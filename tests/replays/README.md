@@ -50,3 +50,5 @@ Then for the catalog's balance edits after calibration (same `sim_version` 6, ne
 spearman and knecht bonuses against cavalry, the crossbow's bonus against spearmen, samogitian
 and light horse costs, light horse damage). The economy fuzzer's orders depend on what players
 can pay, so its commands changed as well.
+Then for `sim_version` 7 (M8: skirmish victory and per-player statistics in the hashes, and
+`data_version` changed with `rules/skirmish.tres`).
