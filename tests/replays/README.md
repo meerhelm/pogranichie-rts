@@ -46,3 +46,7 @@ Then for `sim_version` 6 (M7: places of power, Сила, spells and healers; the
 places, Сила, cooldowns, effects and each unit's last attack, and `data_version` changed with
 `rules/magic.tres`, spell tags and the healer and reliquary techs). `m7_samogitia_magic_3000.json`
 is new.
+Then for the catalog's balance edits after calibration (same `sim_version` 6, new `data_version`:
+spearman and knecht bonuses against cavalry, the crossbow's bonus against spearmen, samogitian
+and light horse costs, light horse damage). The economy fuzzer's orders depend on what players
+can pay, so its commands changed as well.
