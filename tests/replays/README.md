@@ -9,6 +9,7 @@ and fail on the first checkpoint whose hash differs, on Linux and Windows alike.
 | --- | --- |
 | `m2_fuzz_1000.json` | 1000 ticks of random spawn/move/stop/remove orders for two players on open grass (seed 1, fuzz seed 2) |
 | `m3_samogitia_fuzz_1000.json` | The same kind of orders, with formations, on `map_proto_samogitia` (seed 1, fuzz seed 3) |
+| `m5_samogitia_economy_2000.json` | 2000 ticks with the economy: both players join with town centres and peasants, then gather, build, wall, repair, assault, queue, cancel and set rally points among the other orders (seed 1, fuzz seed 4, `--economy 1`) |
 
 ## When a replay fails
 
@@ -23,9 +24,15 @@ $GODOT --headless -s tools/sim/sim_cli.gd -- record --seed 1 --fuzz-seed 2 --tic
   --out tests/replays/m2_fuzz_1000.json
 $GODOT --headless -s tools/sim/sim_cli.gd -- record --seed 1 --fuzz-seed 3 --ticks 1000 \
   --map map_proto_samogitia --out tests/replays/m3_samogitia_fuzz_1000.json
+$GODOT --headless -s tools/sim/sim_cli.gd -- record --seed 1 --fuzz-seed 4 --ticks 2000 \
+  --map map_proto_samogitia --economy 1 --out tests/replays/m5_samogitia_economy_2000.json
 ```
 
 History: both re-recorded for `sim_version` 2 (M3: terrain, A*, flow fields, formations,
 separation; replay format 2 adds `map_id`).
 Then for `sim_version` 3 (M4: combat and morale; the fuzzer now also attacks, sets stances and
 rally points, and data adds `rules/combat.tres`, so `data_version` changed too).
+Then for `sim_version` 4 (M5: economy; the commands are unchanged, the hashes now include
+players, buildings, resources and per-unit work, units carry tech bonuses, map deposits block
+their cells, and `data_version` changed with `rules/economy.tres`, building sizes and tech
+effects). `m5_samogitia_economy_2000.json` is new.
