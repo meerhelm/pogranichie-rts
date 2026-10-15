@@ -2,6 +2,7 @@ extends Node2D
 ## Skirmish scene: the skirmish map with a GDL and an Order army that fight (M4), and from M5
 ## each side's town centre and peasants to gather, build and train. From M6 the local player
 ## sees through the fog of war, with the HUD, minimap and game menu; the main menu opens it.
+## From M7 the map has places of power to take and shrines to lay, and casters cast spells.
 ## Left click or drag selects, right click moves or attacks, Ctrl+right click attack-moves;
 ## Q / E / R pick line, column or wedge; Z / X / C set the stance; with peasants, right click
 ## gathers or builds and B places a building; a selected building queues with Z X C V B N M
@@ -37,6 +38,7 @@ var sim: Simulation
 @onready var _clock: SimClock = $SimClock
 @onready var _map: MapView = $World/Map
 @onready var _buildings: BuildingLayer = $World/Buildings
+@onready var _magic: MagicLayer = $World/Magic
 @onready var _units: UnitLayer = $World/Units
 @onready var _shots: ShotLayer = $World/Shots
 @onready var _camera: RtsCamera = $Camera
@@ -66,6 +68,8 @@ func _ready() -> void:
 	_shots.attach(sim, _clock, _units)
 	_buildings.local_player = PLAYER
 	_buildings.attach(sim, _clock)
+	_magic.local_player = PLAYER
+	_magic.attach(sim, _clock)
 	_fog.attach(sim, _clock, PLAYER)
 	_camera.bounds = Iso.map_rect(grid.width, grid.height)
 	_camera.look_at_point(Iso.cell_to_screen(Vector2(14, 14)))

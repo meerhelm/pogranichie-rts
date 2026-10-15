@@ -9,7 +9,8 @@ extends RefCounted
 ## 3: M4 combat and morale (targets, strikes, projectiles, flight, stances, facing, run-up).
 ## 4: M5 economy (players, gathering, buildings, queues, techs; map deposits block cells).
 ## 5: M6 fog of war (units pick fights only with enemies their side can see).
-const SIM_VERSION := 5
+## 6: M7 places of power, Сила, spells and healers; attacks are remembered (last_attack).
+const SIM_VERSION := 6
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).
@@ -61,6 +62,8 @@ var combat: CombatSystem
 var economy: EconomySystem
 ## Fog of war: what each player sees; off without the catalog's vision rules.
 var vision: VisionSystem
+## Places of power, Сила and spells; off without the catalog's magic rules.
+var magic: MagicSystem
 var data_version: String
 ## Every accepted command, in arrival order, for recording replays.
 var command_log: Array[SimCommand] = []
@@ -102,6 +105,9 @@ func _init(
 	economy = EconomySystem.new(entities, nav, db, combat, walk_unit, stop_unit, spawn_unit)
 	vision = VisionSystem.new(entities, nav, db, economy)
 	combat.vision = vision
+	magic = MagicSystem.new(entities, nav, db, economy, combat, walk_unit, stop_unit, remove_unit)
+	combat.morale_floor = magic.morale_floor
+	vision.mist = magic.mist
 
 
 ## Queues a command for its tick. Commands for a tick already simulated are refused,
@@ -120,6 +126,7 @@ func step() -> void:
 		_apply(cmd)
 	combat.step(tick)
 	economy.step(tick)
+	magic.step(tick)
 	_move_units()
 	combat.after_move()
 	vision.step()
@@ -149,6 +156,7 @@ func state_hash() -> String:
 	combat.write_to(buf)
 	economy.write_to(buf)
 	vision.write_to(buf)
+	magic.write_to(buf)
 	var ctx := HashingContext.new()
 	ctx.start(HashingContext.HASH_SHA256)
 	ctx.update(buf.data_array)
@@ -170,12 +178,14 @@ func _apply(cmd: SimCommand) -> void:
 		SimCommand.Kind.MOVE, SimCommand.Kind.ATTACK_MOVE:
 			var ids := _obedient(cmd)
 			economy.drop_jobs(ids)
+			magic.drop_casts(ids)
 			_order_move(ids, clamp_x(cmd.x), clamp_y(cmd.y), cmd.formation)
 			for id in ids:
 				combat.on_move_order(id, cmd.kind == SimCommand.Kind.ATTACK_MOVE)
 		SimCommand.Kind.STOP:
 			var ids := _obedient(cmd)
 			economy.drop_jobs(ids)
+			magic.drop_casts(ids)
 			for id in ids:
 				_stop(id)
 				combat.on_stop_order(id)
@@ -192,10 +202,16 @@ func _apply(cmd: SimCommand) -> void:
 			_economy_order(cmd)
 		SimCommand.Kind.WORK, SimCommand.Kind.ASSAULT:
 			_economy_order(cmd)
+		SimCommand.Kind.CAST:
+			var ids := _obedient(cmd)
+			economy.drop_jobs(ids)
+			combat.drop_targets(ids)
+			magic.order(cmd, ids)
 		_:
 			var ids := _obedient(cmd)
 			if cmd.kind == SimCommand.Kind.ATTACK or cmd.kind == SimCommand.Kind.RETREAT:
 				economy.drop_jobs(ids)
+				magic.drop_casts(ids)
 			combat.order(cmd, ids)
 
 
@@ -203,6 +219,7 @@ func _apply(cmd: SimCommand) -> void:
 func _economy_order(cmd: SimCommand) -> void:
 	var ids := _obedient(cmd)
 	combat.drop_targets(ids)
+	magic.drop_casts(ids)
 	for id in ids:
 		_stop(id)
 	economy.order(cmd, ids)
@@ -243,6 +260,7 @@ func spawn_unit(type_id: StringName, player: int, px: int, py: int) -> int:
 	combat.on_spawn(id, def)
 	economy.on_spawn(id, def)
 	vision.on_spawn(id, def)
+	magic.on_spawn(id, def)
 	return id
 
 

@@ -6,6 +6,8 @@ extends RefCounted
 ## is untouched. Use as the `orders` callable of Replay.record().
 ## With `economy` on (M5), the players also join with factions and town centres, gather, build,
 ## repair, assault buildings, queue and cancel units, techs and ages, and set rally points.
+## With `magic` on as well (M7), some economy orders lay shrines on the map's places of power
+## and cast spells.
 
 const PLAYERS := 2
 const MAX_UNITS := 200
@@ -19,6 +21,9 @@ var command_permille := 400
 ## Economy orders too; in per-mille of commands, how many are economy ones.
 var economy := false
 var economy_permille := 400
+## Magic orders too (with economy); in per-mille of economy orders.
+var magic := false
+var magic_permille := 200
 
 
 func _init(fuzz_seed: int, types: Array[StringName]) -> void:
@@ -34,7 +39,10 @@ func issue(sim: Simulation) -> void:
 		return
 	var player := rng.range_int(1, PLAYERS)
 	if economy and rng.chance_permille(economy_permille):
-		_economy_order(sim, player)
+		if magic and rng.chance_permille(magic_permille):
+			_magic_order(sim, player)
+		else:
+			_economy_order(sim, player)
 		return
 	var roll := rng.next_below(100)
 	var mine := _units_of(sim, player)
@@ -141,6 +149,29 @@ func _economy_order(sim: Simulation, player: int) -> void:
 	elif not own.is_empty():
 		var b := PackedInt32Array([own[rng.next_below(own.size())]])
 		sim.enqueue(SimCommand.building_rally(sim.tick, player, b, x, y))
+
+
+## A shrine on a place of power (one the player holds when there is one), or a random spell at a
+## random point.
+func _magic_order(sim: Simulation, player: int) -> void:
+	var mine := _units_of(sim, player)
+	if mine.is_empty():
+		return
+	var group := _pick(mine)
+	var places := sim.magic.places
+	if rng.chance_permille(500) and places.count() > 0:
+		var site := rng.next_below(places.count())
+		var held := places.holders.find(player)
+		if held >= 0 and rng.chance_permille(700):
+			site = held
+		var cell := places.cells[site]
+		var x := Fixed.from_cells(cell % sim.nav.width) + Fixed.HALF
+		var y := Fixed.from_cells(cell / sim.nav.width) + Fixed.HALF
+		var shrine := StringName("%s_shrine" % FACTIONS[player - 1])
+		sim.enqueue(SimCommand.build(sim.tick, player, group, shrine, x, y))
+	elif not sim.magic.spells.is_empty():
+		var spell := sim.magic.spells[rng.next_below(sim.magic.spells.size())]
+		sim.enqueue(SimCommand.cast(sim.tick, player, group, spell.id, _rand_x(sim), _rand_y(sim)))
 
 
 func _buildings_of(sim: Simulation, player: int) -> PackedInt32Array:

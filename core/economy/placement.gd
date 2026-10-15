@@ -3,6 +3,8 @@ extends RefCounted
 ## Where buildings may stand and what they cost (M5): footprints, the placement rules (map,
 ## terrain, forest, other buildings, faction, age), palisade lines and the Order's brick
 ## discount. Part of EconomySystem; reads its players, buildings and resources.
+## Places of power (M7): a shrine (tag power_place_only) goes only on the top-left cell of a site
+## its player holds; nothing else may cover a site's cells.
 
 var nav: NavGrid
 var rules: EconomyRulesDef
@@ -10,6 +12,8 @@ var rules: EconomyRulesDef
 var players: Dictionary[int, PlayerState]
 var buildings: BuildingStore
 var nodes: ResourceNodes
+## Places of power (set by MagicSystem; null without the catalog).
+var places: PowerPlaces
 
 var _forest := -1
 
@@ -62,17 +66,22 @@ func can_place(
 ) -> int:
 	var state: PlayerState = players.get(p)
 	var fail := _rule_fail(state, def, setup)
+	if fail == EconomySystem.Fail.OK and not setup and def.tags.has(&"power_place_only"):
+		if places == null or not places.site_free_for(p, cx, cy):
+			fail = EconomySystem.Fail.POWER_PLACE
 	if fail == EconomySystem.Fail.OK:
 		var size := footprint(def, vertical)
 		fail = _cells_fail(def, cx, cy, size)
+		if fail == EconomySystem.Fail.OK and not def.tags.has(&"power_place_only"):
+			if _covers_site(cx, cy, size):
+				fail = EconomySystem.Fail.OCCUPIED
 		if fail == EconomySystem.Fail.OK and def.tags.has(&"near_forest_only"):
 			if not _forest_near(cx, cy, size):
 				fail = EconomySystem.Fail.NO_FOREST_NEAR
 	return fail
 
 
-## Who may build it: the player's faction and age (map setup skips the age and the place of
-## power).
+## Who may build it: the player's faction and age (map setup skips the age).
 func _rule_fail(state: PlayerState, def: BuildingDef, setup: bool) -> int:
 	if state == null:
 		return EconomySystem.Fail.NO_PLAYER
@@ -82,8 +91,6 @@ func _rule_fail(state: PlayerState, def: BuildingDef, setup: bool) -> int:
 		return EconomySystem.Fail.OK
 	if def.campaign_only or def.age > state.age:
 		return EconomySystem.Fail.AGE
-	if def.tags.has(&"power_place_only"):
-		return EconomySystem.Fail.POWER_PLACE
 	return EconomySystem.Fail.OK
 
 
@@ -103,6 +110,18 @@ func _cells_fail(def: BuildingDef, cx: int, cy: int, size: Vector2i) -> int:
 			elif nav.terrain[cell] == _forest or not nav.passable(NavGrid.MoveClass.SIEGE, cell):
 				return EconomySystem.Fail.TERRAIN
 	return EconomySystem.Fail.OK
+
+
+func _covers_site(cx: int, cy: int, size: Vector2i) -> bool:
+	if places == null:
+		return false
+	var s := PowerPlaces.SITE
+	for i in places.count():
+		var x := places.cells[i] % nav.width
+		var y := places.cells[i] / nav.width
+		if cx < x + s and x < cx + size.x and cy < y + s and y < cy + size.y:
+			return true
+	return false
 
 
 func _forest_near(cx: int, cy: int, size: Vector2i) -> bool:

@@ -13,5 +13,5 @@ debt_cost = 0
 cooldown_ticks = 3000
 radius = 8
 duration_ticks = 900
-tags = Array[StringName]([])
+tags = Array[StringName]([&"target_self", &"relic"])
 params = Dictionary[StringName, int]({})

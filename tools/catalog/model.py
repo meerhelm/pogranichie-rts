@@ -50,6 +50,16 @@ ECONOMY_RULE_KEYS = (
 VISION_RULE_KEYS = (
     "cover_reveal_cells", "hill_sight_bonus", "foundation_sight",
 )
+# Places of power and spells (M7), in data/rules/magic.tres; values from manual.json.
+MAGIC_RULE_KEYS = (
+    "capture_ticks", "capture_radius", "power_cap", "consecration_permille",
+    "alka_recharge_permille", "alka_recharge_radius", "cast_range", "relic_morale_floor",
+    "relic_enemy_morale", "exorcism_creature_damage",
+)
+# What a spell does in the game (manual.json → spell_effects, appended to SpellDef.tags): how it
+# is aimed and which effect the simulation runs. A prototype spell must have both or be passive.
+SPELL_TARGETS = ("target_point", "target_self", "passive")
+SPELL_EFFECTS = ("mist", "dispel", "relic", "consecration")
 # Keys of tech effects (manual.json → tech_effects). Gathering and farm keys are per-mille
 # increases; "<class or unit id>.<stat>" keys change unit stats (see TECH_STATS).
 TECH_EFFECT_KEYS = (
@@ -58,6 +68,7 @@ TECH_EFFECT_KEYS = (
 )
 TECH_STATS = (
     "damage_melee", "damage_pierce", "armor_melee", "armor_pierce", "range", "hp_permille",
+    "heal", "radius",
 )
 
 # Field types: int, bool, name (StringName), names (Array[StringName]),
@@ -179,6 +190,8 @@ SCHEMAS: dict[str, dict[str, str]] = {
     "EconomyRulesDef": {"id": "name", **{k: "int" for k in ECONOMY_RULE_KEYS}},
     # data/rules/vision.tres: fog of war (manual.json → vision_rules).
     "VisionRulesDef": {"id": "name", **{k: "int" for k in VISION_RULE_KEYS}},
+    # data/rules/magic.tres: places of power and spells (manual.json → magic_rules).
+    "MagicRulesDef": {"id": "name", **{k: "int" for k in MAGIC_RULE_KEYS}},
     "CatalogIndex": {
         "exported_on": "text",
         "units": "names",
@@ -208,6 +221,7 @@ KIND_DIRS = {
     "CombatRulesDef": "rules",
     "EconomyRulesDef": "rules",
     "VisionRulesDef": "rules",
+    "MagicRulesDef": "rules",
 }
 
 
@@ -263,6 +277,7 @@ class Builder:
         self.rules: dict[str, dict] = {}
         self.economy: dict[str, dict] = {}
         self.vision: dict[str, dict] = {}
+        self.magic: dict[str, dict] = {}
         self.factions: dict[str, dict] = {}
         # (faction or "", lower-case building name) -> building id
         self.building_names: dict[tuple[str, str], str] = {}
@@ -627,6 +642,26 @@ class Builder:
                     d["casters"].append(ref)
             self.spells[sid] = d
 
+    def _spell_effects(self) -> None:
+        """How spells are aimed and what they do (M7), from manual.json → spell_effects."""
+        block = self.manual.get("spell_effects", {})
+        for sid, tags in block.items():
+            if sid.startswith("_"):
+                continue
+            if sid not in self.spells:
+                self.rep.error("spell effects", f"unknown spell {sid!r}")
+                continue
+            for tag in tags:
+                if tag not in SPELL_TARGETS and tag not in SPELL_EFFECTS:
+                    self.rep.error(f"spell {sid}", f"unknown spell effect {tag!r}")
+                elif tag not in self.spells[sid]["tags"]:
+                    self.spells[sid]["tags"].append(tag)
+        for sid in self.proto["spells"]:
+            tags = self.spells.get(sid, {}).get("tags", [])
+            aimed = any(t in tags for t in SPELL_TARGETS)
+            if sid in self.spells and not (aimed and any(t in tags for t in SPELL_EFFECTS)):
+                self.rep.error(f"prototype spell {sid}", "no target and effect in spell_effects")
+
     def _resolve_caster(self, fac: str, token: str) -> str | None:
         alias = self.manual["caster_aliases"].get(token)
         if alias:
@@ -753,6 +788,7 @@ class Builder:
         self.rules["combat"] = self._rule_block("combat", "CombatRulesDef", COMBAT_RULE_KEYS)
         self.economy["economy"] = self._rule_block("economy", "EconomyRulesDef", ECONOMY_RULE_KEYS)
         self.vision["vision"] = self._rule_block("vision", "VisionRulesDef", VISION_RULE_KEYS)
+        self.magic["magic"] = self._rule_block("magic", "MagicRulesDef", MAGIC_RULE_KEYS)
 
     def _rule_block(self, name: str, kind: str, keys: tuple[str, ...]) -> dict:
         block = self.manual.get(f"{name}_rules", {})
@@ -866,6 +902,7 @@ class Builder:
         self.build_techs()
         self._tech_effects()
         self.build_spells()
+        self._spell_effects()
         self.build_ages()
         self.build_power_places()
         self.build_terrain()
@@ -887,4 +924,5 @@ class Builder:
             "CombatRulesDef": self.rules,
             "EconomyRulesDef": self.economy,
             "VisionRulesDef": self.vision,
+            "MagicRulesDef": self.magic,
         }

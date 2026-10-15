@@ -949,21 +949,14 @@ func _assault(id: int) -> void:
 	if entities.cooldown[slot] > 0:
 		return
 	entities.cooldown[slot] = maxi(def.reload_ticks, 1)
+	entities.last_attack[slot] = tick
 	hit_building(b, building_damage(slot, b))
 
 
-## One strike of a unit on a building: the catalog formula against the building's armor;
-## siege damage counts in full against buildings («Ос по постройкам берётся целиком»).
+## One strike of a unit on a building (Damage.against_building).
 func building_damage(slot: int, b: int) -> int:
-	var def := unit_defs[slot]
-	var bdef := buildings.defs[b - 1]
-	var hit := Damage.Hit.new()
-	hit.damage = def.damage + entities.up_damage[slot]
-	hit.damage_type = MELEE if def.damage_type == SIEGE else def.damage_type
-	hit.bonus = Damage.bonus_against(def.bonuses, [&"building"])
-	hit.armor_melee = bdef.armor_melee
-	hit.armor_pierce = bdef.armor_pierce
-	return Damage.compute(hit, combat.rules)
+	var bonus := entities.up_damage[slot]
+	return Damage.against_building(unit_defs[slot], bonus, buildings.defs[b - 1], combat.rules)
 
 
 func hit_building(b: int, damage: int) -> void:

@@ -6,7 +6,8 @@ extends SceneTree
 ##   godot --headless -s tools/sim/sim_cli.gd -- bench --units 200 --ticks 600
 ##   godot --headless -s tools/sim/sim_cli.gd -- arena --seeds 50 --out arena.csv [--pairs a,b]
 ## record, determinism and bench take --map <map id> (see MapText); without it, open grass;
-## and --economy 1 to have the fuzzer play the economy too (players, buildings, gathering).
+## and --economy 1 to have the fuzzer play the economy too (players, buildings, gathering);
+## with it, --magic 1 adds shrines on places of power and spells.
 ## Exit code 0 on success, 1 on a hash mismatch or bad arguments.
 
 
@@ -110,6 +111,7 @@ func _bench(opts: Dictionary) -> int:
 	var fuzz := CommandFuzzer.new(5, types)
 	fuzz.command_permille = 1000
 	fuzz.economy = opts.get("economy", "0") == "1"
+	fuzz.magic = opts.get("magic", "0") == "1"
 	if fuzz.economy:
 		fuzz.issue(sim)
 	sim.step()
@@ -174,6 +176,7 @@ func _fuzz_replay(opts: Dictionary) -> Replay:
 	var db := CatalogDB.load_prototype()
 	var fuzz := CommandFuzzer.new(int(opts.get("fuzz-seed", "2")), _unit_types(db))
 	fuzz.economy = opts.get("economy", "0") == "1"
+	fuzz.magic = opts.get("magic", "0") == "1"
 	return Replay.record(
 		int(opts.get("seed", "1")),
 		db,

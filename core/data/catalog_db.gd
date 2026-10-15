@@ -21,6 +21,8 @@ var rules: CombatRulesDef
 var economy: EconomyRulesDef
 ## Fog of war numbers (data/rules/vision.tres).
 var vision: VisionRulesDef
+## Places of power and spell numbers (data/rules/magic.tres).
+var magic: MagicRulesDef
 
 
 static func load_index() -> CatalogIndex:
@@ -103,6 +105,8 @@ func _load_ids(
 	assert(economy != null, "catalog resource missing: rules/economy")
 	vision = load(DATA_DIR.path_join("rules/vision.tres")) as VisionRulesDef
 	assert(vision != null, "catalog resource missing: rules/vision")
+	magic = load(DATA_DIR.path_join("rules/magic.tres")) as MagicRulesDef
+	assert(magic != null, "catalog resource missing: rules/magic")
 
 
 func _load_kind(dir: String, ids: Array[StringName], into: Dictionary) -> void:
@@ -132,6 +136,8 @@ func content_hash() -> String:
 		ctx.update(_stored_fields(economy).to_utf8_buffer())
 	if vision != null:
 		ctx.update(_stored_fields(vision).to_utf8_buffer())
+	if magic != null:
+		ctx.update(_stored_fields(magic).to_utf8_buffer())
 	return ctx.finish().hex_encode().left(16)
 
 

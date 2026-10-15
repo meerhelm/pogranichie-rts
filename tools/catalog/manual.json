@@ -126,7 +126,7 @@
   }
  },
  "building_layout": {
-  "_source": "Not in the catalog: footprints in cells (w, h) are temporary, after AoE II. Tags: walkable = units walk over it (fields, hives); gate = lets its owner's units through; in_forest = every cell must be forest (ВКЛ: «Ставится в лесу»); no_age_count = does not count toward «2 постройки Удела» (temporary, after AoE II); brick_discount = cheaper while the owner has a building tagged brickworks (Орден → «Кирпич»: стены, башни и замки); power_place_only = only on a place of power (catalog, «Общие постройки» → shrine; M7).",
+  "_source": "Not in the catalog: footprints in cells (w, h) are temporary, after AoE II. Tags: walkable = units walk over it (fields, hives); gate = lets its owner's units through; in_forest = every cell must be forest (ВКЛ: «Ставится в лесу»); no_age_count = does not count toward «2 постройки Удела» (temporary, after AoE II); brick_discount = cheaper while the owner has a building tagged brickworks (Орден → «Кирпич»: стены, башни и замки); power_place_only = only on a place of power (catalog, «Общие постройки» → shrine; M7); spell_recharge = own znakharki near it recharge faster (Алка «знахарки рядом перезаряжаются на 20% быстрее», magic_rules).",
   "sizes": {
    "town_center": [4, 4],
    "house": [2, 2],
@@ -172,6 +172,7 @@
    "brick_discount": ["to_wall", "to_tower", "to_castle"],
    "brickworks": ["to_brickworks"],
    "power_place_only": ["shrine"],
+   "spell_recharge": ["gdl_shrine"],
    "watch": ["tower", "palisade", "wall", "gate"]
   },
   "_sight_source": "Fog of war (M6): how far a finished building sees, in cells → params.sight. Only mo_watchtower «Обзор 12» is from the catalog; the rest are temporary, after AoE II. watch tag = towers and walls for t_watch «Обзор башен и стен +2».",
@@ -199,8 +200,31 @@
    "foundation_sight": 2
   }
  },
+ "magic_rules": {
+  "_source": "Places of power and spells (M7). capture_ticks (15 s) and power_cap: plan M7 «захват 15 секунд без чужих в радиусе», «потолок 500». consecration_permille: «Магия и места силы» → Орденская часовня «вдвое меньше». alka_recharge_permille: Алка «знахарки рядом перезаряжаются на 20% быстрее». relic_morale_floor and relic_enemy_morale: sp_relic «Свои не бегут, пока дух выше 10; враги рядом −10 духа». exorcism_creature_damage: sp_exorcism «существо теряет 150 HP». Keys in `_temporary` are not in the catalog: capture_radius (cells around the site), alka_recharge_radius («рядом»), cast_range (how far from the caster a spell aimed at a point may land).",
+  "_temporary": ["capture_radius", "alka_recharge_radius", "cast_range"],
+  "values": {
+   "capture_ticks": 300,
+   "capture_radius": 4,
+   "power_cap": 500,
+   "consecration_permille": 500,
+   "alka_recharge_permille": 200,
+   "alka_recharge_radius": 6,
+   "cast_range": 8,
+   "relic_morale_floor": 10,
+   "relic_enemy_morale": 10,
+   "exorcism_creature_damage": 150
+  }
+ },
+ "spell_effects": {
+  "_source": "How each spell is aimed (target_point: a point within magic_rules.cast_range of the caster; target_self: around the caster, moving with it; passive) and the effect the simulation runs (mist, dispel, relic, consecration), read from «Эффект» in «Заклинания». Spells without an entry are not in the game yet and cannot be cast.",
+  "sp_bog_mist": ["target_point", "mist"],
+  "sp_exorcism": ["target_point", "dispel"],
+  "sp_relic": ["target_self", "relic"],
+  "sp_consecration": ["passive", "consecration"]
+ },
  "tech_effects": {
-  "_source": "«Эффект» of «Общие технологии» and the faction tabs, written as numbers: gather_* and farm_food are per-mille increases; zaseka_speed and zaseka_hp too (×2 speed = +1000); wall_sight adds cells of sight to the player's buildings tagged watch; «<class or unit id>.<stat>» changes unit stats for the player's units of that class.",
+  "_source": "«Эффект» of «Общие технологии» and the faction tabs, written as numbers: gather_* and farm_food are per-mille increases; zaseka_speed and zaseka_hp too (×2 speed = +1000); wall_sight adds cells of sight to the player's buildings tagged watch; «<class or unit id>.<stat>» changes unit stats for the player's units of that class (heal: HP a second a healer gives); «<spell id>.radius» adds cells to the player's spell.",
   "t_horse_collar": {"gather_farm": 150},
   "t_three_field": {"farm_food": 500},
   "t_saw": {"gather_wood": 200},
@@ -214,16 +238,16 @@
   "t_gdl_forest": {"gather_bort": 400, "gather_hunt": 250, "gather_farm": 250},
   "t_to_great_stud": {"heavy_cavalry.hp_permille": 100},
   "t_watch": {"wall_sight": 2},
+  "t_gdl_herbs": {"gdl_znakharka.heal": 1},
+  "t_to_reliquary": {"to_priest.hp_permille": 500, "sp_exorcism.radius": 2},
   "_deferred": {
    "t_banners": "banner units are not in the prototype",
    "t_wagons": "trade carts (market, after the prototype)",
    "t_to_toll": "trade carts (market, after the prototype)",
    "t_to_arsenal": "researched in the Schnitzhaus, which is not in the prototype",
    "t_gdl_steppe": "«Литовский отход» cooldown and javelin range per player: next combat pass",
-   "t_gdl_horodlo": "lance morale and Power of alkas (M7)",
-   "t_to_rossdienst": "free halfbrother every 3 minutes per castle: next combat pass",
-   "t_gdl_herbs": "faith tech (M7)",
-   "t_to_reliquary": "faith tech (M7)"
+   "t_gdl_horodlo": "researched in the Грод, which is not in the prototype; lance morale and price, alkas −20% Сила",
+   "t_to_rossdienst": "free halfbrother every 3 minutes per castle: next combat pass"
   }
  }
 }

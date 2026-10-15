@@ -143,9 +143,12 @@ func refresh() -> void:
 		for r in 4:
 			_resources[r].text = "%s %d" % [UiText.resource(r), state.stock[r]]
 			_resources[r].tooltip_text = UiText.resource(r)
-		# Power (Сила) comes from places of power in M7; until then there is none.
-		_power.text = "%s %d" % [UiText.resource(-1), 0]
-		_power.tooltip_text = tr("Power: from places of power and shrines")
+		_power.text = "%s %d" % [UiText.resource(-1), state.power_points()]
+		_power.tooltip_text = (
+			tr("Power: from places of power and shrines")
+			+ "\n"
+			+ tr("+%s a second") % _power_income()
+		)
 		_population.text = tr("Population %d/%d") % [state.pop_used(), eco.pop_cap(player)]
 		var age := eco.db.age_by_index(state.age)
 		_age.text = UiText.name_of(age.id) if age != null else ""
@@ -155,7 +158,23 @@ func refresh() -> void:
 	commands.refresh()
 
 
+## Сила a second the player's shrines give now, as "1.2".
+func _power_income() -> String:
+	var places := sim.magic.places
+	var milli := 0
+	for i in places.count():
+		if places.holders[i] == player:
+			milli += places.rate_milli(i)
+	return "%.1f" % (milli / 1000.0)
+
+
 func _placing_text() -> String:
+	if input.casting != null:
+		return (
+			"%s: %s" % [UiText.name_of(input.casting.id), tr("click where to cast it")]
+			+ "\n"
+			+ tr("Esc or right click cancel")
+		)
 	if input.placing == null:
 		return ""
 	var cost := sim.economy.placement.building_cost(player, input.placing)

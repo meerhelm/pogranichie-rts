@@ -102,6 +102,22 @@ static func fail(reason: int) -> String:
 	return t("Not available")
 
 
+## Why a spell cannot be cast now (MagicSystem.Cast).
+static func cast_fail(reason: int) -> String:
+	match reason:
+		MagicSystem.Cast.OK:
+			return ""
+		MagicSystem.Cast.AGE:
+			return t("Needs a later age")
+		MagicSystem.Cast.COOLDOWN:
+			return t("Not ready yet")
+		MagicSystem.Cast.POWER:
+			return t("Not enough Power")
+		MagicSystem.Cast.PASSIVE:
+			return t("Always on")
+	return t("Not available")
+
+
 ## "1:05" for game time in ticks.
 static func clock(ticks: int) -> String:
 	var seconds := ticks / Fixed.TICKS_PER_SECOND

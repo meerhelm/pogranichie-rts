@@ -54,6 +54,20 @@ static func compute(hit: Hit, rules: CombatRulesDef) -> int:
 
 
 ## Sum of an attacker's «+N к …» bonuses that match the target's classes.
+## One strike of a unit on a building: the formula against the building's armor; siege damage
+## counts in full against buildings («Ос по постройкам берётся целиком»).
+static func against_building(
+	def: UnitDef, up_damage: int, bdef: BuildingDef, rules: CombatRulesDef
+) -> int:
+	var hit := Hit.new()
+	hit.damage = def.damage + up_damage
+	hit.damage_type = MELEE if def.damage_type == SIEGE else def.damage_type
+	hit.bonus = bonus_against(def.bonuses, [&"building"])
+	hit.armor_melee = bdef.armor_melee
+	hit.armor_pierce = bdef.armor_pierce
+	return compute(hit, rules)
+
+
 static func bonus_against(bonuses: Dictionary[StringName, int], classes: Array[StringName]) -> int:
 	var sum := 0
 	for cls in classes:

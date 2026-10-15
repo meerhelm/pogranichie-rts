@@ -58,6 +58,9 @@ var rally: Dictionary[int, Vector2i] = {}
 
 ## Fog of war (set by Simulation): units only pick fights with enemies their side can see.
 var vision: VisionSystem
+## «Реликвия в строю» (M7, set by Simulation): `floor(slot) -> int`, the morale in points a unit
+## cannot be brought below while it is above it (0 for none).
+var morale_floor: Callable
 ## Arrows, bolts and javelins in flight.
 var shots := Projectiles.new()
 ## Who is near whom, refilled at the start of every step.
@@ -534,6 +537,7 @@ func _strike(slot: int, t: int) -> void:
 	e.run[slot] = 0
 	_use_turn_bonus(slot)
 	var dmg := Damage.compute(hit, rules)
+	e.last_attack[slot] = tick
 	_apply_hit(slot + 1, e.owners[slot], t, dmg, hit.side, def.damage_type, false)
 
 
@@ -574,6 +578,7 @@ func _shoot(slot: int, t: int, dist: int) -> void:
 	var hit := _hit_from(slot, t, def.damage, def.damage_type)
 	if flags[slot] & F_STEALTH:
 		entities.reveal[slot] = rules.stealth_reveal_ticks
+	entities.last_attack[slot] = tick
 	_use_turn_bonus(slot)
 	var cannon := def.has_class(&"siege") and def.damage_type == Damage.FIREARM
 	_launch(slot, t, dist, hit, cannon)
@@ -588,6 +593,7 @@ func _throw_javelin(slot: int, t: int, dist: int) -> void:
 	hit.bonus = 0
 	_launch(slot, t, dist, hit, false)
 	entities.javelin_cd[slot] = maxi(def.param(&"javelin_cooldown_ticks"), 1)
+	entities.last_attack[slot] = tick
 
 
 ## Sends the shot off. A target standing in the forest is missed forest_miss_permille of the time
@@ -714,7 +720,12 @@ func lose_morale(slot: int, points: int) -> void:
 		return
 	if e.intents[slot] == EntityStore.Intent.RETREAT:
 		return
-	e.morale[slot] = maxi(0, e.morale[slot] - points * MORALE_SCALE)
+	var lowest := 0
+	if morale_floor.is_valid():
+		var floor_points: int = morale_floor.call(slot)
+		if e.morale[slot] > floor_points * MORALE_SCALE:
+			lowest = floor_points * MORALE_SCALE
+	e.morale[slot] = maxi(lowest, e.morale[slot] - points * MORALE_SCALE)
 	if e.morale[slot] == 0 and e.intents[slot] == EntityStore.Intent.NONE:
 		if morale_bonus(slot) <= 0:
 			_flee(slot)
@@ -757,6 +768,13 @@ func wavering(slot: int) -> bool:
 	if e.morale[slot] > rules.waver_morale * MORALE_SCALE:
 		return false
 	return effective_morale(slot) <= rules.waver_morale
+
+
+## Sends a unit running to its rally point even if it never flees (a creature hit by
+## «Экзорцизм»).
+func drive_off(id: int) -> void:
+	if entities.is_alive(id) and defs[id - 1] != null and rules != null:
+		_flee(id - 1)
 
 
 func _flee(slot: int) -> void:

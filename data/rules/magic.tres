@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="MagicRulesDef" format=3]
+
+[ext_resource type="Script" path="res://core/data/magic_rules_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"magic"
+capture_ticks = 300
+capture_radius = 4
+power_cap = 500
+consecration_permille = 500
+alka_recharge_permille = 200
+alka_recharge_radius = 6
+cast_range = 8
+relic_morale_floor = 10
+relic_enemy_morale = 10
+exorcism_creature_damage = 150

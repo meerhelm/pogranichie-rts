@@ -11,12 +11,28 @@ msgstr ""
 msgid "%d %s"
 msgstr ""
 
+#: ui/command_panel.gd
+msgid "%d Power"
+msgstr ""
+
 #: ui/unit_card.gd
 msgid "%d units"
 msgstr ""
 
+#: ui/command_panel.gd
+msgid "(%d s)"
+msgstr ""
+
+#: ui/hud.gd
+msgid "+%s a second"
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Aggressive"
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "Always on"
 msgstr ""
 
 #: ui/unit_card.gd
@@ -51,6 +67,10 @@ msgstr ""
 msgid "Conditions not met"
 msgstr ""
 
+#: ui/command_panel.gd
+msgid "Cooldown %d s"
+msgstr ""
+
 #: ui/unit_card.gd
 msgid "Damage %d (%s)"
 msgstr ""
@@ -65,6 +85,10 @@ msgstr ""
 
 #: game/arena/arena.gd
 msgid "Equal money"
+msgstr ""
+
+#: ui/hud.gd
+msgid "Esc or right click cancel"
 msgstr ""
 
 #: game/arena/arena.gd
@@ -165,11 +189,19 @@ msgid "Not available"
 msgstr ""
 
 #: ui/ui_text.gd
+msgid "Not enough Power"
+msgstr ""
+
+#: ui/ui_text.gd
 msgid "Not enough resources"
 msgstr ""
 
 #: ui/ui_text.gd
 msgid "Not for this faction"
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "Not ready yet"
 msgstr ""
 
 #: ui/unit_card.gd
@@ -323,6 +355,10 @@ msgstr ""
 msgid "age_udel"
 msgstr ""
 
+#: ui/hud.gd
+msgid "click where to cast it"
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "firearm"
 msgstr ""
@@ -471,12 +507,60 @@ msgstr ""
 msgid "pl"
 msgstr ""
 
+#: catalog:power_places
+msgid "pp_bog_island"
+msgstr ""
+
+#: catalog:power_places
+msgid "pp_footprint_stone"
+msgstr ""
+
+#: catalog:power_places
+msgid "pp_hillfort"
+msgstr ""
+
+#: catalog:power_places
+msgid "pp_kurgan"
+msgstr ""
+
+#: catalog:power_places
+msgid "pp_oak_grove"
+msgstr ""
+
+#: catalog:power_places
+msgid "pp_old_tree"
+msgstr ""
+
+#: catalog:power_places
+msgid "pp_spring"
+msgstr ""
+
+#: catalog:power_places
+msgid "pp_wayside"
+msgstr ""
+
 #: ui/unit_card.gd
 msgid "range %d"
 msgstr ""
 
 #: ui/ui_text.gd
 msgid "siege"
+msgstr ""
+
+#: catalog:prototype_spells
+msgid "sp_bog_mist"
+msgstr ""
+
+#: catalog:prototype_spells
+msgid "sp_consecration"
+msgstr ""
+
+#: catalog:prototype_spells
+msgid "sp_exorcism"
+msgstr ""
+
+#: catalog:prototype_spells
+msgid "sp_relic"
 msgstr ""
 
 #: catalog:prototype_techs

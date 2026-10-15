@@ -27,6 +27,7 @@ enum Kind {
 	QUEUE,
 	CANCEL,
 	BUILDING_RALLY,
+	CAST,
 }
 
 ## Kinds whose x and y are a point on the map.
@@ -40,10 +41,11 @@ const POINT_KINDS: Array[Kind] = [
 	Kind.WALL,
 	Kind.GATHER,
 	Kind.BUILDING_RALLY,
+	Kind.CAST,
 ]
 ## Kinds that name a type: unit, faction, building, or queued unit, tech or age.
 const TYPE_KINDS: Array[Kind] = [
-	Kind.SPAWN, Kind.JOIN, Kind.PLACE, Kind.BUILD, Kind.WALL, Kind.QUEUE
+	Kind.SPAWN, Kind.JOIN, Kind.PLACE, Kind.BUILD, Kind.WALL, Kind.QUEUE, Kind.CAST
 ]
 const VALUE_KINDS: Array[Kind] = [Kind.STANCE, Kind.PLACE, Kind.BUILD, Kind.GATHER, Kind.CANCEL]
 
@@ -57,7 +59,8 @@ var y: int
 ## Second point of a WALL line.
 var x2: int
 var y2: int
-## Unit type for SPAWN; faction for JOIN; building for PLACE, BUILD, WALL; item for QUEUE.
+## Unit type for SPAWN; faction for JOIN; building for PLACE, BUILD, WALL; item for QUEUE;
+## spell for CAST.
 var type_id: StringName
 ## Formation.Kind for a group MOVE.
 var formation := 0
@@ -297,6 +300,25 @@ static func building_rally(
 	c.player = by
 	c.kind = Kind.BUILDING_RALLY
 	c.ids = building_ids
+	c.x = px
+	c.y = py
+	return c
+
+
+# --- magic (M7) ----------------------------------------------------------------------------
+
+
+## Cast a spell: one of the units that may (MagicSystem.order) casts it at the point, or around
+## itself for a spell aimed at its caster.
+static func cast(
+	at_tick: int, by: int, units: PackedInt32Array, spell: StringName, px: int, py: int
+) -> SimCommand:
+	var c := SimCommand.new()
+	c.tick = at_tick
+	c.player = by
+	c.kind = Kind.CAST
+	c.ids = units
+	c.type_id = spell
 	c.x = px
 	c.y = py
 	return c

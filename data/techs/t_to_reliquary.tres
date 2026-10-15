@@ -14,4 +14,4 @@ cost_iron = 0
 cost_silver = 150
 research_ticks = 0
 faith = true
-effects = Dictionary[StringName, int]({})
+effects = Dictionary[StringName, int]({&"sp_exorcism.radius": 2, &"to_priest.hp_permille": 500})

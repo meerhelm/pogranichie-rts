@@ -103,6 +103,9 @@ var up_damage := PackedInt32Array()
 var up_armor_m := PackedInt32Array()
 var up_armor_p := PackedInt32Array()
 var up_range := PackedInt32Array()
+## Tick of the unit's last strike, shot or blow on a building (M7: it gives away a unit hidden
+## in «Болотный туман»); -1 if it never attacked.
+var last_attack := PackedInt32Array()
 
 
 func count() -> int:
@@ -180,6 +183,7 @@ func spawn(
 	up_armor_m.append(0)
 	up_armor_p.append(0)
 	up_range.append(0)
+	last_attack.append(-1)
 	alive_ids.append(id)
 	return id
 
@@ -292,3 +296,4 @@ func _write_combat(buf: StreamPeerBuffer, slot: int) -> void:
 	buf.put_32(up_armor_m[slot])
 	buf.put_32(up_armor_p[slot])
 	buf.put_32(up_range[slot])
+	buf.put_32(last_attack[slot])

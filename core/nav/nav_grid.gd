@@ -37,6 +37,9 @@ var blocked := PackedByteArray()
 var terrain_ids: Array[StringName] = []
 ## Map object per cell (index into OBJECT_IDS), set by the map; never changes in play.
 var objects := PackedByteArray()
+## Places of power the map marks (M7): kind (PowerPlaceDef id) and top-left cell of each site.
+var place_kinds: Array[StringName] = []
+var place_cells := PackedInt32Array()
 ## Grows on every change (cost caches, areas, flow fields).
 var version := 0
 ## Grows only when a cell gets closed or slower, so a path planned before is still walkable

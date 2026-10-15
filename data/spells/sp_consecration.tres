@@ -13,5 +13,5 @@ debt_cost = 0
 cooldown_ticks = 0
 radius = 6
 duration_ticks = 0
-tags = Array[StringName]([&"passive", &"permanent"])
+tags = Array[StringName]([&"passive", &"permanent", &"consecration"])
 params = Dictionary[StringName, int]({})

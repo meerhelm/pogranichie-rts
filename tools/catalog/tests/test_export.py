@@ -247,3 +247,36 @@ class VisionExportTest(unittest.TestCase):
         self.assertIn("watch", b["to_tower"]["tags"])
         self.assertIn("watch", b["gdl_palisade"]["tags"])
         self.assertEqual(defs["TechDef"]["t_watch"]["effects"], {"wall_sight": 2})
+
+
+class MagicExportTest(unittest.TestCase):
+    """M7: magic rules, how prototype spells are aimed, healer and reliquary techs."""
+
+    MANUAL = EconomyExportTest.MANUAL
+
+    def build_with(self, edit):
+        manual = copy.deepcopy(self.MANUAL)
+        edit(manual)
+        return export.build(copy.deepcopy(CATALOG), manual=manual)
+
+    def test_magic_rules_and_spell_tags(self):
+        defs, _index, rep = export.build(copy.deepcopy(CATALOG))
+        self.assertEqual(rep.errors, [])
+        r = defs["MagicRulesDef"]["magic"]
+        self.assertEqual(r["capture_ticks"], 300, "15 seconds")
+        self.assertEqual(r["power_cap"], 500)
+        self.assertEqual(r["consecration_permille"], 500, "«вдвое меньше»")
+        s = defs["SpellDef"]
+        self.assertIn("mist", s["sp_bog_mist"]["tags"])
+        self.assertIn("target_point", s["sp_exorcism"]["tags"])
+        self.assertIn("target_self", s["sp_relic"]["tags"])
+        self.assertIn("passive", s["sp_consecration"]["tags"])
+        self.assertIn("spell_recharge", defs["BuildingDef"]["gdl_shrine"]["tags"])
+        self.assertEqual(defs["TechDef"]["t_gdl_herbs"]["effects"], {"gdl_znakharka.heal": 1})
+        self.assertEqual(defs["TechDef"]["t_to_reliquary"]["effects"]["sp_exorcism.radius"], 2)
+
+    def test_prototype_spell_without_effect_and_unknown_effect_are_errors(self):
+        rep = self.build_with(lambda m: m["spell_effects"].pop("sp_relic"))[2]
+        self.assertTrue(any("sp_relic" in e and "no target" in e for e in rep.errors))
+        rep = self.build_with(lambda m: m["spell_effects"].update(sp_relic=["target_self", "fog"]))[2]
+        self.assertTrue(any("unknown spell effect 'fog'" in e for e in rep.errors))

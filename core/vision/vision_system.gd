@@ -9,6 +9,8 @@ extends RefCounted
 ## foundation VisionRulesDef.foundation_sight. Units in cover (forest) are seen only from
 ## cover_reveal_cells away; buildings and the ground are not hidden by cover.
 ## Cells are UNEXPLORED until first seen, then EXPLORED, and VISIBLE while something sees them.
+## «Болотный туман» (M7, MistField) hides its side's units and buildings like cover: seen only
+## from cover_reveal_cells away, a unit until it attacks.
 
 enum State { UNEXPLORED, EXPLORED, VISIBLE }
 
@@ -24,6 +26,8 @@ var nav: NavGrid
 var buildings: BuildingStore
 var players: Dictionary[int, PlayerState]
 var rules: VisionRulesDef
+## Where mists lie (set by Simulation from MagicSystem).
+var mist := MistField.new()
 ## Sight of units without «обзор» in «Особое».
 var sight_default := 0
 ## Grid by player (created when the player first has something that sees).
@@ -196,23 +200,41 @@ func sees_unit_at(player: int, cell: int) -> bool:
 
 func sees_unit(player: int, id: int) -> bool:
 	var slot := id - 1
-	if entities.owners[slot] == player:
+	var owner := entities.owners[slot]
+	if owner == player:
 		return true
-	return sees_unit_at(player, nav.cell_of(entities.pos_x[slot], entities.pos_y[slot]))
+	var cell := nav.cell_of(entities.pos_x[slot], entities.pos_y[slot])
+	if not mist.is_empty() and enabled():
+		var w := nav.width
+		if mist.hides(owner, cell % w, cell / w, entities.last_attack[slot]):
+			return _sees_near(player, cell)
+	return sees_unit_at(player, cell)
+
+
+## Something of the player's is within cover_reveal_cells of the cell.
+func _sees_near(player: int, cell: int) -> bool:
+	var g: VisionGrid = grids.get(player)
+	return g != null and g.near[cell] > 0
 
 
 ## Any cell of the building is in sight.
 func sees_building(player: int, b: int) -> bool:
 	var store := buildings
-	if store.owners[b - 1] == player:
+	var owner := store.owners[b - 1]
+	if owner == player:
 		return true
-	for cell in store.cells_of(b, nav.width):
-		if sees_cell(player, cell):
+	var w := nav.width
+	for cell in store.cells_of(b, w):
+		if not mist.is_empty() and enabled() and mist.hides(owner, cell % w, cell / w, -1):
+			if _sees_near(player, cell):
+				return true
+		elif sees_cell(player, cell):
 			return true
 	return false
 
 
-## Cells that hide units from afar: forest. («Болотный туман» joins in M7.)
+## Cells that hide every unit from afar: forest. («Болотный туман» hides only its side's units
+## and buildings, see MistField.)
 func in_cover(cell: int) -> bool:
 	return nav.terrain[cell] == _forest
 

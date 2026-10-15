@@ -31,7 +31,10 @@ LOCALES = ("en", "be", "pl", "uk", "lt")
 SCAN_DIRS = ("game", "ui")
 INDEX = ROOT / "data" / "catalog_index.tres"
 # Catalog lists whose ids are shown to the player.
-INDEX_LISTS = ("prototype_units", "prototype_buildings", "prototype_techs", "factions", "ages")
+INDEX_LISTS = (
+    "prototype_units", "prototype_buildings", "prototype_techs", "prototype_spells", "factions",
+    "ages", "power_places",
+)
 
 STRING = re.compile(r'(?P<prefix>[&^$]?)"(?P<body>(?:[^"\\]|\\.)*)"')
 TR_CALL = re.compile(r"(?<![\w.])(?:tr|atr|tr_n|UiText\.t|t)\(\s*$")

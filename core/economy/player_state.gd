@@ -24,6 +24,8 @@ var zaseka_speed_bonus := 0
 var zaseka_hp_bonus := 0
 ## Extra cells of sight for towers and walls («Караулы», M6).
 var wall_sight_bonus := 0
+## Сила (M7); MagicSystem.POWER_UNIT is one point (thousandths of a point a second, per tick).
+var power := 0
 ## Unit stat changes from techs: "<class or unit id>.<stat>" -> sum.
 var unit_mods: Dictionary[StringName, int] = {}
 
@@ -35,6 +37,11 @@ func _init(p_player: int, p_faction: StringName) -> void:
 
 func pop_used() -> int:
 	return pop_units + pop_training
+
+
+## Whole points of Сила.
+func power_points() -> int:
+	return power / MagicSystem.POWER_UNIT
 
 
 func can_pay(cost: PackedInt32Array) -> bool:
@@ -77,6 +84,7 @@ func write_to(buf: StreamPeerBuffer) -> void:
 	buf.put_32(zaseka_speed_bonus)
 	buf.put_32(zaseka_hp_bonus)
 	buf.put_32(wall_sight_bonus)
+	buf.put_64(power)
 	var keys := PackedStringArray()
 	for k: StringName in unit_mods:
 		keys.append(String(k))

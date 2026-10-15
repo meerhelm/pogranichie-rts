@@ -5,7 +5,8 @@ extends PanelContainer
 ## building what it can train or research, with the queue (click an item to cancel it).
 ## Every button's tooltip names the order, its key and, for buildings and queue items, the price
 ## and why it cannot be had now. Buttons are rebuilt when the selection changes and their state
-## refreshed after ticks.
+## refreshed after ticks. Casters get a button per spell (M7) with its Сила, cooldown and why it
+## cannot be cast now.
 
 const BUTTON_SIZE := Vector2(118, 34)
 
@@ -21,6 +22,7 @@ var _context := ""
 ## Queue buttons by item and build buttons by building id, to refresh their state.
 var _item_buttons: Dictionary[StringName, Button] = {}
 var _build_buttons: Dictionary[StringName, Button] = {}
+var _spell_buttons: Dictionary[StringName, Button] = {}
 
 
 func _ready() -> void:
@@ -79,6 +81,7 @@ func _clear() -> void:
 			child.queue_free()
 	_item_buttons.clear()
 	_build_buttons.clear()
+	_spell_buttons.clear()
 
 
 func _rebuild() -> void:
@@ -135,6 +138,9 @@ func _unit_orders() -> void:
 		_button(
 			_orders, dismount, dismount + " (V)", input.order_kind.bind(SimCommand.Kind.DISMOUNT)
 		)
+	for spell in input.spells():
+		var b := _button(_orders, UiText.name_of(spell.id), "", input.start_casting.bind(spell))
+		_spell_buttons[spell.id] = b
 	if input.peasants().is_empty():
 		return
 	for def in input.buildable():
@@ -182,6 +188,7 @@ func _refresh_state() -> void:
 		if button.disabled:
 			tip += "\n" + UiText.fail(EconomySystem.Fail.COST)
 		button.tooltip_text = tip
+	_refresh_spells()
 	var b := input.selected_building
 	if b == BuildingStore.NO_ID:
 		return
@@ -196,4 +203,31 @@ func _refresh_state() -> void:
 		tip += "\n" + UiText.cost(eco.production.item_cost(p, b, item))
 		if button.disabled:
 			tip += "\n" + UiText.fail(fail)
+		button.tooltip_text = tip
+
+
+## A spell can be cast if any selected caster may; otherwise the first caster's reason shows.
+func _refresh_spells() -> void:
+	var magic := sim.magic
+	for id: StringName in _spell_buttons:
+		var spell := magic.spells[magic.spell_index[id]]
+		var reason := MagicSystem.Cast.UNKNOWN
+		var ready_in := 0
+		for caster in input.casters_of(spell):
+			var r := magic.can_cast(input.player, caster, id)
+			if r == MagicSystem.Cast.OK or reason == MagicSystem.Cast.UNKNOWN:
+				reason = r
+			if r == MagicSystem.Cast.COOLDOWN:
+				var left := magic.cooldown_ticks(caster, id)
+				ready_in = left if ready_in == 0 else mini(ready_in, left)
+			if r == MagicSystem.Cast.OK:
+				break
+		var button := _spell_buttons[id]
+		button.disabled = reason != MagicSystem.Cast.OK
+		var tip := "%s\n%s" % [UiText.name_of(id), tr("%d Power") % spell.power_cost]
+		tip += "\n" + tr("Cooldown %d s") % (spell.cooldown_ticks / Fixed.TICKS_PER_SECOND)
+		if button.disabled:
+			tip += "\n" + UiText.cast_fail(reason)
+			if reason == MagicSystem.Cast.COOLDOWN:
+				tip += " " + tr("(%d s)") % ceili(ready_in / float(Fixed.TICKS_PER_SECOND))
 		button.tooltip_text = tip

@@ -3,6 +3,8 @@ extends RefCounted
 ## Maps as plain text, one character per cell, so a map diff reads like a picture:
 ##   maps/<map id>/terrain.txt
 ## Lines starting with ';' are comments. Every row must have the same length.
+## A line `@place <kind> <x> <y>` marks a place of power (M7): a PowerPlaceDef id and the
+## top-left cell of its site (MagicSystem.SITE cells square, where the shrine stands).
 
 const LEGEND := {
 	".": &"t_grass",
@@ -45,9 +47,13 @@ static func load_map(map_id: String, db: CatalogDB) -> NavGrid:
 ## Builds a grid from map text; null (with an error) on a malformed map.
 static func parse(text: String, db: CatalogDB) -> NavGrid:
 	var rows := PackedStringArray()
+	var places := PackedStringArray()
 	for line in text.split("\n"):
 		var row := line.strip_edges()
 		if row.is_empty() or row.begins_with(";"):
+			continue
+		if row.begins_with("@place "):
+			places.append(row)
 			continue
 		rows.append(row)
 	if rows.is_empty():
@@ -76,6 +82,18 @@ static func parse(text: String, db: CatalogDB) -> NavGrid:
 				# A grid without the catalog knows only grass; map every tile onto it.
 				index = 0
 			grid.terrain[grid.cell_at(x, y)] = index
+	for line in places:
+		var parts := line.split(" ", false)
+		if parts.size() != 4 or not parts[2].is_valid_int() or not parts[3].is_valid_int():
+			push_error("map: bad place line '%s'" % line)
+			return null
+		var px := parts[2].to_int()
+		var py := parts[3].to_int()
+		if not grid.in_bounds(px, py):
+			push_error("map: place '%s' is off the map" % line)
+			return null
+		grid.place_kinds.append(StringName(parts[1]))
+		grid.place_cells.append(grid.cell_at(px, py))
 	grid.version += 1
 	return grid
 
@@ -100,4 +118,9 @@ static func to_text(grid: NavGrid) -> String:
 				ch = by_object[String(grid.object_at(cell))]
 			row += ch
 		lines.append(row)
+	for i in grid.place_kinds.size():
+		var cell := grid.place_cells[i]
+		lines.append(
+			"@place %s %d %d" % [grid.place_kinds[i], cell % grid.width, cell / grid.width]
+		)
 	return "\n".join(lines) + "\n"

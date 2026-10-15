@@ -13,6 +13,9 @@ extends Control
 ## own building, or assaults an enemy one. A click on an own building selects it: Z X C V B N M
 ## queue its units, techs and the next age, Backspace cancels the last, right click sets
 ## where its units go.
+## Magic (M7): a spell button of the selected casters casts one aimed at its caster at once; one
+## aimed at a point waits for a left click on the map (right click or Esc cancels). A shrine is
+## laid on the place of power nearest the cursor.
 
 signal formation_changed(kind: Formation.Kind)
 ## The selected building, the building being placed or its place changed (for the HUD).
@@ -29,6 +32,8 @@ const DRAG_THRESHOLD := 6.0
 const PICK_RADIUS := 14.0
 ## Pressing a group's number twice within this many ms centres the camera on it.
 const DOUBLE_TAP_MS := 400
+## A shrine being placed snaps to a place of power this many cells from the cursor.
+const SITE_SNAP := 3
 
 var sim: Simulation
 var units: UnitLayer
@@ -43,6 +48,8 @@ var selected_building := BuildingStore.NO_ID
 ## whether it is turned on its side and where a palisade drag started (x < 0 when not).
 var placing: BuildingDef
 var place_fail := 0
+## Spell waiting for its point (null when not aiming one).
+var casting: SpellDef
 
 var _drag_from := Vector2.ZERO
 var _dragging := false
@@ -92,6 +99,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _mouse_button(mb: InputEventMouseButton) -> void:
+	if casting != null:
+		_casting_click(mb)
+		return
 	if placing != null:
 		_placing_click(mb)
 		return
@@ -160,7 +170,9 @@ func _key(key: InputEventKey) -> void:
 	elif key.physical_keycode == KEY_F10:
 		_request_menu()
 	elif key.physical_keycode == KEY_ESCAPE:
-		if placing != null:
+		if casting != null:
+			stop_casting()
+		elif placing != null:
 			_stop_placing()
 		elif selection.ids.is_empty() and selected_building == BuildingStore.NO_ID:
 			_request_menu()
@@ -297,8 +309,7 @@ func buildable() -> Array[BuildingDef]:
 	for id: StringName in sim.economy.db.buildings:
 		var def: BuildingDef = sim.economy.db.buildings[id]
 		if def.faction == state.faction and not def.campaign_only and def.age <= state.age:
-			if not def.tags.has(&"power_place_only"):
-				ids.append(String(id))
+			ids.append(String(id))
 	ids.sort()
 	for id in ids:
 		out.append(sim.economy.db.building(StringName(id)))
@@ -326,8 +337,14 @@ func _stop_placing() -> void:
 	economy_changed.emit()
 
 
-## Top-left cell of the ghost: the footprint centred on the cell under the cursor.
+## Top-left cell of the ghost: the footprint centred on the cell under the cursor; a shrine
+## snaps to the place of power within SITE_SNAP cells.
 func _ghost_origin(size: Vector2i) -> Vector2i:
+	if placing != null and placing.tags.has(&"power_place_only"):
+		var places := sim.magic.places
+		var i := places.site_near(_cursor_cell.x, _cursor_cell.y, SITE_SNAP)
+		if i >= 0:
+			return Vector2i(places.cells[i] % sim.nav.width, places.cells[i] / sim.nav.width)
 	return _cursor_cell - Vector2i((size.x - 1) / 2, (size.y - 1) / 2)
 
 
@@ -504,6 +521,60 @@ func queue_item(item: StringName) -> void:
 func cancel_item(index: int) -> void:
 	if selected_building != BuildingStore.NO_ID:
 		_order(SimCommand.cancel_item(sim.tick, player, selected_building, index))
+
+
+# --- magic ---------------------------------------------------------------------------------
+
+
+## Selected units that cast the spell.
+func casters_of(spell: SpellDef) -> PackedInt32Array:
+	var out := PackedInt32Array()
+	for id in selection.ids:
+		if spell.casters.has(sim.entities.type_ids[id - 1]):
+			out.append(id)
+	return out
+
+
+## Spells the selected units cast, by id.
+func spells() -> Array[SpellDef]:
+	var out: Array[SpellDef] = []
+	for spell in sim.magic.spells:
+		if spell.tags.has(&"passive"):
+			continue
+		if not casters_of(spell).is_empty():
+			out.append(spell)
+	return out
+
+
+## The spell button: cast one aimed at its caster now, or wait for the point of another.
+func start_casting(spell: SpellDef) -> void:
+	var ids := casters_of(spell)
+	if ids.is_empty():
+		return
+	if placing != null:
+		_stop_placing()
+	if spell.tags.has(&"target_self"):
+		_order(SimCommand.cast(sim.tick, player, ids, spell.id, 0, 0))
+		return
+	casting = spell
+	economy_changed.emit()
+
+
+func stop_casting() -> void:
+	casting = null
+	economy_changed.emit()
+
+
+func _casting_click(mb: InputEventMouseButton) -> void:
+	if not mb.pressed:
+		return
+	if mb.button_index == MOUSE_BUTTON_LEFT:
+		var at := Iso.screen_to_fixed(_to_world(mb.position))
+		var ids := casters_of(casting)
+		if not ids.is_empty():
+			_order(SimCommand.cast(sim.tick, player, ids, casting.id, at.x, at.y))
+	if mb.button_index == MOUSE_BUTTON_LEFT or mb.button_index == MOUSE_BUTTON_RIGHT:
+		stop_casting()
 
 
 ## Selected units that can gather and build.
