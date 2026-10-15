@@ -131,3 +131,32 @@ class SchemaTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TerrainTest(unittest.TestCase):
+    def terrain(self, catalog=None):
+        defs, _index, rep = export.build(catalog or copy.deepcopy(CATALOG))
+        self.assertEqual(rep.errors, [])
+        return defs["TerrainDef"]
+
+    def test_movement_multipliers(self):
+        t = self.terrain()
+        self.assertEqual((t["t_forest"]["infantry_permille"], t["t_forest"]["cavalry_permille"]), (700, 500))
+        self.assertEqual(t["t_bog"]["infantry_permille"], 500)
+        self.assertEqual(t["t_ford"]["cavalry_permille"], 400)
+        self.assertTrue(t["t_ford"]["siege_blocked"])
+        self.assertEqual(t["t_road"]["infantry_permille"], 1200)
+        self.assertEqual((t["t_hill"]["infantry_permille"], t["t_hill"]["uphill_permille"]), (1000, 900))
+        self.assertEqual(t["t_grass"]["uphill_permille"], 1000)
+
+    def test_impassable_tiles(self):
+        t = self.terrain()
+        for tid in ("t_old_forest", "t_quagmire", "t_water"):
+            self.assertFalse(t[tid]["passable"], tid)
+            self.assertEqual(t[tid]["infantry_permille"], 0, tid)
+        self.assertTrue(t["t_water"]["boats_only"])
+
+    def test_unknown_passability_is_an_error(self):
+        catalog = copy.deepcopy(CATALOG)
+        row(catalog, "terrain", "t_sand")["passability"] = "медленно"
+        self.assertIn("passability «медленно» not understood", " ".join(errors_for(catalog)))

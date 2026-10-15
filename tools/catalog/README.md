@@ -21,7 +21,7 @@
 ## Как поменять цифру
 
 1. Правим таблицу в документе каталога.
-2. Выгружаем вкладки в Markdown (заголовки и таблицы; `python3 -m tools.catalog.import_docs --from-xml READ.json TAB.md` превращает ответ Claude Docs `read` в такой файл) и собираем `catalog.json`:
+2. Выгружаем вкладки в Markdown (overview, gdl, crown, order, moscow, allies, magic, locations) (заголовки и таблицы; `python3 -m tools.catalog.import_docs --from-xml READ.json TAB.md` превращает ответ Claude Docs `read` в такой файл) и собираем `catalog.json`:
    `python3 -m tools.catalog.import_docs ПАПКА_С_ВКЛАДКАМИ`
 3. `python3 -m tools.catalog.export` и коммитим `catalog.json` вместе с `data/`.
 
@@ -33,6 +33,7 @@
 - Скорость в тысячных клетки в секунду: 1,35 → `speed_milli = 1350`. Так ни одно число не теряет точности; перевод в фиксированную точку делает симуляция (M2).
 - Множители в промилле: таран ×2,5 → `charge_permille = 2500`.
 - Дух «—» → `never_flees = true`.
+- Рельеф (`data/terrain/`, из таблицы «Тайлы и рельеф» вкладки «Локации»): `infantry_permille`, `cavalry_permille`, `uphill_permille` (×0,9 «вверх» у холма, у остальных 1000), `passable`, `boats_only`, `siege_blocked` («Осадное не проходит»). Остальное «Особое» тайлов (дерево, руда, огонь, дальность) пока не разбирается: это следующие этапы.
 
 ## Когда экспортёр падает
 

@@ -118,12 +118,19 @@ func test_players_cannot_order_foreign_or_dead_units() -> void:
 func test_stop_and_remove() -> void:
 	var sim := Simulation.new(1, _db)
 	sim.enqueue(SimCommand.spawn(0, 1, KNIGHT, 0, 0))
-	sim.enqueue(SimCommand.spawn(0, 1, KNIGHT, 0, 0))
-	sim.enqueue(SimCommand.move(0, 1, PackedInt32Array([1, 2]), _cell(50), 0))
+	sim.enqueue(SimCommand.spawn(0, 1, KNIGHT, 0, _cell(4)))
+	sim.enqueue(SimCommand.move(0, 1, PackedInt32Array([1]), _cell(50), 0))
+	sim.enqueue(SimCommand.move(0, 1, PackedInt32Array([2]), _cell(50), _cell(4)))
 	sim.enqueue(SimCommand.stop(10, 1, PackedInt32Array([1])))
 	sim.enqueue(SimCommand.remove(10, 1, PackedInt32Array([2, 2])))
-	sim.run(30)
-	assert_eq(sim.entities.pos_x[0], 64 * 10)
+	sim.run(11)
+	var stopped_at := [sim.entities.pos_x[0], sim.entities.pos_y[0]]
+	sim.run(19)
+	# Ten ticks at 64 units each (the route bends toward a cell centre first), then no more.
+	var walked := Fixed.distance(0, 0, sim.entities.pos_x[0], sim.entities.pos_y[0])
+	assert_between(walked, 600, 640)
+	assert_eq([sim.entities.pos_x[0], sim.entities.pos_y[0]], stopped_at)
+	assert_eq(sim.entities.orders[0], EntityStore.Order.IDLE)
 	assert_eq(sim.entities.alive_ids, PackedInt32Array([1]))
 
 

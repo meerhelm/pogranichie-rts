@@ -121,6 +121,15 @@ SCHEMAS: dict[str, dict[str, str]] = {
         "id": "name",
         "power_permille": "int",
     },
+    "TerrainDef": {
+        "id": "name",
+        "passable": "bool",
+        "boats_only": "bool",
+        "infantry_permille": "int",
+        "cavalry_permille": "int",
+        "uphill_permille": "int",
+        "siege_blocked": "bool",
+    },
     "CatalogIndex": {
         "exported_on": "text",
         "units": "names",
@@ -130,6 +139,7 @@ SCHEMAS: dict[str, dict[str, str]] = {
         "factions": "names",
         "ages": "names",
         "power_places": "names",
+        "terrains": "names",
         "prototype_factions": "names",
         "prototype_units": "names",
         "prototype_buildings": "names",
@@ -145,6 +155,7 @@ KIND_DIRS = {
     "FactionDef": "factions",
     "AgeDef": "ages",
     "PowerPlaceDef": "power_places",
+    "TerrainDef": "terrain",
 }
 
 
@@ -196,6 +207,7 @@ class Builder:
         self.spells: dict[str, dict] = {}
         self.ages: dict[str, dict] = {}
         self.power_places: dict[str, dict] = {}
+        self.terrains: dict[str, dict] = {}
         self.factions: dict[str, dict] = {}
         # (faction or "", lower-case building name) -> building id
         self.building_names: dict[tuple[str, str], str] = {}
@@ -594,6 +606,42 @@ class Builder:
                 self.rep.error(f"power place {row['id']}", str(err))
             self.power_places[d["id"]] = d
 
+    def build_terrain(self) -> None:
+        """«Тайлы и рельеф»: movement multipliers for the nav grid (M3).
+
+        Only the movement part of «Особое» is read here («Осадное не проходит»); the rest
+        (wood, ore, fire, range) belongs to later systems.
+        """
+        for row in self.cat.get("terrain", []):
+            where = f"terrain {row['id']}"
+            d = _defaults("TerrainDef")
+            d["id"] = row["id"]
+            text = row["passability"].strip()
+            try:
+                if text == "непроходима":
+                    pass
+                elif text == "только лодки":
+                    d["boats_only"] = True
+                elif m := re.fullmatch(r"пехота (×[\d,]+), конница (×[\d,]+)", text):
+                    d["passable"] = True
+                    d["infantry_permille"] = cells.permille(m.group(1))
+                    d["cavalry_permille"] = cells.permille(m.group(2))
+                    d["uphill_permille"] = 1000
+                elif m := re.fullmatch(r"(×[\d,]+)( вверх)?", text):
+                    d["passable"] = True
+                    mult = cells.permille(m.group(1))
+                    climb = bool(m.group(2))
+                    d["infantry_permille"] = d["cavalry_permille"] = 1000 if climb else mult
+                    d["uphill_permille"] = mult if climb else 1000
+                else:
+                    self.rep.error(where, f"passability «{text}» not understood")
+                    continue
+            except CellError as err:
+                self.rep.error(where, str(err))
+                continue
+            d["siege_blocked"] = "Осадное не проходит" in row["special"]
+            self.terrains[d["id"]] = d
+
     # --- factions and checks ---------------------------------------------------------
 
     def build_factions(self) -> None:
@@ -667,6 +715,7 @@ class Builder:
             factions=list(FACTIONS),
             ages=sorted(self.ages),
             power_places=sorted(self.power_places),
+            terrains=sorted(self.terrains),
             prototype_factions=list(self.proto["factions"]),
             prototype_units=sorted(self.proto["units"]),
             prototype_buildings=sorted(self.proto["buildings"]),
@@ -682,6 +731,7 @@ class Builder:
         self.build_spells()
         self.build_ages()
         self.build_power_places()
+        self.build_terrain()
         self.build_factions()
         self.check_references()
         self.check_prototype()
@@ -695,4 +745,5 @@ class Builder:
             "FactionDef": self.factions,
             "AgeDef": self.ages,
             "PowerPlaceDef": self.power_places,
+            "TerrainDef": self.terrains,
         }

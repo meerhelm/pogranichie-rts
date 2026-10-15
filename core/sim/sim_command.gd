@@ -15,6 +15,8 @@ var x: int
 var y: int
 ## Unit type for SPAWN.
 var type_id: StringName
+## Formation.Kind for a group MOVE.
+var formation := 0
 ## Order of arrival, set by CommandQueue; breaks ties between commands of one player and tick.
 var seq := -1
 
@@ -30,7 +32,9 @@ static func spawn(at_tick: int, by: int, unit: StringName, px: int, py: int) -> 
 	return c
 
 
-static func move(at_tick: int, by: int, units: PackedInt32Array, px: int, py: int) -> SimCommand:
+static func move(
+	at_tick: int, by: int, units: PackedInt32Array, px: int, py: int, shape: int = 0
+) -> SimCommand:
 	var c := SimCommand.new()
 	c.tick = at_tick
 	c.player = by
@@ -38,6 +42,7 @@ static func move(at_tick: int, by: int, units: PackedInt32Array, px: int, py: in
 	c.ids = units
 	c.x = px
 	c.y = py
+	c.formation = shape
 	return c
 
 
@@ -72,6 +77,8 @@ func to_dict() -> Dictionary:
 		d["y"] = y
 	if kind == Kind.SPAWN:
 		d["u"] = String(type_id)
+	if kind == Kind.MOVE and formation != 0:
+		d["f"] = formation
 	return d
 
 
@@ -90,4 +97,5 @@ static func from_dict(d: Dictionary) -> SimCommand:
 	c.x = int(d.get("x", 0))
 	c.y = int(d.get("y", 0))
 	c.type_id = StringName(str(d.get("u", "")))
+	c.formation = int(d.get("f", 0))
 	return c

@@ -1,15 +1,18 @@
 class_name Replay
 extends RefCounted
-## A recorded game: seed, data and rules versions, map size, the command list and state
+## A recorded game: seed, data and rules versions, map, the command list and state
 ## hashes at checkpoints. Playing it back must reproduce every checkpoint hash exactly.
 ## Stored as JSON (see save()/load_file()).
 
-const FORMAT := 1
+## 2: map_id (M3 terrain maps).
+const FORMAT := 2
 const DEFAULT_CHECKPOINT_EVERY := 10
 
 var sim_version := Simulation.SIM_VERSION
 var data_version: String
 var seed_value: int
+## Map from maps/ (see MapText), or empty for open grass of map_width_cells x map_height_cells.
+var map_id := ""
 var map_width_cells: int
 var map_height_cells: int
 var ticks: int
@@ -40,14 +43,18 @@ static func record(
 	orders: Callable,
 	every: int = DEFAULT_CHECKPOINT_EVERY,
 	width_cells: int = Simulation.DEFAULT_MAP_CELLS,
-	height_cells: int = Simulation.DEFAULT_MAP_CELLS
+	height_cells: int = Simulation.DEFAULT_MAP_CELLS,
+	p_map_id: String = ""
 ) -> Replay:
-	var sim := Simulation.new(p_seed, db, width_cells, height_cells)
 	var r := Replay.new()
-	r.data_version = sim.data_version
+	r.map_id = p_map_id
 	r.seed_value = p_seed
 	r.map_width_cells = width_cells
 	r.map_height_cells = height_cells
+	var sim := r.new_simulation(db)
+	r.map_width_cells = sim.nav.width
+	r.map_height_cells = sim.nav.height
+	r.data_version = sim.data_version
 	r.ticks = p_ticks
 	r.checkpoint_every = every
 	for i in p_ticks:
@@ -91,7 +98,11 @@ func play(db: CatalogDB) -> Playback:
 
 
 func new_simulation(db: CatalogDB) -> Simulation:
-	return Simulation.new(seed_value, db, map_width_cells, map_height_cells)
+	if map_id.is_empty():
+		return Simulation.new(seed_value, db, map_width_cells, map_height_cells)
+	var grid := MapText.load_map(map_id, db)
+	assert(grid != null, "replay map %s does not load" % map_id)
+	return Simulation.new(seed_value, db, 0, 0, grid)
 
 
 func to_dict() -> Dictionary:
@@ -103,6 +114,7 @@ func to_dict() -> Dictionary:
 		"sim_version": sim_version,
 		"data_version": data_version,
 		"seed": seed_value,
+		"map_id": map_id,
 		"map": [map_width_cells, map_height_cells],
 		"ticks": ticks,
 		"checkpoint_every": checkpoint_every,
@@ -119,6 +131,7 @@ static func from_dict(d: Dictionary) -> Replay:
 	r.data_version = d["data_version"]
 	r.seed_value = int(d["seed"])
 	var map_size: Array = d["map"]
+	r.map_id = str(d.get("map_id", ""))
 	r.map_width_cells = int(map_size[0])
 	r.map_height_cells = int(map_size[1])
 	r.ticks = int(d["ticks"])

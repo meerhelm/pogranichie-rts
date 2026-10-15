@@ -10,6 +10,7 @@ extends Resource
 @export var factions: Array[StringName]
 @export var ages: Array[StringName]
 @export var power_places: Array[StringName]
+@export var terrains: Array[StringName]
 @export var prototype_factions: Array[StringName]
 @export var prototype_units: Array[StringName]
 @export var prototype_buildings: Array[StringName]

@@ -8,7 +8,8 @@ happens in the exporter, so catalog.json stays a faithful copy of the document.
 Usage:
     python3 -m tools.catalog.import_docs DUMP_DIR [--date YYYY-MM-DD]
 
-DUMP_DIR holds overview.md, gdl.md, crown.md, order.md, moscow.md, allies.md, magic.md.
+DUMP_DIR holds overview.md, gdl.md, crown.md, order.md, moscow.md, allies.md, magic.md,
+locations.md.
 A Claude Docs `read` result (JSON with an "xml" field) can be converted with --from-xml.
 """
 
@@ -148,6 +149,8 @@ CREATURE_COLUMNS = {
     "Бытовое объяснение": "mundane",
 }
 
+TERRAIN_COLUMNS = {"id": "id", "Тайл": "name", "Проходимость": "passability", "Особое": "special"}
+
 HERO_COLUMNS = {
     "id": "id",
     "Герой": "name",
@@ -182,6 +185,7 @@ TABLES = [
     ("magic.md", "Заклинания", "spells", SPELL_COLUMNS, None),
     ("magic.md", "Существа", "creatures", CREATURE_COLUMNS, None),
     ("magic.md", "Технологии веры", "faith_techs", FAITH_TECH_COLUMNS, None),
+    ("locations.md", "Тайлы и рельеф", "terrain", TERRAIN_COLUMNS, None),
 ]
 
 FACTIONS = {

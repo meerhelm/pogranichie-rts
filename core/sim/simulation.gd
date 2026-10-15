@@ -5,12 +5,41 @@ extends RefCounted
 ## commands give the same state on every machine. Rendering reads it and never writes it.
 
 ## Bump when a change to the rules makes old replays play out differently.
-const SIM_VERSION := 1
+## 2: M3 movement (terrain, A*, flow fields, formations, separation).
+const SIM_VERSION := 2
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).
 const FALLBACK_HP := 100
 const FALLBACK_SPEED_MILLI := 1000
+## Groups this big share one flow field instead of searching a path per unit...
+const FLOW_GROUP_MIN := 8
+## ...when they stand together: a group spread wider than this (in cells) plans per unit.
+const FLOW_MAX_SPREAD := 16
+## A flow-field unit this close to its slot (in cells) walks the last bit on its own path.
+const SLOT_APPROACH_CELLS := 4
+## Units closer than this push each other apart (fixed units), a quarter of the overlap a tick.
+const SEPARATION := Fixed.HALF
+## Within this distance of its target a moving unit is not pushed and pushes nobody.
+const SETTLE_DISTANCE := Fixed.ONE * 3 / 2
+## Ticks without getting closer to the target before re-planning; after MAX_REPLANS, give up.
+const STALL_TICKS := 60
+const MAX_REPLANS := 3
+## Waypoint marker for "walk straight to the exact target point".
+const FINAL := -2
+## Waypoint marker for "the path is not searched yet, stand still this tick".
+const WAIT := -3
+## path_version of a unit whose path search is queued.
+const PATH_PENDING := -1
+## Cells the pathfinder may expand per tick before the remaining searches wait a tick (at
+## least one search always runs), so a big order cannot stall a tick.
+const PATH_BUDGET := 800
+## How far ahead a unit looks for a straight line along its path, in path cells.
+const SMOOTH_LOOKAHEAD := 8
+## Up to this many cells away a unit checks for a straight line to the exact target.
+const DIRECT_CELLS := 24
+## Step when checking a straight line cell by cell (a quarter cell).
+const LINE_SAMPLE := Fixed.ONE / 4
 
 ## Number of ticks already simulated; commands for this tick run at the next step().
 var tick := 0
@@ -20,25 +49,44 @@ var entities := EntityStore.new()
 var queue := CommandQueue.new()
 var map_width: int
 var map_height: int
+## Terrain and blockers for movement.
+var nav: NavGrid
+var pathfinder: Pathfinder
 var data_version: String
 ## Every accepted command, in arrival order, for recording replays.
 var command_log: Array[SimCommand] = []
 
 var _db: CatalogDB
+## Flow fields of group orders by id, and how many units still follow each.
+var _flows: Dictionary[int, FlowField] = {}
+var _flow_users: Dictionary[int, int] = {}
+var _next_flow_id := 1
+## Units waiting for a path search, in request order.
+var _path_queue := PackedInt32Array()
+# Scratch arrays of _separate(), kept between ticks to avoid reallocating.
+var _sep_head := PackedInt32Array()
+var _sep_next := PackedInt32Array()
+var _sep_cell := PackedInt32Array()
+var _push_x := PackedInt64Array()
+var _push_y := PackedInt64Array()
 
 
+## Without `map`, the world is open grass of the given size; with it, the map's size is used.
 func _init(
 	p_seed: int = 1,
 	db: CatalogDB = null,
 	width_cells: int = DEFAULT_MAP_CELLS,
-	height_cells: int = DEFAULT_MAP_CELLS
+	height_cells: int = DEFAULT_MAP_CELLS,
+	map: NavGrid = null
 ) -> void:
 	seed_value = p_seed
 	rng = SimRng.new(p_seed)
 	_db = db
 	data_version = db.content_hash() if db != null else "none"
-	map_width = Fixed.from_cells(width_cells)
-	map_height = Fixed.from_cells(height_cells)
+	nav = map if map != null else NavGrid.for_catalog(width_cells, height_cells, db)
+	pathfinder = Pathfinder.new(nav)
+	map_width = Fixed.from_cells(nav.width)
+	map_height = Fixed.from_cells(nav.height)
 
 
 ## Queues a command for its tick. Commands for a tick already simulated are refused,
@@ -73,6 +121,11 @@ func state_hash() -> String:
 	buf.put_64(rng.state)
 	buf.put_64(map_width)
 	buf.put_64(map_height)
+	buf.put_data(nav.content_hash())
+	buf.put_32(_next_flow_id)
+	buf.put_32(_path_queue.size())
+	for id in _path_queue:
+		buf.put_32(id)
 	entities.write_to(buf)
 	var ctx := HashingContext.new()
 	ctx.start(HashingContext.HASH_SHA256)
@@ -93,21 +146,20 @@ func _apply(cmd: SimCommand) -> void:
 		SimCommand.Kind.SPAWN:
 			_spawn(cmd)
 		SimCommand.Kind.MOVE:
-			var x := clamp_x(cmd.x)
-			var y := clamp_y(cmd.y)
-			for id in _owned(cmd):
-				entities.set_move_target(id, x, y)
+			_order_move(_owned(cmd), clamp_x(cmd.x), clamp_y(cmd.y), cmd.formation)
 		SimCommand.Kind.STOP:
 			for id in _owned(cmd):
-				entities.stop(id)
+				_stop(id)
 		SimCommand.Kind.REMOVE:
 			for id in _owned(cmd):
+				_release_flow(id)
 				entities.remove(id)
 
 
 func _spawn(cmd: SimCommand) -> void:
 	var hit_points := FALLBACK_HP
 	var speed_milli := FALLBACK_SPEED_MILLI
+	var move_class := NavGrid.MoveClass.FOOT
 	if _db != null:
 		var def := _db.unit(cmd.type_id)
 		if def == null:
@@ -115,13 +167,20 @@ func _spawn(cmd: SimCommand) -> void:
 			return
 		hit_points = def.hp
 		speed_milli = def.speed_milli
+		move_class = NavGrid.move_class_for(def)
+	var x := clamp_x(cmd.x)
+	var y := clamp_y(cmd.y)
+	var cell := nav.cell_of(x, y)
+	if not nav.passable(move_class, cell):
+		# Never place a unit in water or a thicket: move it to the nearest open cell.
+		var open := nav.nearest_passable(move_class, cell, maxi(nav.width, nav.height))
+		if open == NavGrid.NO_CELL:
+			push_warning("no open cell to spawn %s" % cmd.type_id)
+			return
+		x = nav.center_x(open)
+		y = nav.center_y(open)
 	entities.spawn(
-		cmd.type_id,
-		cmd.player,
-		clamp_x(cmd.x),
-		clamp_y(cmd.y),
-		hit_points,
-		Fixed.speed_per_tick(speed_milli)
+		cmd.type_id, cmd.player, x, y, hit_points, Fixed.speed_per_tick(speed_milli), move_class
 	)
 
 
@@ -139,22 +198,475 @@ func _owned(cmd: SimCommand) -> PackedInt32Array:
 	return unique
 
 
-## Straight-line movement toward the order target; pathfinding replaces this in M3.
+# --- movement ---------------------------------------------------------------------------
+
+
+## One unit walks to the point; a group takes formation slots around it, facing the way it
+## moves, at the speed of its slowest unit. Big groups share a flow field per movement class.
+func _order_move(ids: PackedInt32Array, x: int, y: int, formation: int) -> void:
+	if ids.is_empty():
+		return
+	var e := entities
+	for id in ids:
+		_release_flow(id)
+	if ids.size() == 1:
+		e.set_move_target(ids[0], x, y)
+		_plan_path(ids[0])
+		return
+	var n := ids.size()
+	var xs := PackedInt64Array()
+	var ys := PackedInt64Array()
+	var sum_x := 0
+	var sum_y := 0
+	var slowest := 1 << 30
+	for id in ids:
+		xs.append(e.pos_x[id - 1])
+		ys.append(e.pos_y[id - 1])
+		sum_x += e.pos_x[id - 1]
+		sum_y += e.pos_y[id - 1]
+		slowest = mini(slowest, e.speed[id - 1])
+	var fx := x - Fixed.floor_div(sum_x, n)
+	var fy := y - Fixed.floor_div(sum_y, n)
+	var kind := formation as Formation.Kind
+	var slots := Formation.slot_positions(kind, n, x, y, fx, fy)
+	var taken_slot := Formation.assign(kind, ids, xs, ys, fx, fy)
+	var flows_by_class := {}
+	if n >= FLOW_GROUP_MIN and _spread_cells(xs, ys) <= FLOW_MAX_SPREAD:
+		flows_by_class = _group_flows(ids, x, y)
+	_fit_on_map(slots)
+	var taken := {}
+	for i in n:
+		var id := ids[i]
+		var slot := id - 1
+		var spot := slots[taken_slot[i]]
+		var cls: int = e.move_class[slot]
+		var cell := nav.cell_of(spot.x, spot.y)
+		if not nav.passable(cls, cell) or taken.has(cell):
+			# A slot in water, a thicket or on another unit's spot: the nearest free open cell.
+			var open := nav.nearest_passable(cls, cell, Pathfinder.GOAL_SNAP_RADIUS, taken)
+			if open != NavGrid.NO_CELL:
+				cell = open
+				spot = Vector2i(nav.center_x(open), nav.center_y(open))
+		taken[cell] = true
+		e.set_move_target(id, spot.x, spot.y)
+		e.move_speed[slot] = slowest
+		if flows_by_class.has(cls):
+			var flow_id: int = flows_by_class[cls]
+			e.flow_ids[slot] = flow_id
+			_flow_users[flow_id] += 1
+		else:
+			_plan_path(id)
+
+
+## Shifts formation slots so they all lie on the map (a formation ordered to the map's edge
+## keeps its shape instead of piling up on the border). Clamps what still does not fit.
+func _fit_on_map(slots: Array[Vector2i]) -> void:
+	var lo := Vector2i(map_width, map_height)
+	var hi := Vector2i(-1, -1)
+	for s in slots:
+		lo = Vector2i(mini(lo.x, s.x), mini(lo.y, s.y))
+		hi = Vector2i(maxi(hi.x, s.x), maxi(hi.y, s.y))
+	var shift := Vector2i(_overflow(lo.x, hi.x, map_width), _overflow(lo.y, hi.y, map_height))
+	for i in slots.size():
+		var s := slots[i] + shift
+		slots[i] = Vector2i(clamp_x(s.x), clamp_y(s.y))
+
+
+## How far to move the span [lo, hi] to keep it half a cell inside [0, size).
+static func _overflow(lo: int, hi: int, size: int) -> int:
+	if lo < Fixed.HALF:
+		return Fixed.HALF - lo
+	if hi > size - Fixed.HALF:
+		return maxi(size - Fixed.HALF - hi, Fixed.HALF - lo)
+	return 0
+
+
+## Side of the box around the units, in cells.
+static func _spread_cells(xs: PackedInt64Array, ys: PackedInt64Array) -> int:
+	var x0 := xs[0]
+	var x1 := xs[0]
+	var y0 := ys[0]
+	var y1 := ys[0]
+	for i in xs.size():
+		x0 = mini(x0, xs[i])
+		x1 = maxi(x1, xs[i])
+		y0 = mini(y0, ys[i])
+		y1 = maxi(y1, ys[i])
+	return Fixed.to_cells(maxi(x1 - x0, y1 - y0))
+
+
+## One flow field per movement class in the group, toward the order point. class -> flow id.
+func _group_flows(ids: PackedInt32Array, x: int, y: int) -> Dictionary:
+	var starts := {}
+	for id in ids:
+		var cls: int = entities.move_class[id - 1]
+		if not starts.has(cls):
+			starts[cls] = PackedInt32Array()
+		var cells: PackedInt32Array = starts[cls]
+		cells.append(nav.cell_of(entities.pos_x[id - 1], entities.pos_y[id - 1]))
+		starts[cls] = cells
+	var result := {}
+	for cls in NavGrid.MOVE_CLASS_COUNT:
+		if not starts.has(cls):
+			continue
+		var goal := nav.nearest_passable(cls, nav.cell_of(x, y), Pathfinder.GOAL_SNAP_RADIUS)
+		if goal == NavGrid.NO_CELL:
+			continue
+		var flow_id := _next_flow_id
+		_next_flow_id += 1
+		_flows[flow_id] = FlowField.new(nav, cls, goal, starts[cls])
+		_flow_users[flow_id] = 0
+		result[cls] = flow_id
+	return result
+
+
+func _release_flow(id: int) -> void:
+	var slot := id - 1
+	var flow_id := entities.flow_ids[slot]
+	if flow_id == 0:
+		return
+	entities.flow_ids[slot] = 0
+	_flow_users[flow_id] -= 1
+	if _flow_users[flow_id] <= 0:
+		_flows.erase(flow_id)
+		_flow_users.erase(flow_id)
+
+
+func _stop(id: int) -> void:
+	_release_flow(id)
+	entities.stop(id)
+
+
+## Asks for a new path. Searches run at the start of the movement step, in request order, up to
+## PATH_BUDGET expanded cells a tick; a unit waiting for its path stands still meanwhile.
+func _plan_path(id: int) -> void:
+	var slot := id - 1
+	if entities.path_version[slot] == PATH_PENDING:
+		return
+	entities.set_path(id, PackedInt32Array(), PATH_PENDING)
+	_path_queue.append(id)
+
+
+func _serve_paths() -> void:
+	var e := entities
+	var spent := 0
+	var served := 0
+	while served < _path_queue.size() and (spent < PATH_BUDGET or served == 0):
+		var id := _path_queue[served]
+		served += 1
+		var slot := id - 1
+		if not e.is_alive(id) or e.path_version[slot] != PATH_PENDING:
+			continue
+		var from := nav.cell_of(e.pos_x[slot], e.pos_y[slot])
+		var to := nav.cell_of(e.target_x[slot], e.target_y[slot])
+		e.set_path(id, pathfinder.find_path(e.move_class[slot], from, to), nav.version)
+		_smooth(id)
+		spent += pathfinder.last_expanded
+	_path_queue = _path_queue.slice(served)
+
+
 func _move_units() -> void:
 	var e := entities
+	_serve_paths()
 	for id in e.alive_ids:
-		var slot := id - 1
-		if e.orders[slot] != EntityStore.Order.MOVE:
-			continue
-		var dx := e.target_x[slot] - e.pos_x[slot]
-		var dy := e.target_y[slot] - e.pos_y[slot]
+		if e.orders[id - 1] == EntityStore.Order.MOVE:
+			_advance(id)
+			_watch_progress(id)
+	_separate()
+
+
+## Moves one unit by its speed for this tick along its route, through as many waypoints as the
+## distance allows. Speed is scaled by the terrain under the unit.
+func _advance(id: int) -> void:
+	var e := entities
+	var slot := id - 1
+	var budget := e.move_speed[slot]
+	for leg in 4:
+		if budget <= 0 or e.orders[slot] != EntityStore.Order.MOVE:
+			return
+		var cell := nav.cell_of(e.pos_x[slot], e.pos_y[slot])
+		var way := _waypoint(id, cell)
+		if way == WAIT:
+			return
+		if way == NavGrid.NO_CELL:
+			_stop(id)
+			return
+		var wx: int
+		var wy: int
+		if way == FINAL:
+			wx = e.target_x[slot]
+			wy = e.target_y[slot]
+		else:
+			wx = nav.center_x(way)
+			wy = nav.center_y(way)
+		var permille := _speed_permille(slot, cell)
+		var reach := budget * permille / 1000
+		var dx := wx - e.pos_x[slot]
+		var dy := wy - e.pos_y[slot]
 		var dist := Fixed.isqrt(dx * dx + dy * dy)
-		var step_len := e.speed[slot]
-		if dist <= step_len:
-			e.pos_x[slot] = e.target_x[slot]
-			e.pos_y[slot] = e.target_y[slot]
-			e.orders[slot] = EntityStore.Order.IDLE
+		if dist <= reach:
+			e.pos_x[slot] = wx
+			e.pos_y[slot] = wy
+			budget -= dist * 1000 / permille
+			_entered(slot)
+			if way == FINAL:
+				_stop(id)
+				return
+			_waypoint_reached(id, way)
 		else:
 			# '/' truncates toward zero, symmetric for both directions and the same everywhere.
-			e.pos_x[slot] += dx * step_len / dist
-			e.pos_y[slot] += dy * step_len / dist
+			e.pos_x[slot] += dx * reach / dist
+			e.pos_y[slot] += dy * reach / dist
+			_entered(slot)
+			return
+
+
+## Speed per-mille in the unit's cell, with the climb penalty if it came up a hill.
+func _speed_permille(slot: int, cell: int) -> int:
+	var cls: int = entities.move_class[slot]
+	var permille := nav.cell_permille(cls, cell)
+	if permille == 0:
+		# Pushed or spawned into a closed cell: walk out at normal speed.
+		return 1000
+	if entities.climbing[slot] == 1:
+		permille = nav.edge_permille(cls, NavGrid.NO_CELL, cell)
+	return maxi(permille, 1)
+
+
+## Notes the cell change after a move, to know whether the unit climbed into its new cell.
+func _entered(slot: int) -> void:
+	var e := entities
+	var cell := nav.cell_of(e.pos_x[slot], e.pos_y[slot])
+	var prev := e.last_cell[slot]
+	if cell == prev:
+		return
+	e.climbing[slot] = 1 if prev >= 0 and nav.is_climb(prev, cell) else 0
+	e.last_cell[slot] = cell
+
+
+## The next cell to walk to, FINAL for the exact target, WAIT while the path is searched, or
+## NO_CELL when there is nowhere to go.
+func _waypoint(id: int, cell: int) -> int:
+	var e := entities
+	var slot := id - 1
+	var goal := nav.cell_of(e.target_x[slot], e.target_y[slot])
+	if e.flow_ids[slot] != 0:
+		var along := _flow_step(id, cell, goal)
+		if along != NavGrid.NO_CELL:
+			return along
+	if e.path_version[slot] != nav.version and e.path_version[slot] != PATH_PENDING:
+		_plan_path(id)
+	var path := e.paths[slot]
+	var i := e.path_index[slot]
+	var way := NavGrid.NO_CELL
+	if e.path_version[slot] == PATH_PENDING:
+		way = WAIT
+	elif e.direct[slot] == 1:
+		way = FINAL
+	elif i < path.size():
+		way = path[i]
+	elif cell == goal:
+		way = FINAL
+	elif not path.is_empty() and path[-1] == goal:
+		# Pushed out of the goal cell after the path ended: walk back.
+		_plan_path(id)
+		way = WAIT
+	# Otherwise the path ended short of the target: it cannot be reached, stop there.
+	return way
+
+
+## The next cell on the unit's flow field; NO_CELL once the unit leaves the field (near its
+## slot, at the goal, off the searched area, or the map changed) and walks its own path.
+func _flow_step(id: int, cell: int, goal: int) -> int:
+	var flow := _flows[entities.flow_ids[id - 1]]
+	var near := _chebyshev(cell, goal) <= SLOT_APPROACH_CELLS
+	if near or flow.is_stale() or not flow.reached(cell) or flow.next[cell] == NavGrid.NO_CELL:
+		_release_flow(id)
+		_plan_path(id)
+		return NavGrid.NO_CELL
+	return flow.next[cell]
+
+
+func _waypoint_reached(id: int, cell: int) -> void:
+	var slot := id - 1
+	if entities.flow_ids[slot] != 0:
+		return
+	var path := entities.paths[slot]
+	var i := entities.path_index[slot]
+	if i < path.size() and path[i] == cell:
+		entities.path_index[slot] = i + 1
+		_smooth(id)
+
+
+## Path smoothing: instead of zig-zagging through cell centres, head for the farthest path cell
+## (or the target itself) the unit can walk to in a straight line, over open cells no slower
+## than the path it skips. Run when a path is planned and at each waypoint, not every tick.
+func _smooth(id: int) -> void:
+	var e := entities
+	var slot := id - 1
+	var path := e.paths[slot]
+	var i := e.path_index[slot]
+	if path.is_empty() or i >= path.size():
+		return
+	var cls: int = e.move_class[slot]
+	var px := e.pos_x[slot]
+	var py := e.pos_y[slot]
+	var goal := nav.cell_of(e.target_x[slot], e.target_y[slot])
+	if path[-1] == goal and path.size() - i <= DIRECT_CELLS:
+		var slowest := _slowest_on(cls, path, i, path.size() - 1)
+		if _line_clear(cls, px, py, e.target_x[slot], e.target_y[slot], slowest):
+			e.direct[slot] = 1
+			return
+	for j in range(mini(i + SMOOTH_LOOKAHEAD, path.size() - 1), i, -1):
+		var slowest := _slowest_on(cls, path, i, j)
+		if _line_clear(cls, px, py, nav.center_x(path[j]), nav.center_y(path[j]), slowest):
+			e.path_index[slot] = j
+			return
+
+
+func _slowest_on(cls: int, path: PackedInt32Array, from: int, to: int) -> int:
+	var slowest := 1 << 30
+	for k in range(from, to + 1):
+		slowest = mini(slowest, nav.cell_permille(cls, path[k]))
+	return slowest
+
+
+## True when a straight walk crosses only cells that are open, at least `min_permille` fast,
+## not hills (climbing is not free), and never squeezes diagonally between two closed corners.
+func _line_clear(cls: int, ax: int, ay: int, bx: int, by: int, min_permille: int) -> bool:
+	var dist := Fixed.distance(ax, ay, bx, by)
+	var samples := dist / LINE_SAMPLE + 1
+	var prev := nav.cell_of(ax, ay)
+	for k in range(1, samples + 1):
+		var cell := nav.cell_of(ax + (bx - ax) * k / samples, ay + (by - ay) * k / samples)
+		if cell == prev:
+			continue
+		if nav.cell_permille(cls, cell) < min_permille or nav.is_climb(prev, cell):
+			return false
+		if cell % nav.width != prev % nav.width and cell / nav.width != prev / nav.width:
+			var side_a := nav.cell_at(cell % nav.width, prev / nav.width)
+			var side_b := nav.cell_at(prev % nav.width, cell / nav.width)
+			if not nav.passable(cls, side_a) or not nav.passable(cls, side_b):
+				return false
+		prev = cell
+	return true
+
+
+## Re-plans a unit that stopped getting closer (pushed off its path, blocked by a crowd) and
+## gives up after MAX_REPLANS stalls in a row, so nobody walks in place forever.
+func _watch_progress(id: int) -> void:
+	var e := entities
+	var slot := id - 1
+	if e.orders[slot] != EntityStore.Order.MOVE or e.path_version[slot] == PATH_PENDING:
+		return
+	var d := Fixed.distance(e.pos_x[slot], e.pos_y[slot], e.target_x[slot], e.target_y[slot])
+	if d < e.best_dist[slot]:
+		e.best_dist[slot] = d
+		e.stall[slot] = 0
+		e.replans[slot] = 0
+		return
+	e.stall[slot] += 1
+	if e.stall[slot] < STALL_TICKS:
+		return
+	e.stall[slot] = 0
+	e.replans[slot] += 1
+	if e.replans[slot] > MAX_REPLANS:
+		_stop(id)
+	else:
+		_release_flow(id)
+		_plan_path(id)
+
+
+## Units closer than SEPARATION push each other apart, a quarter of the overlap each per tick:
+## walking units among themselves and standing units among themselves. A walking unit passes
+## standing ones without shoving them, so a formation that has arrived keeps its slots while
+## the rest of the group files in.
+## Pushes are summed first and applied after, in id order, never into a closed cell.
+func _separate() -> void:
+	var e := entities
+	var n := e.next_id - 1
+	if _sep_head.size() != nav.cell_count():
+		_sep_head.resize(nav.cell_count())
+	_sep_head.fill(0)
+	_sep_next.resize(n)
+	_sep_cell.resize(n)
+	_push_x.resize(n)
+	_push_x.fill(0)
+	_push_y.resize(n)
+	_push_y.fill(0)
+	# Bucket units by cell: _sep_head[cell] is the last id put there, _sep_next chains the rest.
+	for id in e.alive_ids:
+		var cell := nav.cell_of(e.pos_x[id - 1], e.pos_y[id - 1])
+		_sep_cell[id - 1] = cell
+		_sep_next[id - 1] = _sep_head[cell]
+		_sep_head[cell] = id
+	var w := nav.width
+	for id in e.alive_ids:
+		var a := id - 1
+		var cell := _sep_cell[a]
+		var cx := cell % w
+		var cy := cell / w
+		for ny in range(maxi(cy - 1, 0), mini(cy + 2, nav.height)):
+			for nx in range(maxi(cx - 1, 0), mini(cx + 2, w)):
+				var other := _sep_head[ny * w + nx]
+				while other != 0:
+					if other > id:
+						_push_pair(a, other - 1)
+					other = _sep_next[other - 1]
+	for id in e.alive_ids:
+		var slot := id - 1
+		if _push_x[slot] == 0 and _push_y[slot] == 0:
+			continue
+		var nx := clamp_x(e.pos_x[slot] + _push_x[slot])
+		var ny := clamp_y(e.pos_y[slot] + _push_y[slot])
+		if nav.passable(e.move_class[slot], nav.cell_of(nx, ny)):
+			e.pos_x[slot] = nx
+			e.pos_y[slot] = ny
+
+
+func _push_pair(a: int, b: int) -> void:
+	var e := entities
+	var dx := e.pos_x[b] - e.pos_x[a]
+	var dy := e.pos_y[b] - e.pos_y[a]
+	if absi(dx) >= SEPARATION or absi(dy) >= SEPARATION:
+		return
+	var d2 := dx * dx + dy * dy
+	if d2 >= SEPARATION * SEPARATION:
+		return
+	var d := Fixed.isqrt(d2)
+	var amount := (SEPARATION - d) / 4
+	if d == 0:
+		# Same spot: split along a direction picked from the ids, the same on every machine.
+		var dir := (a + b) % 4
+		dx = Pathfinder.DX[dir] * Fixed.ONE
+		dy = Pathfinder.DY[dir] * Fixed.ONE
+		d = Fixed.ONE
+	var px := dx * amount / d
+	var py := dy * amount / d
+	var a_moves := e.orders[a] == EntityStore.Order.MOVE
+	var b_moves := e.orders[b] == EntityStore.Order.MOVE
+	if a_moves != b_moves:
+		return
+	if a_moves and (_settling(a) or _settling(b)):
+		# Stepping into its slot: slots are a cell apart, so let it through.
+		return
+	_push_x[a] -= px
+	_push_y[a] -= py
+	_push_x[b] += px
+	_push_y[b] += py
+
+
+## A moving unit this close to its target is taking its place in the formation.
+func _settling(slot: int) -> bool:
+	var e := entities
+	var dx := absi(e.target_x[slot] - e.pos_x[slot])
+	var dy := absi(e.target_y[slot] - e.pos_y[slot])
+	return maxi(dx, dy) < SETTLE_DISTANCE
+
+
+static func _chebyshev_cells(ax: int, ay: int, bx: int, by: int) -> int:
+	return maxi(absi(ax - bx), absi(ay - by))
+
+
+func _chebyshev(a: int, b: int) -> int:
+	return _chebyshev_cells(a % nav.width, a / nav.width, b % nav.width, b / nav.width)

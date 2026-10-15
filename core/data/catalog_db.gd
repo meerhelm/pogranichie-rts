@@ -14,6 +14,7 @@ var spells: Dictionary[StringName, SpellDef] = {}
 var factions: Dictionary[StringName, FactionDef] = {}
 var ages: Dictionary[StringName, AgeDef] = {}
 var power_places: Dictionary[StringName, PowerPlaceDef] = {}
+var terrains: Dictionary[StringName, TerrainDef] = {}
 
 
 static func load_index() -> CatalogIndex:
@@ -61,6 +62,10 @@ func faction(id: StringName) -> FactionDef:
 	return factions.get(id)
 
 
+func terrain(id: StringName) -> TerrainDef:
+	return terrains.get(id)
+
+
 func _load_ids(
 	unit_ids: Array[StringName],
 	building_ids: Array[StringName],
@@ -73,6 +78,7 @@ func _load_ids(
 	_load_kind("spells", spell_ids, spells)
 	_load_kind("ages", index.ages, ages)
 	_load_kind("power_places", index.power_places, power_places)
+	_load_kind("terrain", index.terrains, terrains)
 
 
 func _load_kind(dir: String, ids: Array[StringName], into: Dictionary) -> void:
@@ -88,7 +94,9 @@ func content_hash() -> String:
 	var ctx := HashingContext.new()
 	ctx.start(HashingContext.HASH_SHA256)
 	ctx.update(index.exported_on.to_utf8_buffer())
-	for kind: Dictionary in [units, buildings, techs, spells, factions, ages, power_places]:
+	for kind: Dictionary in [
+		units, buildings, techs, spells, factions, ages, power_places, terrains
+	]:
 		# Sort as String: StringName order follows interning, not text, and differs per run.
 		var ids := PackedStringArray(kind.keys())
 		ids.sort()

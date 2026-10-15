@@ -1,8 +1,8 @@
 class_name CommandFuzzer
 extends RefCounted
-## Random but reproducible orders for determinism tests and benchmarks: spawns, moves,
-## stops and removals for two players, drawn from its own SimRng so the simulation's
-## generator is untouched. Use as the `orders` callable of Replay.record().
+## Random but reproducible orders for determinism tests and benchmarks: spawns, moves (in
+## random formations), stops and removals for two players, drawn from its own SimRng so the
+## simulation's generator is untouched. Use as the `orders` callable of Replay.record().
 
 const PLAYERS := 2
 const MAX_UNITS := 200
@@ -29,7 +29,8 @@ func issue(sim: Simulation) -> void:
 		sim.enqueue(SimCommand.spawn(sim.tick, player, unit, _rand_x(sim), _rand_y(sim)))
 	elif roll < 80:
 		var group := _pick(mine)
-		sim.enqueue(SimCommand.move(sim.tick, player, group, _rand_x(sim), _rand_y(sim)))
+		var shape := rng.next_below(3)
+		sim.enqueue(SimCommand.move(sim.tick, player, group, _rand_x(sim), _rand_y(sim), shape))
 	elif roll < 92:
 		sim.enqueue(SimCommand.stop(sim.tick, player, _pick(mine)))
 	elif roll < 97:

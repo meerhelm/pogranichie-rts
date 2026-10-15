@@ -4,6 +4,7 @@ extends SceneTree
 ##   godot --headless -s tools/sim/sim_cli.gd -- record --seed 7 --ticks 1000 --out x.json
 ##   godot --headless -s tools/sim/sim_cli.gd -- determinism --runs 10 --ticks 1000
 ##   godot --headless -s tools/sim/sim_cli.gd -- bench --units 200 --ticks 600
+## record, determinism and bench take --map <map id> (see MapText); without it, open grass.
 ## Exit code 0 on success, 1 on a hash mismatch or bad arguments.
 
 
@@ -97,7 +98,9 @@ func _bench(opts: Dictionary) -> int:
 	var units := int(opts.get("units", "200"))
 	var ticks := int(opts.get("ticks", "600"))
 	var db := CatalogDB.load_prototype()
-	var sim := Simulation.new(int(opts.get("seed", "1")), db)
+	var map_id: String = opts.get("map", "")
+	var grid := MapText.load_map(map_id, db) if not map_id.is_empty() else null
+	var sim := Simulation.new(int(opts.get("seed", "1")), db, 120, 120, grid)
 	var types := _unit_types(db)
 	CommandFuzzer.populate(sim, types, units, 99)
 	var fuzz := CommandFuzzer.new(5, types)
@@ -117,13 +120,18 @@ func _bench(opts: Dictionary) -> int:
 	var total := Time.get_ticks_usec() - start - hash_usec
 	print(
 		(
-			"bench: %d units, %d ticks: step avg %.3f ms, worst %.3f ms; state hash avg %.3f ms"
+			(
+				"bench: %d units, %d ticks: step avg %.3f ms, worst %.3f ms; "
+				+ "state hash avg %.3f ms; %d path searches, %d cells expanded"
+			)
 			% [
 				sim.entities.count(),
 				ticks,
 				total / 1000.0 / ticks,
 				worst / 1000.0,
-				hash_usec / 1000.0 / ticks
+				hash_usec / 1000.0 / ticks,
+				sim.pathfinder.searches,
+				sim.pathfinder.total_expanded
 			]
 		)
 	)
@@ -138,7 +146,10 @@ func _fuzz_replay(opts: Dictionary) -> Replay:
 		db,
 		int(opts.get("ticks", "1000")),
 		fuzz.issue,
-		int(opts.get("every", str(Replay.DEFAULT_CHECKPOINT_EVERY)))
+		int(opts.get("every", str(Replay.DEFAULT_CHECKPOINT_EVERY))),
+		Simulation.DEFAULT_MAP_CELLS,
+		Simulation.DEFAULT_MAP_CELLS,
+		opts.get("map", "")
 	)
 
 

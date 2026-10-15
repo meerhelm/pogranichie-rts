@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TerrainDef" format=3]
+
+[ext_resource type="Script" path="res://core/data/terrain_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"t_ash"
+passable = true
+boats_only = false
+infantry_permille = 1000
+cavalry_permille = 1000
+uphill_permille = 1000
+siege_blocked = false
