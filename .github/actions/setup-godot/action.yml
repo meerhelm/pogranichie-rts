@@ -1,0 +1,96 @@
+name: Setup Godot
+description: Download the pinned Godot editor (and optionally export templates), verified by SHA-512 and cached.
+
+inputs:
+  version:
+    description: Godot version without the "-stable" suffix
+    required: true
+  editor-sha512-linux:
+    required: true
+  editor-sha512-windows:
+    required: true
+  templates:
+    description: Also install Linux and Windows export templates
+    default: "false"
+  templates-sha512:
+    required: false
+    default: ""
+
+outputs:
+  godot:
+    description: Path to the Godot binary (console build on Windows)
+    value: ${{ steps.paths.outputs.godot }}
+
+runs:
+  using: composite
+  steps:
+    - id: paths
+      shell: bash
+      run: |
+        dir="$RUNNER_TOOL_CACHE/godot/${{ inputs.version }}"
+        if [[ "$RUNNER_OS" == "Windows" ]]; then
+          zip="Godot_v${{ inputs.version }}-stable_win64.exe.zip"
+          bin="$dir/Godot_v${{ inputs.version }}-stable_win64_console.exe"
+          sha="${{ inputs.editor-sha512-windows }}"
+          tpl="$APPDATA/Godot/export_templates/${{ inputs.version }}.stable"
+        else
+          zip="Godot_v${{ inputs.version }}-stable_linux.x86_64.zip"
+          bin="$dir/Godot_v${{ inputs.version }}-stable_linux.x86_64"
+          sha="${{ inputs.editor-sha512-linux }}"
+          tpl="$HOME/.local/share/godot/export_templates/${{ inputs.version }}.stable"
+        fi
+        {
+          echo "dir=$dir"
+          echo "zip=$zip"
+          echo "godot=$bin"
+          echo "sha=$sha"
+          echo "templates=$tpl"
+        } >> "$GITHUB_OUTPUT"
+
+    - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      id: cache-editor
+      with:
+        path: ${{ steps.paths.outputs.dir }}
+        key: godot-editor-${{ runner.os }}-${{ inputs.version }}
+
+    - if: steps.cache-editor.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        set -euo pipefail
+        base="https://github.com/godotengine/godot/releases/download/${{ inputs.version }}-stable"
+        mkdir -p "${{ steps.paths.outputs.dir }}"
+        cd "${{ steps.paths.outputs.dir }}"
+        curl -fsSL --retry 3 -o godot.zip "$base/${{ steps.paths.outputs.zip }}"
+        echo "${{ steps.paths.outputs.sha }}  godot.zip" | sha512sum -c -
+        if [[ "$RUNNER_OS" == "Windows" ]]; then 7z x -y godot.zip >/dev/null; else unzip -q godot.zip; fi
+        rm godot.zip
+        chmod +x Godot_v* || true
+
+    - if: inputs.templates == 'true'
+      uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      id: cache-templates
+      with:
+        path: ${{ steps.paths.outputs.templates }}
+        key: godot-templates-${{ runner.os }}-${{ inputs.version }}
+
+    - if: inputs.templates == 'true' && steps.cache-templates.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        set -euo pipefail
+        base="https://github.com/godotengine/godot/releases/download/${{ inputs.version }}-stable"
+        tmp="$RUNNER_TEMP/godot-templates"
+        mkdir -p "$tmp" "${{ steps.paths.outputs.templates }}"
+        curl -fsSL --retry 3 -o "$tmp/templates.tpz" "$base/Godot_v${{ inputs.version }}-stable_export_templates.tpz"
+        echo "${{ inputs.templates-sha512 }}  $tmp/templates.tpz" | sha512sum -c -
+        # The full archive is ~1.3 GB; keep only the desktop x86_64 templates we export.
+        cd "$tmp"
+        unzip -q templates.tpz \
+          templates/version.txt \
+          templates/linux_release.x86_64 \
+          templates/linux_debug.x86_64 \
+          templates/windows_release_x86_64.exe \
+          templates/windows_debug_x86_64.exe \
+          templates/windows_release_x86_64_console.exe \
+          templates/windows_debug_x86_64_console.exe
+        mv templates/* "${{ steps.paths.outputs.templates }}/"
+        rm -rf "$tmp"
