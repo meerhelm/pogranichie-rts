@@ -51,7 +51,7 @@ gdlint . && gdformat --check game tests             # линтер и форма
 
 ## CI
 
-GitHub Actions на каждый PR и push в `main`:
+Сейчас CI запускается только вручную (Actions → CI → Run workflow), чтобы не тратить минуты GitHub; проверки гоняем локально. Что делает прогон:
 
 - линтер и проверка форматирования gdtoolkit;
 - импорт проекта, тесты GUT и запуск главной сцены на Ubuntu и Windows; любая строка `ERROR` в выводе Godot валит шаг;
