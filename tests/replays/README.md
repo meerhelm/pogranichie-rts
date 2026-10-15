@@ -36,3 +36,6 @@ Then for `sim_version` 4 (M5: economy; the commands are unchanged, the hashes no
 players, buildings, resources and per-unit work, units carry tech bonuses, map deposits block
 their cells, and `data_version` changed with `rules/economy.tres`, building sizes and tech
 effects). `m5_samogitia_economy_2000.json` is new.
+Then for `sim_version` 5 (M6: fog of war; units pick fights only with enemies their side sees,
+units in the forest are seen only from 2 cells, the hashes include every player's explored
+cells, and `data_version` changed with `rules/vision.tres`, building sight and «Караулы»).
