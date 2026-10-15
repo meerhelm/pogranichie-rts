@@ -37,6 +37,7 @@ CAVALRY = {"light_cavalry", "heavy_cavalry", "horse_archer"}
 BONUS_TARGETS = {
     "коннице": "cavalry",
     "тяжёлой коннице": "heavy_cavalry",
+    "копейщикам": "spearman",
     "существам": "creature",
     "постройкам": "building",
 }

@@ -49,11 +49,12 @@ func test_knight_brother_numbers() -> void:
 
 func test_bonus_and_ranged_units() -> void:
 	var spear := _db.unit(&"gdl_spearman")
-	assert_eq(spear.bonuses, {&"cavalry": 6, &"creature": 4} as Dictionary[StringName, int])
+	assert_eq(spear.bonuses, {&"cavalry": 7, &"creature": 4} as Dictionary[StringName, int])
 	var xbow := _db.unit(&"to_crossbow")
 	assert_eq(xbow.damage_type, &"pierce")
 	assert_eq(xbow.attack_range, 6)
 	assert_eq(xbow.bonuses[&"heavy_cavalry"], 8)
+	assert_eq(xbow.bonuses[&"spearman"], 5)
 	var bombard := _db.unit(&"to_bombard")
 	assert_eq([bombard.attack_range, bombard.min_range], [12, 4])
 	assert_eq(bombard.damage_type, &"siege")

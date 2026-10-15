@@ -17,6 +17,10 @@ class ClassesTest(unittest.TestCase):
         self.assertEqual(sp.classes, ["infantry", "spearman"])
         self.assertEqual(sp.bonuses, {"cavalry": 6, "creature": 4})
 
+    def test_bonus_against_spearmen(self):
+        sp = parse_special("Стрелок. +8 к тяжёлой коннице, +5 к копейщикам; доступен в Уделе")
+        self.assertEqual(sp.bonuses, {"heavy_cavalry": 8, "spearman": 5})
+
     def test_bonus_against_buildings(self):
         sp = parse_special("Осадное, огнестрел. Урон по площади радиусом 1; +20 по постройкам")
         self.assertEqual(sp.classes, ["siege", "firearm"])

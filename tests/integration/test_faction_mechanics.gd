@@ -81,8 +81,8 @@ func test_turn_bonus_on_the_hit() -> void:
 	_face(sim, knecht, -Fixed.ONE, 0)
 	sim.entities.turn_ticks[horse - 1] = 50
 	sim.enqueue(SimCommand.order(sim.tick, 1, SimCommand.Kind.TURN, _ids(horse)))
-	# Лёгкий всадник 6 + 3 по кнехту 1/1 спереди: 8 × 1,25 = 10.
-	assert_eq(_first_damage(sim, knecht), 10)
+	# Лёгкий всадник 5 + 3 по кнехту 1/1 спереди: 7 × 1,25 = 8,75 → 8.
+	assert_eq(_first_damage(sim, knecht), 8)
 	assert_eq(sim.entities.turn_bonus[horse - 1], 0)
 	assert_eq(sim.entities.turn_ticks[horse - 1], 0, "used up")
 
@@ -122,7 +122,7 @@ func test_prussian_rider_dismounts() -> void:
 	var slot := rider - 1
 	assert_eq(sim.combat._armor_melee(slot), 0)
 	var mounted := sim.combat._hit_from(spear - 1, slot, 4, Damage.MELEE)
-	assert_eq(mounted.bonus, 6, "+6 к коннице")
+	assert_eq(mounted.bonus, 7, "+7 к коннице")
 	sim.enqueue(SimCommand.order(sim.tick, 2, SimCommand.Kind.DISMOUNT, _ids(rider)))
 	sim.step()
 	assert_eq(sim.entities.dismounted[slot], 1)

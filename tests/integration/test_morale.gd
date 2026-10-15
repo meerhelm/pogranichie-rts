@@ -26,7 +26,7 @@ func test_wavering_at_25_takes_a_fifth_of_the_damage() -> void:
 	assert_true(sim.combat.wavering(spear - 1))
 	var hit := sim.combat._hit_from(spear - 1, knight - 1, 4, Damage.MELEE)
 	assert_eq(Array(hit.multipliers), [800])
-	assert_eq(Damage.compute(hit, _rules), 5, "7 × 0,8")
+	assert_eq(Damage.compute(hit, _rules), 6, "8 × 0,8")
 
 
 func test_at_zero_a_unit_flees_to_the_rally_point_and_ignores_orders() -> void:

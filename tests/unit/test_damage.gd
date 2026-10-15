@@ -31,8 +31,8 @@ func _hit(
 
 
 func test_cases_from_the_plan() -> void:
-	# Ополченец (4 Б, +6 к коннице) → брат-рыцарь (5/5) спереди: max(1, 4 − 5) + 6 = 7.
-	assert_eq(_hit(&"gdl_spearman", &"to_knight_brother"), 7)
+	# Ополченец (4 Б, +7 к коннице) → брат-рыцарь (5/5) спереди: max(1, 4 − 5) + 7 = 8.
+	assert_eq(_hit(&"gdl_spearman", &"to_knight_brother"), 8)
 	# Арбалетчик (9 С, +8 к тяжёлой коннице) → лёгкий всадник (0/1): 9 − 1 = 8, бонуса нет.
 	assert_eq(_hit(&"to_crossbow", &"gdl_light_horse"), 8)
 	# Кнехт (5 Б) → ополченец (0/0) в тыл: 5 × 1,5 = 7,5 → 7.
@@ -48,18 +48,20 @@ func test_armor_never_takes_below_one_and_never_cuts_the_bonus() -> void:
 	assert_eq(_hit(&"gdl_peasant", &"to_knight_brother"), 1)
 	# Арбалетчик по брату-рыцарю: max(1, 9 − 5) + 8 = 12.
 	assert_eq(_hit(&"to_crossbow", &"to_knight_brother"), 12)
-	# Бонус к коннице есть у каждой конницы: кнехт по полубрату (2/3): (5 − 2) + 6 = 9.
-	assert_eq(_hit(&"to_knecht", &"to_halfbrother"), 9)
+	# Бонус к коннице есть у каждой конницы: кнехт (+10) по полубрату (2/3): (5 − 2) + 10 = 13.
+	assert_eq(_hit(&"to_knecht", &"to_halfbrother"), 13)
+	# Арбалетчик (+5 к копейщикам) по кнехту (1/1): (9 − 1) + 5 = 13.
+	assert_eq(_hit(&"to_crossbow", &"to_knecht"), 13)
 
 
 func test_flank_rear_and_wavering_multiply_then_round_down() -> void:
-	# Лёгкий всадник 6 Б по арбалетчику 1/2 с фланга: 5 × 1,25 = 6,25 → 6.
-	assert_eq(_hit(&"gdl_light_horse", &"to_crossbow", Damage.Side.FLANK), 6)
-	# Колеблющийся ополченец по рыцарю: 7 × 0,8 = 5,6 → 5.
+	# Лёгкий всадник 5 Б по арбалетчику 1/2 с фланга: 4 × 1,25 = 5.
+	assert_eq(_hit(&"gdl_light_horse", &"to_crossbow", Damage.Side.FLANK), 5)
+	# Колеблющийся ополченец по рыцарю: 8 × 0,8 = 6,4 → 6.
 	var waver := PackedInt32Array([_db.rules.waver_damage_permille])
-	assert_eq(_hit(&"gdl_spearman", &"to_knight_brother", 0, waver), 5)
-	# В тыл и колеблясь: 7 × 1,5 × 0,8 = 8,4 → 8, округление одно, в самом конце.
-	assert_eq(_hit(&"gdl_spearman", &"to_knight_brother", Damage.Side.REAR, waver), 8)
+	assert_eq(_hit(&"gdl_spearman", &"to_knight_brother", 0, waver), 6)
+	# В тыл и колеблясь: 8 × 1,5 × 0,8 = 9,6 → 9, округление одно, в самом конце.
+	assert_eq(_hit(&"gdl_spearman", &"to_knight_brother", Damage.Side.REAR, waver), 9)
 	# Литовское копьё (11 Б, ×2) по кнехту (1/1) с фланга после разгона: 10 × 1,25 × 2 = 25.
 	var lance := PackedInt32Array([_db.unit(&"gdl_lit_lance").param(&"charge_permille")])
 	assert_eq(_hit(&"gdl_lit_lance", &"to_knecht", Damage.Side.FLANK, lance), 25)
