@@ -26,6 +26,6 @@ damage = 0
 damage_type = &""
 attack_range = 0
 power_rate_milli = 500
-trains = Array[StringName]([&"mo_zyuzya"])
+trains = Array[StringName]([&"mo_moroz"])
 tags = Array[StringName]([])
 params = Dictionary[StringName, int]({})

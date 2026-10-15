@@ -91,8 +91,8 @@ class ValidatorTest(unittest.TestCase):
 
     def test_creature_hp_must_agree_between_tabs(self):
         cat = copy.deepcopy(CATALOG)
-        row(cat, "creatures", "mo_zyuzya")["hp"] = "500"
-        self.assertIn("creature mo_zyuzya: HP 500 differs from the unit table (450)", errors_for(cat))
+        row(cat, "creatures", "mo_moroz")["hp"] = "500"
+        self.assertIn("creature mo_moroz: HP 500 differs from the unit table (450)", errors_for(cat))
 
     def test_prototype_rules_must_be_understood(self):
         cat = copy.deepcopy(CATALOG)
