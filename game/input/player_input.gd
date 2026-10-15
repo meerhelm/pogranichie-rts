@@ -2,12 +2,16 @@ class_name PlayerInput
 extends Control
 ## Mouse and keyboard of the local player: select units (click, drag box, Shift, double click
 ## for all of a type on screen, Ctrl+1…9 groups) and give orders as simulation commands
-## (right click: move in the chosen formation; H: stop). Draws the drag box.
+## (right click: move in the chosen formation, or attack the enemy under the cursor; Ctrl+right
+## click: attack-move; Shift+right click: rally point; H: stop; Z / X / C: aggressive, defensive,
+## stand ground; T: «Литовский отход», G: «Разворот», V: dismount). Draws the drag box.
 
 signal formation_changed(kind: Formation.Kind)
 
 ## Drags shorter than this many pixels count as clicks.
 const DRAG_THRESHOLD := 6.0
+## A right click this close (pixels) to an enemy attacks it.
+const PICK_RADIUS := 14.0
 ## Pressing a group's number twice within this many ms centres the camera on it.
 const DOUBLE_TAP_MS := 400
 
@@ -76,9 +80,20 @@ func _mouse_button(mb: InputEventMouseButton) -> void:
 				selection.box(
 					Rect2(_drag_from, mb.position - _drag_from), c[0], c[1], mb.shift_pressed
 				)
-	elif mb.button_index == MOUSE_BUTTON_RIGHT and mb.pressed and not selection.ids.is_empty():
+	elif mb.button_index == MOUSE_BUTTON_RIGHT and mb.pressed:
 		var at := Iso.screen_to_fixed(_to_world(mb.position))
-		_order(SimCommand.move(sim.tick, player, selection.ids, at.x, at.y, formation))
+		if mb.shift_pressed:
+			_order(SimCommand.rally(sim.tick, player, at.x, at.y))
+			return
+		if selection.ids.is_empty():
+			return
+		var enemy := _enemy_at(mb.position)
+		if enemy != EntityStore.NO_ID:
+			_order(SimCommand.attack(sim.tick, player, selection.ids, enemy))
+		elif mb.ctrl_pressed:
+			_order(SimCommand.attack_move(sim.tick, player, selection.ids, at.x, at.y, formation))
+		else:
+			_order(SimCommand.move(sim.tick, player, selection.ids, at.x, at.y, formation))
 
 
 func _key(key: InputEventKey) -> void:
@@ -100,10 +115,26 @@ func _key(key: InputEventKey) -> void:
 		_set_formation(Formation.Kind.COLUMN)
 	elif key.is_action(&"formation_wedge"):
 		_set_formation(Formation.Kind.WEDGE)
-	elif key.is_action(&"stop") and not selection.ids.is_empty():
-		_order(SimCommand.stop(sim.tick, player, selection.ids))
 	elif key.physical_keycode == KEY_ESCAPE:
 		selection.clear()
+	elif selection.ids.is_empty():
+		pass
+	elif key.is_action(&"stop"):
+		_order(SimCommand.stop(sim.tick, player, selection.ids))
+	elif key.is_action(&"stance_aggressive"):
+		_order(
+			SimCommand.set_stance(sim.tick, player, selection.ids, EntityStore.Stance.AGGRESSIVE)
+		)
+	elif key.is_action(&"stance_defensive"):
+		_order(SimCommand.set_stance(sim.tick, player, selection.ids, EntityStore.Stance.DEFENSIVE))
+	elif key.is_action(&"stance_stand"):
+		_order(SimCommand.set_stance(sim.tick, player, selection.ids, EntityStore.Stance.STAND))
+	elif key.is_action(&"lithuanian_retreat"):
+		_order(SimCommand.order(sim.tick, player, SimCommand.Kind.RETREAT, selection.ids))
+	elif key.is_action(&"turn_around"):
+		_order(SimCommand.order(sim.tick, player, SimCommand.Kind.TURN, selection.ids))
+	elif key.is_action(&"dismount"):
+		_order(SimCommand.order(sim.tick, player, SimCommand.Kind.DISMOUNT, selection.ids))
 
 
 func _draw() -> void:
@@ -145,6 +176,24 @@ func _candidates(visible_only: bool) -> Array:
 		points.append(p)
 		types.append(v.type_id)
 	return [cand_ids, points, types]
+
+
+## The visible enemy unit nearest to the screen point within PICK_RADIUS, or NO_ID.
+func _enemy_at(screen_point: Vector2) -> int:
+	var to_screen := get_viewport().get_canvas_transform()
+	var best := EntityStore.NO_ID
+	var best_d := PICK_RADIUS
+	for id: int in units.views:
+		var v := units.views[id]
+		if v.player == player or v.player == 0 or not v.visible:
+			continue
+		var d := (to_screen * (v.global_position + Vector2(0, -UnitView.RADIUS))).distance_to(
+			screen_point
+		)
+		if d < best_d:
+			best = id
+			best_d = d
+	return best
 
 
 func _to_world(screen_point: Vector2) -> Vector2:

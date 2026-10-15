@@ -1,8 +1,9 @@
 class_name CommandFuzzer
 extends RefCounted
 ## Random but reproducible orders for determinism tests and benchmarks: spawns, moves (in
-## random formations), stops and removals for two players, drawn from its own SimRng so the
-## simulation's generator is untouched. Use as the `orders` callable of Replay.record().
+## random formations), attacks, attack-moves, stances, retreats, turns, dismounts, rally points,
+## stops and removals for two players, drawn from its own SimRng so the simulation's generator
+## is untouched. Use as the `orders` callable of Replay.record().
 
 const PLAYERS := 2
 const MAX_UNITS := 200
@@ -27,10 +28,29 @@ func issue(sim: Simulation) -> void:
 	if mine.is_empty() or (roll < 30 and sim.entities.count() < MAX_UNITS):
 		var unit := unit_types[rng.next_below(unit_types.size())]
 		sim.enqueue(SimCommand.spawn(sim.tick, player, unit, _rand_x(sim), _rand_y(sim)))
-	elif roll < 80:
+	elif roll < 60:
 		var group := _pick(mine)
 		var shape := rng.next_below(3)
 		sim.enqueue(SimCommand.move(sim.tick, player, group, _rand_x(sim), _rand_y(sim), shape))
+	elif roll < 70:
+		var group := _pick(mine)
+		var shape := rng.next_below(3)
+		var x := _rand_x(sim)
+		var y := _rand_y(sim)
+		sim.enqueue(SimCommand.attack_move(sim.tick, player, group, x, y, shape))
+	elif roll < 78:
+		var theirs := _units_of(sim, 3 - player)
+		var enemy := theirs[rng.next_below(theirs.size())] if not theirs.is_empty() else 0
+		sim.enqueue(SimCommand.attack(sim.tick, player, _pick(mine), enemy))
+	elif roll < 82:
+		var stance := rng.next_below(4)
+		sim.enqueue(SimCommand.set_stance(sim.tick, player, _pick(mine), stance))
+	elif roll < 86:
+		var kinds := [SimCommand.Kind.RETREAT, SimCommand.Kind.TURN, SimCommand.Kind.DISMOUNT]
+		var kind: SimCommand.Kind = kinds[rng.next_below(kinds.size())]
+		sim.enqueue(SimCommand.order(sim.tick, player, kind, _pick(mine)))
+	elif roll < 87:
+		sim.enqueue(SimCommand.rally(sim.tick, player, _rand_x(sim), _rand_y(sim)))
 	elif roll < 92:
 		sim.enqueue(SimCommand.stop(sim.tick, player, _pick(mine)))
 	elif roll < 97:

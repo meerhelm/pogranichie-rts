@@ -1,6 +1,7 @@
 extends Node2D
-## Entry scene (M3): the skirmish map with a few GDL and Order units to command.
-## Left click or drag selects, right click moves; Q / E / R pick line, column or wedge.
+## Entry scene (M4): the skirmish map with a GDL and an Order army that fight.
+## Left click or drag selects, right click moves or attacks, Ctrl+right click attack-moves;
+## Q / E / R pick line, column or wedge; Z / X / C set the stance (see PlayerInput).
 
 const MAP_ID := "map_proto_samogitia"
 const SEED := 1
@@ -28,6 +29,7 @@ var sim: Simulation
 @onready var _clock: SimClock = $SimClock
 @onready var _map: MapView = $World/Map
 @onready var _units: UnitLayer = $World/Units
+@onready var _shots: ShotLayer = $World/Shots
 @onready var _camera: RtsCamera = $Camera
 @onready var _input: PlayerInput = $UI/PlayerInput
 @onready var _status: Label = $UI/Status
@@ -47,7 +49,9 @@ func _ready() -> void:
 	_spawn_army(2, ORDER_ARMY, Vector2i(104, 104))
 	_map.build(grid)
 	_clock.sim = sim
+	_units.local_player = PLAYER
 	_units.attach(sim, _clock)
+	_shots.attach(sim, _clock, _units)
 	_camera.bounds = Iso.map_rect(grid.width, grid.height)
 	_camera.look_at_point(Iso.cell_to_screen(Vector2(14, 14)))
 	_input.attach(sim, _units, _camera)

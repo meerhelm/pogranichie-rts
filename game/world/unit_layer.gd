@@ -7,6 +7,8 @@ extends Node2D
 var sim: Simulation
 var clock: SimClock
 var views: Dictionary[int, UnitView] = {}
+## The player at this screen: enemy forest archers hidden in the forest are not drawn for them.
+var local_player := 1
 
 ## Fixed positions at the previous and the latest tick, by id.
 var _prev: Dictionary[int, Vector2i] = {}
@@ -36,6 +38,7 @@ func _on_ticked(_tick: int) -> void:
 			_prev[id] = _cur[id]
 			view.face(p.x - _cur[id].x, p.y - _cur[id].y)
 		_cur[id] = p
+		_show_state(id, view)
 	for id: int in views.keys():
 		if not e.is_alive(id):
 			views[id].queue_free()
@@ -52,6 +55,20 @@ func _process(_delta: float) -> void:
 		var a := Iso.fixed_to_screen(_prev[id].x, _prev[id].y)
 		var b := Iso.fixed_to_screen(_cur[id].x, _cur[id].y)
 		views[id].position = a.lerp(b, t)
+
+
+func _show_state(id: int, v: UnitView) -> void:
+	var e := sim.entities
+	var slot := id - 1
+	var mood := UnitView.Mood.STEADY
+	if e.intents[slot] == EntityStore.Intent.FLEE:
+		mood = UnitView.Mood.FLEEING
+	elif sim.combat.enabled() and sim.combat.wavering(slot):
+		mood = UnitView.Mood.WAVERING
+	var hidden := sim.combat.enabled() and sim.combat.is_hidden(id)
+	v.visible = not hidden or e.owners[slot] == local_player
+	var hp := clampi(e.hp[slot] * 1000 / maxi(e.max_hp[slot], 1), 0, 1000)
+	v.show_state(hp, mood, hidden, e.move_class[slot])
 
 
 func view(id: int) -> UnitView:

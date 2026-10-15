@@ -106,7 +106,8 @@ func test_diagonal_move_arrives_exactly() -> void:
 func test_players_cannot_order_foreign_or_dead_units() -> void:
 	var sim := Simulation.new(1, _db)
 	sim.enqueue(SimCommand.spawn(0, 1, KNIGHT, _cell(5), _cell(5)))
-	sim.enqueue(SimCommand.spawn(0, 2, KNIGHT, _cell(9), _cell(9)))
+	# Far apart, so they do not see each other and start a fight (M4).
+	sim.enqueue(SimCommand.spawn(0, 2, KNIGHT, _cell(60), _cell(60)))
 	sim.step()
 	sim.enqueue(SimCommand.move(1, 2, PackedInt32Array([1, 7, -1]), 0, 0))
 	sim.enqueue(SimCommand.remove(1, 1, PackedInt32Array([2])))

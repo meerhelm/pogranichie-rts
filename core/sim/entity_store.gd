@@ -6,6 +6,15 @@ extends RefCounted
 ## Scene nodes only read these arrays to draw.
 
 enum Order { IDLE, MOVE }
+## What the unit does in combat beyond its order: running from the fight with no morale left
+## (FLEE, deaf to orders), or the «Литовский отход» (RETREAT).
+enum Intent { NONE, FLEE, RETREAT }
+## How a unit picks fights (M4): AGGRESSIVE chases what it sees, DEFENSIVE follows only a little
+## way from its post and comes back, STAND never moves and shoots what is in range. PASSIVE
+## (peasants, civilians, spiritual units) never starts a fight on its own.
+enum Stance { AGGRESSIVE, DEFENSIVE, STAND, PASSIVE }
+## How the current target was chosen: by the unit itself or by an attack order.
+enum TargetKind { NONE, AUTO, ORDERED }
 
 const NO_ID := 0
 
@@ -45,6 +54,50 @@ var flow_ids := PackedInt32Array()
 var best_dist := PackedInt64Array()
 var stall := PackedInt32Array()
 var replans := PackedInt32Array()
+
+# Combat (M4). Morale is in thousandths of a point (catalog 0..100 × 1000).
+var max_hp := PackedInt32Array()
+var morale := PackedInt32Array()
+var stance := PackedByteArray()
+var intents := PackedByteArray()
+## Remaining ticks of the intent (flight or retreat).
+var intent_ticks := PackedInt32Array()
+var target := PackedInt32Array()
+var target_kind := PackedByteArray()
+## 1 while an attack-move is under way to (am_x, am_y): the unit fights what it meets there.
+var attack_move := PackedByteArray()
+var am_x := PackedInt64Array()
+var am_y := PackedInt64Array()
+## Defensive post, or where the chase of a fleeing target began.
+var post_x := PackedInt64Array()
+var post_y := PackedInt64Array()
+var chase_x := PackedInt64Array()
+var chase_y := PackedInt64Array()
+## Where the unit was created: it flees there when its side has no rally point.
+var home_x := PackedInt64Array()
+var home_y := PackedInt64Array()
+## Ticks until the next strike, the next javelin, the next «Литовский отход».
+var cooldown := PackedInt32Array()
+var javelin_cd := PackedInt32Array()
+var retreat_cd := PackedInt32Array()
+## Way the unit faces, a vector of length Fixed.ONE.
+var facing_x := PackedInt32Array()
+var facing_y := PackedInt32Array()
+## Distance walked without stopping, for the charge, and 1 if the unit moved this tick.
+var run := PackedInt64Array()
+var moved := PackedByteArray()
+## Ticks since the unit last hit or was hit; morale recovers once it is out of combat.
+var calm := PackedInt32Array()
+## Tenths of max HP already lost (−1 morale each).
+var lost_tenths := PackedByteArray()
+## Ticks left to order «Разворот» after a retreat, and 1 while its bonus waits for the next hit.
+var turn_ticks := PackedInt32Array()
+var turn_bonus := PackedByteArray()
+## Ticks a pursuer of a retreating unit stays out of order (−2 melee armor).
+var disorder := PackedInt32Array()
+## Ticks a forest archer stays visible after a shot.
+var reveal := PackedInt32Array()
+var dismounted := PackedByteArray()
 
 
 func count() -> int:
@@ -88,6 +141,36 @@ func spawn(
 	best_dist.append(0)
 	stall.append(0)
 	replans.append(0)
+	max_hp.append(hit_points)
+	morale.append(0)
+	stance.append(Stance.AGGRESSIVE)
+	intents.append(Intent.NONE)
+	intent_ticks.append(0)
+	target.append(NO_ID)
+	target_kind.append(TargetKind.NONE)
+	attack_move.append(0)
+	am_x.append(x)
+	am_y.append(y)
+	post_x.append(x)
+	post_y.append(y)
+	chase_x.append(x)
+	chase_y.append(y)
+	home_x.append(x)
+	home_y.append(y)
+	cooldown.append(0)
+	javelin_cd.append(0)
+	retreat_cd.append(0)
+	facing_x.append(0)
+	facing_y.append(Fixed.ONE)
+	run.append(0)
+	moved.append(0)
+	calm.append(0)
+	lost_tenths.append(0)
+	turn_ticks.append(0)
+	turn_bonus.append(0)
+	disorder.append(0)
+	reveal.append(0)
+	dismounted.append(0)
 	alive_ids.append(id)
 	return id
 
@@ -162,3 +245,37 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_64(best_dist[slot])
 		buf.put_32(stall[slot])
 		buf.put_32(replans[slot])
+		_write_combat(buf, slot)
+
+
+func _write_combat(buf: StreamPeerBuffer, slot: int) -> void:
+	buf.put_32(max_hp[slot])
+	buf.put_32(morale[slot])
+	buf.put_8(stance[slot])
+	buf.put_8(intents[slot])
+	buf.put_32(intent_ticks[slot])
+	buf.put_32(target[slot])
+	buf.put_8(target_kind[slot])
+	buf.put_8(attack_move[slot])
+	buf.put_64(am_x[slot])
+	buf.put_64(am_y[slot])
+	buf.put_64(post_x[slot])
+	buf.put_64(post_y[slot])
+	buf.put_64(chase_x[slot])
+	buf.put_64(chase_y[slot])
+	buf.put_64(home_x[slot])
+	buf.put_64(home_y[slot])
+	buf.put_32(cooldown[slot])
+	buf.put_32(javelin_cd[slot])
+	buf.put_32(retreat_cd[slot])
+	buf.put_32(facing_x[slot])
+	buf.put_32(facing_y[slot])
+	buf.put_64(run[slot])
+	buf.put_8(moved[slot])
+	buf.put_32(calm[slot])
+	buf.put_8(lost_tenths[slot])
+	buf.put_32(turn_ticks[slot])
+	buf.put_8(turn_bonus[slot])
+	buf.put_32(disorder[slot])
+	buf.put_32(reveal[slot])
+	buf.put_8(dismounted[slot])

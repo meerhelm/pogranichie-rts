@@ -15,6 +15,8 @@ var factions: Dictionary[StringName, FactionDef] = {}
 var ages: Dictionary[StringName, AgeDef] = {}
 var power_places: Dictionary[StringName, PowerPlaceDef] = {}
 var terrains: Dictionary[StringName, TerrainDef] = {}
+## Combat and morale numbers (data/rules/combat.tres).
+var rules: CombatRulesDef
 
 
 static func load_index() -> CatalogIndex:
@@ -79,6 +81,8 @@ func _load_ids(
 	_load_kind("ages", index.ages, ages)
 	_load_kind("power_places", index.power_places, power_places)
 	_load_kind("terrain", index.terrains, terrains)
+	rules = load(DATA_DIR.path_join("rules/combat.tres")) as CombatRulesDef
+	assert(rules != null, "catalog resource missing: rules/combat")
 
 
 func _load_kind(dir: String, ids: Array[StringName], into: Dictionary) -> void:
@@ -102,6 +106,8 @@ func content_hash() -> String:
 		ids.sort()
 		for id in ids:
 			ctx.update(_stored_fields(kind[StringName(id)]).to_utf8_buffer())
+	if rules != null:
+		ctx.update(_stored_fields(rules).to_utf8_buffer())
 	return ctx.finish().hex_encode().left(16)
 
 

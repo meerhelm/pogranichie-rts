@@ -1,0 +1,41 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://game/arena/arena.gd" id="1_arena"]
+[ext_resource type="Script" path="res://core/sim/sim_clock.gd" id="2_clock"]
+[ext_resource type="Script" path="res://game/world/map_view.gd" id="3_map"]
+[ext_resource type="Script" path="res://game/world/unit_layer.gd" id="4_units"]
+[ext_resource type="Script" path="res://game/camera/rts_camera.gd" id="5_camera"]
+[ext_resource type="Script" path="res://game/input/player_input.gd" id="6_input"]
+[ext_resource type="Script" path="res://game/world/shot_layer.gd" id="7_shots"]
+
+[node name="Arena" type="Node2D"]
+script = ExtResource("1_arena")
+
+[node name="SimClock" type="Node" parent="."]
+script = ExtResource("2_clock")
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="Map" type="TileMapLayer" parent="World"]
+script = ExtResource("3_map")
+
+[node name="Units" type="Node2D" parent="World"]
+y_sort_enabled = true
+script = ExtResource("4_units")
+
+[node name="Shots" type="Node2D" parent="World"]
+script = ExtResource("7_shots")
+
+[node name="Camera" type="Camera2D" parent="."]
+script = ExtResource("5_camera")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="PlayerInput" type="Control" parent="UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("6_input")

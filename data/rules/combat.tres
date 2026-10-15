@@ -1,0 +1,51 @@
+[gd_resource type="Resource" script_class="CombatRulesDef" format=3]
+
+[ext_resource type="Script" path="res://core/data/combat_rules_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"combat"
+flank_permille = 1250
+rear_permille = 1500
+firearm_pierce_armor_permille = 500
+siege_vs_unit_permille = 250
+forest_miss_permille = 250
+hill_range_bonus = 1
+charge_distance_default = 4
+morale_per_tenth_hp = 1
+neighbour_death_morale = 10
+neighbour_radius_milli = 3000
+flank_hit_morale = 10
+rear_hit_morale = 20
+firearm_hit_morale = 5
+cannon_volley_morale = 15
+cannon_volley_radius = 2
+hero_aura_morale = 15
+hero_aura_radius = 8
+formation_morale = 5
+formation_neighbours = 3
+formation_radius_milli = 1500
+waver_morale = 25
+waver_damage_permille = 800
+flee_ticks = 400
+morale_recovery_per_second = 2
+out_of_combat_ticks = 100
+sight_default = 6
+melee_reach_milli = 1000
+pursuit_cells = 10
+defensive_leash_cells = 6
+projectile_speed_milli = 8000
+stealth_reveal_ticks = 60
+dismount_speed_milli = 900
+retreat_cells = 8
+retreat_fearless_ticks = 120
+retreat_speed_permille = 1300
+retreat_disorder_ticks = 200
+retreat_disorder_armor = 2
+turn_window_ticks = 200
+turn_damage_bonus = 3
+turn_charge_permille = 1250
+retreat_cooldown_ticks = 900
+arena_budget = 1200
+arena_iron_permille = 1500
+arena_silver_permille = 2000

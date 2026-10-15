@@ -20,6 +20,22 @@ AGE_GENITIVE = {"Удела": 1, "Хоругви": 2}
 AGE_IDS = {1: "age_udel", 2: "age_khorugv", 3: "age_derzhava"}
 RESOURCES = ("food", "wood", "iron", "silver")
 
+# Combat and morale numbers (M4), in data/rules/combat.tres; values come from manual.json.
+COMBAT_RULE_KEYS = (
+    "flank_permille", "rear_permille", "firearm_pierce_armor_permille", "siege_vs_unit_permille",
+    "forest_miss_permille", "hill_range_bonus", "charge_distance_default", "morale_per_tenth_hp",
+    "neighbour_death_morale", "neighbour_radius_milli", "flank_hit_morale", "rear_hit_morale",
+    "firearm_hit_morale", "cannon_volley_morale", "cannon_volley_radius", "hero_aura_morale",
+    "hero_aura_radius", "formation_morale", "formation_neighbours", "formation_radius_milli",
+    "waver_morale", "waver_damage_permille", "flee_ticks", "morale_recovery_per_second",
+    "out_of_combat_ticks", "sight_default", "melee_reach_milli", "pursuit_cells",
+    "defensive_leash_cells", "projectile_speed_milli", "stealth_reveal_ticks",
+    "dismount_speed_milli", "retreat_cells", "retreat_fearless_ticks", "retreat_speed_permille",
+    "retreat_disorder_ticks", "retreat_disorder_armor", "turn_window_ticks", "turn_damage_bonus",
+    "turn_charge_permille", "retreat_cooldown_ticks", "arena_budget", "arena_iron_permille",
+    "arena_silver_permille",
+)
+
 # Field types: int, bool, name (StringName), names (Array[StringName]),
 # name_ints (Dictionary[StringName, int]), text (String).
 COST_FIELDS = {f"cost_{r}": "int" for r in RESOURCES}
@@ -130,6 +146,9 @@ SCHEMAS: dict[str, dict[str, str]] = {
         "uphill_permille": "int",
         "siege_blocked": "bool",
     },
+    # One resource, data/rules/combat.tres: the combat and morale numbers the catalog gives in
+    # prose (manual.json → combat_rules).
+    "CombatRulesDef": {"id": "name", **{k: "int" for k in COMBAT_RULE_KEYS}},
     "CatalogIndex": {
         "exported_on": "text",
         "units": "names",
@@ -156,6 +175,7 @@ KIND_DIRS = {
     "AgeDef": "ages",
     "PowerPlaceDef": "power_places",
     "TerrainDef": "terrain",
+    "CombatRulesDef": "rules",
 }
 
 
@@ -208,6 +228,7 @@ class Builder:
         self.ages: dict[str, dict] = {}
         self.power_places: dict[str, dict] = {}
         self.terrains: dict[str, dict] = {}
+        self.rules: dict[str, dict] = {}
         self.factions: dict[str, dict] = {}
         # (faction or "", lower-case building name) -> building id
         self.building_names: dict[tuple[str, str], str] = {}
@@ -642,6 +663,32 @@ class Builder:
             d["siege_blocked"] = "Осадное не проходит" in row["special"]
             self.terrains[d["id"]] = d
 
+    def build_rules(self) -> None:
+        """Combat and morale rules (M4): one CombatRulesDef with id "combat".
+
+        The catalog states them in prose only, so they live in manual.json → combat_rules; each
+        value is an integer in the units its key names (_ticks, _permille, _milli; cells or
+        points otherwise). The keys must be exactly COMBAT_RULE_KEYS.
+        """
+        block = self.manual.get("combat_rules", {})
+        values = block.get("values", {})
+        d = _defaults("CombatRulesDef")
+        d["id"] = "combat"
+        for key in COMBAT_RULE_KEYS:
+            if key not in values:
+                self.rep.error("combat rules", f"missing {key}")
+        for key, value in values.items():
+            if key not in COMBAT_RULE_KEYS:
+                self.rep.error("combat rules", f"unknown key {key!r}")
+            elif not isinstance(value, int) or isinstance(value, bool):
+                self.rep.error("combat rules", f"{key} must be an integer, got {value!r}")
+            else:
+                d[key] = value
+        for key in block.get("_temporary", []):
+            if key not in COMBAT_RULE_KEYS:
+                self.rep.error("combat rules", f"_temporary lists unknown key {key!r}")
+        self.rules["combat"] = d
+
     # --- factions and checks ---------------------------------------------------------
 
     def build_factions(self) -> None:
@@ -732,6 +779,7 @@ class Builder:
         self.build_ages()
         self.build_power_places()
         self.build_terrain()
+        self.build_rules()
         self.build_factions()
         self.check_references()
         self.check_prototype()
@@ -746,4 +794,5 @@ class Builder:
             "AgeDef": self.ages,
             "PowerPlaceDef": self.power_places,
             "TerrainDef": self.terrains,
+            "CombatRulesDef": self.rules,
         }

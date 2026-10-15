@@ -160,3 +160,28 @@ class TerrainTest(unittest.TestCase):
         catalog = copy.deepcopy(CATALOG)
         row(catalog, "terrain", "t_sand")["passability"] = "медленно"
         self.assertIn("passability «медленно» not understood", " ".join(errors_for(catalog)))
+
+
+class CombatRulesTest(unittest.TestCase):
+    MANUAL = json.loads((HERE / "manual.json").read_text(encoding="utf-8"))
+
+    def rules_errors(self, edit):
+        manual = copy.deepcopy(self.MANUAL)
+        edit(manual["combat_rules"])
+        _defs, _index, rep = export.build(copy.deepcopy(CATALOG), manual=manual)
+        return " ".join(rep.errors)
+
+    def test_rules_from_the_catalog_prose(self):
+        defs, _index, rep = export.build(copy.deepcopy(CATALOG))
+        self.assertEqual(rep.errors, [])
+        r = defs["CombatRulesDef"]["combat"]
+        self.assertEqual((r["flank_permille"], r["rear_permille"]), (1250, 1500))
+        self.assertEqual((r["waver_morale"], r["waver_damage_permille"]), (25, 800))
+        self.assertEqual(r["flee_ticks"], 400, "20 seconds")
+        self.assertEqual(r["retreat_cooldown_ticks"], 900, "45 seconds")
+
+    def test_missing_unknown_and_non_integer_values_are_errors(self):
+        self.assertIn("missing flank_permille", self.rules_errors(lambda b: b["values"].pop("flank_permille")))
+        self.assertIn("unknown key 'flanc'", self.rules_errors(lambda b: b["values"].update(flanc=1)))
+        self.assertIn("must be an integer", self.rules_errors(lambda b: b["values"].update(rear_permille=1.5)))
+        self.assertIn("_temporary lists unknown key", self.rules_errors(lambda b: b["_temporary"].append("x")))

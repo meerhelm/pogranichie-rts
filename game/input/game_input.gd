@@ -11,6 +11,12 @@ const KEYS := {
 	&"formation_column": [KEY_E],
 	&"formation_wedge": [KEY_R],
 	&"stop": [KEY_H],
+	&"stance_aggressive": [KEY_Z],
+	&"stance_defensive": [KEY_X],
+	&"stance_stand": [KEY_C],
+	&"lithuanian_retreat": [KEY_T],
+	&"turn_around": [KEY_G],
+	&"dismount": [KEY_V],
 }
 
 

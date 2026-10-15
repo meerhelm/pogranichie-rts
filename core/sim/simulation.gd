@@ -6,7 +6,8 @@ extends RefCounted
 
 ## Bump when a change to the rules makes old replays play out differently.
 ## 2: M3 movement (terrain, A*, flow fields, formations, separation).
-const SIM_VERSION := 2
+## 3: M4 combat and morale (targets, strikes, projectiles, flight, stances, facing, run-up).
+const SIM_VERSION := 3
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).
@@ -52,6 +53,8 @@ var map_height: int
 ## Terrain and blockers for movement.
 var nav: NavGrid
 var pathfinder: Pathfinder
+## Fights and morale; does nothing without the catalog's combat rules (tests without data).
+var combat: CombatSystem
 var data_version: String
 ## Every accepted command, in arrival order, for recording replays.
 var command_log: Array[SimCommand] = []
@@ -87,6 +90,9 @@ func _init(
 	pathfinder = Pathfinder.new(nav)
 	map_width = Fixed.from_cells(nav.width)
 	map_height = Fixed.from_cells(nav.height)
+	combat = CombatSystem.new(
+		entities, nav, rng, db.rules if db != null else null, walk_unit, stop_unit, remove_unit
+	)
 
 
 ## Queues a command for its tick. Commands for a tick already simulated are refused,
@@ -103,7 +109,9 @@ func enqueue(cmd: SimCommand) -> bool:
 func step() -> void:
 	for cmd in queue.take_due(tick):
 		_apply(cmd)
+	combat.step(tick)
 	_move_units()
+	combat.after_move()
 	tick += 1
 
 
@@ -127,6 +135,7 @@ func state_hash() -> String:
 	for id in _path_queue:
 		buf.put_32(id)
 	entities.write_to(buf)
+	combat.write_to(buf)
 	var ctx := HashingContext.new()
 	ctx.start(HashingContext.HASH_SHA256)
 	ctx.update(buf.data_array)
@@ -145,15 +154,22 @@ func _apply(cmd: SimCommand) -> void:
 	match cmd.kind:
 		SimCommand.Kind.SPAWN:
 			_spawn(cmd)
-		SimCommand.Kind.MOVE:
-			_order_move(_owned(cmd), clamp_x(cmd.x), clamp_y(cmd.y), cmd.formation)
+		SimCommand.Kind.MOVE, SimCommand.Kind.ATTACK_MOVE:
+			var ids := _obedient(cmd)
+			_order_move(ids, clamp_x(cmd.x), clamp_y(cmd.y), cmd.formation)
+			for id in ids:
+				combat.on_move_order(id, cmd.kind == SimCommand.Kind.ATTACK_MOVE)
 		SimCommand.Kind.STOP:
-			for id in _owned(cmd):
+			for id in _obedient(cmd):
 				_stop(id)
+				combat.on_stop_order(id)
 		SimCommand.Kind.REMOVE:
 			for id in _owned(cmd):
-				_release_flow(id)
-				entities.remove(id)
+				remove_unit(id)
+		SimCommand.Kind.RALLY:
+			combat.order(cmd, PackedInt32Array())
+		_:
+			combat.order(cmd, _obedient(cmd))
 
 
 func _spawn(cmd: SimCommand) -> void:
@@ -179,9 +195,10 @@ func _spawn(cmd: SimCommand) -> void:
 			return
 		x = nav.center_x(open)
 		y = nav.center_y(open)
-	entities.spawn(
+	var id := entities.spawn(
 		cmd.type_id, cmd.player, x, y, hit_points, Fixed.speed_per_tick(speed_milli), move_class
 	)
+	combat.on_spawn(id, _db.unit(cmd.type_id) if _db != null else null)
 
 
 ## Ids from the command that are alive and belong to its player, ascending, without repeats.
@@ -196,6 +213,32 @@ func _owned(cmd: SimCommand) -> PackedInt32Array:
 		if unique.is_empty() or unique[-1] != id:
 			unique.append(id)
 	return unique
+
+
+## Like _owned(), without units that flee and ignore orders.
+func _obedient(cmd: SimCommand) -> PackedInt32Array:
+	var result := PackedInt32Array()
+	for id in _owned(cmd):
+		if not combat.is_fleeing(id):
+			result.append(id)
+	return result
+
+
+## Ends the unit's current walk where it stands (combat uses this to stop and fight).
+func stop_unit(id: int) -> void:
+	_stop(id)
+
+
+## Sends one unit to the point on its own path, at its own speed (chases, flight, retreats).
+func walk_unit(id: int, x: int, y: int) -> void:
+	_release_flow(id)
+	entities.set_move_target(id, clamp_x(x), clamp_y(y))
+	_plan_path(id)
+
+
+func remove_unit(id: int) -> void:
+	_release_flow(id)
+	entities.remove(id)
 
 
 # --- movement ---------------------------------------------------------------------------
@@ -375,12 +418,34 @@ func _move_units() -> void:
 	_separate()
 
 
-## Moves one unit by its speed for this tick along its route, through as many waypoints as the
-## distance allows. Speed is scaled by the terrain under the unit.
+## Moves one unit by its speed for this tick (faster in a «Литовский отход») and notes where it
+## now faces and how far it has run without stopping (for the charge).
 func _advance(id: int) -> void:
 	var e := entities
 	var slot := id - 1
+	var x0 := e.pos_x[slot]
+	var y0 := e.pos_y[slot]
 	var budget := e.move_speed[slot]
+	if e.intents[slot] == EntityStore.Intent.RETREAT and _db != null:
+		budget = budget * _db.rules.retreat_speed_permille / 1000
+	_walk(id, budget)
+	var dx := e.pos_x[slot] - x0
+	var dy := e.pos_y[slot] - y0
+	if dx != 0 or dy != 0:
+		var d := Fixed.isqrt(dx * dx + dy * dy)
+		if d > 0:
+			e.facing_x[slot] = dx * Fixed.ONE / d
+			e.facing_y[slot] = dy * Fixed.ONE / d
+		e.run[slot] += d
+		e.moved[slot] = 1
+
+
+## Walks the unit `budget` fixed units along its route, through as many waypoints as the
+## distance allows. Speed is scaled by the terrain under the unit.
+func _walk(id: int, p_budget: int) -> void:
+	var e := entities
+	var slot := id - 1
+	var budget := p_budget
 	for leg in 4:
 		if budget <= 0 or e.orders[slot] != EntityStore.Order.MOVE:
 			return

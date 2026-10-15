@@ -4,6 +4,7 @@ extends SceneTree
 ##   godot --headless -s tools/sim/sim_cli.gd -- record --seed 7 --ticks 1000 --out x.json
 ##   godot --headless -s tools/sim/sim_cli.gd -- determinism --runs 10 --ticks 1000
 ##   godot --headless -s tools/sim/sim_cli.gd -- bench --units 200 --ticks 600
+##   godot --headless -s tools/sim/sim_cli.gd -- arena --seeds 50 --out arena.csv [--pairs a,b]
 ## record, determinism and bench take --map <map id> (see MapText); without it, open grass.
 ## Exit code 0 on success, 1 on a hash mismatch or bad arguments.
 
@@ -12,7 +13,7 @@ func _initialize() -> void:
 	var args := OS.get_cmdline_user_args()
 	var code := 1
 	if args.is_empty():
-		printerr("usage: sim_cli.gd -- play|record|determinism|bench [options]")
+		printerr("usage: sim_cli.gd -- play|record|determinism|bench|arena [options]")
 	else:
 		var opts := _options(args.slice(1))
 		match args[0]:
@@ -24,6 +25,8 @@ func _initialize() -> void:
 				code = _determinism(opts)
 			"bench":
 				code = _bench(opts)
+			"arena":
+				code = _arena(opts)
 			_:
 				printerr("unknown command: ", args[0])
 	quit(code)
@@ -135,6 +138,31 @@ func _bench(opts: Dictionary) -> int:
 			]
 		)
 	)
+	return 0
+
+
+## Balance arena (BalanceArena): one CSV row per pair, printed and written to --out.
+func _arena(opts: Dictionary) -> int:
+	var seeds := int(opts.get("seeds", "50"))
+	var only := PackedStringArray()
+	if opts.has("pairs"):
+		only = str(opts["pairs"]).split(",")
+	var arena := BalanceArena.new(CatalogDB.load_all())
+	var lines := PackedStringArray([BalanceArena.CSV_HEADER])
+	print(BalanceArena.CSV_HEADER)
+	for pair: Array in BalanceArena.DEFAULT_PAIRS:
+		if not only.is_empty() and not only.has(str(pair[0])):
+			continue
+		var row := arena.run_pair(pair, seeds)
+		print(row)
+		lines.append(row)
+	var out: String = opts.get("out", "")
+	if not out.is_empty():
+		var f := FileAccess.open(out, FileAccess.WRITE)
+		if f == null:
+			printerr("cannot write %s" % out)
+			return 1
+		f.store_string("\n".join(lines) + "\n")
 	return 0
 
 
