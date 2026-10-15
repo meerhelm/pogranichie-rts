@@ -80,3 +80,28 @@ func _load_kind(dir: String, ids: Array[StringName], into: Dictionary) -> void:
 		var res: Resource = load(DATA_DIR.path_join(dir).path_join("%s.tres" % id))
 		assert(res != null, "catalog resource missing: %s/%s" % [dir, id])
 		into[id] = res
+
+
+## Short hash of every loaded definition's stored fields. Replays keep it so playback can tell
+## that the catalog numbers changed since recording (which changes the outcome).
+func content_hash() -> String:
+	var ctx := HashingContext.new()
+	ctx.start(HashingContext.HASH_SHA256)
+	ctx.update(index.exported_on.to_utf8_buffer())
+	for kind: Dictionary in [units, buildings, techs, spells, factions, ages, power_places]:
+		# Sort as String: StringName order follows interning, not text, and differs per run.
+		var ids := PackedStringArray(kind.keys())
+		ids.sort()
+		for id in ids:
+			ctx.update(_stored_fields(kind[StringName(id)]).to_utf8_buffer())
+	return ctx.finish().hex_encode().left(16)
+
+
+static func _stored_fields(res: Resource) -> String:
+	var parts := PackedStringArray()
+	for prop: Dictionary in res.get_property_list():
+		var usage: int = prop["usage"]
+		if usage & PROPERTY_USAGE_SCRIPT_VARIABLE and usage & PROPERTY_USAGE_STORAGE:
+			var prop_name: String = prop["name"]
+			parts.append("%s=%s" % [prop_name, var_to_str(res.get(prop_name))])
+	return "\n".join(parts)
