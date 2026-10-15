@@ -32,6 +32,10 @@ jobs:
         run: gdlint .
       - name: gdformat
         run: gdformat --check $(git ls-files '*.gd' ':!:addons/**')
+      - name: Catalog exporter tests
+        run: python -m unittest discover -s tools/catalog/tests -t .
+      - name: Catalog data matches catalog.json
+        run: python -m tools.catalog.export --check
 
   test:
     name: Import and tests (${{ matrix.os }})

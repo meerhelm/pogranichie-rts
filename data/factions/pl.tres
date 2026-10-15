@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="FactionDef" format=3]
+
+[ext_resource type="Script" path="res://core/data/faction_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"pl"
+unit_ids = Array[StringName]([&"pl_bombard", &"pl_bowman", &"pl_camp_servant", &"pl_crossbow", &"pl_drab", &"pl_field_gun", &"pl_foot_servant", &"pl_handgunner", &"pl_hussar", &"pl_kmet", &"pl_kopia", &"pl_light_horse", &"pl_merc_horse", &"pl_pavise", &"pl_pospolite", &"pl_priest", &"pl_river_boat", &"pl_spearman", &"pl_stranger", &"pl_wagon"])
+building_ids = Array[StringName]([&"pl_barracks", &"pl_battery", &"pl_castle", &"pl_dock", &"pl_farm", &"pl_field_camp", &"pl_foundry", &"pl_gate", &"pl_granary", &"pl_house", &"pl_lazaret", &"pl_lumber_yard", &"pl_market", &"pl_mine", &"pl_palisade", &"pl_range", &"pl_salt_works", &"pl_shrine", &"pl_siege_workshop", &"pl_smithy", &"pl_stable", &"pl_tavern", &"pl_temple", &"pl_tower", &"pl_town_center", &"pl_wall"])
+tech_ids = Array[StringName]([&"t_arrows", &"t_assay", &"t_banners", &"t_bloomery", &"t_cav_armor_1", &"t_cav_armor_2", &"t_horse_collar", &"t_inf_armor_1", &"t_inf_armor_2", &"t_pl_great_banner", &"t_pl_obrona", &"t_pl_procession", &"t_pl_salt_statute", &"t_pl_tabor", &"t_pl_tithe", &"t_powder", &"t_saw", &"t_three_field", &"t_wagons", &"t_watch", &"t_weapons_1", &"t_weapons_2"])
+spell_ids = Array[StringName]([&"sp_banner_blessing", &"sp_bogurodzica", &"sp_pact"])
+tech_cost_permille = Dictionary[StringName, int]({&"t_three_field": 667})

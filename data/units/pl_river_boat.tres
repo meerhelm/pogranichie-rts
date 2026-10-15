@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="UnitDef" format=3]
+
+[ext_resource type="Script" path="res://core/data/unit_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"pl_river_boat"
+faction = &"pl"
+age = 0
+campaign_only = true
+trained_at = Array[StringName]([&"pl_dock"])
+spawned_by = &""
+cost_food = 0
+cost_wood = 120
+cost_iron = 0
+cost_silver = 30
+cost_power = 0
+cost_debt = 0
+train_ticks = 700
+pop = 2
+hp = 200
+damage = 9
+damage_type = &"pierce"
+shots = 1
+reload_ticks = 80
+attack_range = 6
+min_range = 0
+armor_melee = 1
+armor_pierce = 3
+speed_milli = 1100
+morale = 60
+never_flees = false
+classes = Array[StringName]([&"boat"])
+bonuses = Dictionary[StringName, int]({})
+tags = Array[StringName]([])
+params = Dictionary[StringName, int]({})
+same_as = &""
+food_yield = 0
+lifetime_ticks = 0

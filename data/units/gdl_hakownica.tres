@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="UnitDef" format=3]
+
+[ext_resource type="Script" path="res://core/data/unit_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"gdl_hakownica"
+faction = &"gdl"
+age = 3
+campaign_only = false
+trained_at = Array[StringName]([&"gdl_foundry"])
+spawned_by = &""
+cost_food = 30
+cost_wood = 40
+cost_iron = 40
+cost_silver = 20
+cost_power = 0
+cost_debt = 0
+train_ticks = 600
+pop = 1
+hp = 40
+damage = 22
+damage_type = &"firearm"
+shots = 1
+reload_ticks = 120
+attack_range = 7
+min_range = 0
+armor_melee = 0
+armor_pierce = 0
+speed_milli = 700
+morale = 50
+never_flees = false
+classes = Array[StringName]([&"firearm"])
+bonuses = Dictionary[StringName, int]({})
+tags = Array[StringName]([])
+params = Dictionary[StringName, int]({&"hit_morale_damage": 10})
+same_as = &""
+food_yield = 0
+lifetime_ticks = 0

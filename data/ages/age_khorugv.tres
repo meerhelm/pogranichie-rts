@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="AgeDef" format=3]
+
+[ext_resource type="Script" path="res://core/data/age_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"age_khorugv"
+index = 2
+cost_food = 500
+cost_wood = 0
+cost_iron = 0
+cost_silver = 0
+research_ticks = 2600
+params = Dictionary[StringName, int]({&"required_buildings": 2, &"required_buildings_age": 1})

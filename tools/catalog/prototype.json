@@ -1,0 +1,21 @@
+{
+ "_comment": "What the prototype loads (plan, section 1 «Цель и объём»). The exporter is strict about these: every «Особое» clause must parse and every reference must resolve.",
+ "factions": ["gdl", "to"],
+ "max_age": 2,
+ "units": [
+  "gdl_peasant", "gdl_spearman", "gdl_forest_archer", "gdl_light_horse", "gdl_znakharka",
+  "gdl_castle_archer", "gdl_lit_lance", "gdl_camp_servant", "gdl_wagon",
+  "to_peasant", "to_knight_brother", "to_halfbrother", "to_knecht", "to_crossbow",
+  "to_prussian_rider", "to_priest", "to_tithe_collector",
+  "nt_villager", "nt_bison", "nt_bear", "nt_elk", "nt_boar", "nt_wolf"
+ ],
+ "buildings": [
+  "gdl_town_center", "gdl_house", "gdl_granary", "gdl_farm", "gdl_lumber_yard", "gdl_mine",
+  "gdl_barracks", "gdl_range", "gdl_stable", "gdl_shrine", "gdl_palisade", "gdl_zaseka",
+  "gdl_siege_workshop",
+  "to_town_center", "to_house", "to_granary", "to_farm", "to_lumber_yard", "to_mine",
+  "to_barracks", "to_range", "to_stable", "to_shrine", "to_palisade", "to_gate", "to_tower",
+  "to_market", "to_smithy", "to_temple", "to_siege_workshop", "to_castle"
+ ],
+ "spells": ["sp_bog_mist", "sp_consecration", "sp_exorcism", "sp_relic"]
+}

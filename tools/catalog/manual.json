@@ -1,0 +1,42 @@
+{
+ "_comment": "Values the catalog gives only in prose, and gaps the exporter needs filled. Every entry says where it comes from. Move these into catalog tables when the catalog gets them.",
+ "unit_classes": {
+  "_source": "Rows with no class at the start of «Особое». Temporary class `civilian`, to confirm in the catalog.",
+  "to_spy": ["civilian"],
+  "to_tithe_collector": ["civilian"],
+  "nt_villager": ["civilian"]
+ },
+ "building_overrides": {
+  "_source": "ВКЛ tab «Отличия в общих постройках»; «Общие постройки», row wall, column «Что даёт»",
+  "gdl_farm": {"cost": "0/40/0/0", "params": {"food_capacity": 250}, "tags": ["near_forest_only"]},
+  "gdl_wall": {"cost": "0/10/0/0 за клетку", "hp": "1200", "tags": ["burns_slowly"]},
+  "mo_wall": {"cost": "0/8/0/2 за клетку", "hp": "1500", "tags": ["burns_slowly"]},
+  "pl_shrine": {"cost": "0/40/0/0", "params": {"upgrade_wood": 100, "upgrade_silver": 30}}
+ },
+ "excluded_techs": {
+  "_source": "«Общие технологии», t_three_field: «нет у ВКЛ»",
+  "gdl": ["t_three_field"]
+ },
+ "tech_cost_permille": {
+  "_source": "Корона tab: «Трёхполье у Короны дешевле на треть»",
+  "pl": {"t_three_field": 667}
+ },
+ "faith_tech_building": {
+  "_source": "Inferred: ВКЛ tab says pagan faith technologies come only from the alka; other factions research them in the temple",
+  "gdl": "shrine",
+  "pl": "temple",
+  "to": "temple",
+  "mo": "temple"
+ },
+ "tech_place_aliases": {
+  "_source": "Names in the «Где» column that differ from the building's name",
+  "Центр": "town_center",
+  "Жупа": "pl_salt_works"
+ },
+ "caster_aliases": {
+  "_source": "«Кто читает» in «Заклинания»",
+  "Часовня": "to_shrine",
+  "Герой рода Яська": "hero_jasko",
+  "Незнакомец": "pl_stranger"
+ }
+}

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="PowerPlaceDef" format=3]
+
+[ext_resource type="Script" path="res://core/data/power_place_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"pp_old_tree"
+power_permille = 1000

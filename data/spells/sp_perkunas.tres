@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SpellDef" format=3]
+
+[ext_resource type="Script" path="res://core/data/spell_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"sp_perkunas"
+faction = &"gdl"
+casters = Array[StringName]([&"gdl_znakharka"])
+age = 2
+power_cost = 200
+debt_cost = 0
+cooldown_ticks = 3600
+radius = 8
+duration_ticks = 800
+tags = Array[StringName]([])
+params = Dictionary[StringName, int]({})

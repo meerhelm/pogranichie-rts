@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="UnitDef" format=3]
+
+[ext_resource type="Script" path="res://core/data/unit_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"nt_pomeranian"
+faction = &"nt"
+age = 0
+campaign_only = false
+trained_at = Array[StringName]([])
+spawned_by = &""
+cost_food = 0
+cost_wood = 0
+cost_iron = 0
+cost_silver = 0
+cost_power = 0
+cost_debt = 0
+train_ticks = 0
+pop = 0
+hp = 35
+damage = 3
+damage_type = &"melee"
+shots = 1
+reload_ticks = 40
+attack_range = 0
+min_range = 0
+armor_melee = 0
+armor_pierce = 0
+speed_milli = 850
+morale = 25
+never_flees = false
+classes = Array[StringName]([&"infantry"])
+bonuses = Dictionary[StringName, int]({})
+tags = Array[StringName]([])
+params = Dictionary[StringName, int]({})
+same_as = &""
+food_yield = 0
+lifetime_ticks = 0

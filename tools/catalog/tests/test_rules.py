@@ -1,0 +1,64 @@
+"""«Особое» column: classes, class bonuses and rule clauses."""
+
+import unittest
+
+from tools.catalog.rules import parse_special
+
+
+class ClassesTest(unittest.TestCase):
+    def test_classes_and_cavalry_group(self):
+        sp = parse_special("Конница тяжёлая. Таран ×2 после разгона 4 клетки")
+        self.assertEqual(sp.classes, ["heavy_cavalry", "cavalry"])
+        self.assertEqual(sp.params, {"charge_permille": 2000, "charge_distance": 4})
+        self.assertEqual(sp.unparsed, [])
+
+    def test_two_classes_and_bonuses(self):
+        sp = parse_special("Пехота, копейщик. +6 к коннице, +4 к существам")
+        self.assertEqual(sp.classes, ["infantry", "spearman"])
+        self.assertEqual(sp.bonuses, {"cavalry": 6, "creature": 4})
+
+    def test_bonus_against_buildings(self):
+        sp = parse_special("Осадное, огнестрел. Урон по площади радиусом 1; +20 по постройкам")
+        self.assertEqual(sp.classes, ["siege", "firearm"])
+        self.assertEqual(sp.bonuses, {"building": 20})
+        self.assertEqual(sp.params, {"splash_radius": 1})
+
+    def test_class_only(self):
+        sp = parse_special("Крестьянин")
+        self.assertEqual(sp.classes, ["peasant"])
+        self.assertEqual((sp.tags, sp.params, sp.unparsed), ([], {}, []))
+
+
+class ClauseTest(unittest.TestCase):
+    def test_light_horse(self):
+        sp = parse_special(
+            "Конница лёгкая. Сулица: бросок 6 С на 3 клетки раз в 12 с; «Литовский отход»; обзор 8"
+        )
+        self.assertEqual(sp.tags, ["javelin", "lithuanian_retreat"])
+        self.assertEqual(
+            sp.params,
+            {"javelin_damage": 6, "javelin_range": 3, "javelin_cooldown_ticks": 240, "sight": 8},
+        )
+
+    def test_comma_list_of_rules(self):
+        sp = parse_special("Осадное. Камнемёт, развёртывание 10 с, урон по площади радиусом 1")
+        self.assertEqual(sp.params, {"deploy_ticks": 200, "splash_radius": 1})
+        self.assertEqual(sp.unparsed, [])
+
+    def test_same_as(self):
+        self.assertEqual(parse_special("Как у ВКЛ", "to_field_gun").same_as, "gdl_field_gun")
+        sp = parse_special("Конный стрелок. Та же модель, что у ВКЛ; не больше 12", "mo_tatar")
+        self.assertEqual((sp.same_as, sp.params), ("gdl_tatar", {"limit": 12}))
+
+    def test_unknown_clause_is_reported_not_dropped(self):
+        sp = parse_special("Пехота. Поёт песни; +6 к коннице")
+        self.assertEqual(sp.unparsed, ["Поёт песни"])
+        self.assertEqual(sp.bonuses, {"cavalry": 6})
+
+    def test_partly_known_comma_list_stays_unparsed(self):
+        sp = parse_special("Осадное. Камнемёт, летает")
+        self.assertEqual(sp.unparsed, ["Камнемёт, летает"])
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="TechDef" format=3]
+
+[ext_resource type="Script" path="res://core/data/tech_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"t_to_arsenal"
+faction = &"to"
+building = &"to_schnitzhaus"
+age = 2
+cost_food = 0
+cost_wood = 100
+cost_iron = 100
+cost_silver = 0
+research_ticks = 900
+faith = false

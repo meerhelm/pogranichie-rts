@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="UnitDef" format=3]
+
+[ext_resource type="Script" path="res://core/data/unit_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"mo_syn_boyarsky"
+faction = &"mo"
+age = 2
+campaign_only = false
+trained_at = Array[StringName]([&"mo_stable", &"mo_pomestie"])
+spawned_by = &""
+cost_food = 70
+cost_wood = 0
+cost_iron = 20
+cost_silver = 10
+cost_power = 0
+cost_debt = 0
+train_ticks = 520
+pop = 1
+hp = 80
+damage = 5
+damage_type = &"pierce"
+shots = 1
+reload_ticks = 40
+attack_range = 4
+min_range = 0
+armor_melee = 1
+armor_pierce = 1
+speed_milli = 1550
+morale = 55
+never_flees = false
+classes = Array[StringName]([&"horse_archer", &"cavalry"])
+bonuses = Dictionary[StringName, int]({})
+tags = Array[StringName]([])
+params = Dictionary[StringName, int]({})
+same_as = &""
+food_yield = 0
+lifetime_ticks = 0

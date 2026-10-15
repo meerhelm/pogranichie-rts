@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="UnitDef" format=3]
+
+[ext_resource type="Script" path="res://core/data/unit_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"mo_pishchalnik"
+faction = &"mo"
+age = 3
+campaign_only = false
+trained_at = Array[StringName]([&"mo_foundry"])
+spawned_by = &""
+cost_food = 25
+cost_wood = 20
+cost_iron = 30
+cost_silver = 30
+cost_power = 0
+cost_debt = 0
+train_ticks = 600
+pop = 1
+hp = 45
+damage = 15
+damage_type = &"firearm"
+shots = 1
+reload_ticks = 90
+attack_range = 6
+min_range = 0
+armor_melee = 0
+armor_pierce = 1
+speed_milli = 900
+morale = 50
+never_flees = false
+classes = Array[StringName]([&"firearm"])
+bonuses = Dictionary[StringName, int]({})
+tags = Array[StringName]([])
+params = Dictionary[StringName, int]({})
+same_as = &""
+food_yield = 0
+lifetime_ticks = 0

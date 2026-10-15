@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="BuildingDef" format=3]
+
+[ext_resource type="Script" path="res://core/data/building_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"mo_town_center"
+faction = &"mo"
+base_id = &"town_center"
+age = 1
+campaign_only = false
+cost_food = 0
+cost_wood = 300
+cost_iron = 100
+cost_silver = 0
+cost_per_tile = false
+cost_source = &""
+build_ticks = 3000
+hp = 2400
+armor_melee = 3
+armor_pierce = 7
+pop_provided = 5
+garrison = 15
+accepts = Array[StringName]([&"food", &"wood", &"iron", &"silver"])
+damage = 0
+damage_type = &""
+attack_range = 0
+power_rate_milli = 0
+trains = Array[StringName]([&"mo_peasant"])
+tags = Array[StringName]([])
+params = Dictionary[StringName, int]({})

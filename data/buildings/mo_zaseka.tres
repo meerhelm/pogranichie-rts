@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="BuildingDef" format=3]
+
+[ext_resource type="Script" path="res://core/data/building_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"mo_zaseka"
+faction = &"mo"
+base_id = &""
+age = 1
+campaign_only = false
+cost_food = 0
+cost_wood = 0
+cost_iron = 0
+cost_silver = 0
+cost_per_tile = false
+cost_source = &"forest"
+build_ticks = 300
+hp = 600
+armor_melee = 4
+armor_pierce = 10
+pop_provided = 0
+garrison = 0
+accepts = Array[StringName]([])
+damage = 0
+damage_type = &""
+attack_range = 0
+power_rate_milli = 0
+trains = Array[StringName]([])
+tags = Array[StringName]([])
+params = Dictionary[StringName, int]({})

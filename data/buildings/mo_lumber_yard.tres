@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="BuildingDef" format=3]
+
+[ext_resource type="Script" path="res://core/data/building_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"mo_lumber_yard"
+faction = &"mo"
+base_id = &"lumber_yard"
+age = 1
+campaign_only = false
+cost_food = 0
+cost_wood = 100
+cost_iron = 0
+cost_silver = 0
+cost_per_tile = false
+cost_source = &""
+build_ticks = 700
+hp = 1000
+armor_melee = 0
+armor_pierce = 5
+pop_provided = 0
+garrison = 0
+accepts = Array[StringName]([&"wood"])
+damage = 0
+damage_type = &""
+attack_range = 0
+power_rate_milli = 0
+trains = Array[StringName]([])
+tags = Array[StringName]([])
+params = Dictionary[StringName, int]({})

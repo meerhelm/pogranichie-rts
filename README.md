@@ -25,15 +25,17 @@
 ```
 addons/            # gut, limboai, dialogic — версии закреплены
 core/              # симуляция без сцен и отрисовки
+  data/            # классы UnitDef, BuildingDef, TechDef, SpellDef, FactionDef и CatalogDB
   sim/ combat/ economy/ nav/ vision/ magic/
-data/              # сгенерированные .tres, руками не правим
+data/              # .tres из каталога, генерирует tools/catalog/export.py, руками не правим
 game/              # сцены: карта, юниты, постройки, камера, ввод
 ui/                # HUD, миникарта, меню
 ai/                # деревья LimboAI
 missions/gdl_01/   # карта, триггеры, диалоги
 maps/              # map_proto_samogitia
 i18n/              # en, be, pl, uk, lt .po
-tools/             # экспортёр каталога, скрипты CI
+tools/catalog/     # catalog.json (выгрузка каталога) и экспортёр в data/
+tools/ci/          # скрипты CI
 tests/unit/ tests/integration/ tests/replays/ tests/perf/
 ```
 
@@ -45,6 +47,8 @@ $GODOT --headless --import                          # импорт проект�
 $GODOT --headless -s addons/gut/gut_cmdln.gd        # все тесты (настройки в .gutconfig.json)
 pip install gdtoolkit==4.5.0
 gdlint . && gdformat --check game tests             # линтер и форматирование
+python3 -m unittest discover -s tools/catalog/tests -t .   # тесты экспортёра каталога
+python3 -m tools.catalog.export --check             # data/ совпадает с catalog.json
 ```
 
 Тесты кладутся в `tests/unit/` или `tests/integration/`, файл `test_*.gd`, класс `extends GutTest`.
@@ -54,6 +58,7 @@ gdlint . && gdformat --check game tests             # линтер и форма
 Сейчас CI запускается только вручную (Actions → CI → Run workflow), чтобы не тратить минуты GitHub; проверки гоняем локально. Что делает прогон:
 
 - линтер и проверка форматирования gdtoolkit;
+- тесты экспортёра каталога и проверка, что `data/` совпадает с `tools/catalog/catalog.json`;
 - импорт проекта, тесты GUT и запуск главной сцены на Ubuntu и Windows; любая строка `ERROR` в выводе Godot валит шаг;
 - экспорт сборок Windows и Linux; они лежат в артефактах прогона (`pogranichie-windows-…`, `pogranichie-linux-…`).
 
@@ -63,4 +68,4 @@ gdlint . && gdformat --check game tests             # линтер и форма
 
 - В `main` напрямую не пишем, всё через PR с зелёным CI.
 - Симуляция отдельно от отрисовки, без float, фиксированный шаг 20 тиков/с (с M2).
-- Цифры баланса только из каталога, не в коде.
+- Цифры баланса только из каталога, не в коде: правка идёт в документ каталога, потом выгрузка и экспорт (см. [tools/catalog/README.md](tools/catalog/README.md)).
