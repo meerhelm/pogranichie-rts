@@ -27,3 +27,5 @@ $GODOT --headless -s tools/sim/sim_cli.gd -- record --seed 1 --fuzz-seed 3 --tic
 
 History: both re-recorded for `sim_version` 2 (M3: terrain, A*, flow fields, formations,
 separation; replay format 2 adds `map_id`).
+Then for `sim_version` 3 (M4: combat and morale; the fuzzer now also attacks, sets stances and
+rally points, and data adds `rules/combat.tres`, so `data_version` changed too).
