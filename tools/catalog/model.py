@@ -36,6 +36,26 @@ COMBAT_RULE_KEYS = (
     "arena_silver_permille",
 )
 
+# Economy and construction numbers (M5), in data/rules/economy.tres; values from manual.json.
+ECONOMY_RULE_KEYS = (
+    "carry", "pop_cap", "gather_farm_milli", "gather_hunt_milli", "gather_bort_milli",
+    "gather_wood_milli", "gather_iron_milli", "gather_silver_milli", "tree_wood", "bog_ore_iron",
+    "silver_mine_silver", "bort_workers", "farm_workers", "zaseka_cells",
+    "brick_wood_discount_permille", "brick_wall_silver_discount_permille", "start_food",
+    "start_wood", "start_iron", "start_silver", "work_reach_milli", "resource_search_cells",
+    "builder_extra_permille", "repair_cost_permille", "repair_time_permille", "queue_max",
+    "cancel_refund_permille", "near_forest_cells",
+)
+# Keys of tech effects (manual.json → tech_effects). Gathering and farm keys are per-mille
+# increases; "<class or unit id>.<stat>" keys change unit stats (see TECH_STATS).
+TECH_EFFECT_KEYS = (
+    "gather_farm", "gather_hunt", "gather_bort", "gather_wood", "gather_iron", "gather_silver",
+    "farm_food", "zaseka_speed", "zaseka_hp",
+)
+TECH_STATS = (
+    "damage_melee", "damage_pierce", "armor_melee", "armor_pierce", "range", "hp_permille",
+)
+
 # Field types: int, bool, name (StringName), names (Array[StringName]),
 # name_ints (Dictionary[StringName, int]), text (String).
 COST_FIELDS = {f"cost_{r}": "int" for r in RESOURCES}
@@ -104,6 +124,7 @@ SCHEMAS: dict[str, dict[str, str]] = {
         **COST_FIELDS,
         "research_ticks": "int",
         "faith": "bool",
+        "effects": "name_ints",
     },
     "SpellDef": {
         "id": "name",
@@ -149,6 +170,9 @@ SCHEMAS: dict[str, dict[str, str]] = {
     # One resource, data/rules/combat.tres: the combat and morale numbers the catalog gives in
     # prose (manual.json → combat_rules).
     "CombatRulesDef": {"id": "name", **{k: "int" for k in COMBAT_RULE_KEYS}},
+    # data/rules/economy.tres: gathering, construction and production (manual.json →
+    # economy_rules).
+    "EconomyRulesDef": {"id": "name", **{k: "int" for k in ECONOMY_RULE_KEYS}},
     "CatalogIndex": {
         "exported_on": "text",
         "units": "names",
@@ -176,6 +200,7 @@ KIND_DIRS = {
     "PowerPlaceDef": "power_places",
     "TerrainDef": "terrain",
     "CombatRulesDef": "rules",
+    "EconomyRulesDef": "rules",
 }
 
 
@@ -229,6 +254,7 @@ class Builder:
         self.power_places: dict[str, dict] = {}
         self.terrains: dict[str, dict] = {}
         self.rules: dict[str, dict] = {}
+        self.economy: dict[str, dict] = {}
         self.factions: dict[str, dict] = {}
         # (faction or "", lower-case building name) -> building id
         self.building_names: dict[tuple[str, str], str] = {}
@@ -280,6 +306,9 @@ class Builder:
         m = re.search(r"(\d+) еды, потом пересев", text)
         if m:
             d["params"]["food_capacity"] = int(m.group(1))
+        m = re.search(r"[Кк]онница −(\d+)% цены", text)
+        if m:
+            d["params"]["cavalry_discount_permille"] = int(m.group(1)) * 10
 
     def build_buildings(self) -> None:
         for row in self.cat["common_buildings"]:
@@ -326,6 +355,24 @@ class Builder:
             d["params"].update(over.get("params", {}))
             d["tags"] += over.get("tags", [])
         self._shrine_rates()
+        self._building_layout()
+
+    def _building_layout(self) -> None:
+        """Footprints and construction tags (M5) from manual.json → building_layout.
+
+        The catalog gives no sizes; every building needs one, keyed by its own id or common id.
+        """
+        layout = self.manual.get("building_layout", {})
+        sizes = layout.get("sizes", {})
+        for bid, d in self.buildings.items():
+            size = sizes.get(bid) or sizes.get(d["base_id"])
+            if size is None:
+                self.rep.error(f"building {bid}", "no size in manual.json → building_layout")
+                continue
+            d["params"]["size_w"], d["params"]["size_h"] = size
+            for tag, ids in layout.get("tags", {}).items():
+                if bid in ids or d["base_id"] in ids:
+                    d["tags"].append(tag)
 
     def _apply_faction_variant(self, row: dict) -> None:
         """'stable*' in a faction tab replaces that faction's copy of a common building."""
@@ -523,6 +570,28 @@ class Builder:
         d["building"] = building
         self.techs[tid] = d
 
+    def _tech_effects(self) -> None:
+        """Effects of techs (M5) from manual.json → tech_effects: the catalog gives them in prose."""
+        block = self.manual.get("tech_effects", {})
+        deferred = block.get("_deferred", {})
+        for tid, effects in block.items():
+            if tid.startswith("_"):
+                continue
+            if tid not in self.techs:
+                self.rep.error("tech effects", f"unknown tech {tid!r}")
+                continue
+            for key, value in effects.items():
+                target, _, stat = key.rpartition(".")
+                ok = key in TECH_EFFECT_KEYS if not target else stat in TECH_STATS
+                if not ok:
+                    self.rep.error(f"tech {tid}", f"unknown effect {key!r}")
+                elif not isinstance(value, int) or isinstance(value, bool):
+                    self.rep.error(f"tech {tid}", f"effect {key} must be an integer")
+            self.techs[tid]["effects"] = dict(effects)
+        for tid in deferred:
+            if tid not in self.techs:
+                self.rep.error("tech effects", f"_deferred lists unknown tech {tid!r}")
+
     def build_spells(self) -> None:
         for row in self.cat["spells"]:
             sid = row["id"]
@@ -670,24 +739,28 @@ class Builder:
         value is an integer in the units its key names (_ticks, _permille, _milli; cells or
         points otherwise). The keys must be exactly COMBAT_RULE_KEYS.
         """
-        block = self.manual.get("combat_rules", {})
+        self.rules["combat"] = self._rule_block("combat", "CombatRulesDef", COMBAT_RULE_KEYS)
+        self.economy["economy"] = self._rule_block("economy", "EconomyRulesDef", ECONOMY_RULE_KEYS)
+
+    def _rule_block(self, name: str, kind: str, keys: tuple[str, ...]) -> dict:
+        block = self.manual.get(f"{name}_rules", {})
         values = block.get("values", {})
-        d = _defaults("CombatRulesDef")
-        d["id"] = "combat"
-        for key in COMBAT_RULE_KEYS:
+        d = _defaults(kind)
+        d["id"] = name
+        for key in keys:
             if key not in values:
-                self.rep.error("combat rules", f"missing {key}")
+                self.rep.error(f"{name} rules", f"missing {key}")
         for key, value in values.items():
-            if key not in COMBAT_RULE_KEYS:
-                self.rep.error("combat rules", f"unknown key {key!r}")
+            if key not in keys:
+                self.rep.error(f"{name} rules", f"unknown key {key!r}")
             elif not isinstance(value, int) or isinstance(value, bool):
-                self.rep.error("combat rules", f"{key} must be an integer, got {value!r}")
+                self.rep.error(f"{name} rules", f"{key} must be an integer, got {value!r}")
             else:
                 d[key] = value
         for key in block.get("_temporary", []):
-            if key not in COMBAT_RULE_KEYS:
-                self.rep.error("combat rules", f"_temporary lists unknown key {key!r}")
-        self.rules["combat"] = d
+            if key not in keys:
+                self.rep.error(f"{name} rules", f"_temporary lists unknown key {key!r}")
+        return d
 
     # --- factions and checks ---------------------------------------------------------
 
@@ -735,6 +808,10 @@ class Builder:
                     self.rep.error(
                         f"prototype {eid}", f"age {table[eid]['age']} is above the prototype's ages"
                     )
+        block = self.manual.get("tech_effects", {})
+        for tid in self.prototype_techs():
+            if tid not in block and tid not in block.get("_deferred", {}):
+                self.rep.error(f"prototype tech {tid}", "no effects and not deferred in manual.json")
         for uid in self.proto["units"]:
             sp = self.unit_specials.get(uid)
             if sp and sp.unparsed:
@@ -775,6 +852,7 @@ class Builder:
         self.build_buildings()
         self.build_units()
         self.build_techs()
+        self._tech_effects()
         self.build_spells()
         self.build_ages()
         self.build_power_places()
@@ -795,4 +873,5 @@ class Builder:
             "PowerPlaceDef": self.power_places,
             "TerrainDef": self.terrains,
             "CombatRulesDef": self.rules,
+            "EconomyRulesDef": self.economy,
         }

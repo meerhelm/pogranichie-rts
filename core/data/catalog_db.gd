@@ -17,6 +17,8 @@ var power_places: Dictionary[StringName, PowerPlaceDef] = {}
 var terrains: Dictionary[StringName, TerrainDef] = {}
 ## Combat and morale numbers (data/rules/combat.tres).
 var rules: CombatRulesDef
+## Gathering, construction and production numbers (data/rules/economy.tres).
+var economy: EconomyRulesDef
 
 
 static func load_index() -> CatalogIndex:
@@ -68,6 +70,18 @@ func terrain(id: StringName) -> TerrainDef:
 	return terrains.get(id)
 
 
+func age(id: StringName) -> AgeDef:
+	return ages.get(id)
+
+
+## The age with this index (1 Удел, 2 Хоругвь, 3 Держава), or null.
+func age_by_index(index: int) -> AgeDef:
+	for id: StringName in ages:
+		if ages[id].index == index:
+			return ages[id]
+	return null
+
+
 func _load_ids(
 	unit_ids: Array[StringName],
 	building_ids: Array[StringName],
@@ -83,6 +97,8 @@ func _load_ids(
 	_load_kind("terrain", index.terrains, terrains)
 	rules = load(DATA_DIR.path_join("rules/combat.tres")) as CombatRulesDef
 	assert(rules != null, "catalog resource missing: rules/combat")
+	economy = load(DATA_DIR.path_join("rules/economy.tres")) as EconomyRulesDef
+	assert(economy != null, "catalog resource missing: rules/economy")
 
 
 func _load_kind(dir: String, ids: Array[StringName], into: Dictionary) -> void:
@@ -108,6 +124,8 @@ func content_hash() -> String:
 			ctx.update(_stored_fields(kind[StringName(id)]).to_utf8_buffer())
 	if rules != null:
 		ctx.update(_stored_fields(rules).to_utf8_buffer())
+	if economy != null:
+		ctx.update(_stored_fields(economy).to_utf8_buffer())
 	return ctx.finish().hex_encode().left(16)
 
 

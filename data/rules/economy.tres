@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="EconomyRulesDef" format=3]
+
+[ext_resource type="Script" path="res://core/data/economy_rules_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"economy"
+carry = 10
+pop_cap = 200
+gather_farm_milli = 330
+gather_hunt_milli = 400
+gather_bort_milli = 250
+gather_wood_milli = 390
+gather_iron_milli = 360
+gather_silver_milli = 350
+tree_wood = 100
+bog_ore_iron = 800
+silver_mine_silver = 800
+bort_workers = 2
+farm_workers = 1
+zaseka_cells = 3
+brick_wood_discount_permille = 300
+brick_wall_silver_discount_permille = 500
+start_food = 200
+start_wood = 200
+start_iron = 100
+start_silver = 0
+work_reach_milli = 750
+resource_search_cells = 8
+builder_extra_permille = 333
+repair_cost_permille = 500
+repair_time_permille = 1000
+queue_max = 5
+cancel_refund_permille = 1000
+near_forest_cells = 2

@@ -4,7 +4,48 @@ extends RefCounted
 ## only through commands; a replay is the seed plus the list of commands.
 ## Coordinates are fixed-point (see Fixed). Serialized with short keys to keep replays small.
 
-enum Kind { SPAWN, MOVE, STOP, REMOVE, ATTACK, ATTACK_MOVE, STANCE, RETREAT, TURN, DISMOUNT, RALLY }
+## JOIN and later (M5) are economy commands, see EconomySystem.order().
+enum Kind {
+	SPAWN,
+	MOVE,
+	STOP,
+	REMOVE,
+	ATTACK,
+	ATTACK_MOVE,
+	STANCE,
+	RETREAT,
+	TURN,
+	DISMOUNT,
+	RALLY,
+	JOIN,
+	PLACE,
+	BUILD,
+	WALL,
+	GATHER,
+	WORK,
+	ASSAULT,
+	QUEUE,
+	CANCEL,
+	BUILDING_RALLY,
+}
+
+## Kinds whose x and y are a point on the map.
+const POINT_KINDS: Array[Kind] = [
+	Kind.SPAWN,
+	Kind.MOVE,
+	Kind.ATTACK_MOVE,
+	Kind.RALLY,
+	Kind.PLACE,
+	Kind.BUILD,
+	Kind.WALL,
+	Kind.GATHER,
+	Kind.BUILDING_RALLY,
+]
+## Kinds that name a type: unit, faction, building, or queued unit, tech or age.
+const TYPE_KINDS: Array[Kind] = [
+	Kind.SPAWN, Kind.JOIN, Kind.PLACE, Kind.BUILD, Kind.WALL, Kind.QUEUE
+]
+const VALUE_KINDS: Array[Kind] = [Kind.STANCE, Kind.PLACE, Kind.BUILD, Kind.GATHER, Kind.CANCEL]
 
 ## Tick at whose start the command is applied.
 var tick: int
@@ -13,13 +54,18 @@ var kind: Kind
 var ids := PackedInt32Array()
 var x: int
 var y: int
-## Unit type for SPAWN.
+## Second point of a WALL line.
+var x2: int
+var y2: int
+## Unit type for SPAWN; faction for JOIN; building for PLACE, BUILD, WALL; item for QUEUE.
 var type_id: StringName
 ## Formation.Kind for a group MOVE.
 var formation := 0
-## Unit to attack (ATTACK; optional for TURN).
+## Unit to attack (ATTACK; optional for TURN); building for WORK and ASSAULT; node or animal
+## for GATHER.
 var target := 0
-## EntityStore.Stance for STANCE.
+## EntityStore.Stance for STANCE; 1 for a building turned on its side (PLACE, BUILD);
+## EconomySystem.Target for GATHER; queue index for CANCEL.
 var value := 0
 ## Order of arrival, set by CommandQueue; breaks ties between commands of one player and tick.
 var seq := -1
@@ -119,6 +165,143 @@ static func rally(at_tick: int, by: int, px: int, py: int) -> SimCommand:
 	return c
 
 
+# --- economy (M5) ---------------------------------------------------------------------------
+
+
+## A player enters the game with a faction and the starting stock.
+static func join(at_tick: int, by: int, faction: StringName) -> SimCommand:
+	var c := SimCommand.new()
+	c.tick = at_tick
+	c.player = by
+	c.kind = Kind.JOIN
+	c.type_id = faction
+	return c
+
+
+## Map setup: a finished building at the cell holding the point (no price, no builders).
+static func place(
+	at_tick: int, by: int, building: StringName, px: int, py: int, turned: bool = false
+) -> SimCommand:
+	var c := SimCommand.new()
+	c.tick = at_tick
+	c.player = by
+	c.kind = Kind.PLACE
+	c.type_id = building
+	c.x = px
+	c.y = py
+	c.value = 1 if turned else 0
+	return c
+
+
+## Lay a foundation with its top-left cell at the point, paid now, and send builders to it.
+static func build(
+	at_tick: int,
+	by: int,
+	units: PackedInt32Array,
+	building: StringName,
+	px: int,
+	py: int,
+	turned: bool = false
+) -> SimCommand:
+	var c := place(at_tick, by, building, px, py, turned)
+	c.kind = Kind.BUILD
+	c.ids = units
+	return c
+
+
+## A palisade (or another per-cell wall) from one point to another.
+static func wall(
+	at_tick: int,
+	by: int,
+	units: PackedInt32Array,
+	building: StringName,
+	from: Vector2i,
+	to: Vector2i
+) -> SimCommand:
+	var c := place(at_tick, by, building, from.x, from.y)
+	c.kind = Kind.WALL
+	c.ids = units
+	c.x2 = to.x
+	c.y2 = to.y
+	return c
+
+
+## Gather from the forest cell holding the point.
+static func gather_at(
+	at_tick: int, by: int, units: PackedInt32Array, px: int, py: int
+) -> SimCommand:
+	var c := SimCommand.new()
+	c.tick = at_tick
+	c.player = by
+	c.kind = Kind.GATHER
+	c.ids = units
+	c.x = px
+	c.y = py
+	return c
+
+
+## Gather from a node, a field or hive, or hunt an animal (`what` is EconomySystem.Target).
+static func gather(
+	at_tick: int, by: int, units: PackedInt32Array, what: int, ref: int
+) -> SimCommand:
+	var c := SimCommand.new()
+	c.tick = at_tick
+	c.player = by
+	c.kind = Kind.GATHER
+	c.ids = units
+	c.value = what
+	c.target = ref
+	return c
+
+
+## Build or repair an own building (WORK), or attack someone else's (ASSAULT).
+static func on_building(
+	at_tick: int, by: int, what: Kind, units: PackedInt32Array, building: int
+) -> SimCommand:
+	var c := SimCommand.new()
+	c.tick = at_tick
+	c.player = by
+	c.kind = what
+	c.ids = units
+	c.target = building
+	return c
+
+
+## Train a unit, research a tech or the next age in a building.
+static func queue_item(at_tick: int, by: int, building: int, item: StringName) -> SimCommand:
+	var c := SimCommand.new()
+	c.tick = at_tick
+	c.player = by
+	c.kind = Kind.QUEUE
+	c.ids = PackedInt32Array([building])
+	c.type_id = item
+	return c
+
+
+static func cancel_item(at_tick: int, by: int, building: int, index: int) -> SimCommand:
+	var c := SimCommand.new()
+	c.tick = at_tick
+	c.player = by
+	c.kind = Kind.CANCEL
+	c.ids = PackedInt32Array([building])
+	c.value = index
+	return c
+
+
+## Where the buildings' trained units go.
+static func building_rally(
+	at_tick: int, by: int, building_ids: PackedInt32Array, px: int, py: int
+) -> SimCommand:
+	var c := SimCommand.new()
+	c.tick = at_tick
+	c.player = by
+	c.kind = Kind.BUILDING_RALLY
+	c.ids = building_ids
+	c.x = px
+	c.y = py
+	return c
+
+
 func duplicate_command() -> SimCommand:
 	return from_dict(to_dict())
 
@@ -127,16 +310,19 @@ func to_dict() -> Dictionary:
 	var d := {"t": tick, "p": player, "k": Kind.keys()[kind]}
 	if not ids.is_empty():
 		d["ids"] = Array(ids)
-	if kind in [Kind.SPAWN, Kind.MOVE, Kind.ATTACK_MOVE, Kind.RALLY]:
+	if kind in POINT_KINDS:
 		d["x"] = x
 		d["y"] = y
-	if kind == Kind.SPAWN:
+	if kind == Kind.WALL:
+		d["x2"] = x2
+		d["y2"] = y2
+	if kind in TYPE_KINDS:
 		d["u"] = String(type_id)
 	if (kind == Kind.MOVE or kind == Kind.ATTACK_MOVE) and formation != 0:
 		d["f"] = formation
 	if target != 0:
 		d["tg"] = target
-	if kind == Kind.STANCE:
+	if kind == Kind.STANCE or (kind in VALUE_KINDS and value != 0):
 		d["v"] = value
 	return d
 
@@ -155,6 +341,8 @@ static func from_dict(d: Dictionary) -> SimCommand:
 		c.ids.append(int(v))
 	c.x = int(d.get("x", 0))
 	c.y = int(d.get("y", 0))
+	c.x2 = int(d.get("x2", 0))
+	c.y2 = int(d.get("y2", 0))
 	c.type_id = StringName(str(d.get("u", "")))
 	c.formation = int(d.get("f", 0))
 	c.target = int(d.get("tg", 0))

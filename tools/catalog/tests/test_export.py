@@ -185,3 +185,47 @@ class CombatRulesTest(unittest.TestCase):
         self.assertIn("unknown key 'flanc'", self.rules_errors(lambda b: b["values"].update(flanc=1)))
         self.assertIn("must be an integer", self.rules_errors(lambda b: b["values"].update(rear_permille=1.5)))
         self.assertIn("_temporary lists unknown key", self.rules_errors(lambda b: b["_temporary"].append("x")))
+
+
+class EconomyExportTest(unittest.TestCase):
+    """M5: economy rules, building footprints and tags, tech effects."""
+
+    MANUAL = json.loads((HERE / "manual.json").read_text(encoding="utf-8"))
+
+    def build_with(self, edit):
+        manual = copy.deepcopy(self.MANUAL)
+        edit(manual)
+        return export.build(copy.deepcopy(CATALOG), manual=manual)
+
+    def test_economy_rules_match_the_catalog_prose(self):
+        defs, _index, rep = export.build(copy.deepcopy(CATALOG))
+        self.assertEqual(rep.errors, [])
+        r = defs["EconomyRulesDef"]["economy"]
+        self.assertEqual((r["carry"], r["pop_cap"]), (10, 200))
+        self.assertEqual(r["gather_wood_milli"], 390, "0,39 wood a second")
+        self.assertEqual(r["gather_bort_milli"], 250)
+        self.assertEqual((r["tree_wood"], r["bog_ore_iron"], r["silver_mine_silver"]), (100, 800, 800))
+
+    def test_buildings_get_sizes_tags_and_the_stable_discount(self):
+        defs, _index, _rep = export.build(copy.deepcopy(CATALOG))
+        b = defs["BuildingDef"]
+        self.assertEqual((b["gdl_town_center"]["params"]["size_w"], b["gdl_town_center"]["params"]["size_h"]), (4, 4))
+        self.assertEqual((b["gdl_zaseka"]["params"]["size_w"], b["gdl_zaseka"]["params"]["size_h"]), (3, 1))
+        self.assertIn("in_forest", b["gdl_zaseka"]["tags"])
+        self.assertIn("walkable", b["gdl_farm"]["tags"])
+        self.assertIn("brickworks", b["to_brickworks"]["tags"])
+        self.assertEqual(b["to_stable"]["params"]["cavalry_discount_permille"], 150)
+
+    def test_a_building_without_a_size_is_an_error(self):
+        _defs, _index, rep = self.build_with(lambda m: m["building_layout"]["sizes"].pop("house"))
+        self.assertTrue(any("no size" in e for e in rep.errors))
+
+    def test_tech_effects_are_checked(self):
+        defs, _index, _rep = export.build(copy.deepcopy(CATALOG))
+        self.assertEqual(defs["TechDef"]["t_saw"]["effects"], {"gather_wood": 200})
+        bad = self.build_with(lambda m: m["tech_effects"].update(t_saw={"gather_woood": 1}))[2]
+        self.assertTrue(any("unknown effect 'gather_woood'" in e for e in bad.errors))
+        bad = self.build_with(lambda m: m["tech_effects"].update(t_saw={"infantry.speedd": 1}))[2]
+        self.assertTrue(any("unknown effect" in e for e in bad.errors))
+        bad = self.build_with(lambda m: m["tech_effects"].update(t_nope={"gather_wood": 1}))[2]
+        self.assertTrue(any("unknown tech 't_nope'" in e for e in bad.errors))

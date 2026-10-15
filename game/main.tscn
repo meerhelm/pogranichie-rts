@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://game/main.gd" id="1_main"]
 [ext_resource type="Script" path="res://core/sim/sim_clock.gd" id="2_clock"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://game/camera/rts_camera.gd" id="5_camera"]
 [ext_resource type="Script" path="res://game/input/player_input.gd" id="6_input"]
 [ext_resource type="Script" path="res://game/world/shot_layer.gd" id="7_shots"]
+[ext_resource type="Script" path="res://game/world/building_layer.gd" id="8_buildings"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main")
@@ -18,6 +19,9 @@ script = ExtResource("2_clock")
 
 [node name="Map" type="TileMapLayer" parent="World"]
 script = ExtResource("3_map")
+
+[node name="Buildings" type="Node2D" parent="World"]
+script = ExtResource("8_buildings")
 
 [node name="Units" type="Node2D" parent="World"]
 y_sort_enabled = true
@@ -49,5 +53,5 @@ offset_bottom = 48.0
 [node name="Status" type="Label" parent="UI"]
 offset_left = 16.0
 offset_top = 44.0
-offset_right = 800.0
-offset_bottom = 76.0
+offset_right = 900.0
+offset_bottom = 160.0

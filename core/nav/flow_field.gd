@@ -7,7 +7,7 @@ extends RefCounted
 var grid: NavGrid
 var move_class: int
 var goal: int
-## Grid version the field was built for; a changed grid makes it stale.
+## Grid closing_version the field was built for; a closed or slower cell makes it stale.
 var version: int
 ## Next cell toward the goal; NO_CELL at the goal and where the search did not reach.
 var next := PackedInt32Array()
@@ -19,7 +19,7 @@ func _init(nav: NavGrid, p_move_class: int, goal_cell: int, starts: PackedInt32A
 	grid = nav
 	move_class = p_move_class
 	goal = goal_cell
-	version = nav.version
+	version = nav.closing_version
 	var n := nav.cell_count()
 	next.resize(n)
 	next.fill(NavGrid.NO_CELL)
@@ -33,7 +33,7 @@ func reached(cell: int) -> bool:
 
 
 func is_stale() -> bool:
-	return version != grid.version
+	return version != grid.closing_version
 
 
 ## Dijkstra from the goal outward, steered toward the group (A* with the distance to the box

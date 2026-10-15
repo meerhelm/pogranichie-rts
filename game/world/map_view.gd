@@ -22,10 +22,16 @@ const COLORS := {
 const FALLBACK_COLOR := Color(1.0, 0.0, 1.0)
 
 var grid: NavGrid
+## Terrain as last drawn and the grid version it was drawn at, to redraw only what changed
+## (felled trees, zaseki).
+var _drawn := PackedByteArray()
+var _drawn_version := -1
 
 
 func build(nav: NavGrid) -> void:
 	grid = nav
+	_drawn = nav.terrain.duplicate()
+	_drawn_version = nav.version
 	# TileMapLayer puts a diamond-down tile's centre half a tile right of Iso's; line them up.
 	position = Vector2(-Iso.HALF_W, 0.0)
 	tile_set = _make_tile_set(nav.terrain_ids)
@@ -71,3 +77,15 @@ static func _draw_diamond(img: Image, left: int, base: Color, id: StringName) ->
 			elif id == &"t_hill" and y < Iso.HALF_H:
 				c = base.lightened(0.12)
 			img.set_pixel(left + x, y, c)
+
+
+## Redraws the cells whose terrain changed since the last call (after a tick).
+func refresh() -> void:
+	if grid == null or grid.version == _drawn_version:
+		return
+	_drawn_version = grid.version
+	for cell in grid.cell_count():
+		var t := grid.terrain[cell]
+		if t != _drawn[cell]:
+			_drawn[cell] = t
+			set_cell(Vector2i(cell % grid.width, cell / grid.width), 0, Vector2i(t, 0))

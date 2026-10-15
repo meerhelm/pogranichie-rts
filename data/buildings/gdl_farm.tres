@@ -27,5 +27,5 @@ damage_type = &""
 attack_range = 0
 power_rate_milli = 0
 trains = Array[StringName]([])
-tags = Array[StringName]([&"near_forest_only"])
-params = Dictionary[StringName, int]({&"food_capacity": 250})
+tags = Array[StringName]([&"near_forest_only", &"walkable", &"no_age_count"])
+params = Dictionary[StringName, int]({&"food_capacity": 250, &"size_h": 3, &"size_w": 3})

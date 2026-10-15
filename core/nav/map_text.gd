@@ -19,6 +19,12 @@ const LEGEND := {
 	"s": &"t_sand",
 	"a": &"t_ash",
 }
+## Cells with a map object: the character gives the terrain under it and the object
+## (NavGrid.OBJECT_IDS): a bog ore deposit lies in a bog, a silver mine on a hill.
+const OBJECTS := {
+	"o": [&"t_bog", &"o_bog_ore"],
+	"$": [&"t_hill", &"o_silver_mine"],
+}
 
 
 static func path_for(map_id: String) -> String:
@@ -55,10 +61,16 @@ static func parse(text: String, db: CatalogDB) -> NavGrid:
 			return null
 		for x in w:
 			var ch := rows[y][x]
-			if not LEGEND.has(ch):
+			var tid: StringName
+			if OBJECTS.has(ch):
+				var obj: Array = OBJECTS[ch]
+				tid = obj[0]
+				grid.objects[grid.cell_at(x, y)] = NavGrid.OBJECT_IDS.find(obj[1])
+			elif LEGEND.has(ch):
+				tid = LEGEND[ch]
+			else:
 				push_error("map row %d: unknown cell '%s'" % [y, ch])
 				return null
-			var tid: StringName = LEGEND[ch]
 			var index := grid.terrain_index(tid)
 			if index < 0:
 				# A grid without the catalog knows only grass; map every tile onto it.
@@ -74,11 +86,18 @@ static func to_text(grid: NavGrid) -> String:
 	for ch: String in LEGEND:
 		var tid: StringName = LEGEND[ch]
 		by_id[String(tid)] = ch
+	var by_object := {}
+	for ch: String in OBJECTS:
+		var obj: Array = OBJECTS[ch]
+		by_object[String(obj[1])] = ch
 	var lines := PackedStringArray()
 	for y in grid.height:
 		var row := ""
 		for x in grid.width:
-			var ch: String = by_id.get(String(grid.terrain_at(grid.cell_at(x, y))), ".")
+			var cell := grid.cell_at(x, y)
+			var ch: String = by_id.get(String(grid.terrain_at(cell)), ".")
+			if grid.objects[cell] != NavGrid.NO_OBJECT:
+				ch = by_object[String(grid.object_at(cell))]
 			row += ch
 		lines.append(row)
 	return "\n".join(lines) + "\n"

@@ -27,5 +27,5 @@ damage_type = &""
 attack_range = 0
 power_rate_milli = 600
 trains = Array[StringName]([&"gdl_vilkolak", &"gdl_znakharka"])
-tags = Array[StringName]([])
-params = Dictionary[StringName, int]({})
+tags = Array[StringName]([&"power_place_only"])
+params = Dictionary[StringName, int]({&"size_h": 2, &"size_w": 2})

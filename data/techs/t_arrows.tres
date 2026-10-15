@@ -14,3 +14,4 @@ cost_iron = 50
 cost_silver = 0
 research_ticks = 800
 faith = false
+effects = Dictionary[StringName, int]({&"archer.damage_pierce": 1, &"archer.range": 1})

@@ -34,6 +34,9 @@
 - Множители в промилле: таран ×2,5 → `charge_permille = 2500`.
 - Дух «—» → `never_flees = true`.
 - Правила боя (`data/rules/combat.tres`, блок `combat_rules` в `manual.json`): целые в тех же единицах (промилле, тики, клетки, тысячные клетки `_milli`). Ключи из `_temporary` взяты временно, в каталоге их нет.
+- Экономика (`data/rules/economy.tres`, блок `economy_rules` в `manual.json`, M5): скорости сбора в тысячных единицы в секунду (`gather_wood_milli = 390` — 0,39 дерева/с), запасы, лимит населения, скидки в промилле. `_temporary` — числа, которых нет в каталоге.
+- Размеры и метки построек (блок `building_layout`): `sizes` по id постройки или общей постройки → `params.size_w`, `params.size_h`; `tags` (`walkable`, `in_forest`, `no_age_count`, `brick_discount`, `brickworks`, `gate`, `power_place_only`) → `tags`. Постройка без размера — ошибка экспорта. «Конница −N% цены» из «Эффекта» → `params.cavalry_discount_permille`.
+- Эффекты технологий (блок `tech_effects`, → `TechDef.effects`): `gather_farm`, `gather_wood` и т. п., `farm_food`, `zaseka_speed`, `zaseka_hp` в промилле; `<класс или id юнита>.<damage_melee|damage_pierce|armor_melee|armor_pierce|range|hp_permille>` прибавками. Технологии, эффект которых ещё не сделан, лежат в `_deferred` с причиной; у технологии прототипа должно быть одно из двух.
 - Рельеф (`data/terrain/`, из таблицы «Тайлы и рельеф» вкладки «Локации»): `infantry_permille`, `cavalry_permille`, `uphill_permille` (×0,9 «вверх» у холма, у остальных 1000), `passable`, `boats_only`, `siege_blocked` («Осадное не проходит»). Остальное «Особое» тайлов (дерево, руда, огонь, дальность) пока не разбирается: это следующие этапы.
 
 ## Когда экспортёр падает

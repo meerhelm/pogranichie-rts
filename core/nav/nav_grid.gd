@@ -21,6 +21,12 @@ const MAX_CELLS := 1 << 16
 const DEFAULT_TERRAIN := &"t_grass"
 const FOREST := &"t_forest"
 const BOG := &"t_bog"
+## Map objects a cell may hold (catalog «Локации» → «Объекты карты»); index 0 is none.
+## The 8 cells around a cell, in order round it: sides at even indexes, corners at odd.
+const RING_DX: Array[int] = [0, 1, 1, 1, 0, -1, -1, -1]
+const RING_DY: Array[int] = [-1, -1, 0, 1, 1, 1, 0, -1]
+const OBJECT_IDS: Array[StringName] = [&"", &"o_bog_ore", &"o_silver_mine"]
+const NO_OBJECT := 0
 
 var width: int
 var height: int
@@ -29,8 +35,13 @@ var terrain := PackedByteArray()
 ## Number of blockers (buildings, zaseki) on each cell; a cell with any is impassable.
 var blocked := PackedByteArray()
 var terrain_ids: Array[StringName] = []
-## Grows on every change, so paths planned on an older grid know to re-plan.
+## Map object per cell (index into OBJECT_IDS), set by the map; never changes in play.
+var objects := PackedByteArray()
+## Grows on every change (cost caches, areas, flow fields).
 var version := 0
+## Grows only when a cell gets closed or slower, so a path planned before is still walkable
+## after a cell only opened up (a felled tree): paths re-plan on this one.
+var closing_version := 0
 
 ## enter[move_class][terrain index]: speed per-mille when entering that terrain, 0 = never.
 var _enter: Array[PackedInt32Array] = []
@@ -45,8 +56,11 @@ var _costs: Array[PackedInt32Array] = []
 var _hills := PackedByteArray()
 var _min_cost := PackedInt32Array()
 var _costs_version := -1
-## Connected areas per movement class: _areas[cls][cell] is an area number, -1 if closed.
+## Connected areas per movement class: _areas[cls][cell] is an area label, -1 if closed.
+## Labels merged when a cell opens between two areas point to the merged one through
+## _area_parent[cls] (union-find); area() gives the root label.
 var _areas: Array[PackedInt32Array] = []
+var _area_parent: Array[PackedInt32Array] = []
 var _areas_version := -1
 
 
@@ -66,6 +80,8 @@ func _init(
 	terrain.fill(0)
 	blocked.resize(w * h)
 	blocked.fill(0)
+	objects.resize(w * h)
+	objects.fill(NO_OBJECT)
 	_build_tables(terrains)
 
 
@@ -136,9 +152,18 @@ func terrain_at(cell: int) -> StringName:
 
 func set_terrain(cell: int, index: int) -> void:
 	assert(index >= 0 and index < terrain_ids.size(), "unknown terrain index")
-	if terrain[cell] != index:
+	var old := terrain[cell]
+	if old != index:
 		terrain[cell] = index
-		_changed(cell)
+		var opened_or_closed := false
+		for cls in MOVE_CLASS_COUNT:
+			if (_enter[cls][index] > 0) != (_enter[cls][old] > 0):
+				opened_or_closed = true
+		for cls in MOVE_CLASS_COUNT:
+			if _enter[cls][index] < _enter[cls][old] or _uphill[index] < _uphill[old]:
+				closing_version += 1
+				break
+		_changed(cell, opened_or_closed and blocked[cell] == 0)
 
 
 func set_blocked(cell: int, is_blocked: bool) -> void:
@@ -146,7 +171,13 @@ func set_blocked(cell: int, is_blocked: bool) -> void:
 	var now := mini(count + 1, 255) if is_blocked else maxi(count - 1, 0)
 	if now != count:
 		blocked[cell] = now
-		_changed(cell)
+		if count == 0:
+			closing_version += 1
+		_changed(cell, count == 0 or now == 0)
+
+
+func object_at(cell: int) -> StringName:
+	return OBJECT_IDS[objects[cell]]
 
 
 ## Cached step costs for the pathfinder: kind 0 straight, 1 diagonal, 2 and 3 the same when
@@ -171,12 +202,85 @@ func min_step_cost(move_class: int, kind: int) -> int:
 	return _min_cost[move_class * 2 + kind]
 
 
-func _changed(cell: int) -> void:
+## `passability` is false when no movement class can enter or leave the cell differently
+## than before (a forest felled into grass): the connected areas stay as they are.
+func _changed(cell: int, passability: bool = true) -> void:
 	var was_current := _costs_version == version
+	var areas_current := _areas_version == version
 	version += 1
 	if was_current:
 		_update_costs(cell)
 		_costs_version = version
+	if areas_current and (not passability or _update_areas(cell)):
+		_areas_version = version
+
+
+## Keeps the areas right after one cell opened or closed, without rebuilding them: an opened
+## cell joins (and merges) its neighbours' areas; a closed one cannot split its area when its
+## open neighbours still reach each other around it. False when it might have: rebuild then.
+func _update_areas(cell: int) -> bool:
+	for cls in MOVE_CLASS_COUNT:
+		var open := passable(cls, cell)
+		if open == (_areas[cls][cell] >= 0):
+			continue
+		if not open:
+			_areas[cls][cell] = -1
+			if not _ring_connected(cls, cell):
+				return false
+			continue
+		var label := -1
+		var x := cell % width
+		for nb: int in [
+			cell - width, cell + width, cell - 1 if x > 0 else -1, cell + 1 if x < width - 1 else -1
+		]:
+			if nb < 0 or nb >= cell_count() or _areas[cls][nb] < 0:
+				continue
+			var root := _area_root(cls, _areas[cls][nb])
+			if label < 0:
+				label = root
+			elif root != label:
+				var keep := mini(root, label)
+				_area_parent[cls][maxi(root, label)] = keep
+				label = keep
+		if label < 0:
+			var parent := _area_parent[cls]
+			label = parent.size()
+			parent.append(label)
+			_area_parent[cls] = parent
+		_areas[cls][cell] = label
+	return true
+
+
+## True when the open cells beside `cell` (4-connected) are joined by open cells around it.
+func _ring_connected(cls: int, cell: int) -> bool:
+	var cx := cell % width
+	var cy := cell / width
+	var areas := _areas[cls]
+	var open: Array[bool] = []
+	for i in 8:
+		var x := cx + RING_DX[i]
+		var y := cy + RING_DY[i]
+		open.append(in_bounds(x, y) and areas[y * width + x] >= 0)
+	# Runs of open cells around the ring; how many of them hold a side (not corner) cell.
+	var runs := 0
+	for i in 8:
+		if open[i] and not open[(i + 7) % 8]:
+			var j := i
+			var has_side := false
+			while open[j % 8] and j < i + 8:
+				has_side = has_side or j % 2 == 0
+				j += 1
+			if has_side:
+				runs += 1
+	return runs <= 1
+
+
+func _area_root(cls: int, label: int) -> int:
+	var parent := _area_parent[cls]
+	var root := label
+	while parent[root] != root:
+		root = parent[root]
+	return root
 
 
 func _rebuild_costs() -> void:
@@ -287,7 +391,8 @@ func nearest_passable(
 func area(move_class: int, cell: int) -> int:
 	if _areas_version != version:
 		_rebuild_areas()
-	return _areas[move_class][cell]
+	var label := _areas[move_class][cell]
+	return _area_root(move_class, label) if label >= 0 else -1
 
 
 ## The cell of `area_id` nearest to `cell`, searching square rings outward; NO_CELL if none.
@@ -311,7 +416,7 @@ func nearest_in_area(move_class: int, area_id: int, cell: int) -> int:
 					continue
 				var c := y * width + x
 				var d := dx * dx + dy * dy
-				if areas[c] == area_id and d < best_d:
+				if d < best_d and areas[c] >= 0 and _area_root(move_class, areas[c]) == area_id:
 					best = c
 					best_d = d
 		if best != NO_CELL:
@@ -322,6 +427,7 @@ func nearest_in_area(move_class: int, area_id: int, cell: int) -> int:
 func _rebuild_areas() -> void:
 	var n := cell_count()
 	_areas.clear()
+	_area_parent.clear()
 	var queue := PackedInt32Array()
 	queue.resize(n)
 	for cls in MOVE_CLASS_COUNT:
@@ -350,6 +456,11 @@ func _rebuild_areas() -> void:
 						tail += 1
 			next_area += 1
 		_areas.append(areas)
+		var parent := PackedInt32Array()
+		parent.resize(next_area)
+		for a in next_area:
+			parent[a] = a
+		_area_parent.append(parent)
 	_areas_version = version
 
 
@@ -364,6 +475,7 @@ func content_hash() -> PackedByteArray:
 			ctx.update(String(id).to_utf8_buffer())
 		ctx.update(terrain)
 		ctx.update(blocked)
+		ctx.update(objects)
 		_hash = ctx.finish()
 		_hash_version = version
 	return _hash

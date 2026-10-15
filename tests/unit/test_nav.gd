@@ -292,3 +292,41 @@ func test_skirmish_map_connects_both_starts_for_every_kind_of_unit() -> void:
 		)
 	var cart := pf.find_path(NavGrid.MoveClass.SIEGE, gdl, order)
 	assert_false(_terrains_on(grid, cart).has("t_ford"), "carts cross by the bridge")
+
+
+func test_areas_follow_cells_opening_and_closing_without_rebuilding() -> void:
+	# Blocks and unblocks cells at random (walls, enclosures, gaps) and checks after each change
+	# that the areas kept up to date match areas rebuilt from scratch.
+	var grid := NavGrid.new(16, 12)
+	var rng := SimRng.new(7)
+	grid.area(0, 0)
+	var rebuilt := 0
+	for step in 400:
+		var cell := rng.next_below(grid.cell_count())
+		grid.set_blocked(cell, grid.blocked[cell] == 0)
+		if grid._areas_version != grid.version:
+			rebuilt += 1
+		var kept := PackedInt32Array()
+		for c in grid.cell_count():
+			kept.append(grid.area(0, c))
+		grid._rebuild_areas()
+		var seen := {}
+		for c in grid.cell_count():
+			var fresh := grid.area(0, c)
+			assert_eq(kept[c] < 0, fresh < 0)
+			if fresh < 0:
+				continue
+			if seen.has(fresh):
+				assert_eq(kept[c], seen[fresh], "same area as before")
+			else:
+				seen[fresh] = kept[c]
+		assert_eq(seen.size(), _distinct(kept), "no two areas merged by mistake")
+	gut.p("full rebuilds: %d of 400 changes" % rebuilt)
+
+
+func _distinct(labels: PackedInt32Array) -> int:
+	var d := {}
+	for v in labels:
+		if v >= 0:
+			d[v] = true
+	return d.size()

@@ -27,5 +27,5 @@ damage_type = &""
 attack_range = 0
 power_rate_milli = 0
 trains = Array[StringName]([&"to_grand_master", &"to_knight_brother"])
-tags = Array[StringName]([])
-params = Dictionary[StringName, int]({})
+tags = Array[StringName]([&"brick_discount"])
+params = Dictionary[StringName, int]({&"size_h": 4, &"size_w": 4})

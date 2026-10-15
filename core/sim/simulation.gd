@@ -7,7 +7,8 @@ extends RefCounted
 ## Bump when a change to the rules makes old replays play out differently.
 ## 2: M3 movement (terrain, A*, flow fields, formations, separation).
 ## 3: M4 combat and morale (targets, strikes, projectiles, flight, stances, facing, run-up).
-const SIM_VERSION := 3
+## 4: M5 economy (players, gathering, buildings, queues, techs; map deposits block cells).
+const SIM_VERSION := 4
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).
@@ -55,6 +56,8 @@ var nav: NavGrid
 var pathfinder: Pathfinder
 ## Fights and morale; does nothing without the catalog's combat rules (tests without data).
 var combat: CombatSystem
+## Players, resources, buildings, training and research; idle without the catalog's rules.
+var economy: EconomySystem
 var data_version: String
 ## Every accepted command, in arrival order, for recording replays.
 var command_log: Array[SimCommand] = []
@@ -93,6 +96,7 @@ func _init(
 	combat = CombatSystem.new(
 		entities, nav, rng, db.rules if db != null else null, walk_unit, stop_unit, remove_unit
 	)
+	economy = EconomySystem.new(entities, nav, db, combat, walk_unit, stop_unit, spawn_unit)
 
 
 ## Queues a command for its tick. Commands for a tick already simulated are refused,
@@ -110,6 +114,7 @@ func step() -> void:
 	for cmd in queue.take_due(tick):
 		_apply(cmd)
 	combat.step(tick)
+	economy.step(tick)
 	_move_units()
 	combat.after_move()
 	tick += 1
@@ -136,6 +141,7 @@ func state_hash() -> String:
 		buf.put_32(id)
 	entities.write_to(buf)
 	combat.write_to(buf)
+	economy.write_to(buf)
 	var ctx := HashingContext.new()
 	ctx.start(HashingContext.HASH_SHA256)
 	ctx.update(buf.data_array)
@@ -156,11 +162,14 @@ func _apply(cmd: SimCommand) -> void:
 			_spawn(cmd)
 		SimCommand.Kind.MOVE, SimCommand.Kind.ATTACK_MOVE:
 			var ids := _obedient(cmd)
+			economy.drop_jobs(ids)
 			_order_move(ids, clamp_x(cmd.x), clamp_y(cmd.y), cmd.formation)
 			for id in ids:
 				combat.on_move_order(id, cmd.kind == SimCommand.Kind.ATTACK_MOVE)
 		SimCommand.Kind.STOP:
-			for id in _obedient(cmd):
+			var ids := _obedient(cmd)
+			economy.drop_jobs(ids)
+			for id in ids:
 				_stop(id)
 				combat.on_stop_order(id)
 		SimCommand.Kind.REMOVE:
@@ -168,37 +177,65 @@ func _apply(cmd: SimCommand) -> void:
 				remove_unit(id)
 		SimCommand.Kind.RALLY:
 			combat.order(cmd, PackedInt32Array())
+		SimCommand.Kind.JOIN, SimCommand.Kind.PLACE, SimCommand.Kind.QUEUE:
+			economy.order(cmd, PackedInt32Array())
+		SimCommand.Kind.CANCEL, SimCommand.Kind.BUILDING_RALLY:
+			economy.order(cmd, PackedInt32Array())
+		SimCommand.Kind.BUILD, SimCommand.Kind.WALL, SimCommand.Kind.GATHER:
+			_economy_order(cmd)
+		SimCommand.Kind.WORK, SimCommand.Kind.ASSAULT:
+			_economy_order(cmd)
 		_:
-			combat.order(cmd, _obedient(cmd))
+			var ids := _obedient(cmd)
+			if cmd.kind == SimCommand.Kind.ATTACK or cmd.kind == SimCommand.Kind.RETREAT:
+				economy.drop_jobs(ids)
+			combat.order(cmd, ids)
+
+
+## Work orders: the units stop what they were doing (walk, fight) and the economy takes over.
+func _economy_order(cmd: SimCommand) -> void:
+	var ids := _obedient(cmd)
+	combat.drop_targets(ids)
+	for id in ids:
+		_stop(id)
+	economy.order(cmd, ids)
 
 
 func _spawn(cmd: SimCommand) -> void:
+	spawn_unit(cmd.type_id, cmd.player, cmd.x, cmd.y)
+
+
+## Creates a unit at the point (or the nearest open cell); its id, or 0 if it cannot be made.
+func spawn_unit(type_id: StringName, player: int, px: int, py: int) -> int:
 	var hit_points := FALLBACK_HP
 	var speed_milli := FALLBACK_SPEED_MILLI
 	var move_class := NavGrid.MoveClass.FOOT
+	var def: UnitDef = null
 	if _db != null:
-		var def := _db.unit(cmd.type_id)
+		def = _db.unit(type_id)
 		if def == null:
-			push_warning("spawn of unknown unit %s ignored" % cmd.type_id)
-			return
+			push_warning("spawn of unknown unit %s ignored" % type_id)
+			return EntityStore.NO_ID
 		hit_points = def.hp
 		speed_milli = def.speed_milli
 		move_class = NavGrid.move_class_for(def)
-	var x := clamp_x(cmd.x)
-	var y := clamp_y(cmd.y)
+	var x := clamp_x(px)
+	var y := clamp_y(py)
 	var cell := nav.cell_of(x, y)
 	if not nav.passable(move_class, cell):
 		# Never place a unit in water or a thicket: move it to the nearest open cell.
 		var open := nav.nearest_passable(move_class, cell, maxi(nav.width, nav.height))
 		if open == NavGrid.NO_CELL:
-			push_warning("no open cell to spawn %s" % cmd.type_id)
-			return
+			push_warning("no open cell to spawn %s" % type_id)
+			return EntityStore.NO_ID
 		x = nav.center_x(open)
 		y = nav.center_y(open)
 	var id := entities.spawn(
-		cmd.type_id, cmd.player, x, y, hit_points, Fixed.speed_per_tick(speed_milli), move_class
+		type_id, player, x, y, hit_points, Fixed.speed_per_tick(speed_milli), move_class
 	)
-	combat.on_spawn(id, _db.unit(cmd.type_id) if _db != null else null)
+	combat.on_spawn(id, def)
+	economy.on_spawn(id, def)
+	return id
 
 
 ## Ids from the command that are alive and belong to its player, ascending, without repeats.
@@ -237,6 +274,7 @@ func walk_unit(id: int, x: int, y: int) -> void:
 
 
 func remove_unit(id: int) -> void:
+	economy.on_remove(id)
 	_release_flow(id)
 	entities.remove(id)
 
@@ -402,7 +440,7 @@ func _serve_paths() -> void:
 			continue
 		var from := nav.cell_of(e.pos_x[slot], e.pos_y[slot])
 		var to := nav.cell_of(e.target_x[slot], e.target_y[slot])
-		e.set_path(id, pathfinder.find_path(e.move_class[slot], from, to), nav.version)
+		e.set_path(id, pathfinder.find_path(e.move_class[slot], from, to), nav.closing_version)
 		_smooth(id)
 		spent += pathfinder.last_expanded
 	_path_queue = _path_queue.slice(served)
@@ -469,6 +507,9 @@ func _walk(id: int, p_budget: int) -> void:
 		var dx := wx - e.pos_x[slot]
 		var dy := wy - e.pos_y[slot]
 		var dist := Fixed.isqrt(dx * dx + dy * dy)
+		if _gate_closed(slot, wx, wy, dist, reach):
+			_stop(id)
+			return
 		if dist <= reach:
 			e.pos_x[slot] = wx
 			e.pos_y[slot] = wy
@@ -484,6 +525,21 @@ func _walk(id: int, p_budget: int) -> void:
 			e.pos_y[slot] += dy * reach / dist
 			_entered(slot)
 			return
+
+
+## A finished gate lets only its owner through: anyone else stops in front of it.
+func _gate_closed(slot: int, wx: int, wy: int, dist: int, reach: int) -> bool:
+	var e := entities
+	var nx := wx
+	var ny := wy
+	if dist > reach:
+		nx = e.pos_x[slot] + (wx - e.pos_x[slot]) * reach / dist
+		ny = e.pos_y[slot] + (wy - e.pos_y[slot]) * reach / dist
+	var cell := nav.cell_of(nx, ny)
+	var gate_owner := economy.buildings.gates[cell]
+	if gate_owner == 0 or gate_owner == e.owners[slot]:
+		return false
+	return cell != nav.cell_of(e.pos_x[slot], e.pos_y[slot])
 
 
 ## Speed per-mille in the unit's cell, with the climb penalty if it came up a hill.
@@ -519,7 +575,7 @@ func _waypoint(id: int, cell: int) -> int:
 		var along := _flow_step(id, cell, goal)
 		if along != NavGrid.NO_CELL:
 			return along
-	if e.path_version[slot] != nav.version and e.path_version[slot] != PATH_PENDING:
+	if e.path_version[slot] != nav.closing_version and e.path_version[slot] != PATH_PENDING:
 		_plan_path(id)
 	var path := e.paths[slot]
 	var i := e.path_index[slot]

@@ -98,6 +98,11 @@ var disorder := PackedInt32Array()
 ## Ticks a forest archer stays visible after a shot.
 var reveal := PackedInt32Array()
 var dismounted := PackedByteArray()
+## Bonuses from the owner's techs (M5): damage of the unit's own type, armor, range in cells.
+var up_damage := PackedInt32Array()
+var up_armor_m := PackedInt32Array()
+var up_armor_p := PackedInt32Array()
+var up_range := PackedInt32Array()
 
 
 func count() -> int:
@@ -171,6 +176,10 @@ func spawn(
 	disorder.append(0)
 	reveal.append(0)
 	dismounted.append(0)
+	up_damage.append(0)
+	up_armor_m.append(0)
+	up_armor_p.append(0)
+	up_range.append(0)
 	alive_ids.append(id)
 	return id
 
@@ -279,3 +288,7 @@ func _write_combat(buf: StreamPeerBuffer, slot: int) -> void:
 	buf.put_32(disorder[slot])
 	buf.put_32(reveal[slot])
 	buf.put_8(dismounted[slot])
+	buf.put_32(up_damage[slot])
+	buf.put_32(up_armor_m[slot])
+	buf.put_32(up_armor_p[slot])
+	buf.put_32(up_range[slot])

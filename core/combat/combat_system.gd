@@ -190,6 +190,18 @@ func is_fleeing(id: int) -> bool:
 	return entities.intents[id - 1] == EntityStore.Intent.FLEE
 
 
+## An attack order from outside combat (hunting: the economy sends peasants at animals).
+func order_attack(player: int, ids: PackedInt32Array, enemy: int) -> void:
+	_order_attack(player, ids, enemy)
+
+
+## Units that took up other work (building, gathering, assaulting a building) drop their target.
+func drop_targets(ids: PackedInt32Array) -> void:
+	for id in ids:
+		_clear_target(id - 1)
+		entities.attack_move[id - 1] = 0
+
+
 func _order_attack(player: int, ids: PackedInt32Array, enemy: int) -> void:
 	var e := entities
 	if not e.is_alive(enemy) or e.owners[enemy - 1] == player or _hidden_from(enemy - 1, player):
@@ -529,6 +541,8 @@ func _hit_from(slot: int, t: int, damage: int, damage_type: StringName) -> Damag
 	var e := entities
 	var hit := Damage.Hit.new()
 	hit.damage = damage + (rules.turn_damage_bonus if e.turn_bonus[slot] == 1 else 0)
+	if damage_type == defs[slot].damage_type:
+		hit.damage += e.up_damage[slot]
 	hit.damage_type = damage_type
 	hit.bonus = Damage.bonus_against(defs[slot].bonuses, _classes(t))
 	hit.armor_melee = _armor_melee(t)
@@ -794,7 +808,7 @@ func _armor_melee(t: int) -> int:
 	if def == null:
 		return 0
 	var e := entities
-	var a := def.armor_melee
+	var a := def.armor_melee + e.up_armor_m[t]
 	if _in_terrain(t, _forest):
 		a += def.param(&"forest_armor_melee")
 	if e.dismounted[t] == 1:
@@ -808,7 +822,7 @@ func _armor_pierce(t: int) -> int:
 	var def := defs[t]
 	if def == null:
 		return 0
-	var a := def.armor_pierce
+	var a := def.armor_pierce + entities.up_armor_p[t]
 	if _in_terrain(t, _forest):
 		a += def.param(&"forest_armor_pierce")
 	if entities.dismounted[t] == 1:
@@ -821,7 +835,7 @@ func _reach(slot: int) -> int:
 	var def := defs[slot]
 	if not flags[slot] & F_RANGED:
 		return Fixed.from_milli(rules.melee_reach_milli)
-	var cells := def.attack_range
+	var cells := def.attack_range + entities.up_range[slot]
 	if _in_terrain(slot, _hill):
 		cells += rules.hill_range_bonus
 	if _in_terrain(slot, _forest):
