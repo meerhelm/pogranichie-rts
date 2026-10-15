@@ -5,6 +5,7 @@ extends SceneTree
 ##   godot --headless -s tools/sim/sim_cli.gd -- determinism --runs 10 --ticks 1000
 ##   godot --headless -s tools/sim/sim_cli.gd -- bench --units 200 --ticks 600
 ##   godot --headless -s tools/sim/sim_cli.gd -- arena --seeds 50 --out arena.csv [--pairs a,b]
+##     [--parity 1]
 ## record, determinism and bench take --map <map id> (see MapText); without it, open grass;
 ## and --economy 1 to have the fuzzer play the economy too (players, buildings, gathering);
 ## with it, --magic 1 adds shrines on places of power and spells.
@@ -147,19 +148,22 @@ func _bench(opts: Dictionary) -> int:
 	return 0
 
 
-## Balance arena (BalanceArena): one CSV row per pair, printed and written to --out.
+## Balance arena (BalanceArena): one CSV row per pair, printed and written to --out; with
+## --parity 1 the row is the count of B that holds A's budget army to an even fight.
 func _arena(opts: Dictionary) -> int:
 	var seeds := int(opts.get("seeds", "50"))
 	var only := PackedStringArray()
 	if opts.has("pairs"):
 		only = str(opts["pairs"]).split(",")
+	var parity: bool = opts.get("parity", "0") == "1"
 	var arena := BalanceArena.new(CatalogDB.load_all())
-	var lines := PackedStringArray([BalanceArena.CSV_HEADER])
-	print(BalanceArena.CSV_HEADER)
+	var header := BalanceArena.PARITY_HEADER if parity else BalanceArena.CSV_HEADER
+	var lines := PackedStringArray([header])
+	print(header)
 	for pair: Array in BalanceArena.DEFAULT_PAIRS:
 		if not only.is_empty() and not only.has(str(pair[0])):
 			continue
-		var row := arena.run_pair(pair, seeds)
+		var row := arena.parity_row(pair, seeds) if parity else arena.run_pair(pair, seeds)
 		print(row)
 		lines.append(row)
 	var out: String = opts.get("out", "")

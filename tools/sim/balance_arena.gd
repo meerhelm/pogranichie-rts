@@ -6,6 +6,11 @@ extends RefCounted
 ## catalog's «Сверка статов». Both sides attack-move at each other; a simple commander sends
 ## idle units back into the fight, so a battle ends with one side gone (or a draw at MAX_TICKS).
 ## Used headless by `sim_cli.gd -- arena` and, for one battle at a time, by the debug arena scene.
+##
+## Parity mode (parity_row): win shares do not say "A is 1.3 times as strong as B", since in a
+## mass battle the stronger army nearly always wins. So A keeps its budget count and the count
+## of B is searched for at which the battle is even (A wins half, draws count as half), and the
+## row gives that count and the strength ratios it means.
 
 ## Field size in cells and the gap between the armies.
 const WIDTH := 48
@@ -23,6 +28,12 @@ const CSV_HEADER := (
 	"pair,a,b,terrain,script,seeds,a_count,b_count,a_wins,b_wins,draws,"
 	+ "a_win_share_permille,a_hp_left_permille,b_hp_left_permille,avg_ticks"
 )
+const PARITY_HEADER := (
+	"pair,a,b,terrain,script,seeds,a_count,b_budget_count,b_parity_milli,"
+	+ "count_ratio_permille,square_ratio_permille,money_ratio_permille,searched"
+)
+## Most units of B the parity search tries (the field holds about this many in rows).
+const PARITY_MAX := 120
 
 ## The checks the catalog asks for first (plan, «Проверки баланса из каталога»):
 ## [id, unit A (player 1), unit B (player 2), forest, Lithuanian retreat micro for A].
@@ -58,15 +69,7 @@ func _init(p_db: CatalogDB) -> void:
 
 ## Units of this type the arena budget buys (at least one).
 func army_size(type_id: StringName) -> int:
-	var def := db.unit(type_id)
-	var r := db.rules
-	var cost := (
-		def.cost_food
-		+ def.cost_wood
-		+ def.cost_iron * r.arena_iron_permille / 1000
-		+ def.cost_silver * r.arena_silver_permille / 1000
-	)
-	return maxi(1, r.arena_budget / maxi(cost, 1))
+	return maxi(1, db.rules.arena_budget / unit_money(type_id))
 
 
 ## Open grass, or with `forest` the whole fighting ground is forest.
@@ -125,9 +128,20 @@ static func charge(sim: Simulation) -> void:
 
 
 ## Plays one battle to the end. `micro_a` runs the Lithuanian retreat script for player 1.
-func battle(battle_seed: int, a: StringName, b: StringName, forest: bool, micro_a: bool) -> Outcome:
+## Each army is its budget count unless `count_a` / `count_b` are given.
+func battle(
+	battle_seed: int,
+	a: StringName,
+	b: StringName,
+	forest: bool,
+	micro_a: bool,
+	count_a: int = -1,
+	count_b: int = -1
+) -> Outcome:
 	var out := Outcome.new()
-	var sim := setup(battle_seed, a, army_size(a), b, army_size(b), forest)
+	var na := count_a if count_a > 0 else army_size(a)
+	var nb := count_b if count_b > 0 else army_size(b)
+	var sim := setup(battle_seed, a, na, b, nb, forest)
 	var start_hp := PackedInt32Array([0, _hp_of(sim, 1), _hp_of(sim, 2)])
 	out.counts = PackedInt32Array([0, units_of(sim, 1).size(), units_of(sim, 2).size()])
 	charge(sim)
@@ -231,6 +245,102 @@ func run_pair(pair: Array, seeds: int) -> String:
 	for v: Variant in cols:
 		parts.append(str(v))
 	return ",".join(parts)
+
+
+## A's share of `seeds` battles (seeds 1..seeds) with `count_b` of B, per-mille; a draw is half.
+func win_share(pair: Array, seeds: int, count_b: int) -> int:
+	var a: StringName = pair[1]
+	var points := 0
+	for s in range(1, seeds + 1):
+		var o := battle(s, a, pair[2], pair[3], pair[4], army_size(a), count_b)
+		points += 1000 if o.winner == 1 else (500 if o.winner == 0 else 0)
+	return points / seeds
+
+
+## The count of B at which A (its budget count) wins half the battles, thousandths of a unit:
+## the least count where A wins at most half is found by bisection (A's share falls as B grows),
+## then placed between it and the count below by the two shares. [parity, counts tried];
+## parity is 0 when even one B holds A, and -1 when PARITY_MAX of B still lose.
+func parity_count(pair: Array, seeds: int) -> PackedInt32Array:
+	var shares: Dictionary[int, int] = {}
+	if _share(pair, seeds, 1, shares) <= 500:
+		return PackedInt32Array([0, shares.size()])
+	var lo := 1
+	var hi := clampi(army_size(pair[2]), 2, PARITY_MAX)
+	while _share(pair, seeds, hi, shares) > 500:
+		if hi == PARITY_MAX:
+			return PackedInt32Array([-1, shares.size()])
+		lo = hi
+		hi = mini(hi * 2, PARITY_MAX)
+	while hi - lo > 1:
+		var mid := (lo + hi) / 2
+		if _share(pair, seeds, mid, shares) > 500:
+			lo = mid
+		else:
+			hi = mid
+	var above := _share(pair, seeds, lo, shares)
+	var below := _share(pair, seeds, hi, shares)
+	var parity := lo * 1000 + (above - 500) * 1000 / maxi(above - below, 1)
+	return PackedInt32Array([parity, shares.size()])
+
+
+## win_share, remembered per count in `shares`.
+func _share(pair: Array, seeds: int, count_b: int, shares: Dictionary[int, int]) -> int:
+	if not shares.has(count_b):
+		shares[count_b] = win_share(pair, seeds, count_b)
+	return shares[count_b]
+
+
+## One CSV row (PARITY_HEADER) for a pair: the count of B that matches A's budget army, and
+## what one A is worth in B: by count (b/a), by fighting strength per unit under the square law
+## ((b/a)²), and by money (B's cost at parity over A's; above 1000 means A is worth its price).
+func parity_row(pair: Array, seeds: int) -> String:
+	var a: StringName = pair[1]
+	var b: StringName = pair[2]
+	var na := army_size(a)
+	var found := parity_count(pair, seeds)
+	var parity := found[0]
+	var count_ratio := -1
+	var square_ratio := -1
+	var money_ratio := -1
+	if parity >= 0:
+		count_ratio = parity / na
+		square_ratio = count_ratio * count_ratio / 1000
+		money_ratio = parity * unit_money(b) / (na * unit_money(a))
+	var cols := [
+		pair[0],
+		a,
+		b,
+		"forest" if pair[3] else "open",
+		"retreat" if pair[4] else "-",
+		seeds,
+		na,
+		army_size(b),
+		parity,
+		count_ratio,
+		square_ratio,
+		money_ratio,
+		found[1],
+	]
+	var parts := PackedStringArray()
+	for v: Variant in cols:
+		parts.append(str(v))
+	return ",".join(parts)
+
+
+## What one unit costs in the arena's money (iron and silver weighted as in army_size).
+func unit_money(type_id: StringName) -> int:
+	var def := db.unit(type_id)
+	var r := db.rules
+	return maxi(
+		1,
+		(
+			def.cost_food
+			+ def.cost_wood
+			+ def.cost_iron * r.arena_iron_permille / 1000
+			+ def.cost_silver * r.arena_silver_permille / 1000
+		)
+	)
 
 
 static func units_of(sim: Simulation, player: int) -> PackedInt32Array:

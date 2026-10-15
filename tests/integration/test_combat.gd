@@ -207,3 +207,16 @@ func test_arena_report_row() -> void:
 	var row := arena.run_pair(BalanceArena.DEFAULT_PAIRS[0], 2)
 	assert_eq(row.split(",").size(), BalanceArena.CSV_HEADER.split(",").size())
 	assert_string_starts_with(row, "crossbow_vs_spear,to_crossbow,gdl_spearman,open,-,2,12,24,")
+
+
+func test_arena_parity_finds_the_even_count() -> void:
+	var arena := BalanceArena.new(_db)
+	var mirror := ["knight_mirror", KNIGHT, KNIGHT, false, false]
+	var found := arena.parity_count(mirror, 2)
+	assert_between(found[0], 2000, 4000, "3 knights are held by about 3 knights")
+	var row := arena.parity_row(mirror, 2)
+	assert_eq(row.split(",").size(), BalanceArena.PARITY_HEADER.split(",").size())
+	assert_string_starts_with(
+		row, "knight_mirror,to_knight_brother,to_knight_brother,open,-,2,3,3,"
+	)
+	assert_eq(arena.win_share(mirror, 2, 1), 1000, "3 knights beat 1")
