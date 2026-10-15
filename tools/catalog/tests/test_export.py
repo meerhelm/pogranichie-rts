@@ -249,6 +249,16 @@ class VisionExportTest(unittest.TestCase):
         self.assertEqual(defs["TechDef"]["t_watch"]["effects"], {"wall_sight": 2})
 
 
+class SkirmishExportTest(unittest.TestCase):
+    """M8: how a skirmish is won."""
+
+    def test_skirmish_rules(self):
+        defs, _index, rep = export.build(copy.deepcopy(CATALOG))
+        self.assertEqual(rep.errors, [])
+        r = defs["SkirmishRulesDef"]["skirmish"]
+        self.assertEqual(r["hold_all_places_ticks"], 5 * 60 * 20, "«в течение 5 минут»")
+
+
 class MagicExportTest(unittest.TestCase):
     """M7: magic rules, how prototype spells are aimed, healer and reliquary techs."""
 

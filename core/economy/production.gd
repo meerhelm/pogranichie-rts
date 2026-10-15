@@ -241,6 +241,7 @@ func produce(b: int) -> void:
 	buildings.queue_started[s] = 0
 	if u != null:
 		state.pop_training -= u.pop
+		state.trained += 1
 		_release_unit(b, u)
 	else:
 		_finish_research(state, item)

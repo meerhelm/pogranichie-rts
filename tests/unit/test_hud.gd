@@ -35,6 +35,15 @@ func _own(type: StringName) -> PackedInt32Array:
 	return out
 
 
+## The skirmish starts without an army (M8): a few spearmen for the tests that need fighters.
+func _spearmen() -> PackedInt32Array:
+	for i in 4:
+		var x := Fixed.from_cells(14 + i) + Fixed.HALF
+		_sim.enqueue(SimCommand.spawn(_sim.tick, 1, &"gdl_spearman", x, Fixed.from_cells(14)))
+	_sim.step()
+	return _own(&"gdl_spearman")
+
+
 func _select(ids: PackedInt32Array) -> void:
 	var points := PackedVector2Array()
 	points.resize(ids.size())
@@ -49,7 +58,7 @@ func _buttons(box: Container) -> Array[Button]:
 	return out
 
 
-func test_enemy_army_is_hidden_by_the_fog_and_own_is_drawn() -> void:
+func test_enemy_is_hidden_by_the_fog_and_own_is_drawn() -> void:
 	var units: UnitLayer = _main.get_node("World/Units")
 	units._on_ticked(_sim.tick)
 	var seen_enemy := 0
@@ -60,8 +69,8 @@ func test_enemy_army_is_hidden_by_the_fog_and_own_is_drawn() -> void:
 			seen_enemy += 1
 		elif v.player == 1 and v.visible:
 			own += 1
-	assert_eq(seen_enemy, 0, "the Order's army across the map is in the fog")
-	assert_gt(own, 20)
+	assert_eq(seen_enemy, 0, "the Order's peasants across the map are in the fog")
+	assert_eq(own, SkirmishSetup.START_PEASANTS)
 	var fog: FogLayer = _main.get_node("World/Fog")
 	assert_true(fog.visible)
 	var g: VisionGrid = _sim.vision.grids[1]
@@ -80,7 +89,7 @@ func test_top_bar_shows_stock_population_and_age() -> void:
 
 
 func test_unit_card_shows_hp_morale_and_stance() -> void:
-	var spear := _own(&"gdl_spearman")
+	var spear := _spearmen()
 	_select(PackedInt32Array([spear[0]]))
 	_hud.refresh()
 	assert_eq(_hud.card._title.text, "Boar-Spear Militia")
@@ -92,7 +101,7 @@ func test_unit_card_shows_hp_morale_and_stance() -> void:
 
 
 func test_order_buttons_give_the_same_commands_as_keys() -> void:
-	var spear := _own(&"gdl_spearman")
+	var spear := _spearmen()
 	_select(spear)
 	_hud.refresh()
 	var stand: Button = null

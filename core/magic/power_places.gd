@@ -152,7 +152,9 @@ func step(tick: int) -> void:
 		var rate := rate_milli(i)
 		var state: PlayerState = players.get(holders[i])
 		if rate > 0 and state != null:
+			var before := state.power
 			state.power = mini(cap, state.power + rate)
+			state.power_gained += state.power - before
 
 
 ## Notices a shrine laid on the site or one that is gone; the site is its owner's.

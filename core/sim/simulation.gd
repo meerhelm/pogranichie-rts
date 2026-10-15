@@ -10,7 +10,8 @@ extends RefCounted
 ## 4: M5 economy (players, gathering, buildings, queues, techs; map deposits block cells).
 ## 5: M6 fog of war (units pick fights only with enemies their side can see).
 ## 6: M7 places of power, Сила, spells and healers; attacks are remembered (last_attack).
-const SIM_VERSION := 6
+## 7: M8 match statistics (trained, lost, killed, built, gathered) and skirmish victory.
+const SIM_VERSION := 7
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).
@@ -64,6 +65,8 @@ var economy: EconomySystem
 var vision: VisionSystem
 ## Places of power, Сила and spells; off without the catalog's magic rules.
 var magic: MagicSystem
+## Who has won the skirmish (M8); off without the catalog's skirmish rules.
+var victory: SkirmishVictory
 var data_version: String
 ## Every accepted command, in arrival order, for recording replays.
 var command_log: Array[SimCommand] = []
@@ -107,7 +110,9 @@ func _init(
 	combat.vision = vision
 	magic = MagicSystem.new(entities, nav, db, economy, combat, walk_unit, stop_unit, remove_unit)
 	combat.morale_floor = magic.morale_floor
+	combat.on_kill = _count_kill
 	vision.mist = magic.mist
+	victory = SkirmishVictory.new(db.skirmish if db != null else null, economy, magic.places)
 
 
 ## Queues a command for its tick. Commands for a tick already simulated are refused,
@@ -130,6 +135,7 @@ func step() -> void:
 	_move_units()
 	combat.after_move()
 	vision.step()
+	victory.step(tick)
 	tick += 1
 
 
@@ -157,6 +163,7 @@ func state_hash() -> String:
 	economy.write_to(buf)
 	vision.write_to(buf)
 	magic.write_to(buf)
+	victory.write_to(buf)
 	var ctx := HashingContext.new()
 	ctx.start(HashingContext.HASH_SHA256)
 	ctx.update(buf.data_array)
@@ -300,10 +307,20 @@ func walk_unit(id: int, x: int, y: int) -> void:
 
 
 func remove_unit(id: int) -> void:
+	var state: PlayerState = economy.players.get(entities.owners[id - 1])
+	if state != null:
+		state.lost += 1
 	economy.on_remove(id)
 	vision.on_remove(id)
 	_release_flow(id)
 	entities.remove(id)
+
+
+## A hit of `killer`'s finished a unit of `victim`'s: the killer's statistics count it.
+func _count_kill(killer: int, victim: int) -> void:
+	var state: PlayerState = economy.players.get(killer)
+	if state != null and victim > 0 and victim != killer:
+		state.killed += 1
 
 
 # --- movement ---------------------------------------------------------------------------

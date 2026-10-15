@@ -216,6 +216,13 @@
    "exorcism_creature_damage": 150
   }
  },
+ "skirmish_rules": {
+  "_source": "How a skirmish is won (M8). Concept doc «Игровой цикл» → «Победа в схватке: уничтожение столицы и замков или удержание всех мест силы в течение 5 минут»: hold_all_places_ticks = 5 min at 20 ticks a second.",
+  "_temporary": [],
+  "values": {
+   "hold_all_places_ticks": 6000
+  }
+ },
  "spell_effects": {
   "_source": "How each spell is aimed (target_point: a point within magic_rules.cast_range of the caster; target_self: around the caster, moving with it; passive) and the effect the simulation runs (mist, dispel, relic, consecration), read from «Эффект» in «Заклинания». Spells without an entry are not in the game yet and cannot be cast.",
   "sp_bog_mist": ["target_point", "mist"],

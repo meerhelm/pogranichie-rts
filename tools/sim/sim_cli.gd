@@ -6,6 +6,7 @@ extends SceneTree
 ##   godot --headless -s tools/sim/sim_cli.gd -- bench --units 200 --ticks 600
 ##   godot --headless -s tools/sim/sim_cli.gd -- arena --seeds 50 --out arena.csv [--pairs a,b]
 ##     [--parity 1]
+##   godot --headless -s tools/sim/sim_cli.gd -- aivsai --games 20 --difficulty normal --out g.csv
 ## record, determinism and bench take --map <map id> (see MapText); without it, open grass;
 ## and --economy 1 to have the fuzzer play the economy too (players, buildings, gathering);
 ## with it, --magic 1 adds shrines on places of power and spells.
@@ -16,7 +17,7 @@ func _initialize() -> void:
 	var args := OS.get_cmdline_user_args()
 	var code := 1
 	if args.is_empty():
-		printerr("usage: sim_cli.gd -- play|record|determinism|bench|arena [options]")
+		printerr("usage: sim_cli.gd -- play|record|determinism|bench|arena|aivsai [options]")
 	else:
 		var opts := _options(args.slice(1))
 		match args[0]:
@@ -30,6 +31,8 @@ func _initialize() -> void:
 				code = _bench(opts)
 			"arena":
 				code = _arena(opts)
+			"aivsai":
+				code = _ai_vs_ai(opts)
 			_:
 				printerr("unknown command: ", args[0])
 	quit(code)
@@ -174,6 +177,33 @@ func _arena(opts: Dictionary) -> int:
 			return 1
 		f.store_string("\n".join(lines) + "\n")
 	return 0
+
+
+## «ИИ против ИИ» (AiMatch): --games games from --seed on, one CSV row each; fails if a game
+## times out. Split a long run across processes with different --seed and --games.
+func _ai_vs_ai(opts: Dictionary) -> int:
+	var games := int(opts.get("games", "20"))
+	var first := int(opts.get("seed", "1"))
+	var difficulty := StringName(opts.get("difficulty", "normal"))
+	var match_runner := AiMatch.new(CatalogDB.load_prototype())
+	var lines := PackedStringArray([AiMatch.CSV_HEADER])
+	print(AiMatch.CSV_HEADER)
+	var code := 0
+	for i in games:
+		var game := match_runner.play(first + i, difficulty, int(opts.get("ticks", "72000")))
+		var line := match_runner.row(i + 1, first + i, difficulty, game)
+		print(line)
+		lines.append(line)
+		if game.winner == 0:
+			code = 1
+	var out: String = opts.get("out", "")
+	if not out.is_empty():
+		var f := FileAccess.open(out, FileAccess.WRITE)
+		if f == null:
+			printerr("cannot write %s" % out)
+			return 1
+		f.store_string("\n".join(lines) + "\n")
+	return code
 
 
 func _fuzz_replay(opts: Dictionary) -> Replay:

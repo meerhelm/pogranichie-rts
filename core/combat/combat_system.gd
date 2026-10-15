@@ -61,6 +61,8 @@ var vision: VisionSystem
 ## «Реликвия в строю» (M7, set by Simulation): `floor(slot) -> int`, the morale in points a unit
 ## cannot be brought below while it is above it (0 for none).
 var morale_floor: Callable
+## Called as on_kill.call(killer_player, victim_player) when a hit finishes a unit (M8 stats).
+var on_kill: Callable
 ## Arrows, bolts and javelins in flight.
 var shots := Projectiles.new()
 ## Who is near whom, refilled at the start of every step.
@@ -643,12 +645,15 @@ func _apply_hit(
 	attacker: int, attacker_owner: int, t: int, dmg: int, side: int, kind: StringName, cannon: bool
 ) -> void:
 	var e := entities
+	var was_alive := e.hp[t] > 0
 	e.hp[t] -= dmg
 	e.calm[t] = 0
 	if e.is_alive(attacker):
 		e.calm[attacker - 1] = 0
 	if e.hp[t] <= 0:
 		_dying.append(t + 1)
+		if was_alive and on_kill.is_valid():
+			on_kill.call(attacker_owner, e.owners[t])
 	var loss := 0
 	var tenths := (e.max_hp[t] - maxi(e.hp[t], 0)) * 10 / maxi(e.max_hp[t], 1)
 	if tenths > e.lost_tenths[t]:

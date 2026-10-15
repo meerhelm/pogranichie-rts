@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AiProfile" format=3]
+
+[ext_resource type="Script" path="res://ai/ai_profile.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+faction = &"to"
+difficulty = &"normal"
+think_ticks = 10
+peasant_target = 55
+worker_split = PackedInt32Array(45, 32, 17, 6)
+build_order = Array[StringName]([&"lumber_yard", &"barracks", &"mine", &"range", &"stable", &"age", &"temple"])
+army = Array[StringName]([&"to_knecht", &"to_crossbow", &"to_knecht", &"to_crossbow", &"to_prussian_rider", &"to_halfbrother", &"to_crossbow", &"to_knecht", &"to_halfbrother", &"to_priest"])
+first_wave = 10
+wave_growth = 4
+max_wave = 40
+first_attack_tick = 9600
+retreat_permille = 600
+defend_cells = 14
+shrines = 2
+casts_spells = true

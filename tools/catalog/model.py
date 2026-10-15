@@ -56,6 +56,8 @@ MAGIC_RULE_KEYS = (
     "alka_recharge_permille", "alka_recharge_radius", "cast_range", "relic_morale_floor",
     "relic_enemy_morale", "exorcism_creature_damage",
 )
+# Skirmish victory (M8), in data/rules/skirmish.tres; values from manual.json.
+SKIRMISH_RULE_KEYS = ("hold_all_places_ticks",)
 # What a spell does in the game (manual.json → spell_effects, appended to SpellDef.tags): how it
 # is aimed and which effect the simulation runs. A prototype spell must have both or be passive.
 SPELL_TARGETS = ("target_point", "target_self", "passive")
@@ -192,6 +194,8 @@ SCHEMAS: dict[str, dict[str, str]] = {
     "VisionRulesDef": {"id": "name", **{k: "int" for k in VISION_RULE_KEYS}},
     # data/rules/magic.tres: places of power and spells (manual.json → magic_rules).
     "MagicRulesDef": {"id": "name", **{k: "int" for k in MAGIC_RULE_KEYS}},
+    # data/rules/skirmish.tres: how a skirmish is won (manual.json → skirmish_rules).
+    "SkirmishRulesDef": {"id": "name", **{k: "int" for k in SKIRMISH_RULE_KEYS}},
     "CatalogIndex": {
         "exported_on": "text",
         "units": "names",
@@ -222,6 +226,7 @@ KIND_DIRS = {
     "EconomyRulesDef": "rules",
     "VisionRulesDef": "rules",
     "MagicRulesDef": "rules",
+    "SkirmishRulesDef": "rules",
 }
 
 
@@ -278,6 +283,7 @@ class Builder:
         self.economy: dict[str, dict] = {}
         self.vision: dict[str, dict] = {}
         self.magic: dict[str, dict] = {}
+        self.skirmish: dict[str, dict] = {}
         self.factions: dict[str, dict] = {}
         # (faction or "", lower-case building name) -> building id
         self.building_names: dict[tuple[str, str], str] = {}
@@ -789,6 +795,9 @@ class Builder:
         self.economy["economy"] = self._rule_block("economy", "EconomyRulesDef", ECONOMY_RULE_KEYS)
         self.vision["vision"] = self._rule_block("vision", "VisionRulesDef", VISION_RULE_KEYS)
         self.magic["magic"] = self._rule_block("magic", "MagicRulesDef", MAGIC_RULE_KEYS)
+        self.skirmish["skirmish"] = self._rule_block(
+            "skirmish", "SkirmishRulesDef", SKIRMISH_RULE_KEYS
+        )
 
     def _rule_block(self, name: str, kind: str, keys: tuple[str, ...]) -> dict:
         block = self.manual.get(f"{name}_rules", {})
@@ -925,4 +934,5 @@ class Builder:
             "EconomyRulesDef": self.economy,
             "VisionRulesDef": self.vision,
             "MagicRulesDef": self.magic,
+            "SkirmishRulesDef": self.skirmish,
         }

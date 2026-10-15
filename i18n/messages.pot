@@ -19,6 +19,10 @@ msgstr ""
 msgid "%d units"
 msgstr ""
 
+#: ui/end_screen.gd
+msgid "%s gathered"
+msgstr ""
+
 #: ui/command_panel.gd
 msgid "(%d s)"
 msgstr ""
@@ -27,8 +31,16 @@ msgstr ""
 msgid "+%s a second"
 msgstr ""
 
+#: ui/end_screen.gd
+msgid "Age"
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Aggressive"
+msgstr ""
+
+#: ui/end_screen.gd
+msgid "All places of power held for five minutes."
 msgstr ""
 
 #: ui/ui_text.gd
@@ -45,6 +57,14 @@ msgstr ""
 
 #: ui/settings_panel.gd
 msgid "Back"
+msgstr ""
+
+#: ui/end_screen.gd
+msgid "Buildings built"
+msgstr ""
+
+#: ui/end_screen.gd
+msgid "Buildings lost"
 msgstr ""
 
 #: ui/command_panel.gd
@@ -75,12 +95,20 @@ msgstr ""
 msgid "Damage %d (%s)"
 msgstr ""
 
+#: ui/end_screen.gd
+msgid "Defeat"
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Defensive"
 msgstr ""
 
 #: ui/command_panel.gd
 msgid "Dismount"
+msgstr ""
+
+#: ui/end_screen.gd
+msgid "Draw"
 msgstr ""
 
 #: game/arena/arena.gd
@@ -115,6 +143,10 @@ msgstr ""
 msgid "Fullscreen"
 msgstr ""
 
+#: ui/end_screen.gd
+msgid "Game time: %s"
+msgstr ""
+
 #: ui/main_menu.gd
 msgid "Grand Duchy of Lithuania against the Teutonic Order"
 msgstr ""
@@ -139,6 +171,10 @@ msgstr ""
 msgid "Iron"
 msgstr ""
 
+#: ui/end_screen.gd
+msgid "Keep watching"
+msgstr ""
+
 #: ui/settings_panel.gd
 msgid "Language"
 msgstr ""
@@ -156,6 +192,7 @@ msgstr ""
 msgid "Lithuanian retreat"
 msgstr ""
 
+#: ui/end_screen.gd
 #: ui/pause_menu.gd
 msgid "Main menu"
 msgstr ""
@@ -216,6 +253,14 @@ msgstr ""
 msgid "Only on a place of power"
 msgstr ""
 
+#: ui/main_menu.gd
+msgid "Opponent: easy"
+msgstr ""
+
+#: ui/main_menu.gd
+msgid "Opponent: normal"
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Passive"
 msgstr ""
@@ -244,10 +289,15 @@ msgstr ""
 msgid "Power"
 msgstr ""
 
+#: ui/end_screen.gd
+msgid "Power gained"
+msgstr ""
+
 #: ui/hud.gd
 msgid "Power: from places of power and shrines"
 msgstr ""
 
+#: ui/end_screen.gd
 #: ui/main_menu.gd
 #: ui/pause_menu.gd
 msgid "Quit"
@@ -311,6 +361,10 @@ msgstr ""
 msgid "Stop (H)"
 msgstr ""
 
+#: ui/end_screen.gd
+msgid "The capital and castles of the losing side are destroyed."
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "The place is taken"
 msgstr ""
@@ -329,6 +383,22 @@ msgstr ""
 
 #: ui/unit_card.gd
 msgid "Under construction: %d%%"
+msgstr ""
+
+#: ui/end_screen.gd
+msgid "Units killed"
+msgstr ""
+
+#: ui/end_screen.gd
+msgid "Units lost"
+msgstr ""
+
+#: ui/end_screen.gd
+msgid "Units trained"
+msgstr ""
+
+#: ui/end_screen.gd
+msgid "Victory"
 msgstr ""
 
 #: ui/unit_card.gd

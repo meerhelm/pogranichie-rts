@@ -489,6 +489,7 @@ func destroy(b: int) -> void:
 	var def := buildings.defs[s]
 	var state: PlayerState = players.get(buildings.owners[s])
 	if state != null:
+		state.buildings_lost += 1
 		if buildings.done[s] == 1:
 			state.pop_provided -= def.pop_provided
 		var q: Array = buildings.queues[s]
@@ -798,6 +799,7 @@ func _carry_home(id: int) -> void:
 	var state: PlayerState = players.get(entities.owners[slot])
 	if state != null and res >= 0:
 		state.stock[res] += carry[slot]
+		state.gathered[res] += carry[slot]
 	carry[slot] = 0
 	phase[slot] = Phase.GO
 	if not _has_resource(slot) and not _retarget(slot):
@@ -900,6 +902,7 @@ func _construct(b: int, builders: int) -> void:
 		buildings.hp[s] = clampi(buildings.hp[s], 1, max_hp)
 		if after >= work:
 			_complete(b)
+			players[buildings.owners[s]].built += 1
 		return
 	_repair(b, speed)
 

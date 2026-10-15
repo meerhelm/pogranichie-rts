@@ -1,11 +1,13 @@
 extends Control
-## Main menu: start a skirmish, settings, quit. The first scene the game opens.
+## Main menu: start a skirmish (against the Order AI, easy or normal), settings, quit. The first
+## scene the game opens.
 
 const GAME_SCENE := "res://game/main.tscn"
 
 var _title := Label.new()
 var _subtitle := Label.new()
 var _skirmish := Button.new()
+var _difficulty := OptionButton.new()
 var _settings_button := Button.new()
 var _quit := Button.new()
 var _version := Label.new()
@@ -32,9 +34,13 @@ func _ready() -> void:
 	_menu.add_child(_title)
 	_subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_menu.add_child(_subtitle)
-	for b: Button in [_skirmish, _settings_button, _quit]:
+	for b: Button in [_skirmish, _difficulty, _settings_button, _quit]:
 		b.custom_minimum_size = Vector2(320, 48)
 		_menu.add_child(b)
+	for level in GameSettings.DIFFICULTIES:
+		_difficulty.add_item(String(level))
+	_difficulty.selected = maxi(GameSettings.DIFFICULTIES.find(GameSettings.ai_difficulty), 0)
+	_difficulty.item_selected.connect(_on_difficulty)
 	_skirmish.pressed.connect(_on_skirmish)
 	_settings_button.pressed.connect(_show_settings.bind(true))
 	_quit.pressed.connect(func() -> void: get_tree().quit())
@@ -59,6 +65,8 @@ func _retranslate() -> void:
 	_title.text = tr("Pogranichie")
 	_subtitle.text = tr("Grand Duchy of Lithuania against the Teutonic Order")
 	_skirmish.text = tr("Skirmish")
+	_difficulty.set_item_text(0, tr("Opponent: easy"))
+	_difficulty.set_item_text(1, tr("Opponent: normal"))
 	_settings_button.text = tr("Settings")
 	_quit.text = tr("Quit")
 
@@ -66,6 +74,11 @@ func _retranslate() -> void:
 func _show_settings(on: bool) -> void:
 	_menu.visible = not on
 	_settings.visible = on
+
+
+func _on_difficulty(index: int) -> void:
+	GameSettings.ai_difficulty = GameSettings.DIFFICULTIES[index]
+	GameSettings.save()
 
 
 func _on_skirmish() -> void:

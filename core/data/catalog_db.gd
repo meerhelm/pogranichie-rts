@@ -23,6 +23,8 @@ var economy: EconomyRulesDef
 var vision: VisionRulesDef
 ## Places of power and spell numbers (data/rules/magic.tres).
 var magic: MagicRulesDef
+## How a skirmish is won (data/rules/skirmish.tres).
+var skirmish: SkirmishRulesDef
 
 
 static func load_index() -> CatalogIndex:
@@ -107,6 +109,8 @@ func _load_ids(
 	assert(vision != null, "catalog resource missing: rules/vision")
 	magic = load(DATA_DIR.path_join("rules/magic.tres")) as MagicRulesDef
 	assert(magic != null, "catalog resource missing: rules/magic")
+	skirmish = load(DATA_DIR.path_join("rules/skirmish.tres")) as SkirmishRulesDef
+	assert(skirmish != null, "catalog resource missing: rules/skirmish")
 
 
 func _load_kind(dir: String, ids: Array[StringName], into: Dictionary) -> void:
@@ -138,6 +142,8 @@ func content_hash() -> String:
 		ctx.update(_stored_fields(vision).to_utf8_buffer())
 	if magic != null:
 		ctx.update(_stored_fields(magic).to_utf8_buffer())
+	if skirmish != null:
+		ctx.update(_stored_fields(skirmish).to_utf8_buffer())
 	return ctx.finish().hex_encode().left(16)
 
 

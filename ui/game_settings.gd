@@ -1,11 +1,14 @@
 class_name GameSettings
 extends RefCounted
-## Player settings: language, edge scrolling, fullscreen. Kept in user://settings.cfg and applied
-## at start (main menu or game scene, whichever opens first).
+## Player settings: language, edge scrolling, fullscreen, and the skirmish AI's difficulty last
+## picked. Kept in user://settings.cfg and applied at start (main menu or game scene, whichever
+## opens first).
 
 const PATH := "user://settings.cfg"
 ## Locales the game ships (i18n/<locale>.po); English is the development language.
 const LANGUAGES: Array[String] = ["en", "be", "pl", "uk", "lt"]
+## Skirmish AI difficulties, easiest first.
+const DIFFICULTIES: Array[StringName] = [&"easy", &"normal"]
 ## Each language's name in itself, shown in the language list untranslated.
 const LANGUAGE_NAMES: Array[String] = [
 	"English",  # notr
@@ -18,6 +21,8 @@ const LANGUAGE_NAMES: Array[String] = [
 static var language := "en"
 static var edge_scroll := true
 static var fullscreen := false
+## AiProfile.difficulty of the skirmish opponent (ai/profiles/*_<difficulty>.tres).
+static var ai_difficulty: StringName = &"normal"
 static var _loaded := false
 
 
@@ -32,6 +37,8 @@ static func ensure_loaded() -> void:
 		language = lang if LANGUAGES.has(lang) else "en"
 		edge_scroll = cfg.get_value("general", "edge_scroll", edge_scroll)
 		fullscreen = cfg.get_value("video", "fullscreen", fullscreen)
+		var level := StringName(cfg.get_value("skirmish", "ai_difficulty", String(ai_difficulty)))
+		ai_difficulty = level if DIFFICULTIES.has(level) else &"normal"
 	apply()
 
 
@@ -51,6 +58,7 @@ static func save() -> void:
 	cfg.set_value("general", "language", language)
 	cfg.set_value("general", "edge_scroll", edge_scroll)
 	cfg.set_value("video", "fullscreen", fullscreen)
+	cfg.set_value("skirmish", "ai_difficulty", String(ai_difficulty))
 	var err := cfg.save(PATH)
 	if err != OK:
 		push_warning("cannot save settings: %s" % error_string(err))

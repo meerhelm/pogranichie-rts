@@ -28,6 +28,16 @@ var wall_sight_bonus := 0
 var power := 0
 ## Unit stat changes from techs: "<class or unit id>.<stat>" -> sum.
 var unit_mods: Dictionary[StringName, int] = {}
+## Match statistics (M8, the end screen): units trained, lost (any way) and killed (enemy units
+## this player's hits finished), buildings finished and lost, resources brought in (FOOD...)
+## and Сила gained (MagicSystem.POWER_UNIT a point).
+var trained := 0
+var lost := 0
+var killed := 0
+var built := 0
+var buildings_lost := 0
+var gathered := PackedInt64Array([0, 0, 0, 0])
+var power_gained := 0
 
 
 func _init(p_player: int, p_faction: StringName) -> void:
@@ -92,3 +102,7 @@ func write_to(buf: StreamPeerBuffer) -> void:
 	for k in keys:
 		buf.put_utf8_string(k)
 		buf.put_32(unit_mods[StringName(k)])
+	for v: int in [trained, lost, killed, built, buildings_lost, power_gained]:
+		buf.put_64(v)
+	for v in gathered:
+		buf.put_64(v)
