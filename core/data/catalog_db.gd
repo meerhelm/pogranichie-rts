@@ -19,6 +19,8 @@ var terrains: Dictionary[StringName, TerrainDef] = {}
 var rules: CombatRulesDef
 ## Gathering, construction and production numbers (data/rules/economy.tres).
 var economy: EconomyRulesDef
+## Fog of war numbers (data/rules/vision.tres).
+var vision: VisionRulesDef
 
 
 static func load_index() -> CatalogIndex:
@@ -99,6 +101,8 @@ func _load_ids(
 	assert(rules != null, "catalog resource missing: rules/combat")
 	economy = load(DATA_DIR.path_join("rules/economy.tres")) as EconomyRulesDef
 	assert(economy != null, "catalog resource missing: rules/economy")
+	vision = load(DATA_DIR.path_join("rules/vision.tres")) as VisionRulesDef
+	assert(vision != null, "catalog resource missing: rules/vision")
 
 
 func _load_kind(dir: String, ids: Array[StringName], into: Dictionary) -> void:
@@ -126,6 +130,8 @@ func content_hash() -> String:
 		ctx.update(_stored_fields(rules).to_utf8_buffer())
 	if economy != null:
 		ctx.update(_stored_fields(economy).to_utf8_buffer())
+	if vision != null:
+		ctx.update(_stored_fields(vision).to_utf8_buffer())
 	return ctx.finish().hex_encode().left(16)
 
 

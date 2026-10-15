@@ -4,6 +4,8 @@ extends Node2D
 ## the owner's colour (foundations see-through, filled as they rise), HP bars, map deposits,
 ## carcasses of hunted animals, and the ghost of a building being placed (green where it may
 ## stand, red where not). Redrawn every tick; everything is read from the simulation.
+## Fog of war (M6): others' buildings appear once the local player has seen them and stay as
+## last seen; deposits and carcasses only on explored ground.
 
 const DEPOSIT_COLORS := {
 	ResourceNodes.Source.IRON: Color(0.35, 0.22, 0.16),
@@ -24,6 +26,10 @@ var ghost_ok := false
 ## Ghost of a palisade line: its cells, and per cell whether it may stand there.
 var ghost_line: Array[Vector2i] = []
 var ghost_line_ok: Array[bool] = []
+## The player at this screen.
+var local_player := 1
+## Others' buildings the local player has seen (they stay drawn in the fog).
+var _known: Dictionary[int, bool] = {}
 
 
 func attach(p_sim: Simulation, clock: SimClock) -> void:
@@ -37,6 +43,8 @@ func _draw() -> void:
 	var eco := sim.economy
 	for n in eco.nodes.alive_ids:
 		var cell := eco.nodes.cells[n - 1]
+		if sim.vision.state(local_player, cell) == VisionSystem.State.UNEXPLORED:
+			continue
 		var c: Color = DEPOSIT_COLORS.get(eco.nodes.sources[n - 1], Color.GRAY)
 		var at := Vector2(cell % sim.nav.width, cell / sim.nav.width)
 		if eco.nodes.blocks[n - 1] == 1:
@@ -45,6 +53,10 @@ func _draw() -> void:
 			draw_circle(Iso.cell_to_screen(at + Vector2(0.5, 0.5)), 4.0, c)
 	var b := eco.buildings
 	for id in b.alive_ids:
+		if b.owners[id - 1] != local_player and not _known.has(id):
+			if not sim.vision.sees_building(local_player, id):
+				continue
+			_known[id] = true
 		_building(id)
 	if ghost.size != Vector2i.ZERO:
 		_diamond(Rect2(ghost.position, ghost.size), OK_COLOR if ghost_ok else BAD_COLOR, 0.0)

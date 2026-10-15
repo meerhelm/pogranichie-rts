@@ -5,6 +5,8 @@ extends Control
 ## (right click: move in the chosen formation, or attack the enemy under the cursor; Ctrl+right
 ## click: attack-move; Shift+right click: rally point; H: stop; Z / X / C: aggressive, defensive,
 ## stand ground; T: «Литовский отход», G: «Разворот», V: dismount). Draws the drag box.
+## Esc with nothing to cancel, or F10, asks for the game menu (M6); the HUD's buttons give the
+## same orders through order_stop(), order_stance(), start_placing(), queue_item() and the rest.
 ## Economy (M5): with peasants selected, B picks a building to place (B again for the next one,
 ## F to turn it, left click to lay it, a drag for a palisade line, right click or Esc to stop);
 ## right click gathers (forest, deposit, own field or hive, an animal), builds or repairs an
@@ -13,8 +15,10 @@ extends Control
 ## where its units go.
 
 signal formation_changed(kind: Formation.Kind)
-## The selected building, the building being placed or its place changed (for the status line).
+## The selected building, the building being placed or its place changed (for the HUD).
 signal economy_changed
+## Esc with nothing to cancel, or F10: open the game menu.
+signal menu_requested
 
 ## Keys that queue a selected building's items, by position in its list.
 const QUEUE_KEYS: Array[Key] = [KEY_Z, KEY_X, KEY_C, KEY_V, KEY_B, KEY_N, KEY_M]
@@ -153,9 +157,13 @@ func _key(key: InputEventKey) -> void:
 		_set_formation(Formation.Kind.COLUMN)
 	elif key.is_action(&"formation_wedge"):
 		_set_formation(Formation.Kind.WEDGE)
+	elif key.physical_keycode == KEY_F10:
+		_request_menu()
 	elif key.physical_keycode == KEY_ESCAPE:
 		if placing != null:
 			_stop_placing()
+		elif selection.ids.is_empty() and selected_building == BuildingStore.NO_ID:
+			_request_menu()
 		else:
 			selection.clear()
 			_select_building(Vector2(-1, -1))
@@ -445,9 +453,62 @@ func _building_key(key: InputEventKey) -> void:
 		_order(SimCommand.queue_item(sim.tick, player, selected_building, items[i]))
 
 
+func _request_menu() -> void:
+	# The key that opened the menu must not reach it too (it would close it again).
+	get_viewport().set_input_as_handled()
+	menu_requested.emit()
+
+
 func _set_formation(kind: Formation.Kind) -> void:
 	formation = kind
 	formation_changed.emit(kind)
+
+
+# --- orders from the HUD's buttons, the same as the keys -------------------------------------
+
+
+func set_formation(kind: Formation.Kind) -> void:
+	_set_formation(kind)
+
+
+func order_stop() -> void:
+	if not selection.ids.is_empty():
+		_order(SimCommand.stop(sim.tick, player, selection.ids))
+
+
+func order_stance(stance: EntityStore.Stance) -> void:
+	if not selection.ids.is_empty():
+		_order(SimCommand.set_stance(sim.tick, player, selection.ids, stance))
+
+
+## RETREAT («Литовский отход»), TURN («Разворот») or DISMOUNT for the selection.
+func order_kind(kind: SimCommand.Kind) -> void:
+	if not selection.ids.is_empty():
+		_order(SimCommand.order(sim.tick, player, kind, selection.ids))
+
+
+## Starts placing a building with the selected peasants (as B does).
+func start_placing(def: BuildingDef) -> void:
+	if _peasants().is_empty():
+		return
+	placing = def
+	_wall_from = Vector2i(-1, -1)
+	_update_ghost(get_viewport().get_mouse_position())
+
+
+func queue_item(item: StringName) -> void:
+	if selected_building != BuildingStore.NO_ID:
+		_order(SimCommand.queue_item(sim.tick, player, selected_building, item))
+
+
+func cancel_item(index: int) -> void:
+	if selected_building != BuildingStore.NO_ID:
+		_order(SimCommand.cancel_item(sim.tick, player, selected_building, index))
+
+
+## Selected units that can gather and build.
+func peasants() -> PackedInt32Array:
+	return _peasants()
 
 
 func _order(cmd: SimCommand) -> void:

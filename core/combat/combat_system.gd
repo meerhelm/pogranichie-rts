@@ -56,6 +56,8 @@ var flags := PackedInt32Array()
 ## Rally point of each player, fixed units; units without one flee to where they were created.
 var rally: Dictionary[int, Vector2i] = {}
 
+## Fog of war (set by Simulation): units only pick fights with enemies their side can see.
+var vision: VisionSystem
 ## Arrows, bolts and javelins in flight.
 var shots := Projectiles.new()
 ## Who is near whom, refilled at the start of every step.
@@ -888,7 +890,7 @@ func _nearest_enemy(slot: int, radius: int) -> int:
 		var o := other - 1
 		if e.owners[o] == owner or e.owners[o] == 0 or e.hp[o] <= 0 or defs[o] == null:
 			continue
-		if _hidden_from(o, owner):
+		if _hidden_from(o, owner) or (vision != null and not vision.sees_unit(owner, other)):
 			continue
 		var d := Fixed.distance(px, py, e.pos_x[o], e.pos_y[o])
 		if e.intents[o] == EntityStore.Intent.FLEE and (d > reach or flags[slot] & F_NO_PURSUIT):

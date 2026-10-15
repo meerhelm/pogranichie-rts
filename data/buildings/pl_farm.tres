@@ -28,4 +28,4 @@ attack_range = 0
 power_rate_milli = 0
 trains = Array[StringName]([])
 tags = Array[StringName]([&"walkable", &"no_age_count"])
-params = Dictionary[StringName, int]({&"food_capacity": 300, &"size_h": 3, &"size_w": 3})
+params = Dictionary[StringName, int]({&"food_capacity": 300, &"sight": 2, &"size_h": 3, &"size_w": 3})

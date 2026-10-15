@@ -28,4 +28,4 @@ attack_range = 0
 power_rate_milli = 0
 trains = Array[StringName]([&"to_halfbrother", &"to_prussian_rider"])
 tags = Array[StringName]([&"faction_variant"])
-params = Dictionary[StringName, int]({&"cavalry_discount_permille": 150, &"size_h": 3, &"size_w": 3})
+params = Dictionary[StringName, int]({&"cavalry_discount_permille": 150, &"sight": 4, &"size_h": 3, &"size_w": 3})

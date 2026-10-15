@@ -8,7 +8,8 @@ extends RefCounted
 ## 2: M3 movement (terrain, A*, flow fields, formations, separation).
 ## 3: M4 combat and morale (targets, strikes, projectiles, flight, stances, facing, run-up).
 ## 4: M5 economy (players, gathering, buildings, queues, techs; map deposits block cells).
-const SIM_VERSION := 4
+## 5: M6 fog of war (units pick fights only with enemies their side can see).
+const SIM_VERSION := 5
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).
@@ -58,6 +59,8 @@ var pathfinder: Pathfinder
 var combat: CombatSystem
 ## Players, resources, buildings, training and research; idle without the catalog's rules.
 var economy: EconomySystem
+## Fog of war: what each player sees; off without the catalog's vision rules.
+var vision: VisionSystem
 var data_version: String
 ## Every accepted command, in arrival order, for recording replays.
 var command_log: Array[SimCommand] = []
@@ -97,6 +100,8 @@ func _init(
 		entities, nav, rng, db.rules if db != null else null, walk_unit, stop_unit, remove_unit
 	)
 	economy = EconomySystem.new(entities, nav, db, combat, walk_unit, stop_unit, spawn_unit)
+	vision = VisionSystem.new(entities, nav, db, economy)
+	combat.vision = vision
 
 
 ## Queues a command for its tick. Commands for a tick already simulated are refused,
@@ -117,6 +122,7 @@ func step() -> void:
 	economy.step(tick)
 	_move_units()
 	combat.after_move()
+	vision.step()
 	tick += 1
 
 
@@ -142,6 +148,7 @@ func state_hash() -> String:
 	entities.write_to(buf)
 	combat.write_to(buf)
 	economy.write_to(buf)
+	vision.write_to(buf)
 	var ctx := HashingContext.new()
 	ctx.start(HashingContext.HASH_SHA256)
 	ctx.update(buf.data_array)
@@ -235,6 +242,7 @@ func spawn_unit(type_id: StringName, player: int, px: int, py: int) -> int:
 	)
 	combat.on_spawn(id, def)
 	economy.on_spawn(id, def)
+	vision.on_spawn(id, def)
 	return id
 
 
@@ -275,6 +283,7 @@ func walk_unit(id: int, x: int, y: int) -> void:
 
 func remove_unit(id: int) -> void:
 	economy.on_remove(id)
+	vision.on_remove(id)
 	_release_flow(id)
 	entities.remove(id)
 

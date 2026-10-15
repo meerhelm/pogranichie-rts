@@ -46,11 +46,15 @@ ECONOMY_RULE_KEYS = (
     "builder_extra_permille", "repair_cost_permille", "repair_time_permille", "queue_max",
     "cancel_refund_permille", "near_forest_cells",
 )
+# Fog of war numbers (M6), in data/rules/vision.tres; values from manual.json.
+VISION_RULE_KEYS = (
+    "cover_reveal_cells", "hill_sight_bonus", "foundation_sight",
+)
 # Keys of tech effects (manual.json → tech_effects). Gathering and farm keys are per-mille
 # increases; "<class or unit id>.<stat>" keys change unit stats (see TECH_STATS).
 TECH_EFFECT_KEYS = (
     "gather_farm", "gather_hunt", "gather_bort", "gather_wood", "gather_iron", "gather_silver",
-    "farm_food", "zaseka_speed", "zaseka_hp",
+    "farm_food", "zaseka_speed", "zaseka_hp", "wall_sight",
 )
 TECH_STATS = (
     "damage_melee", "damage_pierce", "armor_melee", "armor_pierce", "range", "hp_permille",
@@ -173,6 +177,8 @@ SCHEMAS: dict[str, dict[str, str]] = {
     # data/rules/economy.tres: gathering, construction and production (manual.json →
     # economy_rules).
     "EconomyRulesDef": {"id": "name", **{k: "int" for k in ECONOMY_RULE_KEYS}},
+    # data/rules/vision.tres: fog of war (manual.json → vision_rules).
+    "VisionRulesDef": {"id": "name", **{k: "int" for k in VISION_RULE_KEYS}},
     "CatalogIndex": {
         "exported_on": "text",
         "units": "names",
@@ -201,6 +207,7 @@ KIND_DIRS = {
     "TerrainDef": "terrain",
     "CombatRulesDef": "rules",
     "EconomyRulesDef": "rules",
+    "VisionRulesDef": "rules",
 }
 
 
@@ -255,6 +262,7 @@ class Builder:
         self.terrains: dict[str, dict] = {}
         self.rules: dict[str, dict] = {}
         self.economy: dict[str, dict] = {}
+        self.vision: dict[str, dict] = {}
         self.factions: dict[str, dict] = {}
         # (faction or "", lower-case building name) -> building id
         self.building_names: dict[tuple[str, str], str] = {}
@@ -370,6 +378,9 @@ class Builder:
                 self.rep.error(f"building {bid}", "no size in manual.json → building_layout")
                 continue
             d["params"]["size_w"], d["params"]["size_h"] = size
+            sight = layout.get("sight", {})
+            default = sight.get("_default", 0)
+            d["params"]["sight"] = sight.get(bid, sight.get(d["base_id"], default))
             for tag, ids in layout.get("tags", {}).items():
                 if bid in ids or d["base_id"] in ids:
                     d["tags"].append(tag)
@@ -741,6 +752,7 @@ class Builder:
         """
         self.rules["combat"] = self._rule_block("combat", "CombatRulesDef", COMBAT_RULE_KEYS)
         self.economy["economy"] = self._rule_block("economy", "EconomyRulesDef", ECONOMY_RULE_KEYS)
+        self.vision["vision"] = self._rule_block("vision", "VisionRulesDef", VISION_RULE_KEYS)
 
     def _rule_block(self, name: str, kind: str, keys: tuple[str, ...]) -> dict:
         block = self.manual.get(f"{name}_rules", {})
@@ -874,4 +886,5 @@ class Builder:
             "TerrainDef": self.terrains,
             "CombatRulesDef": self.rules,
             "EconomyRulesDef": self.economy,
+            "VisionRulesDef": self.vision,
         }

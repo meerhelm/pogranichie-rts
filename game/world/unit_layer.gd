@@ -7,8 +7,11 @@ extends Node2D
 var sim: Simulation
 var clock: SimClock
 var views: Dictionary[int, UnitView] = {}
-## The player at this screen: enemy forest archers hidden in the forest are not drawn for them.
+## The player at this screen: others' units are drawn only when this player sees them (fog of
+## war, forest archers hidden in the forest).
 var local_player := 1
+## Draw everyone regardless of the fog (the debug arena).
+var reveal_all := false
 
 ## Fixed positions at the previous and the latest tick, by id.
 var _prev: Dictionary[int, Vector2i] = {}
@@ -66,7 +69,9 @@ func _show_state(id: int, v: UnitView) -> void:
 	elif sim.combat.enabled() and sim.combat.wavering(slot):
 		mood = UnitView.Mood.WAVERING
 	var hidden := sim.combat.enabled() and sim.combat.is_hidden(id)
-	v.visible = not hidden or e.owners[slot] == local_player
+	var own := e.owners[slot] == local_player
+	var seen := reveal_all or sim.vision.sees_unit(local_player, id)
+	v.visible = own or (not hidden and seen)
 	var hp := clampi(e.hp[slot] * 1000 / maxi(e.max_hp[slot], 1), 0, 1000)
 	v.show_state(hp, mood, hidden, e.move_class[slot])
 

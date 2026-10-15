@@ -41,6 +41,8 @@ func _ready() -> void:
 	_map.build(sim.nav)
 	_clock.sim = sim
 	_units.local_player = 1
+	# The arena shows both sides whatever they see (fog of war still decides who fights whom).
+	_units.reveal_all = true
 	_units.attach(sim, _clock)
 	_shots.attach(sim, _clock, _units)
 	_camera.bounds = Iso.map_rect(sim.nav.width, sim.nav.height)

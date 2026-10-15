@@ -36,6 +36,10 @@ jobs:
         run: python -m unittest discover -s tools/catalog/tests -t .
       - name: Catalog data matches catalog.json
         run: python -m tools.catalog.export --check
+      - name: Translation check tests
+        run: python -m unittest discover -s tools/i18n/tests -t .
+      - name: No hard-coded UI text, all keys in the five .po files
+        run: python -m tools.i18n.extract --check
 
   test:
     name: Import and tests (${{ matrix.os }})

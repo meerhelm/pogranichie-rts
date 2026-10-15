@@ -14,4 +14,4 @@ cost_iron = 0
 cost_silver = 0
 research_ticks = 500
 faith = false
-effects = Dictionary[StringName, int]({})
+effects = Dictionary[StringName, int]({&"wall_sight": 2})

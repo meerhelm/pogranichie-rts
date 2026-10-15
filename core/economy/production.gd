@@ -206,7 +206,8 @@ func cancel(p: int, b: int, index: int) -> void:
 	q.remove_at(index)
 
 
-func _item_ticks(item: StringName) -> int:
+## Ticks an item (unit, tech, age) takes in a queue.
+func item_ticks(item: StringName) -> int:
 	var u := db.unit(item)
 	if u != null:
 		return u.train_ticks
@@ -233,7 +234,7 @@ func produce(b: int) -> void:
 			state.pop_training += u.pop
 		buildings.queue_started[s] = 1
 	buildings.queue_ticks[s] += 1
-	if buildings.queue_ticks[s] < _item_ticks(item):
+	if buildings.queue_ticks[s] < item_ticks(item):
 		return
 	q.remove_at(0)
 	buildings.queue_ticks[s] = 0
@@ -325,6 +326,8 @@ func _research_done(state: PlayerState, t: TechDef) -> void:
 				state.zaseka_speed_bonus += v
 			"zaseka_hp":
 				state.zaseka_hp_bonus += v
+			"wall_sight":
+				state.wall_sight_bonus += v
 			_:
 				var src := (
 					["gather_farm", "gather_hunt", "gather_bort", "gather_wood", "gather_iron"]

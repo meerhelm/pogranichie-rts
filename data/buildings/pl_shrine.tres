@@ -28,4 +28,4 @@ attack_range = 0
 power_rate_milli = 300
 trains = Array[StringName]([&"pl_stranger"])
 tags = Array[StringName]([&"power_place_only"])
-params = Dictionary[StringName, int]({&"size_h": 2, &"size_w": 2, &"upgrade_power_rate_milli": 600, &"upgrade_silver": 30, &"upgrade_wood": 100})
+params = Dictionary[StringName, int]({&"sight": 4, &"size_h": 2, &"size_w": 2, &"upgrade_power_rate_milli": 600, &"upgrade_silver": 30, &"upgrade_wood": 100})

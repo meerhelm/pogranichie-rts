@@ -229,3 +229,21 @@ class EconomyExportTest(unittest.TestCase):
         self.assertTrue(any("unknown effect" in e for e in bad.errors))
         bad = self.build_with(lambda m: m["tech_effects"].update(t_nope={"gather_wood": 1}))[2]
         self.assertTrue(any("unknown tech 't_nope'" in e for e in bad.errors))
+
+
+class VisionExportTest(unittest.TestCase):
+    """M6: fog of war rules, building sight, t_watch."""
+
+    def test_vision_rules_and_building_sight(self):
+        defs, _index, rep = export.build(copy.deepcopy(CATALOG))
+        self.assertEqual(rep.errors, [])
+        r = defs["VisionRulesDef"]["vision"]
+        self.assertEqual(r["hill_sight_bonus"], 2, "t_hill «+2 обзора»")
+        self.assertEqual(r["cover_reveal_cells"], 2)
+        b = defs["BuildingDef"]
+        self.assertEqual(b["gdl_town_center"]["params"]["sight"], 8)
+        self.assertEqual(b["mo_watchtower"]["params"]["sight"], 12, "«Обзор 12»")
+        self.assertEqual(b["gdl_barracks"]["params"]["sight"], 4, "the default")
+        self.assertIn("watch", b["to_tower"]["tags"])
+        self.assertIn("watch", b["gdl_palisade"]["tags"])
+        self.assertEqual(defs["TechDef"]["t_watch"]["effects"], {"wall_sight": 2})

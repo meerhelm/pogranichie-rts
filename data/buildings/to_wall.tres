@@ -27,5 +27,5 @@ damage_type = &""
 attack_range = 0
 power_rate_milli = 0
 trains = Array[StringName]([])
-tags = Array[StringName]([&"brick_discount"])
-params = Dictionary[StringName, int]({&"size_h": 1, &"size_w": 1})
+tags = Array[StringName]([&"brick_discount", &"watch"])
+params = Dictionary[StringName, int]({&"sight": 2, &"size_h": 1, &"size_w": 1})

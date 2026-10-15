@@ -1,0 +1,510 @@
+# Pogranichie, lt. Keys come from `python3 -m tools.i18n.extract`, which keeps
+# the translations here; an empty msgstr falls back to English.
+msgid ""
+msgstr ""
+"Project-Id-Version: Pogranichie\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: lt\n"
+
+msgid "%d %s"
+msgstr ""
+
+msgid "%d units"
+msgstr ""
+
+msgid "Aggressive"
+msgstr ""
+
+msgid "Armor %d melee / %d pierce"
+msgstr ""
+
+msgid "B next, F turn, Shift keep placing, Esc or right click cancel"
+msgstr ""
+
+msgid "Back"
+msgstr "Atgal"
+
+msgid "Cancel %s"
+msgstr ""
+
+msgid "Cannot be built on this ground"
+msgstr ""
+
+msgid "Carries %d %s"
+msgstr ""
+
+msgid "Column"
+msgstr ""
+
+msgid "Conditions not met"
+msgstr ""
+
+msgid "Damage %d (%s)"
+msgstr ""
+
+msgid "Defensive"
+msgstr ""
+
+msgid "Dismount"
+msgstr ""
+
+msgid "Equal money"
+msgstr ""
+
+msgid "Fight!"
+msgstr ""
+
+msgid "Fleeing!"
+msgstr ""
+
+msgid "Food"
+msgstr ""
+
+msgid "Forest"
+msgstr ""
+
+msgid "Formation: %s (%s)"
+msgstr ""
+
+msgid "Fullscreen"
+msgstr "Visas ekranas"
+
+msgid "Grand Duchy of Lithuania against the Teutonic Order"
+msgstr "Lietuvos Didžioji Kunigaikštystė prieš Kryžiuočių ordiną"
+
+msgid "HP %d/%d"
+msgstr ""
+
+msgid "Hidden in the forest"
+msgstr ""
+
+msgid "Houses %d"
+msgstr ""
+
+msgid "In work: %s, %d%%"
+msgstr ""
+
+msgid "Iron"
+msgstr ""
+
+msgid "Language"
+msgstr "Kalba"
+
+msgid "Left (you)"
+msgstr ""
+
+msgid "Line"
+msgstr ""
+
+msgid "Lithuanian retreat"
+msgstr ""
+
+msgid "Main menu"
+msgstr "Pagrindinis meniu"
+
+msgid "Menu (F10)"
+msgstr "Meniu (F10)"
+
+msgid "Morale %d/%d"
+msgstr ""
+
+msgid "Morale: never flees"
+msgstr ""
+
+msgid "Must stand in the forest"
+msgstr ""
+
+msgid "Needs a later age"
+msgstr ""
+
+msgid "Needs forest nearby"
+msgstr ""
+
+msgid "Not available"
+msgstr ""
+
+msgid "Not enough resources"
+msgstr ""
+
+msgid "Not for this faction"
+msgstr ""
+
+msgid "Nothing selected"
+msgstr ""
+
+msgid "Off the map"
+msgstr ""
+
+msgid "Only on a place of power"
+msgstr ""
+
+msgid "Passive"
+msgstr ""
+
+msgid "Paused"
+msgstr "Pauzė"
+
+msgid "Paused (P)"
+msgstr "Pauzė (P)"
+
+msgid "Pogranichie"
+msgstr "Paribys"
+
+msgid "Population %d/%d"
+msgstr ""
+
+msgid "Population limit reached"
+msgstr ""
+
+msgid "Power"
+msgstr ""
+
+msgid "Power: from places of power and shrines"
+msgstr ""
+
+msgid "Quit"
+msgstr "Išeiti"
+
+msgid "Reset"
+msgstr ""
+
+msgid "Resume"
+msgstr "Tęsti"
+
+msgid "Right"
+msgstr ""
+
+msgid "Right click: rally point"
+msgstr ""
+
+msgid "Scroll at the screen edge"
+msgstr "Slinkti prie ekrano krašto"
+
+msgid "Settings"
+msgstr "Nustatymai"
+
+msgid "Side %d: %d units, %d HP, %d fleeing"
+msgstr ""
+
+msgid "Silver"
+msgstr ""
+
+msgid "Skirmish"
+msgstr "Susirėmimas"
+
+msgid "Speed %.2f cells/s"
+msgstr ""
+
+msgid "Stance: %s"
+msgstr ""
+
+msgid "Stand ground"
+msgstr ""
+
+msgid "Stop"
+msgstr ""
+
+msgid "Stop (H)"
+msgstr ""
+
+msgid "The place is taken"
+msgstr ""
+
+msgid "The queue is full"
+msgstr ""
+
+msgid "Time: %d s"
+msgstr ""
+
+msgid "Turn around"
+msgstr ""
+
+msgid "Under construction: %d%%"
+msgstr ""
+
+msgid "Wavering"
+msgstr ""
+
+msgid "Wedge"
+msgstr ""
+
+msgid "Wood"
+msgstr ""
+
+msgid "age_derzhava"
+msgstr ""
+
+msgid "age_khorugv"
+msgstr ""
+
+msgid "age_udel"
+msgstr ""
+
+msgid "firearm"
+msgstr ""
+
+msgid "free"
+msgstr ""
+
+msgid "gdl"
+msgstr ""
+
+msgid "gdl_barracks"
+msgstr ""
+
+msgid "gdl_bort"
+msgstr ""
+
+msgid "gdl_camp_servant"
+msgstr ""
+
+msgid "gdl_castle_archer"
+msgstr ""
+
+msgid "gdl_farm"
+msgstr ""
+
+msgid "gdl_forest_archer"
+msgstr ""
+
+msgid "gdl_gate"
+msgstr ""
+
+msgid "gdl_granary"
+msgstr ""
+
+msgid "gdl_house"
+msgstr ""
+
+msgid "gdl_light_horse"
+msgstr ""
+
+msgid "gdl_lit_lance"
+msgstr ""
+
+msgid "gdl_lumber_yard"
+msgstr ""
+
+msgid "gdl_mine"
+msgstr ""
+
+msgid "gdl_palisade"
+msgstr ""
+
+msgid "gdl_peasant"
+msgstr ""
+
+msgid "gdl_range"
+msgstr ""
+
+msgid "gdl_shrine"
+msgstr ""
+
+msgid "gdl_siege_workshop"
+msgstr ""
+
+msgid "gdl_spearman"
+msgstr ""
+
+msgid "gdl_stable"
+msgstr ""
+
+msgid "gdl_town_center"
+msgstr ""
+
+msgid "gdl_wagon"
+msgstr ""
+
+msgid "gdl_zaseka"
+msgstr ""
+
+msgid "gdl_znakharka"
+msgstr ""
+
+msgid "melee"
+msgstr ""
+
+msgid "mo"
+msgstr ""
+
+msgid "nt_bear"
+msgstr ""
+
+msgid "nt_bison"
+msgstr ""
+
+msgid "nt_boar"
+msgstr ""
+
+msgid "nt_elk"
+msgstr ""
+
+msgid "nt_villager"
+msgstr ""
+
+msgid "nt_wolf"
+msgstr ""
+
+msgid "pierce"
+msgstr ""
+
+msgid "pl"
+msgstr ""
+
+msgid "range %d"
+msgstr ""
+
+msgid "siege"
+msgstr ""
+
+msgid "t_arrows"
+msgstr ""
+
+msgid "t_assay"
+msgstr ""
+
+msgid "t_banners"
+msgstr ""
+
+msgid "t_bloomery"
+msgstr ""
+
+msgid "t_cav_armor_1"
+msgstr ""
+
+msgid "t_gdl_forest"
+msgstr ""
+
+msgid "t_gdl_herbs"
+msgstr ""
+
+msgid "t_gdl_horodlo"
+msgstr ""
+
+msgid "t_gdl_steppe"
+msgstr ""
+
+msgid "t_gdl_zaseka"
+msgstr ""
+
+msgid "t_horse_collar"
+msgstr ""
+
+msgid "t_inf_armor_1"
+msgstr ""
+
+msgid "t_saw"
+msgstr ""
+
+msgid "t_three_field"
+msgstr ""
+
+msgid "t_to_arsenal"
+msgstr ""
+
+msgid "t_to_great_stud"
+msgstr ""
+
+msgid "t_to_reliquary"
+msgstr ""
+
+msgid "t_to_rossdienst"
+msgstr ""
+
+msgid "t_to_toll"
+msgstr ""
+
+msgid "t_wagons"
+msgstr ""
+
+msgid "t_watch"
+msgstr ""
+
+msgid "t_weapons_1"
+msgstr ""
+
+msgid "to"
+msgstr ""
+
+msgid "to_barracks"
+msgstr ""
+
+msgid "to_brickworks"
+msgstr ""
+
+msgid "to_castle"
+msgstr ""
+
+msgid "to_crossbow"
+msgstr ""
+
+msgid "to_farm"
+msgstr ""
+
+msgid "to_gate"
+msgstr ""
+
+msgid "to_granary"
+msgstr ""
+
+msgid "to_halfbrother"
+msgstr ""
+
+msgid "to_house"
+msgstr ""
+
+msgid "to_knecht"
+msgstr ""
+
+msgid "to_knight_brother"
+msgstr ""
+
+msgid "to_lumber_yard"
+msgstr ""
+
+msgid "to_market"
+msgstr ""
+
+msgid "to_mine"
+msgstr ""
+
+msgid "to_palisade"
+msgstr ""
+
+msgid "to_peasant"
+msgstr ""
+
+msgid "to_priest"
+msgstr ""
+
+msgid "to_prussian_rider"
+msgstr ""
+
+msgid "to_range"
+msgstr ""
+
+msgid "to_shrine"
+msgstr ""
+
+msgid "to_siege_workshop"
+msgstr ""
+
+msgid "to_smithy"
+msgstr ""
+
+msgid "to_stable"
+msgstr ""
+
+msgid "to_temple"
+msgstr ""
+
+msgid "to_tithe_collector"
+msgstr ""
+
+msgid "to_tower"
+msgstr ""
+
+msgid "to_town_center"
+msgstr ""

@@ -28,4 +28,4 @@ attack_range = 0
 power_rate_milli = 0
 trains = Array[StringName]([&"mo_syn_boyarsky"])
 tags = Array[StringName]([])
-params = Dictionary[StringName, int]({&"size_h": 3, &"size_w": 3})
+params = Dictionary[StringName, int]({&"sight": 4, &"size_h": 3, &"size_w": 3})

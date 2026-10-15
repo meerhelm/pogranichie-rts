@@ -28,4 +28,4 @@ attack_range = 0
 power_rate_milli = 0
 trains = Array[StringName]([&"to_peasant"])
 tags = Array[StringName]([&"no_age_count"])
-params = Dictionary[StringName, int]({&"size_h": 4, &"size_w": 4})
+params = Dictionary[StringName, int]({&"sight": 8, &"size_h": 4, &"size_w": 4})

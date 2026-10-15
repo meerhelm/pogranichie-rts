@@ -3,8 +3,9 @@ extends Resource
 ## One technology. Common techs have an empty faction and a common building id
 ## ("smithy"); resolve it per faction with FactionDef. Generated into data/techs/.
 ## effects: what the tech changes (manual.json → tech_effects): gather_<kind>, farm_food,
-## zaseka_speed and zaseka_hp are per-mille increases; "<class or unit id>.<stat>" adds to a unit
-## stat (damage_melee, damage_pierce, armor_melee, armor_pierce, range, hp_permille).
+## zaseka_speed and zaseka_hp are per-mille increases; wall_sight adds cells of sight to towers
+## and walls; "<class or unit id>.<stat>" adds to a unit stat (damage_melee, damage_pierce,
+## armor_melee, armor_pierce, range, hp_permille).
 
 @export var id: StringName
 @export var faction: StringName

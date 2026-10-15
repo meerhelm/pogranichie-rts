@@ -31,6 +31,11 @@ func _draw() -> void:
 		var t := clampf((now - c.shots.launched[i]) / span, 0.0, 1.0)
 		var a := Iso.fixed_to_screen(c.shots.x[i], c.shots.y[i]) + Vector2(0, -UnitView.RADIUS)
 		var target := units.view(c.shots.target[i])
+		var seen := sim.vision.sees_cell(
+			units.local_player, sim.nav.cell_of(c.shots.x[i], c.shots.y[i])
+		)
+		if not (seen or units.reveal_all) and (target == null or not target.visible):
+			continue
 		var b := target.position + Vector2(0, -UnitView.RADIUS) if target != null else a
 		var p := a.lerp(b, t) + Vector2(0, -ARC * 4.0 * t * (1.0 - t))
 		var dir := (b - a).normalized()

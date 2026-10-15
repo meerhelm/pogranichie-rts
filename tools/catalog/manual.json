@@ -171,11 +171,36 @@
    "no_age_count": ["town_center", "house", "farm", "palisade", "gate", "gdl_zaseka", "gdl_bort", "mo_zaseka"],
    "brick_discount": ["to_wall", "to_tower", "to_castle"],
    "brickworks": ["to_brickworks"],
-   "power_place_only": ["shrine"]
+   "power_place_only": ["shrine"],
+   "watch": ["tower", "palisade", "wall", "gate"]
+  },
+  "_sight_source": "Fog of war (M6): how far a finished building sees, in cells → params.sight. Only mo_watchtower «Обзор 12» is from the catalog; the rest are temporary, after AoE II. watch tag = towers and walls for t_watch «Обзор башен и стен +2».",
+  "sight": {
+   "_default": 4,
+   "town_center": 8,
+   "castle": 10,
+   "tower": 8,
+   "palisade": 2,
+   "wall": 2,
+   "gate": 2,
+   "farm": 2,
+   "gdl_bort": 2,
+   "gdl_zaseka": 2,
+   "mo_zaseka": 2,
+   "mo_watchtower": 12
+  }
+ },
+ "vision_rules": {
+  "_source": "Fog of war (M6). hill_sight_bonus: catalog «Локации» → t_hill «+2 обзора». cover_reveal_cells: plan M6 «юнит в лесу не виден с дистанции больше 2 клеток» (the same 2 cells as «Болотный туман»). Keys in `_temporary` are not in the catalog.",
+  "_temporary": ["cover_reveal_cells", "foundation_sight"],
+  "values": {
+   "cover_reveal_cells": 2,
+   "hill_sight_bonus": 2,
+   "foundation_sight": 2
   }
  },
  "tech_effects": {
-  "_source": "«Эффект» of «Общие технологии» and the faction tabs, written as numbers: gather_* and farm_food are per-mille increases; zaseka_speed and zaseka_hp too (×2 speed = +1000); «<class or unit id>.<stat>» changes unit stats for the player's units of that class.",
+  "_source": "«Эффект» of «Общие технологии» and the faction tabs, written as numbers: gather_* and farm_food are per-mille increases; zaseka_speed and zaseka_hp too (×2 speed = +1000); wall_sight adds cells of sight to the player's buildings tagged watch; «<class or unit id>.<stat>» changes unit stats for the player's units of that class.",
   "t_horse_collar": {"gather_farm": 150},
   "t_three_field": {"farm_food": 500},
   "t_saw": {"gather_wood": 200},
@@ -188,9 +213,9 @@
   "t_gdl_zaseka": {"zaseka_speed": 1000, "zaseka_hp": 500},
   "t_gdl_forest": {"gather_bort": 400, "gather_hunt": 250, "gather_farm": 250},
   "t_to_great_stud": {"heavy_cavalry.hp_permille": 100},
+  "t_watch": {"wall_sight": 2},
   "_deferred": {
    "t_banners": "banner units are not in the prototype",
-   "t_watch": "tower and wall sight (M6, fog of war)",
    "t_wagons": "trade carts (market, after the prototype)",
    "t_to_toll": "trade carts (market, after the prototype)",
    "t_to_arsenal": "researched in the Schnitzhaus, which is not in the prototype",
