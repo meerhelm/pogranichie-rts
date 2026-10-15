@@ -58,6 +58,7 @@ func _ready() -> void:
 	_units.attach(sim, _clock)
 	_shots.attach(sim, _clock, _units)
 	_buildings.local_player = PLAYER
+	_buildings.depth_layer = _units
 	_buildings.attach(sim, _clock)
 	_magic.local_player = PLAYER
 	_magic.attach(sim, _clock)

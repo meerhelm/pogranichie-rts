@@ -72,3 +72,22 @@ func test_right_click_on_the_forest_sends_peasants_to_fell() -> void:
 	_sim.step()
 	for id in _input.selection.ids:
 		assert_eq(_sim.economy.job[id - 1], EconomySystem.Job.GATHER)
+
+
+func test_buildings_sort_by_depth_with_units() -> void:
+	var clock: SimClock = _main.get_node("SimClock")
+	clock.ticked.emit(_sim.tick)
+	var b := _sim.economy.buildings
+	var id := BuildingStore.NO_ID
+	for i in b.alive_ids:
+		if b.owners[i - 1] == 1 and b.blocks[i - 1] == 1:
+			id = i
+	var s := id - 1
+	var box: BoxView = _main.get_node("World/Units").get_node_or_null("Box_b%d" % id)
+	assert_not_null(box, "a standing building lives among the y-sorted units")
+	var a := Vector2(b.cell_x[s], b.cell_y[s])
+	var e := a + Vector2(b.w[s], b.h[s])
+	var behind := Iso.cell_to_screen(Vector2(a.x - 0.5, a.y + 1.5))
+	var in_front := Iso.cell_to_screen(Vector2(a.x + 1.5, e.y + 0.5))
+	assert_lt(behind.y, box.position.y, "a unit by a back face is drawn behind")
+	assert_gt(in_front.y, box.position.y, "a unit by a front face is drawn in front")
