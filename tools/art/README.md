@@ -2,7 +2,7 @@
 
 Low-poly models built by Python scripts in Blender and rendered into isometric sprites by the
 pipeline of the visual assets doc («Технические спецификации»): orthographic camera at X 60°,
-Z 45°, sun from the upper left at 45°, AgX, transparent film, 45.25 px per metre (a 2 m cell is
+Z 45°, sun from the upper left at 60° (the doc says 45°; raised so shadows stay short and whole), AgX, transparent film, 45.25 px per metre (a 2 m cell is
 128×64 at render size; the game draws cells 64×32 and sprites at half size).
 
 ```sh

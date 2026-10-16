@@ -1,10 +1,10 @@
 {
  "frame": [
-  160,
-  144
+  88,
+  150
  ],
  "pivot": [
-  64,
+  29,
   104
  ],
  "scale": 0.5,
@@ -20,6 +20,7 @@
    "fps": 15
   }
  },
+ "bar_y": 55,
  "rows_per_anim": 8,
  "facing": "row offset = UnitView.facing (0 east, clockwise, 2 south)"
 }

@@ -1,7 +1,8 @@
 """Render rig for isometric sprites (visual assets doc, «Технические спецификации»).
 
 Orthographic camera at X 60°, Z 45° (ground square -> 2:1 diamond), one sun from the
-upper left of the screen at 45° to the ground plus a weak sky fill, transparent film.
+upper left of the screen at 60° to the ground (the doc says 45°; raised 2026-10-16 for
+shorter, tidier shadows) plus a weak sky fill, transparent film.
 Scale: 45.25 px per metre, so a 2 m map cell is a 128x64 diamond; the game draws cells
 64x32 and shows sprites at half size (sharp when zoomed in).
 
@@ -10,11 +11,13 @@ Run with Blender's Python module: `pip install bpy==5.2.2`.
 """
 
 import math
+import os
 
 import bpy
 from mathutils import Euler, Vector
 
 PX_PER_M = 45.25
+SUN_ELEVATION = 60.0
 CELL_M = 2.0
 SQ = math.sqrt(0.5)
 
@@ -53,6 +56,9 @@ def setup(width: int, height: int, pivot: tuple[float, float], samples: int = 24
     scene.cycles.device = "CPU"
     scene.cycles.samples = samples
     scene.cycles.use_denoising = True
+    if os.environ.get("ART_THREADS"):  # several renders side by side share the cores
+        scene.render.threads_mode = "FIXED"
+        scene.render.threads = int(os.environ["ART_THREADS"])
     scene.cycles.max_bounces = 4
     scene.render.resolution_x = width
     scene.render.resolution_y = height
@@ -91,7 +97,8 @@ def setup(width: int, height: int, pivot: tuple[float, float], samples: int = 24
     sun_data.color = (1.0, 0.95, 0.86)
     sun = bpy.data.objects.new("sun", sun_data)
     scene.collection.objects.link(sun)
-    to_sun = ground_dir(math.radians(225)) + Vector((0, 0, 1.0))  # upper left, 45°
+    # Upper left, 60° over the ground: shadows are 0.58 of the height.
+    to_sun = ground_dir(math.radians(225)) + Vector((0, 0, math.tan(math.radians(SUN_ELEVATION))))
     sun.rotation_euler = (-to_sun).to_track_quat("-Z", "Y").to_euler()
 
 

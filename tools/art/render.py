@@ -23,8 +23,12 @@ from PIL import Image
 from tools.art import registry, rig, shrink, stages
 from tools.art import shapes as S
 
+## Extra render room (right, below) for the shadow, cropped away where unused.
+SHADOW_ROOM = (96, 80)
 ANIMS = [("idle", 8, 6), ("walk", 12, 15)]  # name, frames, fps
 PASSES = ("color", "team", "shadow")
+## The shadow catcher leaves a faint haze far out (alpha up to ~12); fade it to nothing.
+HAZE = 12
 
 
 def _meshes():
@@ -75,7 +79,9 @@ def render_unit(uid: str, out: str, preview: bool) -> None:
     rig.reset()
     S.reset_materials()
     spec = registry.UNITS[uid]
-    frame, pivot = spec.frame, spec.pivot
+    # Render with room for the shadow to the right and below, then crop every frame alike.
+    frame = (spec.frame[0] + SHADOW_ROOM[0], spec.frame[1] + SHADOW_ROOM[1])
+    pivot = spec.pivot
     rig.setup(*frame, pivot, samples=16 if preview else 24)
     figure = spec.build()
     passes = Passes(rig.shadow_catcher())
@@ -99,9 +105,17 @@ def render_unit(uid: str, out: str, preview: bool) -> None:
                 for p in PASSES:
                     passes.use(p)
                     path = os.path.join(tmp, f"{anim}_{facing}_{fr}_{p}.png")
-                    rig.render(path)
+                    _render(path)
                     rows[p][-1].append(path)
             row += 1
+    box = _crop_box([f for p in PASSES for r in rows[p] for f in r])
+    for p in PASSES:
+        for r in rows[p]:
+            for f in r:
+                Image.open(f).crop(box).save(f)
+    frame = (box[2] - box[0], box[3] - box[1])
+    pivot = (pivot[0] - box[0], pivot[1] - box[1])
+    meta["frame"], meta["pivot"] = list(frame), list(pivot)
     for p in PASSES:
         _sheet(rows[p], frame, os.path.join(dest, f"{p}.png"))
         if p != "color":
@@ -115,11 +129,20 @@ def render_unit(uid: str, out: str, preview: bool) -> None:
         json.dump(meta, fh, indent=1)
 
 
+def _render(path: str) -> None:
+    rig.render(path)
+    if path.endswith("shadow.png"):
+        img = Image.open(path).convert("RGBA")
+        img.putalpha(img.getchannel("A").point(lambda a: max(0, a - HAZE) * 255 // (255 - HAZE)))
+        img.save(path)
+
+
 def _crop_box(paths: list[str]) -> tuple[int, int, int, int]:
     """Union of the opaque areas of `paths`, with a small margin."""
     box = None
     for path in paths:
-        bb = Image.open(path).getchannel("A").point(lambda a: 255 if a > 3 else 0).getbbox()
+        cut = 3
+        bb = Image.open(path).getchannel("A").point(lambda a: 255 if a > cut else 0).getbbox()
         if bb is None:
             continue
         box = bb if box is None else (min(box[0], bb[0]), min(box[1], bb[1]), max(box[2], bb[2]), max(box[3], bb[3]))
@@ -138,12 +161,14 @@ def render_static(kind: str, uid: str, builder, cells, out: str, preview: bool, 
     if kind == "buildings":
         fw, fh = (cells, cells) if isinstance(cells, int) else cells
         span = fw + fh
-        width = 64 * span + 32 + int(tall * 32)
-        height = 32 * span + 48 + int(tall * 40)
-        pivot = (16 + 32 * span, height - 24 - 16 * span)
+        # Room above for the height, to the right and below for the shadow (0.58 of it).
+        width = 64 * span + 32 + int(tall * 34)
+        height = 32 * span + 48 + int(tall * 40) + int(tall * 16)
+        pivot = (16 + 32 * span, height - 24 - 16 * span - int(tall * 16))
         names = ["done"] if preview else stages.STAGES
     else:
-        width, height = 160, 400
+        fw, fh = 1, 1
+        width, height = 320, 560
         pivot = (64, 360)
         names = [""]
     dest = os.path.join(out, kind)
@@ -163,17 +188,17 @@ def render_static(kind: str, uid: str, builder, cells, out: str, preview: bool, 
                 continue  # nothing of a tree takes the player colour
             passes.use(p)
             path = os.path.join(dest, f"{prefix}{p}.png")
-            rig.render(path)
+            _render(path)
             written.append(path)
     meta = {"size": [width, height], "pivot": list(pivot), "scale": 0.5, "pivot_is": "centre of the footprint"}
+    box = _crop_box(written)
+    for path in written:
+        Image.open(path).crop(box).save(path, optimize=True)
+        if not path.endswith("_color.png"):
+            shrink.shrink(path)
+    meta["size"] = [box[2] - box[0], box[3] - box[1]]
+    meta["pivot"] = [pivot[0] - box[0], pivot[1] - box[1]]
     if kind == "buildings":
-        box = _crop_box(written)
-        for path in written:
-            Image.open(path).crop(box).save(path, optimize=True)
-            if not path.endswith("_color.png"):
-                shrink.shrink(path)
-        meta["size"] = [box[2] - box[0], box[3] - box[1]]
-        meta["pivot"] = [pivot[0] - box[0], pivot[1] - box[1]]
         meta["cells"] = [fw, fh]
         meta["stages"] = names
     else:
@@ -183,11 +208,13 @@ def render_static(kind: str, uid: str, builder, cells, out: str, preview: bool, 
 
 
 def render_deposit(uid: str, out: str, preview: bool) -> None:
-    """A map resource in DEPOSIT_VARIANTS variants: `deposits/<id>_<v>_{color,shadow}.png`."""
-    width, height, pivot = 160, 144, (72, 96)
+    """A map resource in DEPOSIT_VARIANTS variants: `deposits/<id>_<v>_{color,shadow}.png`,
+    all cropped alike."""
+    width, height, pivot = 160 + SHADOW_ROOM[0], 144 + SHADOW_ROOM[1], (72, 96)
     dest = os.path.join(out, "deposits")
     os.makedirs(dest, exist_ok=True)
     count = registry.DEPOSIT_VARIANTS[uid]
+    written = []
     for v in range(count):
         rig.reset()
         S.reset_materials()
@@ -196,10 +223,17 @@ def render_deposit(uid: str, out: str, preview: bool) -> None:
         passes = Passes(rig.shadow_catcher())
         for p in ("color", "shadow"):
             passes.use(p)
-            rig.render(os.path.join(dest, f"{uid}_{v}_{p}.png"))
+            path = os.path.join(dest, f"{uid}_{v}_{p}.png")
+            _render(path)
+            written.append(path)
+    box = _crop_box(written)
+    for path in written:
+        Image.open(path).crop(box).save(path, optimize=True)
+        if path.endswith("_shadow.png"):
+            shrink.shrink(path)
     with open(os.path.join(dest, f"{uid}.json"), "w") as fh:
-        json.dump({"size": [width, height], "pivot": list(pivot), "scale": 0.5, "variants": count,
-                   "pivot_is": "centre of the cell"}, fh, indent=1)
+        json.dump({"size": [box[2] - box[0], box[3] - box[1]], "pivot": [pivot[0] - box[0], pivot[1] - box[1]],
+                   "scale": 0.5, "variants": count, "pivot_is": "centre of the cell"}, fh, indent=1)
 
 
 def main(argv: list[str]) -> None:
