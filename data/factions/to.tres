@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"to"
-unit_ids = Array[StringName]([&"to_bombard", &"to_crossbow", &"to_field_gun", &"to_grand_master", &"to_guest_knight", &"to_halfbrother", &"to_handgunner", &"to_knecht", &"to_knight_brother", &"to_merc_horse", &"to_peasant", &"to_priest", &"to_prussian_rider", &"to_soldner", &"to_spy", &"to_tithe_collector", &"to_wagon"])
+unit_ids = Array[StringName]([&"hero_kuchmeister", &"to_bombard", &"to_crossbow", &"to_field_gun", &"to_grand_master", &"to_guest_knight", &"to_halfbrother", &"to_handgunner", &"to_knecht", &"to_knight_brother", &"to_merc_horse", &"to_peasant", &"to_priest", &"to_prussian_rider", &"to_soldner", &"to_spy", &"to_tithe_collector", &"to_wagon"])
 building_ids = Array[StringName]([&"to_barracks", &"to_brickworks", &"to_castle", &"to_dock", &"to_farm", &"to_field_camp", &"to_foundry", &"to_gate", &"to_granary", &"to_house", &"to_lumber_yard", &"to_market", &"to_mine", &"to_palisade", &"to_range", &"to_schnitzhaus", &"to_shrine", &"to_siege_workshop", &"to_smithy", &"to_stable", &"to_temple", &"to_tower", &"to_town_center", &"to_wall"])
 tech_ids = Array[StringName]([&"t_arrows", &"t_assay", &"t_banners", &"t_bloomery", &"t_cav_armor_1", &"t_cav_armor_2", &"t_horse_collar", &"t_inf_armor_1", &"t_inf_armor_2", &"t_powder", &"t_saw", &"t_three_field", &"t_to_arsenal", &"t_to_great_stud", &"t_to_mission", &"t_to_reliquary", &"t_to_rossdienst", &"t_to_toll", &"t_wagons", &"t_watch", &"t_weapons_1", &"t_weapons_2"])
 spell_ids = Array[StringName]([&"sp_consecration", &"sp_exorcism", &"sp_land_consecration", &"sp_relic"])

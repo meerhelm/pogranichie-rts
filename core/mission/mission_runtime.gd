@@ -1,0 +1,531 @@
+class_name MissionRuntime
+extends RefCounted
+## A mission being played (M9): its setup, its triggers and its own rules, inside the
+## simulation (Simulation.mission), so a saved game and a replay carry them. Simulation.step()
+## runs it after the players' commands of the tick; it orders units with the same commands a
+## player gives (applied at once, not logged: a replay keeps only the players' commands and
+## rebuilds the mission from its file). Integers only, triggers in file order.
+##
+## Conditions (`when`, a dictionary with `type`):
+##   start; fired {trigger}; after {trigger, ticks}; flag {flag}; difficulty {at_least};
+##   stock {player, res, at_least | at_most}; built {player, base} (a finished building of
+##   that kind laid after the setup); destroyed {building}; building_hp_below {building,
+##   permille}; near {player, at, radius, unit?}; group_near {group, at, radius};
+##   has_unit {player, unit}; age {player, at_least}; cast {player, spell} (its effect is on the
+##   map); group_dead / group_lost / group_exited {group}; places_held {player, count};
+##   any / all {of: [...]}; not {of}; for_ticks {ticks, of} (true for that long in a row; one
+##   per trigger).
+## Actions (`do`): objective {id, text?, state? (active, done, failed), optional?}; hint {text};
+##   dialogue {lines}; cutscene {id, at, lines}; ping {at, radius} (these four only reach the
+##   interface through `events`); spawn {group?, player, at, units, stance?, untouchable?};
+##   move / attack_move {group, to}; stance {group, stance}; exit {group, at, radius} (members
+##   that get there leave the map); take_stock {player, res, permille}; give_stock {player, res,
+##   amount}; lock / unlock {player, items}; flag {flag}; boats {on}; ignite {building};
+##   victory / defeat {text}.
+
+enum Outcome { NONE, VICTORY, DEFEAT }
+enum Objective { ACTIVE, DONE, FAILED }
+
+## Triggers and rules are checked every this many ticks (half a second), not every tick.
+const CHECK_EVERY := 10
+const STANCES := {
+	"aggressive": EntityStore.Stance.AGGRESSIVE,
+	"defensive": EntityStore.Stance.DEFENSIVE,
+	"stand": EntityStore.Stance.STAND,
+	"passive": EntityStore.Stance.PASSIVE,
+}
+const DIFFICULTIES: Array[String] = ["easy", "normal", "hard"]
+
+var def: MissionDef
+var difficulty := "normal"
+var entities: EntityStore
+var economy: EconomySystem
+var combat: CombatSystem
+var magic: MagicSystem
+var fire: FireSystem
+var victory: SkirmishVictory
+
+## Trigger id -> the tick it fired.
+var fired: Dictionary[String, int] = {}
+## Objectives in the order they were given, with their state, text and whether optional.
+var objectives: Array[String] = []
+var objective_state: Dictionary[String, int] = {}
+var objective_text: Dictionary[String, String] = {}
+var objective_optional: Dictionary[String, bool] = {}
+var flags: Dictionary[String, int] = {}
+## Named groups of units (ids as spawned; the dead stay in the list) and how many were spawned.
+var groups: Dictionary[String, PackedInt32Array] = {}
+## Groups ordered off the map: [x, y, radius] in fixed units; and how many left that way.
+var exits: Dictionary[String, PackedInt64Array] = {}
+var exited: Dictionary[String, int] = {}
+## Named buildings -> building id.
+var named: Dictionary[String, int] = {}
+## for_ticks counters, by trigger id.
+var counters: Dictionary[String, int] = {}
+## The last building id of the setup: later ones are the players'.
+var setup_buildings := 0
+var next_boat := -1
+var outcome := Outcome.NONE
+var outcome_text := ""
+## What the interface shows, in order: {kind, tick, ...} (kind: objective, hint, dialogue,
+## cutscene, ping, end). The interface keeps its own read position.
+var events: Array[Dictionary] = []
+
+var _apply: Callable
+var _spawn: Callable
+var _remove: Callable
+
+
+func _init(p_def: MissionDef, sim: Simulation, p_difficulty: String) -> void:
+	def = p_def
+	difficulty = p_difficulty
+	entities = sim.entities
+	economy = sim.economy
+	combat = sim.combat
+	magic = sim.magic
+	fire = sim.fire
+	victory = sim.victory
+	_apply = sim.apply_now
+	_spawn = sim.spawn_unit
+	_remove = sim.remove_unit
+
+
+func is_over() -> bool:
+	return outcome != Outcome.NONE
+
+
+# --- setup ----------------------------------------------------------------------------------
+
+
+## The mission's start: players, stock, locks, buildings, walls, units. Called once, at tick 0.
+func set_up(tick: int) -> void:
+	var s := def.setup
+	for entry: Array in def.players:
+		_apply.call(SimCommand.join(tick, entry[0], StringName(entry[1])))
+	var stock: Dictionary = s.get("stock", {})
+	for key: String in stock:
+		var state := economy.player(key.to_int())
+		if state != null:
+			var values: Array = stock[key]
+			state.stock = PackedInt64Array(values)
+	var locked: Dictionary = s.get("locked", {})
+	for key: String in locked:
+		_lock(key.to_int(), locked[key], true)
+	for b: Dictionary in s.get("buildings", []):
+		var id := _place(tick, b["player"], b["type"], b["at"][0], b["at"][1])
+		if id == 0:
+			push_warning("mission %s: cannot place %s at %s" % [def.id, b["type"], b["at"]])
+			continue
+		if b.has("name"):
+			named[b["name"]] = id
+		if b.get("wooden", false):
+			fire.wooden[id] = true
+	for w: Dictionary in s.get("walls", []):
+		var from: Array = w["from"]
+		var to: Array = w["to"]
+		for cell in BuildingPlacement.wall_cells(from[0], from[1], to[0], to[1]):
+			_place(tick, w["player"], w["type"], cell.x, cell.y)
+	for g: Dictionary in s.get("groups", []):
+		_spawn_group(tick, g)
+	for c: Array in s.get("consecrated", []):
+		magic.places.consecrated_by[c[0]] = named.get(c[1], 0)
+	setup_buildings = economy.buildings.next_id - 1
+
+
+func _place(tick: int, p: int, type: String, cx: int, cy: int) -> int:
+	var before := economy.buildings.next_id
+	var x := Fixed.from_cells(cx) + Fixed.HALF
+	var y := Fixed.from_cells(cy) + Fixed.HALF
+	_apply.call(SimCommand.place(tick, p, StringName(type), x, y))
+	return before if economy.buildings.next_id > before else 0
+
+
+## Units of a group stand in a square around `at`, row by row.
+func _spawn_group(tick: int, g: Dictionary) -> void:
+	var p: int = g["player"]
+	var at: Array = g["at"]
+	var units: Array = g["units"]
+	var total := 0
+	for u: Array in units:
+		total += int(u[1])
+	var cols := ceili(sqrt(float(total)))
+	var ids := PackedInt32Array()
+	var i := 0
+	for u: Array in units:
+		for k in int(u[1]):
+			var x := Fixed.from_cells(at[0] + i % cols) + Fixed.HALF
+			var y := Fixed.from_cells(at[1] + i / cols) + Fixed.HALF
+			var id: int = _spawn.call(StringName(u[0]), p, x, y)
+			if id != EntityStore.NO_ID:
+				ids.append(id)
+			i += 1
+	if g.has("stance"):
+		_apply.call(SimCommand.set_stance(tick, p, ids, STANCES[g["stance"]]))
+	if g.get("untouchable", false):
+		for id in ids:
+			combat.untouchable[id] = true
+	if g.has("group"):
+		groups[g["group"]] = ids
+	elif g.has("name"):
+		groups[g["name"]] = ids
+
+
+func _lock(p: int, items: Array, on: bool) -> void:
+	var state := economy.player(p)
+	if state == null:
+		return
+	for item: String in items:
+		if on:
+			state.locked[StringName(item)] = true
+		else:
+			state.locked.erase(StringName(item))
+
+
+# --- the mission step -----------------------------------------------------------------------
+
+
+func step(tick: int) -> void:
+	if is_over() or tick % CHECK_EVERY != 0:
+		return
+	_exits()
+	_hunger(tick)
+	_boats(tick)
+	for t: Dictionary in def.triggers:
+		var tid: String = t["id"]
+		if fired.has(tid):
+			continue
+		if test(t["when"], tid, tick):
+			fired[tid] = tick
+			for action: Dictionary in t["do"]:
+				run(action, tick)
+			if is_over():
+				return
+
+
+## Whether the condition holds now. `tid`: the trigger it belongs to (for for_ticks).
+func test(c: Dictionary, tid: String, tick: int) -> bool:
+	var ok := false
+	match c["type"]:
+		"start":
+			ok = true
+		"fired":
+			ok = fired.has(c["trigger"])
+		"after":
+			ok = fired.has(c["trigger"]) and tick >= fired[c["trigger"]] + int(c["ticks"])
+		"flag":
+			ok = flags.has(c["flag"])
+		"difficulty":
+			ok = DIFFICULTIES.find(difficulty) >= DIFFICULTIES.find(c["at_least"])
+		"stock":
+			ok = _stock(c)
+		"built":
+			ok = _built(c["player"], StringName(c["base"]))
+		"destroyed":
+			ok = not economy.buildings.is_alive(named.get(c["building"], 0))
+		"building_hp_below":
+			ok = _hp_below(named.get(c["building"], 0), int(c["permille"]))
+		"near":
+			ok = _near(c["player"], StringName(c.get("unit", "")), c["at"], c["radius"])
+		"group_near":
+			ok = _group_near(c["group"], c["at"], c["radius"])
+		"has_unit":
+			ok = _has_unit(c["player"], StringName(c["unit"]))
+		"age":
+			var state := economy.player(c["player"])
+			ok = state != null and state.age >= int(c["at_least"])
+		"cast":
+			ok = _cast(c["player"], StringName(c["spell"]))
+		"group_dead":
+			ok = groups.has(c["group"]) and alive_of(c["group"]).is_empty()
+		"group_lost":
+			var g: String = c["group"]
+			ok = groups.has(g) and alive_of(g).size() + exited.get(g, 0) < groups[g].size()
+		"group_exited":
+			ok = exited.get(c["group"], 0) > 0
+		"places_held":
+			ok = _places_held(c["player"]) >= int(c["count"])
+		"any":
+			for sub: Dictionary in c["of"]:
+				ok = ok or test(sub, tid, tick)
+		"all":
+			ok = true
+			for sub: Dictionary in c["of"]:
+				ok = ok and test(sub, tid, tick)
+		"not":
+			ok = not test(c["of"], tid, tick)
+		"for_ticks":
+			if test(c["of"], tid, tick):
+				counters[tid] = counters.get(tid, 0) + CHECK_EVERY
+			else:
+				counters[tid] = 0
+			ok = counters[tid] >= int(c["ticks"])
+		_:
+			push_warning("mission %s: unknown condition %s" % [def.id, c["type"]])
+	return ok
+
+
+func _hp_below(b: int, permille: int) -> bool:
+	var store := economy.buildings
+	return store.is_alive(b) and store.hp[b - 1] * 1000 < store.max_hp[b - 1] * permille
+
+
+func run(a: Dictionary, tick: int) -> void:
+	match a["do"]:
+		"objective":
+			_objective(a, tick)
+		"hint", "dialogue", "cutscene", "ping":
+			var e := a.duplicate(true)
+			e["kind"] = a["do"]
+			e.erase("do")
+			e["tick"] = tick
+			events.append(e)
+		"spawn":
+			_spawn_group(tick, a)
+		"move", "attack_move":
+			var ids := alive_of(a["group"])
+			if not ids.is_empty():
+				var to: Array = a["to"]
+				var x := Fixed.from_cells(to[0]) + Fixed.HALF
+				var y := Fixed.from_cells(to[1]) + Fixed.HALF
+				var owner := entities.owners[ids[0] - 1]
+				var cmd := SimCommand.move(tick, owner, ids, x, y)
+				if a["do"] == "attack_move":
+					cmd = SimCommand.attack_move(tick, owner, ids, x, y)
+				_apply.call(cmd)
+		"stance":
+			var ids := alive_of(a["group"])
+			if not ids.is_empty():
+				var owner := entities.owners[ids[0] - 1]
+				_apply.call(SimCommand.set_stance(tick, owner, ids, STANCES[a["stance"]]))
+		"exit":
+			var at: Array = a["at"]
+			exits[a["group"]] = PackedInt64Array(
+				[
+					Fixed.from_cells(at[0]) + Fixed.HALF,
+					Fixed.from_cells(at[1]) + Fixed.HALF,
+					Fixed.from_cells(a["radius"])
+				]
+			)
+		"take_stock":
+			var state := economy.player(a["player"])
+			if state != null:
+				var r := EconomySystem.RESOURCE_NAMES.find(StringName(a["res"]))
+				state.stock[r] -= state.stock[r] * int(a["permille"]) / 1000
+		"give_stock":
+			var state := economy.player(a["player"])
+			if state != null:
+				var r := EconomySystem.RESOURCE_NAMES.find(StringName(a["res"]))
+				state.stock[r] += int(a["amount"])
+		"lock", "unlock":
+			_lock(a["player"], a["items"], a["do"] == "lock")
+		"flag":
+			flags[a["flag"]] = tick
+		"boats":
+			next_boat = tick + int(def.rules["boats"]["every_ticks"]) if a["on"] else -1
+		"ignite":
+			fire.ignite(named.get(a["building"], 0))
+		"victory", "defeat":
+			_end(a["do"] == "victory", a.get("text", ""), tick)
+		_:
+			push_warning("mission %s: unknown action %s" % [def.id, a["do"]])
+
+
+func _objective(a: Dictionary, tick: int) -> void:
+	var oid: String = a["id"]
+	var state: int = Objective.ACTIVE
+	match a.get("state", "active"):
+		"done":
+			state = Objective.DONE
+		"failed":
+			state = Objective.FAILED
+	if not objective_state.has(oid):
+		if state != Objective.ACTIVE:
+			return
+		objectives.append(oid)
+		objective_text[oid] = a.get("text", "")
+		objective_optional[oid] = a.get("optional", false)
+	elif objective_state[oid] != Objective.ACTIVE:
+		# Done or failed stays so (an optional one cannot be both).
+		return
+	objective_state[oid] = state
+	events.append({"kind": "objective", "tick": tick, "id": oid, "state": state})
+
+
+func _end(won: bool, text: String, tick: int) -> void:
+	outcome = Outcome.VICTORY if won else Outcome.DEFEAT
+	outcome_text = text
+	var other := 0
+	for entry: Array in def.players:
+		if entry[0] != def.player:
+			other = entry[0]
+			break
+	victory.winner = def.player if won else other
+	victory.reason = SkirmishVictory.Reason.MISSION
+	victory.message = text
+	victory.end_tick = tick
+	events.append({"kind": "end", "tick": tick, "won": won, "text": text})
+
+
+# --- conditions -----------------------------------------------------------------------------
+
+
+## The group's members still alive, ascending.
+func alive_of(group: String) -> PackedInt32Array:
+	var out := PackedInt32Array()
+	var members: PackedInt32Array = groups.get(group, PackedInt32Array())
+	for id in members:
+		if entities.is_alive(id):
+			out.append(id)
+	out.sort()
+	return out
+
+
+func _stock(c: Dictionary) -> bool:
+	var state := economy.player(c["player"])
+	if state == null:
+		return false
+	var amount := state.stock[EconomySystem.RESOURCE_NAMES.find(StringName(c["res"]))]
+	if c.has("at_least") and amount < int(c["at_least"]):
+		return false
+	if c.has("at_most") and amount > int(c["at_most"]):
+		return false
+	return true
+
+
+func _built(p: int, base: StringName) -> bool:
+	var store := economy.buildings
+	for b in store.alive_ids:
+		if b > setup_buildings and store.owners[b - 1] == p and store.done[b - 1] == 1:
+			if store.defs[b - 1].base_id == base:
+				return true
+	return false
+
+
+func _near(p: int, unit: StringName, at: Array, radius: int) -> bool:
+	var x := Fixed.from_cells(at[0]) + Fixed.HALF
+	var y := Fixed.from_cells(at[1]) + Fixed.HALF
+	var r := Fixed.from_cells(radius)
+	var e := entities
+	for id in e.alive_ids:
+		var s := id - 1
+		if e.owners[s] != p or (unit != &"" and e.type_ids[s] != unit):
+			continue
+		if _dist_sq(e.pos_x[s] - x, e.pos_y[s] - y) <= r * r:
+			return true
+	return false
+
+
+func _group_near(group: String, at: Array, radius: int) -> bool:
+	var x := Fixed.from_cells(at[0]) + Fixed.HALF
+	var y := Fixed.from_cells(at[1]) + Fixed.HALF
+	var r := Fixed.from_cells(radius)
+	for id in alive_of(group):
+		if _dist_sq(entities.pos_x[id - 1] - x, entities.pos_y[id - 1] - y) <= r * r:
+			return true
+	return false
+
+
+func _has_unit(p: int, unit: StringName) -> bool:
+	for id in entities.alive_ids:
+		if entities.owners[id - 1] == p and entities.type_ids[id - 1] == unit:
+			return true
+	return false
+
+
+func _cast(p: int, spell: StringName) -> bool:
+	for i in magic.fx_ids.size():
+		if magic.fx_owner[i] == p and magic.spells[magic.fx_spell[i]].id == spell:
+			return true
+	return false
+
+
+func _places_held(p: int) -> int:
+	var n := 0
+	for i in magic.places.count():
+		if magic.places.holders[i] == p:
+			n += 1
+	return n
+
+
+static func _dist_sq(dx: int, dy: int) -> int:
+	return dx * dx + dy * dy
+
+
+# --- the mission's own rules ----------------------------------------------------------------
+
+
+## Members of a group with an exit that got there leave the map.
+func _exits() -> void:
+	var names := exits.keys()
+	names.sort()
+	for g: String in names:
+		var at := exits[g]
+		for id in alive_of(g):
+			var dx := entities.pos_x[id - 1] - at[0]
+			var dy := entities.pos_y[id - 1] - at[1]
+			if _dist_sq(dx, dy) <= at[2] * at[2]:
+				exited[g] = exited.get(g, 0) + 1
+				_remove.call(id)
+
+
+## Hunger (card: «стартовый запас еды мал и падает быстрее обычного»): every every_ticks the
+## player loses a food per units_per_food of their units, until the `until` trigger fires.
+func _hunger(tick: int) -> void:
+	var h: Dictionary = def.rules.get("hunger", {})
+	if h.is_empty() or fired.has(h["until"]) or tick == 0 or tick % int(h["every_ticks"]) != 0:
+		return
+	var p: int = h["player"]
+	var state := economy.player(p)
+	if state == null:
+		return
+	var n := 0
+	for id in entities.alive_ids:
+		if entities.owners[id - 1] == p:
+			n += 1
+	var eat := n / maxi(int(h["units_per_food"]), 1)
+	state.stock[EconomySystem.FOOD] = maxi(state.stock[EconomySystem.FOOD] - eat, 0)
+
+
+## Boats: once switched on, every every_ticks a boat lands `units` at the pier and they go to
+## `to`; the boats stop for good once `holder` stands at the pier with no one of the Order near.
+func _boats(tick: int) -> void:
+	var b: Dictionary = def.rules.get("boats", {})
+	if b.is_empty() or next_boat < 0 or flags.has("pier_closed"):
+		return
+	var pier: Array = b["pier"]
+	var holder := _near(b["holder"], &"", pier, b["radius"])
+	if holder and not _near(b["player"], &"", pier, b["radius"]):
+		flags["pier_closed"] = tick
+		next_boat = -1
+		return
+	if tick < next_boat:
+		return
+	next_boat = tick + int(b["every_ticks"])
+	var g := {"group": "boat_%d" % tick, "player": b["player"], "at": b["at"], "units": b["units"]}
+	_spawn_group(tick, g)
+	run({"do": "attack_move", "group": g["group"], "to": b["to"]}, tick)
+
+
+# --- state ----------------------------------------------------------------------------------
+
+
+func write_to(buf: StreamPeerBuffer) -> void:
+	buf.put_8(outcome)
+	buf.put_32(setup_buildings)
+	buf.put_64(next_boat)
+	buf.put_32(events.size())
+	for d: Dictionary in [fired, objective_state, flags, exited, named, counters]:
+		var keys := d.keys()
+		keys.sort()
+		buf.put_32(keys.size())
+		for k: String in keys:
+			buf.put_utf8_string(k)
+			buf.put_64(int(d[k]))
+	var names := groups.keys()
+	names.sort()
+	for g: String in names:
+		buf.put_utf8_string(g)
+		for id in groups[g]:
+			buf.put_32(id)
+	for oid in objectives:
+		buf.put_utf8_string(oid)

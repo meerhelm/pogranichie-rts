@@ -83,6 +83,8 @@ func can_queue(p: int, b: int, item: StringName) -> int:
 		fail = _age_fail(state, bdef, db.age(item))
 	if fail != EconomySystem.Fail.OK:
 		return fail
+	if state.locked.has(item):
+		return EconomySystem.Fail.LOCKED
 	if buildings.queues[b - 1].size() >= rules.queue_max:
 		return EconomySystem.Fail.QUEUE_FULL
 	if not state.can_pay(item_cost(p, b, item)):

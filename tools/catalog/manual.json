@@ -126,7 +126,7 @@
   }
  },
  "building_layout": {
-  "_source": "Not in the catalog: footprints in cells (w, h) are temporary, after AoE II. Tags: walkable = units walk over it (fields, hives); gate = lets its owner's units through; in_forest = every cell must be forest (ВКЛ: «Ставится в лесу»); no_age_count = does not count toward «2 постройки Удела» (temporary, after AoE II); brick_discount = cheaper while the owner has a building tagged brickworks (Орден → «Кирпич»: стены, башни и замки); power_place_only = only on a place of power (catalog, «Общие постройки» → shrine; M7); spell_recharge = own znakharki near it recharge faster (Алка «знахарки рядом перезаряжаются на 20% быстрее», magic_rules).",
+  "_source": "Not in the catalog: footprints in cells (w, h) are temporary, after AoE II. Tags: walkable = units walk over it (fields, hives); gate = lets its owner's units through; in_forest = every cell must be forest (ВКЛ: «Ставится в лесу»); no_age_count = does not count toward «2 постройки Удела» (temporary, after AoE II); brick_discount = cheaper while the owner has a building tagged brickworks (Орден → «Кирпич»: стены, башни и замки); power_place_only = only on a place of power (catalog, «Общие постройки» → shrine; M7); spell_recharge = own znakharki near it recharge faster (Алка «знахарки рядом перезаряжаются на 20% быстрее», magic_rules). fireproof = does not burn (M9; catalog «Городня»: «Камень и кирпич не горят» for the Order's brick castle, brickworks and the stone walls; fields are not buildings that burn, temporary).",
   "sizes": {
    "town_center": [4, 4],
    "house": [2, 2],
@@ -173,7 +173,7 @@
    "brickworks": ["to_brickworks"],
    "power_place_only": ["shrine"],
    "spell_recharge": ["gdl_shrine"],
-   "watch": ["tower", "palisade", "wall", "gate"]
+   "watch": ["tower", "palisade", "wall", "gate"], "fireproof": ["castle", "to_brickworks", "pl_wall", "to_wall", "farm"]
   },
   "_sight_source": "Fog of war (M6): how far a finished building sees, in cells → params.sight. Only mo_watchtower «Обзор 12» is from the catalog; the rest are temporary, after AoE II. watch tag = towers and walls for t_watch «Обзор башен и стен +2».",
   "sight": {
@@ -222,6 +222,34 @@
   "values": {
    "hold_all_places_ticks": 6000
   }
+ },
+ "fire_rules": {
+  "_source": "Arson and fire (M9; mission card ВКЛ 1 «Поджог»: деревянные стены и дома горят, огонь наносит урон со временем и перекидывается на соседние деревянные постройки, защитники тушат). From the catalog: zaseka_burn_ticks (ВКЛ → gdl_zaseka «огонь сжигает за 20 с»); that «горит медленно» exists (gdl_wall, mo_wall: tag burns_slowly) and that stone and brick do not burn (building_layout tag fireproof). Every other number is a guess for M9 (`_temporary`): ignite_ticks is the torch of any unit (Румбаудас «Поджог постройки за 5 с» is his own ability), burn_ticks is how long a fire takes to eat a building's full HP, slow_burn_permille scales that for burns_slowly, a fire tries to jump to each flammable building within spread_cells every spread_every_ticks with chance spread_permille, the owner's free units within douse_radius_cells come to put it out and need douse_ticks unit-ticks of work.",
+  "_temporary": ["ignite_ticks", "burn_ticks", "slow_burn_permille", "spread_every_ticks", "spread_cells", "spread_permille", "douse_radius_cells", "douse_ticks"],
+  "values": {
+   "ignite_ticks": 200,
+   "burn_ticks": 2400,
+   "slow_burn_permille": 500,
+   "zaseka_burn_ticks": 400,
+   "spread_every_ticks": 100,
+   "spread_cells": 2,
+   "spread_permille": 300,
+   "douse_radius_cells": 8,
+   "douse_ticks": 600
+  }
+ },
+ "heroes": {
+  "_source": "Heroes (M9): catalog «Герои: шаблоны» gives HP, damage, armor, speed, aura and the template ability; it says nothing of classes, reload or which side a hero is on. template_classes: mounted and sovereign ride as heavy cavalry, light as light cavalry (Румбаудас leads a cavalry troop), the lady and civilians go on foot; reload_ticks is 2,0 s like most units; factions are given only for the heroes the prototype loads.",
+  "_temporary": ["reload_ticks", "template_classes"],
+  "reload_ticks": 40,
+  "template_classes": {
+   "mounted": ["hero", "heavy_cavalry", "cavalry"],
+   "light": ["hero", "light_cavalry", "cavalry"],
+   "sovereign": ["hero", "heavy_cavalry", "cavalry"],
+   "lady": ["hero"],
+   "civilian": ["hero", "civilian"]
+  },
+  "factions": {"hero_gintaut": "gdl", "hero_rumbaudas": "gdl", "hero_keeper": "gdl", "hero_kuchmeister": "to"}
  },
  "spell_effects": {
   "_source": "How each spell is aimed (target_point: a point within magic_rules.cast_range of the caster; target_self: around the caster, moving with it; passive) and the effect the simulation runs (mist, dispel, relic, consecration), read from «Эффект» in «Заклинания». Spells without an entry are not in the game yet and cannot be cast.",

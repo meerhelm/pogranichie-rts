@@ -10,6 +10,7 @@ extends Node2D
 ## the y-sorted unit layer, so units and buildings hide each other by depth. Flat ones (farms,
 ## open deposits, ghosts) stay on this ground layer under the units. Without a depth layer
 ## everything is drawn here.
+## Fire (M9): a burning building has flickering flames on top, more as its HP falls.
 
 const DEPOSIT_COLORS := {
 	ResourceNodes.Source.IRON: Color(0.35, 0.22, 0.16),
@@ -20,6 +21,7 @@ const OK_COLOR := Color(0.3, 1.0, 0.3, 0.45)
 const BAD_COLOR := Color(1.0, 0.25, 0.2, 0.45)
 ## Screen height of a building per cell of its smaller side.
 const HEIGHT_PER_CELL := 10.0
+const FLAME_COLORS: Array[Color] = [Color(1.0, 0.55, 0.1, 0.85), Color(1.0, 0.85, 0.2, 0.75)]
 
 var sim: Simulation
 ## The building the local player has selected (BuildingStore id), outlined.
@@ -83,7 +85,7 @@ func _refresh() -> void:
 		var c: Color = DEPOSIT_COLORS.get(eco.nodes.sources[n - 1], Color.GRAY)
 		var at := Vector2(cell % sim.nav.width, cell / sim.nav.width)
 		var rect := Rect2(at + Vector2(0.15, 0.15), Vector2(0.7, 0.7))
-		_tall(StringName("n%d" % n), live, rect, c, 6.0, false, -1.0)
+		_tall(StringName("n%d" % n), live, rect, c, 6.0, false, -1.0, -1.0)
 	var b := eco.buildings
 	for id in b.alive_ids:
 		var s := id - 1
@@ -99,7 +101,8 @@ func _refresh() -> void:
 		var hp := float(b.hp[s]) / maxf(b.max_hp[s], 1.0)
 		if hp >= 1.0 and id != selected:
 			hp = -1.0
-		_tall(StringName("b%d" % id), live, rect, c, height, id == selected, hp)
+		var fire := _fire(id)
+		_tall(StringName("b%d" % id), live, rect, c, height, id == selected, hp, fire)
 	for key: StringName in _boxes.keys():
 		if not live.has(key):
 			_boxes[key].queue_free()
@@ -113,10 +116,13 @@ func _tall(
 	c: Color,
 	height: float,
 	outlined: bool,
-	hp: float
+	hp: float,
+	fire: float
 ) -> void:
 	if depth_layer == null:
-		_inline.append({rect = rect, color = c, height = height, outlined = outlined, hp = hp})
+		_inline.append(
+			{rect = rect, color = c, height = height, outlined = outlined, hp = hp, fire = fire}
+		)
 		return
 	live[key] = true
 	var box: BoxView = _boxes.get(key)
@@ -126,6 +132,7 @@ func _tall(
 		_boxes[key] = box
 		depth_layer.add_child(box)
 	box.set_box(rect, c, height, outlined, hp)
+	box.set_fire(fire, sim.tick)
 
 
 ## Whether the local player may see building `id` (others' stay as last seen).
@@ -137,6 +144,14 @@ func _shown(id: int) -> bool:
 		return false
 	_known[id] = true
 	return true
+
+
+## HP fraction of a burning building (for its flames), or -1 when it is not on fire.
+func _fire(id: int) -> float:
+	var b := sim.economy.buildings
+	if not sim.fire.is_burning(id):
+		return -1.0
+	return float(b.hp[id - 1]) / maxf(b.max_hp[id - 1], 1.0)
 
 
 func _progress(s: int) -> float:
@@ -179,6 +194,9 @@ func _draw() -> void:
 		if id == selected:
 			draw_outline(self, rect, Color(0.4, 1.0, 0.4))
 		var hp := float(b.hp[s]) / maxf(b.max_hp[s], 1.0)
+		var fire := _fire(id)
+		if fire >= 0.0:
+			draw_flames(self, rect, height, fire, sim.tick)
 		if hp >= 1.0 and id != selected:
 			hp = -1.0
 		_draw_hp(rect, height, hp)
@@ -188,6 +206,8 @@ func _draw() -> void:
 		draw_box(self, rect, t.color, height)
 		if t.outlined:
 			draw_outline(self, rect, Color(0.4, 1.0, 0.4))
+		if t.fire >= 0.0:
+			draw_flames(self, rect, height, t.fire, sim.tick)
 		_draw_hp(rect, height, t.hp)
 
 
@@ -207,6 +227,25 @@ func _draw_ghosts() -> void:
 	for i in ghost_line.size():
 		var col := OK_COLOR if ghost_line_ok[i] else BAD_COLOR
 		draw_box(_ghosts, Rect2(ghost_line[i], Vector2.ONE), col, 0.0)
+
+
+## Flames over the top of a burning building on `item`, a few per cell, taller as it burns
+## down (`hp` 0..1); `tick` makes them flicker.
+static func draw_flames(
+	item: CanvasItem, cells: Rect2, height: float, hp: float, tick: int
+) -> void:
+	var count := int(cells.size.x * cells.size.y) + 1
+	for i in count:
+		var fx := fposmod(i * 0.618, 1.0)
+		var fy := fposmod(i * 0.382 + 0.17, 1.0)
+		var at := Iso.cell_to_screen(cells.position + cells.size * Vector2(fx, fy))
+		at.y -= height
+		var flicker := 0.6 + 0.4 * sin(tick * 0.7 + i * 1.3)
+		var tall := (8.0 + 10.0 * (1.0 - hp)) * flicker
+		var c := FLAME_COLORS[(tick / 3 + i) % FLAME_COLORS.size()]
+		item.draw_colored_polygon(
+			PackedVector2Array([at + Vector2(-4, 0), at + Vector2(0, -tall), at + Vector2(4, 0)]), c
+		)
 
 
 ## A box over the cells on `item`: its top `height` pixels up, with darker sides.

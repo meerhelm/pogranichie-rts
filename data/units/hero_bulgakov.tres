@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="UnitDef" format=3]
+
+[ext_resource type="Script" path="res://core/data/unit_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"hero_bulgakov"
+faction = &""
+age = 0
+campaign_only = true
+trained_at = Array[StringName]([])
+spawned_by = &""
+cost_food = 0
+cost_wood = 0
+cost_iron = 0
+cost_silver = 0
+cost_power = 0
+cost_debt = 0
+train_ticks = 0
+pop = 0
+hp = 400
+damage = 16
+damage_type = &"melee"
+shots = 1
+reload_ticks = 40
+attack_range = 0
+min_range = 0
+armor_melee = 5
+armor_pierce = 5
+speed_milli = 1350
+morale = 0
+never_flees = true
+classes = Array[StringName]([&"hero", &"heavy_cavalry", &"cavalry"])
+bonuses = Dictionary[StringName, int]({})
+tags = Array[StringName]([&"rally_call"])
+params = Dictionary[StringName, int]({&"aura_morale": 15, &"aura_radius": 8, &"rally_call_cooldown_ticks": 1800, &"rally_call_morale": 30, &"rally_call_radius": 10})
+same_as = &""
+food_yield = 0
+lifetime_ticks = 0

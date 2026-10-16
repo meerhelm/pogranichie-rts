@@ -36,6 +36,9 @@ var progress := PackedInt32Array()
 var shrines := PackedInt32Array()
 ## 1 while the shrine is within reach of another side's consecration.
 var consecrated := PackedByteArray()
+## Sites a mission says another side has consecrated from afar (M9: «освящены орденом»): site ->
+## the building that does it; the site stays consecrated for others while it stands.
+var consecrated_by: Dictionary[int, int] = {}
 
 ## Unit and building ids that consecrate, and how far (sp_consecration).
 var _consecrators: Dictionary[StringName, bool] = {}
@@ -205,6 +208,9 @@ func _is_consecrated(i: int) -> bool:
 	if _consecrators.is_empty() or not buildings.is_done(b):
 		return false
 	var owner := buildings.owners[b - 1]
+	var far := consecrated_by.get(i, BuildingStore.NO_ID) as int
+	if buildings.is_alive(far) and buildings.owners[far - 1] != owner:
+		return true
 	var x := center_x(i)
 	var y := center_y(i)
 	for o in buildings.alive_ids:
@@ -257,3 +263,4 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_32(progress[i])
 		buf.put_32(shrines[i])
 		buf.put_8(consecrated[i])
+		buf.put_32(consecrated_by.get(i, 0))

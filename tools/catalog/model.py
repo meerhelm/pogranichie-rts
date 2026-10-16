@@ -9,6 +9,7 @@ Problems are collected in Report instead of stopping at the first one.
 from __future__ import annotations
 
 import re
+from collections.abc import Callable
 from dataclasses import dataclass, field
 
 from . import cells, rules
@@ -58,6 +59,11 @@ MAGIC_RULE_KEYS = (
 )
 # Skirmish victory (M8), in data/rules/skirmish.tres; values from manual.json.
 SKIRMISH_RULE_KEYS = ("hold_all_places_ticks",)
+# Arson and fire (M9), in data/rules/fire.tres; values from manual.json.
+FIRE_RULE_KEYS = (
+    "ignite_ticks", "burn_ticks", "slow_burn_permille", "zaseka_burn_ticks", "spread_every_ticks",
+    "spread_cells", "spread_permille", "douse_radius_cells", "douse_ticks",
+)
 # What a spell does in the game (manual.json → spell_effects, appended to SpellDef.tags): how it
 # is aimed and which effect the simulation runs. A prototype spell must have both or be passive.
 SPELL_TARGETS = ("target_point", "target_self", "passive")
@@ -196,6 +202,8 @@ SCHEMAS: dict[str, dict[str, str]] = {
     "MagicRulesDef": {"id": "name", **{k: "int" for k in MAGIC_RULE_KEYS}},
     # data/rules/skirmish.tres: how a skirmish is won (manual.json → skirmish_rules).
     "SkirmishRulesDef": {"id": "name", **{k: "int" for k in SKIRMISH_RULE_KEYS}},
+    # data/rules/fire.tres: arson, burning, spreading and putting out (manual.json → fire_rules).
+    "FireRulesDef": {"id": "name", **{k: "int" for k in FIRE_RULE_KEYS}},
     "CatalogIndex": {
         "exported_on": "text",
         "units": "names",
@@ -227,6 +235,7 @@ KIND_DIRS = {
     "VisionRulesDef": "rules",
     "MagicRulesDef": "rules",
     "SkirmishRulesDef": "rules",
+    "FireRulesDef": "rules",
 }
 
 
@@ -284,6 +293,7 @@ class Builder:
         self.vision: dict[str, dict] = {}
         self.magic: dict[str, dict] = {}
         self.skirmish: dict[str, dict] = {}
+        self.fire: dict[str, dict] = {}
         self.factions: dict[str, dict] = {}
         # (faction or "", lower-case building name) -> building id
         self.building_names: dict[tuple[str, str], str] = {}
@@ -479,6 +489,7 @@ class Builder:
                 self.unit_names[(row["faction"], row["name"].lower())] = uid
         self._creatures()
         self._resolve_same_as()
+        self.build_heroes()
 
     def _unit_cells(self, d: dict, row: dict, kind: str, where: str) -> None:
         d["hp"] = cells.integer(row["hp"])
@@ -565,6 +576,132 @@ class Builder:
             life = row["lifetime"].strip()
             if re.fullmatch(r"\d+", life):
                 d["lifetime_ticks"] = cells.ticks(life)
+
+    # --- heroes ---------------------------------------------------------------------
+
+    HERO_AURA = re.compile(r"\+(\d+)(?: духа)?(?P<defenders> обороняющимся)?, радиус (\d+)")
+    # Rules from the template's «Общее умение» and a hero's «Своё умение»: tags and params.
+    HeroRule = Callable[[re.Match[str]], tuple[list[str], dict[str, int]]]
+    HERO_ABILITIES: list[tuple[re.Pattern[str], HeroRule]] = [
+        (
+            re.compile(
+                r"«Ко мне!»: бегущие свои в радиусе (\d+) останавливаются с (\d+) духа, раз в (\d+) с"
+            ),
+            lambda m: (
+                ["rally_call"],
+                {
+                    "rally_call_radius": int(m[1]),
+                    "rally_call_morale": int(m[2]),
+                    "rally_call_cooldown_ticks": cells.ticks(m[3]),
+                },
+            ),
+        ),
+        (re.compile(r"В лесу невидим, пока не атакует"), lambda m: (["forest_stealth"], {})),
+        (
+            re.compile(r"Если ранен, вся армия теряет (\d+) духа"),
+            lambda m: (["wound_breaks_army"], {"wound_army_morale": int(m[1])}),
+        ),
+        (re.compile(r"Распоряжается казной и запасами"), lambda m: (["treasurer"], {})),
+        (
+            re.compile(r"Не дерётся; ИИ его не атакует, если миссия не говорит иного"),
+            lambda m: (["not_targeted"], {}),
+        ),
+        (
+            re.compile(r"Поджог постройки за (\d+) с"),
+            lambda m: (["arsonist"], {"ignite_ticks": cells.ticks(m[1])}),
+        ),
+    ]
+
+    def _hero_ability(self, text: str) -> tuple[list[str], dict[str, int]] | None:
+        text = text.strip()
+        if cells.is_empty(text):
+            return [], {}
+        for pattern, rule in self.HERO_ABILITIES:
+            m = pattern.fullmatch(text)
+            if m:
+                return rule(m)
+        return None
+
+    def build_heroes(self) -> None:
+        """Campaign heroes (catalog «Союзники, нейтралы, герои»): a UnitDef per hero.
+
+        The numbers come from the hero's template («Герои: шаблоны»); the hero row adds only its
+        own ability. Heroes have no price and no population, never flee (at 0 HP they are
+        wounded and leave the field) and are campaign-only. Classes per template, the reload
+        and the factions of heroes are not in the catalog: manual.json → heroes.
+        """
+        block = self.manual.get("heroes", {})
+        classes = block.get("template_classes", {})
+        templates: dict[str, dict] = {}
+        for row in self.cat.get("hero_templates", []):
+            tid = row["id"].removeprefix("hero_type_")
+            where = f"hero template {tid}"
+            d = _defaults("UnitDef")
+            try:
+                d["hp"] = cells.integer(row["hp"])
+                d["armor_melee"], d["armor_pierce"] = cells.armor(row["armor"])
+                d["speed_milli"] = cells.milli(row["speed"])
+                dmg = cells.damage(row["damage"])
+                if dmg:
+                    d["damage"], d["damage_type"], d["shots"] = dmg.amount, dmg.type, dmg.shots
+                    d["reload_ticks"] = block.get("reload_ticks", 0)
+            except CellError as err:
+                self.rep.error(where, str(err))
+            if not cells.is_empty(row["aura"]):
+                m = self.HERO_AURA.fullmatch(row["aura"].strip())
+                if m is None:
+                    self.rep.error(where, f"aura not understood: {row['aura']!r}")
+                else:
+                    d["params"]["aura_morale"] = int(m[1])
+                    d["params"]["aura_radius"] = int(m[3])
+                    if m["defenders"]:
+                        d["tags"].append("aura_defenders")
+            ability = self._hero_ability(row["ability"])
+            if ability is None:
+                self.rep.error(where, f"ability not understood: «{row['ability']}»")
+            else:
+                d["tags"] += ability[0]
+                d["params"].update(ability[1])
+            if tid not in classes:
+                self.rep.error(where, "no classes in manual.json heroes.template_classes")
+            d["classes"] = list(classes.get(tid, []))
+            templates[tid] = d
+        factions = block.get("factions", {})
+        for row in self.cat.get("heroes", []):
+            hid = row["id"]
+            where = f"hero {hid}"
+            if hid in self.units:
+                self.rep.error(where, "duplicate id")
+                continue
+            tid = row["template"].split(";")[0].strip()
+            if tid not in templates:
+                self.rep.error(where, f"unknown template {tid!r}")
+                continue
+            base = templates[tid]
+            d = _defaults("UnitDef")
+            for key in ("hp", "armor_melee", "armor_pierce", "speed_milli", "damage", "damage_type",
+                        "shots", "reload_ticks"):
+                d[key] = base[key]
+            d.update(
+                id=hid,
+                faction=factions.get(hid, ""),
+                campaign_only=True,
+                never_flees=True,
+                classes=list(base["classes"]),
+                tags=list(base["tags"]),
+                params=dict(base["params"]),
+            )
+            ability = self._hero_ability(row["ability"])
+            if ability is None:
+                # Abilities of other missions' heroes wait for their mission.
+                self.rep.pending.append(f"hero {hid}: «{row['ability'].strip()}»")
+            else:
+                d["tags"] += [t for t in ability[0] if t not in d["tags"]]
+                d["params"].update(ability[1])
+            self.units[hid] = d
+        for hid in factions:
+            if hid not in self.units:
+                self.rep.error("manual heroes", f"faction for unknown hero {hid!r}")
 
     # --- techs, spells, ages, power places -------------------------------------------
 
@@ -798,6 +935,7 @@ class Builder:
         self.skirmish["skirmish"] = self._rule_block(
             "skirmish", "SkirmishRulesDef", SKIRMISH_RULE_KEYS
         )
+        self.fire["fire"] = self._rule_block("fire", "FireRulesDef", FIRE_RULE_KEYS)
 
     def _rule_block(self, name: str, kind: str, keys: tuple[str, ...]) -> dict:
         block = self.manual.get(f"{name}_rules", {})
@@ -870,6 +1008,8 @@ class Builder:
             if tid not in block and tid not in block.get("_deferred", {}):
                 self.rep.error(f"prototype tech {tid}", "no effects and not deferred in manual.json")
         for uid in self.proto["units"]:
+            if uid in self.units and not self.units[uid]["faction"]:
+                self.rep.error(f"prototype unit {uid}", "no faction (heroes: manual.json heroes.factions)")
             sp = self.unit_specials.get(uid)
             if sp and sp.unparsed:
                 for clause in sp.unparsed:
@@ -935,4 +1075,5 @@ class Builder:
             "VisionRulesDef": self.vision,
             "MagicRulesDef": self.magic,
             "SkirmishRulesDef": self.skirmish,
+            "FireRulesDef": self.fire,
         }

@@ -11,7 +11,9 @@ extends RefCounted
 ## 5: M6 fog of war (units pick fights only with enemies their side can see).
 ## 6: M7 places of power, Сила, spells and healers; attacks are remembered (last_attack).
 ## 7: M8 match statistics (trained, lost, killed, built, gathered) and skirmish victory.
-const SIM_VERSION := 7
+## 8: M9 fire (arson, burning, spreading, dousing), heroes' own auras, mission locks and the
+## mission script (MissionRuntime) in the world.
+const SIM_VERSION := 8
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).
@@ -67,6 +69,10 @@ var vision: VisionSystem
 var magic: MagicSystem
 ## Who has won the skirmish (M8); off without the catalog's skirmish rules.
 var victory: SkirmishVictory
+## Arson and burning buildings (M9); off without the catalog's fire rules.
+var fire: FireSystem
+## The mission's script (M9): triggers, objectives and its own units' orders; null in a skirmish.
+var mission: MissionRuntime
 var data_version: String
 ## Every accepted command, in arrival order, for recording replays.
 var command_log: Array[SimCommand] = []
@@ -113,6 +119,7 @@ func _init(
 	combat.on_kill = _count_kill
 	vision.mist = magic.mist
 	victory = SkirmishVictory.new(db.skirmish if db != null else null, economy, magic.places)
+	fire = FireSystem.new(economy, rng, db.fire if db != null else null, stop_unit)
 
 
 ## Queues a command for its tick. Commands for a tick already simulated are refused,
@@ -129,8 +136,11 @@ func enqueue(cmd: SimCommand) -> bool:
 func step() -> void:
 	for cmd in queue.take_due(tick):
 		_apply(cmd)
+	if mission != null:
+		mission.step(tick)
 	combat.step(tick)
 	economy.step(tick)
+	fire.step(tick)
 	magic.step(tick)
 	_move_units()
 	combat.after_move()
@@ -164,10 +174,18 @@ func state_hash() -> String:
 	vision.write_to(buf)
 	magic.write_to(buf)
 	victory.write_to(buf)
+	fire.write_to(buf)
+	if mission != null:
+		mission.write_to(buf)
 	var ctx := HashingContext.new()
 	ctx.start(HashingContext.HASH_SHA256)
 	ctx.update(buf.data_array)
 	return ctx.finish().hex_encode()
+
+
+## The catalog the world was made with (null in tests without data).
+func catalog() -> CatalogDB:
+	return _db
 
 
 func clamp_x(x: int) -> int:
@@ -178,6 +196,12 @@ func clamp_y(y: int) -> int:
 	return clampi(y, 0, map_height - 1)
 
 
+## Applies a command at once, without logging it: the mission script orders its units this way
+## during its step (the same commands a player gives; replays keep only the players').
+func apply_now(cmd: SimCommand) -> void:
+	_apply(cmd)
+
+
 func _apply(cmd: SimCommand) -> void:
 	match cmd.kind:
 		SimCommand.Kind.SPAWN:
@@ -186,6 +210,7 @@ func _apply(cmd: SimCommand) -> void:
 			var ids := _obedient(cmd)
 			economy.drop_jobs(ids)
 			magic.drop_casts(ids)
+			fire.drop(ids)
 			_order_move(ids, clamp_x(cmd.x), clamp_y(cmd.y), cmd.formation)
 			for id in ids:
 				combat.on_move_order(id, cmd.kind == SimCommand.Kind.ATTACK_MOVE)
@@ -193,6 +218,7 @@ func _apply(cmd: SimCommand) -> void:
 			var ids := _obedient(cmd)
 			economy.drop_jobs(ids)
 			magic.drop_casts(ids)
+			fire.drop(ids)
 			for id in ids:
 				_stop(id)
 				combat.on_stop_order(id)
@@ -213,12 +239,22 @@ func _apply(cmd: SimCommand) -> void:
 			var ids := _obedient(cmd)
 			economy.drop_jobs(ids)
 			combat.drop_targets(ids)
+			fire.drop(ids)
 			magic.order(cmd, ids)
+		SimCommand.Kind.IGNITE:
+			var ids := _obedient(cmd)
+			economy.drop_jobs(ids)
+			combat.drop_targets(ids)
+			magic.drop_casts(ids)
+			for id in ids:
+				_stop(id)
+			fire.order(cmd, ids)
 		_:
 			var ids := _obedient(cmd)
 			if cmd.kind == SimCommand.Kind.ATTACK or cmd.kind == SimCommand.Kind.RETREAT:
 				economy.drop_jobs(ids)
 				magic.drop_casts(ids)
+				fire.drop(ids)
 			combat.order(cmd, ids)
 
 
@@ -227,6 +263,7 @@ func _economy_order(cmd: SimCommand) -> void:
 	var ids := _obedient(cmd)
 	combat.drop_targets(ids)
 	magic.drop_casts(ids)
+	fire.drop(ids)
 	for id in ids:
 		_stop(id)
 	economy.order(cmd, ids)
@@ -312,6 +349,7 @@ func remove_unit(id: int) -> void:
 		state.lost += 1
 	economy.on_remove(id)
 	vision.on_remove(id)
+	fire.on_remove(id)
 	_release_flow(id)
 	entities.remove(id)
 

@@ -19,6 +19,7 @@ const SKIP_FAILS: Array[int] = [
 	EconomySystem.Fail.FACTION,
 	EconomySystem.Fail.AGE,
 	EconomySystem.Fail.LIMIT,
+	EconomySystem.Fail.LOCKED,
 ]
 ## Free population to keep: this much, plus this much per building that trains.
 const POP_HEADROOM := 4

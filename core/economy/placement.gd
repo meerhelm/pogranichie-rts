@@ -91,6 +91,8 @@ func _rule_fail(state: PlayerState, def: BuildingDef, setup: bool) -> int:
 		return EconomySystem.Fail.OK
 	if def.campaign_only or def.age > state.age:
 		return EconomySystem.Fail.AGE
+	if state.locked.has(def.id):
+		return EconomySystem.Fail.LOCKED
 	return EconomySystem.Fail.OK
 
 

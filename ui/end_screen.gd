@@ -1,8 +1,9 @@
 class_name EndScreen
 extends Control
-## The end of a skirmish (M8): victory or defeat and why, the game time, and each side's
-## statistics side by side (units trained, lost and killed, buildings built and lost, what was
-## gathered, Сила gained). Opens over the paused game; back to the main menu or quit.
+## The end of a skirmish (M8) or a mission (M9): victory or defeat and why, the game time, and
+## each side's statistics side by side (units trained, lost and killed, buildings built and
+## lost, what was gathered, Сила gained). Opens over the paused game; back to the main menu or
+## quit.
 
 signal closed
 
@@ -83,6 +84,8 @@ func _fill() -> void:
 			why = tr("The capital and castles of the losing side are destroyed.")
 		SkirmishVictory.Reason.PLACES:
 			why = tr("All places of power held for five minutes.")
+		SkirmishVictory.Reason.MISSION:
+			why = tr(v.message)
 	_reason.text = "%s %s" % [why, tr("Game time: %s") % UiText.clock(v.end_tick + 1)]
 	_watch.text = tr("Keep watching")
 	_to_menu.text = tr("Main menu")

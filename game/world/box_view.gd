@@ -14,6 +14,10 @@ var height := 0.0
 var outlined := false
 ## HP bar fill 0..1; below zero means no bar.
 var hp := -1.0
+## On fire (M9): HP fraction for the flames, below zero when not burning; and the tick they
+## flicker with.
+var fire := -1.0
+var fire_tick := 0
 
 
 func set_box(
@@ -38,10 +42,21 @@ func set_box(
 	queue_redraw()
 
 
+## Flames flicker every tick while the building burns.
+func set_fire(p_fire: float, tick: int) -> void:
+	if p_fire < 0.0 and fire < 0.0:
+		return
+	fire = p_fire
+	fire_tick = tick
+	queue_redraw()
+
+
 func _draw() -> void:
 	BuildingLayer.draw_box(self, cells, color, height)
 	if outlined:
 		BuildingLayer.draw_outline(self, cells, Color(0.4, 1.0, 0.4))
+	if fire >= 0.0:
+		BuildingLayer.draw_flames(self, cells, height, fire, fire_tick)
 	if hp >= 0.0:
 		var top := Vector2(-16.0, -height - 10.0)
 		draw_rect(Rect2(top, Vector2(32.0, 3.0)), Color(0.15, 0.05, 0.05))

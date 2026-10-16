@@ -1,12 +1,18 @@
 extends Control
-## Main menu: start a skirmish (against the Order AI, easy or normal), settings, quit. The first
-## scene the game opens.
+## Main menu: start a skirmish (against the Order AI, easy or normal), the campaign mission
+## (M9, at the same difficulty), load a saved mission, settings, quit. The first scene the game
+## opens.
 
 const GAME_SCENE := "res://game/main.tscn"
+## The prototype's one campaign mission.
+const MISSION := "gdl_01"
 
 var _title := Label.new()
 var _subtitle := Label.new()
 var _skirmish := Button.new()
+var _campaign := Button.new()
+var _load := Button.new()
+var _saves := VBoxContainer.new()
 var _difficulty := OptionButton.new()
 var _settings_button := Button.new()
 var _quit := Button.new()
@@ -34,9 +40,12 @@ func _ready() -> void:
 	_menu.add_child(_title)
 	_subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_menu.add_child(_subtitle)
-	for b: Button in [_skirmish, _difficulty, _settings_button, _quit]:
+	for b: Button in [_campaign, _skirmish, _difficulty, _load, _settings_button, _quit]:
 		b.custom_minimum_size = Vector2(320, 48)
 		_menu.add_child(b)
+	_menu.add_child(_saves)
+	_campaign.pressed.connect(_on_campaign)
+	_load.pressed.connect(_list_saves)
 	for level in GameSettings.DIFFICULTIES:
 		_difficulty.add_item(String(level))
 	_difficulty.selected = maxi(GameSettings.DIFFICULTIES.find(GameSettings.ai_difficulty), 0)
@@ -65,6 +74,8 @@ func _retranslate() -> void:
 	_title.text = tr("Pogranichie")
 	_subtitle.text = tr("Grand Duchy of Lithuania against the Teutonic Order")
 	_skirmish.text = tr("Skirmish")
+	_campaign.text = tr("Campaign: %s") % tr(MissionDef.load_id(MISSION).title)
+	_load.text = tr("Load game")
 	_difficulty.set_item_text(0, tr("Opponent: easy"))
 	_difficulty.set_item_text(1, tr("Opponent: normal"))
 	_settings_button.text = tr("Settings")
@@ -82,4 +93,38 @@ func _on_difficulty(index: int) -> void:
 
 
 func _on_skirmish() -> void:
+	GameSettings.mission_id = ""
+	GameSettings.load_path = ""
 	get_tree().change_scene_to_file(GAME_SCENE)
+
+
+func _on_campaign() -> void:
+	GameSettings.mission_id = MISSION
+	GameSettings.mission_difficulty = String(GameSettings.ai_difficulty)
+	GameSettings.load_path = ""
+	get_tree().change_scene_to_file(GAME_SCENE)
+
+
+func _list_saves() -> void:
+	for child in _saves.get_children():
+		_saves.remove_child(child)
+		child.queue_free()
+	var paths := SimSave.list()
+	if paths.is_empty():
+		var none := Label.new()
+		none.text = tr("No saved games")
+		_saves.add_child(none)
+	for path in paths:
+		var head := SimSave.read_header(path)
+		var b := Button.new()
+		b.text = (
+			"%s · %s"
+			% [tr(str(head.get("title", path.get_file()))), UiText.clock(int(head.get("tick", 0)))]
+		)
+		b.pressed.connect(
+			func() -> void:
+				GameSettings.load_path = path
+				GameSettings.mission_id = str(head.get("mission_id", ""))
+				get_tree().change_scene_to_file(GAME_SCENE)
+		)
+		_saves.add_child(b)

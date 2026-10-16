@@ -1,0 +1,382 @@
+{
+ "_comment": "Mission «ВКЛ 1. Жемайтский огонь», phases 1-3 (mission card in the missions doc; phase 4, the Dubysa blockade, is not in the prototype: the final cutscene follows phase 3). Read by core/mission/mission_def.gd; the format is described there. Cells are map cells; ticks are 1/20 s. Every text is an English key translated through i18n/*.po (tools/i18n/extract.py collects them).",
+ "id": "gdl_01",
+ "title": "GDL 1. Samogitian Fire",
+ "map": "map_gdl_01",
+ "player": 1,
+ "players": [[1, "gdl"], [2, "to"]],
+ "camera": [124, 24],
+ "difficulties": ["easy", "normal"],
+ "setup": {
+  "stock": {"1": [100, 200, 50, 0], "2": [0, 0, 0, 0]},
+  "locked": {
+   "1": [
+    "gdl_shrine", "gdl_znakharka", "age_khorugv", "gdl_siege_workshop", "gdl_wagon",
+    "gdl_camp_servant", "gdl_castle_archer"
+   ]
+  },
+  "buildings": [
+   {"name": "village_tc", "player": 1, "type": "gdl_town_center", "at": [123, 18]},
+   {"player": 1, "type": "gdl_house", "at": [118, 14]},
+   {"player": 1, "type": "gdl_house", "at": [130, 14]},
+   {"player": 1, "type": "gdl_house", "at": [117, 24]},
+   {"name": "chapel", "player": 2, "type": "to_shrine", "at": [79, 75]},
+   {"name": "skir_castle", "player": 2, "type": "to_castle", "at": [98, 124], "wooden": true},
+   {"player": 2, "type": "to_house", "at": [94, 120]},
+   {"player": 2, "type": "to_house", "at": [103, 120]},
+   {"player": 2, "type": "to_house", "at": [94, 130]},
+   {"player": 2, "type": "to_house", "at": [103, 130]},
+   {"player": 2, "type": "to_gate", "at": [99, 118]},
+   {"player": 2, "type": "to_gate", "at": [100, 118]},
+   {"player": 2, "type": "to_gate", "at": [107, 129]},
+   {"player": 2, "type": "to_gate", "at": [107, 130]},
+   {"name": "dub_castle", "player": 2, "type": "to_castle", "at": [53, 126], "wooden": true},
+   {"player": 2, "type": "to_house", "at": [50, 123]},
+   {"player": 2, "type": "to_house", "at": [57, 123]},
+   {"player": 2, "type": "to_gate", "at": [54, 122]},
+   {"player": 2, "type": "to_gate", "at": [55, 122]},
+   {"player": 2, "type": "to_gate", "at": [60, 127]},
+   {"player": 2, "type": "to_gate", "at": [60, 128]}
+  ],
+  "walls": [
+   {"player": 1, "type": "gdl_palisade", "from": [114, 11], "to": [114, 19]},
+   {"player": 1, "type": "gdl_palisade", "from": [114, 22], "to": [114, 31]},
+   {"player": 1, "type": "gdl_palisade", "from": [115, 11], "to": [136, 11]},
+   {"player": 2, "type": "to_palisade", "from": [92, 118], "to": [107, 118]},
+   {"player": 2, "type": "to_palisade", "from": [92, 133], "to": [107, 133]},
+   {"player": 2, "type": "to_palisade", "from": [92, 119], "to": [92, 132]},
+   {"player": 2, "type": "to_palisade", "from": [107, 119], "to": [107, 132]},
+   {"player": 2, "type": "to_palisade", "from": [49, 122], "to": [60, 122]},
+   {"player": 2, "type": "to_palisade", "from": [49, 133], "to": [60, 133]},
+   {"player": 2, "type": "to_palisade", "from": [49, 123], "to": [49, 132]},
+   {"player": 2, "type": "to_palisade", "from": [60, 123], "to": [60, 132]}
+  ],
+  "groups": [
+   {"name": "gintaut", "player": 1, "units": [["hero_gintaut", 1]], "at": [126, 24]},
+   {"player": 1, "units": [["gdl_peasant", 6]], "at": [119, 22]},
+   {"player": 1, "units": [["gdl_spearman", 4]], "at": [128, 25]},
+   {"player": 0, "units": [["nt_elk", 3]], "at": [138, 24]},
+   {"player": 0, "units": [["nt_boar", 2]], "at": [104, 28]},
+   {"player": 0, "units": [["nt_elk", 2]], "at": [124, 44]},
+   {
+    "name": "grove_guard", "player": 2, "stance": "defensive", "at": [81, 72],
+    "units": [["to_priest", 1], ["to_knecht", 6], ["to_crossbow", 4]]
+   },
+   {
+    "name": "spring_watch", "player": 2, "stance": "defensive", "at": [109, 102],
+    "units": [["to_knecht", 3], ["to_crossbow", 2]]
+   },
+   {
+    "name": "skir_garrison", "player": 2, "stance": "defensive", "at": [95, 124],
+    "units": [["to_priest", 1], ["to_halfbrother", 6], ["to_knecht", 10], ["to_crossbow", 8]]
+   },
+   {
+    "name": "skir_knights", "player": 2, "stance": "stand", "at": [102, 128],
+    "units": [["to_knight_brother", 2]]
+   },
+   {
+    "name": "dub_garrison", "player": 2, "stance": "defensive", "at": [51, 128],
+    "units": [
+     ["hero_kuchmeister", 1], ["to_knight_brother", 3], ["to_halfbrother", 10],
+     ["to_knecht", 16], ["to_crossbow", 10]
+    ]
+   },
+   {
+    "name": "dub_riders", "player": 2, "stance": "defensive", "at": [63, 126],
+    "units": [["to_prussian_rider", 6]]
+   }
+  ],
+  "consecrated": [[1, "skir_castle"], [6, "dub_castle"]]
+ },
+ "rules": {
+  "hunger": {"player": 1, "every_ticks": 200, "units_per_food": 3, "until": "1.4"},
+  "boats": {
+   "player": 2, "every_ticks": 4800, "at": [113, 146], "to": [104, 128],
+   "units": [["to_knecht", 4]], "pier": [112, 140], "radius": 6, "holder": 1
+  }
+ },
+ "triggers": [
+  {
+   "id": "defeat_gintaut", "when": {"type": "group_dead", "group": "gintaut"},
+   "do": [{"do": "defeat", "text": "Gintaut is wounded. The uprising has lost its leader."}]
+  },
+  {
+   "id": "defeat_village", "when": {"type": "destroyed", "building": "village_tc"},
+   "do": [{"do": "defeat", "text": "The village has burned down."}]
+  },
+  {
+   "id": "defeat_hunger",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "difficulty", "at_least": "normal"},
+     {"type": "for_ticks", "ticks": 1200, "of": {"type": "stock", "player": 1, "res": "food", "at_most": 0}}
+    ]
+   },
+   "do": [{"do": "defeat", "text": "The village ran out of food and starved."}]
+  },
+  {
+   "id": "1.1", "when": {"type": "start"},
+   "do": [
+    {
+     "do": "cutscene", "id": "hungry_spring", "at": [124, 22],
+     "lines": [
+      ["Chronicler", "I was at Orsha and heard the guns roar. What I write below I heard from my grandfather, and he from his father. What is true here and what is a tale, judge for yourselves."],
+      ["Chronicler", "That year Samogitia was German. Vytautas gave it to the Order by treaty, and nobody asked us. Last winter there was hunger. King Jogaila sent us grain down the river, but the Germans stopped the boats and said they would feed Samogitia themselves."],
+      ["Chronicler", "Our great-grandfather Gintaut was neither prince nor lord. A boyar with three farmsteads, one horse and one grove where his grandfathers still prayed. And in the spring of fourteen hundred and nine he decided he would bear it no longer."],
+      ["hero_gintaut", "Bread first. Then the Germans."]
+     ]
+    },
+    {"do": "objective", "id": "food", "text": "Gather 300 food so the village lives through the summer"},
+    {"do": "dialogue", "lines": [["hero_gintaut", "There are fish in the lake and honey in the hives. The Germans cannot search the whole forest."]]},
+    {"do": "hint", "text": "Move the camera with the arrow keys or the screen edge. Drag to select units."},
+    {"do": "hint", "text": "Select peasants and right-click game to hunt. Fields by the forest and hives in it give food too."}
+   ]
+  },
+  {
+   "id": "1.2", "when": {"type": "built", "player": 1, "base": "house"},
+   "do": [{"do": "hint", "text": "A house feeds more mouths. Train peasants at the yard and build a granary near the food."}]
+  },
+  {
+   "id": "1.3",
+   "when": {
+    "type": "any",
+    "of": [{"type": "after", "trigger": "1.1", "ticks": 4800}, {"type": "stock", "player": 1, "res": "food", "at_least": 150}]
+   },
+   "do": [
+    {
+     "do": "spawn", "group": "tithe", "player": 2, "at": [113, 58], "stance": "passive", "untouchable": true,
+     "units": [["to_tithe_collector", 1], ["to_knecht", 4]]
+    },
+    {"do": "move", "group": "tithe", "to": [124, 27]},
+    {"do": "hint", "text": "The Order's tithe collector is coming up the road."}
+   ]
+  },
+  {
+   "id": "1.3b", "when": {"type": "group_near", "group": "tithe", "at": [124, 27], "radius": 5},
+   "do": [
+    {"do": "take_stock", "player": 1, "res": "food", "permille": 500},
+    {
+     "do": "dialogue", "id": "tithe",
+     "lines": [
+      ["Collector", "The lord vogt demands grain for the castles. You wanted to be protected, did you not?"],
+      ["hero_gintaut", "From whom?"],
+      ["Collector", "From the darkness you live in. Half of it. And all the rye."]
+     ]
+    },
+    {"do": "hint", "text": "Your people are not ready to fight yet. Gather your stores again."},
+    {"do": "move", "group": "tithe", "to": [100, 116]},
+    {"do": "exit", "group": "tithe", "at": [100, 116], "radius": 3}
+   ]
+  },
+  {
+   "id": "1.4",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "1.3b"}, {"type": "stock", "player": 1, "res": "food", "at_least": 300}]},
+   "do": [
+    {"do": "objective", "id": "food", "state": "done"},
+    {
+     "do": "cutscene", "id": "oaks_fall", "at": [80, 76],
+     "lines": [
+      ["Messenger", "Lord Gintaut, the Germans are in our grove. They are building a house for their god, and our oaks are going for logs."],
+      ["hero_gintaut", "They took the bread, now the grove. Take up your spears."]
+     ]
+    },
+    {"do": "objective", "id": "grove", "text": "Take back the sacred grove and lay an alka there"},
+    {"do": "ping", "at": [80, 76], "radius": 8}
+   ]
+  },
+  {
+   "id": "2.1",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "1.4"}, {"type": "near", "player": 1, "at": [80, 76], "radius": 16}]},
+   "do": [{"do": "hint", "text": "Archers among the trees are harder to hit. Let the spearmen hold the Order's men while your archers shoot from the forest."}]
+  },
+  {
+   "id": "2.2",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "1.4"}, {"type": "destroyed", "building": "chapel"}]},
+   "do": [
+    {"do": "spawn", "group": "keeper", "player": 1, "at": [82, 78], "untouchable": true, "units": [["hero_keeper", 1]]},
+    {
+     "do": "dialogue", "id": "fire_under_ash",
+     "lines": [
+      ["hero_keeper", "You took your time, son of Gintaut. For three days I kept the fire in a pot, the way our old women carry it from house to house."],
+      ["hero_gintaut", "They cut down the old oak."],
+      ["hero_keeper", "An oak can be cut down. But the place where it grew is still here. Set stones in a circle, as your grandfather did, and the fire will come back."]
+     ]
+    },
+    {"do": "unlock", "player": 1, "items": ["gdl_shrine"]},
+    {"do": "hint", "text": "Keep your units on the place of power with no enemies near to take it. Then peasants can lay an alka on it."}
+   ]
+  },
+  {
+   "id": "2.3",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "2.2"}, {"type": "built", "player": 1, "base": "shrine"}]},
+   "do": [
+    {"do": "objective", "id": "grove", "state": "done"},
+    {"do": "flag", "flag": "show_power"},
+    {"do": "unlock", "player": 1, "items": ["gdl_znakharka"]},
+    {"do": "give_stock", "player": 1, "res": "silver", "amount": 60},
+    {
+     "do": "dialogue", "id": "alka_lit",
+     "lines": [
+      ["hero_keeper", "Now listen. The land gives strength to whoever holds it. The Germans have their own strength, from books and the bones of saints. We have ours: from groves, from water, from the stones where the gods stood. Send me girls who know herbs. I will teach them to call the mist."]
+     ]
+    },
+    {"do": "hint", "text": "The alka gives Power. Every place of power you hold with an alka adds more; near the Order's castles and priests it gives less."},
+    {"do": "objective", "id": "places", "optional": true, "text": "Take all 7 places of power"}
+   ]
+  },
+  {
+   "id": "2.4",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "2.3"}, {"type": "has_unit", "player": 1, "unit": "gdl_znakharka"}]},
+   "do": [
+    {"do": "hint", "text": "The znakharka can call Bog Mist: your units in it cannot be seen until they attack."},
+    {"do": "objective", "id": "spring", "optional": true, "text": "Lead forest archers past the Order's watch to the spring"}
+   ]
+  },
+  {
+   "id": "2.4b",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "2.3"}, {"type": "cast", "player": 1, "spell": "sp_bog_mist"}]},
+   "do": [
+    {
+     "do": "dialogue",
+     "lines": [
+      ["Chronicler", "They say the mist rose from the bog in broad daylight, and a German patrol passed ten steps from our men and saw no one. Such mists do happen in Samogitia. But grandfather said that one was special."]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "2.4c",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "2.4"},
+     {"type": "near", "player": 1, "unit": "gdl_forest_archer", "at": [113, 107], "radius": 4}
+    ]
+   },
+   "do": [{"do": "objective", "id": "spring", "state": "done"}]
+  },
+  {
+   "id": "places",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "2.3"}, {"type": "places_held", "player": 1, "count": 7}]},
+   "do": [{"do": "objective", "id": "places", "state": "done"}]
+  },
+  {
+   "id": "3.1", "when": {"type": "after", "trigger": "2.3", "ticks": 3600},
+   "do": [
+    {"do": "spawn", "group": "riders", "player": 1, "at": [154, 63], "units": [["hero_rumbaudas", 1], ["gdl_light_horse", 8]]},
+    {"do": "move", "group": "riders", "to": [130, 46]},
+    {
+     "do": "cutscene", "id": "princes_man", "at": [150, 62],
+     "lines": [
+      ["hero_rumbaudas", "Are you the Gintaut who burned the chapel?"],
+      ["hero_gintaut", "And whose man are you?"],
+      ["hero_rumbaudas", "The prince's. Prince Vytautas has not sent us yet. But the Germans held back the king's grain, and now the prince says he did not send us far enough."],
+      ["hero_rumbaudas", "Where is the nearest German castle?"],
+      ["hero_gintaut", "Skirsnemune. A wooden one."],
+      ["hero_rumbaudas", "Wood burns well."]
+     ]
+    },
+    {"do": "unlock", "player": 1, "items": ["age_khorugv"]},
+    {"do": "objective", "id": "burn", "text": "Burn the castle of Skirsnemune"},
+    {"do": "objective", "id": "riders", "optional": true, "text": "Burn Skirsnemune without losing any of Rumbaudas's riders"},
+    {"do": "boats", "on": true},
+    {"do": "ping", "at": [100, 126], "radius": 10}
+   ]
+  },
+  {
+   "id": "convoy", "when": {"type": "after", "trigger": "3.1", "ticks": 2400},
+   "do": [
+    {"do": "spawn", "group": "convoy", "player": 2, "at": [62, 131], "stance": "passive", "units": [["to_peasant", 3]]},
+    {"do": "spawn", "group": "convoy_guard", "player": 2, "at": [62, 128], "stance": "defensive", "units": [["to_knecht", 2]]},
+    {"do": "move", "group": "convoy", "to": [112, 139]},
+    {"do": "move", "group": "convoy_guard", "to": [111, 137]},
+    {"do": "exit", "group": "convoy", "at": [112, 139], "radius": 3},
+    {"do": "objective", "id": "convoy", "optional": true, "text": "Intercept the Order's grain convoy on the river road"},
+    {"do": "ping", "at": [62, 131], "radius": 6}
+   ]
+  },
+  {
+   "id": "convoy_taken", "when": {"type": "all", "of": [{"type": "fired", "trigger": "convoy"}, {"type": "group_dead", "group": "convoy"}, {"type": "not", "of": {"type": "group_exited", "group": "convoy"}}]},
+   "do": [
+    {"do": "give_stock", "player": 1, "res": "food", "amount": 200},
+    {"do": "objective", "id": "convoy", "state": "done"}
+   ]
+  },
+  {
+   "id": "convoy_lost", "when": {"type": "group_exited", "group": "convoy"},
+   "do": [{"do": "objective", "id": "convoy", "state": "failed"}]
+  },
+  {
+   "id": "3.2", "when": {"type": "age", "player": 1, "at_least": 2},
+   "do": [{"do": "hint", "text": "Boyar lances strike hard in a charge. To set wood on fire, select units and Alt+right-click an enemy building: they will carry torches to it."}]
+  },
+  {
+   "id": "3.3",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "3.1"}, {"type": "near", "player": 1, "at": [112, 140], "radius": 10}]},
+   "do": [{"do": "hint", "text": "Hold the pier with no enemies near, and the boats with reinforcements will stop coming."}]
+  },
+  {
+   "id": "pier",
+   "when": {"type": "flag", "flag": "pier_closed"},
+   "do": [{"do": "hint", "text": "The pier is ours. No more boats will come to Skirsnemune."}]
+  },
+  {
+   "id": "3.4", "when": {"type": "building_hp_below", "building": "skir_castle", "permille": 500},
+   "do": [
+    {"do": "stance", "group": "skir_knights", "stance": "aggressive"},
+    {"do": "move", "group": "skir_knights", "to": [113, 146]},
+    {"do": "exit", "group": "skir_knights", "at": [113, 146], "radius": 3},
+    {"do": "dialogue", "lines": [["hero_rumbaudas", "The knights are coming out! Don't let them reach the boats!"]]},
+    {"do": "objective", "id": "knights", "optional": true, "text": "Do not let the knight brothers reach the boats"}
+   ]
+  },
+  {
+   "id": "knights_caught",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "3.4"}, {"type": "group_dead", "group": "skir_knights"}, {"type": "not", "of": {"type": "group_exited", "group": "skir_knights"}}]},
+   "do": [{"do": "objective", "id": "knights", "state": "done"}]
+  },
+  {
+   "id": "knights_gone", "when": {"type": "group_exited", "group": "skir_knights"},
+   "do": [{"do": "objective", "id": "knights", "state": "failed"}]
+  },
+  {
+   "id": "riders_lost",
+   "when": {"type": "all", "of": [{"type": "not", "of": {"type": "fired", "trigger": "3.5"}}, {"type": "group_lost", "group": "riders"}]},
+   "do": [{"do": "objective", "id": "riders", "state": "failed"}]
+  },
+  {
+   "id": "3.5", "when": {"type": "destroyed", "building": "skir_castle"},
+   "do": [
+    {"do": "objective", "id": "burn", "state": "done"},
+    {"do": "objective", "id": "riders", "state": "done"},
+    {
+     "do": "dialogue",
+     "lines": [
+      ["Chronicler", "The castle at Skirsnemune burned, and the knights who sat in it were killed. Both our books and the German ones write of it. But there was still Dubysa, where the vogt himself sat."]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "final", "when": {"type": "after", "trigger": "3.5", "ticks": 200},
+   "do": [
+    {
+     "do": "cutscene", "id": "vogt_leaves", "at": [55, 128],
+     "lines": [
+      ["Chronicler", "We never had to storm Dubysa. Vogt Michael set fire to his own castle so that we would not have it, and led his sick men away to Prussia. The Germans wrote of sickness. But in the Samogitian villages they said otherwise."],
+      ["hero_rumbaudas", "Now they will not come here, but to the king. This is no longer a revolt, Gintaut. This is a great war."],
+      ["hero_gintaut", "Did we start it?"],
+      ["hero_rumbaudas", "We lit it. Others stacked the firewood."],
+      ["Chronicler", "In August Master Ulrich declared war on King Jogaila and marched on Dobrzyń. In autumn they made a truce until Midsummer Day. All winter both sides forged spears. And our great-grandfather rode beyond the Neman for the first time in his life."]
+     ]
+    },
+    {"do": "ignite", "building": "dub_castle"}
+   ]
+  },
+  {
+   "id": "victory", "when": {"type": "after", "trigger": "final", "ticks": 100},
+   "do": [{"do": "victory", "text": "Skirsnemune has burned. Samogitia has risen."}]
+  }
+ ]
+}

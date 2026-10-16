@@ -7,6 +7,9 @@ Keys are of two kinds. Interface text is written in English in the code and wrap
 (or UiText.t() outside the scene tree); the English text is the key. Game names (units,
 buildings, techs, ages, factions) are their catalog ids, so the catalog and the translations
 cannot drift apart; their English names live in i18n/en.po like any other translation.
+Campaign missions (missions/<id>/mission.json, M9) give their title, objectives, hints, end
+texts and dialogue and cutscene lines as English keys; a speaker is a catalog id (a hero) or
+an English key.
 
 The check fails when
 - a string literal in game/ or ui/ looks like text for the player but is not passed to tr()
@@ -20,6 +23,7 @@ The check fails when
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import sys
 from dataclasses import dataclass, field
@@ -135,6 +139,27 @@ def catalog_keys(rep: Report) -> None:
             rep.key(key, f"catalog:{name}")
 
 
+def mission_texts(mission: dict) -> list[str]:
+    """Every text of a mission the player reads, as MissionDef.texts() lists them."""
+    out = [mission.get("title", "")]
+    for trigger in mission.get("triggers", []):
+        for action in trigger.get("do", []):
+            if "text" in action:
+                out.append(action["text"])
+            for speaker, line in action.get("lines", []):
+                out += [speaker, line]
+    return [t for t in out if t]
+
+
+def mission_keys(rep: Report, root: Path = ROOT) -> None:
+    for path in sorted((root / "missions").glob("*/mission.json")):
+        rel = path.relative_to(root).as_posix()
+        for text in mission_texts(json.loads(path.read_text(encoding="utf-8"))):
+            if '"' in text or "\\" in text:
+                rep.errors.append(f"{rel}: quotes and backslashes are not allowed in {text!r}")
+            rep.key(text, rel)
+
+
 def collect(root: Path = ROOT) -> Report:
     rep = Report()
     for d in SCAN_DIRS:
@@ -143,6 +168,7 @@ def collect(root: Path = ROOT) -> Report:
         for path in sorted((root / d).rglob("*.tscn")):
             scan_tscn(path, rep)
     catalog_keys(rep)
+    mission_keys(rep, root)
     return rep
 
 

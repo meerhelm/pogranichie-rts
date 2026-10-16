@@ -28,6 +28,7 @@ enum Kind {
 	CANCEL,
 	BUILDING_RALLY,
 	CAST,
+	IGNITE,
 }
 
 ## Kinds whose x and y are a point on the map.
@@ -64,8 +65,8 @@ var y2: int
 var type_id: StringName
 ## Formation.Kind for a group MOVE.
 var formation := 0
-## Unit to attack (ATTACK; optional for TURN); building for WORK and ASSAULT; node or animal
-## for GATHER.
+## Unit to attack (ATTACK; optional for TURN); building for WORK, ASSAULT and IGNITE; node or
+## animal for GATHER.
 var target := 0
 ## EntityStore.Stance for STANCE; 1 for a building turned on its side (PLACE, BUILD);
 ## EconomySystem.Target for GATHER; queue index for CANCEL.
@@ -321,6 +322,21 @@ static func cast(
 	c.type_id = spell
 	c.x = px
 	c.y = py
+	return c
+
+
+# --- fire (M9) -----------------------------------------------------------------------------
+
+
+## Set someone else's building on fire (FireSystem): the units walk up to it with torches, or
+## shoot fire arrows from their range.
+static func ignite(at_tick: int, by: int, units: PackedInt32Array, building: int) -> SimCommand:
+	var c := SimCommand.new()
+	c.tick = at_tick
+	c.player = by
+	c.kind = Kind.IGNITE
+	c.ids = units
+	c.target = building
 	return c
 
 

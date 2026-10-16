@@ -23,6 +23,11 @@ static var edge_scroll := true
 static var fullscreen := false
 ## AiProfile.difficulty of the skirmish opponent (ai/profiles/*_<difficulty>.tres).
 static var ai_difficulty: StringName = &"normal"
+## What the game scene opens (M9), set by the menus before switching to it: a campaign
+## mission by id (empty: a skirmish), and a save to load instead (empty: a new game).
+static var mission_id := ""
+static var mission_difficulty := "normal"
+static var load_path := ""
 static var _loaded := false
 
 

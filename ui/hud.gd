@@ -143,6 +143,8 @@ func refresh() -> void:
 		for r in 4:
 			_resources[r].text = "%s %d" % [UiText.resource(r), state.stock[r]]
 			_resources[r].tooltip_text = UiText.resource(r)
+		# A mission shows Power only once it has told the player about it (ВКЛ 1, trigger 2.3).
+		_power.visible = sim.mission == null or sim.mission.flags.has("show_power")
 		_power.text = "%s %d" % [UiText.resource(-1), state.power_points()]
 		_power.tooltip_text = (
 			tr("Power: from places of power and shrines")

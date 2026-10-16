@@ -72,6 +72,27 @@ class PoTest(unittest.TestCase):
         self.assertIn('msgid "Quit"\nmsgstr "Quit"', en, "English text is its own translation")
         self.assertIn('msgid "gdl_peasant"\nmsgstr ""', en, "names are written by hand")
 
+    def test_mission_texts_are_keys(self):
+        mission = {
+            "title": "GDL 1. Samogitian Fire",
+            "triggers": [
+                {
+                    "id": "1.1",
+                    "do": [
+                        {"do": "objective", "id": "food", "text": "Gather 300 food"},
+                        {"do": "dialogue", "lines": [["hero_gintaut", "Bread first."]]},
+                        {"do": "objective", "id": "food", "state": "done"},
+                    ],
+                }
+            ],
+        }
+        self.assertEqual(
+            extract.mission_texts(mission),
+            ["GDL 1. Samogitian Fire", "Gather 300 food", "hero_gintaut", "Bread first."],
+        )
+        rep = extract.collect()
+        self.assertIn("Gintaut is wounded. The uprising has lost its leader.", rep.keys)
+
     def test_the_project_passes(self):
         rep = extract.collect()
         self.assertEqual(rep.errors, [])

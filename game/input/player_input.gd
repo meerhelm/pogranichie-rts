@@ -16,6 +16,7 @@ extends Control
 ## Magic (M7): a spell button of the selected casters casts one aimed at its caster at once; one
 ## aimed at a point waits for a left click on the map (right click or Esc cancels). A shrine is
 ## laid on the place of power nearest the cursor.
+## Fire (M9): Alt+right click on an enemy building sends the selected units to set it on fire.
 
 signal formation_changed(kind: Formation.Kind)
 ## The selected building, the building being placed or its place changed (for the HUD).
@@ -59,6 +60,8 @@ var _last_group_ms := 0
 var _turned := false
 var _wall_from := Vector2i(-1, -1)
 var _cursor_cell := Vector2i.ZERO
+## Alt was held on the right click being handled (an enemy building is set on fire).
+var _torch := false
 
 
 func _ready() -> void:
@@ -137,6 +140,7 @@ func _mouse_button(mb: InputEventMouseButton) -> void:
 			return
 		if selection.ids.is_empty():
 			return
+		_torch = mb.alt_pressed
 		if _economy_order(mb.position, at):
 			return
 		var enemy := _enemy_at(mb.position)
@@ -259,6 +263,8 @@ func _building_command(b: int, workers: PackedInt32Array) -> SimCommand:
 	var store := sim.economy.buildings
 	var s := b - 1
 	if store.owners[s] != player:
+		if _torch:
+			return SimCommand.ignite(sim.tick, player, selection.ids, b)
 		return SimCommand.on_building(sim.tick, player, SimCommand.Kind.ASSAULT, selection.ids, b)
 	if workers.is_empty():
 		return null

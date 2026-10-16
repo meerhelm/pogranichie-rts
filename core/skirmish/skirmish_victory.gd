@@ -8,8 +8,11 @@ extends RefCounted
 ## A side counts as out only once it has had a finished capital, so a player who has not set up
 ## yet (or a test without town centres) is never knocked out. With fewer than two players there
 ## is nobody to win against and nothing ends.
+##
+## In a mission (M9) these rules are off (no rules): the mission's script ends the game and
+## fills in winner, reason MISSION, its end text (message) and end_tick.
 
-enum Reason { NONE, CONQUEST, PLACES }
+enum Reason { NONE, CONQUEST, PLACES, MISSION }
 
 ## BuildingDef.base_id of the buildings a side must keep: «столица и замки».
 const CAPITALS: Array[StringName] = [&"town_center", &"castle"]
@@ -20,6 +23,8 @@ var places: PowerPlaces
 ## The winning player once the game is over; 0 while it goes on or when all sides fell at once.
 var winner := 0
 var reason := Reason.NONE
+## The mission's end text (an English key), for reason MISSION.
+var message := ""
 ## Tick the game ended, -1 while it goes on.
 var end_tick := -1
 ## Players who are out -> the tick they lost their last capital.

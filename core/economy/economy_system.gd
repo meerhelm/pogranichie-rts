@@ -35,6 +35,7 @@ enum Fail {
 	QUEUE_FULL,
 	LIMIT,
 	CONDITION,
+	LOCKED,
 }
 
 const FOOD := 0
@@ -605,7 +606,7 @@ func _rect_distance_sq(px: int, py: int, x0: int, y0: int, w: int, h: int) -> in
 
 
 ## Walks to a building and reports whether the unit is at it.
-func _to_building(id: int, b: int, reach: int = -1) -> bool:
+func to_building(id: int, b: int, reach: int = -1) -> bool:
 	var s := b - 1
 	var r := _reach() if reach < 0 else reach
 	var slot := id - 1
@@ -771,7 +772,7 @@ func _to_resource(id: int) -> bool:
 	var r := _reach()
 	match job_target[slot]:
 		Target.BUILDING:
-			return _to_building(id, ref)
+			return to_building(id, ref)
 		Target.CELL:
 			var near := _rect_distance_sq(px, py, ref % nav.width, ref / nav.width, 1, 1) <= r * r
 			return _approach(id, nav.center_x(ref), nav.center_y(ref), near)
@@ -794,7 +795,7 @@ func _carry_home(id: int) -> void:
 		if entities.orders[slot] == EntityStore.Order.MOVE:
 			_stop.call(id)
 		return
-	if not _to_building(id, drop):
+	if not to_building(id, drop):
 		return
 	var state: PlayerState = players.get(entities.owners[slot])
 	if state != null and res >= 0:
@@ -859,7 +860,7 @@ func _build(id: int) -> void:
 		job_ref[slot] = next
 		tries[slot] = 0
 		b = next
-	if not _to_building(id, b):
+	if not to_building(id, b):
 		return
 	phase[slot] = Phase.WORK
 	_builders[b] = _builders.get(b, 0) + 1
@@ -947,7 +948,7 @@ func _assault(id: int) -> void:
 	var reach := _reach()
 	if def.attack_range > 0:
 		reach = Fixed.from_cells(def.attack_range + entities.up_range[slot])
-	if not _to_building(id, b, reach):
+	if not to_building(id, b, reach):
 		return
 	if entities.cooldown[slot] > 0:
 		return

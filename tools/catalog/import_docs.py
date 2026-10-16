@@ -151,6 +151,16 @@ CREATURE_COLUMNS = {
 
 TERRAIN_COLUMNS = {"id": "id", "Тайл": "name", "Проходимость": "passability", "Особое": "special"}
 
+HERO_TEMPLATE_COLUMNS = {
+    "Шаблон": "id",
+    "HP": "hp",
+    "Урон": "damage",
+    "Броня": "armor",
+    "Скор.": "speed",
+    "Аура": "aura",
+    "Общее умение": "ability",
+}
+
 HERO_COLUMNS = {
     "id": "id",
     "Герой": "name",
@@ -179,6 +189,7 @@ TABLES = [
     ("moscow.md", "Уникальные технологии", "techs", TECH_COLUMNS, "mo"),
     ("allies.md", "Особые отряды", "neutral_units", NEUTRAL_UNIT_COLUMNS, "nt"),
     ("allies.md", "Звери", "animals", ANIMAL_COLUMNS, "nt"),
+    ("allies.md", "Герои: шаблоны", "hero_templates", HERO_TEMPLATE_COLUMNS, None),
     ("allies.md", "Герои кампаний", "heroes", HERO_COLUMNS, None),
     ("magic.md", "Места силы", "power_places", POWER_PLACE_COLUMNS, None),
     ("magic.md", "Святилища", "shrines", SHRINE_COLUMNS, None),

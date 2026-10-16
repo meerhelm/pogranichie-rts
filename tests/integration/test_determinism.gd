@@ -1,6 +1,7 @@
 extends GutTest
 ## M2 acceptance: the same seed and commands give the same state hash every time, and
-## recorded replays play back to the same hashes (on every OS CI runs on).
+## recorded replays play back to the same hashes (on every OS CI runs on). A campaign mission's
+## replay (M9) must also end in victory.
 
 const REPLAY_DIR := "res://tests/replays"
 const RUNS := 10
@@ -82,5 +83,8 @@ func test_recorded_replays_play_back() -> void:
 				% [file, result.first_mismatch_tick, result.expected_hash, result.actual_hash]
 			)
 		)
+		if not replay.mission_id.is_empty():
+			var won := MissionRuntime.Outcome.VICTORY
+			assert_eq(result.mission_outcome, won, "%s: the mission is won" % file)
 		played += 1
 	assert_gt(played, 0, "no replays in %s" % REPLAY_DIR)

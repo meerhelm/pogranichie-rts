@@ -27,8 +27,16 @@ msgstr ""
 msgid "(%d s)"
 msgstr ""
 
+#: ui/mission_panel.gd
+msgid "(optional) %s"
+msgstr ""
+
 #: ui/hud.gd
 msgid "+%s a second"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "A house feeds more mouths. Train peasants at the yard and build a granary near the food."
 msgstr ""
 
 #: ui/end_screen.gd
@@ -47,6 +55,22 @@ msgstr ""
 msgid "Always on"
 msgstr ""
 
+#: missions/gdl_01/mission.json
+msgid "An oak can be cut down. But the place where it grew is still here. Set stones in a circle, as your grandfather did, and the fire will come back."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "And whose man are you?"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Archers among the trees are harder to hit. Let the spearmen hold the Order's men while your archers shoot from the forest."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Are you the Gintaut who burned the chapel?"
+msgstr ""
+
 #: ui/unit_card.gd
 msgid "Armor %d melee / %d pierce"
 msgstr ""
@@ -59,12 +83,32 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
+#: missions/gdl_01/mission.json
+msgid "Boyar lances strike hard in a charge. To set wood on fire, select units and Alt+right-click an enemy building: they will carry torches to it."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Bread first. Then the Germans."
+msgstr ""
+
 #: ui/end_screen.gd
 msgid "Buildings built"
 msgstr ""
 
 #: ui/end_screen.gd
 msgid "Buildings lost"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Burn Skirsnemune without losing any of Rumbaudas's riders"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Burn the castle of Skirsnemune"
+msgstr ""
+
+#: ui/main_menu.gd
+msgid "Campaign: %s"
 msgstr ""
 
 #: ui/command_panel.gd
@@ -79,6 +123,14 @@ msgstr ""
 msgid "Carries %d %s"
 msgstr ""
 
+#: missions/gdl_01/mission.json
+msgid "Chronicler"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Collector"
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Column"
 msgstr ""
@@ -89,6 +141,10 @@ msgstr ""
 
 #: ui/command_panel.gd
 msgid "Cooldown %d s"
+msgstr ""
+
+#: game/main.gd
+msgid "Could not save the game"
 msgstr ""
 
 #: ui/unit_card.gd
@@ -103,8 +159,16 @@ msgstr ""
 msgid "Defensive"
 msgstr ""
 
+#: missions/gdl_01/mission.json
+msgid "Did we start it?"
+msgstr ""
+
 #: ui/command_panel.gd
 msgid "Dismount"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Do not let the knight brothers reach the boats"
 msgstr ""
 
 #: ui/end_screen.gd
@@ -139,12 +203,36 @@ msgstr ""
 msgid "Formation: %s (%s)"
 msgstr ""
 
+#: missions/gdl_01/mission.json
+msgid "From the darkness you live in. Half of it. And all the rye."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "From whom?"
+msgstr ""
+
 #: ui/settings_panel.gd
 msgid "Fullscreen"
 msgstr ""
 
+#: missions/gdl_01/mission.json
+msgid "GDL 1. Samogitian Fire"
+msgstr ""
+
+#: game/main.gd
+msgid "Game saved"
+msgstr ""
+
 #: ui/end_screen.gd
 msgid "Game time: %s"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Gather 300 food so the village lives through the summer"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Gintaut is wounded. The uprising has lost its leader."
 msgstr ""
 
 #: ui/main_menu.gd
@@ -159,12 +247,28 @@ msgstr ""
 msgid "Hidden in the forest"
 msgstr ""
 
+#: missions/gdl_01/mission.json
+msgid "Hold the pier with no enemies near, and the boats with reinforcements will stop coming."
+msgstr ""
+
 #: ui/unit_card.gd
 msgid "Houses %d"
 msgstr ""
 
+#: missions/gdl_01/mission.json
+msgid "I was at Orsha and heard the guns roar. What I write below I heard from my grandfather, and he from his father. What is true here and what is a tale, judge for yourselves."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "In August Master Ulrich declared war on King Jogaila and marched on Dobrzyń. In autumn they made a truce until Midsummer Day. All winter both sides forged spears. And our great-grandfather rode beyond the Neman for the first time in his life."
+msgstr ""
+
 #: ui/unit_card.gd
 msgid "In work: %s, %d%%"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Intercept the Order's grain convoy on the river road"
 msgstr ""
 
 #: ui/ui_text.gd
@@ -175,8 +279,16 @@ msgstr ""
 msgid "Keep watching"
 msgstr ""
 
+#: missions/gdl_01/mission.json
+msgid "Keep your units on the place of power with no enemies near to take it. Then peasants can lay an alka on it."
+msgstr ""
+
 #: ui/settings_panel.gd
 msgid "Language"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Lead forest archers past the Order's watch to the spring"
 msgstr ""
 
 #: game/arena/arena.gd
@@ -192,6 +304,15 @@ msgstr ""
 msgid "Lithuanian retreat"
 msgstr ""
 
+#: ui/main_menu.gd
+#: ui/pause_menu.gd
+msgid "Load game"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Lord Gintaut, the Germans are in our grove. They are building a house for their god, and our oaks are going for logs."
+msgstr ""
+
 #: ui/end_screen.gd
 #: ui/pause_menu.gd
 msgid "Main menu"
@@ -201,12 +322,20 @@ msgstr ""
 msgid "Menu (F10)"
 msgstr ""
 
+#: missions/gdl_01/mission.json
+msgid "Messenger"
+msgstr ""
+
 #: ui/unit_card.gd
 msgid "Morale %d/%d"
 msgstr ""
 
 #: ui/unit_card.gd
 msgid "Morale: never flees"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Move the camera with the arrow keys or the screen edge. Drag to select units."
 msgstr ""
 
 #: ui/ui_text.gd
@@ -221,8 +350,17 @@ msgstr ""
 msgid "Needs forest nearby"
 msgstr ""
 
+#: ui/main_menu.gd
+#: ui/pause_menu.gd
+msgid "No saved games"
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Not available"
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "Not available yet in this mission"
 msgstr ""
 
 #: ui/ui_text.gd
@@ -245,6 +383,18 @@ msgstr ""
 msgid "Nothing selected"
 msgstr ""
 
+#: missions/gdl_01/mission.json
+msgid "Now listen. The land gives strength to whoever holds it. The Germans have their own strength, from books and the bones of saints. We have ours: from groves, from water, from the stones where the gods stood. Send me girls who know herbs. I will teach them to call the mist."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Now they will not come here, but to the king. This is no longer a revolt, Gintaut. This is a great war."
+msgstr ""
+
+#: ui/mission_panel.gd
+msgid "Objectives"
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Off the map"
 msgstr ""
@@ -259,6 +409,10 @@ msgstr ""
 
 #: ui/main_menu.gd
 msgid "Opponent: normal"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Our great-grandfather Gintaut was neither prince nor lord. A boyar with three farmsteads, one horse and one grove where his grandfathers still prayed. And in the spring of fourteen hundred and nine he decided he would bear it no longer."
 msgstr ""
 
 #: ui/ui_text.gd
@@ -319,8 +473,16 @@ msgstr ""
 msgid "Right click: rally point"
 msgstr ""
 
+#: ui/pause_menu.gd
+msgid "Save game"
+msgstr ""
+
 #: ui/settings_panel.gd
 msgid "Scroll at the screen edge"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Select peasants and right-click game to hunt. Fields by the forest and hives in it give food too."
 msgstr ""
 
 #: ui/main_menu.gd
@@ -339,6 +501,14 @@ msgstr ""
 
 #: ui/main_menu.gd
 msgid "Skirmish"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Skirsnemune has burned. Samogitia has risen."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Skirsnemune. A wooden one."
 msgstr ""
 
 #: ui/unit_card.gd
@@ -361,16 +531,84 @@ msgstr ""
 msgid "Stop (H)"
 msgstr ""
 
+#: missions/gdl_01/mission.json
+msgid "Take all 7 places of power"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Take back the sacred grove and lay an alka there"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "That year Samogitia was German. Vytautas gave it to the Order by treaty, and nobody asked us. Last winter there was hunger. King Jogaila sent us grain down the river, but the Germans stopped the boats and said they would feed Samogitia themselves."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "The Order's tithe collector is coming up the road."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "The alka gives Power. Every place of power you hold with an alka adds more; near the Order's castles and priests it gives less."
+msgstr ""
+
 #: ui/end_screen.gd
 msgid "The capital and castles of the losing side are destroyed."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "The castle at Skirsnemune burned, and the knights who sat in it were killed. Both our books and the German ones write of it. But there was still Dubysa, where the vogt himself sat."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "The knights are coming out! Don't let them reach the boats!"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "The lord vogt demands grain for the castles. You wanted to be protected, did you not?"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "The pier is ours. No more boats will come to Skirsnemune."
 msgstr ""
 
 #: ui/ui_text.gd
 msgid "The place is taken"
 msgstr ""
 
+#: missions/gdl_01/mission.json
+msgid "The prince's. Prince Vytautas has not sent us yet. But the Germans held back the king's grain, and now the prince says he did not send us far enough."
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "The queue is full"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "The village has burned down."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "The village ran out of food and starved."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "The znakharka can call Bog Mist: your units in it cannot be seen until they attack."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "There are fish in the lake and honey in the hives. The Germans cannot search the whole forest."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "They cut down the old oak."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "They say the mist rose from the bog in broad daylight, and a German patrol passed ten steps from our men and saw no one. Such mists do happen in Samogitia. But grandfather said that one was special."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "They took the bread, now the grove. Take up your spears."
 msgstr ""
 
 #: game/arena/arena.gd
@@ -405,12 +643,36 @@ msgstr ""
 msgid "Wavering"
 msgstr ""
 
+#: missions/gdl_01/mission.json
+msgid "We lit it. Others stacked the firewood."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "We never had to storm Dubysa. Vogt Michael set fire to his own castle so that we would not have it, and led his sick men away to Prussia. The Germans wrote of sickness. But in the Samogitian villages they said otherwise."
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Wedge"
 msgstr ""
 
+#: missions/gdl_01/mission.json
+msgid "Where is the nearest German castle?"
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Wood"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Wood burns well."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "You took your time, son of Gintaut. For three days I kept the fire in a pot, the way our old women carry it from house to house."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Your people are not ready to fight yet. Gather your stores again."
 msgstr ""
 
 #: catalog:ages
@@ -535,6 +797,25 @@ msgstr ""
 
 #: catalog:prototype_units
 msgid "gdl_znakharka"
+msgstr ""
+
+#: catalog:prototype_units
+#: missions/gdl_01/mission.json
+msgid "hero_gintaut"
+msgstr ""
+
+#: catalog:prototype_units
+#: missions/gdl_01/mission.json
+msgid "hero_keeper"
+msgstr ""
+
+#: catalog:prototype_units
+msgid "hero_kuchmeister"
+msgstr ""
+
+#: catalog:prototype_units
+#: missions/gdl_01/mission.json
+msgid "hero_rumbaudas"
 msgstr ""
 
 #: ui/ui_text.gd

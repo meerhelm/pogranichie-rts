@@ -99,6 +99,8 @@ static func fail(reason: int) -> String:
 			return t("Population limit reached")
 		EconomySystem.Fail.CONDITION:
 			return t("Conditions not met")
+		EconomySystem.Fail.LOCKED:
+			return t("Not available yet in this mission")
 	return t("Not available")
 
 

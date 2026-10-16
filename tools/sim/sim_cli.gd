@@ -7,6 +7,9 @@ extends SceneTree
 ##   godot --headless -s tools/sim/sim_cli.gd -- arena --seeds 50 --out arena.csv [--pairs a,b]
 ##     [--parity 1]
 ##   godot --headless -s tools/sim/sim_cli.gd -- aivsai --games 20 --difficulty normal --out g.csv
+##   godot --headless -s tools/sim/sim_cli.gd -- mission --out m9.json [--mission gdl_01]
+##     [--difficulty normal] [--ticks 90000] [--every 200]
+##     (MissionBot plays the campaign mission until it is over; fails unless it is won)
 ## record, determinism and bench take --map <map id> (see MapText); without it, open grass;
 ## and --economy 1 to have the fuzzer play the economy too (players, buildings, gathering);
 ## with it, --magic 1 adds shrines on places of power and spells.
@@ -17,7 +20,9 @@ func _initialize() -> void:
 	var args := OS.get_cmdline_user_args()
 	var code := 1
 	if args.is_empty():
-		printerr("usage: sim_cli.gd -- play|record|determinism|bench|arena|aivsai [options]")
+		printerr(
+			"usage: sim_cli.gd -- play|record|determinism|bench|arena|aivsai|mission [options]"
+		)
 	else:
 		var opts := _options(args.slice(1))
 		match args[0]:
@@ -33,6 +38,8 @@ func _initialize() -> void:
 				code = _arena(opts)
 			"aivsai":
 				code = _ai_vs_ai(opts)
+			"mission":
+				code = _mission(opts)
 			_:
 				printerr("unknown command: ", args[0])
 	quit(code)
@@ -51,6 +58,9 @@ func _play(paths: PackedStringArray) -> int:
 		var result := replay.play(db)
 		if not result.message.is_empty():
 			print("  note: ", result.message)
+		if not replay.mission_id.is_empty():
+			var outcome: String = MissionRuntime.Outcome.keys()[result.mission_outcome]
+			print("  mission %s: %s" % [replay.mission_id, outcome])
 		if result.ok:
 			print("OK   %s  %d ticks  %s" % [path, replay.ticks, result.final_hash.left(16)])
 		else:
@@ -83,6 +93,57 @@ func _record(opts: Dictionary) -> int:
 		(
 			"recorded %s: %d ticks, %d commands, %s"
 			% [out, replay.ticks, replay.commands.size(), replay.final_hash.left(16)]
+		)
+	)
+	return 0
+
+
+## Records MissionBot playing a campaign mission through; the replay is written only if won.
+func _mission(opts: Dictionary) -> int:
+	var out: String = opts.get("out", "")
+	if out.is_empty():
+		printerr("mission needs --out <path>")
+		return 1
+	var db := CatalogDB.load_prototype()
+	var mission_id: String = opts.get("mission", "gdl_01")
+	# The bot is made on the first tick, once the recording has built the world.
+	var bots: Array[MissionBot] = []
+	var orders := func(sim: Simulation) -> void:
+		if bots.is_empty():
+			bots.append(MissionBot.new(sim))
+		bots[0].think()
+	var over := func(sim: Simulation) -> bool: return sim.mission.is_over()
+	var replay := Replay.record(
+		int(opts.get("seed", "1")),
+		db,
+		int(opts.get("ticks", "90000")),
+		orders,
+		int(opts.get("every", "200")),
+		0,
+		0,
+		"",
+		mission_id,
+		opts.get("difficulty", "normal"),
+		over
+	)
+	var played := replay.play(db)
+	if played.mission_outcome != MissionRuntime.Outcome.VICTORY:
+		printerr("the bot did not win %s (stopped at tick %d)" % [mission_id, replay.ticks])
+		return 1
+	var err := replay.save(out)
+	if err != OK:
+		printerr("cannot write %s: %s" % [out, error_string(err)])
+		return 1
+	print(
+		(
+			"recorded %s: won at tick %d (%s), %d commands, %s"
+			% [
+				out,
+				replay.ticks,
+				UiText.clock(replay.ticks),
+				replay.commands.size(),
+				replay.final_hash.left(16)
+			]
 		)
 	)
 	return 0

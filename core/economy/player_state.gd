@@ -26,6 +26,8 @@ var zaseka_hp_bonus := 0
 var wall_sight_bonus := 0
 ## Сила (M7); MagicSystem.POWER_UNIT is one point (thousandths of a point a second, per tick).
 var power := 0
+## Units, buildings, techs and ages a mission does not allow yet (M9), by id.
+var locked: Dictionary[StringName, bool] = {}
 ## Unit stat changes from techs: "<class or unit id>.<stat>" -> sum.
 var unit_mods: Dictionary[StringName, int] = {}
 ## Match statistics (M8, the end screen): units trained, lost (any way) and killed (enemy units
@@ -106,3 +108,10 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_64(v)
 	for v in gathered:
 		buf.put_64(v)
+	var shut := PackedStringArray()
+	for k: StringName in locked:
+		shut.append(String(k))
+	shut.sort()
+	buf.put_32(shut.size())
+	for k in shut:
+		buf.put_utf8_string(k)

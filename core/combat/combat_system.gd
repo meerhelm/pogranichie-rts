@@ -67,6 +67,8 @@ var on_kill: Callable
 var shots := Projectiles.new()
 ## Who is near whom, refilled at the start of every step.
 var buckets: UnitBuckets
+## Units nobody may attack (M9: a mission's tithe collector and his escort).
+var untouchable: Dictionary[int, bool] = {}
 
 # Simulation callbacks (Callables do not keep the simulation alive, so no reference cycle).
 var _walk: Callable
@@ -75,6 +77,8 @@ var _remove: Callable
 var _forest := -1
 var _hill := -1
 var _heroes := 0
+## The widest hero aura so far, in cells.
+var _aura_cells := 0
 ## Units killed this tick, buried after every hit has landed.
 var _dying := PackedInt32Array()
 
@@ -115,6 +119,7 @@ func on_spawn(id: int, def: UnitDef) -> void:
 	var slot := id - 1
 	if flags[slot] & F_HERO:
 		_heroes += 1
+		_aura_cells = maxi(_aura_cells, aura_radius(def))
 	e.morale[slot] = 0 if flags[slot] & F_NEVER_FLEES else def.morale * MORALE_SCALE
 	e.stance[slot] = (
 		EntityStore.Stance.PASSIVE if flags[slot] & F_PASSIVE else EntityStore.Stance.AGGRESSIVE
@@ -212,6 +217,8 @@ func drop_targets(ids: PackedInt32Array) -> void:
 func _order_attack(player: int, ids: PackedInt32Array, enemy: int) -> void:
 	var e := entities
 	if not e.is_alive(enemy) or e.owners[enemy - 1] == player or _hidden_from(enemy - 1, player):
+		return
+	if untouchable.has(enemy):
 		return
 	for id in ids:
 		var slot := id - 1
@@ -435,6 +442,8 @@ func _target_valid(slot: int) -> bool:
 	var e := entities
 	var t := e.target[slot] - 1
 	if not e.is_alive(t + 1) or e.hp[t] <= 0 or _hidden_from(t, e.owners[slot]):
+		return false
+	if untouchable.has(t + 1):
 		return false
 	if e.target_kind[slot] == EntityStore.TargetKind.ORDERED:
 		return true
@@ -748,11 +757,7 @@ func morale_bonus(slot: int) -> int:
 	var px := e.pos_x[slot]
 	var py := e.pos_y[slot]
 	if _heroes > 0:
-		var r := Fixed.from_cells(rules.hero_aura_radius)
-		for other in buckets.near(px, py, r):
-			if other - 1 != slot and flags[other - 1] & F_HERO and e.owners[other - 1] == owner:
-				bonus += rules.hero_aura_morale
-				break
+		bonus += _aura_at(slot, owner, px, py)
 	if flags[slot] & F_INFANTRY:
 		var r := Fixed.from_milli(rules.formation_radius_milli)
 		var n := 0
@@ -763,6 +768,27 @@ func morale_bonus(slot: int) -> int:
 		if n >= rules.formation_neighbours:
 			bonus += rules.formation_morale
 	return bonus
+
+
+## The strongest aura of an own hero around the unit (its own aura_radius and aura_morale from
+## the hero template, M9; the general hero rule otherwise).
+func _aura_at(slot: int, owner: int, px: int, py: int) -> int:
+	var e := entities
+	var best := 0
+	for other in buckets.near(px, py, Fixed.from_cells(_aura_cells)):
+		var o := other - 1
+		if o == slot or not flags[o] & F_HERO or e.owners[o] != owner:
+			continue
+		var r := Fixed.from_cells(aura_radius(defs[o]))
+		var dx := e.pos_x[o] - px
+		var dy := e.pos_y[o] - py
+		if dx * dx + dy * dy <= r * r:
+			best = maxi(best, defs[o].param(&"aura_morale", rules.hero_aura_morale))
+	return best
+
+
+func aura_radius(def: UnitDef) -> int:
+	return def.param(&"aura_radius", rules.hero_aura_radius)
 
 
 ## At or below waver_morale (with bonuses) a unit hits 20% weaker. Units that never flee do not.
@@ -913,6 +939,8 @@ func _nearest_enemy(slot: int, radius: int) -> int:
 		var o := other - 1
 		if e.owners[o] == owner or e.owners[o] == 0 or e.hp[o] <= 0 or defs[o] == null:
 			continue
+		if untouchable.has(other) or defs[o].tags.has(&"not_targeted"):
+			continue
 		if _hidden_from(o, owner) or (vision != null and not vision.sees_unit(owner, other)):
 			continue
 		var d := Fixed.distance(px, py, e.pos_x[o], e.pos_y[o])
@@ -936,3 +964,8 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_64(rally[p].x)
 		buf.put_64(rally[p].y)
 	shots.write_to(buf)
+	var guarded := untouchable.keys()
+	guarded.sort()
+	buf.put_32(guarded.size())
+	for id: int in guarded:
+		buf.put_32(id)
