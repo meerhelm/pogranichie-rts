@@ -10,6 +10,7 @@
 | [04-catalog/](04-catalog/) | Каталог: правила, юниты и постройки четырёх фракций, союзники и герои, магия, локации, источники | [документ](https://claude.ai/code/artifact/8a193a2b-0e1e-4e3b-b25f-666c9b168c25) |
 | [05-implementation-plan.md](05-implementation-plan.md) | Стек и план реализации прототипа по вехам M0–M10, тестирование | [документ](https://claude.ai/code/artifact/6a467fca-fdd4-422c-9b93-73310a4201e4) |
 | [06-visual-assets.md](06-visual-assets.md) | Около 600 визуальных ассетов по id каталога и пайплайн AI-концепт → 3D → риг → 2D-рендер | [документ](https://claude.ai/code/artifact/b3f91fd7-d6e1-4ed7-9baa-89cf9ad0bfb3) |
+| [07-ui-icons.md](07-ui-icons.md) | Иконки нижней панели: 83 иконки построек, юнитов, приказов, технологий, эпох и заклинаний с размерами и описанием, откуда берутся | [документ](https://claude.ai/code/artifact/9a51dd2f-f8b7-4af3-bbe4-595781bd7f1f) |
 
 ## Что главнее
 

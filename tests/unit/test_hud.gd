@@ -105,9 +105,9 @@ func test_order_buttons_give_the_same_commands_as_keys() -> void:
 	var spear := _spearmen()
 	_select(spear)
 	_hud.refresh()
-	var stand: Button = null
+	var stand: IconButton = null
 	for b in _buttons(_hud.commands._orders):
-		if b.text == "Stand ground":
+		if b.caption == "Stand ground":
 			stand = b
 	assert_not_null(stand)
 	stand.pressed.emit()
@@ -121,8 +121,8 @@ func test_peasants_get_build_buttons_with_prices() -> void:
 	_hud.refresh()
 	var buttons := _buttons(_hud.commands._build)
 	assert_gt(buttons.size(), 5)
-	var house: Button = _hud.commands._build_buttons[&"gdl_house"]
-	assert_eq(house.text, "Hut")
+	var house: IconButton = _hud.commands._build_buttons[&"gdl_house"]
+	assert_eq(house.caption, "Hut")
 	assert_string_contains(house.tooltip_text, "wood")
 	house.pressed.emit()
 	assert_eq(_input.placing, _sim.economy.db.building(&"gdl_house"))

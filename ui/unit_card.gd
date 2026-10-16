@@ -6,6 +6,11 @@ extends PanelContainer
 ## Anything else the player clicks (PlayerInput.look) shows here too, without orders: another
 ## side's or a wild unit, another side's building, a deposit or carcass with what is left of
 ## what it held, a forest cell, a place of power.
+## A unit or building with an icon (IconDB) shows its portrait at the left; a group shows a
+## tile per unit type with how many are selected.
+
+const PORTRAIT := 96.0
+const TILE := 60.0
 
 var sim: Simulation
 var input: PlayerInput
@@ -16,12 +21,28 @@ var _hp := ProgressBar.new()
 var _morale := ProgressBar.new()
 var _hp_label := Label.new()
 var _morale_label := Label.new()
+var _frame := PanelContainer.new()
+var _portrait := TextureRect.new()
+var _tiles := HFlowContainer.new()
+## Unit types the tiles show, to rebuild them only when the group changes.
+var _tile_key := ""
 
 
 func _ready() -> void:
 	custom_minimum_size = Vector2(380, 0)
+	var outer := HBoxContainer.new()
+	outer.add_theme_constant_override("separation", 10)
+	add_child(outer)
+	_frame.theme_type_variation = &"Well"
+	_frame.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	_portrait.custom_minimum_size = Vector2(PORTRAIT, PORTRAIT)
+	_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_frame.add_child(_portrait)
+	outer.add_child(_frame)
 	var box := VBoxContainer.new()
-	add_child(box)
+	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	outer.add_child(box)
 	_title.add_theme_font_size_override("font_size", 20)
 	box.add_child(_title)
 	for pair: Array in [[_hp_label, _hp], [_morale_label, _morale]]:
@@ -37,6 +58,9 @@ func _ready() -> void:
 		box.add_child(row)
 	_morale.modulate = Color(1.0, 0.85, 0.35)
 	box.add_child(_lines)
+	_tiles.add_theme_constant_override("h_separation", 4)
+	_tiles.add_theme_constant_override("v_separation", 4)
+	box.add_child(_tiles)
 
 
 func attach(p_sim: Simulation, p_input: PlayerInput) -> void:
@@ -53,6 +77,9 @@ func refresh() -> void:
 	_hp_label.visible = false
 	_morale.visible = false
 	_morale_label.visible = false
+	_frame.visible = false
+	_tiles.visible = false
+	_lines.visible = true
 	if ids.size() == 1:
 		_unit(ids[0])
 	elif ids.size() > 1:
@@ -93,6 +120,7 @@ func _unit(id: int) -> void:
 	var slot := id - 1
 	var def := sim.economy.unit_defs[slot]
 	_title.text = UiText.name_of(e.type_ids[slot])
+	_show_portrait(e.type_ids[slot])
 	_bar(_hp_label, _hp, tr("HP %d/%d") % [e.hp[slot], e.max_hp[slot]], e.hp[slot], e.max_hp[slot])
 	var lines := PackedStringArray()
 	if e.owners[slot] != input.player:
@@ -166,12 +194,55 @@ func _group(ids: PackedInt32Array) -> void:
 		lines.append("%s × %d" % [UiText.name_of(StringName(type)), counts[type]])
 	_title.text = tr("%d units") % ids.size()
 	_lines.text = "\n".join(lines)
+	_group_tiles(types, counts)
+
+
+func _show_portrait(id: StringName) -> void:
+	var tex := IconDB.of(id)
+	_frame.visible = tex != null
+	_portrait.texture = tex
+
+
+## A tile per unit type of the group, with its count; types without an icon stay as lines.
+func _group_tiles(types: PackedStringArray, counts: Dictionary) -> void:
+	var key := ""
+	for type in types:
+		key += "%s:%d," % [type, counts[type]]
+	_tiles.visible = true
+	if key == _tile_key:
+		return
+	_tile_key = key
+	for child in _tiles.get_children():
+		_tiles.remove_child(child)
+		child.queue_free()
+	for type in types:
+		var tex := IconDB.of(StringName(type))
+		if tex == null:
+			continue
+		var tile := TextureRect.new()
+		tile.texture = tex
+		tile.custom_minimum_size = Vector2(TILE, TILE)
+		tile.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tile.tooltip_text = UiText.name_of(StringName(type))
+		var count := Label.new()
+		count.text = str(counts[type])
+		count.add_theme_font_size_override("font_size", 15)
+		count.add_theme_color_override("font_outline_color", Color.BLACK)
+		count.add_theme_constant_override("outline_size", 4)
+		count.set_anchors_and_offsets_preset(
+			Control.PRESET_BOTTOM_RIGHT, Control.PRESET_MODE_MINSIZE, 2
+		)
+		count.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+		count.grow_vertical = Control.GROW_DIRECTION_BEGIN
+		tile.add_child(count)
+		_tiles.add_child(tile)
 
 
 func _building(b: int) -> void:
 	var store := sim.economy.buildings
 	var s := b - 1
 	_title.text = UiText.name_of(store.type_ids[s])
+	_show_portrait(store.type_ids[s])
 	_bar(
 		_hp_label,
 		_hp,

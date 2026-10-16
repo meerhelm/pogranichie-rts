@@ -11,8 +11,16 @@ msgstr ""
 msgid "%d %s"
 msgstr ""
 
-#: ui/command_panel.gd
+#: ui/tips.gd
 msgid "%d Power"
+msgstr ""
+
+#: ui/tips.gd
+msgid "%d food per sowing"
+msgstr ""
+
+#: ui/tips.gd
+msgid "%d s"
 msgstr ""
 
 #: ui/unit_card.gd
@@ -21,6 +29,10 @@ msgstr ""
 
 #: ui/help_panel.gd
 msgid "%d%% of its price is left in heaps; peasants carry it to the stores."
+msgstr ""
+
+#: ui/tips.gd
+msgid "%s Power a second on a place of power"
 msgstr ""
 
 #: ui/end_screen.gd
@@ -35,8 +47,16 @@ msgstr ""
 msgid "(optional) %s"
 msgstr ""
 
-#: ui/ui_text.gd
+#: ui/tips.gd
+msgid "+%d damage against %s"
+msgstr ""
+
+#: ui/tips.gd
 msgid "+%d population"
+msgstr ""
+
+#: ui/tips.gd
+msgid "+%d range shooting from the forest"
 msgstr ""
 
 #: ui/hud.gd
@@ -63,24 +83,68 @@ msgstr ""
 msgid "5. Build «%s», «%s» or «%s» and train an army."
 msgstr ""
 
-#: ui/ui_text.gd
-msgid "A felled-tree barrier, laid in the forest for free."
+#: ui/tips.gd
+msgid "A barrier of felled trees laid in the forest. Nobody passes it; fire burns it away."
 msgstr ""
 
-#: ui/ui_text.gd
-msgid "A field by the forest: right-click it with a peasant for food."
+#: ui/tips.gd
+msgid "A brother priest: consecrates the land and casts the Order's spells."
 msgstr ""
 
-#: ui/ui_text.gd
-msgid "A gate in your wall that lets your own people through."
+#: ui/tips.gd
+msgid "A castle, the stronghold of the land: trains the best troops and houses many people. Like a town centre, it keeps your side in the game."
 msgstr ""
 
-#: ui/ui_text.gd
-msgid "A hive in the forest: two peasants gather honey (food)."
+#: ui/tips.gd
+msgid "A chapel of the Order. It gathers Power for spells and consecrates the land: shrines of other sides near it give half the Power."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A church: trains priests and researches the faith's improvements."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A crossbowman: slow to load, hits hard."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A fast light horseman with javelins."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A field. A peasant working it brings in food; when it is worked out, it is sown again for its price."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A gate in your wall: your own people pass, enemies do not."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A half-brother in a grey cloak: the Order's medium horse."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A heavy Lithuanian lancer."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A hive hollowed out in a forest tree. Two peasants take honey from it: food that never runs out."
 msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "A house feeds more mouths. Train peasants at the yard and build a granary near the food."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A knight brother in a white cloak: the Order's heavy horse."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A light horseman from the Prussian lands."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A new age opens new buildings, troops and improvements."
 msgstr ""
 
 #: ui/unit_card.gd
@@ -91,24 +155,56 @@ msgstr ""
 msgid "A silver mine (grey blocks on a hill) gives silver."
 msgstr ""
 
-#: ui/ui_text.gd
-msgid "A store at the forest edge, so woodcutters walk less."
+#: ui/tips.gd
+msgid "A smithy: researches better weapons and armor for your troops."
 msgstr ""
 
-#: ui/ui_text.gd
-msgid "A store by the ore or silver, so miners walk less."
+#: ui/tips.gd
+msgid "A store at the forest edge: woodcutters carry wood a shorter way. Researches forestry improvements."
 msgstr ""
 
-#: ui/ui_text.gd
-msgid "A store near the fields, so peasants walk less."
+#: ui/tips.gd
+msgid "A store by bog ore or a silver mine: miners carry a shorter way. Researches mining improvements."
 msgstr ""
 
-#: ui/ui_text.gd
-msgid "A wall: drag to lay a line."
+#: ui/tips.gd
+msgid "A store for food near the fields: peasants carry the harvest a shorter way. Researches farming improvements."
 msgstr ""
 
-#: ui/ui_text.gd
-msgid "A watch tower that shoots at enemies."
+#: ui/tips.gd
+msgid "A sturdy archer of the castle garrisons."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A tower that shoots at enemies who come near."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A trading house. Trade is not in this version yet."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A wagon of the baggage train."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A wall of sharpened stakes: drag to lay a line. Holds enemies off until they break through; it burns."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A wise woman: heals those around her and casts the Duchy's spells."
+msgstr ""
+
+#: ui/tips.gd
+msgid "Abilities"
+msgstr ""
+
+#: ui/tips.gd
+msgid "Advance to the next age"
+msgstr ""
+
+#: ui/tips.gd
+msgid "Advance to: %s"
 msgstr ""
 
 #: ui/end_screen.gd
@@ -131,6 +227,14 @@ msgstr ""
 msgid "Always on"
 msgstr ""
 
+#: ui/tips.gd
+msgid "An alka, a pagan sanctuary. It gathers Power for spells and trains wise women; near it their spells recharge faster."
+msgstr ""
+
+#: ui/tips.gd
+msgid "An archer at home in the forest."
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "An oak can be cut down. But the place where it grew is still here. Set stones in a circle, as your grandfather did, and the fire will come back."
 msgstr ""
@@ -143,16 +247,33 @@ msgstr ""
 msgid "Archers among the trees are harder to hit. Let the spearmen hold the Order's men while your archers shoot from the forest."
 msgstr ""
 
+#: ui/tips.gd
+msgid "Archers: +1 pierce damage and +1 range."
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "Are you the Gintaut who burned the chapel?"
 msgstr ""
 
+#: ui/tips.gd
 #: ui/unit_card.gd
 msgid "Armor %d melee / %d pierce"
 msgstr ""
 
 #: ui/help_panel.gd
 msgid "Army"
+msgstr ""
+
+#: ui/tips.gd
+msgid "At most %d at a time"
+msgstr ""
+
+#: ui/tips.gd
+msgid "At most %d for each castle"
+msgstr ""
+
+#: ui/command_panel.gd
+msgid "Attack any enemy they see and chase it."
 msgstr ""
 
 #: ui/hud.gd
@@ -187,6 +308,18 @@ msgstr ""
 msgid "Bread first. Then the Germans."
 msgstr ""
 
+#: ui/tips.gd
+msgid "Breaks other sides' spells; a creature loses 150 HP and falls back."
+msgstr ""
+
+#: ui/tips.gd
+msgid "Brickworks: while one stands, your towers, walls and castles cost less."
+msgstr ""
+
+#: ui/tips.gd
+msgid "Brother priests: +50% HP; Exorcism reaches 2 cells farther."
+msgstr ""
+
 #: ui/advisor.gd
 msgid "Build «%s» on a place of power: it gives Power for spells."
 msgstr ""
@@ -207,6 +340,14 @@ msgstr ""
 msgid "Buildings lost"
 msgstr ""
 
+#: ui/tips.gd
+msgid "Builds and repairs, but gathers nothing."
+msgstr ""
+
+#: ui/tips.gd
+msgid "Builds wagons and siege engines."
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "Burn Skirsnemune without losing any of Rumbaudas's riders"
 msgstr ""
@@ -217,6 +358,10 @@ msgstr ""
 
 #: ui/main_menu.gd
 msgid "Campaign: %s"
+msgstr ""
+
+#: ui/tips.gd
+msgid "Can dismount to fight on foot (V)"
 msgstr ""
 
 #: ui/command_panel.gd
@@ -233,6 +378,18 @@ msgstr ""
 
 #: ui/unit_card.gd
 msgid "Carries %d %s"
+msgstr ""
+
+#: ui/tips.gd
+msgid "Charge: ×%s damage after a run-up of %d cells"
+msgstr ""
+
+#: ui/tips.gd
+msgid "Cheap foot militia with boar spears, good against horsemen."
+msgstr ""
+
+#: ui/tips.gd
+msgid "Cheaper towers, walls and castles"
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -263,7 +420,7 @@ msgstr ""
 msgid "Conditions not met"
 msgstr ""
 
-#: ui/command_panel.gd
+#: ui/tips.gd
 msgid "Cooldown %d s"
 msgstr ""
 
@@ -279,6 +436,7 @@ msgstr ""
 msgid "Ctrl+right click: attack-move. Alt+right click: set a building on fire."
 msgstr ""
 
+#: ui/tips.gd
 #: ui/unit_card.gd
 msgid "Damage %d (%s)"
 msgstr ""
@@ -307,12 +465,24 @@ msgstr ""
 msgid "Do not let the knight brothers reach the boats"
 msgstr ""
 
+#: ui/tips.gd
+msgid "Does not burn"
+msgstr ""
+
+#: ui/tips.gd
+msgid "Does not chase fleeing enemies"
+msgstr ""
+
 #: ui/help_panel.gd
 msgid "Double click selects all units of that type on screen."
 msgstr ""
 
 #: ui/end_screen.gd
 msgid "Draw"
+msgstr ""
+
+#: ui/tips.gd
+msgid "Each field holds more food: +50%."
 msgstr ""
 
 #: game/arena/arena.gd
@@ -327,6 +497,14 @@ msgstr ""
 msgid "F1: how to play."
 msgstr ""
 
+#: ui/tips.gd
+msgid "Fields give food faster: +15%."
+msgstr ""
+
+#: ui/command_panel.gd
+msgid "Fight enemies who come near, then come back."
+msgstr ""
+
 #: game/arena/arena.gd
 msgid "Fight!"
 msgstr ""
@@ -335,12 +513,20 @@ msgstr ""
 msgid "First steps"
 msgstr ""
 
+#: ui/command_panel.gd
+msgid "Flee from the enemy at full speed, then turn on the chasers."
+msgstr ""
+
 #: ui/unit_card.gd
 msgid "Fleeing!"
 msgstr ""
 
 #: ui/ui_text.gd
 msgid "Food"
+msgstr ""
+
+#: ui/tips.gd
+msgid "Food comes faster: honey from hives +40%, hunting and fields +25%."
 msgstr ""
 
 #: ui/unit_card.gd
@@ -360,6 +546,18 @@ msgstr ""
 msgid "Food: peasants work a farm by the forest or a bort (hive) in it."
 msgstr ""
 
+#: ui/tips.gd
+msgid "Foot soldiers and horsemen: +1 melee damage."
+msgstr ""
+
+#: ui/tips.gd
+msgid "Foot soldiers: +1 melee and +1 pierce armor."
+msgstr ""
+
+#: ui/tips.gd
+msgid "Foot spearman of the Order, good against horsemen."
+msgstr ""
+
 #: game/arena/arena.gd
 #: ui/unit_card.gd
 msgid "Forest"
@@ -367,6 +565,10 @@ msgstr ""
 
 #: ui/help_panel.gd
 msgid "Forest gives wood."
+msgstr ""
+
+#: ui/command_panel.gd
+msgid "Form a wedge with its point to the front, for the charge."
 msgstr ""
 
 #: ui/command_panel.gd
@@ -405,12 +607,24 @@ msgstr ""
 msgid "Gather 300 food so the village lives through the summer"
 msgstr ""
 
-#: ui/ui_text.gd
+#: ui/tips.gd
+msgid "Gathers food, wood, iron and silver, builds and repairs."
+msgstr ""
+
+#: ui/tips.gd
 msgid "Gathers resources and builds."
+msgstr ""
+
+#: ui/command_panel.gd
+msgid "Get off the horse and fight on foot: more armor, the speed of foot soldiers."
 msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "Gintaut is wounded. The uprising has lost its leader."
+msgstr ""
+
+#: ui/tips.gd
+msgid "Gives"
 msgstr ""
 
 #: ui/unit_card.gd
@@ -437,8 +651,24 @@ msgstr ""
 msgid "Green means it can stand there; the line at the top says why red cannot."
 msgstr ""
 
+#: ui/tips.gd
+msgid "HP %d"
+msgstr ""
+
+#: ui/tips.gd
+msgid "HP %d · armor %d melee / %d pierce"
+msgstr ""
+
 #: ui/unit_card.gd
 msgid "HP %d/%d"
+msgstr ""
+
+#: ui/tips.gd
+msgid "Heals %d HP a second to her people within %d cells"
+msgstr ""
+
+#: ui/tips.gd
+msgid "Heavy horse: +10% HP."
 msgstr ""
 
 #: ui/unit_card.gd
@@ -463,6 +693,18 @@ msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "Hold the pier with no enemies near, and the boats with reinforcements will stop coming."
+msgstr ""
+
+#: ui/command_panel.gd
+msgid "Hold this spot: fight only what comes within reach."
+msgstr ""
+
+#: ui/tips.gd
+msgid "Homes for your people. Every unit takes room: when the population is full, nothing more can be trained until you build houses."
+msgstr ""
+
+#: ui/tips.gd
+msgid "Horsemen: +1 melee and +1 pierce armor."
 msgstr ""
 
 #: ui/unit_card.gd
@@ -502,6 +744,10 @@ msgstr ""
 msgid "Iron"
 msgstr ""
 
+#: ui/tips.gd
+msgid "Iron is mined faster: +20%."
+msgstr ""
+
 #: ui/advisor.gd
 #: ui/ui_text.gd
 msgid "Iron: right-click bog ore (brown blocks in the bog) with peasants."
@@ -509,6 +755,10 @@ msgstr ""
 
 #: ui/help_panel.gd
 msgid "It needs two other first-age buildings and opens new units."
+msgstr ""
+
+#: ui/tips.gd
+msgid "Javelin: %d damage at %d cells, every %d s"
 msgstr ""
 
 #: ui/end_screen.gd
@@ -556,6 +806,10 @@ msgstr ""
 msgid "Lithuanian retreat"
 msgstr ""
 
+#: ui/tips.gd
+msgid "Lithuanian retreat: flees, then turns on the chasers (T)"
+msgstr ""
+
 #: ui/help_panel.gd
 msgid "Lithuanian troops can feign a retreat (T) and turn around (G)."
 msgstr ""
@@ -582,6 +836,10 @@ msgstr ""
 msgid "Messenger"
 msgstr ""
 
+#: ui/tips.gd
+msgid "Mist over the bog: your people and buildings in it are hidden from the enemy farther than 2 cells."
+msgstr ""
+
 #: ui/unit_card.gd
 msgid "Morale %d/%d"
 msgstr ""
@@ -598,12 +856,24 @@ msgstr ""
 msgid "Must stand in the forest"
 msgstr ""
 
+#: ui/tips.gd
+msgid "Needs %d finished buildings of the age before."
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Needs a later age"
 msgstr ""
 
 #: ui/ui_text.gd
 msgid "Needs forest nearby"
+msgstr ""
+
+#: ui/tips.gd
+msgid "Never flees"
+msgstr ""
+
+#: ui/tips.gd
+msgid "New buildings"
 msgstr ""
 
 #: ui/advisor.gd
@@ -651,6 +921,10 @@ msgstr ""
 msgid "Nothing selected"
 msgstr ""
 
+#: ui/tips.gd
+msgid "Nothing to train here yet in this version"
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "Now listen. The land gives strength to whoever holds it. The Germans have their own strength, from books and the bones of saints. We have ours: from groves, from water, from the stones where the gods stood. Send me girls who know herbs. I will teach them to call the mist."
 msgstr ""
@@ -667,6 +941,15 @@ msgstr ""
 msgid "Off the map"
 msgstr ""
 
+#: ui/tips.gd
+msgid "Only in the forest"
+msgstr ""
+
+#: ui/tips.gd
+msgid "Only next to the forest"
+msgstr ""
+
+#: ui/tips.gd
 #: ui/ui_text.gd
 msgid "Only on a place of power"
 msgstr ""
@@ -703,7 +986,11 @@ msgstr ""
 msgid "Paused (P)"
 msgstr ""
 
-#: ui/ui_text.gd
+#: ui/tips.gd
+msgid "Peasants bring here every resource"
+msgstr ""
+
+#: ui/tips.gd
 msgid "Peasants bring here: %s"
 msgstr ""
 
@@ -781,6 +1068,14 @@ msgstr ""
 msgid "Quit"
 msgstr ""
 
+#: ui/tips.gd
+msgid "Researched once, works for all your people."
+msgstr ""
+
+#: ui/tips.gd
+msgid "Researches: %s"
+msgstr ""
+
 #: game/arena/arena.gd
 msgid "Reset"
 msgstr ""
@@ -818,10 +1113,6 @@ msgid "Right-click the forest with peasants selected: they cut wood and carry it
 msgstr ""
 
 #: ui/ui_text.gd
-msgid "Room for more people: build one before training more."
-msgstr ""
-
-#: ui/ui_text.gd
 msgid "Salvage"
 msgstr ""
 
@@ -855,6 +1146,10 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
+#: ui/tips.gd
+msgid "Shoots: %d damage (%s), range %d"
+msgstr ""
+
 #: game/arena/arena.gd
 msgid "Side %d: %d units, %d HP, %d fleeing"
 msgstr ""
@@ -863,12 +1158,20 @@ msgstr ""
 msgid "Silver"
 msgstr ""
 
+#: ui/tips.gd
+msgid "Silver is mined faster: +20%."
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Silver mine"
 msgstr ""
 
 #: ui/ui_text.gd
 msgid "Silver: right-click a silver mine (grey blocks on a hill) with peasants."
+msgstr ""
+
+#: ui/tips.gd
+msgid "Size %d×%d cells"
 msgstr ""
 
 #: ui/main_menu.gd
@@ -887,8 +1190,13 @@ msgstr ""
 msgid "Small"
 msgstr ""
 
+#: ui/tips.gd
 #: ui/unit_card.gd
 msgid "Speed %.2f cells/s"
+msgstr ""
+
+#: ui/tips.gd
+msgid "Spells of wise women nearby recharge faster"
 msgstr ""
 
 #: ui/unit_card.gd
@@ -899,16 +1207,12 @@ msgstr ""
 msgid "Stand ground"
 msgstr ""
 
-#: ui/ui_text.gd
-msgid "Stands only on a place of power; gives Power and trains casters."
-msgstr ""
-
 #: ui/command_panel.gd
 msgid "Stop"
 msgstr ""
 
 #: ui/command_panel.gd
-msgid "Stop (H)"
+msgid "Stop what they are doing and stand."
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -925,6 +1229,10 @@ msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "Take back the sacred grove and lay an alka there"
+msgstr ""
+
+#: ui/tips.gd
+msgid "Takes %d population"
 msgstr ""
 
 #: ui/unit_card.gd
@@ -955,6 +1263,10 @@ msgstr ""
 msgid "The castle at Skirsnemune burned, and the knights who sat in it were killed. Both our books and the German ones write of it. But there was still Dubysa, where the vogt himself sat."
 msgstr ""
 
+#: ui/tips.gd
+msgid "The heart of your land: trains peasants, takes in every resource and leads your people into the next age. In a skirmish, a side that loses every town centre and castle is out."
+msgstr ""
+
 #: ui/help_panel.gd
 msgid "The hints at the top left can be turned off in the settings."
 msgstr ""
@@ -977,6 +1289,10 @@ msgstr ""
 
 #: ui/ui_text.gd
 msgid "The place is taken"
+msgstr ""
+
+#: ui/tips.gd
+msgid "The price is for each cell of the line."
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -1027,16 +1343,28 @@ msgstr ""
 msgid "To win, destroy the enemy's capital, or hold every place of power for 5 minutes."
 msgstr ""
 
-#: ui/ui_text.gd
-msgid "Trains peasants, takes every resource, leads to the next age."
+#: ui/tips.gd
+msgid "Towers, walls and gates see 2 cells farther."
 msgstr ""
 
-#: ui/ui_text.gd
-msgid "Trains troops: select it and press a button below."
+#: ui/tips.gd
+msgid "Trains archers and crossbowmen."
 msgstr ""
 
-#: ui/ui_text.gd
+#: ui/tips.gd
+msgid "Trains foot soldiers."
+msgstr ""
+
+#: ui/tips.gd
+msgid "Trains horsemen."
+msgstr ""
+
+#: ui/tips.gd
 msgid "Trains: %s"
+msgstr ""
+
+#: ui/command_panel.gd
+msgid "Turn and face the chasers at once."
 msgstr ""
 
 #: ui/command_panel.gd
@@ -1059,6 +1387,14 @@ msgstr ""
 msgid "Units trained"
 msgstr ""
 
+#: ui/tips.gd
+msgid "Units walk over it"
+msgstr ""
+
+#: ui/tips.gd
+msgid "Unseen in the forest until it shoots"
+msgstr ""
+
 #: ui/settings_panel.gd
 msgid "Very large"
 msgstr ""
@@ -1069,6 +1405,14 @@ msgstr ""
 
 #: ui/help_panel.gd
 msgid "W A S D, the arrows or the screen edge move the view."
+msgstr ""
+
+#: ui/command_panel.gd
+msgid "Walk and stand in a broad line."
+msgstr ""
+
+#: ui/command_panel.gd
+msgid "Walk in a narrow column, for roads and the forest."
 msgstr ""
 
 #: ui/unit_card.gd
@@ -1091,8 +1435,16 @@ msgstr ""
 msgid "Where is the nearest German castle?"
 msgstr ""
 
+#: ui/tips.gd
+msgid "Where it stands"
+msgstr ""
+
 #: ui/unit_card.gd
 msgid "Wild, nobody's"
+msgstr ""
+
+#: ui/tips.gd
+msgid "Wise women heal 2 HP a second instead of 1."
 msgstr ""
 
 #: ui/help_panel.gd
@@ -1111,6 +1463,10 @@ msgstr ""
 msgid "Wood: right-click the forest with peasants."
 msgstr ""
 
+#: ui/tips.gd
+msgid "Woodcutters work faster: +20%."
+msgstr ""
+
 #: ui/help_panel.gd
 msgid "Y with peasants, then a click on your building: they take it apart."
 msgstr ""
@@ -1123,12 +1479,20 @@ msgstr ""
 msgid "You took your time, son of Gintaut. For three days I kept the fire in a pot, the way our old women carry it from house to house."
 msgstr ""
 
+#: ui/tips.gd
+msgid "Your men near the relic do not flee while their morale is above 10; enemies nearby lose 10 morale."
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "Your people are not ready to fight yet. Gather your stores again."
 msgstr ""
 
 #: ui/help_panel.gd
 msgid "Z X C: aggressive, defensive, stand ground. H: stop."
+msgstr ""
+
+#: ui/tips.gd
+msgid "Zasekas are felled twice as fast and have +50% HP."
 msgstr ""
 
 #: catalog:ages
@@ -1143,14 +1507,27 @@ msgstr ""
 msgid "age_udel"
 msgstr ""
 
+#: ui/tips.gd
+msgid "archers"
+msgstr ""
+
+#: ui/tips.gd
+msgid "cavalry"
+msgstr ""
+
 #: ui/hud.gd
 msgid "click where to cast it"
+msgstr ""
+
+#: ui/tips.gd
+msgid "creatures"
 msgstr ""
 
 #: ui/ui_text.gd
 msgid "firearm"
 msgstr ""
 
+#: ui/tips.gd
 #: ui/ui_text.gd
 msgid "free"
 msgstr ""
@@ -1255,6 +1632,10 @@ msgstr ""
 msgid "gdl_znakharka"
 msgstr ""
 
+#: ui/tips.gd
+msgid "heavy cavalry"
+msgstr ""
+
 #: catalog:prototype_units
 #: missions/gdl_01/mission.json
 msgid "hero_gintaut"
@@ -1272,6 +1653,18 @@ msgstr ""
 #: catalog:prototype_units
 #: missions/gdl_01/mission.json
 msgid "hero_rumbaudas"
+msgstr ""
+
+#: ui/tips.gd
+msgid "infantry"
+msgstr ""
+
+#: ui/tips.gd
+msgid "lasts %d s"
+msgstr ""
+
+#: ui/tips.gd
+msgid "light cavalry"
 msgstr ""
 
 #: ui/ui_text.gd
@@ -1346,12 +1739,21 @@ msgstr ""
 msgid "pp_wayside"
 msgstr ""
 
+#: ui/tips.gd
+msgid "radius %d"
+msgstr ""
+
+#: ui/tips.gd
 #: ui/unit_card.gd
 msgid "range %d"
 msgstr ""
 
 #: ui/ui_text.gd
 msgid "siege"
+msgstr ""
+
+#: ui/tips.gd
+msgid "siege engines"
 msgstr ""
 
 #: catalog:prototype_spells
@@ -1368,6 +1770,10 @@ msgstr ""
 
 #: catalog:prototype_spells
 msgid "sp_relic"
+msgstr ""
+
+#: ui/tips.gd
+msgid "spearmen"
 msgstr ""
 
 #: catalog:prototype_techs

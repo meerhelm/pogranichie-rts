@@ -81,3 +81,19 @@ build_66, done, damaged_1, damaged_2, rubble. Normal maps are not rendered yet.
   Tiles are 96×48: the 64×32 diamond plus a ragged fading rim that blends terrains.
 - `render.py o_bog_ore o_silver_mine carcass` — map resources in variants
   (`art/sprites/deposits/<id>_<v>_{color,shadow}.png`), picked per cell by `SpriteDB.deposit_at`.
+
+## HUD icons
+
+The bottom panel's buttons show 128×128 icons from `ui/icons` (list: docs/07-ui-icons.md):
+
+```sh
+python3 -m tools.art.icons          # buildings: the done sprite on a plate, team-tinted
+python3 -m tools.art.portraits      # units: close-up portraits rendered in Blender (bpy)
+python3 -m tools.art.ui_icons       # orders, techs, ages, spells: SVG
+xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
+  -s tools/art/screenshot.gd -- /tmp/panel.png 3 1.0 panel:peasants:gdl_bort
+```
+
+`panel:WHAT[:HOVER]` selects peasants, army or a building (base id) and shows the tooltip of
+the button HOVER; `SHOT_LOCALE=be` takes the shot in another language. The game finds icons by
+catalog id through `ui/icon_db.gd`; buttons are `ui/icon_button.gd`, tooltips `ui/tips.gd`.

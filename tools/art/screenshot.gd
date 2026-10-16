@@ -9,7 +9,11 @@ extends SceneTree
 ##   animal, WHAT = node, forest, building or animal, and a left click on it), dismantle (the
 ##   player's peasants take a house by the town centre apart, nearly done, so its salvage shows),
 ##   work (the same, caught while they work), fight (no fog, spearmen against knechts and a
-##   crossbowman by the town centre)
+##   crossbowman by the town centre), panel:WHAT[:HOVER] (the bottom panel with WHAT selected:
+##   peasants, army (spearmen, a light horseman, a wise woman) or a building base id such as
+##   town_center or granary, finished by the town centre; plenty of resources; the mouse over the
+##   button HOVER, a building, unit, tech or spell id, or order<N> for the Nth order button)
+## SHOT_LOCALE=be (or pl, uk, lt) in the environment shoots in that language.
 
 var _out := "user://screenshot.png"
 var _seconds := 6.0
@@ -31,18 +35,22 @@ func _initialize() -> void:
 	if args.size() > 4:
 		_action = args[4]
 	root.size = Vector2i(1600, 900)
+	if not OS.get_environment("SHOT_LOCALE").is_empty():
+		TranslationServer.set_locale(OS.get_environment("SHOT_LOCALE"))
 	change_scene_to_file(_scene)
 	_shoot.call_deferred()
 
 
 func _shoot() -> void:
 	await create_timer(0.5).timeout
+	if not OS.get_environment("SHOT_LOCALE").is_empty():
+		TranslationServer.set_locale(OS.get_environment("SHOT_LOCALE"))
 	var cam := current_scene.get_node_or_null("Camera") as Camera2D
 	if cam != null:
 		cam.zoom = Vector2.ONE * _zoom
 	await create_timer(_seconds).timeout
 	_act()
-	await create_timer(1.0).timeout
+	await create_timer(2.5 if _action.count(":") > 1 else 1.0).timeout
 	await process_frame
 	var img := root.get_texture().get_image()
 	img.save_png(_out)
@@ -79,6 +87,8 @@ func _act() -> void:
 		_fight(main)
 	elif _action.begins_with("click:"):
 		_click(main, _action.split(":")[1])
+	elif _action.begins_with("panel:"):
+		_panel(main, _action.split(":"))
 	elif _action == "help" and main.has_node("UI/Hud"):
 		(main.get_node("UI/Hud") as Hud).help.open(true)
 
@@ -239,3 +249,90 @@ func _fight(main: Node) -> void:
 		sim.step()
 	var cam: RtsCamera = main.get_node("Camera")
 	cam.look_at_point(Iso.cell_to_screen(Vector2(x + 2, y + 2)))
+
+
+func _panel(main: Node, parts: PackedStringArray) -> void:
+	var sim: Simulation = main.get("sim")
+	var input: PlayerInput = main.get_node("UI/PlayerInput")
+	var state := sim.economy.player(1)
+	for r in 4:
+		state.stock[r] = 600
+	var store := sim.economy.buildings
+	var tc := store.alive_ids[0]
+	for b in store.alive_ids:
+		if store.owners[b - 1] == 1 and store.defs[b - 1].base_id == &"town_center":
+			tc = b
+	var x := store.cell_x[tc - 1]
+	var y := store.cell_y[tc - 1]
+	var ids := PackedInt32Array()
+	match parts[1]:
+		"peasants":
+			for id in sim.entities.alive_ids:
+				if sim.entities.owners[id - 1] == 1:
+					ids.append(id)
+		"army":
+			for i in 5:
+				var at := Fixed.from_cells(x + 5 + i)
+				ids.append(sim.spawn_unit(&"gdl_spearman", 1, at, Fixed.from_cells(y + 6)))
+			ids.append(
+				sim.spawn_unit(
+					&"gdl_light_horse", 1, Fixed.from_cells(x + 5), Fixed.from_cells(y + 7)
+				)
+			)
+			ids.append(
+				sim.spawn_unit(
+					&"gdl_light_horse", 1, Fixed.from_cells(x + 6), Fixed.from_cells(y + 7)
+				)
+			)
+			ids.append(
+				sim.spawn_unit(
+					&"gdl_znakharka", 1, Fixed.from_cells(x + 7), Fixed.from_cells(y + 7)
+				)
+			)
+			for i in 30:
+				sim.step()
+		_:
+			var b := tc
+			if parts[1] != "town_center":
+				var def := sim.economy.db.building(StringName("gdl_" + parts[1]))
+				b = sim.economy._found(1, def, x + 6, y - 1, false)
+				_finish(sim, b)
+			input.selected_building = b
+	if not ids.is_empty():
+		input.selection.ids = ids
+	input.selection.changed.emit()
+	if parts.size() > 2:
+		_hover.call_deferred(main, parts[2])
+
+
+func _hover(main: Node, what: String) -> void:
+	var hud: Hud = main.get_node("UI/Hud")
+	hud.refresh()
+	for i in 20:
+		await process_frame
+	var panel := hud.commands
+	var button: Control = null
+	if what.begins_with("order"):
+		button = panel._orders.get_child(int(what.substr(5)))
+	elif panel._build_buttons.has(StringName(what)):
+		button = panel._build_buttons[StringName(what)]
+	elif panel._item_buttons.has(StringName(what)):
+		button = panel._item_buttons[StringName(what)]
+	elif panel._spell_buttons.has(StringName(what)):
+		button = panel._spell_buttons[StringName(what)]
+	if button == null:
+		push_warning("no button " + what)
+		return
+	# The tooltip as Godot would show it, put above the button (no real mouse under Xvfb).
+	var tip := (button as IconButton)._make_custom_tooltip(button.tooltip_text) as Control
+	var panel_box := PanelContainer.new()
+	panel_box.theme_type_variation = &"TooltipPanel"
+	panel_box.add_theme_stylebox_override("panel", hud.get_theme_stylebox("panel", "TooltipPanel"))
+	panel_box.add_child(tip)
+	hud.add_child(panel_box)
+	await process_frame
+	var rect := button.get_global_rect()
+	var at := Vector2(rect.position.x, rect.position.y - panel_box.size.y - 6)
+	at.x = clampf(at.x, 8, hud.size.x - panel_box.size.x - 8)
+	panel_box.position = at
+	button.add_theme_stylebox_override("normal", button.get_theme_stylebox("hover"))

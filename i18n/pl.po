@@ -14,11 +14,20 @@ msgstr "%d %s"
 msgid "%d Power"
 msgstr "%d Mocy"
 
+msgid "%d food per sowing"
+msgstr "%d żywności z jednego zasiewu"
+
+msgid "%d s"
+msgstr "%d s"
+
 msgid "%d units"
 msgstr "Jednostki: %d"
 
 msgid "%d%% of its price is left in heaps; peasants carry it to the stores."
 msgstr "%d%% ceny zostaje w stertach; chłopi zanoszą to do magazynów."
+
+msgid "%s Power a second on a place of power"
+msgstr "%s Mocy na sekundę w miejscu mocy"
 
 msgid "%s gathered"
 msgstr "Zebrano: %s"
@@ -29,8 +38,14 @@ msgstr "(%d s)"
 msgid "(optional) %s"
 msgstr "(dodatkowe) %s"
 
+msgid "+%d damage against %s"
+msgstr "+%d obrażeń przeciw: %s"
+
 msgid "+%d population"
 msgstr "+%d ludności"
+
+msgid "+%d range shooting from the forest"
+msgstr "+%d zasięgu, gdy strzela z lasu"
 
 msgid "+%s a second"
 msgstr "+%s na sekundę"
@@ -50,20 +65,53 @@ msgstr "4. Kliknij «%s» i szkol więcej chłopów (po 50 żywności)."
 msgid "5. Build «%s», «%s» or «%s» and train an army."
 msgstr "5. Zbuduj «%s», «%s» lub «%s» i szkol wojsko."
 
-msgid "A felled-tree barrier, laid in the forest for free."
-msgstr "Zasieka ze ściętych drzew, stawiana w lesie za darmo."
+msgid "A barrier of felled trees laid in the forest. Nobody passes it; fire burns it away."
+msgstr "Zawał ze ściętych drzew w lesie. Nikt przez niego nie przejdzie; ogień go spala."
 
-msgid "A field by the forest: right-click it with a peasant for food."
-msgstr "Pole przy lesie: kliknij je prawym przyciskiem chłopem, by zbierać żywność."
+msgid "A brother priest: consecrates the land and casts the Order's spells."
+msgstr "Brat kapłan: uświęca ziemię i rzuca zaklęcia Zakonu."
 
-msgid "A gate in your wall that lets your own people through."
-msgstr "Brama w murze, która przepuszcza tylko twoich."
+msgid "A castle, the stronghold of the land: trains the best troops and houses many people. Like a town centre, it keeps your side in the game."
+msgstr "Zamek, ostoja ziemi: szkoli najlepsze wojska i mieści wielu ludzi. Tak jak dwór, utrzymuje twoją stronę w grze."
 
-msgid "A hive in the forest: two peasants gather honey (food)."
-msgstr "Barć w lesie: dwóch chłopów zbiera miód (żywność)."
+msgid "A chapel of the Order. It gathers Power for spells and consecrates the land: shrines of other sides near it give half the Power."
+msgstr "Kaplica Zakonu. Zbiera Moc na zaklęcia i uświęca ziemię: cudze sanktuaria w pobliżu dają o połowę mniej Mocy."
+
+msgid "A church: trains priests and researches the faith's improvements."
+msgstr "Kościół: szkoli kapłanów i bada ulepszenia wiary."
+
+msgid "A crossbowman: slow to load, hits hard."
+msgstr "Kusznik: długo ładuje, za to bije mocno."
+
+msgid "A fast light horseman with javelins."
+msgstr "Szybki lekki jeździec z sulicami."
+
+msgid "A field. A peasant working it brings in food; when it is worked out, it is sown again for its price."
+msgstr "Pole. Chłop przy nim zbiera żywność; gdy pole się wyczerpie, zostaje ponownie obsiane za swoją cenę."
+
+msgid "A gate in your wall: your own people pass, enemies do not."
+msgstr "Brama w twoim murze: swoi przechodzą, wrogowie nie."
+
+msgid "A half-brother in a grey cloak: the Order's medium horse."
+msgstr "Półbrat w szarym płaszczu: średnia jazda Zakonu."
+
+msgid "A heavy Lithuanian lancer."
+msgstr "Ciężki litewski kopijnik."
+
+msgid "A hive hollowed out in a forest tree. Two peasants take honey from it: food that never runs out."
+msgstr "Barć wydrążona w leśnym drzewie. Dwóch chłopów bierze z niej miód: żywność, która nigdy się nie kończy."
 
 msgid "A house feeds more mouths. Train peasants at the yard and build a granary near the food."
 msgstr "Chata wyżywi więcej gąb. Szkol chłopów na dworze i postaw spichlerz blisko jadła."
+
+msgid "A knight brother in a white cloak: the Order's heavy horse."
+msgstr "Brat rycerz w białym płaszczu: ciężka jazda Zakonu."
+
+msgid "A light horseman from the Prussian lands."
+msgstr "Lekki jeździec z ziem pruskich."
+
+msgid "A new age opens new buildings, troops and improvements."
+msgstr "Nowa epoka otwiera nowe budynki, wojska i ulepszenia."
 
 msgid "A shrine stands on it"
 msgstr "Stoi na nim sanktuarium"
@@ -71,20 +119,44 @@ msgstr "Stoi na nim sanktuarium"
 msgid "A silver mine (grey blocks on a hill) gives silver."
 msgstr "Kopalnia srebra (szare bloki na wzgórzu) daje srebro."
 
-msgid "A store at the forest edge, so woodcutters walk less."
-msgstr "Skład na skraju lasu, żeby drwale mniej chodzili."
+msgid "A smithy: researches better weapons and armor for your troops."
+msgstr "Kuźnia: bada lepszą broń i pancerze dla twoich wojsk."
 
-msgid "A store by the ore or silver, so miners walk less."
-msgstr "Skład przy rudzie lub srebrze, żeby górnicy mniej chodzili."
+msgid "A store at the forest edge: woodcutters carry wood a shorter way. Researches forestry improvements."
+msgstr "Skład na skraju lasu: drwale noszą drewno krótszą drogą. Bada ulepszenia leśne."
 
-msgid "A store near the fields, so peasants walk less."
-msgstr "Skład przy polach, żeby chłopi mniej chodzili."
+msgid "A store by bog ore or a silver mine: miners carry a shorter way. Researches mining improvements."
+msgstr "Skład przy rudzie darniowej lub kopalni srebra: górnicy noszą krótszą drogą. Bada ulepszenia górnicze."
 
-msgid "A wall: drag to lay a line."
-msgstr "Mur: przeciągnij, by postawić linię."
+msgid "A store for food near the fields: peasants carry the harvest a shorter way. Researches farming improvements."
+msgstr "Skład żywności przy polach: chłopi noszą plony krótszą drogą. Bada ulepszenia rolnictwa."
 
-msgid "A watch tower that shoots at enemies."
-msgstr "Wieża strażnicza, która strzela do wrogów."
+msgid "A sturdy archer of the castle garrisons."
+msgstr "Wytrzymały łucznik zamkowych załóg."
+
+msgid "A tower that shoots at enemies who come near."
+msgstr "Wieża, która strzela do wrogów, gdy podejdą blisko."
+
+msgid "A trading house. Trade is not in this version yet."
+msgstr "Dom handlowy. Handlu w tej wersji jeszcze nie ma."
+
+msgid "A wagon of the baggage train."
+msgstr "Wóz taborowy."
+
+msgid "A wall of sharpened stakes: drag to lay a line. Holds enemies off until they break through; it burns."
+msgstr "Mur z zaostrzonych pali: przeciągnij, by ułożyć linię. Powstrzymuje wrogów, aż się przebiją; płonie."
+
+msgid "A wise woman: heals those around her and casts the Duchy's spells."
+msgstr "Znachorka: leczy tych wokół siebie i rzuca zaklęcia Księstwa."
+
+msgid "Abilities"
+msgstr "Umiejętności"
+
+msgid "Advance to the next age"
+msgstr "Przejście do następnej epoki"
+
+msgid "Advance to: %s"
+msgstr "Przejdź do epoki: %s"
 
 msgid "Age"
 msgstr "Epoka"
@@ -101,6 +173,12 @@ msgstr "Wszystkie miejsca mocy utrzymane przez pięć minut."
 msgid "Always on"
 msgstr "Zawsze włączone"
 
+msgid "An alka, a pagan sanctuary. It gathers Power for spells and trains wise women; near it their spells recharge faster."
+msgstr "Alka, pogańskie sanktuarium. Zbiera Moc na zaklęcia i szkoli znachorki; przy niej ich zaklęcia odnawiają się szybciej."
+
+msgid "An archer at home in the forest."
+msgstr "Łucznik, dla którego las jest domem."
+
 msgid "An oak can be cut down. But the place where it grew is still here. Set stones in a circle, as your grandfather did, and the fire will come back."
 msgstr "Dąb można ściąć. Ale miejsce, gdzie rósł, zostało. Ułóż kamienie w krąg, jak twój dziad, a ogień wróci."
 
@@ -110,6 +188,9 @@ msgstr "A ty czyj jesteś?"
 msgid "Archers among the trees are harder to hit. Let the spearmen hold the Order's men while your archers shoot from the forest."
 msgstr "Łucznika między drzewami trudniej trafić. Niech włócznicy trzymają ludzi Zakonu, a łucznicy strzelają z lasu."
 
+msgid "Archers: +1 pierce damage and +1 range."
+msgstr "Strzelcy: +1 obrażeń przebijających i +1 zasięgu."
+
 msgid "Are you the Gintaut who burned the chapel?"
 msgstr "To ty jesteś ten Gintowt, co spalił kaplicę?"
 
@@ -118,6 +199,15 @@ msgstr "Pancerz %d wręcz / %d przeb."
 
 msgid "Army"
 msgstr "Wojsko"
+
+msgid "At most %d at a time"
+msgstr "Najwyżej %d naraz"
+
+msgid "At most %d for each castle"
+msgstr "Najwyżej %d na każdy zamek"
+
+msgid "Attack any enemy they see and chase it."
+msgstr "Atakować każdego widzianego wroga i ścigać go."
 
 msgid "B next, F turn, Shift keep placing, Esc or right click cancel"
 msgstr "B dalej, F obrót, Shift stawiaj dalej, Esc lub PPM anuluj"
@@ -143,6 +233,15 @@ msgstr "Kopie bojarskie biją mocno w szarży. By podpalić drewno, zaznacz oddz
 msgid "Bread first. Then the Germans."
 msgstr "Najpierw chleb. Potem Niemcy."
 
+msgid "Breaks other sides' spells; a creature loses 150 HP and falls back."
+msgstr "Zdejmuje cudze czary; stwór traci 150 PŻ i się cofa."
+
+msgid "Brickworks: while one stands, your towers, walls and castles cost less."
+msgstr "Cegielnia: dopóki stoi, twoje wieże, mury i zamki są tańsze."
+
+msgid "Brother priests: +50% HP; Exorcism reaches 2 cells farther."
+msgstr "Bracia kapłani: +50% PŻ; Egzorcyzm sięga o 2 pola dalej."
+
 msgid "Build «%s» on a place of power: it gives Power for spells."
 msgstr "Zbuduj «%s» na miejscu mocy: daje Moc na czary."
 
@@ -158,6 +257,12 @@ msgstr "Zbudowane budynki"
 msgid "Buildings lost"
 msgstr "Utracone budynki"
 
+msgid "Builds and repairs, but gathers nothing."
+msgstr "Buduje i naprawia, ale niczego nie zbiera."
+
+msgid "Builds wagons and siege engines."
+msgstr "Buduje wozy i machiny oblężnicze."
+
 msgid "Burn Skirsnemune without losing any of Rumbaudas's riders"
 msgstr "Spal Skirsnemunę, nie tracąc żadnego jeźdźca Rumbaudasa"
 
@@ -166,6 +271,9 @@ msgstr "Spal zamek Skirsnemunę"
 
 msgid "Campaign: %s"
 msgstr "Kampania: %s"
+
+msgid "Can dismount to fight on foot (V)"
+msgstr "Może zsiąść z konia i walczyć pieszo (V)"
 
 msgid "Cancel %s"
 msgstr "Anuluj: %s"
@@ -178,6 +286,15 @@ msgstr "Tusza"
 
 msgid "Carries %d %s"
 msgstr "Niesie: %d %s"
+
+msgid "Charge: ×%s damage after a run-up of %d cells"
+msgstr "Szarża: obrażenia ×%s po rozpędzie na %d pola"
+
+msgid "Cheap foot militia with boar spears, good against horsemen."
+msgstr "Tanie pospolite ruszenie z rohatynami, dobre przeciw jeźdźcom."
+
+msgid "Cheaper towers, walls and castles"
+msgstr "Tańsze wieże, mury i zamki"
 
 msgid "Chronicler"
 msgstr "Kronikarz"
@@ -233,11 +350,20 @@ msgstr "Zsiądź z koni"
 msgid "Do not let the knight brothers reach the boats"
 msgstr "Nie dopuść braci rycerzy do łodzi"
 
+msgid "Does not burn"
+msgstr "Nie płonie"
+
+msgid "Does not chase fleeing enemies"
+msgstr "Nie ściga uciekających wrogów"
+
 msgid "Double click selects all units of that type on screen."
 msgstr "Podwójny klik zaznacza wszystkie jednostki tego typu na ekranie."
 
 msgid "Draw"
 msgstr "Remis"
+
+msgid "Each field holds more food: +50%."
+msgstr "Każde pole daje więcej żywności: +50%."
 
 msgid "Equal money"
 msgstr "Równe zasoby"
@@ -248,17 +374,29 @@ msgstr "Esc lub PPM anuluj"
 msgid "F1: how to play."
 msgstr "F1: jak grać."
 
+msgid "Fields give food faster: +15%."
+msgstr "Pola dają żywność szybciej: +15%."
+
+msgid "Fight enemies who come near, then come back."
+msgstr "Walczyć z wrogami, którzy podejdą, potem wracać."
+
 msgid "Fight!"
 msgstr "Do boju!"
 
 msgid "First steps"
 msgstr "Pierwsze kroki"
 
+msgid "Flee from the enemy at full speed, then turn on the chasers."
+msgstr "Uciekać przed wrogiem pełnym pędem, a potem uderzyć na pogoń."
+
 msgid "Fleeing!"
 msgstr "Ucieka!"
 
 msgid "Food"
 msgstr "Żywność"
+
+msgid "Food comes faster: honey from hives +40%, hunting and fields +25%."
+msgstr "Żywność płynie szybciej: miód z barci +40%, łowy i pola +25%."
 
 msgid "Food left %d of %d"
 msgstr "Zostało żywności: %d z %d"
@@ -272,11 +410,23 @@ msgstr "Żywność: nigdy się nie kończy"
 msgid "Food: peasants work a farm by the forest or a bort (hive) in it."
 msgstr "Żywność: chłopi pracują na polu przy lesie lub przy barci w lesie."
 
+msgid "Foot soldiers and horsemen: +1 melee damage."
+msgstr "Piechota i jazda: +1 obrażeń wręcz."
+
+msgid "Foot soldiers: +1 melee and +1 pierce armor."
+msgstr "Piechota: +1 pancerza wręcz i +1 przeciw przebiciu."
+
+msgid "Foot spearman of the Order, good against horsemen."
+msgstr "Pieszy włócznik Zakonu, dobry przeciw jeźdźcom."
+
 msgid "Forest"
 msgstr "Las"
 
 msgid "Forest gives wood."
 msgstr "Las daje drewno."
+
+msgid "Form a wedge with its point to the front, for the charge."
+msgstr "Ustawić się klinem ostrzem do przodu, do szarży."
 
 msgid "Formation: %s (%s)"
 msgstr "Szyk: %s (%s)"
@@ -305,11 +455,20 @@ msgstr "Czas gry: %s"
 msgid "Gather 300 food so the village lives through the summer"
 msgstr "Zbierz 300 żywności, by wieś przetrwała lato"
 
+msgid "Gathers food, wood, iron and silver, builds and repairs."
+msgstr "Zbiera żywność, drewno, żelazo i srebro, buduje i naprawia."
+
 msgid "Gathers resources and builds."
 msgstr "Zbiera surowce i buduje."
 
+msgid "Get off the horse and fight on foot: more armor, the speed of foot soldiers."
+msgstr "Zsiąść z konia i walczyć pieszo: więcej pancerza, szybkość piechoty."
+
 msgid "Gintaut is wounded. The uprising has lost its leader."
 msgstr "Gintowt ranny. Powstanie straciło wodza."
+
+msgid "Gives"
+msgstr "Daje"
 
 msgid "Gives %d food when hunted"
 msgstr "Daje %d żywności po upolowaniu"
@@ -329,8 +488,20 @@ msgstr "Wielkie Księstwo Litewskie przeciw Zakonowi Krzyżackiemu"
 msgid "Green means it can stand there; the line at the top says why red cannot."
 msgstr "Zielone — można postawić; wiersz u góry mówi, czemu czerwone nie."
 
+msgid "HP %d"
+msgstr "PŻ %d"
+
+msgid "HP %d · armor %d melee / %d pierce"
+msgstr "PŻ %d · pancerz %d wręcz / %d przeb."
+
 msgid "HP %d/%d"
 msgstr "PŻ %d/%d"
+
+msgid "Heals %d HP a second to her people within %d cells"
+msgstr "Leczy swoich o %d PŻ na sekundę w promieniu %d pól"
+
+msgid "Heavy horse: +10% HP."
+msgstr "Ciężka jazda: +10% PŻ."
 
 msgid "Held by: %s"
 msgstr "Trzyma: %s"
@@ -349,6 +520,15 @@ msgstr "Wskazówki w potyczce"
 
 msgid "Hold the pier with no enemies near, and the boats with reinforcements will stop coming."
 msgstr "Utrzymaj przystań bez wroga w pobliżu, a łodzie z posiłkami przestaną przypływać."
+
+msgid "Hold this spot: fight only what comes within reach."
+msgstr "Trzymać miejsce: walczyć tylko z tym, co podejdzie w zasięg."
+
+msgid "Homes for your people. Every unit takes room: when the population is full, nothing more can be trained until you build houses."
+msgstr "Domy dla twoich ludzi. Każdy zajmuje miejsce: gdy ludność jest pełna, nikogo więcej nie wyszkolisz, póki nie zbudujesz domów."
+
+msgid "Horsemen: +1 melee and +1 pierce armor."
+msgstr "Jazda: +1 pancerza wręcz i +1 przeciw przebiciu."
 
 msgid "Houses %d"
 msgstr "Chaty %d"
@@ -377,11 +557,17 @@ msgstr "Przechwyć zakonny tabor ze zbożem na nadrzecznej drodze"
 msgid "Iron"
 msgstr "Żelazo"
 
+msgid "Iron is mined faster: +20%."
+msgstr "Żelazo wydobywa się szybciej: +20%."
+
 msgid "Iron: right-click bog ore (brown blocks in the bog) with peasants."
 msgstr "Żelazo: kliknij chłopami prawym przyciskiem rudę darniową (brązowe bloki na bagnie)."
 
 msgid "It needs two other first-age buildings and opens new units."
 msgstr "Wymaga dwóch innych budynków pierwszej epoki i otwiera nowe jednostki."
+
+msgid "Javelin: %d damage at %d cells, every %d s"
+msgstr "Sulica: %d obrażeń na %d pola, co %d s"
 
 msgid "Keep watching"
 msgstr "Oglądaj dalej"
@@ -416,6 +602,9 @@ msgstr "Linia"
 msgid "Lithuanian retreat"
 msgstr "Ucieczka litewska"
 
+msgid "Lithuanian retreat: flees, then turns on the chasers (T)"
+msgstr "Ucieczka litewska: ucieka, potem uderza na pogoń (T)"
+
 msgid "Lithuanian troops can feign a retreat (T) and turn around (G)."
 msgstr "Wojska litewskie mogą pozorować ucieczkę (T) i zawracać (G)."
 
@@ -434,6 +623,9 @@ msgstr "Menu (F10)"
 msgid "Messenger"
 msgstr "Posłaniec"
 
+msgid "Mist over the bog: your people and buildings in it are hidden from the enemy farther than 2 cells."
+msgstr "Mgła nad bagnem: twoich ludzi i budynków w niej wróg nie widzi dalej niż na 2 pola."
+
 msgid "Morale %d/%d"
 msgstr "Morale %d/%d"
 
@@ -446,11 +638,20 @@ msgstr "Przesuwaj kamerę strzałkami lub krawędzią ekranu. Przeciągnij, by z
 msgid "Must stand in the forest"
 msgstr "Musi stać w lesie"
 
+msgid "Needs %d finished buildings of the age before."
+msgstr "Potrzeba %d gotowych budynków poprzedniej epoki."
+
 msgid "Needs a later age"
 msgstr "Wymaga późniejszej epoki"
 
 msgid "Needs forest nearby"
 msgstr "Wymaga lasu w pobliżu"
+
+msgid "Never flees"
+msgstr "Nigdy nie ucieka"
+
+msgid "New buildings"
+msgstr "Nowe budynki"
 
 msgid "Next"
 msgstr "Dalej"
@@ -485,6 +686,9 @@ msgstr "Jeszcze niegotowe"
 msgid "Nothing selected"
 msgstr "Nic nie zaznaczono"
 
+msgid "Nothing to train here yet in this version"
+msgstr "W tej wersji nikogo tu jeszcze nie szkolisz"
+
 msgid "Now listen. The land gives strength to whoever holds it. The Germans have their own strength, from books and the bones of saints. We have ours: from groves, from water, from the stones where the gods stood. Send me girls who know herbs. I will teach them to call the mist."
 msgstr "Teraz słuchaj. Ziemia daje siłę temu, kto ją trzyma. Niemcy mają swoją siłę, z ksiąg i z kości świętych. My mamy swoją: z gajów, z wody, z kamieni, gdzie stali bogowie. Przyślij mi dziewki, co znają zioła. Nauczę je wołać mgłę."
 
@@ -496,6 +700,12 @@ msgstr "Cele"
 
 msgid "Off the map"
 msgstr "Poza mapą"
+
+msgid "Only in the forest"
+msgstr "Tylko w lesie"
+
+msgid "Only next to the forest"
+msgstr "Tylko obok lasu"
 
 msgid "Only on a place of power"
 msgstr "Tylko na miejscu mocy"
@@ -523,6 +733,9 @@ msgstr "Pauza"
 
 msgid "Paused (P)"
 msgstr "Pauza (P)"
+
+msgid "Peasants bring here every resource"
+msgstr "Chłopi przynoszą tu wszystkie surowce"
 
 msgid "Peasants bring here: %s"
 msgstr "Chłopi przynoszą tu: %s"
@@ -581,6 +794,12 @@ msgstr "Q E R: linia, kolumna, klin."
 msgid "Quit"
 msgstr "Wyjdź"
 
+msgid "Researched once, works for all your people."
+msgstr "Badane raz, działa na wszystkich twoich ludzi."
+
+msgid "Researches: %s"
+msgstr "Bada: %s"
+
 msgid "Reset"
 msgstr "Przywróć"
 
@@ -608,9 +827,6 @@ msgstr "PPM: punkt zbiórki"
 msgid "Right-click the forest with peasants selected: they cut wood and carry it home."
 msgstr "Zaznacz chłopów i kliknij las prawym przyciskiem: zetną drewno i zaniosą do domu."
 
-msgid "Room for more people: build one before training more."
-msgstr "Miejsce dla ludzi: zbuduj, zanim wyszkolisz kolejnych."
-
 msgid "Salvage"
 msgstr "Rozbiórka"
 
@@ -635,17 +851,26 @@ msgstr "Zaznacz chłopów: przytrzymaj lewy przycisk myszy i obrysuj ich ramką.
 msgid "Settings"
 msgstr "Ustawienia"
 
+msgid "Shoots: %d damage (%s), range %d"
+msgstr "Strzela: %d obrażeń (%s), zasięg %d"
+
 msgid "Side %d: %d units, %d HP, %d fleeing"
 msgstr "Strona %d: jednostki %d, PŻ %d, uciekający %d"
 
 msgid "Silver"
 msgstr "Srebro"
 
+msgid "Silver is mined faster: +20%."
+msgstr "Srebro wydobywa się szybciej: +20%."
+
 msgid "Silver mine"
 msgstr "Kopalnia srebra"
 
 msgid "Silver: right-click a silver mine (grey blocks on a hill) with peasants."
 msgstr "Srebro: kliknij chłopami prawym przyciskiem kopalnię srebra (szare bloki na wzgórzu)."
+
+msgid "Size %d×%d cells"
+msgstr "Rozmiar %d×%d pól"
 
 msgid "Skirmish"
 msgstr "Potyczka"
@@ -662,20 +887,20 @@ msgstr "Mały"
 msgid "Speed %.2f cells/s"
 msgstr "Szybkość %.2f pól/s"
 
+msgid "Spells of wise women nearby recharge faster"
+msgstr "Zaklęcia znachorek w pobliżu odnawiają się szybciej"
+
 msgid "Stance: %s"
 msgstr "Postawa: %s"
 
 msgid "Stand ground"
 msgstr "Stój w miejscu"
 
-msgid "Stands only on a place of power; gives Power and trains casters."
-msgstr "Stoi tylko na miejscu mocy; daje Moc i szkoli czarowników."
-
 msgid "Stop"
 msgstr "Stój"
 
-msgid "Stop (H)"
-msgstr "Stój (H)"
+msgid "Stop what they are doing and stand."
+msgstr "Przerwać to, co robią, i stanąć."
 
 msgid "Take all 7 places of power"
 msgstr "Zajmij wszystkie 7 miejsc mocy"
@@ -688,6 +913,9 @@ msgstr "Rozbiórka: kliknij swój budynek"
 
 msgid "Take back the sacred grove and lay an alka there"
 msgstr "Odbij święty gaj i ułóż tam alkę"
+
+msgid "Takes %d population"
+msgstr "Zajmuje %d miejsca ludności"
 
 msgid "Takes in: %s"
 msgstr "Przyjmuje: %s"
@@ -710,6 +938,9 @@ msgstr "Stolica i zamki strony pokonanej są zburzone."
 msgid "The castle at Skirsnemune burned, and the knights who sat in it were killed. Both our books and the German ones write of it. But there was still Dubysa, where the vogt himself sat."
 msgstr "Zamek w Skirsnemunie spłonął, a rycerze, co w nim siedzieli, zginęli. Piszą o tym i nasze księgi, i niemieckie. Ale była jeszcze Dubisa, gdzie siedział sam wójt."
 
+msgid "The heart of your land: trains peasants, takes in every resource and leads your people into the next age. In a skirmish, a side that loses every town centre and castle is out."
+msgstr "Serce twojej ziemi: szkoli chłopów, przyjmuje wszystkie surowce i prowadzi twój lud do następnej epoki. W potyczce strona, która straci wszystkie dwory i zamki, odpada."
+
 msgid "The hints at the top left can be turned off in the settings."
 msgstr "Wskazówki w lewym górnym rogu można wyłączyć w ustawieniach."
 
@@ -727,6 +958,9 @@ msgstr "Przystań nasza. Żadna łódź już nie przypłynie do Skirsnemuny."
 
 msgid "The place is taken"
 msgstr "Miejsce zajęte"
+
+msgid "The price is for each cell of the line."
+msgstr "Cena za każde pole linii."
 
 msgid "The prince's. Prince Vytautas has not sent us yet. But the Germans held back the king's grain, and now the prince says he did not send us far enough."
 msgstr "Książęcy. Książę Witold jeszcze nas nie posłał. Ale Niemcy zatrzymali królewskie zboże, a teraz książę mówi, że posłał nas za blisko."
@@ -764,14 +998,23 @@ msgstr "Czas: %d s"
 msgid "To win, destroy the enemy's capital, or hold every place of power for 5 minutes."
 msgstr "Aby wygrać, zniszcz stolicę wroga albo utrzymaj wszystkie miejsca mocy przez 5 minut."
 
-msgid "Trains peasants, takes every resource, leads to the next age."
-msgstr "Szkoli chłopów, przyjmuje wszystkie surowce, prowadzi do następnej epoki."
+msgid "Towers, walls and gates see 2 cells farther."
+msgstr "Wieże, mury i bramy widzą o 2 pola dalej."
 
-msgid "Trains troops: select it and press a button below."
-msgstr "Szkoli wojsko: zaznacz go i naciśnij przycisk na dole."
+msgid "Trains archers and crossbowmen."
+msgstr "Szkoli łuczników i kuszników."
+
+msgid "Trains foot soldiers."
+msgstr "Szkoli piechotę."
+
+msgid "Trains horsemen."
+msgstr "Szkoli jeźdźców."
 
 msgid "Trains: %s"
 msgstr "Szkoli: %s"
+
+msgid "Turn and face the chasers at once."
+msgstr "Od razu zawrócić przodem do pogoni."
 
 msgid "Turn around"
 msgstr "Obróć"
@@ -788,6 +1031,12 @@ msgstr "Utracone jednostki"
 msgid "Units trained"
 msgstr "Wyszkolone jednostki"
 
+msgid "Units walk over it"
+msgstr "Można po nim chodzić"
+
+msgid "Unseen in the forest until it shoots"
+msgstr "W lesie niewidoczny, dopóki nie strzeli"
+
 msgid "Very large"
 msgstr "Bardzo duży"
 
@@ -796,6 +1045,12 @@ msgstr "Zwycięstwo"
 
 msgid "W A S D, the arrows or the screen edge move the view."
 msgstr "W A S D, strzałki lub krawędź ekranu przesuwają widok."
+
+msgid "Walk and stand in a broad line."
+msgstr "Iść i stać szerokim szeregiem."
+
+msgid "Walk in a narrow column, for roads and the forest."
+msgstr "Iść wąską kolumną, na drogi i do lasu."
 
 msgid "Wavering"
 msgstr "Chwieje się"
@@ -812,8 +1067,14 @@ msgstr "Klin"
 msgid "Where is the nearest German castle?"
 msgstr "Gdzie najbliższy niemiecki zamek?"
 
+msgid "Where it stands"
+msgstr "Gdzie stoi"
+
 msgid "Wild, nobody's"
 msgstr "Dziki, niczyj"
+
+msgid "Wise women heal 2 HP a second instead of 1."
+msgstr "Znachorki leczą 2 PŻ na sekundę zamiast 1."
 
 msgid "With peasants selected, the buttons at the bottom right are buildings."
 msgstr "Gdy zaznaczeni są chłopi, przyciski w prawym dolnym rogu to budynki."
@@ -827,6 +1088,9 @@ msgstr "Drewno dobrze się pali."
 msgid "Wood: right-click the forest with peasants."
 msgstr "Drewno: kliknij chłopami prawym przyciskiem las."
 
+msgid "Woodcutters work faster: +20%."
+msgstr "Drwale pracują szybciej: +20%."
+
 msgid "Y with peasants, then a click on your building: they take it apart."
 msgstr "Y z chłopami, potem klik na swój budynek: rozbiorą go."
 
@@ -836,11 +1100,17 @@ msgstr "Prowadzisz Litwę z północnego zachodu; Zakon jest na południowym wsc
 msgid "You took your time, son of Gintaut. For three days I kept the fire in a pot, the way our old women carry it from house to house."
 msgstr "Długo szedłeś, synu Gintowta. Trzy dni trzymałam ogień w garnku, jak nasze baby noszą go od chaty do chaty."
 
+msgid "Your men near the relic do not flee while their morale is above 10; enemies nearby lose 10 morale."
+msgstr "Twoi ludzie przy relikwii nie uciekają, póki morale jest powyżej 10; wrogowie w pobliżu tracą 10 morale."
+
 msgid "Your people are not ready to fight yet. Gather your stores again."
 msgstr "Twoi ludzie nie są jeszcze gotowi do boju. Zbierz znów zapasy."
 
 msgid "Z X C: aggressive, defensive, stand ground. H: stop."
 msgstr "Z X C: zaczepna, obronna, stój w miejscu. H: stój."
+
+msgid "Zasekas are felled twice as fast and have +50% HP."
+msgstr "Zasieki układa się dwa razy szybciej i mają +50% PŻ."
 
 msgid "age_derzhava"
 msgstr "Państwo"
@@ -851,8 +1121,17 @@ msgstr "Chorągiew"
 msgid "age_udel"
 msgstr "Dzielnica"
 
+msgid "archers"
+msgstr "strzelcy"
+
+msgid "cavalry"
+msgstr "jazda"
+
 msgid "click where to cast it"
 msgstr "kliknij, gdzie rzucić"
+
+msgid "creatures"
+msgstr "stwory"
 
 msgid "firearm"
 msgstr "palna"
@@ -935,6 +1214,9 @@ msgstr "Zasieka"
 msgid "gdl_znakharka"
 msgstr "Znachorka"
 
+msgid "heavy cavalry"
+msgstr "ciężka jazda"
+
 msgid "hero_gintaut"
 msgstr "Gintowt"
 
@@ -946,6 +1228,15 @@ msgstr "Wójt Michał Küchmeister"
 
 msgid "hero_rumbaudas"
 msgstr "Rumbaudas"
+
+msgid "infantry"
+msgstr "piechota"
+
+msgid "lasts %d s"
+msgstr "trwa %d s"
+
+msgid "light cavalry"
+msgstr "lekka jazda"
 
 msgid "melee"
 msgstr "wręcz"
@@ -1001,11 +1292,17 @@ msgstr "Święte źródło"
 msgid "pp_wayside"
 msgstr "Przydrożny krzyż"
 
+msgid "radius %d"
+msgstr "promień %d"
+
 msgid "range %d"
 msgstr "zasięg %d"
 
 msgid "siege"
 msgstr "oblężnicze"
+
+msgid "siege engines"
+msgstr "machiny oblężnicze"
 
 msgid "sp_bog_mist"
 msgstr "Bagienna mgła"
@@ -1018,6 +1315,9 @@ msgstr "Egzorcyzm"
 
 msgid "sp_relic"
 msgstr "Relikwia w szyku"
+
+msgid "spearmen"
+msgstr "włócznicy"
 
 msgid "t_arrows"
 msgstr "Graniaste groty"

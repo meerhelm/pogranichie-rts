@@ -14,11 +14,20 @@ msgstr "%d %s"
 msgid "%d Power"
 msgstr "%d galios"
 
+msgid "%d food per sowing"
+msgstr "%d maisto per vieną sėją"
+
+msgid "%d s"
+msgstr "%d s"
+
 msgid "%d units"
 msgstr "%d vienetų"
 
 msgid "%d%% of its price is left in heaps; peasants carry it to the stores."
 msgstr "%d%% kainos lieka krūvose; valstiečiai neša ją į sandėlius."
+
+msgid "%s Power a second on a place of power"
+msgstr "%s galios per sekundę galios vietoje"
 
 msgid "%s gathered"
 msgstr "Surinkta: %s"
@@ -29,8 +38,14 @@ msgstr "(%d s)"
 msgid "(optional) %s"
 msgstr "(nebūtina) %s"
 
+msgid "+%d damage against %s"
+msgstr "+%d žalos prieš: %s"
+
 msgid "+%d population"
 msgstr "+%d gyventojų"
+
+msgid "+%d range shooting from the forest"
+msgstr "+%d nuotolio šaudant iš miško"
 
 msgid "+%s a second"
 msgstr "+%s per sekundę"
@@ -50,20 +65,53 @@ msgstr "4. Spustelėkite «%s» ir parenkite daugiau valstiečių (po 50 maisto)
 msgid "5. Build «%s», «%s» or «%s» and train an army."
 msgstr "5. Pastatykite «%s», «%s» arba «%s» ir surinkite kariuomenę."
 
-msgid "A felled-tree barrier, laid in the forest for free."
-msgstr "Iš nukirstų medžių užtvara, statoma miške nemokamai."
+msgid "A barrier of felled trees laid in the forest. Nobody passes it; fire burns it away."
+msgstr "Iš nuverstų medžių sukrauta užtvara miške. Pro ją niekas nepraeina; ugnis ją sudegina."
 
-msgid "A field by the forest: right-click it with a peasant for food."
-msgstr "Laukas prie miško: spustelėkite jį dešiniuoju mygtuku valstiečiu ir gausite maisto."
+msgid "A brother priest: consecrates the land and casts the Order's spells."
+msgstr "Brolis kunigas: pašventina žemę ir naudoja Ordino kerus."
 
-msgid "A gate in your wall that lets your own people through."
-msgstr "Vartai sienoje, praleidžiantys tik jūsiškius."
+msgid "A castle, the stronghold of the land: trains the best troops and houses many people. Like a town centre, it keeps your side in the game."
+msgstr "Pilis, krašto atrama: rengia geriausią kariuomenę ir talpina daug žmonių. Kaip ir dvaras, ji išlaiko jūsų pusę žaidime."
 
-msgid "A hive in the forest: two peasants gather honey (food)."
-msgstr "Drevė miške: du valstiečiai renka medų (maistą)."
+msgid "A chapel of the Order. It gathers Power for spells and consecrates the land: shrines of other sides near it give half the Power."
+msgstr "Ordino koplyčia. Kaupia galią kerams ir pašventina žemę: kitų pusių šventovės šalia duoda perpus mažiau galios."
+
+msgid "A church: trains priests and researches the faith's improvements."
+msgstr "Bažnyčia: rengia kunigus ir tiria tikėjimo patobulinimus."
+
+msgid "A crossbowman: slow to load, hits hard."
+msgstr "Arbaletininkas: ilgai užtaiso, bet smarkiai kerta."
+
+msgid "A fast light horseman with javelins."
+msgstr "Greitas lengvasis raitelis su sulicomis."
+
+msgid "A field. A peasant working it brings in food; when it is worked out, it is sown again for its price."
+msgstr "Laukas. Jame dirbantis valstietis renka maistą; kai laukas išsenka, jis vėl apsėjamas už savo kainą."
+
+msgid "A gate in your wall: your own people pass, enemies do not."
+msgstr "Vartai jūsų sienoje: savi praeina, priešai ne."
+
+msgid "A half-brother in a grey cloak: the Order's medium horse."
+msgstr "Pusbrolis pilku apsiaustu: vidutinė Ordino raitija."
+
+msgid "A heavy Lithuanian lancer."
+msgstr "Sunkusis lietuvių ietininkas."
+
+msgid "A hive hollowed out in a forest tree. Two peasants take honey from it: food that never runs out."
+msgstr "Drevė, išskaptuota miško medyje. Du valstiečiai ima iš jos medų: maistą, kuris niekada nesibaigia."
 
 msgid "A house feeds more mouths. Train peasants at the yard and build a granary near the food."
 msgstr "Troba išmaitina daugiau burnų. Mokyk valstiečius dvare ir statyk klėtį arčiau maisto."
+
+msgid "A knight brother in a white cloak: the Order's heavy horse."
+msgstr "Brolis riteris baltu apsiaustu: sunkioji Ordino raitija."
+
+msgid "A light horseman from the Prussian lands."
+msgstr "Lengvasis raitelis iš prūsų žemių."
+
+msgid "A new age opens new buildings, troops and improvements."
+msgstr "Naujas amžius atveria naujus pastatus, karius ir patobulinimus."
 
 msgid "A shrine stands on it"
 msgstr "Jame stovi šventykla"
@@ -71,20 +119,44 @@ msgstr "Jame stovi šventykla"
 msgid "A silver mine (grey blocks on a hill) gives silver."
 msgstr "Sidabro kasykla (pilki blokai ant kalvos) duoda sidabro."
 
-msgid "A store at the forest edge, so woodcutters walk less."
-msgstr "Sandėlis miško pakraštyje, kad kirtėjai mažiau vaikščiotų."
+msgid "A smithy: researches better weapons and armor for your troops."
+msgstr "Kalvė: tiria geresnius ginklus ir šarvus jūsų kariams."
 
-msgid "A store by the ore or silver, so miners walk less."
-msgstr "Sandėlis prie rūdos ar sidabro, kad kasėjai mažiau vaikščiotų."
+msgid "A store at the forest edge: woodcutters carry wood a shorter way. Researches forestry improvements."
+msgstr "Sandėlis miško pakraštyje: kirtėjai neša medieną trumpesniu keliu. Tiria miško patobulinimus."
 
-msgid "A store near the fields, so peasants walk less."
-msgstr "Sandėlis prie laukų, kad valstiečiai mažiau vaikščiotų."
+msgid "A store by bog ore or a silver mine: miners carry a shorter way. Researches mining improvements."
+msgstr "Sandėlis prie balų rūdos ar sidabro kasyklos: kasėjai neša trumpesniu keliu. Tiria kasybos patobulinimus."
 
-msgid "A wall: drag to lay a line."
-msgstr "Siena: tempkite, kad nutiestumėte liniją."
+msgid "A store for food near the fields: peasants carry the harvest a shorter way. Researches farming improvements."
+msgstr "Maisto sandėlis prie laukų: valstiečiai neša derlių trumpesniu keliu. Tiria žemdirbystės patobulinimus."
 
-msgid "A watch tower that shoots at enemies."
-msgstr "Sargybos bokštas, šaudantis į priešus."
+msgid "A sturdy archer of the castle garrisons."
+msgstr "Tvirtas pilių įgulų lankininkas."
+
+msgid "A tower that shoots at enemies who come near."
+msgstr "Bokštas, šaudantis į artyn priėjusius priešus."
+
+msgid "A trading house. Trade is not in this version yet."
+msgstr "Prekybos namai. Prekybos šioje versijoje dar nėra."
+
+msgid "A wagon of the baggage train."
+msgstr "Gurguolės vežimas."
+
+msgid "A wall of sharpened stakes: drag to lay a line. Holds enemies off until they break through; it burns."
+msgstr "Siena iš smailintų kuolų: tempkite, kad nutiestumėte liniją. Sulaiko priešus, kol jie prasiveržia; dega."
+
+msgid "A wise woman: heals those around her and casts the Duchy's spells."
+msgstr "Žynė: gydo aplinkinius ir naudoja Kunigaikštystės kerus."
+
+msgid "Abilities"
+msgstr "Gebėjimai"
+
+msgid "Advance to the next age"
+msgstr "Perėjimas į kitą amžių"
+
+msgid "Advance to: %s"
+msgstr "Pereiti į amžių: %s"
 
 msgid "Age"
 msgstr "Epocha"
@@ -101,6 +173,12 @@ msgstr "Visos galios vietos išlaikytos penkias minutes."
 msgid "Always on"
 msgstr "Visada veikia"
 
+msgid "An alka, a pagan sanctuary. It gathers Power for spells and trains wise women; near it their spells recharge faster."
+msgstr "Alka, pagonių šventvietė. Kaupia galią kerams ir rengia žynes; šalia jos jų kerai atsikuria greičiau."
+
+msgid "An archer at home in the forest."
+msgstr "Lankininkas, kuriam miškas — namai."
+
 msgid "An oak can be cut down. But the place where it grew is still here. Set stones in a circle, as your grandfather did, and the fire will come back."
 msgstr "Ąžuolą galima nukirsti. Bet vieta, kur jis augo, tebėra čia. Sustatyk akmenis ratu, kaip darė tavo senelis, ir ugnis sugrįš."
 
@@ -110,6 +188,9 @@ msgstr "O tu kieno žmogus?"
 msgid "Archers among the trees are harder to hit. Let the spearmen hold the Order's men while your archers shoot from the forest."
 msgstr "Lankininką tarp medžių sunkiau pataikyti. Tegul ietininkai sulaiko ordino vyrus, o tavo lankininkai šaudo iš miško."
 
+msgid "Archers: +1 pierce damage and +1 range."
+msgstr "Šauliai: +1 duriamosios žalos ir +1 nuotolio."
+
 msgid "Are you the Gintaut who burned the chapel?"
 msgstr "Ar tu tas Gintautas, kuris sudegino koplyčią?"
 
@@ -118,6 +199,15 @@ msgstr "Šarvai %d nuo kirčių / %d nuo dūrių"
 
 msgid "Army"
 msgstr "Kariuomenė"
+
+msgid "At most %d at a time"
+msgstr "Ne daugiau kaip %d vienu metu"
+
+msgid "At most %d for each castle"
+msgstr "Ne daugiau kaip %d kiekvienai piliai"
+
+msgid "Attack any enemy they see and chase it."
+msgstr "Pulti kiekvieną matomą priešą ir jį vytis."
 
 msgid "B next, F turn, Shift keep placing, Esc or right click cancel"
 msgstr "B – kitas, F – pasukti, Shift – statyti toliau, Esc ar dešinysis spustelėjimas – atšaukti"
@@ -143,6 +233,15 @@ msgstr "Bajorų ietys smarkiai smogia puolant. Kad padegtum medinius pastatus, p
 msgid "Bread first. Then the Germans."
 msgstr "Pirma duona. Paskui vokiečiai."
 
+msgid "Breaks other sides' spells; a creature loses 150 HP and falls back."
+msgstr "Panaikina kitų pusių kerus; būtybė netenka 150 gyvybės ir atsitraukia."
+
+msgid "Brickworks: while one stands, your towers, walls and castles cost less."
+msgstr "Plytinė: kol ji stovi, jūsų bokštai, sienos ir pilys kainuoja pigiau."
+
+msgid "Brother priests: +50% HP; Exorcism reaches 2 cells farther."
+msgstr "Broliai kunigai: +50% gyvybės; Egzorcizmas siekia 2 langeliais toliau."
+
 msgid "Build «%s» on a place of power: it gives Power for spells."
 msgstr "Pastatykite «%s» galios vietoje: ji duoda Galios burtams."
 
@@ -158,6 +257,12 @@ msgstr "Pastatyta pastatų"
 msgid "Buildings lost"
 msgstr "Prarasta pastatų"
 
+msgid "Builds and repairs, but gathers nothing."
+msgstr "Stato ir taiso, bet nieko nerenka."
+
+msgid "Builds wagons and siege engines."
+msgstr "Gamina vežimus ir apgulos mašinas."
+
 msgid "Burn Skirsnemune without losing any of Rumbaudas's riders"
 msgstr "Sudegink Skirsnemunę, neprarasdamas nė vieno Rumbaudo raitelio"
 
@@ -166,6 +271,9 @@ msgstr "Sudegink Skirsnemunės pilį"
 
 msgid "Campaign: %s"
 msgstr "Kampanija: %s"
+
+msgid "Can dismount to fight on foot (V)"
+msgstr "Gali nulipti nuo žirgo ir kautis pėsčias (V)"
 
 msgid "Cancel %s"
 msgstr "Atšaukti: %s"
@@ -178,6 +286,15 @@ msgstr "Skerdena"
 
 msgid "Carries %d %s"
 msgstr "Neša: %d %s"
+
+msgid "Charge: ×%s damage after a run-up of %d cells"
+msgstr "Ataka: žala ×%s įsibėgėjus %d langelius"
+
+msgid "Cheap foot militia with boar spears, good against horsemen."
+msgstr "Pigūs pėstieji su ragotinėmis, geri prieš raitelius."
+
+msgid "Cheaper towers, walls and castles"
+msgstr "Pigesni bokštai, sienos ir pilys"
 
 msgid "Chronicler"
 msgstr "Metraštininkas"
@@ -233,11 +350,20 @@ msgstr "Nulipti nuo žirgų"
 msgid "Do not let the knight brothers reach the boats"
 msgstr "Neleisk broliams riteriams pasiekti valčių"
 
+msgid "Does not burn"
+msgstr "Nedega"
+
+msgid "Does not chase fleeing enemies"
+msgstr "Nesiveja bėgančių priešų"
+
 msgid "Double click selects all units of that type on screen."
 msgstr "Dvigubas spustelėjimas pažymi visus to tipo karius ekrane."
 
 msgid "Draw"
 msgstr "Lygiosios"
+
+msgid "Each field holds more food: +50%."
+msgstr "Kiekvienas laukas duoda daugiau maisto: +50%."
 
 msgid "Equal money"
 msgstr "Vienodi pinigai"
@@ -248,17 +374,29 @@ msgstr "Esc ar dešinysis spustelėjimas – atšaukti"
 msgid "F1: how to play."
 msgstr "F1: kaip žaisti."
 
+msgid "Fields give food faster: +15%."
+msgstr "Laukai duoda maistą greičiau: +15%."
+
+msgid "Fight enemies who come near, then come back."
+msgstr "Kautis su priartėjusiais priešais, paskui grįžti."
+
 msgid "Fight!"
 msgstr "Į mūšį!"
 
 msgid "First steps"
 msgstr "Pirmieji žingsniai"
 
+msgid "Flee from the enemy at full speed, then turn on the chasers."
+msgstr "Bėgti nuo priešo visu greičiu, paskui atsisukti prieš vijikus."
+
 msgid "Fleeing!"
 msgstr "Bėga!"
 
 msgid "Food"
 msgstr "Maistas"
+
+msgid "Food comes faster: honey from hives +40%, hunting and fields +25%."
+msgstr "Maistas gaunamas greičiau: medus iš drevių +40%, medžioklė ir laukai +25%."
 
 msgid "Food left %d of %d"
 msgstr "Liko maisto: %d iš %d"
@@ -272,11 +410,23 @@ msgstr "Maistas: niekada nesibaigia"
 msgid "Food: peasants work a farm by the forest or a bort (hive) in it."
 msgstr "Maistas: valstiečiai dirba lauke prie miško arba prie drevės miške."
 
+msgid "Foot soldiers and horsemen: +1 melee damage."
+msgstr "Pėstininkai ir raiteliai: +1 artimosios žalos."
+
+msgid "Foot soldiers: +1 melee and +1 pierce armor."
+msgstr "Pėstininkai: +1 šarvų nuo kirčių ir +1 nuo dūrių."
+
+msgid "Foot spearman of the Order, good against horsemen."
+msgstr "Ordino pėstysis ietininkas, geras prieš raitelius."
+
 msgid "Forest"
 msgstr "Miškas"
 
 msgid "Forest gives wood."
 msgstr "Miškas duoda medienos."
+
+msgid "Form a wedge with its point to the front, for the charge."
+msgstr "Išsirikiuoti pleištu smaigaliu į priekį, atakai."
 
 msgid "Formation: %s (%s)"
 msgstr "Rikiuotė: %s (%s)"
@@ -305,11 +455,20 @@ msgstr "Žaidimo laikas: %s"
 msgid "Gather 300 food so the village lives through the summer"
 msgstr "Surink 300 maisto, kad kaimas išgyventų vasarą"
 
+msgid "Gathers food, wood, iron and silver, builds and repairs."
+msgstr "Renka maistą, medieną, geležį ir sidabrą, stato ir taiso."
+
 msgid "Gathers resources and builds."
 msgstr "Renka išteklius ir stato."
 
+msgid "Get off the horse and fight on foot: more armor, the speed of foot soldiers."
+msgstr "Nulipti nuo žirgo ir kautis pėsčiomis: daugiau šarvų, pėstininko greitis."
+
 msgid "Gintaut is wounded. The uprising has lost its leader."
 msgstr "Gintautas sužeistas. Sukilimas neteko vado."
+
+msgid "Gives"
+msgstr "Duoda"
 
 msgid "Gives %d food when hunted"
 msgstr "Sumedžiotas duoda %d maisto"
@@ -329,8 +488,20 @@ msgstr "Lietuvos Didžioji Kunigaikštystė prieš Kryžiuočių ordiną"
 msgid "Green means it can stand there; the line at the top says why red cannot."
 msgstr "Žalia — galima statyti; eilutė viršuje pasako, kodėl raudona negalima."
 
+msgid "HP %d"
+msgstr "Gyvybė %d"
+
+msgid "HP %d · armor %d melee / %d pierce"
+msgstr "Gyvybė %d · šarvai %d nuo kirčių / %d nuo dūrių"
+
 msgid "HP %d/%d"
 msgstr "Gyvybė %d/%d"
+
+msgid "Heals %d HP a second to her people within %d cells"
+msgstr "Gydo savuosius %d gyvybės per sekundę %d langelių spinduliu"
+
+msgid "Heavy horse: +10% HP."
+msgstr "Sunkioji raitija: +10% gyvybės."
 
 msgid "Held by: %s"
 msgstr "Valdo: %s"
@@ -349,6 +520,15 @@ msgstr "Patarimai susirėmime"
 
 msgid "Hold the pier with no enemies near, and the boats with reinforcements will stop coming."
 msgstr "Išlaikyk prieplauką, kol šalia nėra priešų, ir valtys su pastiprinimu nebeplauks."
+
+msgid "Hold this spot: fight only what comes within reach."
+msgstr "Laikyti vietą: kautis tik su tuo, kas prieina per smūgio atstumą."
+
+msgid "Homes for your people. Every unit takes room: when the population is full, nothing more can be trained until you build houses."
+msgstr "Būstai jūsų žmonėms. Kiekvienas užima vietą: kai gyventojų pilna, nieko daugiau neparengsite, kol nepastatysite namų."
+
+msgid "Horsemen: +1 melee and +1 pierce armor."
+msgstr "Raiteliai: +1 šarvų nuo kirčių ir +1 nuo dūrių."
 
 msgid "Houses %d"
 msgstr "Trobų: %d"
@@ -377,11 +557,17 @@ msgstr "Perimk ordino grūdų vilkstinę pakrantės kelyje"
 msgid "Iron"
 msgstr "Geležis"
 
+msgid "Iron is mined faster: +20%."
+msgstr "Geležis kasama greičiau: +20%."
+
 msgid "Iron: right-click bog ore (brown blocks in the bog) with peasants."
 msgstr "Geležis: spustelėkite valstiečiais dešiniuoju mygtuku balų rūdą (rudi blokai pelkėje)."
 
 msgid "It needs two other first-age buildings and opens new units."
 msgstr "Reikia dviejų kitų pirmosios epochos pastatų; atveria naujus karius."
+
+msgid "Javelin: %d damage at %d cells, every %d s"
+msgstr "Sulica: %d žalos per %d langelius, kas %d s"
 
 msgid "Keep watching"
 msgstr "Stebėti toliau"
@@ -416,6 +602,9 @@ msgstr "Linija"
 msgid "Lithuanian retreat"
 msgstr "Lietuviškas atsitraukimas"
 
+msgid "Lithuanian retreat: flees, then turns on the chasers (T)"
+msgstr "Lietuviškas atsitraukimas: bėga, paskui atsigręžia prieš vijikus (T)"
+
 msgid "Lithuanian troops can feign a retreat (T) and turn around (G)."
 msgstr "Lietuvių kariai gali apsimesti bėgantys (T) ir apsisukti (G)."
 
@@ -434,6 +623,9 @@ msgstr "Meniu (F10)"
 msgid "Messenger"
 msgstr "Pasiuntinys"
 
+msgid "Mist over the bog: your people and buildings in it are hidden from the enemy farther than 2 cells."
+msgstr "Rūkas virš pelkės: jūsų žmonių ir pastatų jame priešas nemato toliau nei 2 langeliai."
+
 msgid "Morale %d/%d"
 msgstr "Dvasia %d/%d"
 
@@ -446,11 +638,20 @@ msgstr "Kamerą judink rodyklių klavišais arba prie ekrano krašto. Tempk pele
 msgid "Must stand in the forest"
 msgstr "Turi stovėti miške"
 
+msgid "Needs %d finished buildings of the age before."
+msgstr "Reikia %d baigtų ankstesnio amžiaus pastatų."
+
 msgid "Needs a later age"
 msgstr "Reikia vėlesnės epochos"
 
 msgid "Needs forest nearby"
 msgstr "Šalia turi būti miškas"
+
+msgid "Never flees"
+msgstr "Niekada nebėga"
+
+msgid "New buildings"
+msgstr "Nauji pastatai"
 
 msgid "Next"
 msgstr "Toliau"
@@ -485,6 +686,9 @@ msgstr "Dar neparuošta"
 msgid "Nothing selected"
 msgstr "Nieko nepažymėta"
 
+msgid "Nothing to train here yet in this version"
+msgstr "Šioje versijoje čia dar nieko nerengiama"
+
 msgid "Now listen. The land gives strength to whoever holds it. The Germans have their own strength, from books and the bones of saints. We have ours: from groves, from water, from the stones where the gods stood. Send me girls who know herbs. I will teach them to call the mist."
 msgstr "Dabar klausyk. Žemė duoda galios tam, kas ją valdo. Vokiečiai turi savo galią – iš knygų ir šventųjų kaulų. Mes turime savąją: iš giraičių, iš vandenų, iš akmenų, kur stovėjo dievai. Atsiųsk man mergų, kurios išmano žoles. Išmokysiu jas šaukti rūką."
 
@@ -496,6 +700,12 @@ msgstr "Užduotys"
 
 msgid "Off the map"
 msgstr "Už žemėlapio ribų"
+
+msgid "Only in the forest"
+msgstr "Tik miške"
+
+msgid "Only next to the forest"
+msgstr "Tik šalia miško"
 
 msgid "Only on a place of power"
 msgstr "Tik galios vietoje"
@@ -523,6 +733,9 @@ msgstr "Pauzė"
 
 msgid "Paused (P)"
 msgstr "Pauzė (P)"
+
+msgid "Peasants bring here every resource"
+msgstr "Valstiečiai neša čia visus išteklius"
 
 msgid "Peasants bring here: %s"
 msgstr "Valstiečiai neša čia: %s"
@@ -581,6 +794,12 @@ msgstr "Q E R: linija, vora, pleištas."
 msgid "Quit"
 msgstr "Išeiti"
 
+msgid "Researched once, works for all your people."
+msgstr "Ištiriama vieną kartą ir veikia visus jūsų žmones."
+
+msgid "Researches: %s"
+msgstr "Tiria: %s"
+
 msgid "Reset"
 msgstr "Atstatyti"
 
@@ -608,9 +827,6 @@ msgstr "Dešinysis spustelėjimas: susibūrimo vieta"
 msgid "Right-click the forest with peasants selected: they cut wood and carry it home."
 msgstr "Pažymėkite valstiečius ir spustelėkite mišką dešiniuoju: jie kirs medieną ir neš namo."
 
-msgid "Room for more people: build one before training more."
-msgstr "Vieta žmonėms: pastatykite prieš rengdami naujus."
-
 msgid "Salvage"
 msgstr "Išardyta medžiaga"
 
@@ -635,17 +851,26 @@ msgstr "Pažymėkite valstiečius: laikykite kairįjį pelės mygtuką ir apvesk
 msgid "Settings"
 msgstr "Nustatymai"
 
+msgid "Shoots: %d damage (%s), range %d"
+msgstr "Šaudo: %d žalos (%s), nuotolis %d"
+
 msgid "Side %d: %d units, %d HP, %d fleeing"
 msgstr "Pusė %d: %d vnt., %d gyvybės, %d bėga"
 
 msgid "Silver"
 msgstr "Sidabras"
 
+msgid "Silver is mined faster: +20%."
+msgstr "Sidabras kasamas greičiau: +20%."
+
 msgid "Silver mine"
 msgstr "Sidabro kasykla"
 
 msgid "Silver: right-click a silver mine (grey blocks on a hill) with peasants."
 msgstr "Sidabras: spustelėkite valstiečiais dešiniuoju sidabro kasyklą (pilki blokai ant kalvos)."
+
+msgid "Size %d×%d cells"
+msgstr "Dydis %d×%d langelių"
 
 msgid "Skirmish"
 msgstr "Susirėmimas"
@@ -662,20 +887,20 @@ msgstr "Mažas"
 msgid "Speed %.2f cells/s"
 msgstr "Greitis %.2f langel./s"
 
+msgid "Spells of wise women nearby recharge faster"
+msgstr "Šalia esančių žynių kerai atsikuria greičiau"
+
 msgid "Stance: %s"
 msgstr "Laikysena: %s"
 
 msgid "Stand ground"
 msgstr "Nesitraukti"
 
-msgid "Stands only on a place of power; gives Power and trains casters."
-msgstr "Stovi tik galios vietoje; duoda Galios ir rengia burtininkus."
-
 msgid "Stop"
 msgstr "Stoti"
 
-msgid "Stop (H)"
-msgstr "Stoti (H)"
+msgid "Stop what they are doing and stand."
+msgstr "Mesti tai, ką daro, ir sustoti."
 
 msgid "Take all 7 places of power"
 msgstr "Užimk visas 7 galios vietas"
@@ -688,6 +913,9 @@ msgstr "Išardyti: spustelėk savo pastatą"
 
 msgid "Take back the sacred grove and lay an alka there"
 msgstr "Atsiimk šventąją giraitę ir įrenk joje alką"
+
+msgid "Takes %d population"
+msgstr "Užima %d gyventojų vietas"
 
 msgid "Takes in: %s"
 msgstr "Priima: %s"
@@ -710,6 +938,9 @@ msgstr "Pralaimėjusios pusės sostinė ir pilys sunaikintos."
 msgid "The castle at Skirsnemune burned, and the knights who sat in it were killed. Both our books and the German ones write of it. But there was still Dubysa, where the vogt himself sat."
 msgstr "Skirsnemunės pilis sudegė, o joje sėdėję riteriai buvo išžudyti. Apie tai rašo ir mūsų, ir vokiečių knygos. Bet dar liko Dubysa, kur sėdėjo pats vogtas."
 
+msgid "The heart of your land: trains peasants, takes in every resource and leads your people into the next age. In a skirmish, a side that loses every town centre and castle is out."
+msgstr "Jūsų krašto širdis: rengia valstiečius, priima visus išteklius ir veda jūsų žmones į kitą amžių. Susirėmime pusė, praradusi visus dvarus ir pilis, iškrenta."
+
 msgid "The hints at the top left can be turned off in the settings."
 msgstr "Patarimus viršuje kairėje galima išjungti nustatymuose."
 
@@ -727,6 +958,9 @@ msgstr "Prieplauka mūsų. Į Skirsnemunę valtys daugiau nebeplauks."
 
 msgid "The place is taken"
 msgstr "Vieta užimta"
+
+msgid "The price is for each cell of the line."
+msgstr "Kaina už kiekvieną linijos langelį."
 
 msgid "The prince's. Prince Vytautas has not sent us yet. But the Germans held back the king's grain, and now the prince says he did not send us far enough."
 msgstr "Kunigaikščio. Kunigaikštis Vytautas mūsų dar nesiuntė. Bet vokiečiai sulaikė karaliaus grūdus, ir dabar kunigaikštis sako, kad per mažai mus siuntė."
@@ -764,14 +998,23 @@ msgstr "Laikas: %d s"
 msgid "To win, destroy the enemy's capital, or hold every place of power for 5 minutes."
 msgstr "Kad laimėtumėte, sunaikinkite priešo sostinę arba 5 minutes išlaikykite visas galios vietas."
 
-msgid "Trains peasants, takes every resource, leads to the next age."
-msgstr "Rengia valstiečius, priima visus išteklius, veda į kitą epochą."
+msgid "Towers, walls and gates see 2 cells farther."
+msgstr "Bokštai, sienos ir vartai mato 2 langeliais toliau."
 
-msgid "Trains troops: select it and press a button below."
-msgstr "Rengia karius: pažymėkite jį ir paspauskite mygtuką apačioje."
+msgid "Trains archers and crossbowmen."
+msgstr "Rengia lankininkus ir arbaletininkus."
+
+msgid "Trains foot soldiers."
+msgstr "Rengia pėstininkus."
+
+msgid "Trains horsemen."
+msgstr "Rengia raitelius."
 
 msgid "Trains: %s"
 msgstr "Rengia: %s"
+
+msgid "Turn and face the chasers at once."
+msgstr "Iš karto atsisukti į vijikus."
 
 msgid "Turn around"
 msgstr "Apsisukti"
@@ -788,6 +1031,12 @@ msgstr "Prarasta karių"
 msgid "Units trained"
 msgstr "Parengta karių"
 
+msgid "Units walk over it"
+msgstr "Juo galima vaikščioti"
+
+msgid "Unseen in the forest until it shoots"
+msgstr "Miške nematomas, kol nešauna"
+
 msgid "Very large"
 msgstr "Labai didelis"
 
@@ -796,6 +1045,12 @@ msgstr "Pergalė"
 
 msgid "W A S D, the arrows or the screen edge move the view."
 msgstr "W A S D, rodyklės ar ekrano kraštas stumia vaizdą."
+
+msgid "Walk and stand in a broad line."
+msgstr "Eiti ir stovėti plačia greta."
+
+msgid "Walk in a narrow column, for roads and the forest."
+msgstr "Eiti siaura kolona, keliams ir miškui."
 
 msgid "Wavering"
 msgstr "Svyruoja"
@@ -812,8 +1067,14 @@ msgstr "Pleištas"
 msgid "Where is the nearest German castle?"
 msgstr "Kur artimiausia vokiečių pilis?"
 
+msgid "Where it stands"
+msgstr "Kur stovi"
+
 msgid "Wild, nobody's"
 msgstr "Laukinis, niekieno"
+
+msgid "Wise women heal 2 HP a second instead of 1."
+msgstr "Žynės gydo 2 gyvybės per sekundę vietoj 1."
 
 msgid "With peasants selected, the buttons at the bottom right are buildings."
 msgstr "Pažymėjus valstiečius, mygtukai apačioje dešinėje yra pastatai."
@@ -827,6 +1088,9 @@ msgstr "Medis gerai dega."
 msgid "Wood: right-click the forest with peasants."
 msgstr "Mediena: spustelėkite valstiečiais dešiniuoju mišką."
 
+msgid "Woodcutters work faster: +20%."
+msgstr "Kirtėjai dirba greičiau: +20%."
+
 msgid "Y with peasants, then a click on your building: they take it apart."
 msgstr "Y su valstiečiais, tada spustelėk savo pastatą: jie jį išardys."
 
@@ -836,11 +1100,17 @@ msgstr "Vadovaujate Lietuvai iš šiaurės vakarų; Ordinas — pietryčiuose."
 msgid "You took your time, son of Gintaut. For three days I kept the fire in a pot, the way our old women carry it from house to house."
 msgstr "Ilgai užtrukai, Gintauto sūnau. Tris dienas laikiau ugnį puode, kaip mūsų senės ją nešioja iš trobos į trobą."
 
+msgid "Your men near the relic do not flee while their morale is above 10; enemies nearby lose 10 morale."
+msgstr "Savieji prie relikvijos nebėga, kol dvasia aukštesnė nei 10; priešai šalia netenka 10 dvasios."
+
 msgid "Your people are not ready to fight yet. Gather your stores again."
 msgstr "Tavo žmonės dar nepasirengę kautis. Vėl sukaupk atsargų."
 
 msgid "Z X C: aggressive, defensive, stand ground. H: stop."
 msgstr "Z X C: puolamoji, gynybinė, nesitraukti. H: stoti."
+
+msgid "Zasekas are felled twice as fast and have +50% HP."
+msgstr "Užkardos verčiamos dvigubai greičiau ir turi +50% gyvybės."
 
 msgid "age_derzhava"
 msgstr "Valstybė"
@@ -851,8 +1121,17 @@ msgstr "Vėliava"
 msgid "age_udel"
 msgstr "Valda"
 
+msgid "archers"
+msgstr "šaulius"
+
+msgid "cavalry"
+msgstr "raitiją"
+
 msgid "click where to cast it"
 msgstr "spustelėk, kur nukreipti"
+
+msgid "creatures"
+msgstr "būtybes"
 
 msgid "firearm"
 msgstr "šaunamoji"
@@ -935,6 +1214,9 @@ msgstr "Medžių užkarda"
 msgid "gdl_znakharka"
 msgstr "Žynė"
 
+msgid "heavy cavalry"
+msgstr "sunkiąją raitiją"
+
 msgid "hero_gintaut"
 msgstr "Gintautas"
 
@@ -946,6 +1228,15 @@ msgstr "Vogtas Michaelis Küchmeisteris"
 
 msgid "hero_rumbaudas"
 msgstr "Rumbaudas"
+
+msgid "infantry"
+msgstr "pėstininkus"
+
+msgid "lasts %d s"
+msgstr "trunka %d s"
+
+msgid "light cavalry"
+msgstr "lengvąją raitiją"
 
 msgid "melee"
 msgstr "artimoji"
@@ -1001,11 +1292,17 @@ msgstr "Šventas šaltinis"
 msgid "pp_wayside"
 msgstr "Pakelės kryžius"
 
+msgid "radius %d"
+msgstr "spindulys %d"
+
 msgid "range %d"
 msgstr "nuotolis %d"
 
 msgid "siege"
 msgstr "apgulos"
+
+msgid "siege engines"
+msgstr "apgulos mašinas"
 
 msgid "sp_bog_mist"
 msgstr "Pelkių rūkas"
@@ -1018,6 +1315,9 @@ msgstr "Egzorcizmas"
 
 msgid "sp_relic"
 msgstr "Relikvija rikiuotėje"
+
+msgid "spearmen"
+msgstr "ietininkus"
 
 msgid "t_arrows"
 msgstr "Briaunoti antgaliai"
