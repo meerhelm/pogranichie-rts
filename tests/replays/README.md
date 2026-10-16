@@ -11,7 +11,7 @@ and fail on the first checkpoint whose hash differs, on Linux and Windows alike.
 | `m3_samogitia_fuzz_1000.json` | The same kind of orders, with formations, on `map_proto_samogitia` (seed 1, fuzz seed 3) |
 | `m5_samogitia_economy_2000.json` | 2000 ticks with the economy: both players join with town centres and peasants, then gather, build, wall, repair, assault, queue, cancel and set rally points among the other orders (seed 1, fuzz seed 4, `--economy 1`) |
 | `m7_samogitia_magic_3000.json` | 3000 ticks of the same with magic: units take and retake places of power, shrines are ordered on them and spells cast (seed 1, fuzz seed 5, `--economy 1 --magic 1`) |
-| `m9_gdl01_playthrough.json` | `MissionBot` plays the campaign mission «ВКЛ 1. Жемайтский огонь» (normal) from the start to victory, 58 701 ticks (48:55); checkpoints every 200 ticks. The test also requires the mission to end in victory |
+| `m9_gdl01_playthrough.json` | `MissionBot` plays the campaign mission «ВКЛ 1. Жемайтский огонь» (normal) from the start to victory, 48 361 ticks (40:18); checkpoints every 200 ticks. The test also requires the mission to end in victory |
 
 ## When a replay fails
 
@@ -61,3 +61,7 @@ Then for `sim_version` 8 (M9: fire, heroes' own auras, mission locks and rules i
 and `data_version` changed with `rules/fire.tres`, the heroes of the campaign and the wooden and
 fireproof tags). The fuzzer picks unit types from the prototype catalog, which now has the four
 heroes of «ВКЛ 1», so the spawn orders changed too. `m9_gdl01_playthrough.json` is new.
+Then for `sim_version` 9 (M10: path searches and flow fields run in slices of at most
+`PATH_BUDGET` expanded cells a tick instead of one whole search per tick, so units start walking
+on different ticks; the hashes include the open search and the flow fields still being built).
+The bot now wins «ВКЛ 1» at 40:18.
