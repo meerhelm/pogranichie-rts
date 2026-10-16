@@ -27,6 +27,8 @@ class Sprite:
 	var scale := 0.5
 	## Units: animation name -> {row, frames, fps}; 8 rows per animation, by facing.
 	var anims: Dictionary = {}
+	## The whole JSON description.
+	var meta: Dictionary = {}
 
 	## Screen rectangle of a frame relative to the anchor.
 	func dest() -> Rect2:
@@ -70,6 +72,35 @@ static func building_stage(done: bool, progress: float, hp: float) -> StringName
 	return &"damaged_1" if hp > 0.33 else &"damaged_2"
 
 
+## A map resource (o_bog_ore, o_silver_mine, carcass) in variant `variant`, or null.
+static func deposit(id: StringName, variant: int = 0) -> Sprite:
+	return _load("deposits/%s_%d_" % [id, variant], "deposits/%s.json" % id)
+
+
+## Catalog id of a ResourceNodes source's map art.
+static func deposit_id(source: int) -> StringName:
+	match source:
+		ResourceNodes.Source.IRON:
+			return &"o_bog_ore"
+		ResourceNodes.Source.SILVER:
+			return &"o_silver_mine"
+		ResourceNodes.Source.HUNT:
+			return &"carcass"
+	return &""
+
+
+## Art of a resource node on `cell`: its variant is picked by the cell, so neighbours differ.
+static func deposit_at(source: int, cell: int) -> Sprite:
+	var id := deposit_id(source)
+	if id.is_empty():
+		return null
+	var first := deposit(id, 0)
+	if first == null:
+		return null
+	var count := int(first.meta.get("variants", 1))
+	return deposit(id, absi(hash(cell)) % count)
+
+
 ## A tree's view, or null.
 static func tree(tree_id: StringName) -> Sprite:
 	return _load("trees/%s_" % tree_id, "trees/%s.json" % tree_id)
@@ -97,5 +128,6 @@ static func _load(prefix: String, meta_name: String) -> Sprite:
 	s.frame = Vector2(size[0], size[1])
 	s.scale = meta.get("scale", 0.5)
 	s.anims = meta.get("anims", {})
+	s.meta = meta
 	_cache[prefix] = s
 	return s

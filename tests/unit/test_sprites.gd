@@ -56,3 +56,20 @@ func test_building_stage_follows_progress_and_hp() -> void:
 	assert_eq(SpriteDB.building_stage(true, 1.0, 0.9), &"done")
 	assert_eq(SpriteDB.building_stage(true, 1.0, 0.5), &"damaged_1")
 	assert_eq(SpriteDB.building_stage(true, 1.0, 0.2), &"damaged_2")
+
+
+func test_resources_have_map_art() -> void:
+	for source: int in [ResourceNodes.Source.IRON, ResourceNodes.Source.SILVER]:
+		for cell: int in [0, 1, 2, 77]:
+			assert_not_null(SpriteDB.deposit_at(source, cell), "source %d" % source)
+	assert_not_null(SpriteDB.deposit_at(ResourceNodes.Source.HUNT, 5), "a carcass")
+	assert_null(SpriteDB.deposit_at(ResourceNodes.Source.WOOD, 5), "wood is the trees")
+
+
+func test_terrain_tiles_repeat_every_period() -> void:
+	var layer := MapView.new()
+	var grid := NavGrid.new(6, 6)
+	layer.build(grid)
+	assert_eq(layer.get_cell_atlas_coords(Vector2i(5, 2)), Vector2i(1, 2))
+	assert_eq(layer.get_cell_source_id(Vector2i(5, 2)), grid.terrain[grid.cell_at(5, 2)])
+	layer.free()

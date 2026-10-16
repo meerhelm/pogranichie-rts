@@ -146,6 +146,26 @@ def render_static(kind: str, uid: str, builder, cells: int, out: str, preview: b
         json.dump(meta, fh, indent=1)
 
 
+def render_deposit(uid: str, out: str, preview: bool) -> None:
+    """A map resource in DEPOSIT_VARIANTS variants: `deposits/<id>_<v>_{color,shadow}.png`."""
+    width, height, pivot = 160, 144, (72, 96)
+    dest = os.path.join(out, "deposits")
+    os.makedirs(dest, exist_ok=True)
+    count = models.DEPOSIT_VARIANTS[uid]
+    for v in range(count):
+        rig.reset()
+        S.reset_materials()
+        rig.setup(width, height, pivot, samples=24 if preview else 48)
+        models.DEPOSITS[uid](seed=v)
+        passes = Passes(rig.shadow_catcher())
+        for p in ("color", "shadow"):
+            passes.use(p)
+            rig.render(os.path.join(dest, f"{uid}_{v}_{p}.png"))
+    with open(os.path.join(dest, f"{uid}.json"), "w") as fh:
+        json.dump({"size": [width, height], "pivot": list(pivot), "scale": 0.5, "variants": count,
+                   "pivot_is": "centre of the cell"}, fh, indent=1)
+
+
 def main(argv: list[str]) -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("ids", nargs="+")
@@ -158,6 +178,8 @@ def main(argv: list[str]) -> None:
         elif uid in models.BUILDINGS:
             builder, cells = models.BUILDINGS[uid]
             render_static("buildings", uid, builder, cells, args.out, args.preview)
+        elif uid in models.DEPOSITS:
+            render_deposit(uid, args.out, args.preview)
         elif uid in models.TREES:
             render_static("trees", uid, models.TREES[uid], 1, args.out, args.preview)
         else:

@@ -47,3 +47,11 @@ build_66, done, damaged_1, damaged_2, rubble. Normal maps are not rendered yet.
 - `menu_scene.py` — the main menu background `ui/art/menu_background.jpg`: the same models
   in the evening sun through a perspective camera (render to PNG, then save as JPEG).
 - Icons of the top bar are hand-written SVGs in `ui/icons` (Godot imports SVG directly).
+
+## Ground and resources
+
+- `tiles.py` — a seamless top-down texture per terrain (periodic FFT noise), cut into a 4×4
+  atlas of isometric tiles in `art/tiles/<terrain>.png`; cell (x, y) uses tile (x % 4, y % 4).
+  Tiles are 96×48: the 64×32 diamond plus a ragged fading rim that blends terrains.
+- `render.py o_bog_ore o_silver_mine carcass` — map resources in variants
+  (`art/sprites/deposits/<id>_<v>_{color,shadow}.png`), picked per cell by `SpriteDB.deposit_at`.

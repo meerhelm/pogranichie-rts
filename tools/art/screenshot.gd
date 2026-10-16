@@ -2,7 +2,8 @@ extends SceneTree
 ## Opens the skirmish, lets it run a few seconds and saves a screenshot, to see the art in the
 ## game. Needs a display (on a server: xvfb-run with the opengl3 driver):
 ##   godot --rendering-driver opengl3 -s tools/art/screenshot.gd -- out.png [seconds] [zoom]
-##   [scene] [action], action: select (the player's units), menu (game menu), help (F1 page)
+##   [scene] [action], action: select (the player's units), menu (game menu), help (F1 page),
+##   look:X:Y (no fog, camera on cell X, Y)
 
 var _out := "user://screenshot.png"
 var _seconds := 6.0
@@ -35,7 +36,7 @@ func _shoot() -> void:
 		cam.zoom = Vector2.ONE * _zoom
 	await create_timer(_seconds).timeout
 	_act()
-	await create_timer(0.3).timeout
+	await create_timer(1.0).timeout
 	await process_frame
 	var img := root.get_texture().get_image()
 	img.save_png(_out)
@@ -56,5 +57,12 @@ func _act() -> void:
 		input.selection.changed.emit()
 	elif _action == "menu" and main.has_node("UI/Hud"):
 		(main.get_node("UI/Hud") as Hud).menu.open()
+	elif _action.begins_with("look:"):
+		var xy := _action.split(":")
+		var sim: Simulation = main.get("sim")
+		sim.vision.rules = null
+		(main.get_node("World/Fog") as Node2D).visible = false
+		var cam: RtsCamera = main.get_node("Camera")
+		cam.look_at_point(Iso.cell_to_screen(Vector2(float(xy[1]), float(xy[2]))))
 	elif _action == "help" and main.has_node("UI/Hud"):
 		(main.get_node("UI/Hud") as Hud).help.open(true)

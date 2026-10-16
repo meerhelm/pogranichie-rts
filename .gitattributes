@@ -31,3 +31,4 @@ art/sprites/**/*.png !filter !diff !merge binary
 # Interface skin and illustrations made by tools/art: plain git as well.
 ui/skin/*.png !filter !diff !merge binary
 ui/art/* !filter !diff !merge binary
+art/tiles/*.png !filter !diff !merge binary

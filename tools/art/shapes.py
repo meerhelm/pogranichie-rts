@@ -180,3 +180,17 @@ def apply_rot_scale(obj):
     obj.data.transform(Matrix.LocRotScale(None, obj.rotation_euler, obj.scale))
     obj.rotation_euler = (0, 0, 0)
     obj.scale = (1, 1, 1)
+
+
+def rock(name, r, loc, material, parent=None, seed=0, squash=0.7, jitter=0.28):
+    """Irregular boulder: an icosphere with jittered vertices, flat shaded."""
+    rng = random.Random(seed)
+    bm = bmesh.new()
+    bmesh.ops.create_icosphere(bm, subdivisions=1, radius=r)
+    for v in bm.verts:
+        v.co *= 1.0 + rng.uniform(-jitter, jitter)
+        v.co.z *= squash
+    o = _mesh_obj(name, bm)
+    o.location = loc
+    o.rotation_euler = (0, 0, rng.uniform(0, math.tau))
+    return _finish(o, material, parent)

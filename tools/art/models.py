@@ -269,3 +269,77 @@ def nt_birch(seed=2):
 UNITS = {"gdl_peasant": gdl_peasant, "gdl_spearman": gdl_spearman}
 BUILDINGS = {"gdl_house": (gdl_house, 2), "gdl_town_center": (gdl_town_center, 4)}
 TREES = {"nt_pine": nt_pine, "nt_birch": nt_birch}
+
+
+# --- resources ---------------------------------------------------------------------------
+
+def o_bog_ore(seed=0):
+    """Bog iron ore: rusty lumps dug out of a peat pit among sedge, a puddle beside."""
+    rng = random.Random(seed)
+    ore = S.mat("bog_ore", "#7a3f1e", 0.95, noise=0.5)
+    ore_light = S.mat("bog_ore_light", "#a35a28", 0.9, noise=0.5)
+    peat = S.mat("peat", "#2e2418", 1.0, noise=0.3)
+    sedge = S.mat("sedge", "#8a8a46", 0.9, noise=0.3)
+    water = S.mat("bog_water", "#1d2622", 0.05)
+    root = S.empty("o_bog_ore")
+    S.cyl("pit", 0.75, 0.7, 0.05, (0.25, 0.3, -0.02), peat, root, seg=12)
+    S.cyl("puddle", 0.45, 0.45, 0.02, (-0.45, 0.45, 0.0), water, root, seg=12)
+    for i in range(16):
+        a = rng.uniform(0, math.tau)
+        d = rng.uniform(0, 0.6)
+        S.rock(f"ore_{i}", rng.uniform(0.17, 0.32), (math.cos(a) * d - 0.1, math.sin(a) * d - 0.2, 0.06),
+               ore if i % 3 else ore_light, root, seed=seed * 31 + i, squash=0.6)
+    for i in range(18):
+        a = rng.uniform(0, math.tau)
+        d = rng.uniform(0.6, 0.95)
+        S.cyl(f"sedge_{i}", 0.025, 0.002, rng.uniform(0.35, 0.6), (math.cos(a) * d, math.sin(a) * d, 0),
+              sedge, root, rot=(rng.uniform(-0.3, 0.3), rng.uniform(-0.3, 0.3), 0), seg=4, smooth=False)
+    if seed % 3 == 1:
+        S.cyl("spade_haft", 0.02, 0.02, 1.1, (0.5, -0.4, 0.0), S.mat("wood", "#7a5a3a", 0.8, noise=0.25),
+              root, rot=(0.35, 0.2, 0), seg=6)
+    return root
+
+
+def o_silver_mine(seed=0):
+    """Silver-bearing rock on a hill: grey boulders with bright veins; one variant has the
+    timber frame of an adit."""
+    rng = random.Random(seed)
+    stone = S.mat("mine_stone", "#7f7b72", 0.85, noise=0.35)
+    stone_dark = S.mat("mine_stone_dark", "#5d5a54", 0.9, noise=0.35)
+    vein = S.mat("silver_vein", "#d9dde2", 0.25, metal=0.9)
+    root = S.empty("o_silver_mine")
+    for i in range(6):
+        a = rng.uniform(0, math.tau)
+        d = rng.uniform(0, 0.5)
+        r = rng.uniform(0.3, 0.55)
+        S.rock(f"rock_{i}", r, (math.cos(a) * d, math.sin(a) * d, r * 0.25),
+               stone if i % 2 else stone_dark, root, seed=seed * 17 + i, squash=0.8)
+    for i in range(8):
+        a = rng.uniform(0, math.tau)
+        d = rng.uniform(0.1, 0.6)
+        S.rock(f"vein_{i}", rng.uniform(0.05, 0.09), (math.cos(a) * d, math.sin(a) * d, rng.uniform(0.25, 0.5)),
+               vein, root, seed=seed * 7 + i, squash=1.0)
+    if seed % 3 == 1:
+        wood = S.mat("wood", "#7a5a3a", 0.8, noise=0.25)
+        for x in (-0.35, 0.35):
+            S.cyl(f"adit_post_{x}", 0.07, 0.07, 1.0, (x, -0.75, 0), wood, root, seg=6)
+        S.box("adit_lintel", (0.9, 0.16, 0.14), (0, -0.75, 1.02), wood, root)
+        S.box("adit_dark", (0.6, 0.05, 0.9), (0, -0.7, 0.47), S.mat("dark", "#1d1712", 1.0), root)
+    return root
+
+
+def carcass(seed=0):
+    """A felled elk on its side: the hunters' food until carved up."""
+    hide = S.mat("elk_hide", "#5e4430", 0.9, noise=0.3)
+    meat = S.mat("meat", "#8a2a22", 0.6)
+    root = S.empty("carcass")
+    body = S.ball("body", 0.5, (0, 0, 0.3), hide, root, scale=(1.6, 0.8, 0.65))
+    S.ball("cut", 0.22, (0.35, -0.25, 0.42), meat, root, scale=(1.4, 0.4, 0.8))
+    S.ball("head", 0.2, (-0.95, 0.1, 0.22), hide, root, scale=(1.4, 0.8, 0.8))
+    for i, (x, y) in enumerate([(-0.4, 0.4), (-0.2, 0.5), (0.4, 0.45), (0.6, 0.35)]):
+        S.cyl(f"leg_{i}", 0.06, 0.04, 0.7, (x, y, 0.14), hide, root, rot=(-math.pi / 2 - 0.1, 0, 0.15 * i - 0.2), seg=6)
+    return root
+
+
+DEPOSITS = {"o_bog_ore": o_bog_ore, "o_silver_mine": o_silver_mine, "carcass": carcass}
+DEPOSIT_VARIANTS = {"o_bog_ore": 3, "o_silver_mine": 3, "carcass": 1}

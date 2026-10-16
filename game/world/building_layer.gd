@@ -96,7 +96,12 @@ func _refresh() -> void:
 		var c: Color = DEPOSIT_COLORS.get(eco.nodes.sources[n - 1], Color.GRAY)
 		var at := Vector2(cell % sim.nav.width, cell / sim.nav.width)
 		var rect := Rect2(at + Vector2(0.15, 0.15), Vector2(0.7, 0.7))
-		_tall(StringName("n%d" % n), live, rect, c, 6.0, false, -1.0, -1.0)
+		var nkey := StringName("n%d" % n)
+		_tall(nkey, live, rect, c, 6.0, false, -1.0, -1.0)
+		if _boxes.has(nkey):
+			_boxes[nkey].set_sprite(
+				SpriteDB.deposit_at(eco.nodes.sources[n - 1], cell), Color.WHITE
+			)
 	var b := eco.buildings
 	for id in b.alive_ids:
 		var s := id - 1
@@ -217,7 +222,14 @@ func _draw() -> void:
 			continue
 		var c: Color = DEPOSIT_COLORS.get(eco.nodes.sources[n - 1], Color.GRAY)
 		var at := Vector2(cell % sim.nav.width, cell / sim.nav.width)
-		draw_circle(Iso.cell_to_screen(at + Vector2(0.5, 0.5)), 4.0, c)
+		var spot := Iso.cell_to_screen(at + Vector2(0.5, 0.5))
+		var art := SpriteDB.deposit_at(eco.nodes.sources[n - 1], cell)
+		if art != null:
+			draw_set_transform(spot)
+			art.draw(self, Rect2(Vector2.ZERO, art.frame), Color.WHITE)
+			draw_set_transform(Vector2.ZERO)
+		else:
+			draw_circle(spot, 4.0, c)
 	var b := eco.buildings
 	for id in b.alive_ids:
 		var s := id - 1

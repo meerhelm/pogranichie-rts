@@ -1,7 +1,10 @@
 class_name MapView
 extends TileMapLayer
-## Draws the nav grid's terrain as isometric tiles. Placeholder art: flat-coloured diamonds
-## generated at start, one per catalog terrain, until the Blender tiles arrive.
+## Draws the nav grid's terrain as isometric tiles. Each terrain has a 4x4 atlas of seamless
+## diamonds (art/tiles, made by tools/art/tiles.py); a cell uses the tile (x % 4, y % 4), so
+## the texture runs across cells without seams. A terrain without art falls back to a
+## flat-coloured diamond (COLORS), which the minimap also uses. Art tiles reach past their
+## cell with a ragged fading rim, so a bog melts into the grass instead of a zigzag.
 
 ## Placeholder colours by terrain id.
 const COLORS := {
@@ -20,6 +23,9 @@ const COLORS := {
 	&"t_ash": Color(0.30, 0.28, 0.26),
 }
 const FALLBACK_COLOR := Color(1.0, 0.0, 1.0)
+const TILES := "res://art/tiles"
+## Cells per repeat of a terrain texture: each terrain atlas holds PERIOD x PERIOD tiles.
+const PERIOD := 4
 
 var grid: NavGrid
 ## Terrain as last drawn and the grid version it was drawn at, to redraw only what changed
@@ -38,7 +44,11 @@ func build(nav: NavGrid) -> void:
 	clear()
 	for y in nav.height:
 		for x in nav.width:
-			set_cell(Vector2i(x, y), 0, Vector2i(nav.terrain[nav.cell_at(x, y)], 0))
+			_put_tile(x, y, nav.terrain[nav.cell_at(x, y)])
+
+
+func _put_tile(x: int, y: int, terrain: int) -> void:
+	set_cell(Vector2i(x, y), terrain, Vector2i(x % PERIOD, y % PERIOD))
 
 
 static func _make_tile_set(ids: Array[StringName]) -> TileSet:
@@ -46,20 +56,30 @@ static func _make_tile_set(ids: Array[StringName]) -> TileSet:
 	ts.tile_shape = TileSet.TILE_SHAPE_ISOMETRIC
 	ts.tile_layout = TileSet.TILE_LAYOUT_DIAMOND_DOWN
 	ts.tile_size = Vector2i(Iso.TILE_W, Iso.TILE_H)
-	var img := Image.create_empty(Iso.TILE_W * ids.size(), Iso.TILE_H, false, Image.FORMAT_RGBA8)
 	for i in ids.size():
-		var base: Color = COLORS.get(ids[i], FALLBACK_COLOR)
-		_draw_diamond(img, i * Iso.TILE_W, base, ids[i])
-	var source := TileSetAtlasSource.new()
-	source.texture = ImageTexture.create_from_image(img)
-	source.texture_region_size = Vector2i(Iso.TILE_W, Iso.TILE_H)
-	for i in ids.size():
-		source.create_tile(Vector2i(i, 0))
-	ts.add_source(source, 0)
+		var source := TileSetAtlasSource.new()
+		var path := TILES.path_join("%s.png" % ids[i])
+		if ResourceLoader.exists(path):
+			source.texture = load(path)
+		else:
+			var img := Image.create_empty(
+				Iso.TILE_W * PERIOD, Iso.TILE_H * PERIOD, false, Image.FORMAT_RGBA8
+			)
+			var base: Color = COLORS.get(ids[i], FALLBACK_COLOR)
+			for v in PERIOD * PERIOD:
+				_draw_diamond(
+					img, (v % PERIOD) * Iso.TILE_W, (v / PERIOD) * Iso.TILE_H, base, ids[i]
+				)
+			source.texture = ImageTexture.create_from_image(img)
+		# Art tiles are larger than the cell: a fading rim blends them into their neighbours.
+		source.texture_region_size = Vector2i(source.texture.get_size()) / PERIOD
+		for v in PERIOD * PERIOD:
+			source.create_tile(Vector2i(v % PERIOD, v / PERIOD))
+		ts.add_source(source, i)
 	return ts
 
 
-static func _draw_diamond(img: Image, left: int, base: Color, id: StringName) -> void:
+static func _draw_diamond(img: Image, left: int, top: int, base: Color, id: StringName) -> void:
 	for y in Iso.TILE_H:
 		for x in Iso.TILE_W:
 			var dx := absf(x + 0.5 - Iso.HALF_W) / Iso.HALF_W
@@ -76,7 +96,7 @@ static func _draw_diamond(img: Image, left: int, base: Color, id: StringName) ->
 				c = Color(0.25, 0.42, 0.50)
 			elif id == &"t_hill" and y < Iso.HALF_H:
 				c = base.lightened(0.12)
-			img.set_pixel(left + x, y, c)
+			img.set_pixel(left + x, top + y, c)
 
 
 ## Redraws the cells whose terrain changed since the last call (after a tick).
@@ -88,4 +108,4 @@ func refresh() -> void:
 		var t := grid.terrain[cell]
 		if t != _drawn[cell]:
 			_drawn[cell] = t
-			set_cell(Vector2i(cell % grid.width, cell / grid.width), 0, Vector2i(t, 0))
+			_put_tile(cell % grid.width, cell / grid.width, t)
