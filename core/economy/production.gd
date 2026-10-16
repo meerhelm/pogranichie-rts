@@ -81,6 +81,8 @@ func can_queue(p: int, b: int, item: StringName) -> int:
 		fail = _tech_fail(state, bdef, db.tech(item))
 	elif db.age(item) != null:
 		fail = _age_fail(state, bdef, db.age(item))
+	if fail == EconomySystem.Fail.OK and buildings.dismantling[b - 1] == 1:
+		fail = EconomySystem.Fail.DISMANTLING
 	if fail != EconomySystem.Fail.OK:
 		return fail
 	if state.locked.has(item):

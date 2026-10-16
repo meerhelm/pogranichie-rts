@@ -29,6 +29,7 @@ enum Kind {
 	BUILDING_RALLY,
 	CAST,
 	IGNITE,
+	DISMANTLE,
 }
 
 ## Kinds whose x and y are a point on the map.
@@ -65,8 +66,8 @@ var y2: int
 var type_id: StringName
 ## Formation.Kind for a group MOVE.
 var formation := 0
-## Unit to attack (ATTACK; optional for TURN); building for WORK, ASSAULT and IGNITE; node or
-## animal for GATHER.
+## Unit to attack (ATTACK; optional for TURN); building for WORK, ASSAULT, IGNITE and
+## DISMANTLE (take an own building apart); node or animal for GATHER.
 var target := 0
 ## EntityStore.Stance for STANCE; 1 for a building turned on its side (PLACE, BUILD);
 ## EconomySystem.Target for GATHER; queue index for CANCEL.

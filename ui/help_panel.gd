@@ -105,6 +105,8 @@ func page() -> String:
 		age = UiText.name_of(&"age_khorugv"),
 		enemy = UiText.name_of(&"to_town_center"),
 	}
+	var rules := load("res://data/rules/economy.tres") as EconomyRulesDef
+	var refund := rules.dismantle_refund_permille / 10 if rules != null else 0
 	var sections: Array[Array] = [
 		[
 			tr("Goal"),
@@ -165,6 +167,9 @@ func page() -> String:
 				tr("Click your building to train units; Z X C V B N M press its buttons."),
 				tr("Right click with a building selected sets where its units gather."),
 				tr("Hover a button to see its price and why it is not available."),
+				tr("Y with peasants, then a click on your building: they take it apart."),
+				tr("%d%% of its price is left in heaps; peasants carry it to the stores.") % refund,
+				tr("Left click on anything else (enemy, deposit, forest) shows it below."),
 			],
 		],
 		[

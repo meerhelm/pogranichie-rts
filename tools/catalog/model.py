@@ -45,7 +45,8 @@ ECONOMY_RULE_KEYS = (
     "brick_wood_discount_permille", "brick_wall_silver_discount_permille", "start_food",
     "start_wood", "start_iron", "start_silver", "work_reach_milli", "resource_search_cells",
     "builder_extra_permille", "repair_cost_permille", "repair_time_permille", "queue_max",
-    "cancel_refund_permille", "near_forest_cells",
+    "cancel_refund_permille", "near_forest_cells", "dismantle_refund_permille",
+    "dismantle_time_permille", "gather_salvage_milli",
 )
 # Fog of war numbers (M6), in data/rules/vision.tres; values from manual.json.
 VISION_RULE_KEYS = (

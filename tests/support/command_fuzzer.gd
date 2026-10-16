@@ -130,9 +130,12 @@ func _economy_order(sim: Simulation, player: int) -> void:
 		var what := rng.range_int(EconomySystem.Target.NODE, EconomySystem.Target.ANIMAL)
 		var ref := rng.range_int(0, maxi(eco.nodes.next_id, sim.entities.next_id) + 2)
 		sim.enqueue(SimCommand.gather(sim.tick, player, group, what, ref))
-	elif roll < 58 and not own.is_empty():
+	elif roll < 56 and not own.is_empty():
 		var b := own[rng.next_below(own.size())]
 		sim.enqueue(SimCommand.on_building(sim.tick, player, SimCommand.Kind.WORK, group, b))
+	elif roll < 58 and not own.is_empty():
+		var b := own[rng.next_below(own.size())]
+		sim.enqueue(SimCommand.on_building(sim.tick, player, SimCommand.Kind.DISMANTLE, group, b))
 	elif roll < 64:
 		var theirs := _buildings_of(sim, 3 - player)
 		var b := theirs[rng.next_below(theirs.size())] if not theirs.is_empty() else 1

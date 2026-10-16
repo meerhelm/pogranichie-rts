@@ -92,8 +92,8 @@
   }
  },
  "economy_rules": {
-  "_source": "Catalog «Обзор и правила» → «Эпохи, население, сбор» (carry, pop_cap, gather rates, tree, ore and silver amounts); ВКЛ tab → «Засеки» (zaseka_cells) and gdl_bort «2 крестьянина» (bort_workers); Орден tab → «Кирпич» (brick discounts). The catalog states these only in prose. Keys in `_temporary` are not in the catalog at all: guesses for M5, to confirm or move into the catalog.",
-  "_temporary": ["farm_workers", "start_food", "start_wood", "start_iron", "start_silver", "work_reach_milli", "resource_search_cells", "builder_extra_permille", "repair_cost_permille", "repair_time_permille", "queue_max", "cancel_refund_permille", "near_forest_cells"],
+  "_source": "Catalog «Обзор и правила» → «Эпохи, население, сбор» (carry, pop_cap, gather rates, tree, ore and silver amounts); ВКЛ tab → «Засеки» (zaseka_cells) and gdl_bort «2 крестьянина» (bort_workers); Орден tab → «Кирпич» (brick discounts). The catalog states these only in prose. Keys in `_temporary` are not in the catalog at all: guesses for M5, to confirm or move into the catalog. dismantle_refund_permille: Valentin 2026-10-16, own buildings are taken apart by peasants for 80% of their price, carried to storage.",
+  "_temporary": ["farm_workers", "start_food", "start_wood", "start_iron", "start_silver", "work_reach_milli", "resource_search_cells", "builder_extra_permille", "repair_cost_permille", "repair_time_permille", "queue_max", "cancel_refund_permille", "near_forest_cells", "dismantle_time_permille", "gather_salvage_milli"],
   "values": {
    "carry": 10,
    "pop_cap": 200,
@@ -122,7 +122,10 @@
    "repair_time_permille": 1000,
    "queue_max": 5,
    "cancel_refund_permille": 1000,
-   "near_forest_cells": 2
+   "near_forest_cells": 2,
+   "dismantle_refund_permille": 800,
+   "dismantle_time_permille": 500,
+   "gather_salvage_milli": 1000
   }
  },
  "building_layout": {

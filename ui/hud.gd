@@ -226,6 +226,11 @@ func _placing_text() -> String:
 			+ "\n"
 			+ tr("Esc or right click cancel")
 		)
+	if input.taking_apart:
+		var why := ""
+		if input.take_apart_fail:
+			why = " · " + tr("The last capital cannot be taken apart")
+		return tr("Take apart: click your building") + why + "\n" + tr("Esc or right click cancel")
 	if input.placing == null:
 		return ""
 	var cost := sim.economy.placement.building_cost(player, input.placing)

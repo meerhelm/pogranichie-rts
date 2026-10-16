@@ -48,6 +48,11 @@ var has_rally := PackedByteArray()
 ## Repair: HP in thousandths gained but not yet whole, and resources owed in thousandths.
 var repair_hp := PackedInt32Array()
 var repair_owed: Array[PackedInt32Array] = []
+## Taking apart (Dismantling): 1 while its owner has it taken apart, the work that takes in all
+## and what is left of it, in thousandths of a builder-tick.
+var dismantling := PackedByteArray()
+var dismantle_total := PackedInt64Array()
+var dismantle_left := PackedInt64Array()
 
 
 func resize_map(cells: int) -> void:
@@ -98,6 +103,9 @@ func add(
 	has_rally.append(0)
 	repair_hp.append(0)
 	repair_owed.append(PackedInt32Array([0, 0, 0, 0]))
+	dismantling.append(0)
+	dismantle_total.append(0)
+	dismantle_left.append(0)
 	alive_ids.append(id)
 	return id
 
@@ -170,3 +178,6 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_32(repair_hp[s])
 		for v in repair_owed[s]:
 			buf.put_32(v)
+		buf.put_8(dismantling[s])
+		buf.put_64(dismantle_total[s])
+		buf.put_64(dismantle_left[s])

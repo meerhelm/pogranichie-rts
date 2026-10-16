@@ -13,7 +13,7 @@ extends RefCounted
 ## population limit.
 
 ## What a unit is busy with besides plain orders.
-enum Job { NONE, GATHER, HUNT, BUILD, ASSAULT }
+enum Job { NONE, GATHER, HUNT, BUILD, ASSAULT, DISMANTLE }
 ## A gather job walks to its work, works, and carries the load back.
 enum Phase { GO, WORK, RETURN }
 ## What a GATHER command points at (SimCommand.value).
@@ -36,6 +36,7 @@ enum Fail {
 	LIMIT,
 	CONDITION,
 	LOCKED,
+	DISMANTLING,
 }
 
 const FOOD := 0
@@ -70,6 +71,8 @@ var nodes := ResourceNodes.new()
 ## this system's players and buildings.
 var placement: BuildingPlacement
 var production: EconomyProduction
+## Building, repairing and taking apart.
+var construction: Construction
 
 # Per unit, by slot (id - 1).
 var unit_defs: Array[UnitDef] = []
@@ -92,8 +95,6 @@ var _walk: Callable
 var _stop: Callable
 var _forest := -1
 var _grass := -1
-## Builders working each building this tick, filled while units work.
-var _builders: Dictionary[int, int] = {}
 
 
 ## `walk(id, x, y)` and `stop(id)` move units; `spawn(type_id, player, x, y) -> id` creates one.
@@ -115,6 +116,7 @@ func _init(
 	_stop = stop
 	placement = BuildingPlacement.new(self)
 	production = EconomyProduction.new(self, walk, spawn)
+	construction = Construction.new(_self)
 	_forest = nav.terrain_index(FOREST)
 	_grass = nav.terrain_index(GRASS)
 	var n := nav.cell_count()
@@ -137,6 +139,11 @@ func _init(
 
 func enabled() -> bool:
 	return rules != null
+
+
+## This system, for parts that must not hold it (Construction).
+func _self() -> EconomySystem:
+	return self
 
 
 func player(p: int) -> PlayerState:
@@ -169,7 +176,7 @@ func on_remove(id: int) -> void:
 	var slot := id - 1
 	if slot >= unit_defs.size():
 		return
-	_end_job(slot)
+	end_job(slot)
 	var def := unit_defs[slot]
 	var p := player(entities.owners[slot])
 	if p != null and def != null:
@@ -183,10 +190,10 @@ func on_remove(id: int) -> void:
 func drop_jobs(ids: PackedInt32Array) -> void:
 	for id in ids:
 		if id - 1 < job.size():
-			_end_job(id - 1)
+			end_job(id - 1)
 
 
-func _end_job(slot: int) -> void:
+func end_job(slot: int) -> void:
 	_unclaim(slot)
 	job[slot] = Job.NONE
 	phase[slot] = Phase.GO
@@ -221,7 +228,7 @@ func order(cmd: SimCommand, units: PackedInt32Array) -> void:
 					== Fail.OK
 				):
 					var b := _found(cmd.player, def, at.x, at.y, cmd.value == 1)
-					_complete(b)
+					complete(b)
 		SimCommand.Kind.BUILD:
 			_order_build(cmd, units)
 		SimCommand.Kind.WALL:
@@ -233,6 +240,8 @@ func order(cmd: SimCommand, units: PackedInt32Array) -> void:
 				_set_build_job(id, cmd.target)
 		SimCommand.Kind.ASSAULT:
 			_order_assault(cmd, units)
+		SimCommand.Kind.DISMANTLE:
+			construction.order_dismantle(cmd, units)
 		SimCommand.Kind.QUEUE:
 			if not cmd.ids.is_empty():
 				production.enqueue(cmd.player, cmd.ids[0], cmd.type_id)
@@ -321,9 +330,11 @@ func _set_build_job(id: int, b: int) -> void:
 	var slot := id - 1
 	if buildings.owners[b - 1] != entities.owners[slot]:
 		return
-	_end_job(slot)
+	end_job(slot)
 	job[slot] = Job.BUILD
 	job_ref[slot] = b
+	if buildings.dismantling[b - 1] == 1:
+		construction.stop_dismantling(b)
 
 
 func _order_gather(cmd: SimCommand, units: PackedInt32Array) -> void:
@@ -340,7 +351,7 @@ func _order_gather(cmd: SimCommand, units: PackedInt32Array) -> void:
 					source = ResourceNodes.Source.WOOD
 					ref = cell
 			Target.NODE:
-				if nodes.is_alive(cmd.target):
+				if nodes.is_alive(cmd.target) and nodes.open_to(cmd.target, cmd.player):
 					source = nodes.sources[cmd.target - 1]
 					ref = cmd.target
 			Target.BUILDING:
@@ -351,13 +362,13 @@ func _order_gather(cmd: SimCommand, units: PackedInt32Array) -> void:
 				if entities.is_alive(t) and entities.owners[t - 1] == 0:
 					var adef := unit_defs[t - 1]
 					if adef != null and adef.food_yield > 0:
-						_end_job(slot)
+						end_job(slot)
 						job[slot] = Job.HUNT
 						job_ref[slot] = t
 				continue
 		if source < 0:
 			continue
-		_start_gather(slot, source, cmd.value, ref)
+		start_gather(slot, source, cmd.value, ref)
 
 
 ## The source a field or hive of this player gives, or -1.
@@ -372,8 +383,8 @@ func building_source(p: int, b: int) -> int:
 	return -1
 
 
-func _start_gather(slot: int, source: int, target: int, ref: int) -> bool:
-	_end_job(slot)
+func start_gather(slot: int, source: int, target: int, ref: int) -> bool:
+	end_job(slot)
 	if target == Target.BUILDING:
 		var limit := (
 			rules.farm_workers if source == ResourceNodes.Source.FARM else rules.bort_workers
@@ -404,7 +415,7 @@ func _order_assault(cmd: SimCommand, units: PackedInt32Array) -> void:
 		var def := unit_defs[id - 1]
 		if def == null or def.damage <= 0:
 			continue
-		_end_job(id - 1)
+		end_job(id - 1)
 		job[id - 1] = Job.ASSAULT
 		job_ref[id - 1] = b
 
@@ -458,7 +469,7 @@ func _push_out(b: int) -> void:
 				_stop.call(id)
 
 
-func _complete(b: int) -> void:
+func complete(b: int) -> void:
 	var s := b - 1
 	var def := buildings.defs[s]
 	buildings.done[s] = 1
@@ -483,14 +494,24 @@ func _complete(b: int) -> void:
 				nav.set_terrain(cell, _grass)
 
 
+## The building is lost (burnt, stormed, a mission's script).
 func destroy(b: int) -> void:
+	if not buildings.is_alive(b):
+		return
+	var state: PlayerState = players.get(buildings.owners[b - 1])
+	if state != null:
+		state.buildings_lost += 1
+	remove_building(b)
+
+
+## The building leaves the map (destroyed or taken apart): its population, queue and cells.
+func remove_building(b: int) -> void:
 	if not buildings.is_alive(b):
 		return
 	var s := b - 1
 	var def := buildings.defs[s]
 	var state: PlayerState = players.get(buildings.owners[s])
 	if state != null:
-		state.buildings_lost += 1
 		if buildings.done[s] == 1:
 			state.pop_provided -= def.pop_provided
 		var q: Array = buildings.queues[s]
@@ -514,14 +535,11 @@ func step(at_tick: int) -> void:
 	tick = at_tick
 	if not enabled():
 		return
-	_builders.clear()
+	construction.begin_step()
 	for id in entities.alive_ids:
 		if job[id - 1] != Job.NONE:
 			_work(id)
-	var built := _builders.keys()
-	built.sort()
-	for b: int in built:
-		_construct(b, _builders[b])
+	construction.end_step()
 	for b in buildings.alive_ids.duplicate():
 		if buildings.is_alive(b):
 			production.produce(b)
@@ -537,7 +555,9 @@ func _work(id: int) -> void:
 		Job.HUNT:
 			_hunt(id)
 		Job.BUILD:
-			_build(id)
+			construction.build(id)
+		Job.DISMANTLE:
+			construction.dismantle(id)
 		Job.ASSAULT:
 			if entities.target[slot] == EntityStore.NO_ID:
 				_assault(id)
@@ -555,7 +575,7 @@ func _approach(id: int, gx: int, gy: int, in_reach: bool) -> bool:
 	if entities.orders[slot] == EntityStore.Order.MOVE:
 		return false
 	if tries[slot] >= MAX_WALK_TRIES:
-		_end_job(slot)
+		end_job(slot)
 		return false
 	tries[slot] += 1
 	_walk.call(id, gx, gy)
@@ -636,15 +656,20 @@ func _gather(id: int) -> void:
 		if carry[slot] > 0:
 			phase[slot] = Phase.RETURN
 		else:
-			_end_job(slot)
+			end_job(slot)
 		return
 	if not _to_resource(id):
 		return
 	phase[slot] = Phase.WORK
 	var source := job_source[slot]
 	var state := players.get(entities.owners[slot]) as PlayerState
-	var bonus := state.gather_bonus[source] if state != null else 0
-	gather_acc[slot] += _base_rate(source) * (1000 + bonus) / 1000
+	var bonus := 0
+	if state != null and source < ResourceNodes.SOURCE_COUNT:
+		bonus = state.gather_bonus[source]
+	var rate := rules.gather_salvage_milli
+	if not ResourceNodes.is_salvage(source):
+		rate = _base_rate(source)
+	gather_acc[slot] += rate * (1000 + bonus) / 1000
 	while gather_acc[slot] >= UNIT_ACC and carry[slot] < rules.carry and _has_resource(slot):
 		gather_acc[slot] -= UNIT_ACC
 		carry[slot] += 1
@@ -748,6 +773,8 @@ func _retarget(slot: int) -> bool:
 		for n in nodes.alive_ids:
 			if nodes.sources[n - 1] != source or nodes.amounts[n - 1] <= 0:
 				continue
+			if not nodes.open_to(n, entities.owners[slot]):
+				continue
 			var c := nodes.cells[n - 1]
 			var dx := c % nav.width - fx
 			var dy := c / nav.width - fy
@@ -804,7 +831,7 @@ func _carry_home(id: int) -> void:
 	carry[slot] = 0
 	phase[slot] = Phase.GO
 	if not _has_resource(slot) and not _retarget(slot):
-		_end_job(slot)
+		end_job(slot)
 
 
 ## The nearest finished building of the player that takes this resource, ties by id.
@@ -836,103 +863,9 @@ func _hunt(id: int) -> void:
 		return
 	var carcass := nodes.carcass_of(animal)
 	if carcass == ResourceNodes.NO_ID:
-		_end_job(slot)
+		end_job(slot)
 		return
-	_start_gather(slot, ResourceNodes.Source.HUNT, Target.NODE, carcass)
-
-
-# --- building and repairing ----------------------------------------------------------------
-
-
-func _build(id: int) -> void:
-	var slot := id - 1
-	var b := job_ref[slot]
-	var finished := not buildings.is_alive(b)
-	if not finished:
-		var s := b - 1
-		finished = buildings.done[s] == 1 and buildings.hp[s] >= buildings.max_hp[s]
-	if finished:
-		# Walls: go on to the next foundation of the line.
-		var next := _nearest_foundation(id)
-		if next == BuildingStore.NO_ID:
-			_end_job(slot)
-			return
-		job_ref[slot] = next
-		tries[slot] = 0
-		b = next
-	if not to_building(id, b):
-		return
-	phase[slot] = Phase.WORK
-	_builders[b] = _builders.get(b, 0) + 1
-
-
-func _nearest_foundation(id: int) -> int:
-	var slot := id - 1
-	var p := entities.owners[slot]
-	var r := Fixed.from_cells(rules.resource_search_cells)
-	var best := BuildingStore.NO_ID
-	var best_d := 0
-	for b in buildings.alive_ids:
-		var s := b - 1
-		if buildings.owners[s] != p or buildings.done[s] == 1:
-			continue
-		var d := buildings.distance_sq(b, entities.pos_x[slot], entities.pos_y[slot])
-		if d > r * r:
-			continue
-		if best == BuildingStore.NO_ID or d < best_d:
-			best = b
-			best_d = d
-	return best
-
-
-## A builder speeds construction by a whole builder, every next one by builder_extra_permille.
-func _speed(builders: int) -> int:
-	return 1000 + (builders - 1) * rules.builder_extra_permille
-
-
-func _construct(b: int, builders: int) -> void:
-	var s := b - 1
-	var speed := _speed(builders)
-	if buildings.done[s] == 0:
-		var before := buildings.progress[s]
-		var after := mini(before + speed, buildings.work[s])
-		buildings.progress[s] = after
-		var max_hp := buildings.max_hp[s]
-		var work := buildings.work[s]
-		buildings.hp[s] += max_hp * after / work - max_hp * before / work
-		buildings.hp[s] = clampi(buildings.hp[s], 1, max_hp)
-		if after >= work:
-			_complete(b)
-			players[buildings.owners[s]].built += 1
-		return
-	_repair(b, speed)
-
-
-## Repair: all HP back in repair_time_permille of the build time, for repair_cost_permille of
-## the price, paid as it goes; it stops while the owner cannot pay.
-func _repair(b: int, speed: int) -> void:
-	var s := b - 1
-	var def := buildings.defs[s]
-	var state: PlayerState = players.get(buildings.owners[s])
-	if state == null or buildings.hp[s] >= buildings.max_hp[s]:
-		return
-	var ticks := maxi(def.build_ticks * rules.repair_time_permille / 1000, 1)
-	var gain := buildings.repair_hp[s] + buildings.max_hp[s] * speed / ticks
-	var whole := mini(gain / 1000, buildings.max_hp[s] - buildings.hp[s])
-	var price := PackedInt32Array([def.cost_food, def.cost_wood, def.cost_iron, def.cost_silver])
-	var owed := buildings.repair_owed[s].duplicate()
-	var due := PackedInt32Array([0, 0, 0, 0])
-	for r in 4:
-		owed[r] += whole * price[r] * rules.repair_cost_permille / buildings.max_hp[s]
-		due[r] = owed[r] / 1000
-	if not state.can_pay(due):
-		return
-	state.pay(due)
-	for r in 4:
-		owed[r] -= due[r] * 1000
-	buildings.repair_owed[s] = owed
-	buildings.repair_hp[s] = gain - whole * 1000
-	buildings.hp[s] += whole
+	start_gather(slot, ResourceNodes.Source.HUNT, Target.NODE, carcass)
 
 
 # --- attacking buildings -------------------------------------------------------------------
@@ -942,7 +875,7 @@ func _assault(id: int) -> void:
 	var slot := id - 1
 	var b := job_ref[slot]
 	if not buildings.is_alive(b):
-		_end_job(slot)
+		end_job(slot)
 		return
 	var def := unit_defs[slot]
 	var reach := _reach()

@@ -17,6 +17,9 @@ msgstr "%d galios"
 msgid "%d units"
 msgstr "%d vienetų"
 
+msgid "%d%% of its price is left in heaps; peasants carry it to the stores."
+msgstr "%d%% kainos lieka krūvose; valstiečiai neša ją į sandėlius."
+
 msgid "%s gathered"
 msgstr "Surinkta: %s"
 
@@ -121,6 +124,12 @@ msgstr "B – kitas, F – pasukti, Shift – statyti toliau, Esc ar dešinysis 
 
 msgid "Back"
 msgstr "Atgal"
+
+msgid "Being taken apart"
+msgstr "Ardomas"
+
+msgid "Being taken apart: %d%%"
+msgstr "Ardoma: %d%%"
 
 msgid "Bog ore"
 msgstr "Balų rūda"
@@ -305,6 +314,9 @@ msgstr "Gintautas sužeistas. Sukilimas neteko vado."
 msgid "Gives %d food when hunted"
 msgstr "Sumedžiotas duoda %d maisto"
 
+msgid "Gives back: %s"
+msgstr "Grąžins: %s"
+
 msgid "Goal"
 msgstr "Tikslas"
 
@@ -388,6 +400,9 @@ msgstr "Nuvesk miško lankininkus pro ordino sargybą prie šaltinio"
 
 msgid "Left (you)"
 msgstr "Kairė (tu)"
+
+msgid "Left click on anything else (enemy, deposit, forest) shows it below."
+msgstr "Kairysis mygtukas ant bet ko kito (priešo, telkinio, miško) parodo tai apačioje."
 
 msgid "Left click or drag a box to select."
 msgstr "Kairysis spustelėjimas ar rėmelis — pažymėti."
@@ -520,6 +535,9 @@ msgstr "Valstiečiai jį kerta malkoms (dešinysis mygtukas)."
 
 msgid "Peasants gather it (right click)."
 msgstr "Renka valstiečiai (dešinysis mygtukas)."
+
+msgid "Peasants take it apart and carry %d%% of its price to storage."
+msgstr "Valstiečiai jį išardys ir nuneš %d%% kainos į sandėlį."
 
 msgid "Pick one and left-click the ground; F turns it, Shift lays several."
 msgstr "Pasirinkite ir spustelėkite kairiuoju ant žemės; F pasuka, Shift stato kelis."
@@ -662,6 +680,12 @@ msgstr "Stoti (H)"
 msgid "Take all 7 places of power"
 msgstr "Užimk visas 7 galios vietas"
 
+msgid "Take apart"
+msgstr "Išardyti"
+
+msgid "Take apart: click your building"
+msgstr "Išardyti: spustelėk savo pastatą"
+
 msgid "Take back the sacred grove and lay an alka there"
 msgstr "Atsiimk šventąją giraitę ir įrenk joje alką"
 
@@ -692,6 +716,9 @@ msgstr "Patarimus viršuje kairėje galima išjungti nustatymuose."
 msgid "The knights are coming out! Don't let them reach the boats!"
 msgstr "Riteriai išeina! Neleiskit jiems pasiekti valčių!"
 
+msgid "The last capital cannot be taken apart"
+msgstr "Paskutinės sostinės išardyti negalima"
+
 msgid "The lord vogt demands grain for the castles. You wanted to be protected, did you not?"
 msgstr "Ponas vogtas reikalauja grūdų pilims. Juk norėjot globos, ar ne?"
 
@@ -715,6 +742,9 @@ msgstr "Kaimui pritrūko maisto, ir jis išmirė badu."
 
 msgid "The znakharka can call Bog Mist: your units in it cannot be seen until they attack."
 msgstr "Žynė gali sušaukti Pelkių rūką: tavo karių jame nematyti, kol jie nepuola."
+
+msgid "Then click your building."
+msgstr "Tada spustelėk savo pastatą."
 
 msgid "There are fish in the lake and honey in the hives. The Germans cannot search the whole forest."
 msgstr "Ežere yra žuvų, drevėse – medaus. Vokiečiai viso miško neišieškos."
@@ -796,6 +826,9 @@ msgstr "Medis gerai dega."
 
 msgid "Wood: right-click the forest with peasants."
 msgstr "Mediena: spustelėkite valstiečiais dešiniuoju mišką."
+
+msgid "Y with peasants, then a click on your building: they take it apart."
+msgstr "Y su valstiečiais, tada spustelėk savo pastatą: jie jį išardys."
 
 msgid "You lead Lithuania from the north-west; the Order is in the south-east."
 msgstr "Vadovaujate Lietuvai iš šiaurės vakarų; Ordinas — pietryčiuose."

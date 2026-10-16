@@ -113,6 +113,8 @@ static func fail(reason: int) -> String:
 			return t("Conditions not met")
 		EconomySystem.Fail.LOCKED:
 			return t("Not available yet in this mission")
+		EconomySystem.Fail.DISMANTLING:
+			return t("Being taken apart")
 	return t("Not available")
 
 

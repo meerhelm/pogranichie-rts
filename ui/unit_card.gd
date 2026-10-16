@@ -183,7 +183,11 @@ func _building(b: int) -> void:
 	var own := store.owners[s] == input.player
 	if not own:
 		lines.append(_owner(store.owners[s]))
-	if store.done[s] == 0:
+	if store.dismantling[s] == 1:
+		var taken := store.dismantle_total[s] - store.dismantle_left[s]
+		lines.append(tr("Being taken apart: %d%%") % (taken * 100 / store.dismantle_total[s]))
+		lines.append(tr("Gives back: %s") % UiText.cost(sim.economy.construction.salvage(b)))
+	elif store.done[s] == 0:
 		lines.append(tr("Under construction: %d%%") % (store.progress[s] * 100 / store.work[s]))
 	elif not own:
 		_resource_lines(b, lines)

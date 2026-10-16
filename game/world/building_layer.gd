@@ -22,6 +22,10 @@ const DEPOSIT_COLORS := {
 	ResourceNodes.Source.SILVER: Color(0.82, 0.84, 0.88),
 	ResourceNodes.Source.HUNT: Color(0.55, 0.2, 0.15),
 }
+## Salvage heaps by resource: food sacks, logs, iron, silver.
+const SALVAGE_COLORS: Array[Color] = [
+	Color(0.85, 0.75, 0.5), Color(0.55, 0.38, 0.2), Color(0.4, 0.4, 0.45), Color(0.85, 0.87, 0.9)
+]
 const OK_COLOR := Color(0.3, 1.0, 0.3, 0.45)
 const BAD_COLOR := Color(1.0, 0.25, 0.2, 0.45)
 ## Screen height of a building per cell of its smaller side.
@@ -123,7 +127,7 @@ func _refresh() -> void:
 		var rect := Rect2(b.cell_x[s], b.cell_y[s], b.w[s], b.h[s])
 		var c := _building_color(s)
 		var height := HEIGHT_PER_CELL * mini(b.w[s], b.h[s])
-		if b.done[s] != 1:
+		if not _standing(s):
 			height *= _progress(s)
 		var hp := float(b.hp[s]) / maxf(b.max_hp[s], 1.0)
 		if hp >= 1.0 and id != selected:
@@ -133,11 +137,12 @@ func _refresh() -> void:
 		_tall(key, live, rect, c, height, id == selected, hp, fire)
 		if _boxes.has(key):
 			var stage := SpriteDB.building_stage(
-				b.done[s] == 1, _progress(s), float(b.hp[s]) / maxf(b.max_hp[s], 1.0)
+				_standing(s), _progress(s), float(b.hp[s]) / maxf(b.max_hp[s], 1.0)
 			)
 			var tint := UnitView.PLAYER_COLORS[b.owners[s] % UnitView.PLAYER_COLORS.size()]
 			_boxes[key].def_id = _art_id(s)
-			_boxes[key].done = b.done[s] == 1
+			# One taken apart leaves no ruins.
+			_boxes[key].done = _standing(s)
 			var back: Array[SpriteDB.Sprite] = []
 			var front: Array[SpriteDB.Sprite] = []
 			if b.defs[s].base_id == &"palisade":
@@ -265,9 +270,18 @@ func _arms(
 			back.append(piece)
 
 
+## How far up slot `s` stands: construction done, or what is left while it is taken apart.
 func _progress(s: int) -> float:
 	var b := sim.economy.buildings
+	if b.dismantling[s] == 1:
+		return float(b.dismantle_left[s]) / maxf(b.dismantle_total[s], 1.0)
 	return float(b.progress[s]) / maxf(b.work[s], 1.0)
+
+
+## A finished building not being taken apart (taking apart shows the build stages backwards).
+func _standing(s: int) -> bool:
+	var b := sim.economy.buildings
+	return b.done[s] == 1 and b.dismantling[s] == 0
 
 
 func _building_color(s: int) -> Color:
@@ -295,7 +309,9 @@ func _draw() -> void:
 		var at := Vector2(cell % sim.nav.width, cell / sim.nav.width)
 		var spot := Iso.cell_to_screen(at + Vector2(0.5, 0.5))
 		var art := SpriteDB.deposit_at(eco.nodes.sources[n - 1], cell)
-		if art != null:
+		if ResourceNodes.is_salvage(eco.nodes.sources[n - 1]):
+			draw_salvage(self, spot, eco.nodes.sources[n - 1], cell)
+		elif art != null:
 			draw_set_transform(spot)
 			art.draw(self, Rect2(Vector2.ZERO, art.frame), Color.WHITE)
 			draw_set_transform(Vector2.ZERO)
@@ -307,11 +323,11 @@ func _draw() -> void:
 		if b.blocks[s] != 0 or not _shown(id):
 			continue
 		var rect := Rect2(b.cell_x[s], b.cell_y[s], b.w[s], b.h[s])
-		var height := 2.0 * (_progress(s) if b.done[s] != 1 else 1.0)
+		var height := 2.0 * (_progress(s) if not _standing(s) else 1.0)
 		var art := SpriteDB.building(
 			_art_id(s),
 			SpriteDB.building_stage(
-				b.done[s] == 1, _progress(s), float(b.hp[s]) / maxf(b.max_hp[s], 1.0)
+				_standing(s), _progress(s), float(b.hp[s]) / maxf(b.max_hp[s], 1.0)
 			)
 		)
 		if art != null:
@@ -364,6 +380,23 @@ func _draw_ghosts() -> void:
 	for i in ghost_line.size():
 		var col := OK_COLOR if ghost_line_ok[i] else BAD_COLOR
 		draw_box(_ghosts, Rect2(ghost_line[i], Vector2.ONE), col, 0.0)
+
+
+## A heap of what a building taken apart left: logs, sacks, iron bars or silver, by source.
+static func draw_salvage(item: CanvasItem, spot: Vector2, source: int, cell: int) -> void:
+	var res := ResourceNodes.SOURCE_RESOURCE[source]
+	var c: Color = SALVAGE_COLORS[res]
+	var turn := 1.0 if cell % 2 == 0 else -1.0
+	# Shifted aside by resource, so piles sharing a cell do not cover each other.
+	spot += Vector2((res - 1.5) * 7.0, (res % 2) * 4.0 - 2.0)
+	item.draw_set_transform(spot, 0.0, Vector2(1.0, 0.5))
+	item.draw_circle(Vector2.ZERO, 9.0, Color(0, 0, 0, 0.25))
+	item.draw_set_transform(Vector2.ZERO)
+	for i in 3:
+		var at := spot + Vector2((i - 1) * 5.0 * turn, -2.0 - (i % 2) * 4.0)
+		var piece := Rect2(at - Vector2(5, 3), Vector2(10, 5))
+		item.draw_rect(piece, c.darkened(0.1 * i))
+		item.draw_rect(piece, c.darkened(0.5), false, 1.0)
 
 
 ## Flames over the top of a burning building on `item`, a few per cell, taller as it burns

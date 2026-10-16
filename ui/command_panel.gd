@@ -143,6 +143,22 @@ func _unit_orders() -> void:
 		_spell_buttons[spell.id] = b
 	if input.peasants().is_empty():
 		return
+	var apart := tr("Take apart")
+	_button(
+		_orders,
+		apart,
+		(
+			apart
+			+ " (Y)\n"
+			+ tr("Then click your building.")
+			+ "\n"
+			+ (
+				tr("Peasants take it apart and carry %d%% of its price to storage.")
+				% (sim.economy.rules.dismantle_refund_permille / 10)
+			)
+		),
+		input.start_taking_apart
+	)
 	for def in input.buildable():
 		var b := _button(_build, UiText.name_of(def.id), "", input.start_placing.bind(def))
 		_build_buttons[def.id] = b

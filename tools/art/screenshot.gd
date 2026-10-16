@@ -6,7 +6,8 @@ extends SceneTree
 ##   look:X:Y (no fog, camera on cell X, Y), showcase:FACTION:X:Y (every prototype building
 ##   and unit of a faction, gdl or to, laid out from cell X, Y, finished, the camera on them),
 ##   click:WHAT (no fog, the camera on the first deposit, forest cell, enemy building or wild
-##   animal, WHAT = node, forest, building or animal, and a left click on it)
+##   animal, WHAT = node, forest, building or animal, and a left click on it), dismantle (the
+##   player's peasants take a house by the town centre apart, nearly done, so its salvage shows)
 
 var _out := "user://screenshot.png"
 var _seconds := 6.0
@@ -70,6 +71,8 @@ func _act() -> void:
 	elif _action.begins_with("showcase:"):
 		var parts := _action.split(":")
 		_showcase(main, parts[1], int(parts[2]), int(parts[3]))
+	elif _action == "dismantle":
+		_dismantle(main)
 	elif _action.begins_with("click:"):
 		_click(main, _action.split(":")[1])
 	elif _action == "help" and main.has_node("UI/Hud"):
@@ -152,7 +155,9 @@ func _click(main: Node, what: String) -> void:
 				if sim.economy.buildings.owners[b - 1] != 1:
 					var s := b - 1
 					var store := sim.economy.buildings
-					at = Vector2(store.cell_x[s] + store.w[s] / 2.0, store.cell_y[s] + store.h[s] / 2.0)
+					at = Vector2(
+						store.cell_x[s] + store.w[s] / 2.0, store.cell_y[s] + store.h[s] / 2.0
+					)
 					break
 		"animal":
 			for id in sim.entities.alive_ids:
@@ -176,3 +181,33 @@ func _click(main: Node, what: String) -> void:
 		ev.position = point
 		ev.global_position = point
 		root.push_input(ev)
+
+
+func _dismantle(main: Node) -> void:
+	var sim: Simulation = main.get("sim")
+	var store := sim.economy.buildings
+	var tc := store.alive_ids[0]
+	for b in store.alive_ids:
+		if store.owners[b - 1] == 1 and store.defs[b - 1].base_id == &"town_center":
+			tc = b
+	var house: BuildingDef = load("res://data/buildings/gdl_house.tres")
+	var hx := store.cell_x[tc - 1] + 5
+	var hy := store.cell_y[tc - 1]
+	while sim.economy.placement.can_place(1, house, hx, hy, false, true) != EconomySystem.Fail.OK:
+		hy += 1
+	var b := sim.economy._found(1, house, hx, hy, false)
+	_finish(sim, b)
+	var ids := PackedInt32Array()
+	for id in sim.entities.alive_ids:
+		if sim.entities.owners[id - 1] == 1:
+			ids.append(id)
+	sim.enqueue(SimCommand.on_building(sim.tick, 1, SimCommand.Kind.DISMANTLE, ids, b))
+	sim.step()
+	store.dismantle_left[b - 1] = 600
+	var at := Vector2(hx, hy)
+	for i in 300:
+		if not store.is_alive(b):
+			break
+		sim.step()
+	var cam: RtsCamera = main.get_node("Camera")
+	cam.look_at_point(Iso.cell_to_screen(at))

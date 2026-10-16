@@ -17,6 +17,8 @@ extends Control
 ## aimed at a point waits for a left click on the map (right click or Esc cancels). A shrine is
 ## laid on the place of power nearest the cursor.
 ## Fire (M9): Alt+right click on an enemy building sends the selected units to set it on fire.
+## Taking apart (2026-10): with peasants selected, Y (or Delete) and a left click on an own
+## building order them to take it apart (right click or Esc cancels).
 ## Looking (2026-10): a left click on anything that is not the player's own (another side's or
 ## a wild unit, another side's building, a deposit, a carcass, a forest cell, a place of
 ## power) shows it in the card without selecting it for orders (`look`, `look_ref`).
@@ -57,6 +59,10 @@ var placing: BuildingDef
 var place_fail := 0
 ## Spell waiting for its point (null when not aiming one).
 var casting: SpellDef
+## Peasants wait for a left click on the own building to take apart (Y); true after a click
+## on the last capital, which cannot be.
+var taking_apart := false
+var take_apart_fail := false
 ## What is looked at (Look) and which: unit id, building id, node id, map cell or site index.
 var look := Look.NONE
 var look_ref := 0
@@ -113,10 +119,16 @@ func _unhandled_input(event: InputEvent) -> void:
 func _mouse_button(mb: InputEventMouseButton) -> void:
 	if casting != null:
 		_casting_click(mb)
-		return
-	if placing != null:
+	elif taking_apart:
+		_take_apart_click(mb)
+	elif placing != null:
 		_placing_click(mb)
-		return
+	else:
+		_plain_click(mb)
+
+
+## A click with no mode on: select, or order the selection.
+func _plain_click(mb: InputEventMouseButton) -> void:
 	if mb.button_index == MOUSE_BUTTON_LEFT:
 		if mb.pressed:
 			_dragging = true
@@ -188,6 +200,8 @@ func _key(key: InputEventKey) -> void:
 	elif key.physical_keycode == KEY_ESCAPE:
 		if casting != null:
 			stop_casting()
+		elif taking_apart:
+			stop_taking_apart()
 		elif placing != null:
 			_stop_placing()
 		elif look != Look.NONE:
@@ -201,6 +215,8 @@ func _key(key: InputEventKey) -> void:
 		_building_key(key)
 	elif key.physical_keycode == KEY_B and _peasants().size() > 0:
 		_next_building(-1 if key.shift_pressed else 1)
+	elif key.physical_keycode in [KEY_Y, KEY_DELETE] and _peasants().size() > 0:
+		start_taking_apart()
 	elif key.physical_keycode == KEY_F and placing != null:
 		_turned = not _turned
 		_update_ghost(get_viewport().get_mouse_position())
@@ -239,6 +255,8 @@ func sim_ticked_cleanup() -> void:
 		_select_building(Vector2(-1, -1))
 	if placing != null:
 		_update_ghost(get_viewport().get_mouse_position())
+	if taking_apart and _peasants().is_empty():
+		stop_taking_apart()
 	if look != Look.NONE and not _still_seen():
 		_look_at(Vector2(-1, -1))
 
@@ -629,6 +647,7 @@ func order_kind(kind: SimCommand.Kind) -> void:
 func start_placing(def: BuildingDef) -> void:
 	if _peasants().is_empty():
 		return
+	taking_apart = false
 	placing = def
 	_wall_from = Vector2i(-1, -1)
 	_update_ghost(get_viewport().get_mouse_position())
@@ -642,6 +661,49 @@ func queue_item(item: StringName) -> void:
 func cancel_item(index: int) -> void:
 	if selected_building != BuildingStore.NO_ID:
 		_order(SimCommand.cancel_item(sim.tick, player, selected_building, index))
+
+
+# --- taking apart --------------------------------------------------------------------------
+
+
+## Y: the selected peasants wait for a left click on the own building to take apart.
+func start_taking_apart() -> void:
+	if _peasants().is_empty():
+		return
+	if placing != null:
+		_stop_placing()
+	casting = null
+	taking_apart = true
+	economy_changed.emit()
+
+
+func stop_taking_apart() -> void:
+	taking_apart = false
+	take_apart_fail = false
+	economy_changed.emit()
+
+
+func _take_apart_click(mb: InputEventMouseButton) -> void:
+	if not mb.pressed:
+		return
+	if mb.button_index == MOUSE_BUTTON_LEFT:
+		var c := Iso.screen_to_cell_index(_to_world(mb.position))
+		if sim.nav.in_bounds(c.x, c.y):
+			var b := sim.economy.buildings.occupant[sim.nav.cell_at(c.x, c.y)]
+			var workers := _peasants()
+			var allowed := sim.economy.construction.can_dismantle(player, b)
+			if b != BuildingStore.NO_ID and not allowed:
+				# The last capital: say why and keep waiting for another building.
+				take_apart_fail = sim.economy.construction.is_last_capital(b)
+				economy_changed.emit()
+				return
+			if allowed and not workers.is_empty():
+				_order(
+					SimCommand.on_building(sim.tick, player, SimCommand.Kind.DISMANTLE, workers, b)
+				)
+	if mb.button_index == MOUSE_BUTTON_LEFT or mb.button_index == MOUSE_BUTTON_RIGHT:
+		if not (mb.shift_pressed and mb.button_index == MOUSE_BUTTON_LEFT):
+			stop_taking_apart()
 
 
 # --- magic ---------------------------------------------------------------------------------
@@ -674,6 +736,7 @@ func start_casting(spell: SpellDef) -> void:
 		return
 	if placing != null:
 		_stop_placing()
+	taking_apart = false
 	if spell.tags.has(&"target_self"):
 		_order(SimCommand.cast(sim.tick, player, ids, spell.id, 0, 0))
 		return

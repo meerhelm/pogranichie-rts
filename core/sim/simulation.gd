@@ -13,7 +13,8 @@ extends RefCounted
 ## 7: M8 match statistics (trained, lost, killed, built, gathered) and skirmish victory.
 ## 8: M9 fire (arson, burning, spreading, dousing), heroes' own auras, mission locks and the
 ## mission script (MissionRuntime) in the world.
-const SIM_VERSION := 9
+## 10: taking own buildings apart (DISMANTLE, salvage piles carried to storage).
+const SIM_VERSION := 10
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).
@@ -283,7 +284,7 @@ func _apply(cmd: SimCommand) -> void:
 			economy.order(cmd, PackedInt32Array())
 		SimCommand.Kind.BUILD, SimCommand.Kind.WALL, SimCommand.Kind.GATHER:
 			_economy_order(cmd)
-		SimCommand.Kind.WORK, SimCommand.Kind.ASSAULT:
+		SimCommand.Kind.WORK, SimCommand.Kind.ASSAULT, SimCommand.Kind.DISMANTLE:
 			_economy_order(cmd)
 		SimCommand.Kind.CAST:
 			var ids := _obedient(cmd)

@@ -60,3 +60,11 @@ extends Resource
 @export var cancel_refund_permille: int
 ## A building marked near_forest_only (ВКЛ подсека) needs forest this many cells around it.
 @export var near_forest_cells: int
+@export_group("Dismantling")
+## Taking an own building apart gives back this share of its price, as salvage the peasants
+## carry to storage (Valentin, 2026-10-16).
+@export var dismantle_refund_permille: int
+## Temporary: taking a building apart takes this share of the time its construction took so far.
+@export var dismantle_time_permille: int
+## Temporary: picking up salvage, thousandths of a unit a second.
+@export var gather_salvage_milli: int

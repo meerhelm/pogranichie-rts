@@ -19,6 +19,10 @@ msgstr ""
 msgid "%d units"
 msgstr ""
 
+#: ui/help_panel.gd
+msgid "%d%% of its price is left in heaps; peasants carry it to the stores."
+msgstr ""
+
 #: ui/end_screen.gd
 msgid "%s gathered"
 msgstr ""
@@ -157,6 +161,14 @@ msgstr ""
 
 #: ui/settings_panel.gd
 msgid "Back"
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "Being taken apart"
+msgstr ""
+
+#: ui/unit_card.gd
+msgid "Being taken apart: %d%%"
 msgstr ""
 
 #: ui/ui_text.gd
@@ -405,6 +417,10 @@ msgstr ""
 msgid "Gives %d food when hunted"
 msgstr ""
 
+#: ui/unit_card.gd
+msgid "Gives back: %s"
+msgstr ""
+
 #: ui/help_panel.gd
 msgid "Goal"
 msgstr ""
@@ -517,6 +533,10 @@ msgstr ""
 
 #: game/arena/arena.gd
 msgid "Left (you)"
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "Left click on anything else (enemy, deposit, forest) shows it below."
 msgstr ""
 
 #: ui/unit_card.gd
@@ -697,6 +717,10 @@ msgstr ""
 
 #: ui/unit_card.gd
 msgid "Peasants gather it (right click)."
+msgstr ""
+
+#: ui/command_panel.gd
+msgid "Peasants take it apart and carry %d%% of its price to storage."
 msgstr ""
 
 #: ui/help_panel.gd
@@ -891,6 +915,14 @@ msgstr ""
 msgid "Take all 7 places of power"
 msgstr ""
 
+#: ui/command_panel.gd
+msgid "Take apart"
+msgstr ""
+
+#: ui/hud.gd
+msgid "Take apart: click your building"
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "Take back the sacred grove and lay an alka there"
 msgstr ""
@@ -931,6 +963,10 @@ msgstr ""
 msgid "The knights are coming out! Don't let them reach the boats!"
 msgstr ""
 
+#: ui/hud.gd
+msgid "The last capital cannot be taken apart"
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "The lord vogt demands grain for the castles. You wanted to be protected, did you not?"
 msgstr ""
@@ -961,6 +997,10 @@ msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "The znakharka can call Bog Mist: your units in it cannot be seen until they attack."
+msgstr ""
+
+#: ui/command_panel.gd
+msgid "Then click your building."
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -1069,6 +1109,10 @@ msgstr ""
 
 #: ui/ui_text.gd
 msgid "Wood: right-click the forest with peasants."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "Y with peasants, then a click on your building: they take it apart."
 msgstr ""
 
 #: ui/help_panel.gd
