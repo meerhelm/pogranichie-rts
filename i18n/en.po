@@ -26,14 +26,65 @@ msgstr "(%d s)"
 msgid "(optional) %s"
 msgstr "(optional) %s"
 
+msgid "+%d population"
+msgstr "+%d population"
+
 msgid "+%s a second"
 msgstr "+%s a second"
+
+msgid "1. You start with «%s», 5 peasants and room for 5 people only."
+msgstr "1. You start with «%s», 5 peasants and room for 5 people only."
+
+msgid "2. Send peasants to the forest, then build «%s»: +5 population."
+msgstr "2. Send peasants to the forest, then build «%s»: +5 population."
+
+msgid "3. Build «%s» by the forest and put a peasant on it."
+msgstr "3. Build «%s» by the forest and put a peasant on it."
+
+msgid "4. Click «%s» and train more peasants (50 food each)."
+msgstr "4. Click «%s» and train more peasants (50 food each)."
+
+msgid "5. Build «%s», «%s» or «%s» and train an army."
+msgstr "5. Build «%s», «%s» or «%s» and train an army."
+
+msgid "A felled-tree barrier, laid in the forest for free."
+msgstr "A felled-tree barrier, laid in the forest for free."
+
+msgid "A field by the forest: right-click it with a peasant for food."
+msgstr "A field by the forest: right-click it with a peasant for food."
+
+msgid "A gate in your wall that lets your own people through."
+msgstr "A gate in your wall that lets your own people through."
+
+msgid "A hive in the forest: two peasants gather honey (food)."
+msgstr "A hive in the forest: two peasants gather honey (food)."
 
 msgid "A house feeds more mouths. Train peasants at the yard and build a granary near the food."
 msgstr "A house feeds more mouths. Train peasants at the yard and build a granary near the food."
 
+msgid "A silver mine (grey blocks on a hill) gives silver."
+msgstr "A silver mine (grey blocks on a hill) gives silver."
+
+msgid "A store at the forest edge, so woodcutters walk less."
+msgstr "A store at the forest edge, so woodcutters walk less."
+
+msgid "A store by the ore or silver, so miners walk less."
+msgstr "A store by the ore or silver, so miners walk less."
+
+msgid "A store near the fields, so peasants walk less."
+msgstr "A store near the fields, so peasants walk less."
+
+msgid "A wall: drag to lay a line."
+msgstr "A wall: drag to lay a line."
+
+msgid "A watch tower that shoots at enemies."
+msgstr "A watch tower that shoots at enemies."
+
 msgid "Age"
 msgstr "Age"
+
+msgid "Ages"
+msgstr "Ages"
 
 msgid "Aggressive"
 msgstr "Aggressive"
@@ -59,17 +110,32 @@ msgstr "Are you the Gintaut who burned the chapel?"
 msgid "Armor %d melee / %d pierce"
 msgstr "Armor %d melee / %d pierce"
 
+msgid "Army"
+msgstr "Army"
+
 msgid "B next, F turn, Shift keep placing, Esc or right click cancel"
 msgstr "B next, F turn, Shift keep placing, Esc or right click cancel"
 
 msgid "Back"
 msgstr "Back"
 
+msgid "Bog ore (brown blocks in the bog) gives iron."
+msgstr "Bog ore (brown blocks in the bog) gives iron."
+
 msgid "Boyar lances strike hard in a charge. To set wood on fire, select units and Alt+right-click an enemy building: they will carry torches to it."
 msgstr "Boyar lances strike hard in a charge. To set wood on fire, select units and Alt+right-click an enemy building: they will carry torches to it."
 
 msgid "Bread first. Then the Germans."
 msgstr "Bread first. Then the Germans."
+
+msgid "Build «%s» on a place of power: it gives Power for spells."
+msgstr "Build «%s» on a place of power: it gives Power for spells."
+
+msgid "Build «%s», «%s» or «%s» and train an army. The Order will come."
+msgstr "Build «%s», «%s» or «%s» and train an army. The Order will come."
+
+msgid "Building and training"
+msgstr "Building and training"
 
 msgid "Buildings built"
 msgstr "Buildings built"
@@ -98,6 +164,15 @@ msgstr "Carries %d %s"
 msgid "Chronicler"
 msgstr "Chronicler"
 
+msgid "Click your building to train units; Z X C V B N M press its buttons."
+msgstr "Click your building to train units; Z X C V B N M press its buttons."
+
+msgid "Click «%s» and train more peasants: the more workers, the faster you grow."
+msgstr "Click «%s» and train more peasants: the more workers, the faster you grow."
+
+msgid "Close (F1)"
+msgstr "Close (F1)"
+
 msgid "Collector"
 msgstr "Collector"
 
@@ -113,6 +188,12 @@ msgstr "Cooldown %d s"
 msgid "Could not save the game"
 msgstr "Could not save the game"
 
+msgid "Ctrl+1…9 makes a group, 1…9 selects it."
+msgstr "Ctrl+1…9 makes a group, 1…9 selects it."
+
+msgid "Ctrl+right click: attack-move. Alt+right click: set a building on fire."
+msgstr "Ctrl+right click: attack-move. Alt+right click: set a building on fire."
+
 msgid "Damage %d (%s)"
 msgstr "Damage %d (%s)"
 
@@ -121,6 +202,9 @@ msgstr "Defeat"
 
 msgid "Defensive"
 msgstr "Defensive"
+
+msgid "Destroy the enemy's capital («%s») and castles to win."
+msgstr "Destroy the enemy's capital («%s») and castles to win."
 
 msgid "Did we start it?"
 msgstr "Did we start it?"
@@ -131,6 +215,9 @@ msgstr "Dismount"
 msgid "Do not let the knight brothers reach the boats"
 msgstr "Do not let the knight brothers reach the boats"
 
+msgid "Double click selects all units of that type on screen."
+msgstr "Double click selects all units of that type on screen."
+
 msgid "Draw"
 msgstr "Draw"
 
@@ -140,8 +227,14 @@ msgstr "Equal money"
 msgid "Esc or right click cancel"
 msgstr "Esc or right click cancel"
 
+msgid "F1: how to play."
+msgstr "F1: how to play."
+
 msgid "Fight!"
 msgstr "Fight!"
+
+msgid "First steps"
+msgstr "First steps"
 
 msgid "Fleeing!"
 msgstr "Fleeing!"
@@ -149,8 +242,17 @@ msgstr "Fleeing!"
 msgid "Food"
 msgstr "Food"
 
+msgid "Food: build «%s» right by the forest, then right-click it with a peasant."
+msgstr "Food: build «%s» right by the forest, then right-click it with a peasant."
+
+msgid "Food: peasants work a farm by the forest or a bort (hive) in it."
+msgstr "Food: peasants work a farm by the forest or a bort (hive) in it."
+
 msgid "Forest"
 msgstr "Forest"
+
+msgid "Forest gives wood."
+msgstr "Forest gives wood."
 
 msgid "Formation: %s (%s)"
 msgstr "Formation: %s (%s)"
@@ -167,6 +269,9 @@ msgstr "Fullscreen"
 msgid "GDL 1. Samogitian Fire"
 msgstr "GDL 1. Samogitian Fire"
 
+msgid "Game"
+msgstr "Game"
+
 msgid "Game saved"
 msgstr "Game saved"
 
@@ -176,11 +281,23 @@ msgstr "Game time: %s"
 msgid "Gather 300 food so the village lives through the summer"
 msgstr "Gather 300 food so the village lives through the summer"
 
+msgid "Gathers resources and builds."
+msgstr "Gathers resources and builds."
+
 msgid "Gintaut is wounded. The uprising has lost its leader."
 msgstr "Gintaut is wounded. The uprising has lost its leader."
 
+msgid "Goal"
+msgstr "Goal"
+
+msgid "Got it"
+msgstr "Got it"
+
 msgid "Grand Duchy of Lithuania against the Teutonic Order"
 msgstr "Grand Duchy of Lithuania against the Teutonic Order"
+
+msgid "Green means it can stand there; the line at the top says why red cannot."
+msgstr "Green means it can stand there; the line at the top says why red cannot."
 
 msgid "HP %d/%d"
 msgstr "HP %d/%d"
@@ -188,11 +305,29 @@ msgstr "HP %d/%d"
 msgid "Hidden in the forest"
 msgstr "Hidden in the forest"
 
+msgid "Hide hints"
+msgstr "Hide hints"
+
+msgid "Hint %d of %d"
+msgstr "Hint %d of %d"
+
+msgid "Hints in skirmish"
+msgstr "Hints in skirmish"
+
 msgid "Hold the pier with no enemies near, and the boats with reinforcements will stop coming."
 msgstr "Hold the pier with no enemies near, and the boats with reinforcements will stop coming."
 
 msgid "Houses %d"
 msgstr "Houses %d"
+
+msgid "Hover a button to see its price and why it is not available."
+msgstr "Hover a button to see its price and why it is not available."
+
+msgid "How to play"
+msgstr "How to play"
+
+msgid "How to play (F1)"
+msgstr "How to play (F1)"
 
 msgid "I was at Orsha and heard the guns roar. What I write below I heard from my grandfather, and he from his father. What is true here and what is a tale, judge for yourselves."
 msgstr "I was at Orsha and heard the guns roar. What I write below I heard from my grandfather, and he from his father. What is true here and what is a tale, judge for yourselves."
@@ -209,6 +344,12 @@ msgstr "Intercept the Order's grain convoy on the river road"
 msgid "Iron"
 msgstr "Iron"
 
+msgid "Iron: right-click bog ore (brown blocks in the bog) with peasants."
+msgstr "Iron: right-click bog ore (brown blocks in the bog) with peasants."
+
+msgid "It needs two other first-age buildings and opens new units."
+msgstr "It needs two other first-age buildings and opens new units."
+
 msgid "Keep watching"
 msgstr "Keep watching"
 
@@ -218,17 +359,29 @@ msgstr "Keep your units on the place of power with no enemies near to take it. T
 msgid "Language"
 msgstr "Language"
 
+msgid "Large"
+msgstr "Large"
+
 msgid "Lead forest archers past the Order's watch to the spring"
 msgstr "Lead forest archers past the Order's watch to the spring"
 
 msgid "Left (you)"
 msgstr "Left (you)"
 
+msgid "Left click or drag a box to select."
+msgstr "Left click or drag a box to select."
+
+msgid "Left click selects; drag a box to select several."
+msgstr "Left click selects; drag a box to select several."
+
 msgid "Line"
 msgstr "Line"
 
 msgid "Lithuanian retreat"
 msgstr "Lithuanian retreat"
+
+msgid "Lithuanian troops can feign a retreat (T) and turn around (G)."
+msgstr "Lithuanian troops can feign a retreat (T) and turn around (G)."
 
 msgid "Load game"
 msgstr "Load game"
@@ -263,8 +416,14 @@ msgstr "Needs a later age"
 msgid "Needs forest nearby"
 msgstr "Needs forest nearby"
 
+msgid "Next"
+msgstr "Next"
+
 msgid "No saved games"
 msgstr "No saved games"
+
+msgid "Normal"
+msgstr "Normal"
 
 msgid "Not available"
 msgstr "Not available"
@@ -308,8 +467,14 @@ msgstr "Opponent: easy"
 msgid "Opponent: normal"
 msgstr "Opponent: normal"
 
+msgid "Or hold every place of power on the map for 5 minutes."
+msgstr "Or hold every place of power on the map for 5 minutes."
+
 msgid "Our great-grandfather Gintaut was neither prince nor lord. A boyar with three farmsteads, one horse and one grove where his grandfathers still prayed. And in the spring of fourteen hundred and nine he decided he would bear it no longer."
 msgstr "Our great-grandfather Gintaut was neither prince nor lord. A boyar with three farmsteads, one horse and one grove where his grandfathers still prayed. And in the spring of fourteen hundred and nine he decided he would bear it no longer."
+
+msgid "P pauses, Esc or F10 opens the menu, F1 shows this page."
+msgstr "P pauses, Esc or F10 opens the menu, F1 shows this page."
 
 msgid "Passive"
 msgstr "Passive"
@@ -320,11 +485,23 @@ msgstr "Paused"
 msgid "Paused (P)"
 msgstr "Paused (P)"
 
+msgid "Peasants bring here: %s"
+msgstr "Peasants bring here: %s"
+
+msgid "Peasants carry everything to «%s» or to a nearer store."
+msgstr "Peasants carry everything to «%s» or to a nearer store."
+
+msgid "Pick one and left-click the ground; F turns it, Shift lays several."
+msgstr "Pick one and left-click the ground; F turns it, Shift lays several."
+
 msgid "Pogranichie"
 msgstr "Pogranichie"
 
 msgid "Population %d/%d"
 msgstr "Population %d/%d"
+
+msgid "Population is full. With a peasant selected, build «%s» (button bottom right)."
+msgstr "Population is full. With a peasant selected, build «%s» (button bottom right)."
 
 msgid "Population limit reached"
 msgstr "Population limit reached"
@@ -332,11 +509,17 @@ msgstr "Population limit reached"
 msgid "Power"
 msgstr "Power"
 
+msgid "Power and spells"
+msgstr "Power and spells"
+
 msgid "Power gained"
 msgstr "Power gained"
 
-msgid "Power: from places of power and shrines"
-msgstr "Power: from places of power and shrines"
+msgid "Power: build a shrine on a place of power; spells spend it."
+msgstr "Power: build a shrine on a place of power; spells spend it."
+
+msgid "Q E R: line, column, wedge."
+msgstr "Q E R: line, column, wedge."
 
 msgid "Quit"
 msgstr "Quit"
@@ -344,14 +527,32 @@ msgstr "Quit"
 msgid "Reset"
 msgstr "Reset"
 
+msgid "Resources"
+msgstr "Resources"
+
 msgid "Resume"
 msgstr "Resume"
 
 msgid "Right"
 msgstr "Right"
 
+msgid "Right click gives orders. F1: how to play."
+msgstr "Right click gives orders. F1: how to play."
+
+msgid "Right click orders: walk, attack the enemy, or work on what you click."
+msgstr "Right click orders: walk, attack the enemy, or work on what you click."
+
+msgid "Right click with a building selected sets where its units gather."
+msgstr "Right click with a building selected sets where its units gather."
+
 msgid "Right click: rally point"
 msgstr "Right click: rally point"
+
+msgid "Right-click the forest with peasants selected: they cut wood and carry it home."
+msgstr "Right-click the forest with peasants selected: they cut wood and carry it home."
+
+msgid "Room for more people: build one before training more."
+msgstr "Room for more people: build one before training more."
 
 msgid "Save game"
 msgstr "Save game"
@@ -359,8 +560,17 @@ msgstr "Save game"
 msgid "Scroll at the screen edge"
 msgstr "Scroll at the screen edge"
 
+msgid "Select and order"
+msgstr "Select and order"
+
 msgid "Select peasants and right-click game to hunt. Fields by the forest and hives in it give food too."
 msgstr "Select peasants and right-click game to hunt. Fields by the forest and hives in it give food too."
+
+msgid "Select peasants and right-click what they should gather."
+msgstr "Select peasants and right-click what they should gather."
+
+msgid "Select your peasants: hold the left mouse button and drag a box around them."
+msgstr "Select your peasants: hold the left mouse button and drag a box around them."
 
 msgid "Settings"
 msgstr "Settings"
@@ -371,6 +581,9 @@ msgstr "Side %d: %d units, %d HP, %d fleeing"
 msgid "Silver"
 msgstr "Silver"
 
+msgid "Silver: right-click a silver mine (grey blocks on a hill) with peasants."
+msgstr "Silver: right-click a silver mine (grey blocks on a hill) with peasants."
+
 msgid "Skirmish"
 msgstr "Skirmish"
 
@@ -380,6 +593,9 @@ msgstr "Skirsnemune has burned. Samogitia has risen."
 msgid "Skirsnemune. A wooden one."
 msgstr "Skirsnemune. A wooden one."
 
+msgid "Small"
+msgstr "Small"
+
 msgid "Speed %.2f cells/s"
 msgstr "Speed %.2f cells/s"
 
@@ -388,6 +604,9 @@ msgstr "Stance: %s"
 
 msgid "Stand ground"
 msgstr "Stand ground"
+
+msgid "Stands only on a place of power; gives Power and trains casters."
+msgstr "Stands only on a place of power; gives Power and trains casters."
 
 msgid "Stop"
 msgstr "Stop"
@@ -400,6 +619,9 @@ msgstr "Take all 7 places of power"
 
 msgid "Take back the sacred grove and lay an alka there"
 msgstr "Take back the sacred grove and lay an alka there"
+
+msgid "Text size"
+msgstr "Text size"
 
 msgid "That year Samogitia was German. Vytautas gave it to the Order by treaty, and nobody asked us. Last winter there was hunger. King Jogaila sent us grain down the river, but the Germans stopped the boats and said they would feed Samogitia themselves."
 msgstr "That year Samogitia was German. Vytautas gave it to the Order by treaty, and nobody asked us. Last winter there was hunger. King Jogaila sent us grain down the river, but the Germans stopped the boats and said they would feed Samogitia themselves."
@@ -415,6 +637,9 @@ msgstr "The capital and castles of the losing side are destroyed."
 
 msgid "The castle at Skirsnemune burned, and the knights who sat in it were killed. Both our books and the German ones write of it. But there was still Dubysa, where the vogt himself sat."
 msgstr "The castle at Skirsnemune burned, and the knights who sat in it were killed. Both our books and the German ones write of it. But there was still Dubysa, where the vogt himself sat."
+
+msgid "The hints at the top left can be turned off in the settings."
+msgstr "The hints at the top left can be turned off in the settings."
 
 msgid "The knights are coming out! Don't let them reach the boats!"
 msgstr "The knights are coming out! Don't let them reach the boats!"
@@ -458,6 +683,18 @@ msgstr "They took the bread, now the grove. Take up your spears."
 msgid "Time: %d s"
 msgstr "Time: %d s"
 
+msgid "To win, destroy the enemy's capital, or hold every place of power for 5 minutes."
+msgstr "To win, destroy the enemy's capital, or hold every place of power for 5 minutes."
+
+msgid "Trains peasants, takes every resource, leads to the next age."
+msgstr "Trains peasants, takes every resource, leads to the next age."
+
+msgid "Trains troops: select it and press a button below."
+msgstr "Trains troops: select it and press a button below."
+
+msgid "Trains: %s"
+msgstr "Trains: %s"
+
 msgid "Turn around"
 msgstr "Turn around"
 
@@ -473,8 +710,14 @@ msgstr "Units lost"
 msgid "Units trained"
 msgstr "Units trained"
 
+msgid "Very large"
+msgstr "Very large"
+
 msgid "Victory"
 msgstr "Victory"
+
+msgid "W A S D, the arrows or the screen edge move the view."
+msgstr "W A S D, the arrows or the screen edge move the view."
 
 msgid "Wavering"
 msgstr "Wavering"
@@ -491,17 +734,29 @@ msgstr "Wedge"
 msgid "Where is the nearest German castle?"
 msgstr "Where is the nearest German castle?"
 
+msgid "With peasants selected, the buttons at the bottom right are buildings."
+msgstr "With peasants selected, the buttons at the bottom right are buildings."
+
 msgid "Wood"
 msgstr "Wood"
 
 msgid "Wood burns well."
 msgstr "Wood burns well."
 
+msgid "Wood: right-click the forest with peasants."
+msgstr "Wood: right-click the forest with peasants."
+
+msgid "You lead Lithuania from the north-west; the Order is in the south-east."
+msgstr "You lead Lithuania from the north-west; the Order is in the south-east."
+
 msgid "You took your time, son of Gintaut. For three days I kept the fire in a pot, the way our old women carry it from house to house."
 msgstr "You took your time, son of Gintaut. For three days I kept the fire in a pot, the way our old women carry it from house to house."
 
 msgid "Your people are not ready to fight yet. Gather your stores again."
 msgstr "Your people are not ready to fight yet. Gather your stores again."
+
+msgid "Z X C: aggressive, defensive, stand ground. H: stop."
+msgstr "Z X C: aggressive, defensive, stand ground. H: stop."
 
 msgid "age_derzhava"
 msgstr "Realm"
@@ -829,3 +1084,18 @@ msgstr "Tower"
 
 msgid "to_town_center"
 msgstr "Order Court"
+
+msgid "«%s» (a hive) stands in the forest; two peasants gather food there."
+msgstr "«%s» (a hive) stands in the forest; two peasants gather food there."
+
+msgid "«%s» leads to the next age, «%s», for 500 food."
+msgstr "«%s» leads to the next age, «%s», for 500 food."
+
+msgid "«%s» stands only on a place of power and gives Power."
+msgstr "«%s» stands only on a place of power and gives Power."
+
+msgid "«%s» takes wood, «%s» food, «%s» iron and silver."
+msgstr "«%s» takes wood, «%s» food, «%s» iron and silver."
+
+msgid "«%s», trained there, casts spells for Power."
+msgstr "«%s», trained there, casts spells for Power."

@@ -1,8 +1,8 @@
 class_name GameSettings
 extends RefCounted
-## Player settings: language, edge scrolling, fullscreen, and the skirmish AI's difficulty last
-## picked. Kept in user://settings.cfg and applied at start (main menu or game scene, whichever
-## opens first).
+## Player settings: language, edge scrolling, fullscreen, text size, skirmish hints, and the
+## skirmish AI's difficulty last picked. Kept in user://settings.cfg and applied at start (main
+## menu or game scene, whichever opens first).
 
 const PATH := "user://settings.cfg"
 ## Locales the game ships (i18n/<locale>.po); English is the development language.
@@ -18,9 +18,16 @@ const LANGUAGE_NAMES: Array[String] = [
 	"Lietuvių",  # notr
 ]
 
+## Interface font sizes the player picks from (the theme's default font size), smallest first.
+const TEXT_SIZES: Array[int] = [16, 20, 24, 28]
+
 static var language := "en"
 static var edge_scroll := true
 static var fullscreen := false
+## Index in TEXT_SIZES.
+static var text_size := 1
+## Whether a skirmish shows the advisor's step-by-step hints.
+static var hints := true
 ## AiProfile.difficulty of the skirmish opponent (ai/profiles/*_<difficulty>.tres).
 static var ai_difficulty: StringName = &"normal"
 ## What the game scene opens (M9), set by the menus before switching to it: a campaign
@@ -42,6 +49,9 @@ static func ensure_loaded() -> void:
 		language = lang if LANGUAGES.has(lang) else "en"
 		edge_scroll = cfg.get_value("general", "edge_scroll", edge_scroll)
 		fullscreen = cfg.get_value("video", "fullscreen", fullscreen)
+		var size: int = cfg.get_value("video", "text_size", text_size)
+		text_size = clampi(size, 0, TEXT_SIZES.size() - 1)
+		hints = cfg.get_value("general", "hints", hints)
 		var level := StringName(cfg.get_value("skirmish", "ai_difficulty", String(ai_difficulty)))
 		ai_difficulty = level if DIFFICULTIES.has(level) else &"normal"
 	apply()
@@ -49,6 +59,9 @@ static func ensure_loaded() -> void:
 
 static func apply() -> void:
 	TranslationServer.set_locale(language)
+	var theme := ThemeDB.get_project_theme()
+	if theme != null and theme.default_font_size != TEXT_SIZES[text_size]:
+		theme.default_font_size = TEXT_SIZES[text_size]
 	if DisplayServer.get_name() == "headless":
 		return
 	var mode := (
@@ -63,6 +76,8 @@ static func save() -> void:
 	cfg.set_value("general", "language", language)
 	cfg.set_value("general", "edge_scroll", edge_scroll)
 	cfg.set_value("video", "fullscreen", fullscreen)
+	cfg.set_value("video", "text_size", text_size)
+	cfg.set_value("general", "hints", hints)
 	cfg.set_value("skirmish", "ai_difficulty", String(ai_difficulty))
 	var err := cfg.save(PATH)
 	if err != OK:

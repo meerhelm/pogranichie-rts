@@ -31,16 +31,84 @@ msgstr ""
 msgid "(optional) %s"
 msgstr ""
 
+#: ui/ui_text.gd
+msgid "+%d population"
+msgstr ""
+
 #: ui/hud.gd
 msgid "+%s a second"
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "1. You start with «%s», 5 peasants and room for 5 people only."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "2. Send peasants to the forest, then build «%s»: +5 population."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "3. Build «%s» by the forest and put a peasant on it."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "4. Click «%s» and train more peasants (50 food each)."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "5. Build «%s», «%s» or «%s» and train an army."
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "A felled-tree barrier, laid in the forest for free."
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "A field by the forest: right-click it with a peasant for food."
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "A gate in your wall that lets your own people through."
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "A hive in the forest: two peasants gather honey (food)."
 msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "A house feeds more mouths. Train peasants at the yard and build a granary near the food."
 msgstr ""
 
+#: ui/help_panel.gd
+msgid "A silver mine (grey blocks on a hill) gives silver."
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "A store at the forest edge, so woodcutters walk less."
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "A store by the ore or silver, so miners walk less."
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "A store near the fields, so peasants walk less."
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "A wall: drag to lay a line."
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "A watch tower that shoots at enemies."
+msgstr ""
+
 #: ui/end_screen.gd
 msgid "Age"
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "Ages"
 msgstr ""
 
 #: ui/ui_text.gd
@@ -75,6 +143,10 @@ msgstr ""
 msgid "Armor %d melee / %d pierce"
 msgstr ""
 
+#: ui/help_panel.gd
+msgid "Army"
+msgstr ""
+
 #: ui/hud.gd
 msgid "B next, F turn, Shift keep placing, Esc or right click cancel"
 msgstr ""
@@ -83,12 +155,28 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
+#: ui/help_panel.gd
+msgid "Bog ore (brown blocks in the bog) gives iron."
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "Boyar lances strike hard in a charge. To set wood on fire, select units and Alt+right-click an enemy building: they will carry torches to it."
 msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "Bread first. Then the Germans."
+msgstr ""
+
+#: ui/advisor.gd
+msgid "Build «%s» on a place of power: it gives Power for spells."
+msgstr ""
+
+#: ui/advisor.gd
+msgid "Build «%s», «%s» or «%s» and train an army. The Order will come."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "Building and training"
 msgstr ""
 
 #: ui/end_screen.gd
@@ -127,6 +215,18 @@ msgstr ""
 msgid "Chronicler"
 msgstr ""
 
+#: ui/help_panel.gd
+msgid "Click your building to train units; Z X C V B N M press its buttons."
+msgstr ""
+
+#: ui/advisor.gd
+msgid "Click «%s» and train more peasants: the more workers, the faster you grow."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "Close (F1)"
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "Collector"
 msgstr ""
@@ -147,6 +247,14 @@ msgstr ""
 msgid "Could not save the game"
 msgstr ""
 
+#: ui/help_panel.gd
+msgid "Ctrl+1…9 makes a group, 1…9 selects it."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "Ctrl+right click: attack-move. Alt+right click: set a building on fire."
+msgstr ""
+
 #: ui/unit_card.gd
 msgid "Damage %d (%s)"
 msgstr ""
@@ -157,6 +265,10 @@ msgstr ""
 
 #: ui/ui_text.gd
 msgid "Defensive"
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "Destroy the enemy's capital («%s») and castles to win."
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -171,6 +283,10 @@ msgstr ""
 msgid "Do not let the knight brothers reach the boats"
 msgstr ""
 
+#: ui/help_panel.gd
+msgid "Double click selects all units of that type on screen."
+msgstr ""
+
 #: ui/end_screen.gd
 msgid "Draw"
 msgstr ""
@@ -183,8 +299,16 @@ msgstr ""
 msgid "Esc or right click cancel"
 msgstr ""
 
+#: ui/advisor.gd
+msgid "F1: how to play."
+msgstr ""
+
 #: game/arena/arena.gd
 msgid "Fight!"
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "First steps"
 msgstr ""
 
 #: ui/unit_card.gd
@@ -195,8 +319,21 @@ msgstr ""
 msgid "Food"
 msgstr ""
 
+#: ui/advisor.gd
+#: ui/help_panel.gd
+msgid "Food: build «%s» right by the forest, then right-click it with a peasant."
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "Food: peasants work a farm by the forest or a bort (hive) in it."
+msgstr ""
+
 #: game/arena/arena.gd
 msgid "Forest"
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "Forest gives wood."
 msgstr ""
 
 #: ui/command_panel.gd
@@ -219,6 +356,10 @@ msgstr ""
 msgid "GDL 1. Samogitian Fire"
 msgstr ""
 
+#: ui/help_panel.gd
+msgid "Game"
+msgstr ""
+
 #: game/main.gd
 msgid "Game saved"
 msgstr ""
@@ -231,12 +372,28 @@ msgstr ""
 msgid "Gather 300 food so the village lives through the summer"
 msgstr ""
 
+#: ui/ui_text.gd
+msgid "Gathers resources and builds."
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "Gintaut is wounded. The uprising has lost its leader."
 msgstr ""
 
+#: ui/help_panel.gd
+msgid "Goal"
+msgstr ""
+
+#: ui/advisor.gd
+msgid "Got it"
+msgstr ""
+
 #: ui/main_menu.gd
 msgid "Grand Duchy of Lithuania against the Teutonic Order"
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "Green means it can stand there; the line at the top says why red cannot."
 msgstr ""
 
 #: ui/unit_card.gd
@@ -247,12 +404,37 @@ msgstr ""
 msgid "Hidden in the forest"
 msgstr ""
 
+#: ui/advisor.gd
+msgid "Hide hints"
+msgstr ""
+
+#: ui/advisor.gd
+msgid "Hint %d of %d"
+msgstr ""
+
+#: ui/settings_panel.gd
+msgid "Hints in skirmish"
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "Hold the pier with no enemies near, and the boats with reinforcements will stop coming."
 msgstr ""
 
 #: ui/unit_card.gd
 msgid "Houses %d"
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "Hover a button to see its price and why it is not available."
+msgstr ""
+
+#: ui/help_panel.gd
+#: ui/main_menu.gd
+msgid "How to play"
+msgstr ""
+
+#: ui/pause_menu.gd
+msgid "How to play (F1)"
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -275,6 +457,15 @@ msgstr ""
 msgid "Iron"
 msgstr ""
 
+#: ui/advisor.gd
+#: ui/ui_text.gd
+msgid "Iron: right-click bog ore (brown blocks in the bog) with peasants."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "It needs two other first-age buildings and opens new units."
+msgstr ""
+
 #: ui/end_screen.gd
 msgid "Keep watching"
 msgstr ""
@@ -287,12 +478,24 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
+#: ui/settings_panel.gd
+msgid "Large"
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "Lead forest archers past the Order's watch to the spring"
 msgstr ""
 
 #: game/arena/arena.gd
 msgid "Left (you)"
+msgstr ""
+
+#: ui/unit_card.gd
+msgid "Left click or drag a box to select."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "Left click selects; drag a box to select several."
 msgstr ""
 
 #: ui/ui_text.gd
@@ -302,6 +505,10 @@ msgstr ""
 #: ui/command_panel.gd
 #: ui/unit_card.gd
 msgid "Lithuanian retreat"
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "Lithuanian troops can feign a retreat (T) and turn around (G)."
 msgstr ""
 
 #: ui/main_menu.gd
@@ -350,9 +557,17 @@ msgstr ""
 msgid "Needs forest nearby"
 msgstr ""
 
+#: ui/advisor.gd
+msgid "Next"
+msgstr ""
+
 #: ui/main_menu.gd
 #: ui/pause_menu.gd
 msgid "No saved games"
+msgstr ""
+
+#: ui/settings_panel.gd
+msgid "Normal"
 msgstr ""
 
 #: ui/ui_text.gd
@@ -411,8 +626,16 @@ msgstr ""
 msgid "Opponent: normal"
 msgstr ""
 
+#: ui/help_panel.gd
+msgid "Or hold every place of power on the map for 5 minutes."
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "Our great-grandfather Gintaut was neither prince nor lord. A boyar with three farmsteads, one horse and one grove where his grandfathers still prayed. And in the spring of fourteen hundred and nine he decided he would bear it no longer."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "P pauses, Esc or F10 opens the menu, F1 shows this page."
 msgstr ""
 
 #: ui/ui_text.gd
@@ -427,12 +650,28 @@ msgstr ""
 msgid "Paused (P)"
 msgstr ""
 
+#: ui/ui_text.gd
+msgid "Peasants bring here: %s"
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "Peasants carry everything to «%s» or to a nearer store."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "Pick one and left-click the ground; F turns it, Shift lays several."
+msgstr ""
+
 #: ui/main_menu.gd
 msgid "Pogranichie"
 msgstr ""
 
 #: ui/hud.gd
 msgid "Population %d/%d"
+msgstr ""
+
+#: ui/advisor.gd
+msgid "Population is full. With a peasant selected, build «%s» (button bottom right)."
 msgstr ""
 
 #: ui/ui_text.gd
@@ -443,12 +682,20 @@ msgstr ""
 msgid "Power"
 msgstr ""
 
+#: ui/help_panel.gd
+msgid "Power and spells"
+msgstr ""
+
 #: ui/end_screen.gd
 msgid "Power gained"
 msgstr ""
 
-#: ui/hud.gd
-msgid "Power: from places of power and shrines"
+#: ui/ui_text.gd
+msgid "Power: build a shrine on a place of power; spells spend it."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "Q E R: line, column, wedge."
 msgstr ""
 
 #: ui/end_screen.gd
@@ -461,6 +708,10 @@ msgstr ""
 msgid "Reset"
 msgstr ""
 
+#: ui/help_panel.gd
+msgid "Resources"
+msgstr ""
+
 #: ui/pause_menu.gd
 msgid "Resume"
 msgstr ""
@@ -470,7 +721,27 @@ msgid "Right"
 msgstr ""
 
 #: ui/unit_card.gd
+msgid "Right click gives orders. F1: how to play."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "Right click orders: walk, attack the enemy, or work on what you click."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "Right click with a building selected sets where its units gather."
+msgstr ""
+
+#: ui/unit_card.gd
 msgid "Right click: rally point"
+msgstr ""
+
+#: ui/advisor.gd
+msgid "Right-click the forest with peasants selected: they cut wood and carry it home."
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "Room for more people: build one before training more."
 msgstr ""
 
 #: ui/pause_menu.gd
@@ -481,8 +752,20 @@ msgstr ""
 msgid "Scroll at the screen edge"
 msgstr ""
 
+#: ui/help_panel.gd
+msgid "Select and order"
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "Select peasants and right-click game to hunt. Fields by the forest and hives in it give food too."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "Select peasants and right-click what they should gather."
+msgstr ""
+
+#: ui/advisor.gd
+msgid "Select your peasants: hold the left mouse button and drag a box around them."
 msgstr ""
 
 #: ui/main_menu.gd
@@ -499,6 +782,10 @@ msgstr ""
 msgid "Silver"
 msgstr ""
 
+#: ui/ui_text.gd
+msgid "Silver: right-click a silver mine (grey blocks on a hill) with peasants."
+msgstr ""
+
 #: ui/main_menu.gd
 msgid "Skirmish"
 msgstr ""
@@ -511,6 +798,10 @@ msgstr ""
 msgid "Skirsnemune. A wooden one."
 msgstr ""
 
+#: ui/settings_panel.gd
+msgid "Small"
+msgstr ""
+
 #: ui/unit_card.gd
 msgid "Speed %.2f cells/s"
 msgstr ""
@@ -521,6 +812,10 @@ msgstr ""
 
 #: ui/ui_text.gd
 msgid "Stand ground"
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "Stands only on a place of power; gives Power and trains casters."
 msgstr ""
 
 #: ui/command_panel.gd
@@ -537,6 +832,10 @@ msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "Take back the sacred grove and lay an alka there"
+msgstr ""
+
+#: ui/settings_panel.gd
+msgid "Text size"
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -557,6 +856,10 @@ msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "The castle at Skirsnemune burned, and the knights who sat in it were killed. Both our books and the German ones write of it. But there was still Dubysa, where the vogt himself sat."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "The hints at the top left can be turned off in the settings."
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -615,6 +918,22 @@ msgstr ""
 msgid "Time: %d s"
 msgstr ""
 
+#: ui/advisor.gd
+msgid "To win, destroy the enemy's capital, or hold every place of power for 5 minutes."
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "Trains peasants, takes every resource, leads to the next age."
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "Trains troops: select it and press a button below."
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "Trains: %s"
+msgstr ""
+
 #: ui/command_panel.gd
 msgid "Turn around"
 msgstr ""
@@ -635,8 +954,16 @@ msgstr ""
 msgid "Units trained"
 msgstr ""
 
+#: ui/settings_panel.gd
+msgid "Very large"
+msgstr ""
+
 #: ui/end_screen.gd
 msgid "Victory"
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "W A S D, the arrows or the screen edge move the view."
 msgstr ""
 
 #: ui/unit_card.gd
@@ -659,6 +986,10 @@ msgstr ""
 msgid "Where is the nearest German castle?"
 msgstr ""
 
+#: ui/help_panel.gd
+msgid "With peasants selected, the buttons at the bottom right are buildings."
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Wood"
 msgstr ""
@@ -667,12 +998,24 @@ msgstr ""
 msgid "Wood burns well."
 msgstr ""
 
+#: ui/ui_text.gd
+msgid "Wood: right-click the forest with peasants."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "You lead Lithuania from the north-west; the Order is in the south-east."
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "You took your time, son of Gintaut. For three days I kept the fire in a pot, the way our old women carry it from house to house."
 msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "Your people are not ready to fight yet. Gather your stores again."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "Z X C: aggressive, defensive, stand ground. H: stop."
 msgstr ""
 
 #: catalog:ages
@@ -1112,4 +1455,24 @@ msgstr ""
 
 #: catalog:prototype_buildings
 msgid "to_town_center"
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "«%s» (a hive) stands in the forest; two peasants gather food there."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "«%s» leads to the next age, «%s», for 500 food."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "«%s» stands only on a place of power and gives Power."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "«%s» takes wood, «%s» food, «%s» iron and silver."
+msgstr ""
+
+#: ui/help_panel.gd
+msgid "«%s», trained there, casts spells for Power."
 msgstr ""

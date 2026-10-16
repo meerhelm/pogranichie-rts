@@ -1,7 +1,7 @@
 extends Control
 ## Main menu: start a skirmish (against the Order AI, easy or normal), the campaign mission
-## (M9, at the same difficulty), load a saved mission, settings, quit. The first scene the game
-## opens.
+## (M9, at the same difficulty), load a saved mission, how to play, settings, quit. The first
+## scene the game opens.
 
 const GAME_SCENE := "res://game/main.tscn"
 ## The prototype's one campaign mission.
@@ -15,10 +15,12 @@ var _load := Button.new()
 var _saves := VBoxContainer.new()
 var _difficulty := OptionButton.new()
 var _settings_button := Button.new()
+var _help_button := Button.new()
 var _quit := Button.new()
 var _version := Label.new()
 var _menu := VBoxContainer.new()
 var _settings := SettingsPanel.new()
+var _help := HelpPanel.new()
 
 
 func _ready() -> void:
@@ -41,7 +43,9 @@ func _ready() -> void:
 	_menu.add_child(_title)
 	_subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_menu.add_child(_subtitle)
-	for b: Button in [_campaign, _skirmish, _difficulty, _load, _settings_button, _quit]:
+	for b: Button in [
+		_campaign, _skirmish, _difficulty, _load, _help_button, _settings_button, _quit
+	]:
 		b.custom_minimum_size = Vector2(320, 48)
 		_menu.add_child(b)
 	_menu.add_child(_saves)
@@ -53,10 +57,12 @@ func _ready() -> void:
 	_difficulty.item_selected.connect(_on_difficulty)
 	_skirmish.pressed.connect(_on_skirmish)
 	_settings_button.pressed.connect(_show_settings.bind(true))
+	_help_button.pressed.connect(_help.open)
 	_quit.pressed.connect(func() -> void: get_tree().quit())
 	_settings.visible = false
 	_settings.closed.connect(_show_settings.bind(false))
 	stack.add_child(_settings)
+	add_child(_help)
 	_version.position = Vector2(16, 16)
 	add_child(_version)
 	var game_name: String = ProjectSettings.get_setting("application/config/name")
@@ -80,6 +86,7 @@ func _retranslate() -> void:
 	_difficulty.set_item_text(0, tr("Opponent: easy"))
 	_difficulty.set_item_text(1, tr("Opponent: normal"))
 	_settings_button.text = tr("Settings")
+	_help_button.text = tr("How to play")
 	_quit.text = tr("Quit")
 
 

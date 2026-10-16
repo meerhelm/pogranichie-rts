@@ -58,7 +58,13 @@ func refresh() -> void:
 		_building(input.selected_building)
 	else:
 		_title.text = ""
-		_lines.text = tr("Nothing selected")
+		_lines.text = (
+			tr("Nothing selected")
+			+ "\n"
+			+ tr("Left click or drag a box to select.")
+			+ "\n"
+			+ tr("Right click gives orders. F1: how to play.")
+		)
 
 
 func _bar(label: Label, bar: ProgressBar, text: String, value: int, most: int) -> void:

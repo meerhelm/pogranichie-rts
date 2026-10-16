@@ -26,14 +26,65 @@ msgstr "(%d с)"
 msgid "(optional) %s"
 msgstr "(неабавязкова) %s"
 
+msgid "+%d population"
+msgstr "+%d насельніцтва"
+
 msgid "+%s a second"
 msgstr "+%s у секунду"
+
+msgid "1. You start with «%s», 5 peasants and room for 5 people only."
+msgstr "1. На пачатку ў вас «%s», 5 сялян і месца толькі для 5 чалавек."
+
+msgid "2. Send peasants to the forest, then build «%s»: +5 population."
+msgstr "2. Пашліце сялян у лес, потым пабудуйце «%s»: +5 насельніцтва."
+
+msgid "3. Build «%s» by the forest and put a peasant on it."
+msgstr "3. Пабудуйце «%s» ля лесу і пастаўце на яе селяніна."
+
+msgid "4. Click «%s» and train more peasants (50 food each)."
+msgstr "4. Націсніце на «%s» і навучыце больш сялян (50 ежы кожны)."
+
+msgid "5. Build «%s», «%s» or «%s» and train an army."
+msgstr "5. Пабудуйце «%s», «%s» або «%s» і збярыце войска."
+
+msgid "A felled-tree barrier, laid in the forest for free."
+msgstr "Завал са ссечаных дрэў, ставіцца ў лесе бясплатна."
+
+msgid "A field by the forest: right-click it with a peasant for food."
+msgstr "Поле ля лесу: правы пстрык селянінам па ім дае ежу."
+
+msgid "A gate in your wall that lets your own people through."
+msgstr "Брама ў сцяне, якая прапускае толькі вашых."
+
+msgid "A hive in the forest: two peasants gather honey (food)."
+msgstr "Борць у лесе: два селяніны збіраюць мёд (ежу)."
 
 msgid "A house feeds more mouths. Train peasants at the yard and build a granary near the food."
 msgstr "Хата корміць больш ратоў. Навучайце сялян на двары і стаўце свіран побач з ежай."
 
+msgid "A silver mine (grey blocks on a hill) gives silver."
+msgstr "Срэбраная капальня (шэрыя блокі на ўзгорку) дае срэбра."
+
+msgid "A store at the forest edge, so woodcutters walk less."
+msgstr "Склад на ўскрайку лесу, каб лесарубы менш хадзілі."
+
+msgid "A store by the ore or silver, so miners walk less."
+msgstr "Склад ля руды ці срэбра, каб рудакопы менш хадзілі."
+
+msgid "A store near the fields, so peasants walk less."
+msgstr "Склад ля палёў, каб сяляне менш хадзілі."
+
+msgid "A wall: drag to lay a line."
+msgstr "Сцяна: пацягніце, каб паставіць лінію."
+
+msgid "A watch tower that shoots at enemies."
+msgstr "Вартавая вежа, якая страляе па ворагах."
+
 msgid "Age"
 msgstr "Эпоха"
+
+msgid "Ages"
+msgstr "Эпохі"
 
 msgid "Aggressive"
 msgstr "Наступальная"
@@ -59,17 +110,32 @@ msgstr "Ты той Гінтаўт, што спаліў капліцу?"
 msgid "Armor %d melee / %d pierce"
 msgstr "Браня %d блізкі бой / %d колкі"
 
+msgid "Army"
+msgstr "Войска"
+
 msgid "B next, F turn, Shift keep placing, Esc or right click cancel"
 msgstr "B далей, F павярнуць, Shift ставіць яшчэ, Esc або правая кнопка — адмена"
 
 msgid "Back"
 msgstr "Назад"
 
+msgid "Bog ore (brown blocks in the bog) gives iron."
+msgstr "Балотная руда (карычневыя блокі ў балоце) дае жалеза."
+
 msgid "Boyar lances strike hard in a charge. To set wood on fire, select units and Alt+right-click an enemy building: they will carry torches to it."
 msgstr "Баярскія коп’і моцна б’юць з разгону. Каб падпаліць дрэва, вылучыце атрады і націсніце Alt+правую кнопку на варожай пабудове: яны панясуць да яе паходні."
 
 msgid "Bread first. Then the Germans."
 msgstr "Спачатку хлеб. Потым немцы."
+
+msgid "Build «%s» on a place of power: it gives Power for spells."
+msgstr "Пабудуйце «%s» на месцы сілы: яна дае Сілу для чараў."
+
+msgid "Build «%s», «%s» or «%s» and train an army. The Order will come."
+msgstr "Пабудуйце «%s», «%s» або «%s» і збярыце войска. Ордэн прыйдзе."
+
+msgid "Building and training"
+msgstr "Будаўніцтва і навучанне"
 
 msgid "Buildings built"
 msgstr "Пабудавана"
@@ -98,6 +164,15 @@ msgstr "Нясе: %d %s"
 msgid "Chronicler"
 msgstr "Летапісец"
 
+msgid "Click your building to train units; Z X C V B N M press its buttons."
+msgstr "Пстрыкніце па сваім будынку, каб навучаць атрады; Z X C V B N M — яго кнопкі."
+
+msgid "Click «%s» and train more peasants: the more workers, the faster you grow."
+msgstr "Націсніце на «%s» і навучыце больш сялян: чым больш рук, тым хутчэй рост."
+
+msgid "Close (F1)"
+msgstr "Закрыць (F1)"
+
 msgid "Collector"
 msgstr "Зборшчык"
 
@@ -113,6 +188,12 @@ msgstr "Перазарадка %d с"
 msgid "Could not save the game"
 msgstr "Не ўдалося захаваць гульню"
 
+msgid "Ctrl+1…9 makes a group, 1…9 selects it."
+msgstr "Ctrl+1…9 стварае групу, 1…9 вылучае яе."
+
+msgid "Ctrl+right click: attack-move. Alt+right click: set a building on fire."
+msgstr "Ctrl+правы пстрык: рух з атакай. Alt+правы пстрык: падпаліць будынак."
+
 msgid "Damage %d (%s)"
 msgstr "Урон %d (%s)"
 
@@ -121,6 +202,9 @@ msgstr "Паражэнне"
 
 msgid "Defensive"
 msgstr "Абарончая"
+
+msgid "Destroy the enemy's capital («%s») and castles to win."
+msgstr "Каб перамагчы, знішчыце сталіцу ворага («%s») і замкі."
 
 msgid "Did we start it?"
 msgstr "Гэта мы пачалі?"
@@ -131,6 +215,9 @@ msgstr "Спешыцца"
 msgid "Do not let the knight brothers reach the boats"
 msgstr "Не дапусціць братоў-рыцараў да чоўнаў"
 
+msgid "Double click selects all units of that type on screen."
+msgstr "Падвойны пстрык вылучае ўсе атрады гэтага тыпу на экране."
+
 msgid "Draw"
 msgstr "Нічыя"
 
@@ -140,8 +227,14 @@ msgstr "Роўныя грошы"
 msgid "Esc or right click cancel"
 msgstr "Esc або правая кнопка — адмена"
 
+msgid "F1: how to play."
+msgstr "F1: як гуляць."
+
 msgid "Fight!"
 msgstr "У бой!"
+
+msgid "First steps"
+msgstr "Першыя крокі"
 
 msgid "Fleeing!"
 msgstr "Уцякае!"
@@ -149,8 +242,17 @@ msgstr "Уцякае!"
 msgid "Food"
 msgstr "Ежа"
 
+msgid "Food: build «%s» right by the forest, then right-click it with a peasant."
+msgstr "Ежа: пабудуйце «%s» побач з лесам, потым правы пстрык па ёй селянінам."
+
+msgid "Food: peasants work a farm by the forest or a bort (hive) in it."
+msgstr "Ежа: сяляне працуюць на полі ля лесу ці на борці ў лесе."
+
 msgid "Forest"
 msgstr "Лес"
+
+msgid "Forest gives wood."
+msgstr "Лес дае дрэва."
 
 msgid "Formation: %s (%s)"
 msgstr "Строй: %s (%s)"
@@ -167,6 +269,9 @@ msgstr "Поўнаэкранны рэжым"
 msgid "GDL 1. Samogitian Fire"
 msgstr "ВКЛ 1. Жамойцкі агонь"
 
+msgid "Game"
+msgstr "Гульня"
+
 msgid "Game saved"
 msgstr "Гульня захавана"
 
@@ -176,11 +281,23 @@ msgstr "Час гульні: %s"
 msgid "Gather 300 food so the village lives through the summer"
 msgstr "Сабраць 300 ежы, каб вёска перажыла лета"
 
+msgid "Gathers resources and builds."
+msgstr "Збірае рэсурсы і будуе."
+
 msgid "Gintaut is wounded. The uprising has lost its leader."
 msgstr "Гінтаўт паранены. Паўстанне страціла правадыра."
 
+msgid "Goal"
+msgstr "Мэта"
+
+msgid "Got it"
+msgstr "Зразумела"
+
 msgid "Grand Duchy of Lithuania against the Teutonic Order"
 msgstr "Вялікае Княства Літоўскае супраць Тэўтонскага ордэна"
+
+msgid "Green means it can stand there; the line at the top says why red cannot."
+msgstr "Зялёнае — можна ставіць; радок уверсе кажа, чаму чырвонае нельга."
 
 msgid "HP %d/%d"
 msgstr "Здароўе %d/%d"
@@ -188,11 +305,29 @@ msgstr "Здароўе %d/%d"
 msgid "Hidden in the forest"
 msgstr "Схаваны ў лесе"
 
+msgid "Hide hints"
+msgstr "Схаваць падказкі"
+
+msgid "Hint %d of %d"
+msgstr "Падказка %d з %d"
+
+msgid "Hints in skirmish"
+msgstr "Падказкі ў сутычцы"
+
 msgid "Hold the pier with no enemies near, and the boats with reinforcements will stop coming."
 msgstr "Утрымлівайце прыстань, пакуль побач няма ворагаў, і чоўны з падмогай перастануць прыходзіць."
 
 msgid "Houses %d"
 msgstr "Хаты %d"
+
+msgid "Hover a button to see its price and why it is not available."
+msgstr "Навядзіце на кнопку, каб пабачыць кошт і чаму яна недаступная."
+
+msgid "How to play"
+msgstr "Як гуляць"
+
+msgid "How to play (F1)"
+msgstr "Як гуляць (F1)"
 
 msgid "I was at Orsha and heard the guns roar. What I write below I heard from my grandfather, and he from his father. What is true here and what is a tale, judge for yourselves."
 msgstr "Я быў пад Оршай і чуў, як равуць гарматы. Тое, што пішу ніжэй, я чуў ад дзеда, а ён — ад свайго бацькі. Што тут праўда, а што казка, судзіце самі."
@@ -209,6 +344,12 @@ msgstr "Перахапіць ордэнскі абоз з зернем на ра
 msgid "Iron"
 msgstr "Жалеза"
 
+msgid "Iron: right-click bog ore (brown blocks in the bog) with peasants."
+msgstr "Жалеза: правы пстрык сялянамі па балотнай рудзе (карычневыя блокі ў балоце)."
+
+msgid "It needs two other first-age buildings and opens new units."
+msgstr "Патрэбны два іншыя будынкі першай эпохі; адкрывае новыя атрады."
+
 msgid "Keep watching"
 msgstr "Глядзець далей"
 
@@ -218,17 +359,29 @@ msgstr "Каб заняць месца сілы, трымайце на ім ат
 msgid "Language"
 msgstr "Мова"
 
+msgid "Large"
+msgstr "Вялікі"
+
 msgid "Lead forest archers past the Order's watch to the spring"
 msgstr "Правесці лясных лучнікаў міма ордэнскай варты да крыніцы"
 
 msgid "Left (you)"
 msgstr "Злева (вы)"
 
+msgid "Left click or drag a box to select."
+msgstr "Левы пстрык ці рамка — вылучыць."
+
+msgid "Left click selects; drag a box to select several."
+msgstr "Левы пстрык вылучае; рамка вылучае некалькі."
+
 msgid "Line"
 msgstr "Шарэнга"
 
 msgid "Lithuanian retreat"
 msgstr "Літоўскі ўцёк"
+
+msgid "Lithuanian troops can feign a retreat (T) and turn around (G)."
+msgstr "Літоўскае войска можа ўдаваць уцёкі (T) і разварочвацца (G)."
 
 msgid "Load game"
 msgstr "Загрузіць гульню"
@@ -263,8 +416,14 @@ msgstr "Патрэбна пазнейшая эпоха"
 msgid "Needs forest nearby"
 msgstr "Патрэбны лес побач"
 
+msgid "Next"
+msgstr "Далей"
+
 msgid "No saved games"
 msgstr "Няма захаваных гульняў"
+
+msgid "Normal"
+msgstr "Звычайны"
 
 msgid "Not available"
 msgstr "Недаступна"
@@ -308,8 +467,14 @@ msgstr "Супернік: лёгкі"
 msgid "Opponent: normal"
 msgstr "Супернік: звычайны"
 
+msgid "Or hold every place of power on the map for 5 minutes."
+msgstr "Або ўтрымлівайце ўсе месцы сілы на мапе 5 хвілін."
+
 msgid "Our great-grandfather Gintaut was neither prince nor lord. A boyar with three farmsteads, one horse and one grove where his grandfathers still prayed. And in the spring of fourteen hundred and nine he decided he would bear it no longer."
 msgstr "Наш прапрадзед Гінтаўт не быў ні князем, ні панам. Баярын з трыма дварамі, адным канём і адным гаем, дзе яшчэ маліліся ягоныя дзяды. І вясной тысяча чатырыста дзявятага году ён вырашыў, што болей цярпець не будзе."
+
+msgid "P pauses, Esc or F10 opens the menu, F1 shows this page."
+msgstr "P — паўза, Esc ці F10 — меню, F1 — гэта старонка."
 
 msgid "Passive"
 msgstr "Пасіўная"
@@ -320,11 +485,23 @@ msgstr "Паўза"
 msgid "Paused (P)"
 msgstr "Паўза (P)"
 
+msgid "Peasants bring here: %s"
+msgstr "Сяляне нясуць сюды: %s"
+
+msgid "Peasants carry everything to «%s» or to a nearer store."
+msgstr "Сяляне нясуць усё ў «%s» або на бліжэйшы склад."
+
+msgid "Pick one and left-click the ground; F turns it, Shift lays several."
+msgstr "Выберыце і левы пстрык па зямлі; F паварочвае, Shift ставіць некалькі."
+
 msgid "Pogranichie"
 msgstr "Памежжа"
 
 msgid "Population %d/%d"
 msgstr "Насельніцтва %d/%d"
+
+msgid "Population is full. With a peasant selected, build «%s» (button bottom right)."
+msgstr "Месцы скончыліся. Вылучыце селяніна і пабудуйце «%s» (кнопка ўнізе справа)."
 
 msgid "Population limit reached"
 msgstr "Дасягнуты ліміт насельніцтва"
@@ -332,11 +509,17 @@ msgstr "Дасягнуты ліміт насельніцтва"
 msgid "Power"
 msgstr "Сіла"
 
+msgid "Power and spells"
+msgstr "Сіла і чары"
+
 msgid "Power gained"
 msgstr "Здабыта Сілы"
 
-msgid "Power: from places of power and shrines"
-msgstr "Сіла: з месцаў сілы і свяцілішчаў"
+msgid "Power: build a shrine on a place of power; spells spend it."
+msgstr "Сіла: пабудуйце свяцілішча на месцы сілы; чары яе выдаткоўваюць."
+
+msgid "Q E R: line, column, wedge."
+msgstr "Q E R: шарэнга, калона, клін."
 
 msgid "Quit"
 msgstr "Выхад"
@@ -344,14 +527,32 @@ msgstr "Выхад"
 msgid "Reset"
 msgstr "Скінуць"
 
+msgid "Resources"
+msgstr "Рэсурсы"
+
 msgid "Resume"
 msgstr "Працягнуць"
 
 msgid "Right"
 msgstr "Справа"
 
+msgid "Right click gives orders. F1: how to play."
+msgstr "Правы пстрык — загад. F1: як гуляць."
+
+msgid "Right click orders: walk, attack the enemy, or work on what you click."
+msgstr "Правы пстрык — загад: ісці, атакаваць ворага ці працаваць на тым, па чым пстрыкнулі."
+
+msgid "Right click with a building selected sets where its units gather."
+msgstr "Правы пстрык пры вылучаным будынку задае месца збору яго атрадаў."
+
 msgid "Right click: rally point"
 msgstr "Правая кнопка: пункт збору"
+
+msgid "Right-click the forest with peasants selected: they cut wood and carry it home."
+msgstr "Вылучыце сялян і правы пстрык па лесе: яны сякуць дрэва і нясуць дадому."
+
+msgid "Room for more people: build one before training more."
+msgstr "Месца для людзей: будуйце, перш чым навучаць новых."
 
 msgid "Save game"
 msgstr "Захаваць гульню"
@@ -359,8 +560,17 @@ msgstr "Захаваць гульню"
 msgid "Scroll at the screen edge"
 msgstr "Пракрутка ля краю экрана"
 
+msgid "Select and order"
+msgstr "Вылучэнне і загады"
+
 msgid "Select peasants and right-click game to hunt. Fields by the forest and hives in it give food too."
 msgstr "Вылучыце сялян і націсніце правай кнопкай на звера, каб паляваць. Ежу даюць таксама палеткі ля лесу і борці ў ім."
+
+msgid "Select peasants and right-click what they should gather."
+msgstr "Вылучыце сялян і правым пстрыкам пакажыце, што збіраць."
+
+msgid "Select your peasants: hold the left mouse button and drag a box around them."
+msgstr "Вылучыце сялян: трымайце левую кнопку мышы і абвядзіце іх рамкай."
 
 msgid "Settings"
 msgstr "Налады"
@@ -371,6 +581,9 @@ msgstr "Бок %d: атрадаў %d, здароўя %d, уцякае %d"
 msgid "Silver"
 msgstr "Срэбра"
 
+msgid "Silver: right-click a silver mine (grey blocks on a hill) with peasants."
+msgstr "Срэбра: правы пстрык сялянамі па срэбранай капальні (шэрыя блокі на ўзгорку)."
+
 msgid "Skirmish"
 msgstr "Сутычка"
 
@@ -380,6 +593,9 @@ msgstr "Скірснемунэ згарэў. Жамойць паўстала."
 msgid "Skirsnemune. A wooden one."
 msgstr "Скірснемунэ. Драўляны."
 
+msgid "Small"
+msgstr "Малы"
+
 msgid "Speed %.2f cells/s"
 msgstr "Хуткасць %.2f клет./с"
 
@@ -388,6 +604,9 @@ msgstr "Пастава: %s"
 
 msgid "Stand ground"
 msgstr "Трымаць пазіцыю"
+
+msgid "Stands only on a place of power; gives Power and trains casters."
+msgstr "Стаіць толькі на месцы сілы; дае Сілу і навучае чарадзеяў."
 
 msgid "Stop"
 msgstr "Стоп"
@@ -400,6 +619,9 @@ msgstr "Заняць усе 7 месцаў сілы"
 
 msgid "Take back the sacred grove and lay an alka there"
 msgstr "Вярнуць святы гай і закласці там алку"
+
+msgid "Text size"
+msgstr "Памер тэксту"
 
 msgid "That year Samogitia was German. Vytautas gave it to the Order by treaty, and nobody asked us. Last winter there was hunger. King Jogaila sent us grain down the river, but the Germans stopped the boats and said they would feed Samogitia themselves."
 msgstr "У той год Жамойць была нямецкай. Вітаўт аддаў яе Ордэну паводле дагавору, і нас ніхто не пытаў. Мінулай зімой быў голад. Кароль Ягайла паслаў нам збожжа ўніз па рацэ, але немцы спынілі чоўны і сказалі, што самі пракормяць Жамойць."
@@ -415,6 +637,9 @@ msgstr "Сталіца і замкі пераможанага боку зніш�
 
 msgid "The castle at Skirsnemune burned, and the knights who sat in it were killed. Both our books and the German ones write of it. But there was still Dubysa, where the vogt himself sat."
 msgstr "Замак у Скірснемунэ згарэў, а рыцары, што сядзелі ў ім, загінулі. Пра тое пішуць і нашы кнігі, і нямецкія. Але заставалася Дубіса, дзе сядзеў сам фогт."
+
+msgid "The hints at the top left can be turned off in the settings."
+msgstr "Падказкі ўверсе злева можна выключыць у наладах."
 
 msgid "The knights are coming out! Don't let them reach the boats!"
 msgstr "Рыцары выходзяць! Не пусціце іх да чоўнаў!"
@@ -458,6 +683,18 @@ msgstr "Забралі хлеб, цяпер гай. Бярыце коп’і."
 msgid "Time: %d s"
 msgstr "Час: %d с"
 
+msgid "To win, destroy the enemy's capital, or hold every place of power for 5 minutes."
+msgstr "Каб перамагчы, знішчыце сталіцу ворага або ўтрымлівайце ўсе месцы сілы 5 хвілін."
+
+msgid "Trains peasants, takes every resource, leads to the next age."
+msgstr "Навучае сялян, прымае ўсе рэсурсы, вядзе ў наступную эпоху."
+
+msgid "Trains troops: select it and press a button below."
+msgstr "Навучае войска: вылучыце і націсніце кнопку ўнізе."
+
+msgid "Trains: %s"
+msgstr "Навучае: %s"
+
 msgid "Turn around"
 msgstr "Развярнуцца"
 
@@ -473,8 +710,14 @@ msgstr "Страчана атрадаў"
 msgid "Units trained"
 msgstr "Навучана атрадаў"
 
+msgid "Very large"
+msgstr "Вельмі вялікі"
+
 msgid "Victory"
 msgstr "Перамога"
+
+msgid "W A S D, the arrows or the screen edge move the view."
+msgstr "W A S D, стрэлкі ці край экрана рухаюць выгляд."
 
 msgid "Wavering"
 msgstr "Хістаецца"
@@ -491,17 +734,29 @@ msgstr "Клін"
 msgid "Where is the nearest German castle?"
 msgstr "Дзе бліжэйшы нямецкі замак?"
 
+msgid "With peasants selected, the buttons at the bottom right are buildings."
+msgstr "Калі вылучаны сяляне, кнопкі ўнізе справа — гэта будынкі."
+
 msgid "Wood"
 msgstr "Дрэва"
 
 msgid "Wood burns well."
 msgstr "Дрэва добра гарыць."
 
+msgid "Wood: right-click the forest with peasants."
+msgstr "Дрэва: правы пстрык сялянамі па лесе."
+
+msgid "You lead Lithuania from the north-west; the Order is in the south-east."
+msgstr "Вы вядзеце Літву з паўночнага захаду; Ордэн — на паўднёвым усходзе."
+
 msgid "You took your time, son of Gintaut. For three days I kept the fire in a pot, the way our old women carry it from house to house."
 msgstr "Доўга ж ты ішоў, сын Гінтаўта. Тры дні я трымала агонь у гаршку, як нашы бабы носяць яго з хаты ў хату."
 
 msgid "Your people are not ready to fight yet. Gather your stores again."
 msgstr "Твае людзі яшчэ не гатовыя біцца. Зноў збяры запасы."
+
+msgid "Z X C: aggressive, defensive, stand ground. H: stop."
+msgstr "Z X C: наступальная, абарончая, трымаць пазіцыю. H: стоп."
 
 msgid "age_derzhava"
 msgstr "Дзяржава"
@@ -829,3 +1084,18 @@ msgstr "Вежа"
 
 msgid "to_town_center"
 msgstr "Ордэнскі двор"
+
+msgid "«%s» (a hive) stands in the forest; two peasants gather food there."
+msgstr "«%s» стаіць у лесе; там збіраюць мёд (ежу) два селяніны."
+
+msgid "«%s» leads to the next age, «%s», for 500 food."
+msgstr "«%s» вядзе ў наступную эпоху, «%s», за 500 ежы."
+
+msgid "«%s» stands only on a place of power and gives Power."
+msgstr "«%s» стаіць толькі на месцы сілы і дае Сілу."
+
+msgid "«%s» takes wood, «%s» food, «%s» iron and silver."
+msgstr "«%s» прымае дрэва, «%s» — ежу, «%s» — жалеза і срэбра."
+
+msgid "«%s», trained there, casts spells for Power."
+msgstr "«%s», навучаная там, чаруе за Сілу."

@@ -8,7 +8,7 @@ extends PanelContainer
 ## refreshed after ticks. Casters get a button per spell (M7) with its Сила, cooldown and why it
 ## cannot be cast now.
 
-const BUTTON_SIZE := Vector2(118, 34)
+const BUTTON_SIZE := Vector2(170, 38)
 
 var sim: Simulation
 var input: PlayerInput
@@ -185,6 +185,9 @@ func _refresh_state() -> void:
 		var button := _build_buttons[id]
 		button.disabled = not state.can_pay(cost)
 		var tip := "%s\n%s" % [UiText.name_of(id), UiText.cost(cost)]
+		var help := UiText.building_help(def, eco.db)
+		if not help.is_empty():
+			tip += "\n" + help
 		if button.disabled:
 			tip += "\n" + UiText.fail(EconomySystem.Fail.COST)
 		button.tooltip_text = tip
@@ -201,6 +204,9 @@ func _refresh_state() -> void:
 		if not key.is_empty():
 			tip += " (%s)" % key
 		tip += "\n" + UiText.cost(eco.production.item_cost(p, b, item))
+		var help := UiText.unit_help(eco.db.unit(item))
+		if not help.is_empty():
+			tip += "\n" + help
 		if button.disabled:
 			tip += "\n" + UiText.fail(fail)
 		button.tooltip_text = tip

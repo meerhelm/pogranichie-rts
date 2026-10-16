@@ -7,6 +7,10 @@ extends Control
 signal resumed
 signal save_requested
 signal load_requested(path: String)
+## «How to play» was pressed (the HUD shows the HelpPanel).
+signal help_requested
+## The skirmish hints were turned on or off in the settings.
+signal hints_changed
 
 const MENU_SCENE := "res://ui/main_menu.tscn"
 
@@ -16,6 +20,7 @@ var can_save := false
 var _title := Label.new()
 var _resume := Button.new()
 var _settings_button := Button.new()
+var _help := Button.new()
 var _save := Button.new()
 var _load := Button.new()
 var _saves := VBoxContainer.new()
@@ -47,13 +52,15 @@ func _ready() -> void:
 	_title.add_theme_font_size_override("font_size", 32)
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_menu.add_child(_title)
-	for b: Button in [_resume, _save, _load, _settings_button, _to_menu, _quit]:
+	for b: Button in [_resume, _save, _load, _help, _settings_button, _to_menu, _quit]:
 		b.custom_minimum_size = Vector2(300, 44)
 		_menu.add_child(b)
 	_menu.add_child(_saves)
 	_save.pressed.connect(func() -> void: save_requested.emit())
 	_load.pressed.connect(_list_saves)
 	_resume.pressed.connect(close)
+	_help.pressed.connect(func() -> void: help_requested.emit())
+	_settings.hints_changed.connect(func() -> void: hints_changed.emit())
 	_settings_button.pressed.connect(_show_settings.bind(true))
 	_to_menu.pressed.connect(_on_main_menu)
 	_quit.pressed.connect(func() -> void: get_tree().quit())
@@ -75,6 +82,7 @@ func _retranslate() -> void:
 	_save.text = tr("Save game")
 	_load.text = tr("Load game")
 	_settings_button.text = tr("Settings")
+	_help.text = tr("How to play (F1)")
 	_to_menu.text = tr("Main menu")
 	_quit.text = tr("Quit")
 

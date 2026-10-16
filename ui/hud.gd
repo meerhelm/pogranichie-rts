@@ -4,7 +4,8 @@ extends Control
 ## at the bottom the minimap, the card of what is selected and the order buttons; a line with
 ## what is being placed and why it cannot stand; and the game menu. P pauses without the menu,
 ## Esc (with nothing to cancel) or F10 opens it. Lets clicks through to the map wherever it
-## draws nothing.
+## draws nothing. In a skirmish the Advisor gives a new player step-by-step hints; F1 opens the
+## «How to play» page (HelpPanel), which the game menu opens too.
 
 var sim: Simulation
 var input: PlayerInput
@@ -15,6 +16,8 @@ var minimap := Minimap.new()
 var card := UnitCard.new()
 var commands := CommandPanel.new()
 var menu := PauseMenu.new()
+var advisor := Advisor.new()
+var help := HelpPanel.new()
 
 var _top := PanelContainer.new()
 var _resources: Array[Label] = []
@@ -45,8 +48,12 @@ func _ready() -> void:
 	_paused.add_theme_font_size_override("font_size", 40)
 	_paused.visible = false
 	add_child(_paused)
+	add_child(advisor)
 	add_child(menu)
+	add_child(help)
 	menu.resumed.connect(refresh)
+	menu.help_requested.connect(help.open)
+	menu.hints_changed.connect(_on_hints_changed)
 
 
 func _build_top() -> void:
@@ -98,6 +105,7 @@ func attach(
 	minimap.attach(sim, clock, camera, player)
 	card.attach(sim, input)
 	commands.attach(sim, input)
+	advisor.attach(sim, input, player)
 	input.selection.changed.connect(refresh)
 	input.economy_changed.connect(refresh)
 	input.formation_changed.connect(func(_k: Formation.Kind) -> void: refresh())
@@ -123,6 +131,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	if key.physical_keycode == KEY_P or key.physical_keycode == KEY_PAUSE:
 		toggle_pause()
 		get_viewport().set_input_as_handled()
+	elif key.physical_keycode == KEY_F1 and not help.visible:
+		help.open(true)
+		get_viewport().set_input_as_handled()
 
 
 ## Pauses the game without the menu (P), or resumes it.
@@ -142,14 +153,12 @@ func refresh() -> void:
 	if state != null:
 		for r in 4:
 			_resources[r].text = "%s %d" % [UiText.resource(r), state.stock[r]]
-			_resources[r].tooltip_text = UiText.resource(r)
+			_resources[r].tooltip_text = UiText.resource_help(r)
 		# A mission shows Power only once it has told the player about it (ВКЛ 1, trigger 2.3).
 		_power.visible = sim.mission == null or sim.mission.flags.has("show_power")
 		_power.text = "%s %d" % [UiText.resource(-1), state.power_points()]
 		_power.tooltip_text = (
-			tr("Power: from places of power and shrines")
-			+ "\n"
-			+ tr("+%s a second") % _power_income()
+			UiText.resource_help(-1) + "\n" + tr("+%s a second") % _power_income()
 		)
 		_population.text = tr("Population %d/%d") % [state.pop_used(), eco.pop_cap(player)]
 		var age := eco.db.age_by_index(state.age)
@@ -158,6 +167,13 @@ func refresh() -> void:
 	_placing.text = _placing_text()
 	card.refresh()
 	commands.refresh()
+	advisor.refresh()
+
+
+func _on_hints_changed() -> void:
+	if GameSettings.hints:
+		advisor.step = 0
+	advisor.refresh()
 
 
 ## Сила a second the player's shrines give now, as "1.2".
