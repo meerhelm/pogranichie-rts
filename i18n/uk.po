@@ -62,6 +62,9 @@ msgstr "Борть у лісі: двоє селян збирають мед (ї�
 msgid "A house feeds more mouths. Train peasants at the yard and build a granary near the food."
 msgstr "Хата прогодує більше ротів. Навчайте селян у дворі та поставте комору біля їжі."
 
+msgid "A shrine stands on it"
+msgstr "На ньому стоїть святилище"
+
 msgid "A silver mine (grey blocks on a hill) gives silver."
 msgstr "Срібна копальня (сірі блоки на пагорбі) дає срібло."
 
@@ -119,6 +122,9 @@ msgstr "B далі, F поворот, Shift ставити ще, Esc або пр
 msgid "Back"
 msgstr "Назад"
 
+msgid "Bog ore"
+msgstr "Болотна руда"
+
 msgid "Bog ore (brown blocks in the bog) gives iron."
 msgstr "Болотна руда (коричневі блоки в болоті) дає залізо."
 
@@ -157,6 +163,9 @@ msgstr "Скасувати: %s"
 
 msgid "Cannot be built on this ground"
 msgstr "Тут будувати не можна"
+
+msgid "Carcass"
+msgstr "Туша"
 
 msgid "Carries %d %s"
 msgstr "Несе %d %s"
@@ -242,8 +251,14 @@ msgstr "Тікають!"
 msgid "Food"
 msgstr "Їжа"
 
+msgid "Food left %d of %d"
+msgstr "Їжі лишилося %d з %d"
+
 msgid "Food: build «%s» right by the forest, then right-click it with a peasant."
 msgstr "Їжа: збудуйте «%s» поруч із лісом, потім клацніть по ній правою кнопкою селянином."
+
+msgid "Food: never runs out"
+msgstr "Їжа: ніколи не закінчується"
 
 msgid "Food: peasants work a farm by the forest or a bort (hive) in it."
 msgstr "Їжа: селяни працюють на полі біля лісу чи на борті в лісі."
@@ -287,6 +302,9 @@ msgstr "Збирає ресурси і будує."
 msgid "Gintaut is wounded. The uprising has lost its leader."
 msgstr "Гінтаута поранено. Повстання втратило ватажка."
 
+msgid "Gives %d food when hunted"
+msgstr "Дає %d їжі, коли вполюють"
+
 msgid "Goal"
 msgstr "Мета"
 
@@ -301,6 +319,9 @@ msgstr "Зелене — можна ставити; рядок угорі каж
 
 msgid "HP %d/%d"
 msgstr "Здоров'я %d/%d"
+
+msgid "Held by: %s"
+msgstr "Тримає: %s"
 
 msgid "Hidden in the forest"
 msgstr "Схований у лісі"
@@ -422,6 +443,9 @@ msgstr "Далі"
 msgid "No saved games"
 msgstr "Немає збережених ігор"
 
+msgid "Nobody holds it"
+msgstr "Нічиє"
+
 msgid "Normal"
 msgstr "Звичайний"
 
@@ -491,8 +515,20 @@ msgstr "Селяни несуть сюди: %s"
 msgid "Peasants carry everything to «%s» or to a nearer store."
 msgstr "Селяни несуть усе до «%s» або на ближчий склад."
 
+msgid "Peasants fell it for wood (right click)."
+msgstr "Селяни рубають його на дерево (права кнопка)."
+
+msgid "Peasants gather it (right click)."
+msgstr "Збирають селяни (права кнопка)."
+
 msgid "Pick one and left-click the ground; F turns it, Shift lays several."
 msgstr "Виберіть і клацніть лівою по землі; F повертає, Shift ставить кілька."
+
+msgid "Place of power"
+msgstr "Місце сили"
+
+msgid "Player %d, %s"
+msgstr "Гравець %d, %s"
 
 msgid "Pogranichie"
 msgstr "Порубіжжя"
@@ -514,6 +550,9 @@ msgstr "Сила і чари"
 
 msgid "Power gained"
 msgstr "Здобуто Сили"
+
+msgid "Power x%.1f"
+msgstr "Сила ×%.1f"
 
 msgid "Power: build a shrine on a place of power; spells spend it."
 msgstr "Сила: збудуйте святилище на місці сили; чари її витрачають."
@@ -554,6 +593,9 @@ msgstr "Виберіть селян і клацніть правою кнопк�
 msgid "Room for more people: build one before training more."
 msgstr "Місце для людей: будуйте, перш ніж навчати нових."
 
+msgid "Salvage"
+msgstr "Розібране"
+
 msgid "Save game"
 msgstr "Зберегти гру"
 
@@ -580,6 +622,9 @@ msgstr "Сторона %d: %d загонів, %d здоров'я, %d тікаю�
 
 msgid "Silver"
 msgstr "Срібло"
+
+msgid "Silver mine"
+msgstr "Срібна копальня"
 
 msgid "Silver: right-click a silver mine (grey blocks on a hill) with peasants."
 msgstr "Срібло: клацніть селянами правою кнопкою по срібній копальні (сірі блоки на пагорбі)."
@@ -619,6 +664,9 @@ msgstr "Візьміть усі 7 місць сили"
 
 msgid "Take back the sacred grove and lay an alka there"
 msgstr "Відвоюйте священний гай і закладіть там алку"
+
+msgid "Takes in: %s"
+msgstr "Приймає: %s"
 
 msgid "Text size"
 msgstr "Розмір тексту"
@@ -733,6 +781,9 @@ msgstr "Клин"
 
 msgid "Where is the nearest German castle?"
 msgstr "Де найближчий німецький замок?"
+
+msgid "Wild, nobody's"
+msgstr "Дикий, нічий"
 
 msgid "With peasants selected, the buttons at the bottom right are buildings."
 msgstr "Коли вибрано селян, кнопки внизу праворуч — це будівлі."

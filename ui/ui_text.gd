@@ -15,6 +15,18 @@ static func name_of(id: StringName) -> String:
 	return TranslationServer.translate(String(id))
 
 
+## Name of a resource node of this ResourceNodes source (a deposit, a carcass, salvage).
+static func node_name(source: int) -> String:
+	match source:
+		ResourceNodes.Source.IRON:
+			return t("Bog ore")
+		ResourceNodes.Source.SILVER:
+			return t("Silver mine")
+		ResourceNodes.Source.HUNT:
+			return t("Carcass")
+	return t("Salvage")
+
+
 static func resource(r: int) -> String:
 	match r:
 		EconomySystem.FOOD:

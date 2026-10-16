@@ -17,12 +17,18 @@ extends Control
 ## aimed at a point waits for a left click on the map (right click or Esc cancels). A shrine is
 ## laid on the place of power nearest the cursor.
 ## Fire (M9): Alt+right click on an enemy building sends the selected units to set it on fire.
+## Looking (2026-10): a left click on anything that is not the player's own (another side's or
+## a wild unit, another side's building, a deposit, a carcass, a forest cell, a place of
+## power) shows it in the card without selecting it for orders (`look`, `look_ref`).
 
 signal formation_changed(kind: Formation.Kind)
 ## The selected building, the building being placed or its place changed (for the HUD).
 signal economy_changed
 ## Esc with nothing to cancel, or F10: open the game menu.
 signal menu_requested
+
+## What the card shows when nothing of the player's own is selected (a left click on it).
+enum Look { NONE, UNIT, BUILDING, NODE, FOREST, PLACE }
 
 ## Keys that queue a selected building's items, by position in its list.
 const QUEUE_KEYS: Array[Key] = [KEY_Z, KEY_X, KEY_C, KEY_V, KEY_B, KEY_N, KEY_M]
@@ -51,6 +57,9 @@ var placing: BuildingDef
 var place_fail := 0
 ## Spell waiting for its point (null when not aiming one).
 var casting: SpellDef
+## What is looked at (Look) and which: unit id, building id, node id, map cell or site index.
+var look := Look.NONE
+var look_ref := 0
 
 var _drag_from := Vector2.ZERO
 var _dragging := false
@@ -124,11 +133,14 @@ func _mouse_button(mb: InputEventMouseButton) -> void:
 			if _drag_from.distance_to(mb.position) < DRAG_THRESHOLD:
 				selection.click(mb.position, c[0], c[1], mb.shift_pressed)
 				_select_building(mb.position if selection.ids.is_empty() else Vector2(-1, -1))
+				var free := selection.ids.is_empty() and selected_building == BuildingStore.NO_ID
+				_look_at(mb.position if free else Vector2(-1, -1))
 			else:
 				selection.box(
 					Rect2(_drag_from, mb.position - _drag_from), c[0], c[1], mb.shift_pressed
 				)
 				_select_building(Vector2(-1, -1))
+				_look_at(Vector2(-1, -1))
 	elif mb.button_index == MOUSE_BUTTON_RIGHT and mb.pressed:
 		var at := Iso.screen_to_fixed(_to_world(mb.position))
 		if mb.shift_pressed:
@@ -178,6 +190,8 @@ func _key(key: InputEventKey) -> void:
 			stop_casting()
 		elif placing != null:
 			_stop_placing()
+		elif look != Look.NONE:
+			_look_at(Vector2(-1, -1))
 		elif selection.ids.is_empty() and selected_building == BuildingStore.NO_ID:
 			_request_menu()
 		else:
@@ -225,6 +239,107 @@ func sim_ticked_cleanup() -> void:
 		_select_building(Vector2(-1, -1))
 	if placing != null:
 		_update_ghost(get_viewport().get_mouse_position())
+	if look != Look.NONE and not _still_seen():
+		_look_at(Vector2(-1, -1))
+
+
+# --- looking at things -----------------------------------------------------------------------
+
+
+## Looks at what is under the screen point (nothing for x < 0): another side's or a wild unit,
+## another side's building the player has seen, a resource node, a forest cell or a place of
+## power on explored ground, in that order.
+func _look_at(screen_point: Vector2) -> void:
+	var kind := Look.NONE
+	var ref := 0
+	if screen_point.x >= 0:
+		var unit := _other_unit_at(screen_point)
+		var c := Iso.screen_to_cell_index(_to_world(screen_point))
+		if unit != EntityStore.NO_ID:
+			kind = Look.UNIT
+			ref = unit
+		elif sim.nav.in_bounds(c.x, c.y):
+			var cell := sim.nav.cell_at(c.x, c.y)
+			var known := sim.vision.state(player, cell) != VisionSystem.State.UNEXPLORED
+			var b := sim.economy.buildings.occupant[cell]
+			var site := sim.magic.places.site_near(c.x, c.y, 1)
+			if b != BuildingStore.NO_ID and _building_known(b):
+				kind = Look.BUILDING
+				ref = b
+			elif known and sim.economy.nodes.at_cell(cell) != ResourceNodes.NO_ID:
+				kind = Look.NODE
+				ref = sim.economy.nodes.at_cell(cell)
+			elif known and sim.economy.nodes.wood[cell] > 0:
+				kind = Look.FOREST
+				ref = cell
+			elif known and site >= 0:
+				kind = Look.PLACE
+				ref = site
+	look = kind
+	look_ref = ref
+	for id: int in units.views:
+		units.views[id].looked = kind == Look.UNIT and id == ref
+	if buildings != null:
+		buildings.looked = ref if kind == Look.BUILDING else BuildingStore.NO_ID
+		buildings.look_cells = _look_rect()
+		buildings.queue_redraw()
+	economy_changed.emit()
+
+
+## Cells outlined for what is looked at on the ground (a node, a forest cell, a site).
+func _look_rect() -> Rect2i:
+	var w := sim.nav.width
+	match look:
+		Look.NODE:
+			var cell := sim.economy.nodes.cells[look_ref - 1]
+			return Rect2i(cell % w, cell / w, 1, 1)
+		Look.FOREST:
+			return Rect2i(look_ref % w, look_ref / w, 1, 1)
+		Look.PLACE:
+			var top := sim.magic.places.cells[look_ref]
+			return Rect2i(top % w, top / w, PowerPlaces.SITE, PowerPlaces.SITE)
+	return Rect2i()
+
+
+## Whether what is looked at is still there for the player to see.
+func _still_seen() -> bool:
+	match look:
+		Look.UNIT:
+			var v: UnitView = units.views.get(look_ref)
+			return sim.entities.is_alive(look_ref) and v != null and v.visible
+		Look.BUILDING:
+			return sim.economy.buildings.is_alive(look_ref)
+		Look.NODE:
+			return sim.economy.nodes.is_alive(look_ref)
+		Look.FOREST:
+			return sim.economy.nodes.wood[look_ref] > 0
+	return true
+
+
+## Whether the player knows building b: its own, or seen once (as BuildingLayer draws it).
+func _building_known(b: int) -> bool:
+	if sim.economy.buildings.owners[b - 1] == player:
+		return true
+	if buildings != null:
+		return buildings.is_known(b)
+	return sim.vision.sees_building(player, b)
+
+
+## Another side's or a wild unit drawn near the screen point, or NO_ID.
+func _other_unit_at(screen_point: Vector2) -> int:
+	var to_screen := get_viewport().get_canvas_transform()
+	var best := EntityStore.NO_ID
+	var best_d := PICK_RADIUS
+	for id: int in units.views:
+		var v := units.views[id]
+		if v.player == player or not v.visible:
+			continue
+		var body := v.global_position + Vector2(0, -UnitView.RADIUS)
+		var d := (to_screen * body).distance_to(screen_point)
+		if d < best_d:
+			best = id
+			best_d = d
+	return best
 
 
 # --- economy ---------------------------------------------------------------------------------

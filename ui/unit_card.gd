@@ -3,6 +3,9 @@ extends PanelContainer
 ## What is selected (M6): one unit with its HP, morale, damage, armor, range, speed, stance and
 ## state; several units as a count per type; or the selected building with its HP,
 ## construction and what it is training or researching. Refreshed by the HUD after ticks.
+## Anything else the player clicks (PlayerInput.look) shows here too, without orders: another
+## side's or a wild unit, another side's building, a deposit or carcass with what is left of
+## what it held, a forest cell, a place of power.
 
 var sim: Simulation
 var input: PlayerInput
@@ -56,6 +59,16 @@ func refresh() -> void:
 		_group(ids)
 	elif input.selected_building != BuildingStore.NO_ID:
 		_building(input.selected_building)
+	elif input.look == PlayerInput.Look.UNIT:
+		_unit(input.look_ref)
+	elif input.look == PlayerInput.Look.BUILDING:
+		_building(input.look_ref)
+	elif input.look == PlayerInput.Look.NODE:
+		_node(input.look_ref)
+	elif input.look == PlayerInput.Look.FOREST:
+		_forest(input.look_ref)
+	elif input.look == PlayerInput.Look.PLACE:
+		_place(input.look_ref)
 	else:
 		_title.text = ""
 		_lines.text = (
@@ -82,9 +95,13 @@ func _unit(id: int) -> void:
 	_title.text = UiText.name_of(e.type_ids[slot])
 	_bar(_hp_label, _hp, tr("HP %d/%d") % [e.hp[slot], e.max_hp[slot]], e.hp[slot], e.max_hp[slot])
 	var lines := PackedStringArray()
+	if e.owners[slot] != input.player:
+		lines.append(_owner(e.owners[slot]))
 	if def == null:
-		_lines.text = ""
+		_lines.text = "\n".join(lines)
 		return
+	if def.food_yield > 0 and e.owners[slot] == 0:
+		lines.append(tr("Gives %d food when hunted") % def.food_yield)
 	if sim.combat.enabled():
 		if def.never_flees:
 			lines.append(tr("Morale: never flees"))
@@ -163,8 +180,13 @@ func _building(b: int) -> void:
 		store.max_hp[s]
 	)
 	var lines := PackedStringArray()
+	var own := store.owners[s] == input.player
+	if not own:
+		lines.append(_owner(store.owners[s]))
 	if store.done[s] == 0:
 		lines.append(tr("Under construction: %d%%") % (store.progress[s] * 100 / store.work[s]))
+	elif not own:
+		_resource_lines(b, lines)
 	else:
 		var q: Array = store.queues[s]
 		if not q.is_empty():
@@ -174,5 +196,77 @@ func _building(b: int) -> void:
 			lines.append(tr("In work: %s, %d%%") % [UiText.name_of(first), pct])
 		if store.defs[s].pop_provided > 0:
 			lines.append(tr("Houses %d") % store.defs[s].pop_provided)
+		_resource_lines(b, lines)
 		lines.append(tr("Right click: rally point"))
+	_lines.text = "\n".join(lines)
+
+
+## What a finished building gives or takes: a field's food left, a hive's endless food, the
+## resources a storehouse takes in.
+func _resource_lines(b: int, lines: PackedStringArray) -> void:
+	var eco := sim.economy
+	var s := b - 1
+	var def := eco.buildings.defs[s]
+	if def.base_id == &"farm":
+		var state := eco.player(eco.buildings.owners[s])
+		var bonus := state.farm_food_bonus if state != null else 0
+		var full := def.param(&"food_capacity") * (1000 + bonus) / 1000
+		lines.append(tr("Food left %d of %d") % [eco.buildings.food[s], full])
+	elif eco.building_source(eco.buildings.owners[s], b) == ResourceNodes.Source.BORT:
+		lines.append(tr("Food: never runs out"))
+	var takes := PackedStringArray()
+	for r in 4:
+		if def.accepts.has(EconomySystem.RESOURCE_NAMES[r]):
+			takes.append(UiText.resource(r).to_lower())
+	if not takes.is_empty():
+		lines.append(tr("Takes in: %s") % ", ".join(takes))
+
+
+## Whose it is: a faction (and the player's number), or nobody's for wild things.
+func _owner(p: int) -> String:
+	var state := sim.economy.player(p)
+	if p == 0 or state == null:
+		return tr("Wild, nobody's")
+	return tr("Player %d, %s") % [p, UiText.name_of(state.faction)]
+
+
+## A deposit, carcass or salvage: what it gives and how much of what it held is left.
+func _node(n: int) -> void:
+	var nodes := sim.economy.nodes
+	var s := n - 1
+	var source := nodes.sources[s]
+	var res := ResourceNodes.SOURCE_RESOURCE[source]
+	_title.text = UiText.node_name(source)
+	if source == ResourceNodes.Source.HUNT and sim.entities.type_ids.size() >= nodes.from_unit[s]:
+		var animal := sim.entities.type_ids[nodes.from_unit[s] - 1]
+		_title.text = "%s: %s" % [_title.text, UiText.name_of(animal)]
+	var left := nodes.amounts[s]
+	var full := maxi(nodes.initial[s], left)
+	_bar(_hp_label, _hp, "%s %d/%d" % [UiText.resource(res), left, full], left, full)
+	_lines.text = tr("Peasants gather it (right click).")
+
+
+## A forest cell: the wood left in it.
+func _forest(cell: int) -> void:
+	var left := sim.economy.nodes.wood[cell]
+	var full := maxi(sim.economy.rules.tree_wood, left)
+	_title.text = tr("Forest")
+	var wood := UiText.resource(EconomySystem.WOOD)
+	_bar(_hp_label, _hp, "%s %d/%d" % [wood, left, full], left, full)
+	_lines.text = tr("Peasants fell it for wood (right click).")
+
+
+## A place of power: who holds it and whether a shrine stands on it.
+func _place(i: int) -> void:
+	var places := sim.magic.places
+	_title.text = UiText.name_of(places.defs[i].id)
+	var lines := PackedStringArray()
+	lines.append(tr("Place of power"))
+	if places.holders[i] == 0:
+		lines.append(tr("Nobody holds it"))
+	else:
+		lines.append(tr("Held by: %s") % _owner(places.holders[i]))
+	if places.shrines[i] != BuildingStore.NO_ID:
+		lines.append(tr("A shrine stands on it"))
+	lines.append(tr("Power x%.1f") % (places.defs[i].power_permille / 1000.0))
 	_lines.text = "\n".join(lines)

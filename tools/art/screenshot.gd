@@ -4,7 +4,9 @@ extends SceneTree
 ##   godot --rendering-driver opengl3 -s tools/art/screenshot.gd -- out.png [seconds] [zoom]
 ##   [scene] [action], action: select (the player's units), menu (game menu), help (F1 page),
 ##   look:X:Y (no fog, camera on cell X, Y), showcase:FACTION:X:Y (every prototype building
-##   and unit of a faction, gdl or to, laid out from cell X, Y, finished, the camera on them)
+##   and unit of a faction, gdl or to, laid out from cell X, Y, finished, the camera on them),
+##   click:WHAT (no fog, the camera on the first deposit, forest cell, enemy building or wild
+##   animal, WHAT = node, forest, building or animal, and a left click on it)
 
 var _out := "user://screenshot.png"
 var _seconds := 6.0
@@ -68,6 +70,8 @@ func _act() -> void:
 	elif _action.begins_with("showcase:"):
 		var parts := _action.split(":")
 		_showcase(main, parts[1], int(parts[2]), int(parts[3]))
+	elif _action.begins_with("click:"):
+		_click(main, _action.split(":")[1])
 	elif _action == "help" and main.has_node("UI/Hud"):
 		(main.get_node("UI/Hud") as Hud).help.open(true)
 
@@ -126,3 +130,49 @@ func _finish(sim: Simulation, id: int) -> void:
 	b.done[id - 1] = 1
 	b.progress[id - 1] = b.work[id - 1]
 	b.hp[id - 1] = b.max_hp[id - 1]
+
+
+## Turns the fog off, puts the camera on the first thing of the kind and clicks it.
+func _click(main: Node, what: String) -> void:
+	var sim: Simulation = main.get("sim")
+	sim.vision.rules = null
+	(main.get_node("World/Fog") as Node2D).visible = false
+	var at := Vector2(-1, -1)
+	match what:
+		"node":
+			var cell := sim.economy.nodes.cells[sim.economy.nodes.alive_ids[0] - 1]
+			at = Vector2(cell % sim.nav.width, cell / sim.nav.width) + Vector2(0.5, 0.5)
+		"forest":
+			for cell in sim.nav.cell_count():
+				if sim.economy.nodes.wood[cell] > 0:
+					at = Vector2(cell % sim.nav.width, cell / sim.nav.width) + Vector2(0.5, 0.5)
+					break
+		"building":
+			for b in sim.economy.buildings.alive_ids:
+				if sim.economy.buildings.owners[b - 1] != 1:
+					var s := b - 1
+					var store := sim.economy.buildings
+					at = Vector2(store.cell_x[s] + store.w[s] / 2.0, store.cell_y[s] + store.h[s] / 2.0)
+					break
+		"animal":
+			for id in sim.entities.alive_ids:
+				if sim.entities.owners[id - 1] == 0:
+					at = Iso.screen_to_cell(
+						Iso.fixed_to_screen(sim.entities.pos_x[id - 1], sim.entities.pos_y[id - 1])
+					)
+					break
+	var cam: RtsCamera = main.get_node("Camera")
+	var world := Iso.cell_to_screen(at)
+	cam.look_at_point(world)
+	await process_frame
+	await process_frame
+	var point := root.get_canvas_transform() * world
+	if what == "animal":
+		point.y -= UnitView.RADIUS
+	for pressed: bool in [true, false]:
+		var ev := InputEventMouseButton.new()
+		ev.button_index = MOUSE_BUTTON_LEFT
+		ev.pressed = pressed
+		ev.position = point
+		ev.global_position = point
+		root.push_input(ev)

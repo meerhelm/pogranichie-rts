@@ -79,6 +79,10 @@ msgstr ""
 msgid "A house feeds more mouths. Train peasants at the yard and build a granary near the food."
 msgstr ""
 
+#: ui/unit_card.gd
+msgid "A shrine stands on it"
+msgstr ""
+
 #: ui/help_panel.gd
 msgid "A silver mine (grey blocks on a hill) gives silver."
 msgstr ""
@@ -155,6 +159,10 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
+#: ui/ui_text.gd
+msgid "Bog ore"
+msgstr ""
+
 #: ui/help_panel.gd
 msgid "Bog ore (brown blocks in the bog) gives iron."
 msgstr ""
@@ -205,6 +213,10 @@ msgstr ""
 
 #: ui/ui_text.gd
 msgid "Cannot be built on this ground"
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "Carcass"
 msgstr ""
 
 #: ui/unit_card.gd
@@ -319,9 +331,17 @@ msgstr ""
 msgid "Food"
 msgstr ""
 
+#: ui/unit_card.gd
+msgid "Food left %d of %d"
+msgstr ""
+
 #: ui/advisor.gd
 #: ui/help_panel.gd
 msgid "Food: build «%s» right by the forest, then right-click it with a peasant."
+msgstr ""
+
+#: ui/unit_card.gd
+msgid "Food: never runs out"
 msgstr ""
 
 #: ui/ui_text.gd
@@ -329,6 +349,7 @@ msgid "Food: peasants work a farm by the forest or a bort (hive) in it."
 msgstr ""
 
 #: game/arena/arena.gd
+#: ui/unit_card.gd
 msgid "Forest"
 msgstr ""
 
@@ -380,6 +401,10 @@ msgstr ""
 msgid "Gintaut is wounded. The uprising has lost its leader."
 msgstr ""
 
+#: ui/unit_card.gd
+msgid "Gives %d food when hunted"
+msgstr ""
+
 #: ui/help_panel.gd
 msgid "Goal"
 msgstr ""
@@ -398,6 +423,10 @@ msgstr ""
 
 #: ui/unit_card.gd
 msgid "HP %d/%d"
+msgstr ""
+
+#: ui/unit_card.gd
+msgid "Held by: %s"
 msgstr ""
 
 #: ui/unit_card.gd
@@ -566,6 +595,10 @@ msgstr ""
 msgid "No saved games"
 msgstr ""
 
+#: ui/unit_card.gd
+msgid "Nobody holds it"
+msgstr ""
+
 #: ui/settings_panel.gd
 msgid "Normal"
 msgstr ""
@@ -658,8 +691,24 @@ msgstr ""
 msgid "Peasants carry everything to «%s» or to a nearer store."
 msgstr ""
 
+#: ui/unit_card.gd
+msgid "Peasants fell it for wood (right click)."
+msgstr ""
+
+#: ui/unit_card.gd
+msgid "Peasants gather it (right click)."
+msgstr ""
+
 #: ui/help_panel.gd
 msgid "Pick one and left-click the ground; F turns it, Shift lays several."
+msgstr ""
+
+#: ui/unit_card.gd
+msgid "Place of power"
+msgstr ""
+
+#: ui/unit_card.gd
+msgid "Player %d, %s"
 msgstr ""
 
 #: ui/main_menu.gd
@@ -688,6 +737,10 @@ msgstr ""
 
 #: ui/end_screen.gd
 msgid "Power gained"
+msgstr ""
+
+#: ui/unit_card.gd
+msgid "Power x%.1f"
 msgstr ""
 
 #: ui/ui_text.gd
@@ -744,6 +797,10 @@ msgstr ""
 msgid "Room for more people: build one before training more."
 msgstr ""
 
+#: ui/ui_text.gd
+msgid "Salvage"
+msgstr ""
+
 #: ui/pause_menu.gd
 msgid "Save game"
 msgstr ""
@@ -780,6 +837,10 @@ msgstr ""
 
 #: ui/ui_text.gd
 msgid "Silver"
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "Silver mine"
 msgstr ""
 
 #: ui/ui_text.gd
@@ -832,6 +893,10 @@ msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "Take back the sacred grove and lay an alka there"
+msgstr ""
+
+#: ui/unit_card.gd
+msgid "Takes in: %s"
 msgstr ""
 
 #: ui/settings_panel.gd
@@ -984,6 +1049,10 @@ msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "Where is the nearest German castle?"
+msgstr ""
+
+#: ui/unit_card.gd
+msgid "Wild, nobody's"
 msgstr ""
 
 #: ui/help_panel.gd

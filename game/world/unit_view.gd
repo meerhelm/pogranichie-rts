@@ -14,6 +14,8 @@ const PLAYER_COLORS: Array[Color] = [
 	Color(0.7, 0.7, 0.7), Color(0.85, 0.2, 0.15), Color(0.95, 0.95, 0.9), Color(0.2, 0.4, 0.9)
 ]
 const RADIUS := 7.0
+## Outline of what the player looks at (not his own: no orders).
+const LOOK_COLOR := Color(1.0, 0.75, 0.25)
 const BAR_WIDTH := 18.0
 ## Height of the HP bar over a sprite's anchor (a 1.75 m figure is about 35 px tall).
 const SPRITE_BAR_Y := 46.0
@@ -28,6 +30,12 @@ var selected := false:
 	set(value):
 		if selected != value:
 			selected = value
+			queue_redraw()
+## Looked at by the player (another side's or a wild unit shown in the card): an amber ring.
+var looked := false:
+	set(value):
+		if looked != value:
+			looked = value
 			queue_redraw()
 var hp_permille := 1000
 var mood := Mood.STEADY
@@ -79,11 +87,12 @@ func _draw() -> void:
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 0.5))
 	if sprite == null:
 		draw_circle(Vector2.ZERO, RADIUS + 3.0, Color(0, 0, 0, 0.3))
-	if selected:
+	if selected or looked:
 		var ring := RADIUS + 5.0
 		if sprite != null and move_class in [NavGrid.MoveClass.CAVALRY, NavGrid.MoveClass.SIEGE]:
 			ring *= 1.6
-		draw_arc(Vector2.ZERO, ring, 0.0, TAU, 32, Color(0.4, 1.0, 0.4), 2.0)
+		var c := Color(0.4, 1.0, 0.4) if selected else LOOK_COLOR
+		draw_arc(Vector2.ZERO, ring, 0.0, TAU, 32, c, 2.0)
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 	if sprite != null:
 		var a := _anim()
@@ -115,7 +124,7 @@ func _draw_state() -> void:
 	var top := Vector2(-BAR_WIDTH / 2.0, -RADIUS * 2.0 - 8.0)
 	if sprite != null:
 		top.y = -float(sprite.meta.get("bar_y", SPRITE_BAR_Y))
-	if selected or hp_permille < 1000:
+	if selected or looked or hp_permille < 1000:
 		draw_rect(Rect2(top, Vector2(BAR_WIDTH, 3.0)), Color(0.15, 0.05, 0.05))
 		var w := BAR_WIDTH * hp_permille / 1000.0
 		var c := Color(0.3, 0.85, 0.3) if hp_permille > 400 else Color(0.9, 0.3, 0.2)

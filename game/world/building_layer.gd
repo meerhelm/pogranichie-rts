@@ -38,6 +38,13 @@ var selected := BuildingStore.NO_ID:
 	set(value):
 		selected = value
 		_refresh()
+## Another side's building the local player looks at, outlined in amber, and the cells of a
+## ground thing looked at (a deposit, carcass, forest cell, place of power); size 0 for none.
+var looked := BuildingStore.NO_ID:
+	set(value):
+		looked = value
+		_refresh()
+var look_cells := Rect2i()
 ## Where tall objects go as BoxViews (the UnitLayer); null draws them on this layer.
 var depth_layer: Node2D
 ## Ghost cells (top-left, size) and whether it may stand there; size 0 means no ghost.
@@ -181,6 +188,11 @@ func _tall(
 		depth_layer.add_child(box)
 	box.set_box(rect, c, height, outlined, hp)
 	box.set_fire(fire, sim.tick)
+
+
+## Whether the local player knows building `id`: its own, or another side's seen once.
+func is_known(id: int) -> bool:
+	return sim.economy.buildings.is_alive(id) and _shown(id)
 
 
 ## Whether the local player may see building `id` (others' stay as last seen).
@@ -340,6 +352,12 @@ func _draw_hp(rect: Rect2, height: float, hp: float) -> void:
 
 ## Placement ghosts, over the buildings and units (but under the fog).
 func _draw_ghosts() -> void:
+	var b := sim.economy.buildings if sim != null else null
+	if b != null and b.is_alive(looked):
+		var s := looked - 1
+		draw_outline(_ghosts, Rect2(b.cell_x[s], b.cell_y[s], b.w[s], b.h[s]), UnitView.LOOK_COLOR)
+	if look_cells.size != Vector2i.ZERO:
+		draw_outline(_ghosts, Rect2(look_cells), UnitView.LOOK_COLOR)
 	if ghost.size != Vector2i.ZERO:
 		var col := OK_COLOR if ghost_ok else BAD_COLOR
 		draw_box(_ghosts, Rect2(ghost.position, ghost.size), col, 0.0)

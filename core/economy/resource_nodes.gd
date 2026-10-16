@@ -21,6 +21,9 @@ var alive := PackedByteArray()
 var sources := PackedByteArray()
 var cells := PackedInt32Array()
 var amounts := PackedInt32Array()
+## What each node held when it appeared (for the card; not part of the state hash, it follows
+## from the map and the rules).
+var initial := PackedInt32Array()
 ## 1 when the node stands in the way (deposits); carcasses lie on the ground.
 var blocks := PackedByteArray()
 ## For a carcass: the animal it came from.
@@ -38,6 +41,7 @@ func add(source: int, cell: int, amount: int, blocking: bool, unit_id: int = 0) 
 	sources.append(source)
 	cells.append(cell)
 	amounts.append(amount)
+	initial.append(amount)
 	blocks.append(1 if blocking else 0)
 	from_unit.append(unit_id)
 	alive_ids.append(id)
