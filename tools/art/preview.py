@@ -57,3 +57,39 @@ if __name__ == "__main__":
         y += r.height
     sheet = sheet.resize((sheet.width * 2, sheet.height * 2), Image.NEAREST)
     sheet.save(out)
+
+
+def buildings_sheet(src: str, ids: list[str], out: str, stage: str = "done", cols: int = 4,
+                    rgb=TEAM_COLORS[1]) -> None:
+    """Finished views of buildings side by side on grass, each over its footprint diamond, at
+    render size (twice the game's)."""
+    from PIL import ImageDraw
+
+    tiles = []
+    for uid in ids:
+        meta = json.load(open(os.path.join(src, "buildings", f"{uid}.json")))
+        color, team, shadow = load(os.path.join(src, "buildings", f"{uid}_{stage}_"))
+        img = Image.new("RGBA", color.size, GRASS + (255,))
+        d = ImageDraw.Draw(img)
+        px, py = meta["pivot"]
+        w, h = meta["cells"]
+        # Footprint corners: cell x runs down-right (64, 32), cell y down-left (-64, 32).
+        pts = [(px + (x - y) * 64 / 2 * 2 / 2, py + (x + y) * 32 / 2 * 2 / 2)
+               for x, y in ((-w, -h), (w, -h), (w, h), (-w, h))]
+        d.polygon(pts, outline=(60, 80, 40))
+        img.alpha_composite(shadow)
+        img.alpha_composite(color)
+        img.alpha_composite(tint(team, rgb))
+        tiles.append(img)
+    rows = [tiles[i:i + cols] for i in range(0, len(tiles), cols)]
+    width = max(sum(t.width for t in r) for r in rows)
+    sheet = Image.new("RGBA", (width, sum(max(t.height for t in r) for r in rows)), GRASS + (255,))
+    y = 0
+    for r in rows:
+        x = 0
+        hh = max(t.height for t in r)
+        for t in r:
+            sheet.paste(t, (x, y + hh - t.height))
+            x += t.width
+        y += hh
+    sheet.save(out)

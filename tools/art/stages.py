@@ -80,10 +80,10 @@ def _timber_stack(at, count, length, rng):
               logs, rot=(0, math.pi / 2, rng.uniform(-0.05, 0.05)), seg=7)
 
 
-def _stakes(half):
+def _stakes(hx, hy):
     wood = S.mat("stake", "#b08a5a", 0.9, noise=0.2)
     rope = S.mat("rope", "#d8c9a0", 1.0)
-    corners = [(-half, -half), (half, -half), (half, half), (-half, half)]
+    corners = [(-hx, -hy), (hx, -hy), (hx, hy), (-hx, hy)]
     for i, (x, y) in enumerate(corners):
         S.cyl(f"stake_{i}", 0.05, 0.03, 0.55, (x, y, 0), wood, seg=6)
     for i in range(4):
@@ -93,13 +93,17 @@ def _stakes(half):
               rot=(0, math.pi / 2, math.atan2(y1 - y0, x1 - x0)), seg=4)
 
 
-def apply(stage: str, root, cells: int, seed: int = 3) -> None:
-    """Turns the finished model under `root` into `stage` in place."""
+def apply(stage: str, root, cells, seed: int = 3, props: bool = True) -> None:
+    """Turns the finished model under `root` into `stage` in place; `cells` is the footprint
+    (w, h) in cells, or one number for a square. Without `props` the building site gets no
+    stakes, scaffolds or timber (a piece drawn beside another that has them)."""
     if stage == "done":
         return
     bpy.context.view_layer.update()
     rng = random.Random(seed)
-    half = cells  # metres: a cell is 2 m, so the footprint spans -cells..cells
+    # Metres: a cell is 2 m, so the footprint spans -w..w by -h..h.
+    hx, hy = (cells, cells) if isinstance(cells, (int, float)) else cells
+    half = min(hx, hy)
     names = [o.name for o in _meshes(root) if not _is_ground(o)]
     top = max(_bounds(bpy.data.objects[n])[1].z for n in names) if names else 1.0
 
@@ -114,19 +118,23 @@ def apply(stage: str, root, cells: int, seed: int = 3) -> None:
     if stage == "found":
         for o in alive():
             _remove(o)
-        _stakes(half * 0.82)
-        _timber_stack((half * 0.2, -half * 0.55), 6, half * 0.9, rng)
+        if not props:
+            return
+        _stakes(hx * 0.82, hy * 0.82)
+        _timber_stack((hx * 0.2, -hy * 0.55), 6 if half > 1 else 3, half * 0.9, rng)
         return
     if stage in ("build_33", "build_66"):
         cut = top * (0.28 if stage == "build_33" else 0.55)
         for o in alive():
             if centre_z(o) > cut or any(k in o.name for k in ("roof", "flag", "gable")):
                 _remove(o)
+        if not props:
+            return
         # Scaffold poles at the corners and stacked timber for what is still to come.
         wood = S.mat("stake", "#b08a5a", 0.9, noise=0.2)
         for i, (x, y) in enumerate([(-1, -1), (1, -1), (1, 1), (-1, 1)]):
-            S.cyl(f"scaffold_{i}", 0.06, 0.05, cut + 1.2, (x * half * 0.7, y * half * 0.7, 0), wood, seg=6)
-        _timber_stack((half * 0.35, -half * 0.88), 8 if stage == "build_33" else 4, half * 0.8, rng)
+            S.cyl(f"scaffold_{i}", 0.06, 0.05, cut + 1.2, (x * hx * 0.7, y * hy * 0.7, 0), wood, seg=6)
+        _timber_stack((hx * 0.35, -hy * 0.88), 8 if stage == "build_33" else 4, half * 0.8, rng)
         return
     if stage == "damaged_1":
         for o in alive():

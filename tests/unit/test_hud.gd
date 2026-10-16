@@ -217,3 +217,36 @@ func test_buildings_show_damage_stages_and_ruins() -> void:
 	_sim.tick += BuildingLayer.RUBBLE_TICKS
 	layer._refresh()
 	assert_true(box.is_queued_for_deletion(), "and go after a while")
+
+
+func test_palisade_cells_join_their_neighbours() -> void:
+	var layer: BuildingLayer = _main.get_node("World/Buildings")
+	var b := _sim.economy.buildings
+	var def: BuildingDef = load("res://data/buildings/gdl_palisade.tres")
+	var gate: BuildingDef = load("res://data/buildings/gdl_gate.tres")
+	var x0 := 2
+	var y0 := _sim.nav.height - 3
+	# A line along x: post, gate, post; and one more post below the last one.
+	var left := _sim.economy._found(1, def, x0, y0, false)
+	var middle := _sim.economy._found(1, gate, x0 + 1, y0, false)
+	var right := _sim.economy._found(1, def, x0 + 2, y0, false)
+	_sim.economy._found(1, def, x0 + 2, y0 + 1, false)
+	for id: int in [left, middle, right]:
+		b.done[id - 1] = 1
+		b.hp[id - 1] = b.max_hp[id - 1]
+	layer._refresh()
+	var box: BoxView = layer._boxes[StringName("b%d" % left)]
+	assert_eq(box.sprite, SpriteDB.building(&"gdl_palisade"))
+	assert_eq(box.front, [SpriteDB.building(&"gdl_palisade_e")] as Array[SpriteDB.Sprite])
+	assert_true(box.back.is_empty(), "nothing west or north of the first post")
+	var corner: BoxView = layer._boxes[StringName("b%d" % right)]
+	assert_eq(corner.back, [SpriteDB.building(&"gdl_palisade_w")] as Array[SpriteDB.Sprite])
+	assert_eq(corner.front, [SpriteDB.building(&"gdl_palisade_s")] as Array[SpriteDB.Sprite])
+	assert_eq(layer._art_id(middle - 1), &"gdl_gate", "a gate in a line along x keeps its view")
+
+
+func test_zaseka_along_y_uses_its_turned_view() -> void:
+	var layer: BuildingLayer = _main.get_node("World/Buildings")
+	var def: BuildingDef = load("res://data/buildings/gdl_zaseka.tres")
+	var id := _sim.economy._found(1, def, 2, _sim.nav.height - 8, true)
+	assert_eq(layer._art_id(id - 1), &"gdl_zaseka_v")

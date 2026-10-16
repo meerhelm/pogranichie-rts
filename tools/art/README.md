@@ -26,7 +26,13 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
   game's 8 facings (`UnitView.facing`: 0 east, clockwise, 2 south).
 - `shapes.py` — materials and primitives; the `TEAM` material marks player-colour zones.
 - `people.py` — a 1.75 m figure of joint empties with idle (8 frames) and walk (12 frames).
-- `models.py` — the assets, keyed by catalog id; descriptions follow the visual assets doc.
+- `models.py` — the first assets (peasant, spearman, house, town centre, trees, deposits).
+- `folk.py` — the other people on foot; `beasts.py` — a four-legged rig for animals and horses,
+  riders sitting on them, the wagon.
+- `kit.py` — building materials (log, thatch, shingle, brick, roof tile, plaster and timber
+  framing) and parts (roofs, stepped gables, windows, sheds, fences, barrels);
+  `buildings_gdl.py` and `buildings_to.py` — the Duchy's and the Order's buildings.
+- `registry.py` — every asset by catalog id with its frame (units) or footprint (buildings).
 - `render.py` — renders three passes and packs them into `art/sprites`:
   - `color` — the sprite with alpha;
   - `team` — only the TEAM surfaces, lit and white; the game multiplies it by the player colour;
@@ -36,6 +42,18 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
   (pivot = centre of the footprint). Trees have no team pass.
 
 The game reads them through `game/world/SpriteDB`; ids without art keep their placeholders.
+Building frames are rendered large and cropped to what all stages cover. Unit frames: 160×144
+on foot, 224×256 mounted (an upright lance), 224×176 big beasts, 320×240 the wagon; `bar_y`
+in `sheet.json` is where the HP bar goes.
+
+Line pieces: a palisade cell is its post cluster (`<id>`) plus arms toward the neighbours
+(`<id>_e`, `_w`, `_n`, `_s`, model axes +X, -X, +Y, -Y), which BuildingLayer picks per cell.
+Turned views end in `_v`: a zaseka placed along y, a gate in a line running along y.
+
+```sh
+python3 -m tools.art.render all          # every asset of the registry (about an hour on 4 cores)
+python3 -c "from tools.art.preview import buildings_sheet; buildings_sheet('art/sprites', ['to_castle'], '/tmp/b.png')"
+```
 Rendered PNGs are plain git (see `.gitattributes`), not LFS: they are small and regenerable.
 Buildings come in the 7 stages of `stages.py` (`<id>_<stage>_<pass>.png`): found, build_33,
 build_66, done, damaged_1, damaged_2, rubble. Normal maps are not rendered yet.

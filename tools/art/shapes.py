@@ -194,3 +194,40 @@ def rock(name, r, loc, material, parent=None, seed=0, squash=0.7, jitter=0.28):
     o.location = loc
     o.rotation_euler = (0, 0, rng.uniform(0, math.tau))
     return _finish(o, material, parent)
+
+
+def brick(name: str, color: str, mortar: str = "#b9ab95", width: float = 0.42, row: float = 0.15,
+          rough: float = 0.9):
+    """Masonry (brick, roof tiles): a brick texture on the walls' horizontal run and height, so
+    courses read on every face whatever its direction."""
+    if name in _materials:
+        return _materials[name]
+    m = bpy.data.materials.new(name)
+    m.use_nodes = True
+    nt = m.node_tree
+    bsdf = nt.nodes["Principled BSDF"]
+    bsdf.inputs["Roughness"].default_value = rough
+    geo = nt.nodes.new("ShaderNodeNewGeometry")
+    sep = nt.nodes.new("ShaderNodeSeparateXYZ")
+    add = nt.nodes.new("ShaderNodeMath")
+    comb = nt.nodes.new("ShaderNodeCombineXYZ")
+    nt.links.new(geo.outputs["Position"], sep.inputs[0])
+    nt.links.new(sep.outputs["X"], add.inputs[0])
+    nt.links.new(sep.outputs["Y"], add.inputs[1])
+    nt.links.new(add.outputs[0], comb.inputs["X"])
+    nt.links.new(sep.outputs["Z"], comb.inputs["Y"])
+    tex = nt.nodes.new("ShaderNodeTexBrick")
+    base = srgb(color)
+    tex.inputs["Color1"].default_value = base
+    tex.inputs["Color2"].default_value = tuple(c * 0.78 for c in base[:3]) + (1.0,)
+    tex.inputs["Mortar"].default_value = srgb(mortar)
+    tex.inputs["Scale"].default_value = 1.0
+    tex.inputs["Mortar Size"].default_value = 0.012
+    tex.inputs["Brick Width"].default_value = width
+    tex.inputs["Row Height"].default_value = row
+    tex.offset = 0.5
+    nt.links.new(comb.outputs[0], tex.inputs["Vector"])
+    nt.links.new(tex.outputs["Color"], bsdf.inputs["Base Color"])
+    m.diffuse_color = base
+    _materials[name] = m
+    return m

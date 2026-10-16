@@ -20,11 +20,9 @@ import tempfile
 import bpy
 from PIL import Image
 
-from tools.art import models, rig, stages
+from tools.art import registry, rig, shrink, stages
 from tools.art import shapes as S
 
-UNIT_FRAME = (160, 144)
-UNIT_PIVOT = (64, 104)
 ANIMS = [("idle", 8, 6), ("walk", 12, 15)]  # name, frames, fps
 PASSES = ("color", "team", "shadow")
 
@@ -76,15 +74,17 @@ def _sheet(frames: list[list[str]], size: tuple[int, int], path: str) -> None:
 def render_unit(uid: str, out: str, preview: bool) -> None:
     rig.reset()
     S.reset_materials()
-    rig.setup(*UNIT_FRAME, UNIT_PIVOT, samples=16 if preview else 24)
-    figure = models.UNITS[uid]()
+    spec = registry.UNITS[uid]
+    frame, pivot = spec.frame, spec.pivot
+    rig.setup(*frame, pivot, samples=16 if preview else 24)
+    figure = spec.build()
     passes = Passes(rig.shadow_catcher())
     dest = os.path.join(out, "units", uid)
     os.makedirs(dest, exist_ok=True)
     tmp = tempfile.mkdtemp(prefix=uid)
     anims = [("walk", 12, 15)] if preview else ANIMS
     rows: dict[str, list[list[str]]] = {p: [] for p in PASSES}
-    meta = {"frame": list(UNIT_FRAME), "pivot": list(UNIT_PIVOT), "scale": 0.5, "anims": {}}
+    meta = {"frame": list(frame), "pivot": list(pivot), "scale": 0.5, "anims": {}}
     row = 0
     for anim, count, fps in anims:
         meta["anims"][anim] = {"row": row, "frames": count, "fps": fps}
@@ -103,47 +103,83 @@ def render_unit(uid: str, out: str, preview: bool) -> None:
                     rows[p][-1].append(path)
             row += 1
     for p in PASSES:
-        _sheet(rows[p], UNIT_FRAME, os.path.join(dest, f"{p}.png"))
+        _sheet(rows[p], frame, os.path.join(dest, f"{p}.png"))
+        if p != "color":
+            shrink.shrink(os.path.join(dest, f"{p}.png"))
+    # Height of the HP bar over the anchor (game pixels): just above the tallest frame.
+    top = min(_crop_box([f])[1] for r in rows["color"] for f in r)
+    meta["bar_y"] = round((pivot[1] - top) * 0.5 + 3)
     meta["rows_per_anim"] = 8
     meta["facing"] = "row offset = UnitView.facing (0 east, clockwise, 2 south)"
     with open(os.path.join(dest, "sheet.json"), "w") as fh:
         json.dump(meta, fh, indent=1)
 
 
-def render_static(kind: str, uid: str, builder, cells: int, out: str, preview: bool) -> None:
-    """One view of a tree (one cell), or of a building (cells x cells) in each of its stages
-    (stages.STAGES: `<id>_<stage>_<pass>.png`)."""
+def _crop_box(paths: list[str]) -> tuple[int, int, int, int]:
+    """Union of the opaque areas of `paths`, with a small margin."""
+    box = None
+    for path in paths:
+        bb = Image.open(path).getchannel("A").point(lambda a: 255 if a > 3 else 0).getbbox()
+        if bb is None:
+            continue
+        box = bb if box is None else (min(box[0], bb[0]), min(box[1], bb[1]), max(box[2], bb[2]), max(box[3], bb[3]))
+    w, h = Image.open(paths[0]).size
+    if box is None:
+        return (0, 0, w, h)
+    m = 2
+    return (max(0, box[0] - m), max(0, box[1] - m), min(w, box[2] + m), min(h, box[3] + m))
+
+
+def render_static(kind: str, uid: str, builder, cells, out: str, preview: bool, tall: float = 8.0,
+                  props: bool = True) -> None:
+    """One view of a tree (one cell), or of a building (w x h cells) in each of its stages
+    (stages.STAGES: `<id>_<stage>_<pass>.png`). Buildings render into a generous frame that is
+    then cropped to what all stages cover; the pivot (footprint centre) moves with the crop."""
     if kind == "buildings":
-        width = 128 * cells + 32
-        height = {2: 300, 4: 580}.get(cells, 128 * cells + 200)
-        pivot = (width // 2, height - 32 - 32 * cells)
-        names = stages.STAGES
+        fw, fh = (cells, cells) if isinstance(cells, int) else cells
+        span = fw + fh
+        width = 64 * span + 32 + int(tall * 32)
+        height = 32 * span + 48 + int(tall * 40)
+        pivot = (16 + 32 * span, height - 24 - 16 * span)
+        names = ["done"] if preview else stages.STAGES
     else:
         width, height = 160, 400
         pivot = (64, 360)
         names = [""]
     dest = os.path.join(out, kind)
     os.makedirs(dest, exist_ok=True)
+    written = []
     for stage in names:
         rig.reset()
         S.reset_materials()
         rig.setup(width, height, pivot, samples=24 if preview else 48)
         root = builder()
         if stage:
-            stages.apply(stage, root, cells)
+            stages.apply(stage, root, (fw, fh), props=props)
         passes = Passes(rig.shadow_catcher())
         prefix = f"{uid}_{stage}_" if stage else f"{uid}_"
         for p in PASSES:
             if p == "team" and kind == "trees":
                 continue  # nothing of a tree takes the player colour
             passes.use(p)
-            rig.render(os.path.join(dest, f"{prefix}{p}.png"))
-    meta = {"size": [width, height], "pivot": list(pivot), "cells": cells, "scale": 0.5,
-            "pivot_is": "centre of the footprint"}
+            path = os.path.join(dest, f"{prefix}{p}.png")
+            rig.render(path)
+            written.append(path)
+    meta = {"size": [width, height], "pivot": list(pivot), "scale": 0.5, "pivot_is": "centre of the footprint"}
     if kind == "buildings":
+        box = _crop_box(written)
+        for path in written:
+            Image.open(path).crop(box).save(path, optimize=True)
+            if not path.endswith("_color.png"):
+                shrink.shrink(path)
+        meta["size"] = [box[2] - box[0], box[3] - box[1]]
+        meta["pivot"] = [pivot[0] - box[0], pivot[1] - box[1]]
+        meta["cells"] = [fw, fh]
         meta["stages"] = names
-    with open(os.path.join(dest, f"{uid}.json"), "w") as fh:
-        json.dump(meta, fh, indent=1)
+    else:
+        meta["cells"] = cells
+    with open(os.path.join(dest, f"{uid}.json"), "w") as fh_:
+        json.dump(meta, fh_, indent=1)
 
 
 def render_deposit(uid: str, out: str, preview: bool) -> None:
@@ -151,12 +187,12 @@ def render_deposit(uid: str, out: str, preview: bool) -> None:
     width, height, pivot = 160, 144, (72, 96)
     dest = os.path.join(out, "deposits")
     os.makedirs(dest, exist_ok=True)
-    count = models.DEPOSIT_VARIANTS[uid]
+    count = registry.DEPOSIT_VARIANTS[uid]
     for v in range(count):
         rig.reset()
         S.reset_materials()
         rig.setup(width, height, pivot, samples=24 if preview else 48)
-        models.DEPOSITS[uid](seed=v)
+        registry.DEPOSITS[uid](seed=v)
         passes = Passes(rig.shadow_catcher())
         for p in ("color", "shadow"):
             passes.use(p)
@@ -172,16 +208,18 @@ def main(argv: list[str]) -> None:
     ap.add_argument("--out", default="art/sprites")
     ap.add_argument("--preview", action="store_true")
     args = ap.parse_args(argv)
+    if args.ids == ["all"]:
+        args.ids = [*registry.UNITS, *registry.BUILDINGS, *registry.TREES, *registry.DEPOSITS]
     for uid in args.ids:
-        if uid in models.UNITS:
+        if uid in registry.UNITS:
             render_unit(uid, args.out, args.preview)
-        elif uid in models.BUILDINGS:
-            builder, cells = models.BUILDINGS[uid]
-            render_static("buildings", uid, builder, cells, args.out, args.preview)
-        elif uid in models.DEPOSITS:
+        elif uid in registry.BUILDINGS:
+            b = registry.BUILDINGS[uid]
+            render_static("buildings", uid, b.build, b.cells, args.out, args.preview, b.tall, b.props)
+        elif uid in registry.DEPOSITS:
             render_deposit(uid, args.out, args.preview)
-        elif uid in models.TREES:
-            render_static("trees", uid, models.TREES[uid], 1, args.out, args.preview)
+        elif uid in registry.TREES:
+            render_static("trees", uid, registry.TREES[uid], 1, args.out, args.preview)
         else:
             sys.exit(f"unknown asset id {uid}")
         print("rendered", uid, flush=True)

@@ -27,6 +27,7 @@ class Figure:
             )
         self.held_r = False  # right arm holds a weapon still
         self.held_l = False  # left arm holds a shield still
+        self.stoop = 0.0  # forward lean of the chest in every pose (old people)
 
     def j(self, name):
         return self.joints[name]
@@ -98,5 +99,5 @@ class Figure:
         for k, v in rot.items():
             self.joints[k].rotation_euler = v
         self.hips.location.z = hips_z
-        self.chest.rotation_euler = (chest_x, 0.0, 0.0)
+        self.chest.rotation_euler = (chest_x + self.stoop, 0.0, 0.0)
         self.head.rotation_euler = (0.0, 0.0, head_z)

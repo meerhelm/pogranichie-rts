@@ -21,6 +21,10 @@ var fire_tick := 0
 ## Rendered view drawn instead of the box (finished buildings with art), and its team tint.
 var sprite: SpriteDB.Sprite
 var tint := Color.WHITE
+## Pieces drawn with the sprite: behind it and in front of it (palisade arms toward the
+## neighbours).
+var back: Array[SpriteDB.Sprite] = []
+var front: Array[SpriteDB.Sprite] = []
 ## Catalog id of the building and whether it was finished (for its ruins).
 var def_id: StringName
 var done := false
@@ -57,11 +61,18 @@ func set_fire(p_fire: float, tick: int) -> void:
 	queue_redraw()
 
 
-func set_sprite(p_sprite: SpriteDB.Sprite, p_tint: Color) -> void:
-	if p_sprite == sprite and p_tint == tint:
+func set_sprite(
+	p_sprite: SpriteDB.Sprite,
+	p_tint: Color,
+	p_back: Array[SpriteDB.Sprite] = [],
+	p_front: Array[SpriteDB.Sprite] = []
+) -> void:
+	if p_sprite == sprite and p_tint == tint and p_back == back and p_front == front:
 		return
 	sprite = p_sprite
 	tint = p_tint
+	back = p_back
+	front = p_front
 	queue_redraw()
 
 
@@ -70,7 +81,11 @@ func _draw() -> void:
 	if sprite != null:
 		if outlined:
 			BuildingLayer.draw_outline(self, cells, Color(0.4, 1.0, 0.4))
+		for piece in back:
+			piece.draw(self, Rect2(Vector2.ZERO, piece.frame), tint)
 		sprite.draw(self, Rect2(Vector2.ZERO, sprite.frame), tint)
+		for piece in front:
+			piece.draw(self, Rect2(Vector2.ZERO, piece.frame), tint)
 		top_y = _sprite_top()
 	else:
 		BuildingLayer.draw_box(self, cells, color, height)

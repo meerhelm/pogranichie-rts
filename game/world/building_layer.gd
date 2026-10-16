@@ -13,7 +13,9 @@ extends Node2D
 ## Fire (M9): a burning building has flickering flames on top, more as its HP falls.
 ## Buildings with rendered art (SpriteDB) show their sprite instead of the box, in stages:
 ## foundation, rising walls, finished, damaged twice as HP falls; a finished building that is
-## gone leaves ruins for RUBBLE_TICKS.
+## gone leaves ruins for RUBBLE_TICKS. Palisade cells grow arms toward their neighbours in
+## the line, gates turn along it, a zaseka placed along y uses its turned view (`<id>_v`).
+## Flat buildings (farms, gates) draw their art on the ground layer.
 
 const DEPOSIT_COLORS := {
 	ResourceNodes.Source.IRON: Color(0.35, 0.22, 0.16),
@@ -27,6 +29,8 @@ const HEIGHT_PER_CELL := 10.0
 ## Ruins stay this long (60 s at 20 ticks a second).
 const RUBBLE_TICKS := 1200
 const FLAME_COLORS: Array[Color] = [Color(1.0, 0.55, 0.1, 0.85), Color(1.0, 0.85, 0.2, 0.75)]
+## Buildings that make up lines and join their neighbours.
+const LINE_BASES: Array[StringName] = [&"palisade", &"gate", &"wall"]
 
 var sim: Simulation
 ## The building the local player has selected (BuildingStore id), outlined.
@@ -125,9 +129,13 @@ func _refresh() -> void:
 				b.done[s] == 1, _progress(s), float(b.hp[s]) / maxf(b.max_hp[s], 1.0)
 			)
 			var tint := UnitView.PLAYER_COLORS[b.owners[s] % UnitView.PLAYER_COLORS.size()]
-			_boxes[key].def_id = b.defs[s].id
+			_boxes[key].def_id = _art_id(s)
 			_boxes[key].done = b.done[s] == 1
-			_boxes[key].set_sprite(SpriteDB.building(b.defs[s].id, stage), tint)
+			var back: Array[SpriteDB.Sprite] = []
+			var front: Array[SpriteDB.Sprite] = []
+			if b.defs[s].base_id == &"palisade":
+				_arms(s, stage, back, front)
+			_boxes[key].set_sprite(SpriteDB.building(_art_id(s), stage), tint, back, front)
 	for key: StringName in _boxes.keys():
 		if not live.has(key):
 			var box := _boxes[key]
@@ -194,6 +202,57 @@ func _fire(id: int) -> float:
 	return float(b.hp[id - 1]) / maxf(b.max_hp[id - 1], 1.0)
 
 
+## Catalog id of the art of building slot `s`: the turned view (`<id>_v`) of a zaseka placed
+## along y or of a gate in a line running along y, when it has one.
+func _art_id(s: int) -> StringName:
+	var b := sim.economy.buildings
+	var id := b.defs[s].id
+	var turned := b.w[s] < b.h[s]
+	if b.defs[s].base_id == &"gate":
+		var n := _line_neighbours(s)
+		turned = (n[2] or n[3]) and not (n[0] or n[1])
+	if turned and SpriteDB.building(StringName("%s_v" % id)) != null:
+		return StringName("%s_v" % id)
+	return id
+
+
+## Whether the cells east, west, south (cell y + 1) and north of slot `s` hold line pieces.
+func _line_neighbours(s: int) -> Array[bool]:
+	var b := sim.economy.buildings
+	var out: Array[bool] = []
+	for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+		var x := b.cell_x[s] + d.x
+		var y := b.cell_y[s] + d.y
+		var other := BuildingStore.NO_ID
+		if x >= 0 and y >= 0 and x < sim.nav.width and y < sim.nav.height:
+			other = b.occupant[y * sim.nav.width + x]
+		out.append(other != BuildingStore.NO_ID and LINE_BASES.has(b.defs[other - 1].base_id))
+	return out
+
+
+## Arms of a palisade cell toward its neighbours in the line (both ways along x when alone):
+## the ones toward the back of the screen go behind the post, the others in front.
+func _arms(
+	s: int, stage: StringName, back: Array[SpriteDB.Sprite], front: Array[SpriteDB.Sprite]
+) -> void:
+	var n := _line_neighbours(s)
+	if not n.has(true):
+		n = [true, true, false, false]
+	var id := sim.economy.buildings.defs[s].id
+	# East (+x) and south (+y) come toward the viewer; west and north go away.
+	var arms: Array[String] = ["e", "w", "s", "n"]
+	for i in 4:
+		if not n[i]:
+			continue
+		var piece := SpriteDB.building(StringName("%s_%s" % [id, arms[i]]), stage)
+		if piece == null:
+			continue
+		if i == 0 or i == 2:
+			front.append(piece)
+		else:
+			back.append(piece)
+
+
 func _progress(s: int) -> float:
 	var b := sim.economy.buildings
 	return float(b.progress[s]) / maxf(b.work[s], 1.0)
@@ -237,7 +296,20 @@ func _draw() -> void:
 			continue
 		var rect := Rect2(b.cell_x[s], b.cell_y[s], b.w[s], b.h[s])
 		var height := 2.0 * (_progress(s) if b.done[s] != 1 else 1.0)
-		draw_box(self, rect, _building_color(s), height)
+		var art := SpriteDB.building(
+			_art_id(s),
+			SpriteDB.building_stage(
+				b.done[s] == 1, _progress(s), float(b.hp[s]) / maxf(b.max_hp[s], 1.0)
+			)
+		)
+		if art != null:
+			var tint := UnitView.PLAYER_COLORS[b.owners[s] % UnitView.PLAYER_COLORS.size()]
+			draw_set_transform(Iso.cell_to_screen(rect.get_center()))
+			art.draw(self, Rect2(Vector2.ZERO, art.frame), tint)
+			draw_set_transform(Vector2.ZERO)
+			height = 16.0
+		else:
+			draw_box(self, rect, _building_color(s), height)
 		if id == selected:
 			draw_outline(self, rect, Color(0.4, 1.0, 0.4))
 		var hp := float(b.hp[s]) / maxf(b.max_hp[s], 1.0)

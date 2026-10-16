@@ -80,7 +80,10 @@ func _draw() -> void:
 	if sprite == null:
 		draw_circle(Vector2.ZERO, RADIUS + 3.0, Color(0, 0, 0, 0.3))
 	if selected:
-		draw_arc(Vector2.ZERO, RADIUS + 5.0, 0.0, TAU, 32, Color(0.4, 1.0, 0.4), 2.0)
+		var ring := RADIUS + 5.0
+		if sprite != null and move_class in [NavGrid.MoveClass.CAVALRY, NavGrid.MoveClass.SIEGE]:
+			ring *= 1.6
+		draw_arc(Vector2.ZERO, ring, 0.0, TAU, 32, Color(0.4, 1.0, 0.4), 2.0)
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 	if sprite != null:
 		var a := _anim()
@@ -111,7 +114,7 @@ func _draw() -> void:
 func _draw_state() -> void:
 	var top := Vector2(-BAR_WIDTH / 2.0, -RADIUS * 2.0 - 8.0)
 	if sprite != null:
-		top.y = -SPRITE_BAR_Y
+		top.y = -float(sprite.meta.get("bar_y", SPRITE_BAR_Y))
 	if selected or hp_permille < 1000:
 		draw_rect(Rect2(top, Vector2(BAR_WIDTH, 3.0)), Color(0.15, 0.05, 0.05))
 		var w := BAR_WIDTH * hp_permille / 1000.0
