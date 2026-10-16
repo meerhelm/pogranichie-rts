@@ -1,5 +1,5 @@
 extends EconomyTest
-## Taking own buildings apart: peasants take it down, 80% of its price is left as salvage that
+## Taking own buildings apart: peasants take it down, half of its price is left as salvage that
 ## only the owner's peasants carry to a building that takes that resource in.
 
 
@@ -43,8 +43,8 @@ func test_a_town_center_taken_apart_gives_80_percent_carried_to_storage() -> voi
 	var iron := _stock(sim, 1, EconomySystem.IRON)
 	var give := sim.economy.construction.salvage(b)
 	var cost := sim.economy.placement.building_cost(1, sim.economy.buildings.defs[b - 1])
-	assert_eq(give[EconomySystem.WOOD], cost[EconomySystem.WOOD] * 8 / 10)
-	assert_eq(give[EconomySystem.IRON], cost[EconomySystem.IRON] * 8 / 10)
+	assert_eq(give[EconomySystem.WOOD], cost[EconomySystem.WOOD] * 5 / 10)
+	assert_eq(give[EconomySystem.IRON], cost[EconomySystem.IRON] * 5 / 10)
 	var ids := _peasants(sim, 1, 3, 16.5, 9.5)
 	_dismantle(sim, 1, ids, b)
 	assert_eq(sim.economy.buildings.dismantling[b - 1], 1)
@@ -80,7 +80,7 @@ func test_more_peasants_take_it_apart_faster_and_a_foundation_takes_little() -> 
 		times.append(_until_gone(sim, b, 2000))
 	assert_gt(times[0], 0)
 	assert_lt(times[1], times[0], "three are faster than one")
-	# A foundation nobody worked on comes down at once, still giving back 80%.
+	# A foundation nobody worked on comes down at once, still giving back half.
 	var sim := _drawn(20, 12)
 	_join(sim, 1, GDL)
 	var ids := _peasants(sim, 1, 1, 8.5, 8.5)
@@ -90,7 +90,7 @@ func test_more_peasants_take_it_apart_faster_and_a_foundation_takes_little() -> 
 	assert_gt(_until_gone(sim, house, 400), -1)
 	var piles := _salvage_nodes(sim)
 	assert_eq(piles.size(), 1)
-	assert_eq(sim.economy.nodes.amounts[piles[0] - 1], 30 * 8 / 10)
+	assert_eq(sim.economy.nodes.amounts[piles[0] - 1], 30 * 5 / 10)
 
 
 func test_a_build_order_stops_taking_it_apart() -> void:
