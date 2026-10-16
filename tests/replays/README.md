@@ -65,3 +65,6 @@ Then for `sim_version` 9 (M10: path searches and flow fields run in slices of at
 `PATH_BUDGET` expanded cells a tick instead of one whole search per tick, so units start walking
 on different ticks; the hashes include the open search and the flow fields still being built).
 The bot now wins «ВКЛ 1» at 40:18.
+Then for `sim_version` 10 (taking own buildings apart: the `DISMANTLE` order, salvage piles only
+their owner picks up, and `data_version` changed with the dismantling rules in
+`rules/economy.tres`). The fuzzer now also orders peasants to take buildings apart.
