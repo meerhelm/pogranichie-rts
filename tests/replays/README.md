@@ -57,3 +57,7 @@ and light horse costs, light horse damage). The economy fuzzer's orders depend o
 can pay, so its commands changed as well.
 Then for `sim_version` 7 (M8: skirmish victory and per-player statistics in the hashes, and
 `data_version` changed with `rules/skirmish.tres`).
+Then for `sim_version` 8 (M9: fire, heroes' own auras, mission locks and rules in the hashes,
+and `data_version` changed with `rules/fire.tres`, the heroes of the campaign and the wooden and
+fireproof tags). The fuzzer picks unit types from the prototype catalog, which now has the four
+heroes of «ВКЛ 1», so the spawn orders changed too. `m9_gdl01_playthrough.json` is new.
