@@ -75,7 +75,7 @@ func _retranslate() -> void:
 	_fullscreen.text = tr("Fullscreen")
 	_text_label.text = tr("Text size")
 	var sizes := [tr("Small"), tr("Normal"), tr("Large"), tr("Very large")]
-	for i in sizes.size():
+	for i in mini(sizes.size(), _text_size.item_count):
 		_text_size.set_item_text(i, sizes[i])
 	_hints.text = tr("Hints in skirmish")
 	_back.text = tr("Back")

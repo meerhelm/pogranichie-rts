@@ -83,8 +83,10 @@ func _retranslate() -> void:
 	_skirmish.text = tr("Skirmish")
 	_campaign.text = tr("Campaign: %s") % tr(MissionDef.load_id(MISSION).title)
 	_load.text = tr("Load game")
-	_difficulty.set_item_text(0, tr("Opponent: easy"))
-	_difficulty.set_item_text(1, tr("Opponent: normal"))
+	# The locale can change before _ready() has filled the list (GameSettings.ensure_loaded).
+	var levels := [tr("Opponent: easy"), tr("Opponent: normal")]
+	for i in mini(levels.size(), _difficulty.item_count):
+		_difficulty.set_item_text(i, levels[i])
 	_settings_button.text = tr("Settings")
 	_help_button.text = tr("How to play")
 	_quit.text = tr("Quit")
