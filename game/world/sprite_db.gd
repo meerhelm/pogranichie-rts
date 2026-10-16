@@ -8,6 +8,10 @@ extends RefCounted
 
 const ROOT := "res://art/sprites"
 const SHADOW_ALPHA := 0.7
+## Building stages, as tools/art/stages.py renders them.
+const STAGES: Array[StringName] = [
+	&"found", &"build_33", &"build_66", &"done", &"damaged_1", &"damaged_2", &"rubble"
+]
 
 
 ## One view (a building or a tree) or a sheet of frames (a unit).
@@ -50,9 +54,20 @@ static func unit(type_id: StringName) -> Sprite:
 	return _load("units/%s/" % type_id, "units/%s/sheet.json" % type_id)
 
 
-## A building's view, or null.
-static func building(def_id: StringName) -> Sprite:
-	return _load("buildings/%s_" % def_id, "buildings/%s.json" % def_id)
+## A building's view in one of its stages (STAGES), or null.
+static func building(def_id: StringName, stage: StringName = &"done") -> Sprite:
+	return _load("buildings/%s_%s_" % [def_id, stage], "buildings/%s.json" % def_id)
+
+
+## Stage of a building under construction (`progress` 0..1) or standing with `hp` 0..1.
+static func building_stage(done: bool, progress: float, hp: float) -> StringName:
+	if not done:
+		if progress < 1.0 / 3.0:
+			return &"found"
+		return &"build_33" if progress < 2.0 / 3.0 else &"build_66"
+	if hp > 0.66:
+		return &"done"
+	return &"damaged_1" if hp > 0.33 else &"damaged_2"
 
 
 ## A tree's view, or null.

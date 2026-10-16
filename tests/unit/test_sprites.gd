@@ -40,9 +40,19 @@ func test_walker_stands_after_still_ticks() -> void:
 
 func test_buildings_and_trees_have_views() -> void:
 	for id: StringName in [&"gdl_house", &"gdl_town_center"]:
-		var b := SpriteDB.building(id)
-		assert_not_null(b, String(id))
-		assert_eq(b.frame, Vector2(b.color.get_size()), "a building is one view")
+		for stage in SpriteDB.STAGES:
+			var b := SpriteDB.building(id, stage)
+			assert_not_null(b, "%s %s" % [id, stage])
+			assert_eq(b.frame, Vector2(b.color.get_size()), "a building is one view")
 	var t := SpriteDB.tree(&"nt_pine")
 	assert_not_null(t)
 	assert_null(t.team, "trees take no player colour")
+
+
+func test_building_stage_follows_progress_and_hp() -> void:
+	assert_eq(SpriteDB.building_stage(false, 0.1, 1.0), &"found")
+	assert_eq(SpriteDB.building_stage(false, 0.5, 1.0), &"build_33")
+	assert_eq(SpriteDB.building_stage(false, 0.9, 1.0), &"build_66")
+	assert_eq(SpriteDB.building_stage(true, 1.0, 0.9), &"done")
+	assert_eq(SpriteDB.building_stage(true, 1.0, 0.5), &"damaged_1")
+	assert_eq(SpriteDB.building_stage(true, 1.0, 0.2), &"damaged_2")

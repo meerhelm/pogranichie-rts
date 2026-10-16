@@ -21,6 +21,9 @@ var fire_tick := 0
 ## Rendered view drawn instead of the box (finished buildings with art), and its team tint.
 var sprite: SpriteDB.Sprite
 var tint := Color.WHITE
+## Catalog id of the building and whether it was finished (for its ruins).
+var def_id: StringName
+var done := false
 
 
 func set_box(

@@ -20,7 +20,7 @@ import tempfile
 import bpy
 from PIL import Image
 
-from tools.art import models, rig
+from tools.art import models, rig, stages
 from tools.art import shapes as S
 
 UNIT_FRAME = (160, 144)
@@ -111,30 +111,39 @@ def render_unit(uid: str, out: str, preview: bool) -> None:
 
 
 def render_static(kind: str, uid: str, builder, cells: int, out: str, preview: bool) -> None:
-    """One view of a building (cells x cells) or a tree (one cell)."""
-    rig.reset()
-    S.reset_materials()
+    """One view of a tree (one cell), or of a building (cells x cells) in each of its stages
+    (stages.STAGES: `<id>_<stage>_<pass>.png`)."""
     if kind == "buildings":
         width = 128 * cells + 32
         height = {2: 300, 4: 580}.get(cells, 128 * cells + 200)
         pivot = (width // 2, height - 32 - 32 * cells)
+        names = stages.STAGES
     else:
         width, height = 160, 400
         pivot = (64, 360)
-    rig.setup(width, height, pivot, samples=24 if preview else 48)
-    builder()
-    passes = Passes(rig.shadow_catcher())
+        names = [""]
     dest = os.path.join(out, kind)
     os.makedirs(dest, exist_ok=True)
-    for p in PASSES:
-        if p == "team" and kind == "trees":
-            continue  # nothing of a tree takes the player colour
-        passes.use(p)
-        rig.render(os.path.join(dest, f"{uid}_{p}.png"))
-    meta_path = os.path.join(dest, f"{uid}.json")
-    with open(meta_path, "w") as fh:
-        json.dump({"size": [width, height], "pivot": list(pivot), "cells": cells, "scale": 0.5,
-                   "pivot_is": "centre of the footprint"}, fh, indent=1)
+    for stage in names:
+        rig.reset()
+        S.reset_materials()
+        rig.setup(width, height, pivot, samples=24 if preview else 48)
+        root = builder()
+        if stage:
+            stages.apply(stage, root, cells)
+        passes = Passes(rig.shadow_catcher())
+        prefix = f"{uid}_{stage}_" if stage else f"{uid}_"
+        for p in PASSES:
+            if p == "team" and kind == "trees":
+                continue  # nothing of a tree takes the player colour
+            passes.use(p)
+            rig.render(os.path.join(dest, f"{prefix}{p}.png"))
+    meta = {"size": [width, height], "pivot": list(pivot), "cells": cells, "scale": 0.5,
+            "pivot_is": "centre of the footprint"}
+    if kind == "buildings":
+        meta["stages"] = names
+    with open(os.path.join(dest, f"{uid}.json"), "w") as fh:
+        json.dump(meta, fh, indent=1)
 
 
 def main(argv: list[str]) -> None:

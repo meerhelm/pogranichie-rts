@@ -11,7 +11,9 @@ extends Node2D
 ## open deposits, ghosts) stay on this ground layer under the units. Without a depth layer
 ## everything is drawn here.
 ## Fire (M9): a burning building has flickering flames on top, more as its HP falls.
-## Finished buildings with rendered art (SpriteDB) show their sprite instead of the box.
+## Buildings with rendered art (SpriteDB) show their sprite instead of the box, in stages:
+## foundation, rising walls, finished, damaged twice as HP falls; a finished building that is
+## gone leaves ruins for RUBBLE_TICKS.
 
 const DEPOSIT_COLORS := {
 	ResourceNodes.Source.IRON: Color(0.35, 0.22, 0.16),
@@ -22,6 +24,8 @@ const OK_COLOR := Color(0.3, 1.0, 0.3, 0.45)
 const BAD_COLOR := Color(1.0, 0.25, 0.2, 0.45)
 ## Screen height of a building per cell of its smaller side.
 const HEIGHT_PER_CELL := 10.0
+## Ruins stay this long (60 s at 20 ticks a second).
+const RUBBLE_TICKS := 1200
 const FLAME_COLORS: Array[Color] = [Color(1.0, 0.55, 0.1, 0.85), Color(1.0, 0.85, 0.2, 0.75)]
 
 var sim: Simulation
@@ -47,6 +51,8 @@ var _boxes: Dictionary[StringName, BoxView] = {}
 ## Tall objects to draw here when there is no depth layer, gathered by _refresh().
 var _inline: Array[Dictionary] = []
 var _ghosts := Node2D.new()
+## Ruins of destroyed buildings and the tick they disappear at.
+var _rubble: Dictionary[BoxView, int] = {}
 
 
 func _ready() -> void:
@@ -66,6 +72,10 @@ func _exit_tree() -> void:
 		if is_instance_valid(box):
 			box.queue_free()
 	_boxes.clear()
+	for box: BoxView in _rubble.keys():
+		if is_instance_valid(box):
+			box.queue_free()
+	_rubble.clear()
 
 
 ## Brings the tall objects up to date with the simulation and redraws the ground.
@@ -106,13 +116,32 @@ func _refresh() -> void:
 		var key := StringName("b%d" % id)
 		_tall(key, live, rect, c, height, id == selected, hp, fire)
 		if _boxes.has(key):
-			var art := SpriteDB.building(b.defs[s].id) if b.done[s] == 1 else null
+			var stage := SpriteDB.building_stage(
+				b.done[s] == 1, _progress(s), float(b.hp[s]) / maxf(b.max_hp[s], 1.0)
+			)
 			var tint := UnitView.PLAYER_COLORS[b.owners[s] % UnitView.PLAYER_COLORS.size()]
-			_boxes[key].set_sprite(art, tint)
+			_boxes[key].def_id = b.defs[s].id
+			_boxes[key].done = b.done[s] == 1
+			_boxes[key].set_sprite(SpriteDB.building(b.defs[s].id, stage), tint)
 	for key: StringName in _boxes.keys():
 		if not live.has(key):
-			_boxes[key].queue_free()
+			var box := _boxes[key]
 			_boxes.erase(key)
+			var rubble := SpriteDB.building(box.def_id, &"rubble") if box.done else null
+			if rubble == null:
+				box.queue_free()
+				continue
+			# A finished building that is gone leaves its ruins for a while.
+			box.set_sprite(rubble, box.tint)
+			box.outlined = false
+			box.hp = -1.0
+			box.set_fire(-1.0, sim.tick)
+			box.queue_redraw()
+			_rubble[box] = sim.tick + RUBBLE_TICKS
+	for box: BoxView in _rubble.keys():
+		if sim.tick >= _rubble[box]:
+			_rubble.erase(box)
+			box.queue_free()
 
 
 func _tall(

@@ -32,12 +32,13 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
   - `team` — only the TEAM surfaces, lit and white; the game multiplies it by the player colour;
   - `shadow` — the ground shadow alone, drawn first at 70 % so it never covers neighbours.
   Units: `units/<id>/{color,team,shadow}.png` + `sheet.json` (frame, pivot, rows per animation;
-  row offset = facing). Buildings and trees: `<kind>/<id>_<pass>.png` + `<id>.json`
+  row offset = facing). Buildings: `buildings/<id>_<stage>_<pass>.png`, trees: `trees/<id>_<pass>.png`; each with `<id>.json`
   (pivot = centre of the footprint). Trees have no team pass.
 
 The game reads them through `game/world/SpriteDB`; ids without art keep their placeholders.
 Rendered PNGs are plain git (see `.gitattributes`), not LFS: they are small and regenerable.
-Normal maps and building stages (foundation, damage, rubble) are not rendered yet.
+Buildings come in the 7 stages of `stages.py` (`<id>_<stage>_<pass>.png`): found, build_33,
+build_66, done, damaged_1, damaged_2, rubble. Normal maps are not rendered yet.
 
 ## Interface
 

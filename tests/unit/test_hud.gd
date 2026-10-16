@@ -194,3 +194,26 @@ func test_main_menu_opens_and_follows_the_language() -> void:
 	TranslationServer.set_locale("lt")
 	menu.propagate_notification(NOTIFICATION_TRANSLATION_CHANGED)
 	assert_eq(menu._skirmish.text, "Susirėmimas")
+
+
+func test_buildings_show_damage_stages_and_ruins() -> void:
+	var layer: BuildingLayer = _main.get_node("World/Buildings")
+	var b := _sim.economy.buildings
+	var court := 0
+	for id in b.alive_ids:
+		if b.owners[id - 1] == 1 and b.defs[id - 1].id == &"gdl_town_center":
+			court = id
+	assert_gt(court, 0, "the player has a court")
+	layer._refresh()
+	var box: BoxView = layer._boxes[StringName("b%d" % court)]
+	assert_eq(box.sprite, SpriteDB.building(&"gdl_town_center", &"done"))
+	b.hp[court - 1] = b.max_hp[court - 1] / 5
+	layer._refresh()
+	assert_eq(box.sprite, SpriteDB.building(&"gdl_town_center", &"damaged_2"))
+	_sim.economy.destroy(court)
+	layer._refresh()
+	assert_true(is_instance_valid(box) and not box.is_queued_for_deletion(), "ruins stay")
+	assert_eq(box.sprite, SpriteDB.building(&"gdl_town_center", &"rubble"))
+	_sim.tick += BuildingLayer.RUBBLE_TICKS
+	layer._refresh()
+	assert_true(box.is_queued_for_deletion(), "and go after a while")
