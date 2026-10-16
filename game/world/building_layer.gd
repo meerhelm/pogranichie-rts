@@ -11,6 +11,7 @@ extends Node2D
 ## open deposits, ghosts) stay on this ground layer under the units. Without a depth layer
 ## everything is drawn here.
 ## Fire (M9): a burning building has flickering flames on top, more as its HP falls.
+## Finished buildings with rendered art (SpriteDB) show their sprite instead of the box.
 
 const DEPOSIT_COLORS := {
 	ResourceNodes.Source.IRON: Color(0.35, 0.22, 0.16),
@@ -102,7 +103,12 @@ func _refresh() -> void:
 		if hp >= 1.0 and id != selected:
 			hp = -1.0
 		var fire := _fire(id)
-		_tall(StringName("b%d" % id), live, rect, c, height, id == selected, hp, fire)
+		var key := StringName("b%d" % id)
+		_tall(key, live, rect, c, height, id == selected, hp, fire)
+		if _boxes.has(key):
+			var art := SpriteDB.building(b.defs[s].id) if b.done[s] == 1 else null
+			var tint := UnitView.PLAYER_COLORS[b.owners[s] % UnitView.PLAYER_COLORS.size()]
+			_boxes[key].set_sprite(art, tint)
 	for key: StringName in _boxes.keys():
 		if not live.has(key):
 			_boxes[key].queue_free()

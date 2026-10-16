@@ -25,6 +25,8 @@ var ai: SkirmishAi
 var end_screen := EndScreen.new()
 ## The mission's interface (null in a skirmish).
 var mission_panel: MissionPanel
+## Trees on forest cells, among the units.
+var trees := TreeLayer.new()
 
 var _ended := false
 
@@ -66,6 +68,9 @@ func _ready() -> void:
 	_buildings.local_player = PLAYER
 	_buildings.depth_layer = _units
 	_buildings.attach(sim, _clock)
+	trees.local_player = PLAYER
+	add_child(trees)
+	trees.attach(sim, _clock, _units)
 	_magic.local_player = PLAYER
 	_magic.attach(sim, _clock)
 	_fog.attach(sim, _clock, PLAYER)

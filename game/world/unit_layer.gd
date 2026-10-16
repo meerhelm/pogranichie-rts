@@ -40,6 +40,7 @@ func _on_ticked(_tick: int) -> void:
 		else:
 			_prev[id] = _cur[id]
 			view.face(p.x - _cur[id].x, p.y - _cur[id].y)
+			view.set_moving(p != _cur[id])
 		_cur[id] = p
 		_show_state(id, view)
 	for id: int in views.keys():

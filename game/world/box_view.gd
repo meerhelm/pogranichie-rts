@@ -18,6 +18,9 @@ var hp := -1.0
 ## flicker with.
 var fire := -1.0
 var fire_tick := 0
+## Rendered view drawn instead of the box (finished buildings with art), and its team tint.
+var sprite: SpriteDB.Sprite
+var tint := Color.WHITE
 
 
 func set_box(
@@ -51,13 +54,35 @@ func set_fire(p_fire: float, tick: int) -> void:
 	queue_redraw()
 
 
+func set_sprite(p_sprite: SpriteDB.Sprite, p_tint: Color) -> void:
+	if p_sprite == sprite and p_tint == tint:
+		return
+	sprite = p_sprite
+	tint = p_tint
+	queue_redraw()
+
+
 func _draw() -> void:
-	BuildingLayer.draw_box(self, cells, color, height)
-	if outlined:
-		BuildingLayer.draw_outline(self, cells, Color(0.4, 1.0, 0.4))
+	var top_y := -height
+	if sprite != null:
+		if outlined:
+			BuildingLayer.draw_outline(self, cells, Color(0.4, 1.0, 0.4))
+		sprite.draw(self, Rect2(Vector2.ZERO, sprite.frame), tint)
+		top_y = _sprite_top()
+	else:
+		BuildingLayer.draw_box(self, cells, color, height)
+		if outlined:
+			BuildingLayer.draw_outline(self, cells, Color(0.4, 1.0, 0.4))
 	if fire >= 0.0:
-		BuildingLayer.draw_flames(self, cells, height, fire, fire_tick)
+		BuildingLayer.draw_flames(
+			self, cells, -top_y * 0.6 if sprite != null else height, fire, fire_tick
+		)
 	if hp >= 0.0:
-		var top := Vector2(-16.0, -height - 10.0)
+		var top := Vector2(-16.0, top_y - 10.0)
 		draw_rect(Rect2(top, Vector2(32.0, 3.0)), Color(0.15, 0.05, 0.05))
 		draw_rect(Rect2(top, Vector2(32.0 * hp, 3.0)), Color(0.3, 0.85, 0.3))
+
+
+## Screen height of the sprite's top over the anchor, less the frame's empty margin.
+func _sprite_top() -> float:
+	return sprite.dest().position.y + 24.0

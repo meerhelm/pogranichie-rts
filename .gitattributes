@@ -24,3 +24,7 @@ addons/**/*.otf binary
 addons/limboai/bin/*.so binary
 addons/limboai/bin/*.dll binary
 addons/limboai/bin/*.framework/** binary
+
+# Sprites rendered by tools/art are small and regenerable from its scripts; plain git, so they
+# can be pushed from any machine (cloud sessions cannot upload to LFS).
+art/sprites/**/*.png !filter !diff !merge binary
