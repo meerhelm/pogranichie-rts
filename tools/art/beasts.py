@@ -82,7 +82,12 @@ class Beast:
         for k, ph in phases.items():
             hip = self.joints[f"hip_{k}"]
             knee = self.joints[f"knee_{k}"]
-            if anim == "walk":
+            if anim == "attack":
+                # A lunge: the forelegs reach, the hind legs push.
+                s = math.sin(math.pi * frame / frames)
+                hip.rotation_euler = ((-r(22) if k[0] == "f" else r(16)) * s, 0, 0)
+                knee.rotation_euler = ((-r(30) if k[0] == "f" else r(10)) * s, 0, 0)
+            elif anim == "walk":
                 a = p + ph * 2.0 * math.pi
                 hip.rotation_euler = (r(24) * math.sin(a), 0, 0)
                 bend = max(0.0, math.cos(a))
@@ -90,15 +95,24 @@ class Beast:
             else:
                 hip.rotation_euler = (0, 0, 0)
                 knee.rotation_euler = (0, 0, 0)
+        lean = 0.0
         if anim == "walk":
             bob = 0.025 * math.cos(2 * p)
             head = r(5) * math.sin(2 * p)
             tail = r(8) * math.sin(p)
+        elif anim == "attack":
+            s = math.sin(math.pi * frame / frames)
+            bob = 0.04 * s
+            head = r(28) * s
+            lean = r(7) * s
+            tail = r(20) * s
         else:
             head = r(6) + r(6) * math.sin(p)
             turn = r(10) * math.sin(p)
             tail = r(14) * math.sin(p * 2)
         self.body.location.z = self.height + bob
+        self.body.rotation_euler = (-lean, 0, 0)
+        self.body.location.y = 0.12 * lean / math.radians(7)
         self.neck.rotation_euler = (-self.neck_angle + head * 0.5, 0, turn)
         self.head.rotation_euler = (self.neck_angle - self.head_tilt + head, 0, 0)
         self.tail.rotation_euler = (self.base_tail, tail, 0)
@@ -243,8 +257,9 @@ class Mounted:
         rider.root.location = (0, -0.08, saddle_z - people.HIP_Z + 0.05)
 
     def pose(self, anim, frame, frames):
-        self.horse.pose(anim, frame, frames)
-        self.rider.pose("idle", frame, frames)
+        # The horse stands while its rider strikes.
+        self.horse.pose("idle" if anim == "attack" else anim, frame, frames)
+        self.rider.pose("attack" if anim == "attack" else "idle", frame, frames)
         r = math.radians
         for side, x in (("l", -1), ("r", 1)):
             self.rider.j(f"thigh_{side}").rotation_euler = (r(72), -x * r(28), 0)

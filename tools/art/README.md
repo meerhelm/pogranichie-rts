@@ -8,7 +8,8 @@ Z 45°, sun from the upper left at 60° (the doc says 45°; raised so shadows st
 ```sh
 pip install bpy==5.2.2 pillow          # Blender as a Python module, no Blender install needed
 python3 -m tools.art.render gdl_peasant gdl_spearman gdl_house gdl_town_center nt_pine nt_birch
-python3 -m tools.art.render gdl_peasant --preview --out /tmp/prev   # one frame per direction
+python3 -m tools.art.render gdl_peasant --preview --out /tmp/prev   # a few frames per direction
+python3 -m tools.art.render gdl_peasant --add   # only the animations its sheet lacks
 python3 -m tools.art.preview art/sprites /tmp/units.png             # units as the game tints them
 python3 -m tools.art.mockup art/sprites /tmp/scene.png              # game-scale mock scene
 ```
@@ -25,7 +26,11 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
 - `rig.py` — camera, light, scale, shadow catcher; `heading_for_facing` turns a model to the
   game's 8 facings (`UnitView.facing`: 0 east, clockwise, 2 south).
 - `shapes.py` — materials and primitives; the `TEAM` material marks player-colour zones.
-- `people.py` — a 1.75 m figure of joint empties with idle (8 frames) and walk (12 frames).
+- `people.py` — a 1.75 m figure of joint empties with idle (8 frames), walk (12 frames), work
+  (8 frames: a two-handed chop, for peasants and camp servants) and attack (8 frames, played
+  once per blow) in one of `ATTACK_STYLES`: swing, thrust, throw, bow, crossbow, cast. Which
+  units get work and which attack style is in `registry.py` (`WORKERS`, `ATTACK_STYLE`); beasts
+  lunge (`beasts.py`), riders strike while the horse stands, the wagon only walks.
 - `models.py` — the first assets (peasant, spearman, house, town centre, trees, deposits).
 - `folk.py` — the other people on foot; `beasts.py` — a four-legged rig for animals and horses,
   riders sitting on them, the wagon.
@@ -42,6 +47,9 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
   (pivot = centre of the footprint). Trees have no team pass.
 
 The game reads them through `game/world/SpriteDB`; ids without art keep their placeholders.
+`UnitView` plays walk while moving, else attack once after each blow (`last_attack`), else work
+at a job, else idle, turned to the target or the work. `--add` renders only the animations a
+sheet lacks and copies the old rows back, so a new animation does not re-render the rest.
 Building frames are rendered large and cropped to what all stages cover. Unit frames: 160×144
 on foot, 224×256 mounted (an upright lance), 224×176 big beasts, 320×240 the wagon; `bar_y`
 in `sheet.json` is where the HP bar goes.

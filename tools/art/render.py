@@ -1,8 +1,9 @@
 """Renders code-built assets into isometric sprite sheets for the game.
 
-    python3 -m tools.art.render gdl_peasant [--out art/sprites] [--preview]
+    python3 -m tools.art.render gdl_peasant [--out art/sprites] [--preview] [--add]
 
-Units: 8 directions x (idle 8 + walk 12 frames) in three passes, packed into
+Units: 8 directions x (idle 8 + walk 12 frames, work 8 for peasants, attack 8 for fighters
+and beasts; registry.anims) in three passes, packed into
 `<out>/units/<id>/{color,team,shadow}.png` (one row per direction and animation) with
 `sheet.json`. Buildings and trees: one view in the same three passes.
 Passes (visual assets doc): color with alpha; team = the TEAM material alone, lit, white,
@@ -25,7 +26,6 @@ from tools.art import shapes as S
 
 ## Extra render room (right, below) for the shadow, cropped away where unused.
 SHADOW_ROOM = (96, 80)
-ANIMS = [("idle", 8, 6), ("walk", 12, 15)]  # name, frames, fps
 PASSES = ("color", "team", "shadow")
 ## The shadow catcher leaves a faint haze far out (alpha up to ~12); fade it to nothing.
 HAZE = 12
@@ -75,7 +75,42 @@ def _sheet(frames: list[list[str]], size: tuple[int, int], path: str) -> None:
     sheet.save(path, optimize=True)
 
 
-def render_unit(uid: str, out: str, preview: bool) -> None:
+def _old_frames(dest: str, full: tuple[int, int], pivot: tuple[int, int], tmp: str):
+    """Frames of an already rendered sheet put back on the uncropped render canvas, so new
+    animations can be added without rendering the old ones again: {pass: rows of paths}, the
+    old animations, or None when there is no sheet."""
+    path = os.path.join(dest, "sheet.json")
+    if not os.path.exists(path):
+        return None
+    with open(path) as fh:
+        meta = json.load(fh)
+    fw, fh_ = meta["frame"]
+    at = (pivot[0] - meta["pivot"][0], pivot[1] - meta["pivot"][1])
+    rows = {}
+    for p in PASSES:
+        sheet = Image.open(os.path.join(dest, f"{p}.png")).convert("RGBA")
+        cols, count = sheet.width // fw, sheet.height // fh_
+        rows[p] = []
+        for r in range(count):
+            rows[p].append([])
+            for c in range(cols):
+                cell = sheet.crop((c * fw, r * fh_, (c + 1) * fw, (r + 1) * fh_))
+                canvas = Image.new("RGBA", full)
+                canvas.paste(cell, at)
+                f = os.path.join(tmp, f"old_{r}_{c}_{p}.png")
+                canvas.save(f)
+                rows[p][-1].append(f)
+    # Each row as long as its animation (shorter ones leave the sheet's end empty).
+    for p in PASSES:
+        for a in meta["anims"].values():
+            for r in range(a["row"], a["row"] + 8):
+                rows[p][r] = rows[p][r][: a["frames"]]
+    return rows, meta["anims"]
+
+
+def render_unit(uid: str, out: str, preview: bool, add: bool = False) -> None:
+    """Renders the unit's animations (registry.anims). With `add`, keeps the frames of the
+    animations its sheet already has and renders only the missing ones."""
     rig.reset()
     S.reset_materials()
     spec = registry.UNITS[uid]
@@ -84,17 +119,27 @@ def render_unit(uid: str, out: str, preview: bool) -> None:
     pivot = spec.pivot
     rig.setup(*frame, pivot, samples=16 if preview else 24)
     figure = spec.build()
+    registry.style(figure, uid)
     passes = Passes(rig.shadow_catcher())
     dest = os.path.join(out, "units", uid)
     os.makedirs(dest, exist_ok=True)
     tmp = tempfile.mkdtemp(prefix=uid)
-    anims = [("walk", 12, 15)] if preview else ANIMS
+    anims = registry.anims(uid)
+    if preview:
+        anims = [a for a in anims if a[0] != "idle"]
     rows: dict[str, list[list[str]]] = {p: [] for p in PASSES}
     meta = {"frame": list(frame), "pivot": list(pivot), "scale": 0.5, "anims": {}}
     row = 0
+    old = _old_frames(dest, frame, pivot, tmp) if add and not preview else None
+    if old is not None:
+        rows, meta["anims"] = old
+        row = len(rows["color"])
+        anims = [a for a in anims if a[0] not in meta["anims"]]
+        if not anims:
+            return
     for anim, count, fps in anims:
         meta["anims"][anim] = {"row": row, "frames": count, "fps": fps}
-        frame_ids = [3] if preview else list(range(count))
+        frame_ids = ([3] if anim == "walk" else [0, 3, 5]) if preview else list(range(count))
         for facing in range(8):
             figure.root.rotation_euler = (0, 0, rig.heading_for_facing(facing))
             for p in PASSES:
@@ -241,12 +286,13 @@ def main(argv: list[str]) -> None:
     ap.add_argument("ids", nargs="+")
     ap.add_argument("--out", default="art/sprites")
     ap.add_argument("--preview", action="store_true")
+    ap.add_argument("--add", action="store_true", help="units: render only animations their sheet lacks")
     args = ap.parse_args(argv)
     if args.ids == ["all"]:
         args.ids = [*registry.UNITS, *registry.BUILDINGS, *registry.TREES, *registry.DEPOSITS]
     for uid in args.ids:
         if uid in registry.UNITS:
-            render_unit(uid, args.out, args.preview)
+            render_unit(uid, args.out, args.preview, args.add)
         elif uid in registry.BUILDINGS:
             b = registry.BUILDINGS[uid]
             render_static("buildings", uid, b.build, b.cells, args.out, args.preview, b.tall, b.props)

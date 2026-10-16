@@ -1,11 +1,40 @@
 """Code-built human figures (1.75 m, feet on zero, front +Y, right hand +X) and their
-idle / walk animation. A figure is a tree of joint empties; `pose()` rotates them."""
+animations: idle, walk, work (a two-handed chop at the ground: felling, digging, building)
+and attack in the figure's style (`ATTACK_STYLES`). A figure is a tree of joint empties;
+`pose()` rotates them."""
 
 import math
 
 from tools.art import shapes as S
 
 HIP_Z = 0.92
+## swing: overhead blow with what the right hand holds; thrust: a spear driven forward level;
+## throw: a javelin thrown overhand; bow: draw and loose a longbow held in the left hand;
+## crossbow: aim, shoot, lower and span again; cast: both arms raised to the sky.
+ATTACK_STYLES = ("swing", "thrust", "throw", "bow", "crossbow", "cast")
+
+
+def ease(t: float) -> float:
+    t = min(1.0, max(0.0, t))
+    return t * t * (3.0 - 2.0 * t)
+
+
+def blow(t: float) -> float:
+    """Wind up slowly (0 -> 1), strike fast past the rest (1 -> -0.2), recover (-> 0)."""
+    if t < 0.5:
+        return ease(t / 0.5)
+    if t < 0.7:
+        return 1.0 - 1.2 * ease((t - 0.5) / 0.2)
+    return -0.2 * (1.0 - ease((t - 0.7) / 0.3))
+
+
+def lunge(t: float) -> float:
+    """Draw back (0 -> -1), drive forward fast (-> 1), come back to rest (-> 0)."""
+    if t < 0.4:
+        return -ease(t / 0.4)
+    if t < 0.6:
+        return -1.0 + 2.0 * ease((t - 0.4) / 0.2)
+    return 1.0 - ease((t - 0.6) / 0.4)
 
 
 class Figure:
@@ -28,6 +57,9 @@ class Figure:
         self.held_r = False  # right arm holds a weapon still
         self.held_l = False  # left arm holds a shield still
         self.stoop = 0.0  # forward lean of the chest in every pose (old people)
+        self.attack_style = "swing"
+        self._held = None  # (empty in the right hand, its rest rotation), found on first pose
+        self._offhand = None  # the same for the left hand (a bow)
 
     def j(self, name):
         return self.joints[name]
@@ -65,6 +97,19 @@ class Figure:
         sk.scale = (1.0, 0.85, 1.0)
         return sk
 
+    def _weapon(self, side: str):
+        """The empty a weapon hangs from in that hand (spear, staff, bow...), with its rest
+        rotation; (None, None) when the hand holds nothing turnable."""
+        cache = "_held" if side == "r" else "_offhand"
+        if getattr(self, cache) is None:
+            found = (None, None)
+            for child in self.j(f"hand_{side}").children:
+                if child.type == "EMPTY":
+                    found = (child, tuple(child.rotation_euler))
+                    break
+            setattr(self, cache, found)
+        return getattr(self, cache)
+
     def pose(self, anim: str, frame: int, frames: int) -> None:
         p = 2.0 * math.pi * frame / frames
         r = math.radians
@@ -84,6 +129,8 @@ class Figure:
             rot["elbow_r"][0] = r(12) + r(10) * max(0.0, s)
             hips_z = HIP_Z - 0.03 + 0.03 * abs(math.cos(p))
             chest_x = r(4)
+        elif anim in ("work", "attack"):
+            pass
         else:  # idle: breathing and a slow look around
             chest_x = r(1.5) * math.sin(p)
             head_z = r(6) * math.sin(p)
@@ -96,8 +143,97 @@ class Figure:
         if self.held_l:
             rot["shoulder_l"] = [r(30), r(8), 0.0]
             rot["elbow_l"] = [r(75), 0.0, -r(20)]
+        held, held_rest = self._weapon("r")
+        bow, bow_rest = self._weapon("l")
+        if held is not None:
+            held.rotation_euler = held_rest
+        if bow is not None:
+            bow.rotation_euler = bow_rest
+        t = frame / frames
+        if anim == "work":
+            chest_x, hips_z = self._work(rot, t)
+        elif anim == "attack":
+            chest_x = self._attack(rot, t)
         for k, v in rot.items():
             self.joints[k].rotation_euler = v
         self.hips.location.z = hips_z
         self.chest.rotation_euler = (chest_x + self.stoop, 0.0, 0.0)
         self.head.rotation_euler = (0.0, 0.0, head_z)
+
+    def _level(self, side: str, rot, chest_x: float, angle: float = -90.0, twist: bool = True) -> None:
+        """Turns what the hand holds to `angle` degrees off upright (-90: straight forward),
+        whatever the arm does."""
+        weapon, rest = self._weapon(side)
+        if weapon is None:
+            return
+        arm = chest_x + self.stoop + rot[f"shoulder_{side}"][0] + rot[f"elbow_{side}"][0]
+        weapon.rotation_euler = (math.radians(angle) - arm, rest[1], rest[2] if twist else 0.0)
+
+    def _work(self, rot, t: float):
+        """Two-handed chop at the ground, bent at the knees."""
+        r = math.radians
+        w = blow(t)
+        for side in ("l", "r"):
+            rot[f"shoulder_{side}"] = [r(25) + r(135) * w, r(10) if side == "l" else -r(10), 0.0]
+            rot[f"elbow_{side}"] = [r(15) + r(35) * max(w, 0.0), 0.0, 0.0]
+            rot[f"thigh_{side}"] = [r(16), 0.0, 0.0]
+            rot[f"knee_{side}"] = [-r(26), 0.0, 0.0]
+        rot["thigh_l"][0] += r(10)
+        chest_x = r(20) - r(16) * w
+        return chest_x, HIP_Z - 0.05
+
+    def _attack(self, rot, t: float) -> float:
+        r = math.radians
+        style = self.attack_style
+        chest_x = 0.0
+        if style in ("swing", "throw"):
+            w = blow(t)
+            rot["shoulder_r"] = [r(35) + r(130) * w, -r(8), 0.0]
+            rot["elbow_r"] = [r(20) + r(45) * max(w, 0.0), 0.0, 0.0]
+            if not self.held_l:
+                rot["shoulder_l"] = [r(25) - r(15) * w, r(6), 0.0]
+                rot["elbow_l"] = [r(20), 0.0, 0.0]
+            chest_x = r(10) - r(14) * w
+            rot["thigh_l"][0] = r(14)
+            rot["thigh_r"][0] = -r(8)
+            if style == "throw":
+                self._level("r", rot, chest_x)
+        elif style == "thrust":
+            e = lunge(t)
+            rot["shoulder_r"] = [r(28) + r(42) * e, -r(6), 0.0]
+            rot["elbow_r"] = [max(r(5), r(65) - r(50) * e), 0.0, 0.0]
+            chest_x = r(6) * e + r(4)
+            rot["thigh_l"][0] = r(18) + r(8) * max(e, 0.0)
+            rot["thigh_r"][0] = -r(10)
+            rot["knee_l"][0] = -r(12)
+            self._level("r", rot, chest_x, -84.0)
+        elif style == "bow":
+            draw = ease(t / 0.5)
+            loose = t >= 0.62
+            back = ease((t - 0.62) / 0.38) if loose else 0.0
+            rot["shoulder_l"] = [r(84) - r(10) * back, r(14), 0.0]
+            rot["elbow_l"] = [r(4), 0.0, 0.0]
+            rot["shoulder_r"] = [r(84) - (r(14) if loose else 0.0) - r(20) * back, -r(12), 0.0]
+            rot["elbow_r"] = [r(10) + r(115) * (draw if not loose else 1.0 - back), 0.0, 0.0]
+            chest_x = -r(4)
+            rot["thigh_l"][0] = r(12)
+            rot["thigh_r"][0] = -r(8)
+            self._level("l", rot, chest_x, 0.0)
+        elif style == "crossbow":
+            # Aim and shoot (kick at 0.3), then lower it, span and raise it again.
+            low = math.sin(math.pi * ease((t - 0.45) / 0.55)) if t > 0.45 else 0.0
+            kick = r(10) if 0.3 <= t < 0.42 else 0.0
+            for side in ("l", "r"):
+                rot[f"shoulder_{side}"] = [r(92) - kick - r(60) * low, r(10) if side == "l" else -r(4), 0.0]
+                rot[f"elbow_{side}"] = [r(55) - r(10) * low, 0.0, 0.0]
+            chest_x = r(14) * low
+            self._level("r", rot, chest_x, -90.0 + 60.0 * low, twist=False)
+        elif style == "cast":
+            k = math.sin(math.pi * t)
+            rot["shoulder_r"] = [r(20) + r(140) * k, -r(10), 0.0]
+            rot["elbow_r"] = [r(10), 0.0, 0.0]
+            if not self.held_l:
+                rot["shoulder_l"] = [r(15) + r(140) * k, r(10), 0.0]
+                rot["elbow_l"] = [r(10), 0.0, 0.0]
+            chest_x = -r(8) * k
+        return chest_x
