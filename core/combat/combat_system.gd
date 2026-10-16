@@ -614,24 +614,48 @@ func _launch(slot: int, t: int, dist: int, hit: Damage.Hit, cannon: bool) -> voi
 	for m in hit.multipliers:
 		mult = mult * m / 1000
 	var shot_flags := Projectiles.CANNON if cannon else 0
-	if _in_terrain(t, _forest) and rng.chance_permille(rules.forest_miss_permille):
+	if _lost_in_forest(t):
 		shot_flags |= Projectiles.MISS
-	# Flight time in whole ticks, rounded up: dist / (speed per tick).
+	var e := entities
+	_send_shot(
+		slot + 1, e.owners[slot], e.pos_x[slot], e.pos_y[slot], t, dist, hit, mult, shot_flags
+	)
+
+
+## A tower's arrow (TowerFire): from (sx, sy) at unit slot t, no class bonus; the shooter is
+## minus the building id `b`.
+func tower_shot(
+	b: int, owner: int, sx: int, sy: int, t: int, damage: int, kind: StringName
+) -> void:
+	var hit := Damage.Hit.new()
+	hit.damage = damage
+	hit.damage_type = kind
+	hit.side = _side(t, sx, sy)
+	var shot_flags := Projectiles.MISS if _lost_in_forest(t) else 0
+	var dist := Fixed.distance(sx, sy, entities.pos_x[t], entities.pos_y[t])
+	_send_shot(-b, owner, sx, sy, t, dist, hit, 1000, shot_flags)
+
+
+## Puts a shot in the air from (sx, sy) at unit slot t, `dist` away; flight time in whole
+## ticks, rounded up.
+func _send_shot(
+	shooter: int,
+	owner: int,
+	sx: int,
+	sy: int,
+	t: int,
+	dist: int,
+	hit: Damage.Hit,
+	mult: int,
+	shot_flags: int
+) -> void:
 	var per_second := rules.projectile_speed_milli * Fixed.ONE
 	var flight := maxi(1, (dist * 1000 * Fixed.TICKS_PER_SECOND + per_second - 1) / per_second)
-	var e := entities
-	shots.launch(
-		slot + 1,
-		e.owners[slot],
-		t + 1,
-		e.pos_x[slot],
-		e.pos_y[slot],
-		tick,
-		flight,
-		hit,
-		mult,
-		shot_flags
-	)
+	shots.launch(shooter, owner, t + 1, sx, sy, tick, flight, hit, mult, shot_flags)
+
+
+func _lost_in_forest(t: int) -> bool:
+	return _in_terrain(t, _forest) and rng.chance_permille(rules.forest_miss_permille)
 
 
 func _land_shots() -> void:

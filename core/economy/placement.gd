@@ -6,6 +6,10 @@ extends RefCounted
 ## Places of power (M7): a shrine (tag power_place_only) goes only on the top-left cell of a site
 ## its player holds; nothing else may cover a site's cells.
 
+## What may be put into a line (replacing its pieces), and what a line is made of.
+const REPLACING: Array[StringName] = [&"tower", &"gate"]
+const REPLACED: Array[StringName] = [&"palisade", &"wall"]
+
 var nav: NavGrid
 var rules: EconomyRulesDef
 ## Shared with EconomySystem.
@@ -71,7 +75,7 @@ func can_place(
 			fail = EconomySystem.Fail.POWER_PLACE
 	if fail == EconomySystem.Fail.OK:
 		var size := footprint(def, vertical)
-		fail = _cells_fail(def, cx, cy, size)
+		fail = _cells_fail(p, def, cx, cy, size)
 		if fail == EconomySystem.Fail.OK and not def.tags.has(&"power_place_only"):
 			if _covers_site(cx, cy, size):
 				fail = EconomySystem.Fail.OCCUPIED
@@ -97,14 +101,18 @@ func _rule_fail(state: PlayerState, def: BuildingDef, setup: bool) -> int:
 
 
 ## Where it may stand: on the map, on free cells, on open land (in the forest for in_forest).
-func _cells_fail(def: BuildingDef, cx: int, cy: int, size: Vector2i) -> int:
+## A tower or gate may also go on cells of the player's own palisade or wall (replaceable()).
+func _cells_fail(p: int, def: BuildingDef, cx: int, cy: int, size: Vector2i) -> int:
 	var in_forest := def.tags.has(&"in_forest")
 	for y in range(cy, cy + size.y):
 		for x in range(cx, cx + size.x):
 			if not nav.in_bounds(x, y):
 				return EconomySystem.Fail.OUT_OF_MAP
 			var cell := nav.cell_at(x, y)
-			if buildings.occupant[cell] != 0 or nav.blocked[cell] != 0:
+			var on := buildings.occupant[cell]
+			if on != 0 and replaceable(p, def, on) and nav.blocked[cell] == 1:
+				continue
+			if on != 0 or nav.blocked[cell] != 0:
 				return EconomySystem.Fail.OCCUPIED
 			if in_forest:
 				if nodes.wood[cell] <= 0:
@@ -156,6 +164,15 @@ func _has_done_tag(p: int, tag: StringName) -> bool:
 		if buildings.owners[s] == p and buildings.done[s] == 1 and buildings.defs[s].tags.has(tag):
 			return true
 	return false
+
+
+## Whether a new `def` of player p takes the place of building b: a tower or gate put into
+## the player's own palisade or wall line replaces the pieces under it.
+func replaceable(p: int, def: BuildingDef, b: int) -> bool:
+	if not REPLACING.has(def.base_id) or not buildings.is_alive(b):
+		return false
+	var s := b - 1
+	return buildings.owners[s] == p and REPLACED.has(buildings.defs[s].base_id)
 
 
 static func is_zaseka(def: BuildingDef) -> bool:

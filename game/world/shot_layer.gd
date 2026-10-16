@@ -2,9 +2,12 @@ class_name ShotLayer
 extends Node2D
 ## Draws arrows, bolts and javelins in flight (CombatSystem projectiles) as short dark strokes
 ## from the shooter's launch point to the target, moved along between ticks like the units.
+## Towers shoot from their top.
 
 const LENGTH := 10.0
 const ARC := 18.0
+## Screen height of a tower's fighting platform.
+const TOWER_TOP := 56.0
 
 var sim: Simulation
 var clock: SimClock
@@ -29,7 +32,9 @@ func _draw() -> void:
 	for i in c.shots.size():
 		var span := maxf(c.shots.lands[i] - c.shots.launched[i], 1.0)
 		var t := clampf((now - c.shots.launched[i]) / span, 0.0, 1.0)
-		var a := Iso.fixed_to_screen(c.shots.x[i], c.shots.y[i]) + Vector2(0, -UnitView.RADIUS)
+		# A tower's arrows (shooter = minus its id) leave from the top of it.
+		var lift := TOWER_TOP if c.shots.from[i] < 0 else UnitView.RADIUS
+		var a := Iso.fixed_to_screen(c.shots.x[i], c.shots.y[i]) + Vector2(0, -lift)
 		var target := units.view(c.shots.target[i])
 		var seen := sim.vision.sees_cell(
 			units.local_player, sim.nav.cell_of(c.shots.x[i], c.shots.y[i])

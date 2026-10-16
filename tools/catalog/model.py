@@ -413,6 +413,9 @@ class Builder:
             sight = layout.get("sight", {})
             default = sight.get("_default", 0)
             d["params"]["sight"] = sight.get(bid, sight.get(d["base_id"], default))
+            reload = layout.get("reload_ticks", {})
+            if bid in reload or d["base_id"] in reload:
+                d["params"]["reload_ticks"] = reload.get(bid, reload.get(d["base_id"]))
             for tag, ids in layout.get("tags", {}).items():
                 if bid in ids or d["base_id"] in ids:
                     d["tags"].append(tag)

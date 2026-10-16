@@ -116,7 +116,7 @@ msgid "A field. A peasant working it brings in food; when it is worked out, it i
 msgstr ""
 
 #: ui/tips.gd
-msgid "A gate in your wall: your own people pass, enemies do not."
+msgid "A gate in your wall: your own people pass, enemies have to break it down."
 msgstr ""
 
 #: ui/tips.gd
@@ -176,7 +176,7 @@ msgid "A sturdy archer of the castle garrisons."
 msgstr ""
 
 #: ui/tips.gd
-msgid "A tower that shoots at enemies who come near."
+msgid "A tower that shoots arrows at enemies in range. Palisades and walls join onto it."
 msgstr ""
 
 #: ui/tips.gd
@@ -358,6 +358,10 @@ msgstr ""
 
 #: ui/main_menu.gd
 msgid "Campaign: %s"
+msgstr ""
+
+#: ui/tips.gd
+msgid "Can be put into your own palisade or wall"
 msgstr ""
 
 #: ui/tips.gd
@@ -1614,6 +1618,10 @@ msgstr ""
 
 #: catalog:prototype_buildings
 msgid "gdl_stable"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "gdl_tower"
 msgstr ""
 
 #: catalog:prototype_buildings

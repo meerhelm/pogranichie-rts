@@ -65,6 +65,12 @@ var _costs_version := -1
 var _areas: Array[PackedInt32Array] = []
 var _area_parent: Array[PackedInt32Array] = []
 var _areas_version := -1
+## Gates: a gate's cells are blocked like a wall, but open to its owner's units. Per player,
+## the cells of its finished gates (ascending), and step costs with them open, per player and
+## movement class (built on demand for the grid version _own_version).
+var _gates: Dictionary[int, PackedInt32Array] = {}
+var _own_costs: Dictionary[int, Array] = {}
+var _own_version := -1
 
 
 ## An all-grass grid, or of the given terrain defs. `terrains` maps id -> TerrainDef; when
@@ -177,6 +183,88 @@ func set_blocked(cell: int, is_blocked: bool) -> void:
 		if count == 0:
 			closing_version += 1
 		_changed(cell, count == 0 or now == 0)
+
+
+## Opens the blocked `cell` to `owner`'s units (a finished gate), or closes it again.
+func set_gate(owner: int, cell: int, is_open: bool) -> void:
+	var cells: PackedInt32Array = _gates.get(owner, PackedInt32Array())
+	var i := cells.find(cell)
+	if is_open == (i >= 0):
+		return
+	if is_open:
+		cells.insert(cells.bsearch(cell), cell)
+	else:
+		cells.remove_at(i)
+	if cells.is_empty():
+		_gates.erase(owner)
+	else:
+		_gates[owner] = cells
+	_own_costs.clear()
+
+
+func has_gates(player: int) -> bool:
+	return _gates.has(player)
+
+
+## step_costs() as `player`'s units see them: its own gates are open.
+func step_costs_for(player: int, move_class: int, kind: int) -> PackedInt32Array:
+	if not _gates.has(player):
+		return step_costs(move_class, kind)
+	if _own_version != version:
+		_own_costs.clear()
+		_own_version = version
+	var key := player * MOVE_CLASS_COUNT + move_class
+	if not _own_costs.has(key):
+		var own: Array[PackedInt32Array] = []
+		for k in 4:
+			var arr := step_costs(move_class, k).duplicate()
+			for cell in _gates[player]:
+				# Only a cell closed by the gate alone, of a terrain this class may enter.
+				var permille := _enter[move_class][terrain[cell]]
+				if permille == 0 or blocked[cell] != 1:
+					continue
+				if k >= 2:
+					permille = maxi(permille * _uphill[terrain[cell]] / 1000, 1)
+				arr[cell] = (DIAGONAL if k % 2 == 1 else STRAIGHT) * 1000 / permille
+			own.append(arr)
+		_own_costs[key] = own
+	var costs: Array = _own_costs[key]
+	return costs[kind]
+
+
+## Whether `player`'s units can walk from area `a` to area `b` through its own gates.
+func gate_linked(player: int, move_class: int, a: int, b: int) -> bool:
+	if not _gates.has(player) or a < 0 or b < 0:
+		return false
+	# Union-find over area labels: the open areas beside each gate are joined through it.
+	var parent: Dictionary[int, int] = {}
+	for cell in _gates[player]:
+		if _enter[move_class][terrain[cell]] == 0:
+			continue
+		var x := cell % width
+		var first := -1
+		for nb: int in [
+			cell - width, cell + width, cell - 1 if x > 0 else -1, cell + 1 if x < width - 1 else -1
+		]:
+			if nb < 0 or nb >= cell_count():
+				continue
+			var label := area(move_class, nb)
+			if label < 0:
+				continue
+			var root := _link_root(parent, label)
+			if first < 0:
+				first = root
+			elif root != first:
+				parent[maxi(root, first)] = mini(root, first)
+				first = mini(root, first)
+	return _link_root(parent, a) == _link_root(parent, b)
+
+
+static func _link_root(parent: Dictionary[int, int], label: int) -> int:
+	var root := label
+	while parent.has(root) and parent[root] != root:
+		root = parent[root]
+	return root
 
 
 func object_at(cell: int) -> StringName:

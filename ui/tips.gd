@@ -203,9 +203,11 @@ static func purpose(def: BuildingDef) -> String:
 				"A wall of sharpened stakes: drag to lay a line. Holds enemies off until they break through; it burns."
 			)
 		&"gate":
-			return t("A gate in your wall: your own people pass, enemies do not.")
+			return t("A gate in your wall: your own people pass, enemies have to break it down.")
 		&"tower":
-			return t("A tower that shoots at enemies who come near.")
+			return t(
+				"A tower that shoots arrows at enemies in range. Palisades and walls join onto it."
+			)
 		&"market":
 			return t("A trading house. Trade is not in this version yet.")
 		&"smithy":
@@ -281,6 +283,8 @@ static func placement(def: BuildingDef) -> PackedStringArray:
 		lines.append(t("Only next to the forest"))
 	if def.tags.has(&"walkable"):
 		lines.append(t("Units walk over it"))
+	if BuildingPlacement.REPLACING.has(def.base_id):
+		lines.append(t("Can be put into your own palisade or wall"))
 	if def.tags.has(&"fireproof"):
 		lines.append(t("Does not burn"))
 	var w := def.param(&"size_w", 1)

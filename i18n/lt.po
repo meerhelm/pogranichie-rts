@@ -89,8 +89,8 @@ msgstr "Greitas lengvasis raitelis su sulicomis."
 msgid "A field. A peasant working it brings in food; when it is worked out, it is sown again for its price."
 msgstr "Laukas. Jame dirbantis valstietis renka maistą; kai laukas išsenka, jis vėl apsėjamas už savo kainą."
 
-msgid "A gate in your wall: your own people pass, enemies do not."
-msgstr "Vartai jūsų sienoje: savi praeina, priešai ne."
+msgid "A gate in your wall: your own people pass, enemies have to break it down."
+msgstr "Vartai jūsų sienoje: savi praeina, priešams tenka juos išlaužti."
 
 msgid "A half-brother in a grey cloak: the Order's medium horse."
 msgstr "Pusbrolis pilku apsiaustu: vidutinė Ordino raitija."
@@ -134,8 +134,8 @@ msgstr "Maisto sandėlis prie laukų: valstiečiai neša derlių trumpesniu keli
 msgid "A sturdy archer of the castle garrisons."
 msgstr "Tvirtas pilių įgulų lankininkas."
 
-msgid "A tower that shoots at enemies who come near."
-msgstr "Bokštas, šaudantis į artyn priėjusius priešus."
+msgid "A tower that shoots arrows at enemies in range. Palisades and walls join onto it."
+msgstr "Bokštas, šaudantis strėlėmis į priešus, esančius šaudymo nuotolyje. Prie jo jungiasi aptvarai ir sienos."
 
 msgid "A trading house. Trade is not in this version yet."
 msgstr "Prekybos namai. Prekybos šioje versijoje dar nėra."
@@ -271,6 +271,9 @@ msgstr "Sudegink Skirsnemunės pilį"
 
 msgid "Campaign: %s"
 msgstr "Kampanija: %s"
+
+msgid "Can be put into your own palisade or wall"
+msgstr "Galima įstatyti į savo aptvarą ar sieną"
 
 msgid "Can dismount to fight on foot (V)"
 msgstr "Gali nulipti nuo žirgo ir kautis pėsčias (V)"
@@ -1201,6 +1204,9 @@ msgstr "Ietininkas su ragotine"
 
 msgid "gdl_stable"
 msgstr "Arklidė"
+
+msgid "gdl_tower"
+msgstr "Bokštas"
 
 msgid "gdl_town_center"
 msgstr "Dvaras"

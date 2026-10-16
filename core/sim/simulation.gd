@@ -14,7 +14,7 @@ extends RefCounted
 ## 8: M9 fire (arson, burning, spreading, dousing), heroes' own auras, mission locks and the
 ## mission script (MissionRuntime) in the world.
 ## 10: taking own buildings apart (DISMANTLE, salvage piles carried to storage).
-const SIM_VERSION := 10
+const SIM_VERSION := 11
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).
@@ -72,6 +72,8 @@ var magic: MagicSystem
 var victory: SkirmishVictory
 ## Arson and burning buildings (M9); off without the catalog's fire rules.
 var fire: FireSystem
+## Towers shooting at enemies in range.
+var towers: TowerFire
 ## The mission's script (M9): triggers, objectives and its own units' orders; null in a skirmish.
 var mission: MissionRuntime
 var data_version: String
@@ -130,6 +132,8 @@ func _init(
 	vision.mist = magic.mist
 	victory = SkirmishVictory.new(db.skirmish if db != null else null, economy, magic.places)
 	fire = FireSystem.new(economy, rng, db.fire if db != null else null, stop_unit)
+	towers = TowerFire.new(economy.buildings, entities, combat)
+	towers.vision = vision
 
 
 ## Queues a command for its tick. Commands for a tick already simulated are refused,
@@ -149,6 +153,7 @@ func step() -> void:
 	if mission != null:
 		mission.step(tick)
 	combat.step(tick)
+	towers.step()
 	economy.step(tick)
 	fire.step(tick)
 	magic.step(tick)
@@ -169,6 +174,7 @@ func step_profiled(times: Dictionary) -> void:
 		mission.step(tick)
 	t = _lap(times, "mission", t)
 	combat.step(tick)
+	towers.step()
 	t = _lap(times, "combat", t)
 	economy.step(tick)
 	t = _lap(times, "economy", t)
@@ -528,7 +534,8 @@ func _group_flows(ids: PackedInt32Array, x: int, y: int) -> Dictionary:
 			continue
 		var flow_id := _next_flow_id
 		_next_flow_id += 1
-		_flows[flow_id] = FlowField.new(nav, cls, goal, starts[cls])
+		var owner := entities.owners[ids[0] - 1]
+		_flows[flow_id] = FlowField.new(nav, cls, goal, starts[cls], owner)
 		_flow_users[flow_id] = 0
 		_flow_queue.append(flow_id)
 		result[cls] = flow_id
@@ -588,7 +595,7 @@ func _serve_paths() -> void:
 			_search_goal = to
 			_search_version = nav.closing_version
 			var from := nav.cell_of(e.pos_x[slot], e.pos_y[slot])
-			pathfinder.begin(e.move_class[slot], from, to)
+			pathfinder.begin(e.move_class[slot], from, to, e.owners[slot])
 		spent += pathfinder.resume(PATH_BUDGET - spent)
 		if not pathfinder.done:
 			break
@@ -794,12 +801,16 @@ func _smooth(id: int) -> void:
 	var goal := nav.cell_of(e.target_x[slot], e.target_y[slot])
 	if path[-1] == goal and path.size() - i <= DIRECT_CELLS:
 		var slowest := _slowest_on(cls, path, i, path.size() - 1)
-		if _line_clear(cls, px, py, e.target_x[slot], e.target_y[slot], slowest):
+		if slowest > 0 and _line_clear(cls, px, py, e.target_x[slot], e.target_y[slot], slowest):
 			e.direct[slot] = 1
 			return
 	for j in range(mini(i + SMOOTH_LOOKAHEAD, path.size() - 1), i, -1):
 		var slowest := _slowest_on(cls, path, i, j)
-		if _line_clear(cls, px, py, nav.center_x(path[j]), nav.center_y(path[j]), slowest):
+		# Through an own gate (closed to everyone else) only from cell to cell.
+		if (
+			slowest > 0
+			and _line_clear(cls, px, py, nav.center_x(path[j]), nav.center_y(path[j]), slowest)
+		):
 			e.path_index[slot] = j
 			return
 

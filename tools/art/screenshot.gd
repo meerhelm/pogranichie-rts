@@ -12,8 +12,11 @@ extends SceneTree
 ##   crossbowman by the town centre), panel:WHAT[:HOVER] (the bottom panel with WHAT selected:
 ##   peasants, army (spearmen, a light horseman, a wise woman) or a building base id such as
 ##   town_center or granary, finished by the town centre; plenty of resources; the mouse over the
-##   button HOVER, a building, unit, tech or spell id, or order<N> for the Nth order button)
-## SHOT_LOCALE=be (or pl, uk, lt) in the environment shoots in that language.
+##   button HOVER, a building, unit, tech or spell id, or order<N> for the Nth order button),
+##   towers:X:Y (no fog: from cell X, Y a palisade ring of the player's with a tower in each
+##   corner and a gate, a house inside; knechts outside storm the house, spearmen inside)
+## SHOT_LOCALE=be (or pl, uk, lt) in the environment shoots in that language; SHOT_AFTER=N
+## waits N seconds after the action instead of 1 (2.5 for actions with arguments).
 
 var _out := "user://screenshot.png"
 var _seconds := 6.0
@@ -50,7 +53,10 @@ func _shoot() -> void:
 		cam.zoom = Vector2.ONE * _zoom
 	await create_timer(_seconds).timeout
 	_act()
-	await create_timer(2.5 if _action.count(":") > 1 else 1.0).timeout
+	var after := 2.5 if _action.count(":") > 1 else 1.0
+	if not OS.get_environment("SHOT_AFTER").is_empty():
+		after = float(OS.get_environment("SHOT_AFTER"))
+	await create_timer(after).timeout
 	await process_frame
 	var img := root.get_texture().get_image()
 	img.save_png(_out)
@@ -85,6 +91,9 @@ func _act() -> void:
 		_dismantle(main, _action == "work")
 	elif _action == "fight":
 		_fight(main)
+	elif _action.begins_with("towers:"):
+		var parts := _action.split(":")
+		_towers(main, int(parts[1]), int(parts[2]))
 	elif _action.begins_with("click:"):
 		_click(main, _action.split(":")[1])
 	elif _action.begins_with("panel:"):
@@ -140,6 +149,40 @@ func _showcase(main: Node, faction: String, x0: int, y0: int) -> void:
 			ux += 1
 	var cam: RtsCamera = main.get_node("Camera")
 	cam.look_at_point(Iso.cell_to_screen(Vector2(x0 + 12, y0 + 9)))
+
+
+func _towers(main: Node, x0: int, y0: int) -> void:
+	var sim: Simulation = main.get("sim")
+	sim.vision.rules = null
+	(main.get_node("World/Fog") as Node2D).visible = false
+	var grass := sim.nav.terrain_index(&"t_grass")
+	for y in range(y0, y0 + 14):
+		for x in range(x0, x0 + 18):
+			sim.nav.set_terrain(sim.nav.cell_at(x, y), grass)
+	var eco := sim.economy
+	var corners := [Vector2i(5, 2), Vector2i(13, 2), Vector2i(5, 10), Vector2i(13, 10)]
+	for y in range(2, 11):
+		for x in range(5, 14):
+			if x != 5 and x != 13 and y != 2 and y != 10:
+				continue
+			var id := &"gdl_palisade"
+			if Vector2i(x, y) in corners:
+				id = &"gdl_tower"
+			elif Vector2i(x, y) == Vector2i(5, 6):
+				id = &"gdl_gate"
+			eco.complete(eco._found(1, sim.catalog().building(id), x0 + x, y0 + y, false))
+	var house := eco._found(1, sim.catalog().building(&"gdl_house"), x0 + 9, y0 + 5, false)
+	eco.complete(house)
+	var knechts := PackedInt32Array()
+	for i in 6:
+		var at := Vector2i(Fixed.from_cells(x0) + Fixed.HALF, Fixed.from_cells(y0 + 3 + i))
+		knechts.append(sim.spawn_unit(&"to_knecht", 2, at.x, at.y))
+	sim.enqueue(SimCommand.on_building(sim.tick, 2, SimCommand.Kind.ASSAULT, knechts, house))
+	for i in 3:
+		var at := Fixed.from_cells(x0 + 7 + i) + Fixed.HALF
+		sim.spawn_unit(&"gdl_spearman", 1, at, Fixed.from_cells(y0 + 8) + Fixed.HALF)
+	var cam: RtsCamera = main.get_node("Camera")
+	cam.look_at_point(Iso.cell_to_screen(Vector2(x0 + 8, y0 + 6)))
 
 
 func _finish(sim: Simulation, id: int) -> void:

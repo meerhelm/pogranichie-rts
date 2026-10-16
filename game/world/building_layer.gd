@@ -14,8 +14,8 @@ extends Node2D
 ## Buildings with rendered art (SpriteDB) show their sprite instead of the box, in stages:
 ## foundation, rising walls, finished, damaged twice as HP falls; a finished building that is
 ## gone leaves ruins for RUBBLE_TICKS. Palisade cells grow arms toward their neighbours in
-## the line, gates turn along it, a zaseka placed along y uses its turned view (`<id>_v`).
-## Flat buildings (farms, gates) draw their art on the ground layer.
+## the line (towers and gates included), gates turn along it, a zaseka placed along y uses its
+## turned view (`<id>_v`). Flat buildings (farms, hives) draw their art on the ground layer.
 
 const DEPOSIT_COLORS := {
 	ResourceNodes.Source.IRON: Color(0.35, 0.22, 0.16),
@@ -33,8 +33,9 @@ const HEIGHT_PER_CELL := 10.0
 ## Ruins stay this long (60 s at 20 ticks a second).
 const RUBBLE_TICKS := 1200
 const FLAME_COLORS: Array[Color] = [Color(1.0, 0.55, 0.1, 0.85), Color(1.0, 0.85, 0.2, 0.75)]
-## Buildings that make up lines and join their neighbours.
-const LINE_BASES: Array[StringName] = [&"palisade", &"gate", &"wall"]
+## Buildings that make up lines and join their neighbours: palisades and walls reach out to
+## gates and towers next to them, whoever's they are.
+const LINE_BASES: Array[StringName] = [&"palisade", &"gate", &"wall", &"tower"]
 
 var sim: Simulation
 ## The building the local player has selected (BuildingStore id), outlined.

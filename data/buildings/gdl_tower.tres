@@ -28,4 +28,4 @@ attack_range = 7
 power_rate_milli = 0
 trains = Array[StringName]([])
 tags = Array[StringName]([&"watch"])
-params = Dictionary[StringName, int]({&"sight": 8, &"size_h": 1, &"size_w": 1})
+params = Dictionary[StringName, int]({&"reload_ticks": 40, &"sight": 8, &"size_h": 1, &"size_w": 1})

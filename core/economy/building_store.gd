@@ -53,6 +53,8 @@ var repair_owed: Array[PackedInt32Array] = []
 var dismantling := PackedByteArray()
 var dismantle_total := PackedInt64Array()
 var dismantle_left := PackedInt64Array()
+## Towers: ticks until the next arrow (TowerFire).
+var cooldown := PackedInt32Array()
 
 
 func resize_map(cells: int) -> void:
@@ -106,6 +108,7 @@ func add(
 	dismantling.append(0)
 	dismantle_total.append(0)
 	dismantle_left.append(0)
+	cooldown.append(0)
 	alive_ids.append(id)
 	return id
 
@@ -181,3 +184,4 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_8(dismantling[s])
 		buf.put_64(dismantle_total[s])
 		buf.put_64(dismantle_left[s])
+		buf.put_32(cooldown[s])

@@ -90,6 +90,8 @@ var carry := PackedInt32Array()
 ## Gathering progress toward the next whole unit (UNIT_ACC = one unit).
 var gather_acc := PackedInt32Array()
 var tries := PackedInt32Array()
+## The building an assault was ordered at, while the unit breaks a wall on the way (Breach).
+var assault_goal := PackedInt32Array()
 
 var _walk: Callable
 var _stop: Callable
@@ -165,6 +167,7 @@ func on_spawn(id: int, def: UnitDef) -> void:
 	carry.append(0)
 	gather_acc.append(0)
 	tries.append(0)
+	assault_goal.append(0)
 	var p := player(entities.owners[id - 1])
 	if p != null and def != null:
 		p.pop_units += def.pop
@@ -418,6 +421,7 @@ func _order_assault(cmd: SimCommand, units: PackedInt32Array) -> void:
 		end_job(id - 1)
 		job[id - 1] = Job.ASSAULT
 		job_ref[id - 1] = b
+		assault_goal[id - 1] = b
 
 
 # --- placement and prices ------------------------------------------------------------------
@@ -441,8 +445,14 @@ func _found(p: int, def: BuildingDef, cx: int, cy: int, vertical: bool) -> int:
 	if BuildingPlacement.is_zaseka(def):
 		full_hp = full_hp * (1000 + state.zaseka_hp_bonus) / 1000
 		ticks = ticks * 1000 / (1000 + state.zaseka_speed_bonus)
+	for y in range(cy, cy + size.y):
+		for x in range(cx, cx + size.x):
+			var old := buildings.occupant[nav.cell_at(x, y)]
+			if old != 0 and placement.replaceable(p, def, old):
+				remove_building(old)
 	var b := buildings.add(def, p, cx, cy, size.x, size.y, full_hp, maxi(ticks, 1) * 1000)
-	var blocking := not def.tags.has(&"walkable") and def.base_id != GATE
+	# A gate closes its cell like a wall; once finished it opens to its owner (NavGrid).
+	var blocking := not def.tags.has(&"walkable")
 	buildings.blocks[b - 1] = 1 if blocking else 0
 	for cell in buildings.cells_of(b, nav.width):
 		buildings.occupant[cell] = b
@@ -487,6 +497,7 @@ func complete(b: int) -> void:
 	for cell in buildings.cells_of(b, nav.width):
 		if def.base_id == GATE:
 			buildings.gates[cell] = buildings.owners[s]
+			nav.set_gate(buildings.owners[s], cell, true)
 		if BuildingPlacement.is_zaseka(def):
 			# The trees are down: the cells are a felled barrier now, not forest.
 			nodes.wood[cell] = 0
@@ -522,6 +533,8 @@ func remove_building(b: int) -> void:
 				state.pop_training -= db.unit(item).pop
 	for cell in buildings.cells_of(b, nav.width):
 		buildings.occupant[cell] = 0
+		if buildings.gates[cell] != 0:
+			nav.set_gate(buildings.gates[cell], cell, false)
 		buildings.gates[cell] = 0
 		if buildings.blocks[s] == 1:
 			nav.set_blocked(cell, false)
@@ -874,6 +887,10 @@ func _hunt(id: int) -> void:
 func _assault(id: int) -> void:
 	var slot := id - 1
 	var b := job_ref[slot]
+	if not buildings.is_alive(b) and buildings.is_alive(assault_goal[slot]):
+		# The way is broken open: on at the building it was sent at.
+		b = assault_goal[slot]
+		job_ref[slot] = b
 	if not buildings.is_alive(b):
 		end_job(slot)
 		return
@@ -881,6 +898,8 @@ func _assault(id: int) -> void:
 	var reach := _reach()
 	if def.attack_range > 0:
 		reach = Fixed.from_cells(def.attack_range + entities.up_range[slot])
+	if tries[slot] > 0 and entities.orders[slot] != EntityStore.Order.MOVE:
+		b = _break_in(id, b, reach)
 	if not to_building(id, b, reach):
 		return
 	if entities.cooldown[slot] > 0:
@@ -888,6 +907,25 @@ func _assault(id: int) -> void:
 	entities.cooldown[slot] = maxi(def.reload_ticks, 1)
 	entities.last_attack[slot] = tick
 	hit_building(b, building_damage(slot, b))
+
+
+## Stopped short of building `b` with no way to it: the enemy palisade, gate or tower in the
+## way becomes the target (Breach), or `b` stays when there is none or the way is open.
+func _break_in(id: int, b: int, reach: int) -> int:
+	var slot := id - 1
+	var e := entities
+	if buildings.distance_sq(b, e.pos_x[slot], e.pos_y[slot]) <= reach * reach:
+		return b
+	var cell := nav.cell_of(e.pos_x[slot], e.pos_y[slot])
+	var cls: int = e.move_class[slot]
+	if not Breach.cut_off(nav, buildings, cls, e.owners[slot], cell, b):
+		return b
+	var wall := Breach.target(nav, buildings, e.owners[slot], cell, b)
+	if wall == BuildingStore.NO_ID:
+		return b
+	job_ref[slot] = wall
+	tries[slot] = 0
+	return wall
 
 
 ## One strike of a unit on a building (Damage.against_building).
@@ -923,6 +961,7 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_8(job_source[s])
 		buf.put_8(job_target[s])
 		buf.put_32(job_ref[s])
+		buf.put_32(assault_goal[s])
 		buf.put_8(claimed[s])
 		buf.put_32(carry_res[s])
 		buf.put_32(carry[s])

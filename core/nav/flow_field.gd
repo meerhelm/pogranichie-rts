@@ -6,6 +6,8 @@ extends RefCounted
 
 var grid: NavGrid
 var move_class: int
+## The group's player: its own gates are open to it.
+var player := 0
 var goal: int
 ## Grid closing_version the field was built for; a closed or slower cell makes it stale.
 var version: int
@@ -29,9 +31,12 @@ var _bx1 := -1
 var _by1 := -1
 
 
-func _init(nav: NavGrid, p_move_class: int, goal_cell: int, starts: PackedInt32Array) -> void:
+func _init(
+	nav: NavGrid, p_move_class: int, goal_cell: int, starts: PackedInt32Array, p_player: int = 0
+) -> void:
 	grid = nav
 	move_class = p_move_class
+	player = p_player
 	goal = goal_cell
 	version = nav.closing_version
 	var n := nav.cell_count()
@@ -81,10 +86,10 @@ func build(budget: int) -> int:
 	var by0 := _by0
 	var bx1 := _bx1
 	var by1 := _by1
-	var straight := grid.step_costs(move_class, 0)
-	var diagonal := grid.step_costs(move_class, 1)
-	var climb_straight := grid.step_costs(move_class, 2)
-	var climb_diagonal := grid.step_costs(move_class, 3)
+	var straight := grid.step_costs_for(player, move_class, 0)
+	var diagonal := grid.step_costs_for(player, move_class, 1)
+	var climb_straight := grid.step_costs_for(player, move_class, 2)
+	var climb_diagonal := grid.step_costs_for(player, move_class, 3)
 	var hills := grid.hill_cells()
 	var min_s := grid.min_step_cost(move_class, 0)
 	var min_d := grid.min_step_cost(move_class, 1)

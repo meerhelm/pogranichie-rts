@@ -89,8 +89,8 @@ msgstr "Швидкий легкий вершник із суліцами."
 msgid "A field. A peasant working it brings in food; when it is worked out, it is sown again for its price."
 msgstr "Поле. Селянин на ньому добуває їжу; коли поле вичерпане, його знову засівають за його ціну."
 
-msgid "A gate in your wall: your own people pass, enemies do not."
-msgstr "Ворота у вашій стіні: свої проходять, вороги ні."
+msgid "A gate in your wall: your own people pass, enemies have to break it down."
+msgstr "Ворота у вашій стіні: свої проходять, ворогам доведеться їх виламати."
 
 msgid "A half-brother in a grey cloak: the Order's medium horse."
 msgstr "Напівбрат у сірому плащі: середня кіннота Ордену."
@@ -134,8 +134,8 @@ msgstr "Склад для їжі біля полів: селяни носять 
 msgid "A sturdy archer of the castle garrisons."
 msgstr "Витривалий лучник замкових залог."
 
-msgid "A tower that shoots at enemies who come near."
-msgstr "Вежа, що стріляє по ворогах, які підходять близько."
+msgid "A tower that shoots arrows at enemies in range. Palisades and walls join onto it."
+msgstr "Вежа, що стріляє з лука по ворогах у межах дальності. До неї приєднуються частокіл і стіни."
 
 msgid "A trading house. Trade is not in this version yet."
 msgstr "Торговий дім. Торгівлі в цій версії поки немає."
@@ -271,6 +271,9 @@ msgstr "Спаліть замок Скірснемуне"
 
 msgid "Campaign: %s"
 msgstr "Кампанія: %s"
+
+msgid "Can be put into your own palisade or wall"
+msgstr "Можна ставити у свій частокіл або стіну"
 
 msgid "Can dismount to fight on foot (V)"
 msgstr "Може спішитися і битися пішки (V)"
@@ -1201,6 +1204,9 @@ msgstr "Ополченець з рогатиною"
 
 msgid "gdl_stable"
 msgstr "Стайня"
+
+msgid "gdl_tower"
+msgstr "Вежа"
 
 msgid "gdl_town_center"
 msgstr "Двір"

@@ -32,6 +32,8 @@ var _heap := MinHeap.new()
 # The open search: movement class, start, target, best cell so far and its heuristic, A* cost
 # floors, and whether the target was reached.
 var _s_class := 0
+## The player whose unit searches: its own gates are open to it.
+var _s_player := 0
 var _s_start := 0
 var _s_target := 0
 var _s_best := 0
@@ -80,8 +82,9 @@ static func neighbour(nav: NavGrid, cell: int, dir: int) -> int:
 ## moved to the nearest passable cell; when the goal cannot be reached, the path leads to the
 ## reachable cell closest to it (by straight distance). Empty when already there.
 ## The whole search at once; the simulation runs it in slices with begin() and resume().
-func find_path(move_class: int, start: int, goal: int) -> PackedInt32Array:
-	begin(move_class, start, goal)
+## `player`'s own gates are open to it (0: nobody's).
+func find_path(move_class: int, start: int, goal: int, player: int = 0) -> PackedInt32Array:
+	begin(move_class, start, goal, player)
 	var expanded := 0
 	while not done:
 		expanded += resume(1 << 30)
@@ -90,17 +93,23 @@ func find_path(move_class: int, start: int, goal: int) -> PackedInt32Array:
 
 
 ## Starts a search that resume() carries on, a slice at a time. Only one search is open at once.
-func begin(move_class: int, start: int, goal: int) -> void:
+func begin(move_class: int, start: int, goal: int, player: int = 0) -> void:
 	var target := grid.nearest_passable(move_class, goal, GOAL_SNAP_RADIUS)
 	if target == NavGrid.NO_CELL:
 		target = goal
 	var start_area := grid.area(move_class, start)
-	if start_area >= 0 and grid.area(move_class, target) != start_area:
+	var target_area := grid.area(move_class, target)
+	if (
+		start_area >= 0
+		and target_area != start_area
+		and not grid.gate_linked(player, move_class, start_area, target_area)
+	):
 		# Across water or a thicket with no way round: aim for the closest reachable cell
 		# instead of searching the whole area to find out.
 		target = grid.nearest_in_area(move_class, start_area, target)
 	last_expanded = 0
 	_s_class = move_class
+	_s_player = player
 	_s_start = start
 	_s_target = target
 	_s_found = false
@@ -133,10 +142,10 @@ func resume(budget: int) -> int:
 	var h_max := grid.height - 1
 	var w_max := w - 1
 	var move_class := _s_class
-	var straight := grid.step_costs(move_class, 0)
-	var diagonal := grid.step_costs(move_class, 1)
-	var climb_straight := grid.step_costs(move_class, 2)
-	var climb_diagonal := grid.step_costs(move_class, 3)
+	var straight := grid.step_costs_for(_s_player, move_class, 0)
+	var diagonal := grid.step_costs_for(_s_player, move_class, 1)
+	var climb_straight := grid.step_costs_for(_s_player, move_class, 2)
+	var climb_diagonal := grid.step_costs_for(_s_player, move_class, 3)
 	var hills := grid.hill_cells()
 	var min_s := _s_min_s
 	var min_d := _s_min_d

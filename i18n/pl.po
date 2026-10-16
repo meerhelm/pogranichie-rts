@@ -89,8 +89,8 @@ msgstr "Szybki lekki jeździec z sulicami."
 msgid "A field. A peasant working it brings in food; when it is worked out, it is sown again for its price."
 msgstr "Pole. Chłop przy nim zbiera żywność; gdy pole się wyczerpie, zostaje ponownie obsiane za swoją cenę."
 
-msgid "A gate in your wall: your own people pass, enemies do not."
-msgstr "Brama w twoim murze: swoi przechodzą, wrogowie nie."
+msgid "A gate in your wall: your own people pass, enemies have to break it down."
+msgstr "Brama w twoim murze: swoi przechodzą, wrogowie muszą ją wyłamać."
 
 msgid "A half-brother in a grey cloak: the Order's medium horse."
 msgstr "Półbrat w szarym płaszczu: średnia jazda Zakonu."
@@ -134,8 +134,8 @@ msgstr "Skład żywności przy polach: chłopi noszą plony krótszą drogą. Ba
 msgid "A sturdy archer of the castle garrisons."
 msgstr "Wytrzymały łucznik zamkowych załóg."
 
-msgid "A tower that shoots at enemies who come near."
-msgstr "Wieża, która strzela do wrogów, gdy podejdą blisko."
+msgid "A tower that shoots arrows at enemies in range. Palisades and walls join onto it."
+msgstr "Wieża, która strzela z łuku do wrogów w zasięgu. Dołączają do niej palisady i mury."
 
 msgid "A trading house. Trade is not in this version yet."
 msgstr "Dom handlowy. Handlu w tej wersji jeszcze nie ma."
@@ -271,6 +271,9 @@ msgstr "Spal zamek Skirsnemunę"
 
 msgid "Campaign: %s"
 msgstr "Kampania: %s"
+
+msgid "Can be put into your own palisade or wall"
+msgstr "Można wstawić we własną palisadę lub mur"
 
 msgid "Can dismount to fight on foot (V)"
 msgstr "Może zsiąść z konia i walczyć pieszo (V)"
@@ -1201,6 +1204,9 @@ msgstr "Pospolitak z rohatyną"
 
 msgid "gdl_stable"
 msgstr "Stajnia"
+
+msgid "gdl_tower"
+msgstr "Wieża"
 
 msgid "gdl_town_center"
 msgstr "Dwór"

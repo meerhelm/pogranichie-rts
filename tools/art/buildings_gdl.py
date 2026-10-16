@@ -14,6 +14,8 @@ wood everywhere, log frames (срубы), palisades, shingle and thatch.
 - gdl_siege_workshop: a shed, an unfinished cart, logs, ropes, wheels.
 - gdl_bort: a living pine with a hollowed hive closed by a board, a rope and a climbing iron.
 - gdl_gate: a wooden gate in the palisade with a platform over it.
+- gdl_tower: «Вежа», a log tower (сруб) with an overhanging fighting gallery (облам) with
+  loopholes and a shingled pyramid roof.
 """
 
 import math
@@ -82,6 +84,43 @@ def gate(vertical=False):
         return root
 
     return build
+
+
+def gdl_tower():
+    m = kit.mats()
+    root = S.empty("gdl_tower")
+    t = S.empty("tower", (0, 0, 0), root)
+    half = 0.9
+    S.box("footing", (2.1, 2.1, 0.3), (0, 0, 0.15), m["stone"], t)
+    # The srub: four log walls, their ends crossing at the corners.
+    for i, (x, y, rot) in enumerate([(0, -half, 0.0), (0, half, 0.0), (-half, 0, math.pi / 2),
+                                     (half, 0, math.pi / 2)]):
+        S.log_wall(f"srub_{i}", 2 * half, 5.6, 0.13, (x, y, 0.3 + (0.12 if i >= 2 else 0.0)), rot,
+                   m["logs"], t, seed=i)
+    kit.window("door", 0.75, 1.4, (-0.3, -half - 0.14, 0.3), 0.0, m["door"], t)
+    for z in (2.4, 4.2):
+        kit.window(f"slit_s_{z}", 0.12, 0.55, (0.4, -half - 0.14, z), 0.0, m["dark"], t)
+        kit.window(f"slit_e_{z}", 0.12, 0.55, (half + 0.14, -0.3, z), math.pi / 2, m["dark"], t)
+    # The fighting gallery (облам): beams out over the walls, a plank floor, plank walls with
+    # loopholes, open under the eaves.
+    g = 1.35
+    z0 = 6.0
+    for i, x in enumerate((-0.6, 0.6)):
+        S.box(f"beam_x_{i}", (2 * g + 0.2, 0.18, 0.18), (0, x, z0 - 0.1), m["logs_old"], t)
+        S.box(f"beam_y_{i}", (0.18, 2 * g + 0.2, 0.18), (x, 0, z0 - 0.28), m["logs_old"], t)
+    S.box("gallery_floor", (2 * g, 2 * g, 0.12), (0, 0, z0 + 0.06), m["plank"], t)
+    for i, (x, y, w, d) in enumerate([(0, -g, 2 * g, 0.1), (0, g, 2 * g, 0.1), (-g, 0, 0.1, 2 * g),
+                                      (g, 0, 0.1, 2 * g)]):
+        S.box(f"gallery_wall_{i}", (w, d, 1.0), (x, y, z0 + 0.62), m["plank"], t)
+    for k in (-0.6, 0.6):
+        kit.window(f"loop_s_{k}", 0.14, 0.35, (k, -g - 0.06, z0 + 0.55), 0.0, m["dark"], t)
+        kit.window(f"loop_e_{k}", 0.14, 0.35, (g + 0.06, k, z0 + 0.55), math.pi / 2, m["dark"], t)
+    for i, (x, y) in enumerate([(-g, -g), (g, -g), (g, g), (-g, g)]):
+        S.cyl(f"roof_post_{i}", 0.07, 0.07, 1.6, (x * 0.95, y * 0.95, z0 + 0.1), m["logs"], t, seg=6)
+    kit.hip_roof("roof", 2 * g, 2 * g, 1.9, 0.3, z0 + 1.7, m["shingle"], t)
+    S.box("shield_mark", (0.6, 0.05, 0.45), (0, -g - 0.08, z0 + 0.62), m["team"], t)
+    kit.flag(t, (0, 0, z0 + 3.4), 1.6, m)
+    return root
 
 
 def gdl_granary():
@@ -436,6 +475,7 @@ BUILDINGS = {
     "gdl_siege_workshop": (gdl_siege_workshop, (3, 3), 6),
     "gdl_bort": (gdl_bort, (1, 1), 10),
     "gdl_gate": (gate(), (1, 1), 6),
+    "gdl_tower": (gdl_tower, (1, 1), 11),
     "gdl_gate_v": (gate(True), (1, 1), 6),
     "gdl_palisade": (palisade_piece(""), (1, 1), 3),
 }

@@ -192,6 +192,10 @@
    "gdl_zaseka": 2,
    "mo_zaseka": 2,
    "mo_watchtower": 12
+  },
+  "_reload_source": "Towers shooting (2026-10-16): ticks between a tower's arrows → params.reload_ticks. Not in the catalog (it gives only «5 С, дальн. 7»), temporary: 2 s, as the archers' «2,0».",
+  "reload_ticks": {
+   "tower": 40
   }
  },
  "vision_rules": {
