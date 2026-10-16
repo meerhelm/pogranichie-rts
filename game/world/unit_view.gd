@@ -5,8 +5,9 @@ extends Node2D
 ## and a ring when selected. Above it, from M4: an HP bar once hurt or selected, a yellow mark
 ## while wavering and a white flag while fleeing. Position is set by UnitLayer, interpolated
 ## between ticks; UnitLayer also feeds the combat state with show_state().
-## Types with rendered art (SpriteDB) draw their sprite sheet instead of the body: idle or walk
-## in the facing direction, the team mask tinted with the owner's colour.
+## Types with rendered art (SpriteDB) draw their sprite sheet instead of the body: idle, walk,
+## work (peasants at their job) or attack (once per blow or shot) in the facing direction, the
+## team mask tinted with the owner's colour.
 
 enum Mood { STEADY, WAVERING, FLEEING }
 
@@ -45,6 +46,8 @@ var stealthed := false
 var sprite: SpriteDB.Sprite
 ## Walking (moved since the last tick) or standing, for the sheet's animation.
 var moving := false
+## At its job (gathering, building, taking apart) and standing: the sheet's work animation.
+var working := false
 ## Screen direction in 8 steps: 0 east, 2 south, 4 west, 6 north (clockwise, y down).
 var facing := 2:
 	set(value):
@@ -55,6 +58,8 @@ var facing := 2:
 var _anim_time := 0.0
 var _still_ticks := 0
 var _anim_frame := -1
+## Seconds into the attack animation, which plays once per blow; -1 when none plays.
+var _strike_time := -1.0
 
 
 func _ready() -> void:
@@ -64,14 +69,31 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_anim_time += delta
+	if _strike_time >= 0.0:
+		_strike_time += delta
+		var a: Dictionary = sprite.anims["attack"]
+		if _strike_time * float(a["fps"]) >= float(a["frames"]):
+			_strike_time = -1.0
+			_anim_time = 0.0
 	var frame := _frame()
 	if frame != _anim_frame:
 		_anim_frame = frame
 		queue_redraw()
 
 
+## Walking wins (a rider throwing on the move keeps riding), then a blow, then work.
+func _anim_name() -> String:
+	if moving:
+		return "walk"  # notr
+	if _strike_time >= 0.0:
+		return "attack"  # notr
+	if working and sprite.anims.has("work"):
+		return "work"  # notr
+	return "idle"  # notr
+
+
 func _anim() -> Dictionary:
-	var a: Dictionary = sprite.anims.get("walk" if moving else "idle", {})
+	var a: Dictionary = sprite.anims.get(_anim_name(), {})
 	if a.is_empty():
 		a = sprite.anims.values()[0]
 	return a
@@ -79,6 +101,8 @@ func _anim() -> Dictionary:
 
 func _frame() -> int:
 	var a := _anim()
+	if _anim_name() == "attack":
+		return mini(int(_strike_time * float(a["fps"])), int(a["frames"]) - 1)
 	return int(_anim_time * float(a["fps"])) % int(a["frames"])
 
 
@@ -174,3 +198,19 @@ func face(dx: int, dy: int) -> void:
 	var screen := Iso.cell_to_screen(Vector2(dx, dy))
 	var octant := wrapi(roundi(screen.angle() / (PI / 4.0)), 0, 8)
 	facing = octant
+
+
+## Plays the attack animation once from its start (a new blow restarts it).
+func strike() -> void:
+	if sprite == null or not sprite.anims.has("attack"):
+		return
+	_strike_time = 0.0
+	queue_redraw()
+
+
+func set_working(value: bool) -> void:
+	if working == value:
+		return
+	working = value
+	_anim_time = 0.0
+	queue_redraw()

@@ -4,6 +4,9 @@ extends Node2D
 ## so units glide at any frame rate while the simulation ticks 20 times a second.
 ## Children are y-sorted: a unit lower on screen is drawn in front.
 
+## No place to turn to (_work_point).
+const NO_POINT := Vector2i(-1, -1)
+
 var sim: Simulation
 var clock: SimClock
 var views: Dictionary[int, UnitView] = {}
@@ -13,6 +16,8 @@ var local_player := 1
 ## Draw everyone regardless of the fog (the debug arena).
 var reveal_all := false
 
+## Tick of each unit's last blow already shown, by id.
+var _struck: Dictionary[int, int] = {}
 ## Fixed positions at the previous and the latest tick, by id.
 var _prev: Dictionary[int, Vector2i] = {}
 var _cur: Dictionary[int, Vector2i] = {}
@@ -41,6 +46,7 @@ func _on_ticked(_tick: int) -> void:
 			_prev[id] = _cur[id]
 			view.face(p.x - _cur[id].x, p.y - _cur[id].y)
 			view.set_moving(p != _cur[id])
+			_show_action(id, view, p != _cur[id])
 		_cur[id] = p
 		_show_state(id, view)
 	for id: int in views.keys():
@@ -49,6 +55,7 @@ func _on_ticked(_tick: int) -> void:
 			views.erase(id)
 			_prev.erase(id)
 			_cur.erase(id)
+			_struck.erase(id)
 
 
 func _process(_delta: float) -> void:
@@ -75,6 +82,50 @@ func _show_state(id: int, v: UnitView) -> void:
 	v.visible = own or (not hidden and seen)
 	var hp := clampi(e.hp[slot] * 1000 / maxi(e.max_hp[slot], 1), 0, 1000)
 	v.show_state(hp, mood, hidden, e.move_class[slot])
+
+
+## Work and attack animations, turned toward what the unit works on or hits.
+func _show_action(id: int, v: UnitView, moved: bool) -> void:
+	if v.sprite == null:
+		return
+	var e := sim.entities
+	var slot := id - 1
+	var eco := sim.economy
+	var job := eco.job[slot] if eco.enabled() else EconomySystem.Job.NONE
+	var work := (
+		job in [EconomySystem.Job.GATHER, EconomySystem.Job.BUILD, EconomySystem.Job.DISMANTLE]
+		and eco.phase[slot] == EconomySystem.Phase.WORK
+	)
+	v.set_working(work)
+	var at := _work_point(slot, job) if work or job == EconomySystem.Job.ASSAULT else NO_POINT
+	var blow := e.last_attack[slot]
+	if blow != _struck.get(id, -1):
+		_struck[id] = blow
+		if blow >= 0:
+			v.strike()
+			if at == NO_POINT:
+				v.face(e.facing_x[slot], e.facing_y[slot])
+	if not moved and at != NO_POINT:
+		v.face(at.x - e.pos_x[slot], at.y - e.pos_y[slot])
+
+
+## Where a unit's job is, in fixed units: the building, resource cell or node it works on.
+func _work_point(slot: int, job: int) -> Vector2i:
+	var eco := sim.economy
+	var ref := eco.job_ref[slot]
+	var nav := sim.nav
+	var cell := -1
+	if job != EconomySystem.Job.GATHER or eco.job_target[slot] == EconomySystem.Target.BUILDING:
+		if not eco.buildings.is_alive(ref):
+			return NO_POINT
+		return Vector2i(eco.buildings.center_x(ref), eco.buildings.center_y(ref))
+	if eco.job_target[slot] == EconomySystem.Target.CELL:
+		cell = ref
+	elif ref > 0 and ref <= eco.nodes.alive.size() and eco.nodes.alive[ref - 1] == 1:
+		cell = eco.nodes.cells[ref - 1]
+	if cell < 0:
+		return NO_POINT
+	return Vector2i(nav.center_x(cell), nav.center_y(cell))
 
 
 func view(id: int) -> UnitView:

@@ -7,7 +7,9 @@ extends SceneTree
 ##   and unit of a faction, gdl or to, laid out from cell X, Y, finished, the camera on them),
 ##   click:WHAT (no fog, the camera on the first deposit, forest cell, enemy building or wild
 ##   animal, WHAT = node, forest, building or animal, and a left click on it), dismantle (the
-##   player's peasants take a house by the town centre apart, nearly done, so its salvage shows)
+##   player's peasants take a house by the town centre apart, nearly done, so its salvage shows),
+##   work (the same, caught while they work), fight (no fog, spearmen against knechts and a
+##   crossbowman by the town centre)
 
 var _out := "user://screenshot.png"
 var _seconds := 6.0
@@ -71,8 +73,10 @@ func _act() -> void:
 	elif _action.begins_with("showcase:"):
 		var parts := _action.split(":")
 		_showcase(main, parts[1], int(parts[2]), int(parts[3]))
-	elif _action == "dismantle":
-		_dismantle(main)
+	elif _action == "dismantle" or _action == "work":
+		_dismantle(main, _action == "work")
+	elif _action == "fight":
+		_fight(main)
 	elif _action.begins_with("click:"):
 		_click(main, _action.split(":")[1])
 	elif _action == "help" and main.has_node("UI/Hud"):
@@ -183,7 +187,7 @@ func _click(main: Node, what: String) -> void:
 		root.push_input(ev)
 
 
-func _dismantle(main: Node) -> void:
+func _dismantle(main: Node, working := false) -> void:
 	var sim: Simulation = main.get("sim")
 	var store := sim.economy.buildings
 	var tc := store.alive_ids[0]
@@ -203,11 +207,35 @@ func _dismantle(main: Node) -> void:
 			ids.append(id)
 	sim.enqueue(SimCommand.on_building(sim.tick, 1, SimCommand.Kind.DISMANTLE, ids, b))
 	sim.step()
-	store.dismantle_left[b - 1] = 600
+	if not working:
+		store.dismantle_left[b - 1] = 600
 	var at := Vector2(hx, hy)
-	for i in 300:
+	for i in 300 if not working else 80:
 		if not store.is_alive(b):
 			break
 		sim.step()
 	var cam: RtsCamera = main.get_node("Camera")
 	cam.look_at_point(Iso.cell_to_screen(at))
+
+
+func _fight(main: Node) -> void:
+	var sim: Simulation = main.get("sim")
+	sim.vision.rules = null
+	(main.get_node("World/Fog") as Node2D).visible = false
+	var store := sim.economy.buildings
+	var tc := store.alive_ids[0]
+	for b in store.alive_ids:
+		if store.owners[b - 1] == 1 and store.defs[b - 1].base_id == &"town_center":
+			tc = b
+	var x := store.cell_x[tc - 1] + 6
+	var y := store.cell_y[tc - 1] + 6
+	for i in 4:
+		var fy := Fixed.from_cells(y + i) + Fixed.ONE / 2
+		sim.spawn_unit(&"gdl_spearman", 1, Fixed.from_cells(x), fy)
+		sim.spawn_unit(&"to_knecht", 2, Fixed.from_cells(x + 3), fy)
+	sim.spawn_unit(&"to_crossbow", 2, Fixed.from_cells(x + 6), Fixed.from_cells(y + 2))
+	sim.spawn_unit(&"gdl_forest_archer", 1, Fixed.from_cells(x - 3), Fixed.from_cells(y + 2))
+	for i in 50:
+		sim.step()
+	var cam: RtsCamera = main.get_node("Camera")
+	cam.look_at_point(Iso.cell_to_screen(Vector2(x + 2, y + 2)))
