@@ -82,7 +82,8 @@ func test_enemy_is_hidden_by_the_fog_and_own_is_drawn() -> void:
 func test_top_bar_shows_stock_population_and_age() -> void:
 	var state := _sim.economy.player(1)
 	var food: Label = _hud._resources[0]
-	assert_eq(food.text, "Food %d" % state.stock[0])
+	assert_eq(food.text, str(state.stock[0]))
+	assert_string_contains(food.tooltip_text, "Food", "the name is in the tooltip")
 	assert_string_contains(_hud._population.text, "%d/" % state.pop_used())
 	assert_eq(_hud._age.text, "Appanage")
 	assert_eq(_hud._time.text, "0:00")

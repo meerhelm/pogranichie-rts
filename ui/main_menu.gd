@@ -6,6 +6,7 @@ extends Control
 const GAME_SCENE := "res://game/main.tscn"
 ## The prototype's one campaign mission.
 const MISSION := "gdl_01"
+const BACKGROUND := preload("res://ui/art/menu_background.jpg")
 
 var _title := Label.new()
 var _subtitle := Label.new()
@@ -21,32 +22,47 @@ var _version := Label.new()
 var _menu := VBoxContainer.new()
 var _settings := SettingsPanel.new()
 var _help := HelpPanel.new()
+var _panel: PanelContainer
 
 
 func _ready() -> void:
 	GameSettings.ensure_loaded()
 	set_anchors_preset(Control.PRESET_FULL_RECT)
-	var bg := ColorRect.new()
-	bg.color = Color(0.09, 0.11, 0.09)
-	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
-	add_child(bg)
-	var center := CenterContainer.new()
-	center.set_anchors_preset(Control.PRESET_FULL_RECT)
-	add_child(center)
-	var stack := VBoxContainer.new()
-	center.add_child(stack)
-	_menu.add_theme_constant_override("separation", 14)
-	stack.add_child(_menu)
+	_build_backdrop()
+	var margin := MarginContainer.new()
+	margin.set_anchors_and_offsets_preset(Control.PRESET_LEFT_WIDE)
+	margin.add_theme_constant_override("margin_left", 96)
+	add_child(margin)
+	var column := VBoxContainer.new()
+	column.alignment = BoxContainer.ALIGNMENT_CENTER
+	column.add_theme_constant_override("separation", 10)
+	margin.add_child(column)
 	_title.theme_type_variation = &"Title"
-	_title.add_theme_font_size_override("font_size", 64)
-	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_menu.add_child(_title)
-	_subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_menu.add_child(_subtitle)
+	_title.add_theme_font_size_override("font_size", 84)
+	column.add_child(_title)
+	_subtitle.add_theme_font_size_override("font_size", 22)
+	_subtitle.add_theme_color_override("font_color", Color(0.93, 0.84, 0.66))
+	column.add_child(_subtitle)
+	var rule := ColorRect.new()
+	rule.color = Color(0.75, 0.6, 0.35, 0.8)
+	rule.custom_minimum_size = Vector2(380, 2)
+	rule.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	column.add_child(rule)
+	var gap := Control.new()
+	gap.custom_minimum_size = Vector2(0, 18)
+	column.add_child(gap)
+	var stack := VBoxContainer.new()
+	stack.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	column.add_child(stack)
+	var panel := PanelContainer.new()
+	stack.add_child(panel)
+	_menu.add_theme_constant_override("separation", 12)
+	panel.add_child(_menu)
+	_panel = panel
 	for b: Button in [
 		_campaign, _skirmish, _difficulty, _load, _help_button, _settings_button, _quit
 	]:
-		b.custom_minimum_size = Vector2(320, 48)
+		b.custom_minimum_size = Vector2(340, 50)
 		_menu.add_child(b)
 	_menu.add_child(_saves)
 	_campaign.pressed.connect(_on_campaign)
@@ -63,13 +79,45 @@ func _ready() -> void:
 	_settings.closed.connect(_show_settings.bind(false))
 	stack.add_child(_settings)
 	add_child(_help)
-	_version.position = Vector2(16, 16)
+	_version.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
+	_version.position = Vector2(16, -36)
+	_version.modulate = Color(1, 1, 1, 0.6)
 	add_child(_version)
 	var game_name: String = ProjectSettings.get_setting("application/config/name")
 	var version: String = ProjectSettings.get_setting("application/config/version")
 	_version.text = "%s %s" % [game_name, version]
 	_retranslate()
 	_skirmish.grab_focus.call_deferred()
+
+
+## The evening court (tools/art/menu_scene.py) behind a shade that darkens the menu side.
+func _build_backdrop() -> void:
+	var bg := ColorRect.new()
+	bg.color = Color(0.09, 0.08, 0.06)
+	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_child(bg)
+	var art := TextureRect.new()
+	art.texture = BACKGROUND
+	art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	art.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_child(art)
+	var gradient := Gradient.new()
+	gradient.set_color(0, Color(0.05, 0.035, 0.02, 0.88))
+	gradient.set_color(1, Color(0.05, 0.035, 0.02, 0.0))
+	gradient.add_point(0.35, Color(0.05, 0.035, 0.02, 0.6))
+	var shade_tex := GradientTexture2D.new()
+	shade_tex.gradient = gradient
+	shade_tex.width = 256
+	shade_tex.height = 4
+	shade_tex.fill_to = Vector2(1, 0)
+	var shade := TextureRect.new()
+	shade.texture = shade_tex
+	shade.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	shade.stretch_mode = TextureRect.STRETCH_SCALE
+	shade.set_anchors_and_offsets_preset(Control.PRESET_LEFT_WIDE)
+	shade.anchor_right = 0.62
+	add_child(shade)
 
 
 func _notification(what: int) -> void:
@@ -93,7 +141,7 @@ func _retranslate() -> void:
 
 
 func _show_settings(on: bool) -> void:
-	_menu.visible = not on
+	_panel.visible = not on
 	_settings.visible = on
 
 

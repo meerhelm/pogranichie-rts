@@ -38,3 +38,11 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
 The game reads them through `game/world/SpriteDB`; ids without art keep their placeholders.
 Rendered PNGs are plain git (see `.gitattributes`), not LFS: they are small and regenerable.
 Normal maps and building stages (foundation, damage, rubble) are not rendered yet.
+
+## Interface
+
+- `ui_skin.py` — procedural nine-patch textures in `ui/skin` (oak panels with a bronze rim,
+  wooden buttons, parchment for tooltips, a sunk well); `ui/theme.tres` uses them.
+- `menu_scene.py` — the main menu background `ui/art/menu_background.jpg`: the same models
+  in the evening sun through a perspective camera (render to PNG, then save as JPEG).
+- Icons of the top bar are hand-written SVGs in `ui/icons` (Godot imports SVG directly).
