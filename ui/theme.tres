@@ -1,0 +1,10 @@
+[gd_resource type="Theme" load_steps=3 format=3]
+
+[ext_resource type="FontFile" path="res://ui/fonts/PT_Sans-Web-Regular.ttf" id="1_sans"]
+[ext_resource type="FontFile" path="res://ui/fonts/PT_Serif-Web-Bold.ttf" id="2_serif"]
+
+[resource]
+default_font = ExtResource("1_sans")
+default_font_size = 16
+Title/base_type = &"Label"
+Title/fonts/font = ExtResource("2_serif")

@@ -634,9 +634,9 @@ func _find_spot(def: BuildingDef, anchor: Vector2i, gap: int) -> Vector2i:
 	var ok := EconomySystem.Fail.OK
 	for r in range(gap + 1, FAR_RADIUS + 1):
 		for dy in range(-r, r + 1):
-			for dx in range(-r, r + 1):
-				if maxi(absi(dx), absi(dy)) != r:
-					continue
+			# Only the ring itself: whole rows at the top and bottom, the two ends elsewhere.
+			var step := 1 if absi(dy) == r else 2 * r
+			for dx in range(-r, r + 1, step):
 				var x := anchor.x + dx - size.x / 2
 				var y := anchor.y + dy - size.y / 2
 				if placement.can_place(ai.player, def, x, y, false) != ok:

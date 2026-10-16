@@ -171,3 +171,37 @@ func test_unit_spawned_in_water_is_put_on_the_bank() -> void:
 	sim.step()
 	var cell := sim.nav.cell_of(sim.entities.pos_x[0], sim.entities.pos_y[0])
 	assert_eq(cell, sim.nav.cell_at(1, 0))
+
+
+## M10: a long search is spread over ticks (at most PATH_BUDGET cells a tick) and the unit
+## waits for it, then walks the whole winding way.
+func test_long_search_runs_in_slices() -> void:
+	var rows := PackedStringArray()
+	for y in 41:
+		if y % 2 == 0:
+			rows.append(".".repeat(60))
+		elif y % 4 == 1:
+			rows.append("~".repeat(59) + ".")
+		else:
+			rows.append("." + "~".repeat(59))
+	var sim := _sim_on("\n".join(rows))
+	sim.enqueue(SimCommand.spawn(0, 1, SPEARMAN, _cell(0), _cell(0)))
+	sim.enqueue(SimCommand.move(0, 1, PackedInt32Array([1]), _cell(0), _cell(40)))
+	var slices := 0
+	var before := 0
+	while slices == 0 or sim.entities.path_version[0] == Simulation.PATH_PENDING:
+		sim.step()
+		var spent := sim.pathfinder.total_expanded - before
+		before = sim.pathfinder.total_expanded
+		assert_lte(spent, Simulation.PATH_BUDGET)
+		slices += 1
+		if slices > 50:
+			break
+	assert_gt(slices, 1, "the search took more than one tick")
+	assert_eq(sim.pathfinder.searches, 1)
+	var path := sim.entities.paths[0]
+	assert_gt(path.size(), 1000, "the path winds through every row")
+	assert_eq(path[-1], sim.nav.cell_at(0, 40), "and ends at the order point")
+	var y0 := sim.entities.pos_y[0]
+	sim.run(100)
+	assert_ne(sim.entities.pos_y[0] + sim.entities.pos_x[0], y0 + _cell(0), "the unit walks")

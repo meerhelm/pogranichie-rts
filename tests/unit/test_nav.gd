@@ -212,6 +212,8 @@ func test_flow_field_leads_every_start_to_the_goal() -> void:
 		for x in range(2, 6):
 			starts.append(grid.cell_at(x, y))
 	var flow := FlowField.new(grid, NavGrid.MoveClass.FOOT, goal, starts)
+	flow.build(1 << 30)
+	assert_true(flow.done)
 	var pf := Pathfinder.new(grid)
 	for s in starts:
 		assert_true(flow.reached(s))
@@ -227,7 +229,31 @@ func test_flow_field_leads_every_start_to_the_goal() -> void:
 	var start := grid.cell_at(3, 3)
 	var path := pf.find_path(NavGrid.MoveClass.FOOT, start, goal)
 	var flow2 := FlowField.new(grid, NavGrid.MoveClass.FOOT, goal, PackedInt32Array([start]))
+	flow2.build(1 << 30)
 	assert_eq(flow2.dist[start], pf.path_cost(NavGrid.MoveClass.FOOT, start, path))
+
+
+func test_searches_in_slices_match_whole_searches() -> void:
+	var grid := MapText.load_map("res://tests/maps/forest_ford.txt", _db)
+	var goal := grid.cell_at(36, 14)
+	var start := grid.cell_at(3, 3)
+	var whole := Pathfinder.new(grid).find_path(NavGrid.MoveClass.FOOT, start, goal)
+	var pf := Pathfinder.new(grid)
+	pf.begin(NavGrid.MoveClass.FOOT, start, goal)
+	var slices := 0
+	while not pf.done:
+		assert_lte(pf.resume(7), 7, "a slice expands at most its budget")
+		slices += 1
+	assert_gt(slices, 1)
+	assert_eq(pf.result(), whole)
+	var starts := PackedInt32Array([start, grid.cell_at(4, 18)])
+	var flow := FlowField.new(grid, NavGrid.MoveClass.FOOT, goal, starts)
+	flow.build(1 << 30)
+	var sliced := FlowField.new(grid, NavGrid.MoveClass.FOOT, goal, starts)
+	while not sliced.done:
+		assert_lte(sliced.build(5), 5)
+	assert_eq(sliced.next, flow.next)
+	assert_eq(sliced.dist, flow.dist)
 
 
 func test_formation_shapes() -> void:

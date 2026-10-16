@@ -13,7 +13,7 @@ extends RefCounted
 ## 7: M8 match statistics (trained, lost, killed, built, gathered) and skirmish victory.
 ## 8: M9 fire (arson, burning, spreading, dousing), heroes' own auras, mission locks and the
 ## mission script (MissionRuntime) in the world.
-const SIM_VERSION := 8
+const SIM_VERSION := 9
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).
@@ -38,8 +38,8 @@ const FINAL := -2
 const WAIT := -3
 ## path_version of a unit whose path search is queued.
 const PATH_PENDING := -1
-## Cells the pathfinder may expand per tick before the remaining searches wait a tick (at
-## least one search always runs), so a big order cannot stall a tick.
+## Cells the pathfinder and flow fields may expand per tick; a longer search goes on next tick
+## where it stopped, so a big order or a path across the map cannot stall a tick (M10).
 const PATH_BUDGET := 800
 ## How far ahead a unit looks for a straight line along its path, in path cells.
 const SMOOTH_LOOKAHEAD := 8
@@ -84,6 +84,13 @@ var _flow_users: Dictionary[int, int] = {}
 var _next_flow_id := 1
 ## Units waiting for a path search, in request order.
 var _path_queue := PackedInt32Array()
+## Flow fields still being built, oldest first.
+var _flow_queue := PackedInt32Array()
+## The unit whose path search is open in the pathfinder (0: none), the goal cell and map
+## version it was started for.
+var _searching := 0
+var _search_goal := 0
+var _search_version := 0
 # Scratch arrays of _separate(), kept between ticks to avoid reallocating.
 var _sep_head := PackedInt32Array()
 var _sep_next := PackedInt32Array()
@@ -106,6 +113,8 @@ func _init(
 	data_version = db.content_hash() if db != null else "none"
 	nav = map if map != null else NavGrid.for_catalog(width_cells, height_cells, db)
 	pathfinder = Pathfinder.new(nav)
+	# Label the connected areas now, while the world loads, not in the first tick a unit walks.
+	nav.area(0, 0)
 	map_width = Fixed.from_cells(nav.width)
 	map_height = Fixed.from_cells(nav.height)
 	combat = CombatSystem.new(
@@ -149,6 +158,43 @@ func step() -> void:
 	tick += 1
 
 
+## step() with each system timed: adds microseconds per system name into times (bench --profile).
+func step_profiled(times: Dictionary) -> void:
+	var t := Time.get_ticks_usec()
+	for cmd in queue.take_due(tick):
+		_apply(cmd)
+	t = _lap(times, "commands", t)
+	if mission != null:
+		mission.step(tick)
+	t = _lap(times, "mission", t)
+	combat.step(tick)
+	t = _lap(times, "combat", t)
+	economy.step(tick)
+	t = _lap(times, "economy", t)
+	fire.step(tick)
+	magic.step(tick)
+	t = _lap(times, "fire+magic", t)
+	_serve_paths()
+	t = _lap(times, "move.paths", t)
+	_walk_units()
+	t = _lap(times, "move.walk", t)
+	_separate()
+	t = _lap(times, "move.separate", t)
+	combat.after_move()
+	t = _lap(times, "combat_after_move", t)
+	vision.step()
+	t = _lap(times, "vision", t)
+	victory.step(tick)
+	_lap(times, "victory", t)
+	tick += 1
+
+
+static func _lap(times: Dictionary, key: String, since: int) -> int:
+	var now := Time.get_ticks_usec()
+	times[key] = int(times.get(key, 0)) + now - since
+	return now
+
+
 func run(ticks: int) -> void:
 	for i in ticks:
 		step()
@@ -168,6 +214,10 @@ func state_hash() -> String:
 	buf.put_32(_path_queue.size())
 	for id in _path_queue:
 		buf.put_32(id)
+	buf.put_32(_searching)
+	buf.put_32(_flow_queue.size())
+	for flow_id in _flow_queue:
+		buf.put_32(flow_id)
 	entities.write_to(buf)
 	combat.write_to(buf)
 	economy.write_to(buf)
@@ -479,6 +529,7 @@ func _group_flows(ids: PackedInt32Array, x: int, y: int) -> Dictionary:
 		_next_flow_id += 1
 		_flows[flow_id] = FlowField.new(nav, cls, goal, starts[cls])
 		_flow_users[flow_id] = 0
+		_flow_queue.append(flow_id)
 		result[cls] = flow_id
 	return result
 
@@ -511,31 +562,54 @@ func _plan_path(id: int) -> void:
 
 
 func _serve_paths() -> void:
-	var e := entities
 	var spent := 0
+	# Flow fields first, in the order the groups were sent; their units wait meanwhile.
+	while not _flow_queue.is_empty() and spent < PATH_BUDGET:
+		var flow: FlowField = _flows.get(_flow_queue[0])
+		if flow != null:
+			spent += flow.build(PATH_BUDGET - spent)
+			if not flow.done:
+				return
+		_flow_queue = _flow_queue.slice(1)
+	var e := entities
 	var served := 0
-	while served < _path_queue.size() and (spent < PATH_BUDGET or served == 0):
+	while served < _path_queue.size() and spent < PATH_BUDGET:
 		var id := _path_queue[served]
-		served += 1
 		var slot := id - 1
 		if not e.is_alive(id) or e.path_version[slot] != PATH_PENDING:
+			served += 1
+			_searching = 0
 			continue
-		var from := nav.cell_of(e.pos_x[slot], e.pos_y[slot])
 		var to := nav.cell_of(e.target_x[slot], e.target_y[slot])
-		e.set_path(id, pathfinder.find_path(e.move_class[slot], from, to), nav.closing_version)
+		if _searching != id or to != _search_goal or nav.closing_version != _search_version:
+			# A new search, or the open one is out of date (new target, the map changed).
+			_searching = id
+			_search_goal = to
+			_search_version = nav.closing_version
+			var from := nav.cell_of(e.pos_x[slot], e.pos_y[slot])
+			pathfinder.begin(e.move_class[slot], from, to)
+		spent += pathfinder.resume(PATH_BUDGET - spent)
+		if not pathfinder.done:
+			break
+		e.set_path(id, pathfinder.result(), _search_version)
 		_smooth(id)
-		spent += pathfinder.last_expanded
+		_searching = 0
+		served += 1
 	_path_queue = _path_queue.slice(served)
 
 
 func _move_units() -> void:
-	var e := entities
 	_serve_paths()
+	_walk_units()
+	_separate()
+
+
+func _walk_units() -> void:
+	var e := entities
 	for id in e.alive_ids:
 		if e.orders[id - 1] == EntityStore.Order.MOVE:
 			_advance(id)
 			_watch_progress(id)
-	_separate()
 
 
 ## Moves one unit by its speed for this tick (faster in a «Литовский отход») and notes where it
@@ -654,6 +728,8 @@ func _waypoint(id: int, cell: int) -> int:
 	var slot := id - 1
 	var goal := nav.cell_of(e.target_x[slot], e.target_y[slot])
 	if e.flow_ids[slot] != 0:
+		if not _flows[e.flow_ids[slot]].done:
+			return WAIT
 		var along := _flow_step(id, cell, goal)
 		if along != NavGrid.NO_CELL:
 			return along
@@ -761,6 +837,8 @@ func _watch_progress(id: int) -> void:
 	var e := entities
 	var slot := id - 1
 	if e.orders[slot] != EntityStore.Order.MOVE or e.path_version[slot] == PATH_PENDING:
+		return
+	if e.flow_ids[slot] != 0 and not _flows[e.flow_ids[slot]].done:
 		return
 	var d := Fixed.distance(e.pos_x[slot], e.pos_y[slot], e.target_x[slot], e.target_y[slot])
 	if d < e.best_dist[slot]:

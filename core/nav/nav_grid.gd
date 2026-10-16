@@ -375,8 +375,9 @@ func nearest_passable(
 		var best := NO_CELL
 		var best_d := 1 << 30
 		for dy in range(-r, r + 1):
-			for dx in range(-r, r + 1):
-				if maxi(absi(dx), absi(dy)) != r or not in_bounds(cx + dx, cy + dy):
+			var step := 1 if absi(dy) == r else 2 * r
+			for dx in range(-r, r + 1, step):
+				if not in_bounds(cx + dx, cy + dy):
 					continue
 				var c := cell_at(cx + dx, cy + dy)
 				var d := dx * dx + dy * dy

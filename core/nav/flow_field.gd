@@ -14,6 +14,20 @@ var next := PackedInt32Array()
 ## Cost to the goal in path-cost units; -1 where not reached.
 var dist := PackedInt32Array()
 
+## True once every starting cell is settled (or nothing more can be reached). The simulation
+## builds a field a slice at a time (build()); its units wait until then.
+var done := false
+
+# The open search: settled cells, the frontier, starting cells not settled yet and the box
+# around the starting cells (the heuristic aims at it).
+var _settled := PackedByteArray()
+var _heap := MinHeap.new()
+var _waiting := {}
+var _bx0 := 0
+var _by0 := 0
+var _bx1 := -1
+var _by1 := -1
+
 
 func _init(nav: NavGrid, p_move_class: int, goal_cell: int, starts: PackedInt32Array) -> void:
 	grid = nav
@@ -25,7 +39,22 @@ func _init(nav: NavGrid, p_move_class: int, goal_cell: int, starts: PackedInt32A
 	next.fill(NavGrid.NO_CELL)
 	dist.resize(n)
 	dist.fill(-1)
-	_build(starts)
+	var w := grid.width
+	_bx0 = w
+	_by0 = grid.height
+	for c in starts:
+		_waiting[c] = true
+		_bx0 = mini(_bx0, c % w)
+		_bx1 = maxi(_bx1, c % w)
+		_by0 = mini(_by0, c / w)
+		_by1 = maxi(_by1, c / w)
+	done = _waiting.is_empty()
+	if done:
+		return
+	_settled.resize(n)
+	_settled.fill(0)
+	dist[goal] = 0
+	_heap.push(0, goal)
 
 
 func reached(cell: int) -> bool:
@@ -39,24 +68,19 @@ func is_stale() -> bool:
 ## Dijkstra from the goal outward, steered toward the group (A* with the distance to the box
 ## around the starting cells as heuristic), until every starting cell is settled. With a
 ## consistent heuristic each settled cell has its true cost, so only a corridor between the
-## goal and the group is searched instead of the whole map.
-func _build(starts: PackedInt32Array) -> void:
+## goal and the group is searched instead of the whole map. Settles up to `budget` cells and
+## returns how many it settled.
+func build(budget: int) -> int:
+	if done:
+		return 0
 	var w := grid.width
 	var w_max := w - 1
 	var h_max := grid.height - 1
-	var waiting := {}
-	var bx0 := w
-	var by0 := grid.height
-	var bx1 := -1
-	var by1 := -1
-	for c in starts:
-		waiting[c] = true
-		bx0 = mini(bx0, c % w)
-		bx1 = maxi(bx1, c % w)
-		by0 = mini(by0, c / w)
-		by1 = maxi(by1, c / w)
-	if waiting.is_empty():
-		return
+	var waiting := _waiting
+	var bx0 := _bx0
+	var by0 := _by0
+	var bx1 := _bx1
+	var by1 := _by1
 	var straight := grid.step_costs(move_class, 0)
 	var diagonal := grid.step_costs(move_class, 1)
 	var climb_straight := grid.step_costs(move_class, 2)
@@ -64,17 +88,15 @@ func _build(starts: PackedInt32Array) -> void:
 	var hills := grid.hill_cells()
 	var min_s := grid.min_step_cost(move_class, 0)
 	var min_d := grid.min_step_cost(move_class, 1)
-	var settled := PackedByteArray()
-	settled.resize(grid.cell_count())
-	settled.fill(0)
-	var heap := MinHeap.new()
-	dist[goal] = 0
-	heap.push(0, goal)
-	while not heap.is_empty():
+	var settled := _settled
+	var heap := _heap
+	var count := 0
+	while not heap.is_empty() and count < budget:
 		var b := heap.pop()
 		if settled[b] == 1:
 			continue
 		settled[b] = 1
+		count += 1
 		if waiting.erase(b) and waiting.is_empty():
 			break
 		var cx := b % w
@@ -231,3 +253,9 @@ func _build(starts: PackedInt32Array) -> void:
 						else dy * min_d + (dx - dy) * min_s
 					)
 					heap.push((nd + h) << Pathfinder.H_BITS | mini(h, Pathfinder.H_MASK), a)
+	if waiting.is_empty() or heap.is_empty():
+		done = true
+		# The search is over: free its working arrays.
+		_settled = PackedByteArray()
+		heap.clear()
+	return count

@@ -14,11 +14,15 @@ var sim: Simulation
 var camera: RtsCamera
 var player := 1
 
-## Terrain sprite under the cell -> local transform, with the fog shader; dots and the camera
-## frame are drawn by _marks on top of it.
+## Terrain sprite under the cell -> local transform, with the fog shader; dots are drawn by
+## _marks on top of it, and the camera frame by _frame, which alone follows the camera every
+## frame (M10: the dots are not redrawn 60 times a second).
 var _ground := Node2D.new()
 var _ground_sprite := Sprite2D.new()
 var _marks := Node2D.new()
+var _frame := Node2D.new()
+## Camera position and zoom the frame was last drawn for.
+var _framed := Rect2()
 var _terrain_image: Image
 var _terrain := ImageTexture.new()
 var _fog_image: Image
@@ -42,7 +46,9 @@ func _ready() -> void:
 	_ground.add_child(_ground_sprite)
 	add_child(_ground)
 	add_child(_marks)
+	add_child(_frame)
 	_marks.draw.connect(_draw_marks)
+	_frame.draw.connect(_draw_camera)
 	resized.connect(_fit)
 
 
@@ -76,9 +82,12 @@ func _on_ticked(tick: int) -> void:
 
 
 func _process(_delta: float) -> void:
-	# The camera frame follows the camera every frame.
+	# The camera frame follows the camera: redrawn when it moved or zoomed.
 	if camera != null and is_visible_in_tree():
-		_marks.queue_redraw()
+		var at := Rect2(camera.position, camera.zoom)
+		if at != _framed:
+			_framed = at
+			_frame.queue_redraw()
 
 
 func _paint_terrain() -> void:
@@ -108,6 +117,7 @@ func _fit() -> void:
 	)
 	_ground.transform = _to_local
 	_marks.queue_redraw()
+	_frame.queue_redraw()
 
 
 func _draw() -> void:
@@ -119,7 +129,6 @@ func _draw_marks() -> void:
 		return
 	_draw_buildings()
 	_draw_units()
-	_draw_camera()
 
 
 func _draw_buildings() -> void:
@@ -165,7 +174,7 @@ func _draw_camera() -> void:
 			to_local * r.position,
 		]
 	)
-	_marks.draw_polyline(p, Color(1, 1, 1, 0.9), 1.0)
+	_frame.draw_polyline(p, Color(1, 1, 1, 0.9), 1.0)
 
 
 func _gui_input(event: InputEvent) -> void:

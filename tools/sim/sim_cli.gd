@@ -13,7 +13,15 @@ extends SceneTree
 ## record, determinism and bench take --map <map id> (see MapText); without it, open grass;
 ## and --economy 1 to have the fuzzer play the economy too (players, buildings, gathering);
 ## with it, --magic 1 adds shrines on places of power and spells.
+## bench also takes --battle 1 (two armies meet instead of random orders) and --profile 1
+## (milliseconds per system, on average and in the slowest tick).
 ## Exit code 0 on success, 1 on a hash mismatch or bad arguments.
+
+## Armies of bench --battle 1.
+const BATTLE_ARMIES: Array = [
+	[&"gdl_spearman", &"gdl_forest_archer", &"gdl_light_horse", &"gdl_lit_lance"],
+	[&"to_knecht", &"to_crossbow", &"to_halfbrother", &"to_knight_brother"],
+]
 
 
 func _initialize() -> void:
@@ -172,21 +180,39 @@ func _bench(opts: Dictionary) -> int:
 	var grid := MapText.load_map(map_id, db) if not map_id.is_empty() else null
 	var sim := Simulation.new(int(opts.get("seed", "1")), db, 120, 120, grid)
 	var types := _unit_types(db)
-	CommandFuzzer.populate(sim, types, units, 99)
+	var battle: bool = opts.get("battle", "0") == "1"
+	if battle:
+		_spawn_battle(sim, units)
+	else:
+		CommandFuzzer.populate(sim, types, units, 99)
 	var fuzz := CommandFuzzer.new(5, types)
-	fuzz.command_permille = 1000
+	fuzz.command_permille = 0 if battle else 1000
 	fuzz.economy = opts.get("economy", "0") == "1"
 	fuzz.magic = opts.get("magic", "0") == "1"
 	if fuzz.economy:
 		fuzz.issue(sim)
 	sim.step()
+	if battle:
+		_charge_battle(sim)
 	var worst := 0
 	var hash_usec := 0
 	var start := Time.get_ticks_usec()
+	var times := {}
+	var worst_parts := {}
+	var profile: bool = opts.get("profile", "0") == "1"
 	for i in ticks:
-		fuzz.issue(sim)
+		if not battle:
+			fuzz.issue(sim)
 		var t0 := Time.get_ticks_usec()
-		sim.step()
+		if profile:
+			var one := {}
+			sim.step_profiled(one)
+			for key: String in one:
+				times[key] = int(times.get(key, 0)) + int(one[key])
+			if Time.get_ticks_usec() - t0 > worst:
+				worst_parts = one
+		else:
+			sim.step()
 		worst = maxi(worst, Time.get_ticks_usec() - t0)
 		var h0 := Time.get_ticks_usec()
 		sim.state_hash()
@@ -209,7 +235,45 @@ func _bench(opts: Dictionary) -> int:
 			]
 		)
 	)
+	for key: String in times:
+		print(
+			(
+				"  %-18s %.3f ms/tick, %.3f ms in the worst tick"
+				% [key, int(times[key]) / 1000.0 / ticks, int(worst_parts.get(key, 0)) / 1000.0]
+			)
+		)
 	return 0
+
+
+## bench --battle 1: two armies of units/2 each (GDL west, Order east) in the middle of the
+## map, which then attack-move into each other in groups of 25.
+static func _spawn_battle(sim: Simulation, units: int) -> void:
+	var cx := Fixed.to_cells(sim.map_width) / 2
+	var cy := Fixed.to_cells(sim.map_height) / 2
+	for side in 2:
+		var kinds: Array = BATTLE_ARMIES[side]
+		var x0 := cx - 22 if side == 0 else cx + 12
+		for i in units / 2:
+			var unit: StringName = kinds[i % kinds.size()]
+			var x := Fixed.from_cells(x0 + i % 10) + Fixed.HALF
+			var y := Fixed.from_cells(cy - 10 + i / 10) + Fixed.HALF
+			sim.enqueue(SimCommand.spawn(sim.tick, side + 1, unit, x, y))
+
+
+static func _charge_battle(sim: Simulation) -> void:
+	var sides: Array[PackedInt32Array] = [PackedInt32Array(), PackedInt32Array()]
+	for id in sim.entities.alive_ids:
+		sides[sim.entities.owners[id - 1] - 1].append(id)
+	for side in 2:
+		var ids := sides[side]
+		var target_x := (
+			sim.map_width / 2 + (Fixed.from_cells(8) if side == 0 else -Fixed.from_cells(8))
+		)
+		for start in range(0, ids.size(), 25):
+			var group := ids.slice(start, start + 25)
+			sim.enqueue(
+				SimCommand.attack_move(sim.tick, side + 1, group, target_x, sim.map_height / 2)
+			)
 
 
 ## Balance arena (BalanceArena): one CSV row per pair, printed and written to --out; with

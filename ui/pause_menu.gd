@@ -43,6 +43,7 @@ func _ready() -> void:
 	panel.add_child(_menu)
 	stack.add_child(panel)
 	_menu.add_theme_constant_override("separation", 10)
+	_title.theme_type_variation = &"Title"
 	_title.add_theme_font_size_override("font_size", 32)
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_menu.add_child(_title)

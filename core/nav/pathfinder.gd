@@ -20,6 +20,8 @@ var grid: NavGrid
 var last_expanded := 0
 var total_expanded := 0
 var searches := 0
+## True when no search is open (the last one finished).
+var done := true
 
 var _g := PackedInt32Array()
 var _parent := PackedInt32Array()
@@ -27,6 +29,16 @@ var _seen := PackedInt32Array()
 var _closed := PackedInt32Array()
 var _stamp := 0
 var _heap := MinHeap.new()
+# The open search: movement class, start, target, best cell so far and its heuristic, A* cost
+# floors, and whether the target was reached.
+var _s_class := 0
+var _s_start := 0
+var _s_target := 0
+var _s_best := 0
+var _s_best_h := 0
+var _s_min_s := 0
+var _s_min_d := 0
+var _s_found := false
 
 
 func _init(nav: NavGrid) -> void:
@@ -67,7 +79,18 @@ static func neighbour(nav: NavGrid, cell: int, dir: int) -> int:
 ## Cells to walk through from `start` (excluded) to `goal` (included). An impassable goal is
 ## moved to the nearest passable cell; when the goal cannot be reached, the path leads to the
 ## reachable cell closest to it (by straight distance). Empty when already there.
+## The whole search at once; the simulation runs it in slices with begin() and resume().
 func find_path(move_class: int, start: int, goal: int) -> PackedInt32Array:
+	begin(move_class, start, goal)
+	var expanded := 0
+	while not done:
+		expanded += resume(1 << 30)
+	last_expanded = expanded
+	return result()
+
+
+## Starts a search that resume() carries on, a slice at a time. Only one search is open at once.
+func begin(move_class: int, start: int, goal: int) -> void:
 	var target := grid.nearest_passable(move_class, goal, GOAL_SNAP_RADIUS)
 	if target == NavGrid.NO_CELL:
 		target = goal
@@ -77,23 +100,47 @@ func find_path(move_class: int, start: int, goal: int) -> PackedInt32Array:
 		# instead of searching the whole area to find out.
 		target = grid.nearest_in_area(move_class, start_area, target)
 	last_expanded = 0
-	if start == target:
-		return PackedInt32Array()
+	_s_class = move_class
+	_s_start = start
+	_s_target = target
+	_s_found = false
+	done = start == target
+	if done:
+		return
 	_stamp += 1
+	var w := grid.width
+	# Heuristic at open-ground speed, not the map's fastest: roads (x1,2) make it overestimate a
+	# little, so a path may be up to 20% longer than the best one where roads matter, but the
+	# search no longer floods every field when the map has a single road on it.
+	_s_min_s = maxi(grid.min_step_cost(move_class, 0), NavGrid.STRAIGHT)
+	_s_min_d = maxi(grid.min_step_cost(move_class, 1), NavGrid.DIAGONAL)
+	_heap.clear()
+	_g[start] = 0
+	_parent[start] = NavGrid.NO_CELL
+	_seen[start] = _stamp
+	_s_best = start
+	_s_best_h = _octile(start % w - target % w, start / w - target / w, _s_min_s, _s_min_d)
+	_heap.push(_s_best_h << H_BITS | mini(_s_best_h, H_MASK), start)
+
+
+## Expands up to `budget` cells of the open search; returns how many it expanded. `done` turns
+## true when the search has finished.
+func resume(budget: int) -> int:
+	if done:
+		return 0
 	var stamp := _stamp
 	var w := grid.width
 	var h_max := grid.height - 1
 	var w_max := w - 1
+	var move_class := _s_class
 	var straight := grid.step_costs(move_class, 0)
 	var diagonal := grid.step_costs(move_class, 1)
 	var climb_straight := grid.step_costs(move_class, 2)
 	var climb_diagonal := grid.step_costs(move_class, 3)
 	var hills := grid.hill_cells()
-	# Heuristic at open-ground speed, not the map's fastest: roads (x1,2) make it overestimate a
-	# little, so a path may be up to 20% longer than the best one where roads matter, but the
-	# search no longer floods every field when the map has a single road on it.
-	var min_s := maxi(grid.min_step_cost(move_class, 0), NavGrid.STRAIGHT)
-	var min_d := maxi(grid.min_step_cost(move_class, 1), NavGrid.DIAGONAL)
+	var min_s := _s_min_s
+	var min_d := _s_min_d
+	var target := _s_target
 	var tx := target % w
 	var ty := target / w
 	var g := _g
@@ -101,20 +148,16 @@ func find_path(move_class: int, start: int, goal: int) -> PackedInt32Array:
 	var seen := _seen
 	var closed := _closed
 	var heap := _heap
-	heap.clear()
-	g[start] = 0
-	parent[start] = NavGrid.NO_CELL
-	seen[start] = stamp
-	var best := start
-	var best_h := _octile(start % w - tx, start / w - ty, min_s, min_d)
-	heap.push(best_h << H_BITS | mini(best_h, H_MASK), start)
+	var best := _s_best
+	var best_h := _s_best_h
 	var found := false
-	while not heap.is_empty():
+	var expanded := 0
+	while not heap.is_empty() and expanded < budget:
 		var cur := heap.pop()
 		if closed[cur] == stamp:
 			continue
 		closed[cur] = stamp
-		last_expanded += 1
+		expanded += 1
 		if cur == target:
 			found = true
 			break
@@ -275,9 +318,21 @@ func find_path(move_class: int, start: int, goal: int) -> PackedInt32Array:
 						else dy * min_d + (dx - dy) * min_s
 					)
 					heap.push((ng + h) << H_BITS | mini(h, H_MASK), nb)
-	total_expanded += last_expanded
-	searches += 1
-	return _trace(target if found else best, start)
+	_s_best = best
+	_s_best_h = best_h
+	total_expanded += expanded
+	if found or heap.is_empty():
+		_s_found = found
+		done = true
+		searches += 1
+	return expanded
+
+
+## The path of the finished search.
+func result() -> PackedInt32Array:
+	if _s_start == _s_target:
+		return PackedInt32Array()
+	return _trace(_s_target if _s_found else _s_best, _s_start)
 
 
 ## Total cost of walking a path from `start`, in path-cost units (100 per open cell).

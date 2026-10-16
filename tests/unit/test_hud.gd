@@ -180,7 +180,7 @@ func test_language_switch_translates_names_and_menu() -> void:
 	assert_eq(tr("gdl_lit_lance"), "Lithuanian Lance")
 	TranslationServer.set_locale("pl")
 	assert_eq(tr("Resume"), "Wznów")
-	assert_eq(tr("gdl_lit_lance"), "Lithuanian Lance", "untranslated keys fall back to English")
+	assert_eq(tr("gdl_lit_lance"), "Kopia litewska", "names are translated too (M10)")
 	TranslationServer.set_locale("be")
 	assert_eq(tr("Settings"), "Налады")
 

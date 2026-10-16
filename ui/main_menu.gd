@@ -35,6 +35,7 @@ func _ready() -> void:
 	center.add_child(stack)
 	_menu.add_theme_constant_override("separation", 14)
 	stack.add_child(_menu)
+	_title.theme_type_variation = &"Title"
 	_title.add_theme_font_size_override("font_size", 64)
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_menu.add_child(_title)
