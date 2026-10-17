@@ -12,7 +12,8 @@ const MAX_TICKS_PER_FRAME := 5
 
 var sim: Simulation
 var paused := false
-## Game speed in per-mille: 1000 is normal, 2000 double.
+## Game speed in per-mille: 1000 is normal, 2000 double. Speed only changes how many ticks
+## run per real second; every tick is the same, so replays and lockstep stay deterministic.
 var speed_permille := 1000
 
 var _accum_usec := 0
@@ -28,14 +29,20 @@ func _process(delta: float) -> void:
 ## Steps the simulation for the time accumulated so far. Split out for tests.
 func advance_accumulated() -> int:
 	var steps := 0
-	while _accum_usec >= Fixed.TICK_USEC and steps < MAX_TICKS_PER_FRAME:
+	var max_steps := max_ticks_per_frame()
+	while _accum_usec >= Fixed.TICK_USEC and steps < max_steps:
 		_accum_usec -= Fixed.TICK_USEC
 		sim.step()
 		steps += 1
 		ticked.emit(sim.tick)
-	if steps == MAX_TICKS_PER_FRAME:
+	if steps == max_steps:
 		_accum_usec = mini(_accum_usec, Fixed.TICK_USEC)
 	return steps
+
+
+## The catch-up limit grows with the speed, so 8x still runs 8x at 30 frames a second.
+func max_ticks_per_frame() -> int:
+	return MAX_TICKS_PER_FRAME * maxi(1, speed_permille / 2000)
 
 
 func add_time_usec(usec: int) -> void:

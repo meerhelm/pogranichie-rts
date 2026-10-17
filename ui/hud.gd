@@ -7,9 +7,13 @@ extends Control
 ## draws nothing. The top bar shows each value as an icon and a number (names in the tooltips).
 ## In a skirmish the Advisor gives a new player step-by-step hints; F1 opens the
 ## «How to play» page (HelpPanel), which the game menu opens too.
+## A button by the menu sets the game speed: 1x, 2x, 4x, 8x (click or + goes up, right click
+## or - goes down).
 
 const ICONS: Array[String] = ["food", "wood", "iron", "silver"]
 const ICON_SIZE := 30
+## Game speeds the speed button steps through, as multipliers.
+const SPEEDS: Array[int] = [1, 2, 4, 8]
 
 var sim: Simulation
 var input: PlayerInput
@@ -30,6 +34,7 @@ var _population := Label.new()
 var _age := Label.new()
 var _time := Label.new()
 var _menu_button := Button.new()
+var _speed_button := Button.new()
 var _placing := Label.new()
 var _paused := Label.new()
 var _bottom_panel := PanelContainer.new()
@@ -79,6 +84,11 @@ func _build_top() -> void:
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(spacer)
+	_speed_button.focus_mode = Control.FOCUS_NONE
+	_speed_button.custom_minimum_size.x = 64
+	_speed_button.button_mask = MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT
+	_speed_button.gui_input.connect(_on_speed_input)
+	row.add_child(_speed_button)
 	_menu_button.focus_mode = Control.FOCUS_NONE
 	_menu_button.pressed.connect(menu.open)
 	row.add_child(_menu_button)
@@ -159,6 +169,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	if key.physical_keycode == KEY_P or key.physical_keycode == KEY_PAUSE:
 		toggle_pause()
 		get_viewport().set_input_as_handled()
+	elif key.physical_keycode in [KEY_EQUAL, KEY_KP_ADD]:
+		step_speed(1)
+		get_viewport().set_input_as_handled()
+	elif key.physical_keycode in [KEY_MINUS, KEY_KP_SUBTRACT]:
+		step_speed(-1)
+		get_viewport().set_input_as_handled()
 	elif key.physical_keycode == KEY_F1 and not help.visible:
 		help.open(true)
 		get_viewport().set_input_as_handled()
@@ -171,10 +187,44 @@ func toggle_pause() -> void:
 	_paused.text = tr("Paused (P)")
 
 
+## The game speed as a multiplier: 1, 2, 4 or 8.
+func speed() -> int:
+	return clock.speed_permille / 1000 if clock != null else 1
+
+
+## Sets the game speed to the next (`dir` 1) or previous (-1) of SPEEDS, wrapping around.
+func step_speed(dir: int) -> void:
+	if clock == null:
+		return
+	var i := SPEEDS.find(speed())
+	i = posmod(i + dir, SPEEDS.size()) if i >= 0 else 0
+	clock.speed_permille = SPEEDS[i] * 1000
+	_show_speed()
+
+
+func _on_speed_input(event: InputEvent) -> void:
+	var mb := event as InputEventMouseButton
+	if mb == null or not mb.pressed:
+		return
+	if mb.button_index == MOUSE_BUTTON_LEFT:
+		step_speed(1)
+	elif mb.button_index == MOUSE_BUTTON_RIGHT:
+		step_speed(-1)
+	else:
+		return
+	_speed_button.accept_event()
+
+
+func _show_speed() -> void:
+	_speed_button.text = "%dx" % speed()  # notr
+	_speed_button.tooltip_text = tr("Game speed: click or + faster, right click or - slower")
+
+
 func refresh() -> void:
 	if sim == null:
 		return
 	_menu_button.text = tr("Menu (F10)")
+	_show_speed()
 	var eco := sim.economy
 	var state := eco.player(player)
 	_top.visible = state != null

@@ -14,7 +14,8 @@ extends SceneTree
 ##   town_center or granary, finished by the town centre; plenty of resources; the mouse over the
 ##   button HOVER, a building, unit, tech or spell id, or order<N> for the Nth order button),
 ##   towers:X:Y (no fog: from cell X, Y a palisade ring of the player's with a tower in each
-##   corner and a gate, a house inside; knechts outside storm the house, spearmen inside)
+##   corner and a gate, a house inside; knechts outside storm the house, spearmen inside),
+##   speed:N (the game speed button stepped N times up, e.g. 2 for 4x)
 ## SHOT_LOCALE=be (or pl, uk, lt) in the environment shoots in that language; SHOT_AFTER=N
 ## waits N seconds after the action instead of 1 (2.5 for actions with arguments).
 
@@ -98,6 +99,9 @@ func _act() -> void:
 		_click(main, _action.split(":")[1])
 	elif _action.begins_with("panel:"):
 		_panel(main, _action.split(":"))
+	elif _action.begins_with("speed:"):
+		for i in int(_action.split(":")[1]):
+			(main.get_node("UI/Hud") as Hud).step_speed(1)
 	elif _action == "help" and main.has_node("UI/Hud"):
 		(main.get_node("UI/Hud") as Hud).help.open(true)
 

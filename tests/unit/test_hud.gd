@@ -250,3 +250,30 @@ func test_zaseka_along_y_uses_its_turned_view() -> void:
 	var def: BuildingDef = load("res://data/buildings/gdl_zaseka.tres")
 	var id := _sim.economy._found(1, def, 2, _sim.nav.height - 8, true)
 	assert_eq(layer._art_id(id - 1), &"gdl_zaseka_v")
+
+
+func test_speed_button_steps_through_1x_2x_4x_8x() -> void:
+	var clock: SimClock = _main.get_node("SimClock")
+	assert_eq(_hud._speed_button.text, "1x")
+	var seen: Array[String] = []
+	for i in 4:
+		_hud.step_speed(1)
+		seen.append(_hud._speed_button.text)
+	assert_eq(seen, ["2x", "4x", "8x", "1x"] as Array[String])
+	_hud.step_speed(-1)
+	assert_eq(clock.speed_permille, 8000)
+	var key := InputEventKey.new()
+	key.pressed = true
+	key.physical_keycode = KEY_MINUS
+	_hud._unhandled_input(key)
+	assert_eq(_hud._speed_button.text, "4x")
+
+
+func test_8x_runs_eight_times_the_ticks_and_the_same_ticks() -> void:
+	var clock: SimClock = _main.get_node("SimClock")
+	clock.speed_permille = 8000
+	var start := _sim.tick
+	# One 30 fps frame at 8x is 5.3 ticks: all of them run, the catch-up limit grows with speed.
+	clock.add_time_usec(33_333 * 8)
+	assert_eq(clock.advance_accumulated(), 5)
+	assert_eq(_sim.tick, start + 5)
