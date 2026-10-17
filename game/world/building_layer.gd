@@ -381,6 +381,29 @@ func _draw_ghosts() -> void:
 	for i in ghost_line.size():
 		var col := OK_COLOR if ghost_line_ok[i] else BAD_COLOR
 		draw_box(_ghosts, Rect2(ghost_line[i], Vector2.ONE), col, 0.0)
+	if b != null and b.is_alive(selected) and b.has_rally[selected - 1] == 1:
+		var s := selected - 1
+		var from := Iso.cell_to_screen(Rect2(b.cell_x[s], b.cell_y[s], b.w[s], b.h[s]).get_center())
+		var to := Iso.fixed_to_screen(b.rally_x[s], b.rally_y[s])
+		var tint := UnitView.PLAYER_COLORS[b.owners[s] % UnitView.PLAYER_COLORS.size()]
+		draw_rally_flag(_ghosts, from, to, tint)
+
+
+## The rally point of the selected building: a dashed line from the building and a flag on a
+## pole where its trained units gather, in the owner's colour.
+static func draw_rally_flag(item: CanvasItem, from: Vector2, to: Vector2, tint: Color) -> void:
+	item.draw_dashed_line(from, to, Color(1, 1, 1, 0.55), 1.5, 6.0)
+	item.draw_set_transform(to, 0.0, Vector2(1.0, 0.5))
+	item.draw_circle(Vector2.ZERO, 8.0, Color(0, 0, 0, 0.35))
+	item.draw_set_transform(Vector2.ZERO)
+	var top := to + Vector2(0, -44)
+	item.draw_line(to, top, Color(0.25, 0.16, 0.08), 3.0)
+	var cloth := PackedVector2Array(
+		[top + Vector2(1, 0), top + Vector2(25, 8), top + Vector2(1, 16)]
+	)
+	item.draw_colored_polygon(cloth, tint)
+	cloth.append(cloth[0])
+	item.draw_polyline(cloth, tint.darkened(0.5), 1.0)
 
 
 ## A heap of what a building taken apart left: logs, sacks, iron bars or silver, by source.

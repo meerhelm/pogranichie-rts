@@ -19,6 +19,7 @@ extends SceneTree
 ##   speed:N (the game speed button stepped N times up, e.g. 2 for 4x),
 ##   units:X:Y:ID,ID,... (no fog: the listed units, heroes too, in a row from cell X, Y, two
 ##   cells apart, the camera on them)
+##   rally (the player's town centre selected, its rally point set a few cells away),
 ##   play (in a mission: the briefing closed, the mission starts),
 ##   briefing (in a mission: the briefing closed, the mission run a little, then F2's briefing).
 ## SHOT_MISSION=gdl_01 (or another mission id) opens that mission instead of the skirmish; a new
@@ -87,6 +88,8 @@ func _act() -> void:
 		input.selection.changed.emit()
 	elif _action == "about" and main.get("_about") != null:
 		(main.get("_about") as AboutPanel).open()
+	elif _action == "rally":
+		_rally(main)
 	elif _action == "play" and main.get("briefing") != null:
 		(main.get("briefing") as MissionBriefing).close()
 	elif _action == "briefing" and main.get("briefing") != null:
@@ -336,6 +339,22 @@ func _fight(main: Node) -> void:
 		sim.step()
 	var cam: RtsCamera = main.get_node("Camera")
 	cam.look_at_point(Iso.cell_to_screen(Vector2(x + 2, y + 2)))
+
+
+func _rally(main: Node) -> void:
+	var sim: Simulation = main.get("sim")
+	var input: PlayerInput = main.get_node("UI/PlayerInput")
+	var store := sim.economy.buildings
+	var tc := store.alive_ids[0]
+	for b in store.alive_ids:
+		if store.owners[b - 1] == 1 and store.defs[b - 1].base_id == &"town_center":
+			tc = b
+	var x := Fixed.from_cells(store.cell_x[tc - 1] + 7)
+	var y := Fixed.from_cells(store.cell_y[tc - 1] + 5)
+	sim.enqueue(SimCommand.building_rally(sim.tick, 1, PackedInt32Array([tc]), x, y))
+	input.selected_building = tc
+	input.buildings.selected = tc
+	input.economy_changed.emit()
 
 
 func _panel(main: Node, parts: PackedStringArray) -> void:
