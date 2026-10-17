@@ -211,6 +211,11 @@ msgstr ""
 msgid "Abilities"
 msgstr ""
 
+#: ui/about_panel.gd
+#: ui/main_menu.gd
+msgid "About the game"
+msgstr ""
+
 #: ui/tips.gd
 msgid "Advance to the next age"
 msgstr ""
@@ -525,6 +530,10 @@ msgstr ""
 
 #: ui/advisor.gd
 msgid "Click «%s» and train more peasants: the more workers, the faster you grow."
+msgstr ""
+
+#: ui/about_panel.gd
+msgid "Close"
 msgstr ""
 
 #: ui/help_panel.gd
@@ -1526,6 +1535,7 @@ msgstr ""
 msgid "Player %d, %s"
 msgstr ""
 
+#: ui/about_panel.gd
 #: ui/main_menu.gd
 msgid "Pogranichie"
 msgstr ""
@@ -2229,6 +2239,11 @@ msgstr ""
 
 #: ui/tips.gd
 msgid "Unseen in the forest until it shoots"
+msgstr ""
+
+#: ui/about_panel.gd
+#: ui/main_menu.gd
+msgid "Version %s"
 msgstr ""
 
 #: ui/settings_panel.gd

@@ -1,0 +1,164 @@
+{
+	"_comment": "What each build has. Newest version first; the first entry must match application/config/version in project.godot. Every new build: bump the version there and in export_presets.cfg, add an entry on top. Texts per game language; a missing language falls back to en.",
+	"versions": [
+		{
+			"version": "0.0.2",
+			"date": "2026-10-17",
+			"items": [
+				{
+					"en": "The version is shown in the main menu, with this «About the game» window.",
+					"be": "Версія паказана ў галоўным меню, разам з гэтым акном «Пра гульню».",
+					"pl": "Wersja jest widoczna w menu głównym, razem z tym oknem «O grze».",
+					"uk": "Версію видно в головному меню, разом із цим вікном «Про гру».",
+					"lt": "Versija rodoma pagrindiniame meniu, kartu su šiuo langu «Apie žaidimą»."
+				},
+				{
+					"en": "Fixed: the main menu no longer stops with an error when the saved language is applied at start.",
+					"be": "Выпраўлена: галоўнае меню больш не спыняецца з памылкай, калі пры запуску ўжываецца захаваная мова.",
+					"pl": "Poprawka: menu główne nie zatrzymuje się już z błędem, gdy przy starcie ustawia się zapisany język.",
+					"uk": "Виправлено: головне меню більше не зупиняється з помилкою, коли під час запуску застосовується збережена мова.",
+					"lt": "Pataisyta: pagrindinis meniu nebesustoja su klaida, kai paleidžiant pritaikoma išsaugota kalba."
+				},
+				{
+					"en": "Towers for every faction; walls join towers; gates let your own men through and the enemy has to break them; towers and gates shoot.",
+					"be": "Вежы ва ўсіх фракцый; сцены прымыкаюць да вежаў; праз вароты праходзяць свае, а ворагу іх трэба выбіць; вежы і вароты страляюць.",
+					"pl": "Wieże u wszystkich frakcji; mury łączą się z wieżami; bramy przepuszczają swoich, a wróg musi je wyłamać; wieże i bramy strzelają.",
+					"uk": "Вежі в усіх фракцій; стіни примикають до веж; ворота пропускають своїх, а ворогові їх треба виламати; вежі й ворота стріляють.",
+					"lt": "Bokštai visoms frakcijoms; sienos jungiasi su bokštais; pro vartus praeina savi, o priešas turi juos išlaužti; bokštai ir vartai šaudo."
+				},
+				{
+					"en": "Allies, khorugv banners (morale near the banner bearer) and the spell «Wrath of Perkūnas».",
+					"be": "Саюзнікі, харугвы са сцягамі (дух каля сцяганосца) і закляцце «Гнеў Перкуна».",
+					"pl": "Sojusznicy, chorągwie ze sztandarami (morale przy chorążym) i zaklęcie «Gniew Perkuna».",
+					"uk": "Союзники, корогви з прапорами (дух біля прапороносця) і закляття «Гнів Перкуна».",
+					"lt": "Sąjungininkai, vėliavos (dvasia šalia vėliavnešio) ir burtas «Perkūno rūstybė»."
+				},
+				{
+					"en": "«GDL 1. Samogitian Fire», phase 4: the blockade of Dubysa.",
+					"be": "«ВКЛ 1. Жамойцкі агонь», фаза 4: блакада Дубісы.",
+					"pl": "«WKL 1. Żmudzki ogień», faza 4: blokada Dubissy.",
+					"uk": "«ВКЛ 1. Жемайтський вогонь», фаза 4: блокада Дубиси.",
+					"lt": "«LDK 1. Žemaičių ugnis», 4 fazė: Dubysos blokada."
+				},
+				{
+					"en": "New mission «GDL 2. Grunwald», 1410: a field battle in Vytautas's right wing with the Crown and the Tatars as allies.",
+					"be": "Новая місія «ВКЛ 2. Грунвальд», 1410: палявая бітва ў правым крыле Вітаўта, Карона і татары — саюзнікі.",
+					"pl": "Nowa misja «WKL 2. Grunwald», 1410: bitwa w polu na prawym skrzydle Witolda, Korona i Tatarzy jako sojusznicy.",
+					"uk": "Нова місія «ВКЛ 2. Грюнвальд», 1410: польова битва в правому крилі Вітовта, Корона й татари — союзники.",
+					"lt": "Nauja misija «LDK 2. Žalgiris», 1410: lauko mūšis Vytauto dešiniajame sparne, Karūna ir totoriai — sąjungininkai."
+				},
+				{
+					"en": "New mission «GDL 3. Baptism», 1413–1417: the church, the Order's spies, the embassy to the council and questions to the player.",
+					"be": "Новая місія «ВКЛ 3. Хрышчэнне», 1413–1417: касцёл, выведнікі Ордэна, пасольства на сабор і пытанні гульцу.",
+					"pl": "Nowa misja «WKL 3. Chrzest», 1413–1417: kościół, szpiedzy Zakonu, poselstwo na sobór i pytania do gracza.",
+					"uk": "Нова місія «ВКЛ 3. Хрещення», 1413–1417: костел, вивідачі Ордену, посольство на собор і питання до гравця.",
+					"lt": "Nauja misija «LDK 3. Krikštas», 1413–1417: bažnyčia, Ordino šnipai, pasiuntiniai į susirinkimą ir klausimai žaidėjui."
+				},
+				{
+					"en": "New mission «GDL 4. Vilkomir, 1435»: the field camp and its supply, Tatar raids, the enemy column on the march, captives.",
+					"be": "Новая місія «ВКЛ 4. Вількамір, 1435»: палявы лагер і яго забеспячэнне, татарскія набегі, варожая калона на маршы, палонныя.",
+					"pl": "Nowa misja «WKL 4. Wiłkomierz, 1435»: obóz polowy i jego zaopatrzenie, najazdy tatarskie, wroga kolumna w marszu, jeńcy.",
+					"uk": "Нова місія «ВКЛ 4. Вількомир, 1435»: польовий табір і його постачання, татарські набіги, ворожа колона на марші, полонені.",
+					"lt": "Nauja misija «LDK 4. Ukmergė, 1435»: lauko stovykla ir jos tiekimas, totorių antpuoliai, priešo kolona žygyje, belaisviai."
+				},
+				{
+					"en": "Art for the new missions: Grunwald's units and heroes, the wooden church, the spy, pagans, the council envoys, six heroes of Vilkomir and the field camp.",
+					"be": "Арт для новых місій: войска і героі Грунвальда, драўляны касцёл, выведнік, язычнікі, пасланцы сабора, шэсць герояў Вількаміра і палявы лагер.",
+					"pl": "Grafika do nowych misji: wojska i bohaterowie Grunwaldu, drewniany kościół, szpieg, poganie, posłowie soboru, sześciu bohaterów Wiłkomierza i obóz polowy.",
+					"uk": "Арт для нових місій: війська й герої Грюнвальда, дерев'яний костел, вивідач, язичники, посланці собору, шість героїв Вількомира і польовий табір.",
+					"lt": "Grafika naujoms misijoms: Žalgirio kariai ir didvyriai, medinė bažnyčia, šnipas, pagonys, susirinkimo pasiuntiniai, šeši Ukmergės didvyriai ir lauko stovykla."
+				},
+				{
+					"en": "Game speed button in the top bar: 1x, 2x, 4x, 8x.",
+					"be": "Кнопка хуткасці гульні ў верхняй панэлі: 1x, 2x, 4x, 8x.",
+					"pl": "Przycisk szybkości gry na górnym pasku: 1x, 2x, 4x, 8x.",
+					"uk": "Кнопка швидкості гри у верхній панелі: 1x, 2x, 4x, 8x.",
+					"lt": "Žaidimo greičio mygtukas viršutinėje juostoje: 1x, 2x, 4x, 8x."
+				}
+			]
+		},
+		{
+			"version": "0.0.1",
+			"date": "2026-10-16",
+			"items": [
+				{
+					"en": "Skirmish: the Grand Duchy of Lithuania against the Teutonic Order on an isometric map, with an AI opponent on easy or normal.",
+					"be": "Сутычка: Вялікае Княства Літоўскае супраць Тэўтонскага ордэна на ізаметрычнай карце, супернік-ШІ лёгкі або звычайны.",
+					"pl": "Potyczka: Wielkie Księstwo Litewskie przeciw Zakonowi Krzyżackiemu na mapie izometrycznej, przeciwnik SI łatwy lub zwykły.",
+					"uk": "Сутичка: Велике князівство Литовське проти Тевтонського ордену на ізометричній мапі, суперник-ШІ легкий або звичайний.",
+					"lt": "Susirėmimas: Lietuvos Didžioji Kunigaikštystė prieš Kryžiuočių ordiną izometriniame žemėlapyje, DI priešininkas lengvas arba įprastas."
+				},
+				{
+					"en": "Economy: peasants gather food, wood, iron and silver and put up buildings; ages and technologies.",
+					"be": "Гаспадарка: сяляне здабываюць ежу, дрэва, жалеза і срэбра і ставяць будынкі; эпохі і тэхналогіі.",
+					"pl": "Gospodarka: chłopi zbierają żywność, drewno, żelazo i srebro i stawiają budynki; epoki i technologie.",
+					"uk": "Господарство: селяни добувають їжу, дерево, залізо й срібло та ставлять будівлі; епохи й технології.",
+					"lt": "Ūkis: valstiečiai renka maistą, medieną, geležį ir sidabrą ir stato pastatus; epochos ir technologijos."
+				},
+				{
+					"en": "Battle with morale and stances: foot, archers, cavalry, wagons, beasts and heroes.",
+					"be": "Бой з духам і стойкамі: пяхота, стральцы, конніца, вазы, звяры і героі.",
+					"pl": "Walka z morale i postawami: piechota, łucznicy, jazda, wozy, zwierzęta i bohaterowie.",
+					"uk": "Бій із духом і стійками: піхота, стрільці, кіннота, вози, звірі й герої.",
+					"lt": "Mūšis su dvasia ir laikysenomis: pėstininkai, šauliai, raiteliai, vežimai, žvėrys ir didvyriai."
+				},
+				{
+					"en": "Fog of war and minimap; forests hide, hills see further.",
+					"be": "Туман вайны і мінікарта; лес хавае, з пагоркаў відаць далей.",
+					"pl": "Mgła wojny i minimapa; las ukrywa, ze wzgórz widać dalej.",
+					"uk": "Туман війни й мінімапа; ліс ховає, з пагорбів видно далі.",
+					"lt": "Karo rūkas ir minižemėlapis; miškas slepia, nuo kalvų matyti toliau."
+				},
+				{
+					"en": "Places of power, the Power resource and spells.",
+					"be": "Месцы сілы, рэсурс Сіла і закляцці.",
+					"pl": "Miejsca mocy, zasób Moc i zaklęcia.",
+					"uk": "Місця сили, ресурс Сила й закляття.",
+					"lt": "Galios vietos, Galios ištekliai ir burtai."
+				},
+				{
+					"en": "Campaign mission «GDL 1. Samogitian Fire», phases 1–3.",
+					"be": "Місія кампаніі «ВКЛ 1. Жамойцкі агонь», фазы 1–3.",
+					"pl": "Misja kampanii «WKL 1. Żmudzki ogień», fazy 1–3.",
+					"uk": "Місія кампанії «ВКЛ 1. Жемайтський вогонь», фази 1–3.",
+					"lt": "Kampanijos misija «LDK 1. Žemaičių ugnis», 1–3 fazės."
+				},
+				{
+					"en": "Save and load, game menu, settings, five languages: English, Belarusian, Polish, Ukrainian, Lithuanian.",
+					"be": "Захаванне і загрузка, меню гульні, налады, пяць моў: англійская, беларуская, польская, украінская, літоўская.",
+					"pl": "Zapis i wczytywanie, menu gry, ustawienia, pięć języków: angielski, białoruski, polski, ukraiński, litewski.",
+					"uk": "Збереження й завантаження, меню гри, налаштування, п'ять мов: англійська, білоруська, польська, українська, литовська.",
+					"lt": "Išsaugojimas ir įkėlimas, žaidimo meniu, nustatymai, penkios kalbos: anglų, baltarusių, lenkų, ukrainiečių, lietuvių."
+				},
+				{
+					"en": "Hints for newcomers and the «How to play» page.",
+					"be": "Падказкі навічку і старонка «Як гуляць».",
+					"pl": "Podpowiedzi dla nowicjusza i strona «Jak grać».",
+					"uk": "Підказки новачкові й сторінка «Як грати».",
+					"lt": "Patarimai naujokui ir puslapis «Kaip žaisti»."
+				},
+				{
+					"en": "Art for the GDL and the Order: buildings with building stages and ruins, units in 8 directions with work and attack animations, ground for 13 terrains.",
+					"be": "Арт для ВКЛ і Ордэна: будынкі са стадыямі будоўлі і руінамі, войска ў 8 напрамках з анімацыямі працы і атакі, зямля для 13 мясцовасцяў.",
+					"pl": "Grafika WKL i Zakonu: budynki z etapami budowy i ruinami, jednostki w 8 kierunkach z animacjami pracy i ataku, grunt dla 13 terenów.",
+					"uk": "Арт для ВКЛ і Ордену: будівлі зі стадіями будівництва й руїнами, війська у 8 напрямках з анімаціями праці й атаки, земля для 13 місцевостей.",
+					"lt": "Grafika LDK ir Ordinui: pastatai su statybos etapais ir griuvėsiais, kariai 8 kryptimis su darbo ir puolimo animacijomis, žemė 13 vietovių."
+				},
+				{
+					"en": "Click any object on the map to see its card; your own buildings can be taken apart for half their price.",
+					"be": "Пстрычка па любым аб'екце на карце паказвае яго картку; свае будынкі можна разабраць за палову кошту.",
+					"pl": "Kliknięcie dowolnego obiektu na mapie pokazuje jego kartę; własne budynki można rozebrać za połowę ceny.",
+					"uk": "Клік по будь-якому об'єкту на мапі показує його картку; свої будівлі можна розібрати за половину ціни.",
+					"lt": "Spustelėjus bet kurį objektą žemėlapyje matyti jo kortelė; savus pastatus galima išardyti už pusę kainos."
+				},
+				{
+					"en": "Bottom panel with picture buttons and tooltips.",
+					"be": "Ніжняя панэль з кнопкамі-малюнкамі і падказкамі.",
+					"pl": "Dolny pasek z przyciskami-obrazkami i podpowiedziami.",
+					"uk": "Нижня панель із кнопками-малюнками й підказками.",
+					"lt": "Apatinė juosta su paveikslėlių mygtukais ir patarimais."
+				}
+			]
+		}
+	]
+}

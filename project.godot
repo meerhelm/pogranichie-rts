@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Pogranichie"
 config/description="Isometric historical RTS prototype (GDL and Poland vs the Teutonic Order)."
-config/version="0.0.1"
+config/version="0.0.2"
 run/main_scene="res://ui/main_menu.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 
@@ -27,6 +27,7 @@ gdscript/warnings/unsafe_property_access=1
 gdscript/warnings/unsafe_method_access=1
 gdscript/warnings/unsafe_cast=1
 gdscript/warnings/unsafe_call_argument=1
+gdscript/warnings/integer_division=0
 
 [dialogic]
 

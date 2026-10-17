@@ -1,6 +1,7 @@
 extends Control
 ## Main menu: start a skirmish (against the Order AI, easy or normal), the campaign missions
-## (at the same difficulty), load a saved mission, how to play, settings, quit. The first
+## (at the same difficulty), load a saved mission, how to play, about the game (version and
+## what each build added), settings, quit. The game's version stands under the title. The first
 ## scene the game opens.
 
 const GAME_SCENE := "res://game/main.tscn"
@@ -17,12 +18,16 @@ var _saves := VBoxContainer.new()
 var _difficulty := OptionButton.new()
 var _settings_button := Button.new()
 var _help_button := Button.new()
+var _about_button := Button.new()
 var _quit := Button.new()
 var _version := Label.new()
 var _menu := VBoxContainer.new()
 var _settings := SettingsPanel.new()
 var _help := HelpPanel.new()
+var _about := AboutPanel.new()
 var _panel: PanelContainer
+## Set once _ready() has made every control; the locale can change before that.
+var _built := false
 
 
 func _ready() -> void:
@@ -43,6 +48,9 @@ func _ready() -> void:
 	_subtitle.add_theme_font_size_override("font_size", 22)
 	_subtitle.add_theme_color_override("font_color", Color(0.93, 0.84, 0.66))
 	column.add_child(_subtitle)
+	_version.add_theme_font_size_override("font_size", 22)
+	_version.add_theme_color_override("font_color", Color(0.85, 0.72, 0.45))
+	column.add_child(_version)
 	var rule := ColorRect.new()
 	rule.color = Color(0.75, 0.6, 0.35, 0.8)
 	rule.custom_minimum_size = Vector2(380, 2)
@@ -65,7 +73,9 @@ func _ready() -> void:
 		_campaign.append(mission)
 	var buttons: Array[Control] = []
 	buttons.append_array(_campaign)
-	buttons.append_array([_skirmish, _difficulty, _load, _help_button, _settings_button, _quit])
+	buttons.append_array(
+		[_skirmish, _difficulty, _load, _help_button, _about_button, _settings_button, _quit]
+	)
 	for b: Control in buttons:
 		b.custom_minimum_size = Vector2(340, 50)
 		_menu.add_child(b)
@@ -78,18 +88,14 @@ func _ready() -> void:
 	_skirmish.pressed.connect(_on_skirmish)
 	_settings_button.pressed.connect(_show_settings.bind(true))
 	_help_button.pressed.connect(_help.open)
+	_about_button.pressed.connect(_about.open)
 	_quit.pressed.connect(func() -> void: get_tree().quit())
 	_settings.visible = false
 	_settings.closed.connect(_show_settings.bind(false))
 	stack.add_child(_settings)
 	add_child(_help)
-	_version.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
-	_version.position = Vector2(16, -36)
-	_version.modulate = Color(1, 1, 1, 0.6)
-	add_child(_version)
-	var game_name: String = ProjectSettings.get_setting("application/config/name")
-	var version: String = ProjectSettings.get_setting("application/config/version")
-	_version.text = "%s %s" % [game_name, version]
+	add_child(_about)
+	_built = true
 	_retranslate()
 	_skirmish.grab_focus.call_deferred()
 
@@ -130,6 +136,8 @@ func _notification(what: int) -> void:
 
 
 func _retranslate() -> void:
+	if not _built:
+		return
 	_title.text = tr("Pogranichie")
 	_subtitle.text = tr("Grand Duchy of Lithuania against the Teutonic Order")
 	_skirmish.text = tr("Skirmish")
@@ -142,6 +150,8 @@ func _retranslate() -> void:
 		_difficulty.set_item_text(i, levels[i])
 	_settings_button.text = tr("Settings")
 	_help_button.text = tr("How to play")
+	_about_button.text = tr("About the game")
+	_version.text = tr("Version %s") % AboutPanel.version()
 	_quit.text = tr("Quit")
 
 

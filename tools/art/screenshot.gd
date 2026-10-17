@@ -15,6 +15,7 @@ extends SceneTree
 ##   button HOVER, a building, unit, tech or spell id, or order<N> for the Nth order button),
 ##   towers:X:Y (no fog: from cell X, Y a palisade ring of the player's with a tower in each
 ##   corner and a gate, a house inside; knechts outside storm the house, spearmen inside),
+##   about (on res://ui/main_menu.tscn: the «About the game» page),
 ##   speed:N (the game speed button stepped N times up, e.g. 2 for 4x),
 ##   units:X:Y:ID,ID,... (no fog: the listed units, heroes too, in a row from cell X, Y, two
 ##   cells apart, the camera on them)
@@ -78,6 +79,8 @@ func _act() -> void:
 				ids.append(id)
 		input.selection.ids = ids
 		input.selection.changed.emit()
+	elif _action == "about" and main.get("_about") != null:
+		(main.get("_about") as AboutPanel).open()
 	elif _action == "menu" and main.has_node("UI/Hud"):
 		(main.get_node("UI/Hud") as Hud).menu.open()
 	elif _action.begins_with("look:"):
