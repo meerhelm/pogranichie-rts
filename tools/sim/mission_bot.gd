@@ -443,10 +443,36 @@ func _dubysa(army: PackedInt32Array) -> void:
 			_cmd(SimCommand.set_stance(sim.tick, P, settle, EntityStore.Stance.DEFENSIVE))
 		_move(to_via, via)
 		_move(to_post, post)
+		# Sortie crossbowmen that stop out of a defensive spearman's reach would hold the
+		# post for good: the squad goes at them.
+		var foe := _enemy_by(post, 8)
+		if foe.x >= 0:
+			var there := PackedInt32Array()
+			for id in squads[i]:
+				var c := Vector2i(Fixed.to_cells(e.pos_x[id - 1]), Fixed.to_cells(e.pos_y[id - 1]))
+				if _cells_sq(c, post) <= 100:
+					there.append(id)
+			_attack_move(there, foe)
 
 
 static func _cells_sq(a: Vector2i, b: Vector2i) -> int:
 	return (a - b).length_squared()
+
+
+## The cell of the enemy nearest to `at` within `radius` cells, or (-1, -1).
+func _enemy_by(at: Vector2i, radius: int) -> Vector2i:
+	var e := sim.entities
+	var best := Vector2i(-1, -1)
+	var best_d := radius * radius + 1
+	for id in e.alive_ids:
+		if e.owners[id - 1] != 2:
+			continue
+		var c := Vector2i(Fixed.to_cells(e.pos_x[id - 1]), Fixed.to_cells(e.pos_y[id - 1]))
+		var d := _cells_sq(c, at)
+		if d < best_d:
+			best = c
+			best_d = d
+	return best
 
 
 func _enemies_near(at: Vector2i, radius: int) -> int:

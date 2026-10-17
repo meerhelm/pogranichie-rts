@@ -203,10 +203,14 @@ static func purpose(def: BuildingDef) -> String:
 				"A wall of sharpened stakes: drag to lay a line. Holds enemies off until they break through; it burns."
 			)
 		&"gate":
-			return t("A gate in your wall: your own people pass, enemies have to break it down.")
+			return t(
+				# gdlint:ignore = max-line-length
+				"A gate in your wall: your own people pass, enemies have to break it down. One or two archers on it shoot at enemies nearby."
+			)
 		&"tower":
 			return t(
-				"A tower that shoots arrows at enemies in range. Palisades and walls join onto it."
+				# gdlint:ignore = max-line-length
+				"A tower with three or four archers shooting at enemies in range. Palisades and walls join onto it."
 			)
 		&"market":
 			return t("A trading house. Trade is not in this version yet.")
@@ -257,11 +261,10 @@ static func gives(def: BuildingDef, db: CatalogDB) -> PackedStringArray:
 	if def.power_rate_milli > 0:
 		lines.append(t("%s Power a second on a place of power") % _decimal(def.power_rate_milli))
 	if def.damage > 0:
+		var every := _decimal(def.param(&"reload_ticks", TowerFire.DEFAULT_RELOAD) * 50)
+		var shoots := t("Shoots: %d damage (%s), range %d, an arrow every %s s")
 		lines.append(
-			(
-				t("Shoots: %d damage (%s), range %d")
-				% [def.damage, UiText.damage_type(def.damage_type), def.attack_range]
-			)
+			shoots % [def.damage, UiText.damage_type(def.damage_type), def.attack_range, every]
 		)
 	if def.tags.has(&"brickworks"):
 		lines.append(t("Cheaper towers, walls and castles"))

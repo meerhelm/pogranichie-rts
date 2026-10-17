@@ -335,6 +335,9 @@ class Builder:
             d["damage"] = int(m.group(1))
             d["damage_type"] = cells.DAMAGE_TYPES[m.group(2)]
             d["attack_range"] = int(m.group(3))
+        m = re.search(r"стрела раз в (\d+(?:,\d+)?) с", text)
+        if m:
+            d["params"]["reload_ticks"] = cells.ticks(m.group(1))
         accepts = []
         if re.search(r"[Пп]риём всех ресурсов|[Пп]риём из обоза", text):
             accepts = list(RESOURCES)
@@ -413,9 +416,6 @@ class Builder:
             sight = layout.get("sight", {})
             default = sight.get("_default", 0)
             d["params"]["sight"] = sight.get(bid, sight.get(d["base_id"], default))
-            reload = layout.get("reload_ticks", {})
-            if bid in reload or d["base_id"] in reload:
-                d["params"]["reload_ticks"] = reload.get(bid, reload.get(d["base_id"]))
             for tag, ids in layout.get("tags", {}).items():
                 if bid in ids or d["base_id"] in ids:
                     d["tags"].append(tag)

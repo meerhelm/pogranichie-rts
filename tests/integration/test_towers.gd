@@ -20,6 +20,20 @@ func test_every_faction_has_a_tower_that_shoots() -> void:
 		assert_true(TowerFire.shoots(def), "%s_tower shoots" % faction)
 		assert_eq(def.attack_range, 7, "catalog «дальн. 7»")
 		assert_gt(def.param(&"reload_ticks"), 0)
+		var gate := _db.building(StringName("%s_gate" % faction))
+		assert_true(TowerFire.shoots(gate), "%s_gate: one or two archers on it" % faction)
+		assert_gt(gate.param(&"reload_ticks"), def.param(&"reload_ticks"), "fewer than a tower")
+
+
+func test_a_gate_shoots_enemies_near_it() -> void:
+	var sim := _open(40, 20)
+	_join(sim, 1, GDL)
+	_join(sim, 2, ORDER)
+	assert_ne(_place(sim, 1, &"gdl_gate", 10, 10), 0)
+	var enemy := _spawn(sim, 2, KNECHT, 14.5, 10.5)
+	_passive(sim, enemy)
+	sim.run(200)
+	assert_lt(sim.entities.hp[enemy - 1], sim.entities.max_hp[enemy - 1])
 
 
 func test_a_tower_shoots_enemies_in_range_and_spares_its_own() -> void:
@@ -87,7 +101,7 @@ func test_enemies_break_in_to_reach_a_building_behind_the_wall() -> void:
 	var sim := _open(30, 20)
 	_join(sim, 1, GDL)
 	_join(sim, 2, ORDER)
-	_walled(sim, 10, 5, 18, 13, Vector2i(10, 9))
+	_walled(sim, 10, 5, 18, 13, Vector2i(18, 9))  # the gate, which shoots, on the far side
 	var house := _place(sim, 1, &"gdl_house", 13, 8)
 	assert_ne(house, 0)
 	var ring := sim.economy.buildings.count() - 1
@@ -139,3 +153,18 @@ func test_a_tower_or_gate_goes_into_an_own_palisade_line() -> void:
 		EconomySystem.Fail.OCCUPIED,
 		"other buildings do not"
 	)
+
+
+func test_a_gateway_two_cells_wide_shoots_as_one_gate() -> void:
+	var sim := _open(40, 20)
+	_join(sim, 1, GDL)
+	_join(sim, 2, ORDER)
+	var a := _place(sim, 1, &"gdl_gate", 10, 10)
+	var b := _place(sim, 1, &"gdl_gate", 10, 11)
+	assert_ne(a, 0)
+	assert_ne(b, 0)
+	_passive(sim, _spawn(sim, 2, KNECHT, 13.5, 10.5))
+	sim.run(5)
+	var cd := sim.economy.buildings.cooldown
+	assert_gt(cd[a - 1], 0, "the first cell shoots")
+	assert_eq(cd[b - 1], 0, "the second is the same gateway")

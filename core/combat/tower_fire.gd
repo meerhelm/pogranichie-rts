@@ -1,9 +1,11 @@
 class_name TowerFire
 extends RefCounted
-## Towers shoot: every finished building with damage and a range in the catalog (the towers of
-## all four factions, «5 С, дальн. 7») sends an arrow every params.reload_ticks at the nearest
-## enemy unit its side can see within range of its walls. Arrows fly and land like the
-## archers' (CombatSystem.tower_shot) with no class bonus; the shooter is minus the building id.
+## Towers and gates shoot: every finished building with damage and a range in the catalog
+## (tower «5 С, дальн. 7, стрела раз в 0,6 с», gate «5 С, дальн. 6, стрела раз в 1,3 с»)
+## sends an arrow every params.reload_ticks at the nearest enemy unit its side can see within
+## range of its walls. Arrows fly and land like the archers' (CombatSystem.tower_shot) with
+## no class bonus; the shooter is minus the building id.
+## A gateway two or more cells wide is one gate: only its lowest-id cell shoots.
 ## Run by Simulation after CombatSystem.step (its unit buckets are fresh then).
 
 ## Ticks between arrows when the data gives none.
@@ -36,12 +38,37 @@ func step() -> void:
 		if buildings.cooldown[s] > 0:
 			buildings.cooldown[s] -= 1
 			continue
+		if _gate_wing(b):
+			continue
 		var t := _nearest_enemy(b)
 		if t == EntityStore.NO_ID:
 			continue
 		var def := buildings.defs[s]
 		buildings.cooldown[s] = maxi(def.param(&"reload_ticks", DEFAULT_RELOAD), 1)
 		_shoot(b, t - 1)
+
+
+## True for a gate cell next to an own gate cell with a lower id: the same gateway, whose
+## archers stand on that one.
+func _gate_wing(b: int) -> bool:
+	var s := b - 1
+	if not buildings.defs[s].tags.has(&"gate"):
+		return false
+	for o in buildings.alive_ids:
+		if o >= b:
+			continue
+		var q := o - 1
+		if buildings.owners[q] != buildings.owners[s] or not buildings.defs[q].tags.has(&"gate"):
+			continue
+		if (
+			(
+				absi(buildings.cell_x[q] - buildings.cell_x[s])
+				+ absi(buildings.cell_y[q] - buildings.cell_y[s])
+			)
+			== 1
+		):
+			return true
+	return false
 
 
 func _shoot(b: int, t: int) -> void:

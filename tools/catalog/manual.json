@@ -180,7 +180,7 @@
    "spell_recharge": ["gdl_shrine"],
    "watch": ["tower", "palisade", "wall", "gate"], "fireproof": ["castle", "to_brickworks", "pl_wall", "to_wall", "farm"]
   },
-  "_sight_source": "Fog of war (M6): how far a finished building sees, in cells → params.sight. Only mo_watchtower «Обзор 12» is from the catalog; the rest are temporary, after AoE II. watch tag = towers and walls for t_watch «Обзор башен и стен +2».",
+  "_sight_source": "Fog of war (M6): how far a finished building sees, in cells → params.sight. Only mo_watchtower «Обзор 12» is from the catalog; the rest are temporary, after AoE II. watch tag = towers and walls for t_watch «Обзор башен и стен +2». Gate 6: its archers see as far as they shoot (Valentin 2026-10-17: 1–2 archers on a gate).",
   "sight": {
    "_default": 4,
    "town_center": 8,
@@ -188,16 +188,12 @@
    "tower": 8,
    "palisade": 2,
    "wall": 2,
-   "gate": 2,
+   "gate": 6,
    "farm": 2,
    "gdl_bort": 2,
    "gdl_zaseka": 2,
    "mo_zaseka": 2,
    "mo_watchtower": 12
-  },
-  "_reload_source": "Towers shooting (2026-10-16): ticks between a tower's arrows → params.reload_ticks. Not in the catalog (it gives only «5 С, дальн. 7»), temporary: 0.6 s, about 3–4 archers at «2,0» shooting from it (Valentin 2026-10-17: «в башне сидят 3-4 лучника»).",
-  "reload_ticks": {
-   "tower": 12
   }
  },
  "vision_rules": {
