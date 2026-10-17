@@ -15,7 +15,9 @@ extends SceneTree
 ##   button HOVER, a building, unit, tech or spell id, or order<N> for the Nth order button),
 ##   towers:X:Y (no fog: from cell X, Y a palisade ring of the player's with a tower in each
 ##   corner and a gate, a house inside; knechts outside storm the house, spearmen inside),
-##   speed:N (the game speed button stepped N times up, e.g. 2 for 4x)
+##   speed:N (the game speed button stepped N times up, e.g. 2 for 4x),
+##   units:X:Y:ID,ID,... (no fog: the listed units, heroes too, in a row from cell X, Y, two
+##   cells apart, the camera on them)
 ## SHOT_LOCALE=be (or pl, uk, lt) in the environment shoots in that language; SHOT_AFTER=N
 ## waits N seconds after the action instead of 1 (2.5 for actions with arguments).
 
@@ -95,6 +97,9 @@ func _act() -> void:
 	elif _action.begins_with("towers:"):
 		var parts := _action.split(":")
 		_towers(main, int(parts[1]), int(parts[2]))
+	elif _action.begins_with("units:"):
+		var parts := _action.split(":")
+		_units(main, int(parts[1]), int(parts[2]), parts[3].split(","))
 	elif _action.begins_with("click:"):
 		_click(main, _action.split(":")[1])
 	elif _action.begins_with("panel:"):
@@ -153,6 +158,23 @@ func _showcase(main: Node, faction: String, x0: int, y0: int) -> void:
 			ux += 1
 	var cam: RtsCamera = main.get_node("Camera")
 	cam.look_at_point(Iso.cell_to_screen(Vector2(x0 + 12, y0 + 9)))
+
+
+## The listed units of player 1 in a row from cell (x0, y0), two cells apart; no fog.
+func _units(main: Node, x0: int, y0: int, ids: PackedStringArray) -> void:
+	var sim: Simulation = main.get("sim")
+	sim.vision.rules = null
+	(main.get_node("World/Fog") as Node2D).visible = false
+	var grass := sim.nav.terrain_index(&"t_grass")
+	for y in range(y0 - 2, y0 + 3):
+		for x in range(x0 - 2, x0 + ids.size() * 2 + 2):
+			if sim.nav.in_bounds(x, y):
+				sim.nav.set_terrain(sim.nav.cell_at(x, y), grass)
+	for i in ids.size():
+		var at := Fixed.from_cells(x0 + i * 2) + Fixed.ONE / 2
+		sim.spawn_unit(StringName(ids[i]), 1, at, Fixed.from_cells(y0) + Fixed.ONE / 2)
+	var cam: RtsCamera = main.get_node("Camera")
+	cam.look_at_point(Iso.cell_to_screen(Vector2(x0 + ids.size(), y0)))
 
 
 func _towers(main: Node, x0: int, y0: int) -> void:

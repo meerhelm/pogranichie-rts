@@ -2,7 +2,7 @@
 
 from typing import Callable, NamedTuple
 
-from tools.art import beasts, buildings_gdl, buildings_to, folk, folk_1410, models
+from tools.art import beasts, buildings_gdl, buildings_to, folk, folk_1410, folk_1435, models
 
 
 class Unit(NamedTuple):
@@ -26,7 +26,7 @@ WAGON = {"frame": (320, 240), "pivot": (156, 150)}
 UNITS: dict[str, Unit] = {uid: Unit(fn) for uid, fn in {**models.UNITS, **folk.UNITS, **folk_1410.UNITS}.items()}
 for _uid, _fn in beasts.UNITS.items():
     UNITS[_uid] = Unit(_fn, **BEAST) if _uid in beasts.BIG_BEASTS else Unit(_fn)
-for _uid, _fn in {**beasts.MOUNTED_UNITS, **folk_1410.MOUNTED_UNITS}.items():
+for _uid, _fn in {**beasts.MOUNTED_UNITS, **folk_1410.MOUNTED_UNITS, **folk_1435.MOUNTED_UNITS}.items():
     UNITS[_uid] = Unit(_fn, **MOUNTED)
 for _uid, _fn in {**beasts.WAGONS, **folk_1410.WAGONS}.items():
     UNITS[_uid] = Unit(_fn, **WAGON)
@@ -64,6 +64,8 @@ ATTACK_STYLE = {
     "nt_steppe_archer": "bow", "pl_kopia": "thrust", "to_guest_knight": "thrust",
     "hero_vytautas": "swing", "hero_lengvenis": "thrust", "hero_wallenrode": "thrust",
     "hero_jungingen": "swing", "to_bombard": "fire", "nt_pagan": "swing", "nt_pagan_priest": "cast",
+    "hero_mikolaj": "swing", "hero_jurij_gintovt": "thrust", "hero_mikhail_sigismundovich": "swing",
+    "hero_jakub_kobylany": "thrust", "hero_nesselrode": "thrust", "hero_kerskorf": "swing",
     **{uid: "lunge" for uid in beasts.UNITS},
 }
 

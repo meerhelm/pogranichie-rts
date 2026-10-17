@@ -19,6 +19,11 @@ wood everywhere, log frames (срубы), palisades, shingle and thatch.
 - gdl_temple: «Храм», a wooden church of the first Samogitian parishes (1410s): a log nave
   and a lower chancel under high shingle roofs, an open bell turret with a spire and a cross
   on the ridge, a porch over the door, a wooden cross in the yard.
+- gdl_field_camp: «Походный лагерь» (ВКЛ 4, 1435), a camp of the field army: a round
+  pavilion tent with a team-coloured valance and two ridge tents of canvas, wagons drawn up in
+  a ring at the back and the left, a campfire with a kettle on a tripod in the open middle,
+  a banner, barrels, sacks and spears in a stack. The canvas is named as roof parts, so the
+  build stages show only the tent poles and a burning camp loses it first.
 """
 
 import math
@@ -527,6 +532,121 @@ def gdl_temple():
     return root
 
 
+def _camp_wagon(name, loc, rot_z, m, cover, parent):
+    """A four-wheeled cart without horses, its pole on the ground; a matting cover (named as
+    a roof) over the front, sacks at the back."""
+    w = S.empty(name, loc, parent)
+    w.rotation_euler = (0, 0, rot_z)
+    S.box(f"{name}_bed", (1.0, 2.1, 0.08), (0, 0, 0.62), m["plank"], w)
+    for x in (-0.5, 0.5):
+        S.box(f"{name}_side_{x}", (0.05, 2.1, 0.36), (x, 0, 0.82), m["plank"], w)
+    for x in (-0.56, 0.56):
+        for y in (-0.7, 0.7):
+            wh = S.cyl(f"{name}_wheel_{x}_{y}", 0.34, 0.34, 0.07, (x, y, 0.34), m["logs_old"], w,
+                       rot=(0, math.pi / 2, 0), seg=12)
+            S.cyl(f"{name}_hub_{x}_{y}", 0.08, 0.08, 0.14, (0, 0, -0.035), m["logs"], wh, seg=6)
+    S.cyl(f"{name}_pole", 0.035, 0.035, 1.7, (0, 1.05, 0.55), m["logs"], w,
+          rot=(-math.pi / 2 - 0.3, 0, 0), seg=6)
+    hoop = S.cyl(f"{name}_roof_cover", 0.52, 0.52, 1.2, (0, 0.85, 0.95), cover, w,
+                 rot=(math.pi / 2, 0, 0), seg=12)
+    hoop.scale = (1.0, 0.75, 1.0)
+    kit.sack(f"{name}_sack_a", (-0.2, -0.6, 0.66), m, w)
+    kit.sack(f"{name}_sack_b", (0.2, -0.75, 0.66), m, w, s=0.9)
+    return w
+
+
+def _ridge_tent(name, loc, rot_z, w, d, h, canvas, m, parent):
+    """A ridge tent: two upright poles and a ridge pole, the canvas to the ground, a team
+    pennant on the front pole."""
+    t = S.empty(name, loc, parent)
+    t.rotation_euler = (0, 0, rot_z)
+    for x in (-w / 2, w / 2):
+        S.cyl(f"{name}_pole_{x}", 0.04, 0.04, h + 0.25, (x, 0, 0), m["logs"], t, seg=6)
+    S.cyl(f"{name}_ridge_pole", 0.03, 0.03, w + 0.2, (-w / 2 - 0.1, 0, h), m["logs"], t,
+          rot=(0, math.pi / 2, 0), seg=5)
+    roof = S.prism_roof(f"{name}_roof", w, d, h, 0.0, (0, 0, 0), canvas, t)
+    S.solidify(roof, 0.04)
+    # Rear wall and the open front flaps (front = +X end).
+    S.solidify(S.poly(f"{name}_roof_back", [(-w / 2, -d / 2, 0), (-w / 2, d / 2, 0), (-w / 2, 0, h)],
+                      [(0, 1, 2)], canvas, t), 0.04)
+    for k, sgn in enumerate((-1, 1)):
+        S.solidify(S.poly(f"{name}_roof_flap_{k}", [(w / 2, sgn * d / 2, 0), (w / 2 + 0.35, sgn * d * 0.55, 0),
+                                                     (w / 2, 0, h)], [(0, 1, 2)], canvas, t), 0.03)
+    S.box(f"{name}_roof_dark", (0.02, d * 0.5, h * 0.6), (w / 2 - 0.05, 0, h * 0.3), m["dark"], t)
+    S.solidify(S.poly(f"{name}_flag", [(w / 2, 0, h + 0.25), (w / 2 + 0.45, 0, h + 0.15), (w / 2, 0, h + 0.05)],
+                      [(0, 1, 2)], m["team"], t), 0.015)
+    return t
+
+
+def gdl_field_camp():
+    rng = random.Random(14)
+    m = kit.mats()
+    canvas = S.mat("tent_canvas", "#ddd2b4", 0.95, noise=0.15)
+    canvas_old = S.mat("tent_canvas_old", "#c4b38e", 0.95, noise=0.2)
+    matting = S.mat("matting", "#b8a273", 1.0, noise=0.5)
+    root = S.empty("gdl_field_camp")
+    kit.yard(3.0, 3.0, S.mat("trodden_grass", "#6f7444", 1.0, noise=0.35)).parent = root
+    # The round pavilion at the back: a canvas wall, a cone roof, a team valance, a finial.
+    pav = S.empty("pavilion", (-0.6, 1.0, 0), root)
+    S.cyl("pavilion_pole", 0.06, 0.05, 3.5, (0, 0, 0), m["logs"], pav, seg=6)
+    S.cyl("pavilion_roof_wall", 1.25, 1.25, 1.45, (0, 0, 0), canvas, pav, seg=16)
+    S.cyl("pavilion_roof_cone", 1.42, 0.06, 1.6, (0, 0, 1.4), canvas, pav, seg=16)
+    # The valance is an open band (no caps), so a lost cone never shows a team-coloured disc.
+    n = 16
+    ring = [(math.cos(i * math.tau / n) * 1.43, math.sin(i * math.tau / n) * 1.43, z) for z in (1.28, 1.46)
+            for i in range(n)]
+    S.solidify(S.poly("pavilion_roof_valance", ring, [(i, (i + 1) % n, n + (i + 1) % n, n + i) for i in range(n)],
+                      m["team"], pav), 0.03)
+    S.ball("pavilion_roof_finial", 0.09, (0, 0, 3.05), m["iron"], pav)
+    # Its door faces the fire: a dark slit with the flap tied back.
+    S.box("pavilion_roof_door", (0.55, 0.06, 1.25), (0.62, -1.08, 0.62), m["dark"], pav, rot=(0, 0, math.radians(30)))
+    S.solidify(S.poly("pavilion_roof_flap", [(0.95, -0.85, 0), (1.35, -0.75, 0.2), (1.0, -0.9, 1.35)],
+                      [(0, 1, 2)], canvas, pav), 0.03)
+    for i in range(8):  # guy ropes to pegs
+        a = i * math.tau / 8 + 0.2
+        S.cyl(f"pavilion_roof_rope_{i}", 0.01, 0.01, 1.2, (math.cos(a) * 1.3, math.sin(a) * 1.3, 1.4), m["rope"], pav,
+              rot=(math.sin(a) * 0.9, -math.cos(a) * 0.9, 0), seg=3)
+    # Two ridge tents on the left.
+    _ridge_tent("tent_a", (-1.9, -0.9, 0), 0.0, 1.6, 1.3, 1.25, canvas_old, m, root)
+    _ridge_tent("tent_b", (1.4, 1.6, 0), -math.pi / 2, 1.5, 1.2, 1.2, canvas, m, root)
+    # Wagons in a ring along the back and the left edge.
+    _camp_wagon("wagon_a", (0.9, 2.5, 0), math.pi / 2 + 0.25, m, matting, root)
+    _camp_wagon("wagon_b", (-2.4, 2.1, 0), math.pi / 4 + 0.15, m, matting, root)
+    _camp_wagon("wagon_c", (-2.65, -1.0 - 1.0, 0), -0.15, m, matting, root)
+    # The campfire in the open middle: a ring of stones, logs, flames, a kettle on a tripod.
+    fx, fy = 0.9, -0.6
+    for i in range(8):
+        a = i * math.tau / 8
+        S.rock(f"fire_stone_{i}", 0.13, (fx + math.cos(a) * 0.42, fy + math.sin(a) * 0.42, 0.05), m["stone"], root,
+               seed=i + 20)
+    for i in range(4):
+        S.cyl(f"fire_wood_{i}", 0.05, 0.05, 0.55, (fx - 0.25 * math.cos(i * 1.6), fy - 0.25 * math.sin(i * 1.6), 0.1),
+              m["charcoal"], root, rot=(0, math.pi / 2 - 0.35, i * 1.6), seg=5)
+    S.cyl("fire", 0.2, 0.02, 0.5, (fx, fy, 0.1), m["fire"], root, seg=6, smooth=False)
+    for i in range(3):
+        a = i * math.tau / 3
+        S.cyl(f"tripod_{i}", 0.025, 0.02, 1.35, (fx + math.cos(a) * 0.45, fy + math.sin(a) * 0.45, 0), m["logs_old"],
+              root, rot=(-math.sin(a) * 0.33, math.cos(a) * 0.33, 0), seg=5)
+    S.cyl("kettle_chain", 0.008, 0.008, 0.4, (fx, fy, 0.82), m["iron"], root, seg=3)
+    S.cyl("kettle", 0.18, 0.14, 0.24, (fx, fy, 0.6), S.mat("kettle", "#2e2c2a", 0.5, metal=0.6), root, seg=10)
+    S.cyl("bench_log", 0.13, 0.13, 1.2, (fx + 1.1, fy - 0.2, 0.13), m["logs"], root, rot=(0, math.pi / 2, 1.35), seg=7)
+    # Stores and arms: barrels, sacks, a stack of spears, a saddle on the ground.
+    kit.barrel("barrel_a", (2.2, 0.4, 0), m, root)
+    kit.barrel("barrel_b", (2.55, 0.0, 0), m, root, r=0.24, h=0.65)
+    for i, (x, y) in enumerate(((-0.6, -2.3), (-0.25, -2.45), (-0.45, -2.1))):
+        kit.sack(f"sack_{i}", (x, y, 0.0 if i < 2 else 0.25), m, root, s=0.9)
+    for i in range(5):
+        a = i * math.tau / 5
+        shaft = S.cyl(f"spear_stack_{i}", 0.018, 0.016, 2.4, (2.3 + math.cos(a) * 0.3, -1.9 + math.sin(a) * 0.3, 0), m["logs"],
+              root, rot=(math.sin(a) * 0.12, -math.cos(a) * 0.12, 0), seg=5)
+        S.cyl(f"spear_stack_head_{i}", 0.03, 0.0, 0.2, (0, 0, 2.4), m["iron"], shaft, seg=4, smooth=False)
+    S.box("saddle_ground", (0.4, 0.55, 0.22), (1.6, -2.4, 0.11), S.mat("saddle_leather", "#5a3e28", 0.8, noise=0.2),
+          root, rot=(0, 0, rng.uniform(-0.4, 0.4)))
+    # The banner by the pavilion.
+    kit.flag(root, (-2.0, 0.5, 0), 4.2, m, banner=True)
+    return root
+
+
 BUILDINGS = {
     "gdl_granary": (gdl_granary, (2, 2), 5),
     "gdl_farm": (gdl_farm, (3, 3), 2),
@@ -545,6 +665,7 @@ BUILDINGS = {
     "gdl_gate_v": (gate(True), (1, 1), 6),
     "gdl_palisade": (palisade_piece(""), (1, 1), 3),
     "gdl_temple": (gdl_temple, (3, 3), 10),
+    "gdl_field_camp": (gdl_field_camp, (3, 3), 6),
 }
 for _arm in "ewns":
     BUILDINGS[f"gdl_palisade_{_arm}"] = (palisade_piece(_arm), (1, 1), 3)

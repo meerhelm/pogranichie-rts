@@ -40,6 +40,10 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
   hero template (a rider with a standard-bearer on foot) is `Sovereign` there. Also the
   Baptism (ВКЛ 3): the Order's spy, the pagans and their priest, and the council's envoys
   (`Envoys`: two clerics as one unit); civilians only idle and walk.
+- `folk_1435.py` — the heroes of Wiłkomierz (ВКЛ 4): the Gintovt brothers (placeholder family
+  arms: a white zigzag on green; Jurij's lance carries the woven belt under the pennon),
+  Mikhail Sigismundovich with the Pogoń, Jakub of Kobylany (arms unverified: plain white and
+  red), the Livonian brother Nesselrode and the Master Kerskorf (`Sovereign`, with a bearer).
 - `kit.py` — building materials (log, thatch, shingle, brick, roof tile, plaster and timber
   framing) and parts (roofs, stepped gables, windows, sheds, fences, barrels);
   `buildings_gdl.py` and `buildings_to.py` — the Duchy's and the Order's buildings.
