@@ -1,8 +1,8 @@
 # gdlint:ignore = max-public-methods
 extends GutTest
-## M9 acceptance: «ВКЛ 1. Жемайтский огонь», phases 1-3. One test per trigger of the mission
-## card (1.1-3.5) and per extra one (optional objectives, boats, convoy, defeats, the end): the
-## world is put into the trigger's condition and the trigger's events are checked. Earlier
+## M9 acceptance: «ВКЛ 1. Жемайтский огонь», all four phases. One test per trigger of the
+## mission card (1.1-4.3) and per extra one (optional objectives, boats, convoy, defeats, the
+## end): the world is put into the trigger's condition and the trigger's events are checked. Earlier
 ## triggers a test does not need are marked as fired by hand.
 
 const MISSION := "gdl_01"
@@ -421,7 +421,7 @@ func test_a_lost_rider_fails_the_riders_objective() -> void:
 	assert_eq(_state(sim, "riders"), MissionRuntime.Objective.FAILED)
 
 
-func test_3_5_skirsnemune_burnt_then_the_final_cutscene_and_victory() -> void:
+func test_3_5_skirsnemune_burnt_starts_the_blockade_of_dubysa() -> void:
 	var sim := _sim()
 	_phase_3(sim)
 	sim.economy.destroy(sim.mission.named["skir_castle"])
@@ -429,14 +429,143 @@ func test_3_5_skirsnemune_burnt_then_the_final_cutscene_and_victory() -> void:
 	assert_true(sim.mission.fired.has("3.5"))
 	assert_eq(_state(sim, "burn"), MissionRuntime.Objective.DONE)
 	assert_eq(_state(sim, "riders"), MissionRuntime.Objective.DONE, "nobody of them lost")
-	sim.run(200)
-	assert_true(sim.mission.fired.has("final"))
+	assert_eq(_state(sim, "blockade"), MissionRuntime.Objective.ACTIVE)
+	assert_true(sim.mission.blockade_on)
+	assert_eq(sim.mission.garrison, 1000)
+	sim.run(400)
+	assert_false(sim.mission.is_over(), "no victory before the blockade")
+	assert_false(sim.fire.is_burning(sim.mission.named["dub_castle"]))
+
+
+# --- phase 4: the blockade ------------------------------------------------------------------
+
+
+func _posts(sim: Simulation) -> Array:
+	return sim.mission.def.rules["blockade"]["posts"]
+
+
+## Phase 4 started (3.5 fired, the blockade on), with a few of the player's spearmen at every
+## post.
+func _phase_4(sim: Simulation, guards: int = 3) -> void:
+	_skip(sim, ["1.3", "1.3b", "1.4", "2.1", "2.2", "2.3", "2.4", "2.4b", "2.4c", "places"])
+	_skip(sim, ["3.1", "convoy", "3.2", "3.3", "3.4"])
+	sim.economy.destroy(sim.mission.named["skir_castle"])
+	_check(sim)
+	for at: Array in _posts(sim):
+		for k in guards:
+			var id := _spawn(sim, P, &"gdl_spearman", at[0] + k % 2, at[1] + k / 2)
+			sim.apply_now(SimCommand.set_stance(sim.tick, P, _ids([id]), EntityStore.Stance.STAND))
+
+
+func _ids(list: Array) -> PackedInt32Array:
+	return PackedInt32Array(list)
+
+
+## Everyone of the garrison moved far into the castle yard, so no one stands near a post.
+func _garrison_home(sim: Simulation) -> void:
+	for g: String in ["dub_garrison", "dub_riders"]:
+		_put(sim, sim.mission.alive_of(g), 54, 128)
+
+
+func test_4_1_all_three_posts_held_start_the_blockade() -> void:
+	var sim := _sim()
+	_phase_4(sim)
+	_garrison_home(sim)
+	_check(sim)
+	assert_eq(sim.mission.posts_held, 7)
+	assert_true(sim.mission.fired.has("4.1"))
+	assert_gt(sim.mission.next_sortie, sim.tick, "the sorties start")
+	sim.run(400)
+	assert_lt(sim.mission.garrison, 1000, "the garrison weakens")
+
+
+func test_a_post_with_an_enemy_near_is_not_held_and_the_blockade_stops() -> void:
+	var sim := _sim()
+	_phase_4(sim)
+	_garrison_home(sim)
+	var at: Array = _posts(sim)[1]
+	var knecht := _spawn(sim, ORDER, &"to_knecht", at[0] + 2, at[1])
+	sim.apply_now(
+		SimCommand.set_stance(sim.tick, ORDER, _ids([knecht]), EntityStore.Stance.PASSIVE)
+	)
+	sim.combat.untouchable[knecht] = true
+	sim.run(600)
+	assert_eq(sim.mission.posts_held, 5, "posts 1 and 3 only")
+	assert_false(sim.mission.fired.has("4.1"))
+	assert_eq(sim.mission.garrison, 1000)
+
+
+func test_the_blockade_sickens_the_garrison_but_does_not_kill_it() -> void:
+	var sim := _sim()
+	_phase_4(sim)
+	_garrison_home(sim)
+	sim.mission.next_sortie = 1 << 30
+	sim.mission.garrison = 20
+	var ids := sim.mission.alive_of("dub_garrison")
+	var before := ids.size()
+	sim.run(600)
+	assert_eq(sim.mission.garrison, 0)
+	assert_eq(sim.mission.alive_of("dub_garrison").size(), before, "nobody dies of it")
+	var id := ids[1]
+	assert_lt(sim.entities.hp[id - 1], sim.entities.max_hp[id - 1])
+
+
+func test_sorties_go_out_against_the_posts_in_turn() -> void:
+	var sim := _sim()
+	_phase_4(sim)
+	_garrison_home(sim)
+	_check(sim)
+	sim.mission.next_sortie = sim.tick + 1
+	_check(sim)
+	assert_eq(sim.mission.sorties, 1)
+	var out := sim.mission.alive_of("sortie_0")
+	assert_eq(out.size(), 6)
+	for id in out:
+		assert_false(
+			(
+				sim.entities.type_ids[id - 1]
+				in [&"hero_kuchmeister", &"to_knight_brother", &"to_halfbrother"]
+			)
+		)
+	assert_true(sim.mission.fired.has("4.1b"), "the sortie hint")
+	_check(sim)
+	assert_eq(sim.mission.sorties, 1, "one every two minutes")
+
+
+func test_4_2_half_strength_gives_the_coughing_dialogue() -> void:
+	var sim := _sim()
+	_phase_4(sim)
+	sim.mission.garrison = 500
+	_check(sim)
+	assert_true(sim.mission.fired.has("4.2"))
+	assert_true(_kinds(sim).has("dialogue"))
+
+
+func test_4_3_the_garrison_broken_the_vogt_burns_dubysa_and_leaves() -> void:
+	var sim := _sim()
+	_phase_4(sim)
+	sim.mission.garrison = 0
+	_check(sim)
+	assert_true(sim.mission.fired.has("4.3"))
+	assert_eq(_state(sim, "blockade"), MissionRuntime.Objective.DONE)
+	assert_false(sim.mission.blockade_on)
+	assert_true(_kinds(sim).has("cutscene"))
 	assert_true(sim.fire.is_burning(sim.mission.named["dub_castle"]), "the vogt burns Dubysa")
-	sim.run(100)
+	sim.run(300)
 	assert_eq(sim.mission.outcome, MissionRuntime.Outcome.VICTORY)
 	assert_true(sim.victory.is_over())
 	assert_eq(sim.victory.winner, P)
 	assert_eq(sim.victory.reason, SkirmishVictory.Reason.MISSION)
+
+
+func test_4_3_also_when_the_whole_garrison_is_killed() -> void:
+	var sim := _sim()
+	_phase_4(sim)
+	for g: String in ["dub_garrison", "dub_riders"]:
+		for id in sim.mission.alive_of(g):
+			sim.remove_unit(id)
+	_check(sim)
+	assert_true(sim.mission.fired.has("4.3"))
 
 
 # --- defeat ---------------------------------------------------------------------------------

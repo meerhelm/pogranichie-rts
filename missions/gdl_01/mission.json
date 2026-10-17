@@ -1,5 +1,5 @@
 {
- "_comment": "Mission «ВКЛ 1. Жемайтский огонь», phases 1-3 (mission card in the missions doc; phase 4, the Dubysa blockade, is not in the prototype: the final cutscene follows phase 3). Read by core/mission/mission_def.gd; the format is described there. Cells are map cells; ticks are 1/20 s. Every text is an English key translated through i18n/*.po (tools/i18n/extract.py collects them).",
+ "_comment": "Mission «ВКЛ 1. Жемайтский огонь», all four phases (mission card in the missions doc; phase 4 is the Dubysa blockade, rules.blockade). Read by core/mission/mission_def.gd; the format is described there. Cells are map cells; ticks are 1/20 s. Every text is an English key translated through i18n/*.po (tools/i18n/extract.py collects them).",
  "id": "gdl_01",
  "title": "GDL 1. Samogitian Fire",
  "map": "map_gdl_01",
@@ -93,6 +93,12 @@
   "boats": {
    "player": 2, "every_ticks": 4800, "at": [113, 146], "to": [104, 128],
    "units": [["to_knecht", 4]], "pier": [112, 140], "radius": 6, "holder": 1
+  },
+  "blockade": {
+   "player": 1, "enemy": 2, "posts": [[52, 108], [74, 134], [66, 141]], "radius": 5,
+   "groups": ["dub_garrison", "dub_riders"], "keep": ["hero_kuchmeister", "to_knight_brother", "to_halfbrother"],
+   "every_ticks": 200, "step_permille": 10, "sick_floor_permille": 300,
+   "sortie_every": 2400, "sortie_size": 6
   }
  },
  "triggers": [
@@ -355,12 +361,62 @@
      "lines": [
       ["Chronicler", "The castle at Skirsnemune burned, and the knights who sat in it were killed. Both our books and the German ones write of it. But there was still Dubysa, where the vogt himself sat."]
      ]
+    },
+    {"do": "boats", "on": false},
+    {"do": "blockade", "on": true},
+    {"do": "objective", "id": "blockade", "text": "Hold the three posts around Dubysa until the garrison leaves"},
+    {"do": "hint", "text": "Dubysa need not be stormed. Hold the road up the Dubysa, the river road and the Neman bank with no enemies near them: cut off, the garrison weakens from sickness and hunger."},
+    {"do": "ping", "at": [52, 108], "radius": 5},
+    {"do": "ping", "at": [74, 134], "radius": 5},
+    {"do": "ping", "at": [66, 141], "radius": 5}
+   ]
+  },
+  {
+   "id": "4.1", "when": {"type": "blockade_held"},
+   "do": [{"do": "hint", "text": "Dubysa is cut off. While all three posts are held, the garrison loses strength. Every two minutes it will sally out against one of them."}]
+  },
+  {
+   "id": "4.1b", "when": {"type": "flag", "flag": "sortie"},
+   "do": [{"do": "hint", "text": "A sortie from Dubysa! Beat it back and take the post again: while a post is lost, the blockade does not work."}]
+  },
+  {
+   "id": "4.2", "when": {"type": "garrison_at_most", "permille": 500},
+   "do": [
+    {
+     "do": "dialogue", "id": "coughing",
+     "lines": [
+      ["hero_gintaut", "They have been coughing for a whole week. Did you do this to them?"],
+      ["hero_keeper", "In spring they stood on the bog, they drink river water and eat old grain. Think what you like."],
+      ["hero_gintaut", "I am asking what you think."],
+      ["hero_keeper", "I think the land does not want them."]
+     ]
     }
    ]
   },
   {
-   "id": "final", "when": {"type": "after", "trigger": "3.5", "ticks": 200},
+   "id": "4.3",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "3.5"},
+     {
+      "type": "any",
+      "of": [
+       {"type": "garrison_at_most", "permille": 0},
+       {"type": "all", "of": [{"type": "group_dead", "group": "dub_garrison"}, {"type": "group_dead", "group": "dub_riders"}]}
+      ]
+     }
+    ]
+   },
    "do": [
+    {"do": "objective", "id": "blockade", "state": "done"},
+    {"do": "blockade", "on": false},
+    {"do": "stance", "group": "dub_garrison", "stance": "passive"},
+    {"do": "stance", "group": "dub_riders", "stance": "passive"},
+    {"do": "move", "group": "dub_garrison", "to": [50, 142]},
+    {"do": "move", "group": "dub_riders", "to": [50, 142]},
+    {"do": "exit", "group": "dub_garrison", "at": [50, 142], "radius": 3},
+    {"do": "exit", "group": "dub_riders", "at": [50, 142], "radius": 3},
     {
      "do": "cutscene", "id": "vogt_leaves", "at": [55, 128],
      "lines": [
@@ -375,8 +431,8 @@
    ]
   },
   {
-   "id": "victory", "when": {"type": "after", "trigger": "final", "ticks": 100},
-   "do": [{"do": "victory", "text": "Skirsnemune has burned. Samogitia has risen."}]
+   "id": "victory", "when": {"type": "after", "trigger": "4.3", "ticks": 300},
+   "do": [{"do": "victory", "text": "Skirsnemune has burned and the vogt has left Dubysa. Samogitia has risen."}]
   }
  ]
 }

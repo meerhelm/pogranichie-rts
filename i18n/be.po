@@ -122,6 +122,9 @@ msgstr "Срэбраная капальня (шэрыя блокі на ўзго
 msgid "A smithy: researches better weapons and armor for your troops."
 msgstr "Кузня: даследуе лепшую зброю і браню для вашых войскаў."
 
+msgid "A sortie from Dubysa! Beat it back and take the post again: while a post is lost, the blockade does not work."
+msgstr "Вылазка з Дубісы! Адбіце яе і зноў займіце пост: пакуль пост страчаны, блакада не дзейнічае."
+
 msgid "A store at the forest edge: woodcutters carry wood a shorter way. Researches forestry improvements."
 msgstr "Склад на ўскрайку лесу: дрывасекі носяць дрэва карацейшым шляхам. Даследуе лясныя ўдасканаленні."
 
@@ -365,6 +368,15 @@ msgstr "Падвойны пстрык вылучае ўсе атрады гэт�
 msgid "Draw"
 msgstr "Нічыя"
 
+msgid "Dubysa garrison: %d%%"
+msgstr "Гарнізон Дубісы: %d%%"
+
+msgid "Dubysa is cut off. While all three posts are held, the garrison loses strength. Every two minutes it will sally out against one of them."
+msgstr "Дубіса адрэзана. Пакуль усе тры пасты ўтрымліваюцца, гарнізон слабее. Кожныя дзве хвіліны ён будзе рабіць вылазку на адзін з іх."
+
+msgid "Dubysa need not be stormed. Hold the road up the Dubysa, the river road and the Neman bank with no enemies near them: cut off, the garrison weakens from sickness and hunger."
+msgstr "Штурмаваць Дубісу не трэба. Утрымлівайце дарогу ўверх па Дубісе, прыбярэжную дарогу і бераг Нёмана, каб побач не было ворага: адрэзаны гарнізон слабее ад хваробаў і голаду."
+
 msgid "Each field holds more food: +50%."
 msgstr "Кожнае поле дае больш ежы: +50%."
 
@@ -524,6 +536,9 @@ msgstr "Падказкі ў сутычцы"
 msgid "Hold the pier with no enemies near, and the boats with reinforcements will stop coming."
 msgstr "Утрымлівайце прыстань, пакуль побач няма ворагаў, і чоўны з падмогай перастануць прыходзіць."
 
+msgid "Hold the three posts around Dubysa until the garrison leaves"
+msgstr "Утрымлівайце тры пасты вакол Дубісы, пакуль гарнізон не сыдзе"
+
 msgid "Hold this spot: fight only what comes within reach."
 msgstr "Трымаць месца: біцца толькі з тым, хто падыйдзе на ўдар."
 
@@ -545,11 +560,20 @@ msgstr "Як гуляць"
 msgid "How to play (F1)"
 msgstr "Як гуляць (F1)"
 
+msgid "I am asking what you think."
+msgstr "Я пытаюся, што думаеш ты."
+
+msgid "I think the land does not want them."
+msgstr "Я думаю, што зямля іх не хоча."
+
 msgid "I was at Orsha and heard the guns roar. What I write below I heard from my grandfather, and he from his father. What is true here and what is a tale, judge for yourselves."
 msgstr "Я быў пад Оршай і чуў, як равуць гарматы. Тое, што пішу ніжэй, я чуў ад дзеда, а ён — ад свайго бацькі. Што тут праўда, а што казка, судзіце самі."
 
 msgid "In August Master Ulrich declared war on King Jogaila and marched on Dobrzyń. In autumn they made a truce until Midsummer Day. All winter both sides forged spears. And our great-grandfather rode beyond the Neman for the first time in his life."
 msgstr "У жніўні магістр Ульрых абвясціў вайну каралю Ягайлу і пайшоў на Добжынь. Увосень заключылі замірэнне да Яна. Усю зіму абодва бакі кавалі коп’і. А наш прапрадзед упершыню ў жыцці паехаў за Нёман."
+
+msgid "In spring they stood on the bog, they drink river water and eat old grain. Think what you like."
+msgstr "Яны вясной стаялі на балоце, п'юць рачную ваду і ядуць старое зерне. А ты думай як хочаш."
 
 msgid "In work: %s, %d%%"
 msgstr "У рабоце: %s, %d%%"
@@ -776,6 +800,9 @@ msgstr "Месцы скончыліся. Вылучыце селяніна і п
 msgid "Population limit reached"
 msgstr "Дасягнуты ліміт насельніцтва"
 
+msgid "Posts held: %d of %d"
+msgstr "Пасты ўтрыманы: %d з %d"
+
 msgid "Power"
 msgstr "Сіла"
 
@@ -878,8 +905,8 @@ msgstr "Памер %d×%d клетак"
 msgid "Skirmish"
 msgstr "Сутычка"
 
-msgid "Skirsnemune has burned. Samogitia has risen."
-msgstr "Скірснемунэ згарэў. Жамойць паўстала."
+msgid "Skirsnemune has burned and the vogt has left Dubysa. Samogitia has risen."
+msgstr "Скірснемунэ згарэў, а фогт пакінуў Дубісу. Жамойць паўстала."
 
 msgid "Skirsnemune. A wooden one."
 msgstr "Скірснемунэ. Драўляны."
@@ -988,6 +1015,9 @@ msgstr "У возеры ёсць рыба, а ў борцях — мёд. Нем
 
 msgid "They cut down the old oak."
 msgstr "Яны ссеклі стары дуб."
+
+msgid "They have been coughing for a whole week. Did you do this to them?"
+msgstr "Кашляюць цэлы тыдзень. Гэта ты ім зрабіла?"
 
 msgid "They say the mist rose from the bog in broad daylight, and a German patrol passed ten steps from our men and saw no one. Such mists do happen in Samogitia. But grandfather said that one was special."
 msgstr "Кажуць, туман падняўся з балота сярод белага дня, і нямецкі раз’езд прайшоў за дзесяць крокаў ад нашых і нікога не ўбачыў. Такія туманы ў Жамойці бываюць. Але дзед казаў, што той быў асаблівы."

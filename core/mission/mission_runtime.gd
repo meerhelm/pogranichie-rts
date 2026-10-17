@@ -13,6 +13,10 @@ extends RefCounted
 ##   permille}; near {player, at, radius, unit?}; group_near {group, at, radius};
 ##   has_unit {player, unit}; age {player, at_least}; cast {player, spell} (its effect is on the
 ##   map); group_dead / group_lost / group_exited {group}; places_held {player, count};
+##   blockade_held (every blockade post is held now); garrison_at_most {permille};
+##   group_near_count {group, at, radius, count}; group_alive_at_most {group, count};
+##   retreating {player} (some unit of the player is in a «Литовский отход»); place_held
+##   {player, place} (by index in the map's list);
 ##   any / all {of: [...]}; not {of}; for_ticks {ticks, of} (true for that long in a row; one
 ##   per trigger).
 ## Actions (`do`): objective {id, text?, state? (active, done, failed), optional?}; hint {text};
@@ -20,8 +24,12 @@ extends RefCounted
 ##   interface through `events`); spawn {group?, player, at, units, stance?, untouchable?};
 ##   move / attack_move {group, to}; stance {group, stance}; exit {group, at, radius} (members
 ##   that get there leave the map); take_stock {player, res, permille}; give_stock {player, res,
-##   amount}; lock / unlock {player, items}; flag {flag}; boats {on}; ignite {building};
+##   amount}; lock / unlock {player, items}; flag {flag}; boats {on}; blockade {on};
+##   ignite {building}; rally {player, at}; volley {player, at, radius, damage} (a cannon ball
+##   lands: the player's enemies there lose HP and morale); kill {group, by} (scripted deaths);
 ##   victory / defeat {text}.
+## Setup may also give sides: {player: lead player} (allies, Sides) and age: {player: index}.
+## Rules: hunger, boats, blockade (ВКЛ 1) and banner (ВКЛ 2, see _banner).
 
 enum Outcome { NONE, VICTORY, DEFEAT }
 enum Objective { ACTIVE, DONE, FAILED }
@@ -65,6 +73,20 @@ var counters: Dictionary[String, int] = {}
 ## The last building id of the setup: later ones are the players'.
 var setup_buildings := 0
 var next_boat := -1
+## The blockade (rules.blockade, phase 4 of ВКЛ 1): on or off, the garrison's strength in
+## permille, which posts are held (a bit per post), the tick of the next sortie (-1: none yet)
+## and how many sorties went out.
+var blockade_on := false
+var garrison := 1000
+var posts_held := 0
+var next_sortie := -1
+var sorties := 0
+## The khorugv's banner (rules.banner): who carries it (0: it lies on the ground), where it
+## fell (fixed units) and when (-1: it stands).
+var bearer := 0
+var banner_x := 0
+var banner_y := 0
+var banner_down := -1
 var outcome := Outcome.NONE
 var outcome_text := ""
 ## What the interface shows, in order: {kind, tick, ...} (kind: objective, hint, dialogue,
@@ -74,6 +96,7 @@ var events: Array[Dictionary] = []
 var _apply: Callable
 var _spawn: Callable
 var _remove: Callable
+var _sides: Sides
 
 
 func _init(p_def: MissionDef, sim: Simulation, p_difficulty: String) -> void:
@@ -88,6 +111,7 @@ func _init(p_def: MissionDef, sim: Simulation, p_difficulty: String) -> void:
 	_apply = sim.apply_now
 	_spawn = sim.spawn_unit
 	_remove = sim.remove_unit
+	_sides = sim.sides
 
 
 func is_over() -> bool:
@@ -100,6 +124,9 @@ func is_over() -> bool:
 ## The mission's start: players, stock, locks, buildings, walls, units. Called once, at tick 0.
 func set_up(tick: int) -> void:
 	var s := def.setup
+	var sides: Dictionary = s.get("sides", {})
+	for key: String in sides:
+		_sides.team[key.to_int()] = int(sides[key])
 	for entry: Array in def.players:
 		_apply.call(SimCommand.join(tick, entry[0], StringName(entry[1])))
 	var stock: Dictionary = s.get("stock", {})
@@ -129,6 +156,16 @@ func set_up(tick: int) -> void:
 		_spawn_group(tick, g)
 	for c: Array in s.get("consecrated", []):
 		magic.places.consecrated_by[c[0]] = named.get(c[1], 0)
+	var ages: Dictionary = s.get("age", {})
+	for key: String in ages:
+		var state := economy.player(key.to_int())
+		if state != null:
+			state.age = int(ages[key])
+	var b: Dictionary = def.rules.get("banner", {})
+	if not b.is_empty():
+		var carriers := alive_of(b["group"])
+		if not carriers.is_empty():
+			_raise_banner(carriers[0])
 	setup_buildings = economy.buildings.next_id - 1
 
 
@@ -190,6 +227,8 @@ func step(tick: int) -> void:
 	_exits()
 	_hunger(tick)
 	_boats(tick)
+	_blockade(tick)
+	_banner(tick)
 	for t: Dictionary in def.triggers:
 		var tid: String = t["id"]
 		if fired.has(tid):
@@ -244,6 +283,19 @@ func test(c: Dictionary, tid: String, tick: int) -> bool:
 			ok = exited.get(c["group"], 0) > 0
 		"places_held":
 			ok = _places_held(c["player"]) >= int(c["count"])
+		"blockade_held":
+			ok = blockade_on and posts_held == _all_posts()
+		"garrison_at_most":
+			ok = blockade_on and garrison <= int(c["permille"])
+		"group_near_count":
+			ok = _group_near_count(c["group"], c["at"], c["radius"]) >= int(c["count"])
+		"group_alive_at_most":
+			ok = groups.has(c["group"]) and alive_of(c["group"]).size() <= int(c["count"])
+		"retreating":
+			ok = _retreating(c["player"])
+		"place_held":
+			var i := int(c["place"])
+			ok = i < magic.places.count() and magic.places.holders[i] == int(c["player"])
 		"any":
 			for sub: Dictionary in c["of"]:
 				ok = ok or test(sub, tid, tick)
@@ -322,8 +374,20 @@ func run(a: Dictionary, tick: int) -> void:
 			flags[a["flag"]] = tick
 		"boats":
 			next_boat = tick + int(def.rules["boats"]["every_ticks"]) if a["on"] else -1
+		"blockade":
+			blockade_on = a["on"]
 		"ignite":
 			fire.ignite(named.get(a["building"], 0))
+		"rally":
+			var at: Array = a["at"]
+			var x := Fixed.from_cells(at[0]) + Fixed.HALF
+			var y := Fixed.from_cells(at[1]) + Fixed.HALF
+			_apply.call(SimCommand.rally(tick, a["player"], x, y))
+		"volley":
+			_volley(a)
+		"kill":
+			for id in alive_of(a["group"]):
+				combat.lightning(id, int(a.get("by", 0)), entities.hp[id - 1])
 		"victory", "defeat":
 			_end(a["do"] == "victory", a.get("text", ""), tick)
 		_:
@@ -425,6 +489,43 @@ func _group_near(group: String, at: Array, radius: int) -> bool:
 	return false
 
 
+func _group_near_count(group: String, at: Array, radius: int) -> int:
+	var x := Fixed.from_cells(at[0]) + Fixed.HALF
+	var y := Fixed.from_cells(at[1]) + Fixed.HALF
+	var r := Fixed.from_cells(radius)
+	var n := 0
+	for id in alive_of(group):
+		if _dist_sq(entities.pos_x[id - 1] - x, entities.pos_y[id - 1] - y) <= r * r:
+			n += 1
+	return n
+
+
+func _retreating(p: int) -> bool:
+	for id in entities.alive_ids:
+		if entities.owners[id - 1] == p and entities.intents[id - 1] == EntityStore.Intent.RETREAT:
+			return true
+	return false
+
+
+## A cannon ball lands at `at`: every enemy of `player` within `radius` loses `damage` HP and
+## morale as from a volley.
+func _volley(a: Dictionary) -> void:
+	var at: Array = a["at"]
+	var x := Fixed.from_cells(at[0]) + Fixed.HALF
+	var y := Fixed.from_cells(at[1]) + Fixed.HALF
+	var r := Fixed.from_cells(a["radius"])
+	var by: int = a["player"]
+	var hit := PackedInt32Array()
+	for id in entities.alive_ids:
+		var s := id - 1
+		if not _sides.hostile(by, entities.owners[s]):
+			continue
+		if _dist_sq(entities.pos_x[s] - x, entities.pos_y[s] - y) <= r * r:
+			hit.append(id)
+	for id in hit:
+		combat.lightning(id, by, int(a["damage"]))
+
+
 func _has_unit(p: int, unit: StringName) -> bool:
 	for id in entities.alive_ids:
 		if entities.owners[id - 1] == p and entities.type_ids[id - 1] == unit:
@@ -506,6 +607,129 @@ func _boats(tick: int) -> void:
 	run({"do": "attack_move", "group": g["group"], "to": b["to"]}, tick)
 
 
+## Blockade (card, phase 4: «если перерезать пристань и дороги к замку, его гарнизон теряет
+## здоровье от болезней и голода, по 1% в 10 секунд»; «каждые 2 минуты вылазка на одну из
+## точек»). A post is held when `player` has a unit within `radius` of it and `enemy` has none.
+## While every post is held, each every_ticks the garrison's strength falls by step_permille and
+## each of its units loses that share of its HP, down to sick_floor_permille of it (sickness
+## weakens, it does not kill). From the first time all posts are held, every sortie_every ticks
+## up to sortie_size garrison units (not the `keep` ones) come out against the next post in turn.
+func _blockade(tick: int) -> void:
+	var b: Dictionary = def.rules.get("blockade", {})
+	if b.is_empty() or not blockade_on:
+		return
+	var posts: Array = b["posts"]
+	posts_held = 0
+	for i in posts.size():
+		var at: Array = posts[i]
+		if _near(b["player"], &"", at, b["radius"]) and not _near(b["enemy"], &"", at, b["radius"]):
+			posts_held |= 1 << i
+	var full := posts_held == _all_posts()
+	if full and next_sortie < 0:
+		next_sortie = tick + int(b["sortie_every"])
+	if full and garrison > 0 and tick % int(b["every_ticks"]) == 0:
+		var step := int(b["step_permille"])
+		garrison = maxi(garrison - step, 0)
+		_sicken(b, step)
+	if next_sortie >= 0 and tick >= next_sortie and garrison > 0:
+		next_sortie = tick + int(b["sortie_every"])
+		_sortie(b, tick)
+
+
+func _all_posts() -> int:
+	var b: Dictionary = def.rules.get("blockade", {})
+	return (1 << (b.get("posts", []) as Array).size()) - 1
+
+
+func _garrison_ids(b: Dictionary) -> PackedInt32Array:
+	var out := PackedInt32Array()
+	for g: String in b["groups"]:
+		out.append_array(alive_of(g))
+	return out
+
+
+func _sicken(b: Dictionary, step: int) -> void:
+	var floor_permille := int(b["sick_floor_permille"])
+	for id in _garrison_ids(b):
+		var s := id - 1
+		var low := entities.max_hp[s] * floor_permille / 1000
+		if entities.hp[s] > low:
+			entities.hp[s] = maxi(entities.hp[s] - maxi(entities.max_hp[s] * step / 1000, 1), low)
+
+
+func _sortie(b: Dictionary, tick: int) -> void:
+	var out_already := {}
+	for i in sorties:
+		var members: PackedInt32Array = groups.get("sortie_%d" % i, PackedInt32Array())
+		for id in members:
+			out_already[id] = true
+	var keep: Array = b.get("keep", [])
+	var ids := PackedInt32Array()
+	for id in _garrison_ids(b):
+		if ids.size() >= int(b["sortie_size"]):
+			break
+		if out_already.has(id) or String(entities.type_ids[id - 1]) in keep:
+			continue
+		ids.append(id)
+	if ids.is_empty():
+		return
+	var posts: Array = b["posts"]
+	var at: Array = posts[sorties % posts.size()]
+	var name := "sortie_%d" % sorties
+	sorties += 1
+	groups[name] = ids
+	flags["sortie"] = tick
+	run({"do": "stance", "group": name, "stance": "aggressive"}, tick)
+	run({"do": "attack_move", "group": name, "to": at}, tick)
+	run({"do": "ping", "at": at, "radius": int(b["radius"])}, tick)
+
+
+## The khorugv's banner (card ВКЛ 2: «Если знаменосец пал, у отряда есть 20 секунд, чтобы
+## поднять знамя, иначе хоругвь бежит»). The bearer gives the banner's morale around him
+## (CombatSystem.banners). When he falls the banner lies where he fell: the first unit of
+## `player` within raise_radius of it (lowest id) picks it up. If nobody does in raise_ticks,
+## the flag banner_lost is set and every unit of the player loses all its morale.
+func _banner(tick: int) -> void:
+	var b: Dictionary = def.rules.get("banner", {})
+	if b.is_empty():
+		return
+	if bearer != 0:
+		if entities.is_alive(bearer) and entities.hp[bearer - 1] > 0:
+			banner_x = entities.pos_x[bearer - 1]
+			banner_y = entities.pos_y[bearer - 1]
+			return
+		combat.banners.bearers.erase(bearer)
+		bearer = 0
+		banner_down = tick
+		flags["banner_down"] = tick
+		run({"do": "ping", "at": [banner_x / Fixed.ONE, banner_y / Fixed.ONE], "radius": 2}, tick)
+	if banner_down < 0 or flags.has("banner_lost"):
+		return
+	var r := Fixed.from_cells(b["raise_radius"])
+	var p: int = b["player"]
+	for id in entities.alive_ids:
+		var s := id - 1
+		if entities.owners[s] != p or entities.hp[s] <= 0 or combat.is_fleeing(id):
+			continue
+		if _dist_sq(entities.pos_x[s] - banner_x, entities.pos_y[s] - banner_y) <= r * r:
+			_raise_banner(id)
+			flags["banner_raised"] = tick
+			return
+	if tick - banner_down >= int(b["raise_ticks"]):
+		flags["banner_lost"] = tick
+		for id in entities.alive_ids:
+			if entities.owners[id - 1] == p:
+				combat.lose_morale(id - 1, 1000)
+
+
+func _raise_banner(id: int) -> void:
+	bearer = id
+	banner_down = -1
+	banner_x = entities.pos_x[id - 1]
+	banner_y = entities.pos_y[id - 1]
+	combat.banners.bearers[id] = true
+
+
 # --- state ----------------------------------------------------------------------------------
 
 
@@ -513,6 +737,15 @@ func write_to(buf: StreamPeerBuffer) -> void:
 	buf.put_8(outcome)
 	buf.put_32(setup_buildings)
 	buf.put_64(next_boat)
+	buf.put_8(1 if blockade_on else 0)
+	buf.put_32(garrison)
+	buf.put_32(posts_held)
+	buf.put_64(next_sortie)
+	buf.put_32(sorties)
+	buf.put_32(bearer)
+	buf.put_64(banner_x)
+	buf.put_64(banner_y)
+	buf.put_64(banner_down)
 	buf.put_32(events.size())
 	for d: Dictionary in [fired, objective_state, flags, exited, named, counters]:
 		var keys := d.keys()

@@ -7,7 +7,9 @@ extends RefCounted
 ##     --out tests/replays/m9_gdl01_playthrough.json
 ## It sees the whole world (no fog) and is not meant to play well, only to get through: hunt for
 ## the first 300 food, build up spearmen and archers, take the grove with Gintaut at their head,
-## lay the alka, wait for Rumbaudas, break into Skirsnemune and set the castle on fire.
+## lay the alka, wait for Rumbaudas, break into Skirsnemune and set the castle on fire, then
+## split the army over the three blockade posts round Dubysa and hold them until the garrison
+## gives up.
 
 const THINK_EVERY := 20
 const P := 1
@@ -25,12 +27,16 @@ const PEASANTS := 28
 ## Where the army forms up before the grove and before Skirsnemune.
 const GROVE_RALLY := Vector2i(100, 68)
 const SKIR_RALLY := Vector2i(106, 100)
+## The way round Dubysa to each blockade post (north road, river road, Neman bank).
+const POST_WAYPOINTS: Array[Vector2i] = [Vector2i(80, 100), Vector2i(90, 128), Vector2i(90, 140)]
 
 var sim: Simulation
 var stage := "food"
 var _sent := {}
 ## Peasants given an order this think (orders take effect next tick, so they still look idle).
 var _ordered := {}
+## Blockade post (index) of each soldier in phase 4.
+var _post_of: Dictionary[int, int] = {}
 
 
 func _init(p_sim: Simulation) -> void:
@@ -44,6 +50,39 @@ func think() -> void:
 	_ordered.clear()
 	_economy()
 	_army()
+	if sim.tick % 1200 == 0 and OS.has_environment("BOT_LOG"):
+		_log()
+
+
+## A line a minute when BOT_LOG is set, to see where a run goes wrong.
+func _log() -> void:
+	var m := sim.mission
+	var last := ""
+	var at := -1
+	for tid: String in m.fired:
+		if m.fired[tid] >= at:
+			at = m.fired[tid]
+			last = tid
+	var enemies := 0
+	for id in sim.entities.alive_ids:
+		if sim.entities.owners[id - 1] == 2:
+			enemies += 1
+	print(
+		(
+			"%02d:%02d %s last=%s army=%d enemies=%d garrison=%d posts=%d stock=%s"
+			% [
+				sim.tick / 1200,
+				sim.tick / 20 % 60,
+				stage,
+				last,
+				_soldiers().size(),
+				enemies,
+				m.garrison,
+				m.posts_held,
+				sim.economy.player(P).stock
+			]
+		)
+	)
 
 
 # --- economy --------------------------------------------------------------------------------
@@ -315,7 +354,12 @@ func _army() -> void:
 			_move(army, SKIR_RALLY)
 			if m.fired.has("3.1") and _near_count(army, SKIR_RALLY, 8) >= SKIR_ARMY:
 				stage = "skirsnemune"
+		"dubysa":
+			_dubysa(army)
 		"skirsnemune":
+			if m.fired.has("3.5"):
+				stage = "dubysa"
+				return
 			# Too few left against a garrison still standing: fall back and gather again.
 			if army.size() < 15 and _enemies_near(Vector2i(100, 125), 10) > 3:
 				stage = "wait_riders"
@@ -353,6 +397,56 @@ func _skirsnemune(army: PackedInt32Array) -> void:
 			ids.append(id)
 	if not ids.is_empty():
 		_cmd(SimCommand.ignite(sim.tick, P, ids, castle))
+
+
+## Every soldier goes to a post in turn (by id, so a squad keeps its post), walking round the
+## castle by a waypoint (an attack-move past its walls draws the whole garrison out), and once
+## there takes the defensive stance, so it beats off sorties without chasing them home.
+func _dubysa(army: PackedInt32Array) -> void:
+	var posts: Array = sim.mission.def.rules["blockade"]["posts"]
+	var squads: Array[PackedInt32Array] = []
+	for i in posts.size():
+		squads.append(PackedInt32Array())
+	# A soldier keeps the post it was first sent to; a new one joins the smallest squad.
+	for id in army:
+		if _post_of.has(id):
+			squads[_post_of[id]].append(id)
+	for id in army:
+		if not _post_of.has(id):
+			var least := 0
+			for i in posts.size():
+				if squads[i].size() < squads[least].size():
+					least = i
+			_post_of[id] = least
+			squads[least].append(id)
+	var e := sim.entities
+	for i in posts.size():
+		var at: Array = posts[i]
+		var post := Vector2i(at[0], at[1])
+		var via: Vector2i = POST_WAYPOINTS[i]
+		var settle := PackedInt32Array()
+		var to_via := PackedInt32Array()
+		var to_post := PackedInt32Array()
+		for id in squads[i]:
+			var cell := Vector2i(Fixed.to_cells(e.pos_x[id - 1]), Fixed.to_cells(e.pos_y[id - 1]))
+			var far := _cells_sq(cell, post)
+			if far <= 100 and e.stance[id - 1] == EntityStore.Stance.DEFENSIVE:
+				continue
+			if far <= 9:
+				if e.stance[id - 1] != EntityStore.Stance.DEFENSIVE:
+					settle.append(id)
+			elif far > _cells_sq(via, post) and _cells_sq(cell, via) > 16:
+				to_via.append(id)
+			else:
+				to_post.append(id)
+		if not settle.is_empty():
+			_cmd(SimCommand.set_stance(sim.tick, P, settle, EntityStore.Stance.DEFENSIVE))
+		_move(to_via, via)
+		_move(to_post, post)
+
+
+static func _cells_sq(a: Vector2i, b: Vector2i) -> int:
+	return (a - b).length_squared()
 
 
 func _enemies_near(at: Vector2i, radius: int) -> int:

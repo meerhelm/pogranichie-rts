@@ -24,6 +24,8 @@ var camera: RtsCamera
 var _read := 0
 var _objectives := VBoxContainer.new()
 var _objective_panel := PanelContainer.new()
+## The blockade's state under the objectives (phase 4 of ВКЛ 1), hidden while it is off.
+var _blockade := Label.new()
 var _hints := VBoxContainer.new()
 ## Waiting dialogues (lists of [speaker, text]) while one is on screen.
 var _dialogues: Array = []
@@ -47,7 +49,12 @@ func _ready() -> void:
 	_objective_panel.grow_horizontal = Control.GROW_DIRECTION_BEGIN
 	_objective_panel.position.y = 48
 	_objective_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_objective_panel.add_child(_objectives)
+	var column := VBoxContainer.new()
+	column.add_child(_objectives)
+	_blockade.visible = false
+	_blockade.add_theme_color_override("font_color", Color(0.95, 0.8, 0.45))
+	column.add_child(_blockade)
+	_objective_panel.add_child(column)
 	add_child(_objective_panel)
 	_hints.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 	_hints.grow_horizontal = Control.GROW_DIRECTION_BOTH
@@ -110,6 +117,7 @@ func poll() -> void:
 				_cutscenes.append(e)
 			"ping":
 				pass
+	_show_blockade()
 	if _line < 0 and not _cutscenes.is_empty():
 		_start_cutscene(_cutscenes.pop_front())
 	elif _line < 0 and not _in_dialogue and not _dialogues.is_empty():
@@ -153,6 +161,29 @@ func _fill_objectives() -> void:
 		label.text = text
 		_objectives.add_child(label)
 	_objective_panel.visible = not m.objectives.is_empty()
+
+
+## «Garrison strength 74% · posts held 2/3» while the blockade is on.
+func _show_blockade() -> void:
+	var m := sim.mission
+	_blockade.visible = m.blockade_on
+	if not m.blockade_on:
+		return
+	var posts: Array = m.def.rules["blockade"]["posts"]
+	var held := 0
+	for i in posts.size():
+		if m.posts_held & (1 << i):
+			held += 1
+	_blockade.text = (
+		tr("Dubysa garrison: %d%%") % (m.garrison / 10)
+		+ "\n"
+		+ tr("Posts held: %d of %d") % [held, posts.size()]
+	)
+
+
+## The blockade line as shown, for tests ("" while hidden).
+func blockade_text() -> String:
+	return _blockade.text if _blockade.visible else ""
 
 
 func _hint(text: String) -> void:

@@ -21,7 +21,10 @@ func attach(p_sim: Simulation, clock: SimClock) -> void:
 
 
 func _draw() -> void:
-	if sim == null or not sim.magic.enabled():
+	if sim == null:
+		return
+	_blockade_posts()
+	if not sim.magic.enabled():
 		return
 	var magic := sim.magic
 	for i in magic.fx_ids.size():
@@ -40,6 +43,23 @@ func _draw() -> void:
 			var top := Iso.cell_to_screen(rect.get_center()) - Vector2(16.0, 30.0)
 			draw_rect(Rect2(top, Vector2(32.0, 4.0)), Color(0.1, 0.1, 0.1, 0.8))
 			draw_rect(Rect2(top, Vector2(32.0 * share, 4.0)), _color(places.takers[i]))
+
+
+## The mission's blockade posts (ВКЛ 1, phase 4): a ring in the player's colour when held,
+## grey when not.
+func _blockade_posts() -> void:
+	var m := sim.mission
+	if m == null or not m.blockade_on:
+		return
+	var b: Dictionary = m.def.rules["blockade"]
+	var posts: Array = b["posts"]
+	for i in posts.size():
+		var at: Array = posts[i]
+		var held := m.posts_held & (1 << i) != 0
+		var c := _color(b["player"]) if held else FREE_COLOR
+		var ring := _circle(Vector2(at[0], at[1]) + Vector2(0.5, 0.5), float(b["radius"]))
+		ring.append(ring[0])
+		draw_polyline(ring, c, 3.0 if held else 2.0)
 
 
 func _effect(i: int) -> void:

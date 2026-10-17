@@ -159,6 +159,10 @@ msgstr ""
 msgid "A smithy: researches better weapons and armor for your troops."
 msgstr ""
 
+#: missions/gdl_01/mission.json
+msgid "A sortie from Dubysa! Beat it back and take the post again: while a post is lost, the blockade does not work."
+msgstr ""
+
 #: ui/tips.gd
 msgid "A store at the forest edge: woodcutters carry wood a shorter way. Researches forestry improvements."
 msgstr ""
@@ -485,6 +489,18 @@ msgstr ""
 msgid "Draw"
 msgstr ""
 
+#: ui/mission_panel.gd
+msgid "Dubysa garrison: %d%%"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Dubysa is cut off. While all three posts are held, the garrison loses strength. Every two minutes it will sally out against one of them."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Dubysa need not be stormed. Hold the road up the Dubysa, the river road and the Neman bank with no enemies near them: cut off, the garrison weakens from sickness and hunger."
+msgstr ""
+
 #: ui/tips.gd
 msgid "Each field holds more food: +50%."
 msgstr ""
@@ -699,6 +715,10 @@ msgstr ""
 msgid "Hold the pier with no enemies near, and the boats with reinforcements will stop coming."
 msgstr ""
 
+#: missions/gdl_01/mission.json
+msgid "Hold the three posts around Dubysa until the garrison leaves"
+msgstr ""
+
 #: ui/command_panel.gd
 msgid "Hold this spot: fight only what comes within reach."
 msgstr ""
@@ -729,11 +749,23 @@ msgid "How to play (F1)"
 msgstr ""
 
 #: missions/gdl_01/mission.json
+msgid "I am asking what you think."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "I think the land does not want them."
+msgstr ""
+
+#: missions/gdl_01/mission.json
 msgid "I was at Orsha and heard the guns roar. What I write below I heard from my grandfather, and he from his father. What is true here and what is a tale, judge for yourselves."
 msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "In August Master Ulrich declared war on King Jogaila and marched on Dobrzyń. In autumn they made a truce until Midsummer Day. All winter both sides forged spears. And our great-grandfather rode beyond the Neman for the first time in his life."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "In spring they stood on the bog, they drink river water and eat old grain. Think what you like."
 msgstr ""
 
 #: ui/unit_card.gd
@@ -1042,6 +1074,10 @@ msgstr ""
 msgid "Population limit reached"
 msgstr ""
 
+#: ui/mission_panel.gd
+msgid "Posts held: %d of %d"
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Power"
 msgstr ""
@@ -1183,7 +1219,7 @@ msgid "Skirmish"
 msgstr ""
 
 #: missions/gdl_01/mission.json
-msgid "Skirsnemune has burned. Samogitia has risen."
+msgid "Skirsnemune has burned and the vogt has left Dubysa. Samogitia has risen."
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -1329,6 +1365,10 @@ msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "They cut down the old oak."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "They have been coughing for a whole week. Did you do this to them?"
 msgstr ""
 
 #: missions/gdl_01/mission.json
