@@ -14,6 +14,9 @@ const ICONS: Array[String] = ["food", "wood", "iron", "silver"]
 const ICON_SIZE := 30
 ## Game speeds the speed button steps through, as multipliers.
 const SPEEDS: Array[int] = [1, 2, 4, 8]
+## How many times faster than the sim's own 20 ticks a second «1x» runs (Valentin 2026-10-17:
+## the game felt slow, «1x» is now what was 2x). The button still shows 1x, 2x, 4x, 8x.
+const BASE_SPEED := 2
 
 var sim: Simulation
 var input: PlayerInput
@@ -138,6 +141,7 @@ func attach(
 ) -> void:
 	sim = p_sim
 	clock = p_clock
+	clock.speed_permille = BASE_SPEED * 1000
 	input = p_input
 	player = p_player
 	minimap.attach(sim, clock, camera, player)
@@ -189,7 +193,7 @@ func toggle_pause() -> void:
 
 ## The game speed as a multiplier: 1, 2, 4 or 8.
 func speed() -> int:
-	return clock.speed_permille / 1000 if clock != null else 1
+	return clock.speed_permille / (BASE_SPEED * 1000) if clock != null else 1
 
 
 ## Sets the game speed to the next (`dir` 1) or previous (-1) of SPEEDS, wrapping around.
@@ -198,7 +202,7 @@ func step_speed(dir: int) -> void:
 		return
 	var i := SPEEDS.find(speed())
 	i = posmod(i + dir, SPEEDS.size()) if i >= 0 else 0
-	clock.speed_permille = SPEEDS[i] * 1000
+	clock.speed_permille = SPEEDS[i] * BASE_SPEED * 1000
 	_show_speed()
 
 

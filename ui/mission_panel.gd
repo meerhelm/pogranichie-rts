@@ -2,11 +2,11 @@ class_name MissionPanel
 extends Control
 ## What a campaign mission shows (M9): the objectives (top right; optional ones marked, done
 ## ones ticked, failed ones crossed), hints (top middle, each for a while), the characters'
-## lines in the mission through Dialogic, and cutscenes on the engine: the game stops, black
-## bars close in, the camera flies to the place and the lines run as subtitles (click, Space or
-## Enter for the next one, Esc skips the rest). Reads MissionRuntime.events; the only thing it
-## sends is the player's answer to a mission's question (ВКЛ 3), as a CHOOSE command. All texts
-## are translation keys.
+## lines in the mission through Dialogic, and cutscenes on the engine: the game stops, a black
+## band rises at the bottom, the camera flies to the place and the lines run there as subtitles
+## (click, Space or Enter for the next one, Esc skips the rest). Reads MissionRuntime.events;
+## the only thing it sends is the player's answer to a mission's question (ВКЛ 3), as a CHOOSE
+## command. All texts are translation keys.
 
 signal cutscene_started
 signal cutscene_finished
@@ -50,7 +50,6 @@ var _cutscenes: Array = []
 var _lines: Array = []
 var _line := -1
 var _line_left := 0.0
-var _top_bar := ColorRect.new()
 var _bottom_bar := ColorRect.new()
 var _subtitle := Label.new()
 var _speaker := Label.new()
@@ -95,13 +94,11 @@ func _ready() -> void:
 	ask.add_child(_answers)
 	_question.add_child(ask)
 	add_child(_question)
-	for bar: ColorRect in [_top_bar, _bottom_bar]:
-		bar.color = Color.BLACK
-		bar.visible = false
-		bar.mouse_filter = Control.MOUSE_FILTER_STOP
-		add_child(bar)
-	_top_bar.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
-	_top_bar.custom_minimum_size.y = BAR_HEIGHT
+	# Only a band at the bottom for the subtitles: the top bar with resources stays in view.
+	_bottom_bar.color = Color.BLACK
+	_bottom_bar.visible = false
+	_bottom_bar.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(_bottom_bar)
 	_bottom_bar.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	_bottom_bar.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	_bottom_bar.custom_minimum_size.y = BAR_HEIGHT
@@ -326,7 +323,7 @@ func _hint(text: String) -> void:
 	label.text = tr(text)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.custom_minimum_size.x = 760
+	label.custom_minimum_size.x = 640
 	label.add_theme_color_override("font_outline_color", Color.BLACK)
 	label.add_theme_constant_override("outline_size", 5)
 	_hints.add_child(label)
@@ -386,7 +383,6 @@ func _start_cutscene(e: Dictionary) -> void:
 	_lines = e["lines"]
 	_line = 0
 	clock.paused = true
-	_top_bar.visible = true
 	_bottom_bar.visible = true
 	cutscene_started.emit()
 	var at: Array = e["at"]
@@ -417,7 +413,6 @@ func next_line() -> void:
 
 func end_cutscene() -> void:
 	_line = -1
-	_top_bar.visible = false
 	_bottom_bar.visible = false
 	clock.paused = false
 	cutscene_finished.emit()

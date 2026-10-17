@@ -261,7 +261,7 @@ func test_speed_button_steps_through_1x_2x_4x_8x() -> void:
 		seen.append(_hud._speed_button.text)
 	assert_eq(seen, ["2x", "4x", "8x", "1x"] as Array[String])
 	_hud.step_speed(-1)
-	assert_eq(clock.speed_permille, 8000)
+	assert_eq(clock.speed_permille, 8000 * Hud.BASE_SPEED)
 	var key := InputEventKey.new()
 	key.pressed = true
 	key.physical_keycode = KEY_MINUS
