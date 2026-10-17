@@ -7,6 +7,18 @@
  "players": [[1, "gdl"], [2, "to"], [3, "gdl"], [4, "gdl"], [5, "gdl"]],
  "camera": [120, 112],
  "difficulties": ["easy", "normal"],
+ "briefing": {
+  "place": "The field by Grunwald, Prussia. 15 July 1410.",
+  "story": "The armies of King Jogaila and Grand Duke Vytautas stand against the Order of Grand Master Ulrich von Jungingen. Gintaut and his Samogitians are in the right wing, under the hand of Vytautas. The Lithuanian wing will be the first to hear the trumpet.",
+  "goal": "Lead Gintaut's khorugv through the whole battle: from the first charge at the Order's left wing to the storming of the wagenburg. Keep the khorugv's banner up and do not leave the Smolensk banners alone.",
+  "lose": [
+   "Gintaut falls",
+   "Gintaut's banner falls and nobody raises it",
+   "All three Smolensk banners fall",
+   "Gintaut's khorugv is cut to pieces",
+   "The Grand Master's reserve breaks the Polish centre while you are away"
+  ]
+ },
  "setup": {
   "sides": {"1": 1, "3": 1, "4": 1, "5": 1, "2": 2},
   "age": {"1": 2},

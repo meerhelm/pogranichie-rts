@@ -22,6 +22,10 @@ var sim: Simulation
 var clock: SimClock
 var camera: RtsCamera
 
+## While true (the briefing before the mission is open) no cutscene, dialogue or question
+## starts; they wait until release().
+var hold := false
+
 var _read := 0
 var _objectives := VBoxContainer.new()
 var _objective_panel := PanelContainer.new()
@@ -54,7 +58,7 @@ var _speaker := Label.new()
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	set_anchors_preset(Control.PRESET_FULL_RECT)
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_objective_panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 	_objective_panel.grow_horizontal = Control.GROW_DIRECTION_BEGIN
@@ -159,12 +163,20 @@ func poll() -> void:
 	_show_blockade()
 	_show_evidence()
 	_show_march()
+	if hold:
+		return
 	if _asking.is_empty() and _line < 0 and not _questions.is_empty():
 		_ask(_questions.pop_front())
 	if _line < 0 and not _cutscenes.is_empty():
 		_start_cutscene(_cutscenes.pop_front())
 	elif _line < 0 and not _in_dialogue and not _dialogues.is_empty():
 		_start_dialogue(_dialogues.pop_front())
+
+
+## Ends the hold: what waited starts now.
+func release() -> void:
+	hold = false
+	poll()
 
 
 func in_cutscene() -> bool:
@@ -188,22 +200,26 @@ func _fill_objectives() -> void:
 	title.text = tr("Objectives")
 	_objectives.add_child(title)
 	for oid in m.objectives:
+		var row := objective_row(m, oid)
 		var label := Label.new()
-		var text := tr(m.objective_text[oid])
-		if m.objective_optional[oid]:
-			text = tr("(optional) %s") % text
-		match m.objective_state[oid]:
-			MissionRuntime.Objective.DONE:
-				text = "✓ " + text  # notr
-				label.modulate = Color(0.6, 1.0, 0.6)
-			MissionRuntime.Objective.FAILED:
-				text = "✗ " + text  # notr
-				label.modulate = Color(1.0, 0.55, 0.5)
-			_:
-				text = "• " + text  # notr
-		label.text = text
+		label.text = row[0]
+		label.modulate = row[1]
 		_objectives.add_child(label)
 	_objective_panel.visible = not m.objectives.is_empty()
+
+
+## An objective as shown: [text with its mark, colour]: «• Burn the castle», «✓ ...» in
+## green when done, «✗ ...» in red when failed; optional ones say so.
+static func objective_row(m: MissionRuntime, oid: String) -> Array:
+	var text := UiText.t(m.objective_text[oid])
+	if m.objective_optional[oid]:
+		text = UiText.t("(optional) %s") % text
+	match m.objective_state[oid]:
+		MissionRuntime.Objective.DONE:
+			return ["✓ " + text, Color(0.6, 1.0, 0.6)]  # notr
+		MissionRuntime.Objective.FAILED:
+			return ["✗ " + text, Color(1.0, 0.55, 0.5)]  # notr
+	return ["• " + text, Color.WHITE]  # notr
 
 
 ## «Garrison strength 74% · posts held 2/3» while the blockade is on.

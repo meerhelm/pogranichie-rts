@@ -19,6 +19,10 @@ extends SceneTree
 ##   speed:N (the game speed button stepped N times up, e.g. 2 for 4x),
 ##   units:X:Y:ID,ID,... (no fog: the listed units, heroes too, in a row from cell X, Y, two
 ##   cells apart, the camera on them)
+##   play (in a mission: the briefing closed, the mission starts),
+##   briefing (in a mission: the briefing closed, the mission run a little, then F2's briefing).
+## SHOT_MISSION=gdl_01 (or another mission id) opens that mission instead of the skirmish; a new
+## mission starts with its briefing open.
 ## SHOT_LOCALE=be (or pl, uk, lt) in the environment shoots in that language; SHOT_AFTER=N
 ## waits N seconds after the action instead of 1 (2.5 for actions with arguments).
 
@@ -44,6 +48,8 @@ func _initialize() -> void:
 	root.size = Vector2i(1600, 900)
 	if not OS.get_environment("SHOT_LOCALE").is_empty():
 		TranslationServer.set_locale(OS.get_environment("SHOT_LOCALE"))
+	if not OS.get_environment("SHOT_MISSION").is_empty():
+		GameSettings.mission_id = OS.get_environment("SHOT_MISSION")
 	change_scene_to_file(_scene)
 	_shoot.call_deferred()
 
@@ -81,7 +87,16 @@ func _act() -> void:
 		input.selection.changed.emit()
 	elif _action == "about" and main.get("_about") != null:
 		(main.get("_about") as AboutPanel).open()
+	elif _action == "play" and main.get("briefing") != null:
+		(main.get("briefing") as MissionBriefing).close()
+	elif _action == "briefing" and main.get("briefing") != null:
+		var briefing: MissionBriefing = main.get("briefing")
+		briefing.close()
+		await create_timer(4.0).timeout
+		briefing.open()
 	elif _action == "menu" and main.has_node("UI/Hud"):
+		if main.get("briefing") != null:
+			(main.get("briefing") as MissionBriefing).close()
 		(main.get_node("UI/Hud") as Hud).menu.open()
 	elif _action.begins_with("look:"):
 		var xy := _action.split(":")

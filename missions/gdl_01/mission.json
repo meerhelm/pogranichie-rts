@@ -7,6 +7,16 @@
  "players": [[1, "gdl"], [2, "to"]],
  "camera": [124, 24],
  "difficulties": ["easy", "normal"],
+ "briefing": {
+  "place": "Samogitia, the lower Dubysa by the Neman. Summer 1409.",
+  "story": "Samogitia belongs to the Teutonic Order: Vytautas gave it away by treaty, and nobody asked the Samogitians. Last winter brought famine, and the Order stopped the boats with the grain King Jogaila had sent down the river. The boyar Gintaut has three yards, one horse and one sacred grove, and in the spring of 1409 he decides that he will endure no longer.",
+  "goal": "Feed the village through the summer, take back the sacred grove from the Order, then burn the castle of Skirsnemune and hold Dubysa in blockade.",
+  "lose": [
+   "Gintaut falls",
+   "The village burns down",
+   "Food stays at zero for a minute (normal difficulty)"
+  ]
+ },
  "setup": {
   "stock": {"1": [100, 200, 50, 0], "2": [0, 0, 0, 0]},
   "locked": {

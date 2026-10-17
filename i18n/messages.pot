@@ -43,6 +43,7 @@ msgstr ""
 msgid "(%d s)"
 msgstr ""
 
+#: ui/mission_briefing.gd
 #: ui/mission_panel.gd
 msgid "(optional) %s"
 msgstr ""
@@ -225,6 +226,10 @@ msgid "Advance to: %s"
 msgstr ""
 
 #: missions/gdl_04/mission.json
+msgid "After the death of Vytautas the Grand Duchy split in two. Sigismund Kęstutaitis holds Vilnius, Trakai and Samogitia; Polotsk, Vitebsk and Smolensk went over to Švitrigaila, and the Livonian knights ride with him. Now Švitrigaila marches on Vilnius, and Sigismund has sent his son Michael against him, with the Poles of Jakub of Kobylany. Mikołaj Gintovt leads his banner in Michael's army. His brother Jurij rides with Švitrigaila."
+msgstr ""
+
+#: missions/gdl_04/mission.json
 msgid "After the death of great Vytautas the Grand Duchy became like one coat for two. Vilnius pulls one way, Polotsk the other, and the seams crack."
 msgstr ""
 
@@ -242,6 +247,10 @@ msgstr ""
 
 #: ui/end_screen.gd
 msgid "All places of power held for five minutes."
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "All three Smolensk banners fall"
 msgstr ""
 
 #: missions/gdl_02/mission.json
@@ -341,6 +350,10 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
+#: ui/mission_briefing.gd
+msgid "Back to the game (F2)"
+msgstr ""
+
 #: ui/mission_panel.gd
 msgid "Banners taken captive: %d"
 msgstr ""
@@ -359,6 +372,10 @@ msgstr ""
 
 #: missions/gdl_04/mission.json
 msgid "Beaten men surrounded from two sides lay down their arms. Captive princes count for the extra objective."
+msgstr ""
+
+#: ui/mission_briefing.gd
+msgid "Begin"
 msgstr ""
 
 #: ui/ui_text.gd
@@ -415,6 +432,10 @@ msgstr ""
 
 #: ui/tips.gd
 msgid "Brother priests: +50% HP; Exorcism reaches 2 cells farther."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Build a church and baptize your people, send a delegation to the council, beat back the Order's raid and lead the council's envoys through Samogitia. Do not let the Order's evidence reach 100."
 msgstr ""
 
 #: missions/gdl_03/mission.json
@@ -701,6 +722,10 @@ msgstr ""
 msgid "Father gave you land near Vitebsk to sit on. Not to fight for."
 msgstr ""
 
+#: missions/gdl_01/mission.json
+msgid "Feed the village through the summer, take back the sacred grove from the Order, then burn the castle of Skirsnemune and hold Dubysa in blockade."
+msgstr ""
+
 #: ui/tips.gd
 msgid "Fields give food faster: +15%."
 msgstr ""
@@ -743,6 +768,10 @@ msgstr ""
 
 #: ui/unit_card.gd
 msgid "Food left %d of %d"
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Food stays at zero for a minute (normal difficulty)"
 msgstr ""
 
 #: ui/advisor.gd
@@ -875,6 +904,12 @@ msgstr ""
 msgid "Get off the horse and fight on foot: more armor, the speed of foot soldiers."
 msgstr ""
 
+#: missions/gdl_01/mission.json
+#: missions/gdl_02/mission.json
+#: missions/gdl_03/mission.json
+msgid "Gintaut falls"
+msgstr ""
+
 #: missions/gdl_03/mission.json
 msgid "Gintaut has fallen. Nobody is left to answer for Samogitia before the council."
 msgstr ""
@@ -888,11 +923,19 @@ msgid "Gintaut is wounded. The uprising has lost its leader."
 msgstr ""
 
 #: missions/gdl_02/mission.json
+msgid "Gintaut's banner falls and nobody raises it"
+msgstr ""
+
+#: missions/gdl_02/mission.json
 msgid "Gintaut's banner has fallen and nobody raised it. The khorugv is running."
 msgstr ""
 
 #: missions/gdl_02/mission.json
 msgid "Gintaut's khorugv has been cut to pieces."
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "Gintaut's khorugv is cut to pieces"
 msgstr ""
 
 #: missions/gdl_03/mission.json
@@ -924,6 +967,7 @@ msgid "Go, then. While this lasts, we will not come to your new house."
 msgstr ""
 
 #: ui/help_panel.gd
+#: ui/mission_briefing.gd
 msgid "Goal"
 msgstr ""
 
@@ -1005,6 +1049,10 @@ msgstr ""
 
 #: ui/command_panel.gd
 msgid "Hold this spot: fight only what comes within reach."
+msgstr ""
+
+#: missions/gdl_04/mission.json
+msgid "Hold your shore of the lake until dawn, then cross the stream, cut Švitrigaila's marching column in two and break the Livonian banners."
 msgstr ""
 
 #: missions/gdl_04/mission.json
@@ -1193,12 +1241,20 @@ msgstr ""
 msgid "Kobylański and Prince Michael strike the column's head beyond the stream. The middle ford is yours."
 msgstr ""
 
+#: missions/gdl_04/mission.json
+msgid "Lake Žirnajai south of Vilkomir. 30 August to 1 September 1435."
+msgstr ""
+
 #: ui/settings_panel.gd
 msgid "Language"
 msgstr ""
 
 #: ui/settings_panel.gd
 msgid "Large"
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "Lead Gintaut's khorugv through the whole battle: from the first charge at the Order's left wing to the storming of the wagenburg. Keep the khorugv's banner up and do not leave the Smolensk banners alone."
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -1301,12 +1357,24 @@ msgstr ""
 msgid "Mikołaj Gintovt is wounded and carried off the field. His banner has lost its leader."
 msgstr ""
 
+#: missions/gdl_04/mission.json
+msgid "Mikołaj Gintovt or Prince Michael falls"
+msgstr ""
+
 #: missions/gdl_03/mission.json
 msgid "Mikołaj looked towards the forest. There, at the edge, for a moment a woman's figure was seen."
 msgstr ""
 
 #: missions/gdl_04/mission.json
 msgid "Mikołaj's banner has been cut to pieces."
+msgstr ""
+
+#: missions/gdl_04/mission.json
+msgid "Mikołaj's banner is cut to pieces"
+msgstr ""
+
+#: ui/pause_menu.gd
+msgid "Mission (F2)"
 msgstr ""
 
 #: ui/tips.gd
@@ -1355,6 +1423,10 @@ msgstr ""
 
 #: ui/tips.gd
 msgid "New buildings"
+msgstr ""
+
+#: ui/mission_briefing.gd
+msgid "New objectives appear as the mission goes on."
 msgstr ""
 
 #: ui/advisor.gd
@@ -1422,6 +1494,7 @@ msgstr ""
 msgid "Now they will not come here, but to the king. This is no longer a revolt, Gintaut. This is a great war."
 msgstr ""
 
+#: ui/mission_briefing.gd
 #: ui/mission_panel.gd
 msgid "Objectives"
 msgstr ""
@@ -1658,8 +1731,20 @@ msgstr ""
 msgid "Salvage"
 msgstr ""
 
+#: missions/gdl_01/mission.json
+msgid "Samogitia belongs to the Teutonic Order: Vytautas gave it away by treaty, and nobody asked the Samogitians. Last winter brought famine, and the Order stopped the boats with the grain King Jogaila had sent down the river. The boyar Gintaut has three yards, one horse and one sacred grove, and in the spring of 1409 he decides that he will endure no longer."
+msgstr ""
+
 #: missions/gdl_03/mission.json
 msgid "Samogitia has its own bishop. The Order has nothing left to tell the council."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Samogitia, Gintaut's lands. Autumn 1413 to autumn 1417."
+msgstr ""
+
+#: missions/gdl_01/mission.json
+msgid "Samogitia, the lower Dubysa by the Neman. Summer 1409."
 msgstr ""
 
 #: missions/gdl_02/mission.json
@@ -1882,11 +1967,19 @@ msgid "The Germans will go. The grove will go too. Not at once. The fire will go
 msgstr ""
 
 #: missions/gdl_02/mission.json
+msgid "The Grand Master's reserve breaks the Polish centre while you are away"
+msgstr ""
+
+#: missions/gdl_02/mission.json
 msgid "The Grand Master's reserve broke the Polish centre while the Lithuanians were away."
 msgstr ""
 
 #: missions/gdl_04/mission.json
 msgid "The Livonian Master fell, and his marshal, and many commanders. And Švitrigaila got away to Polotsk with thirty men, as three years before. That road must have been well known to him."
+msgstr ""
+
+#: missions/gdl_04/mission.json
+msgid "The Livonian vanguard gets away with most of its men"
 msgstr ""
 
 #: missions/gdl_04/mission.json
@@ -1913,6 +2006,10 @@ msgstr ""
 msgid "The Order is gathering evidence for the council. Every rite a spy sees brings defeat closer. A spy is struck only on your order, and a killed spy is evidence too."
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "The Order's evidence reaches 100"
+msgstr ""
+
 #: missions/gdl_02/mission.json
 msgid "The Order's knechts hold out behind the chained wagons. Break in and cut them down."
 msgstr ""
@@ -1927,6 +2024,10 @@ msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "The alka gives Power. Every place of power you hold with an alka adds more; near the Order's castles and priests it gives less."
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "The armies of King Jogaila and Grand Duke Vytautas stand against the Order of Grand Master Ulrich von Jungingen. Gintaut and his Samogitians are in the right wing, under the hand of Vytautas. The Lithuanian wing will be the first to hear the trumpet."
 msgstr ""
 
 #: missions/gdl_02/mission.json
@@ -1970,11 +2071,19 @@ msgid "The delegation's cart has been destroyed. Nobody will speak for Samogitia
 msgstr ""
 
 #: missions/gdl_03/mission.json
+msgid "The delegation's cart or the council's envoys are destroyed"
+msgstr ""
+
+#: missions/gdl_03/mission.json
 msgid "The envoys stop in each of the three villages on the way and go on once a church stands there. Lay the next church before they come."
 msgstr ""
 
 #: missions/gdl_03/mission.json
 msgid "The evidence at the top right is what the Order can show the council. At 100 the mission is lost. Every baptized peasant slows it down."
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "The field by Grunwald, Prussia. 15 July 1410."
 msgstr ""
 
 #: missions/gdl_03/mission.json
@@ -2086,6 +2195,10 @@ msgid "The truth. That we were baptized. That for years the Germans burned our y
 msgstr ""
 
 #: missions/gdl_01/mission.json
+msgid "The village burns down"
+msgstr ""
+
+#: missions/gdl_01/mission.json
 msgid "The village has burned down."
 msgstr ""
 
@@ -2167,6 +2280,10 @@ msgstr ""
 
 #: missions/gdl_04/mission.json
 msgid "They will take the land anyway."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Three years after the great battle King Jogaila and Grand Duke Vytautas came to Samogitia to baptize it, and Gintaut was among the first to step into the river. Now the Order says that the Samogitians are baptized in name only, and its spies are gathering evidence for the council at Konstanz."
 msgstr ""
 
 #: missions/gdl_03/mission.json
@@ -2376,6 +2493,10 @@ msgstr ""
 
 #: missions/gdl_03/mission.json
 msgid "You let their water on your head, Gintaut. Now let us see whether their god saves your new house."
+msgstr ""
+
+#: ui/mission_briefing.gd
+msgid "You lose if"
 msgstr ""
 
 #: missions/gdl_03/mission.json

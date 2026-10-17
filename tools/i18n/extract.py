@@ -7,8 +7,8 @@ Keys are of two kinds. Interface text is written in English in the code and wrap
 (or UiText.t() outside the scene tree); the English text is the key. Game names (units,
 buildings, techs, ages, factions) are their catalog ids, so the catalog and the translations
 cannot drift apart; their English names live in i18n/en.po like any other translation.
-Campaign missions (missions/<id>/mission.json, M9) give their title, objectives, hints, end
-texts and dialogue and cutscene lines as English keys; a speaker is a catalog id (a hero) or
+Campaign missions (missions/<id>/mission.json, M9) give their title, briefing, objectives, hints,
+end texts and dialogue and cutscene lines as English keys; a speaker is a catalog id (a hero) or
 an English key.
 
 The check fails when
@@ -142,6 +142,9 @@ def catalog_keys(rep: Report) -> None:
 def mission_texts(mission: dict) -> list[str]:
     """Every text of a mission the player reads, as MissionDef.texts() lists them."""
     out = [mission.get("title", "")]
+    briefing = mission.get("briefing", {})
+    out += [briefing.get(key, "") for key in ("place", "story", "goal")]
+    out += briefing.get("lose", [])
     for trigger in mission.get("triggers", []):
         for action in trigger.get("do", []):
             if "text" in action:

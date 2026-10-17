@@ -13,7 +13,10 @@ extends RefCounted
 ## - rules: hunger (the player's food falls with the number of units until a trigger fires) and
 ##   boats (reinforcements at a pier every so often once a trigger switches them on, until the
 ##   player holds the pier);
-## - triggers: [{id, when: condition, do: [actions]}], each fires once, in file order.
+## - triggers: [{id, when: condition, do: [actions]}], each fires once, in file order;
+## - briefing: what the briefing window shows before the mission and from the game menu (F2):
+##   place (where and when), story (a paragraph), goal (the whole mission in a sentence),
+##   lose (the ways to lose, one line each). The objectives come from the triggers.
 ## MissionRuntime's comments list the conditions and actions.
 
 const DIR := "res://missions/%s/mission.json"
@@ -29,6 +32,8 @@ var difficulties := PackedStringArray()
 var setup: Dictionary = {}
 var rules: Dictionary = {}
 var triggers: Array = []
+## {place, story, goal, lose: [lines]}, every text a translation key; {} if the mission has none.
+var briefing: Dictionary = {}
 
 
 static func path_for(mission_id: String) -> String:
@@ -60,6 +65,7 @@ static func from_dict(d: Dictionary) -> MissionDef:
 	m.setup = d.get("setup", {})
 	m.rules = d.get("rules", {})
 	m.triggers = d.get("triggers", [])
+	m.briefing = d.get("briefing", {})
 	return m
 
 
@@ -94,9 +100,15 @@ func faction_of(p: int) -> StringName:
 
 
 ## Every text the player reads, for the translation extractor's tests: objectives, hints,
-## dialogue and cutscene lines (speakers too), end texts and the options of questions.
+## dialogue and cutscene lines (speakers too), end texts, the options of questions and the
+## briefing.
 func texts() -> PackedStringArray:
 	var out := PackedStringArray([title])
+	for key: String in ["place", "story", "goal"]:
+		if briefing.has(key):
+			out.append(briefing[key])
+	for line: String in briefing.get("lose", []):
+		out.append(line)
 	for t: Dictionary in triggers:
 		for action: Dictionary in t.get("do", []):
 			if action.has("text"):

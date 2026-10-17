@@ -2,13 +2,16 @@ class_name PauseMenu
 extends Control
 ## In-game menu (Esc with nothing to cancel, or F10): pauses the game; resume, settings, back to
 ## the main menu, quit. Runs while the scene tree is paused. In a mission (M9, can_save) also
-## save the game and load a saved one (the list of saves, newest first).
+## save the game and load a saved one (the list of saves, newest first), and open the mission's
+## briefing again (its goal and objectives).
 
 signal resumed
 signal save_requested
 signal load_requested(path: String)
 ## «How to play» was pressed (the HUD shows the HelpPanel).
 signal help_requested
+## «Mission» was pressed (the game shows the MissionBriefing over the menu).
+signal briefing_requested
 ## The skirmish hints were turned on or off in the settings.
 signal hints_changed
 
@@ -19,6 +22,7 @@ var can_save := false
 
 var _title := Label.new()
 var _resume := Button.new()
+var _briefing := Button.new()
 var _settings_button := Button.new()
 var _help := Button.new()
 var _save := Button.new()
@@ -52,13 +56,14 @@ func _ready() -> void:
 	_title.add_theme_font_size_override("font_size", 32)
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_menu.add_child(_title)
-	for b: Button in [_resume, _save, _load, _help, _settings_button, _to_menu, _quit]:
+	for b: Button in [_resume, _briefing, _save, _load, _help, _settings_button, _to_menu, _quit]:
 		b.custom_minimum_size = Vector2(300, 44)
 		_menu.add_child(b)
 	_menu.add_child(_saves)
 	_save.pressed.connect(func() -> void: save_requested.emit())
 	_load.pressed.connect(_list_saves)
 	_resume.pressed.connect(close)
+	_briefing.pressed.connect(func() -> void: briefing_requested.emit())
 	_help.pressed.connect(func() -> void: help_requested.emit())
 	_settings.hints_changed.connect(func() -> void: hints_changed.emit())
 	_settings_button.pressed.connect(_show_settings.bind(true))
@@ -79,6 +84,7 @@ func _notification(what: int) -> void:
 func _retranslate() -> void:
 	_title.text = tr("Paused") if _note.is_empty() else _note
 	_resume.text = tr("Resume")
+	_briefing.text = tr("Mission (F2)")
 	_save.text = tr("Save game")
 	_load.text = tr("Load game")
 	_settings_button.text = tr("Settings")
@@ -101,6 +107,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func open() -> void:
 	_show_settings(false)
 	_note = ""
+	_briefing.visible = can_save
 	_save.visible = can_save
 	_load.visible = can_save
 	_clear_saves()

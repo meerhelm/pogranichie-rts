@@ -7,6 +7,16 @@
  "players": [[1, "gdl"], [2, "to"], [3, "gdl"], [4, "gdl"]],
  "camera": [100, 76],
  "difficulties": ["easy", "normal"],
+ "briefing": {
+  "place": "Samogitia, Gintaut's lands. Autumn 1413 to autumn 1417.",
+  "story": "Three years after the great battle King Jogaila and Grand Duke Vytautas came to Samogitia to baptize it, and Gintaut was among the first to step into the river. Now the Order says that the Samogitians are baptized in name only, and its spies are gathering evidence for the council at Konstanz.",
+  "goal": "Build a church and baptize your people, send a delegation to the council, beat back the Order's raid and lead the council's envoys through Samogitia. Do not let the Order's evidence reach 100.",
+  "lose": [
+   "Gintaut falls",
+   "The Order's evidence reaches 100",
+   "The delegation's cart or the council's envoys are destroyed"
+  ]
+ },
  "setup": {
   "sides": {"1": 1, "4": 1, "2": 2, "3": 3},
   "age": {"1": 2},

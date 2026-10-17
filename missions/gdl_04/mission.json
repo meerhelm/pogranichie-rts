@@ -7,6 +7,16 @@
  "players": [[1, "gdl"], [2, "to"], [3, "gdl"], [4, "gdl"], [5, "gdl"]],
  "camera": [114, 56],
  "difficulties": ["easy", "normal"],
+ "briefing": {
+  "place": "Lake Žirnajai south of Vilkomir. 30 August to 1 September 1435.",
+  "story": "After the death of Vytautas the Grand Duchy split in two. Sigismund Kęstutaitis holds Vilnius, Trakai and Samogitia; Polotsk, Vitebsk and Smolensk went over to Švitrigaila, and the Livonian knights ride with him. Now Švitrigaila marches on Vilnius, and Sigismund has sent his son Michael against him, with the Poles of Jakub of Kobylany. Mikołaj Gintovt leads his banner in Michael's army. His brother Jurij rides with Švitrigaila.",
+  "goal": "Hold your shore of the lake until dawn, then cross the stream, cut Švitrigaila's marching column in two and break the Livonian banners.",
+  "lose": [
+   "Mikołaj Gintovt or Prince Michael falls",
+   "The Livonian vanguard gets away with most of its men",
+   "Mikołaj's banner is cut to pieces"
+  ]
+ },
  "setup": {
   "sides": {"1": 1, "4": 1, "5": 1, "2": 2, "3": 2},
   "age": {"1": 2},

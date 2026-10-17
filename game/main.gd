@@ -13,6 +13,8 @@ extends Node2D
 ## From M9 the same scene plays a campaign mission (GameSettings.mission_id, or a save from
 ## GameSettings.load_path): no AI, the mission's script (MissionRuntime) runs the Order; the
 ## MissionPanel shows objectives, hints, dialogues and cutscenes; the game menu saves and loads.
+## A new mission opens with its briefing (MissionBriefing: story, goal, objectives), which F2 and
+## the game menu show again.
 
 const SEED := 1
 const PLAYER := 1
@@ -25,6 +27,8 @@ var ai: SkirmishAi
 var end_screen := EndScreen.new()
 ## The mission's interface (null in a skirmish).
 var mission_panel: MissionPanel
+## The mission's briefing (null in a skirmish).
+var briefing: MissionBriefing
 ## Trees on forest cells, among the units.
 var trees := TreeLayer.new()
 
@@ -92,6 +96,15 @@ func _ready() -> void:
 		_hud.menu.can_save = true
 		_hud.menu.save_requested.connect(_save_game)
 		_hud.menu.load_requested.connect(_load_game)
+		briefing = MissionBriefing.new()
+		$UI.add_child(briefing)
+		briefing.attach(sim)
+		_hud.menu.briefing_requested.connect(briefing.open)
+		if sim.tick == 0:
+			# A new mission waits for the player to read its briefing.
+			mission_panel.hold = true
+			briefing.closed.connect(mission_panel.release, CONNECT_ONE_SHOT)
+			briefing.open(true)
 		mission_panel.poll()
 	if ai != null:
 		# Thinks before the step its orders are for, as a player at the keyboard would.
