@@ -165,6 +165,33 @@ func test_crowded_units_push_apart() -> void:
 			assert_gt(d, Simulation.SEPARATION / 2, "units %d and %d" % [a + 1, b + 1])
 
 
+## Two of a side's peasants walking at each other along one line, in the open and along a lane
+## one cell wide (between trees): both step aside and get where they were going.
+func _head_on(rows: PackedStringArray, y: int) -> void:
+	var sim := _sim_on("\n".join(rows))
+	sim.enqueue(SimCommand.spawn(0, 1, PEASANT, _cell(1), _cell(y)))
+	sim.enqueue(SimCommand.spawn(0, 1, PEASANT, _cell(14), _cell(y)))
+	sim.enqueue(SimCommand.move(0, 1, PackedInt32Array([1]), _cell(14), _cell(y)))
+	sim.enqueue(SimCommand.move(0, 1, PackedInt32Array([2]), _cell(1), _cell(y)))
+	var e := sim.entities
+	for t in 1200:
+		sim.step()
+		if e.orders[0] == EntityStore.Order.IDLE and e.orders[1] == EntityStore.Order.IDLE:
+			break
+	var near := Fixed.ONE / 2
+	assert_lt(Fixed.distance(e.pos_x[0], e.pos_y[0], _cell(14), _cell(y)), near, "first got there")
+	assert_lt(Fixed.distance(e.pos_x[1], e.pos_y[1], _cell(1), _cell(y)), near, "second got there")
+
+
+func test_two_peasants_walking_head_on_pass_each_other() -> void:
+	_head_on(PackedStringArray([".".repeat(16), ".".repeat(16), ".".repeat(16)]), 1)
+
+
+func test_two_peasants_head_on_in_a_lane_between_trees_pass_each_other() -> void:
+	var trees := "F".repeat(16)
+	_head_on(PackedStringArray([trees, ".".repeat(16), trees]), 1)
+
+
 func test_unit_spawned_in_water_is_put_on_the_bank() -> void:
 	var sim := _sim_on("..~~\n..~~\n")
 	sim.enqueue(SimCommand.spawn(0, 1, SPEARMAN, _cell(3), _cell(0)))

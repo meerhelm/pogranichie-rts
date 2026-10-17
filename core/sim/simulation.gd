@@ -17,7 +17,8 @@ extends RefCounted
 ## 11: towers and gates shoot.
 ## 12: ВКЛ 3: the CHOOSE command, spies nobody strikes unordered, quenched places of power.
 ## 13: ВКЛ 4: a column on the march, captives, a spared hero (HP floor), camp supply, raids.
-const SIM_VERSION := 13
+## 14: walkers meeting head-on sidestep to their right (Separation.SIDESTEP).
+const SIM_VERSION := 14
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).
@@ -29,10 +30,8 @@ const FLOW_GROUP_MIN := 8
 const FLOW_MAX_SPREAD := 16
 ## A flow-field unit this close to its slot (in cells) walks the last bit on its own path.
 const SLOT_APPROACH_CELLS := 4
-## Units closer than this push each other apart (fixed units), a quarter of the overlap a tick.
-const SEPARATION := Fixed.HALF
-## Within this distance of its target a moving unit is not pushed and pushes nobody.
-const SETTLE_DISTANCE := Fixed.ONE * 3 / 2
+## Units closer than this push each other apart (fixed units); see Separation.
+const SEPARATION := Separation.SEPARATION
 ## Ticks without getting closer to the target before re-planning; after MAX_REPLANS, give up.
 const STALL_TICKS := 60
 const MAX_REPLANS := 3
@@ -99,12 +98,8 @@ var _flow_queue := PackedInt32Array()
 var _searching := 0
 var _search_goal := 0
 var _search_version := 0
-# Scratch arrays of _separate(), kept between ticks to avoid reallocating.
-var _sep_head := PackedInt32Array()
-var _sep_next := PackedInt32Array()
-var _sep_cell := PackedInt32Array()
-var _push_x := PackedInt64Array()
-var _push_y := PackedInt64Array()
+## Keeps units apart (and lets walkers meeting head-on sidestep); scratch only, no state.
+var _separation := Separation.new()
 
 
 ## Without `map`, the world is open grass of the given size; with it, the map's size is used.
@@ -195,7 +190,7 @@ func step_profiled(times: Dictionary) -> void:
 	t = _lap(times, "move.paths", t)
 	_walk_units()
 	t = _lap(times, "move.walk", t)
-	_separate()
+	_separation.run(entities, nav)
 	t = _lap(times, "move.separate", t)
 	combat.after_move()
 	t = _lap(times, "combat_after_move", t)
@@ -623,7 +618,7 @@ func _serve_paths() -> void:
 func _move_units() -> void:
 	_serve_paths()
 	_walk_units()
-	_separate()
+	_separation.run(entities, nav)
 
 
 func _walk_units() -> void:
@@ -882,93 +877,6 @@ func _watch_progress(id: int) -> void:
 	else:
 		_release_flow(id)
 		_plan_path(id)
-
-
-## Units closer than SEPARATION push each other apart, a quarter of the overlap each per tick:
-## walking units among themselves and standing units among themselves. A walking unit passes
-## standing ones without shoving them, so a formation that has arrived keeps its slots while
-## the rest of the group files in.
-## Pushes are summed first and applied after, in id order, never into a closed cell.
-func _separate() -> void:
-	var e := entities
-	var n := e.next_id - 1
-	if _sep_head.size() != nav.cell_count():
-		_sep_head.resize(nav.cell_count())
-	_sep_head.fill(0)
-	_sep_next.resize(n)
-	_sep_cell.resize(n)
-	_push_x.resize(n)
-	_push_x.fill(0)
-	_push_y.resize(n)
-	_push_y.fill(0)
-	# Bucket units by cell: _sep_head[cell] is the last id put there, _sep_next chains the rest.
-	for id in e.alive_ids:
-		var cell := nav.cell_of(e.pos_x[id - 1], e.pos_y[id - 1])
-		_sep_cell[id - 1] = cell
-		_sep_next[id - 1] = _sep_head[cell]
-		_sep_head[cell] = id
-	var w := nav.width
-	for id in e.alive_ids:
-		var a := id - 1
-		var cell := _sep_cell[a]
-		var cx := cell % w
-		var cy := cell / w
-		for ny in range(maxi(cy - 1, 0), mini(cy + 2, nav.height)):
-			for nx in range(maxi(cx - 1, 0), mini(cx + 2, w)):
-				var other := _sep_head[ny * w + nx]
-				while other != 0:
-					if other > id:
-						_push_pair(a, other - 1)
-					other = _sep_next[other - 1]
-	for id in e.alive_ids:
-		var slot := id - 1
-		if _push_x[slot] == 0 and _push_y[slot] == 0:
-			continue
-		var nx := clamp_x(e.pos_x[slot] + _push_x[slot])
-		var ny := clamp_y(e.pos_y[slot] + _push_y[slot])
-		if nav.passable(e.move_class[slot], nav.cell_of(nx, ny)):
-			e.pos_x[slot] = nx
-			e.pos_y[slot] = ny
-
-
-func _push_pair(a: int, b: int) -> void:
-	var e := entities
-	var dx := e.pos_x[b] - e.pos_x[a]
-	var dy := e.pos_y[b] - e.pos_y[a]
-	if absi(dx) >= SEPARATION or absi(dy) >= SEPARATION:
-		return
-	var d2 := dx * dx + dy * dy
-	if d2 >= SEPARATION * SEPARATION:
-		return
-	var d := Fixed.isqrt(d2)
-	var amount := (SEPARATION - d) / 4
-	if d == 0:
-		# Same spot: split along a direction picked from the ids, the same on every machine.
-		var dir := (a + b) % 4
-		dx = Pathfinder.DX[dir] * Fixed.ONE
-		dy = Pathfinder.DY[dir] * Fixed.ONE
-		d = Fixed.ONE
-	var px := dx * amount / d
-	var py := dy * amount / d
-	var a_moves := e.orders[a] == EntityStore.Order.MOVE
-	var b_moves := e.orders[b] == EntityStore.Order.MOVE
-	if a_moves != b_moves:
-		return
-	if a_moves and (_settling(a) or _settling(b)):
-		# Stepping into its slot: slots are a cell apart, so let it through.
-		return
-	_push_x[a] -= px
-	_push_y[a] -= py
-	_push_x[b] += px
-	_push_y[b] += py
-
-
-## A moving unit this close to its target is taking its place in the formation.
-func _settling(slot: int) -> bool:
-	var e := entities
-	var dx := absi(e.target_x[slot] - e.pos_x[slot])
-	var dy := absi(e.target_y[slot] - e.pos_y[slot])
-	return maxi(dx, dy) < SETTLE_DISTANCE
 
 
 static func _chebyshev_cells(ax: int, ay: int, bx: int, by: int) -> int:
