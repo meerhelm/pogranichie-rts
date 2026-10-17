@@ -37,7 +37,9 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
   riders sitting on them, the wagon.
 - `folk_1410.py` — the units of the Grunwald mission (ВКЛ 2): Samogitian, Polish and Tatar
   troops, the guest knight, the Order's wagon and bombard, and the heroes; the `sovereign`
-  hero template (a rider with a standard-bearer on foot) is `Sovereign` there.
+  hero template (a rider with a standard-bearer on foot) is `Sovereign` there. Also the
+  Baptism (ВКЛ 3): the Order's spy, the pagans and their priest, and the council's envoys
+  (`Envoys`: two clerics as one unit); civilians only idle and walk.
 - `kit.py` — building materials (log, thatch, shingle, brick, roof tile, plaster and timber
   framing) and parts (roofs, stepped gables, windows, sheds, fences, barrels);
   `buildings_gdl.py` and `buildings_to.py` — the Duchy's and the Order's buildings.

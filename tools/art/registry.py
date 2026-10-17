@@ -47,7 +47,7 @@ DEPOSIT_VARIANTS = models.DEPOSIT_VARIANTS
 ## Animations every unit has, and the extra ones: `work` for peasants (felling, digging,
 ## building), `attack` in a style of people.ATTACK_STYLES (beasts lunge, riders use the style
 ## too while the horse stands). Wagons neither work nor fight; the bombard fires (flash,
-## smoke, recoil: folk_1410.Bombard).
+## smoke, recoil: folk_1410.Bombard). Civilians (to_spy, hero_council_envoys) only idle and walk.
 BASE_ANIMS = [("idle", 8, 6), ("walk", 12, 15)]  # name, frames, fps
 WORK_ANIM = ("work", 8, 9)
 ATTACK_ANIM = ("attack", 8, 12)
@@ -63,7 +63,7 @@ ATTACK_STYLE = {
     "gdl_samogitian": "thrust", "pl_spearman": "thrust", "pl_crossbow": "crossbow",
     "nt_steppe_archer": "bow", "pl_kopia": "thrust", "to_guest_knight": "thrust",
     "hero_vytautas": "swing", "hero_lengvenis": "thrust", "hero_wallenrode": "thrust",
-    "hero_jungingen": "swing", "to_bombard": "fire",
+    "hero_jungingen": "swing", "to_bombard": "fire", "nt_pagan": "swing", "nt_pagan_priest": "cast",
     **{uid: "lunge" for uid in beasts.UNITS},
 }
 

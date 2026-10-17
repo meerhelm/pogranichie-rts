@@ -16,6 +16,9 @@ wood everywhere, log frames (срубы), palisades, shingle and thatch.
 - gdl_gate: a wooden gate in the palisade with a platform over it.
 - gdl_tower: «Вежа», a log tower (сруб) with an overhanging fighting gallery (облам) with
   loopholes and a shingled pyramid roof.
+- gdl_temple: «Храм», a wooden church of the first Samogitian parishes (1410s): a log nave
+  and a lower chancel under high shingle roofs, an open bell turret with a spire and a cross
+  on the ridge, a porch over the door, a wooden cross in the yard.
 """
 
 import math
@@ -461,6 +464,69 @@ def gdl_bort():
     return root
 
 
+def _wooden_cross(name, loc, height, mat, parent, arm=None):
+    """An upright cross of two squared beams."""
+    holder = S.empty(name, loc, parent)
+    arm = arm or height * 0.45
+    t = max(0.05, height * 0.06)
+    S.box(f"{name}_v", (t, t, height), (0, 0, height / 2), mat, holder)
+    S.box(f"{name}_h", (arm, t, t), (0, 0, height * 0.72), mat, holder)
+    return holder
+
+
+def gdl_temple():
+    m = kit.mats()
+    from tools.art.models import _srub
+    root = S.empty("gdl_temple")
+    kit.yard(3.0, 3.0, S.mat("meadow", "#6e7a45", 1.0, noise=0.3)).parent = root
+    # The nave along X, the lower chancel to the east (front right), the door on the -Y side.
+    ch = S.empty("church", (-0.75, 0.5, 0), root)
+    nw, nd, nh = 3.6, 3.0, 2.6
+    cw, cd, chh = 1.5, 2.2, 2.3
+    z0 = 0.25
+    S.box("footing", (nw + 0.3, nd + 0.3, z0), (0, 0, z0 / 2), m["stone"], ch)
+    _srub("nave", nw, nd, nh, 0.13, z0, m["logs"], ch, seed=71)
+    nave_top = z0 + nh
+    kit.gable_roof("nave_roof", nw, nd, 3.1, 0.35, nave_top, m["shingle"], ch)
+    for x in (-nw / 2, nw / 2):
+        kit.gable_wall(f"nave_gable_{x}", nd + 0.1, 3.05, (x, 0, nave_top), math.pi / 2, m["plank"], ch)
+    chancel = S.empty("chancel", (nw / 2 + cw / 2, 0, 0), ch)
+    S.box("chancel_footing", (cw + 0.3, cd + 0.3, z0), (0, 0, z0 / 2), m["stone"], chancel)
+    _srub("chancel", cw, cd, chh, 0.12, z0, m["logs"], chancel, seed=77)
+    kit.gable_roof("chancel_roof", cw, cd, 2.2, 0.3, z0 + chh, m["shingle"], chancel)
+    kit.gable_wall("chancel_gable", cd + 0.1, 2.15, (cw / 2, 0, z0 + chh), math.pi / 2, m["plank"], chancel)
+    _wooden_cross("chancel_gable_cross", (cw / 2 + 0.05, 0, z0 + chh + 2.1), 0.75, m["logs_old"], chancel)
+    kit.window("chancel_ewin", 0.35, 0.65, (cw / 2 + 0.15, 0, z0 + 1.0), math.pi / 2, m["dark"], chancel)
+    kit.window("chancel_win", 0.35, 0.65, (0, -cd / 2 - 0.14, z0 + 1.0), 0.0, m["dark"], chancel)
+    # The door under a small gabled porch, small windows, a team-coloured banner by the door.
+    face = -nd / 2 - 0.14
+    kit.window("door", 0.9, 1.8, (-0.55, face, z0), 0.0, m["door"], ch)
+    kit.window("nave_win", 0.4, 0.7, (0.95, face, z0 + 1.1), 0.0, m["dark"], ch)
+    porch = S.empty("porch", (-0.55, face - 0.5, 0), ch)
+    for x in (-0.6, 0.6):
+        S.cyl(f"porch_post_{x}", 0.07, 0.07, 2.05, (x, -0.35, z0), m["logs"], porch, seg=6)
+    kit.gable_roof("porch_roof", 1.4, 1.2, 0.8, 0.12, z0 + 2.05, m["shingle"], porch, along_y=True)
+    kit.gable_wall("porch_gable", 1.5, 0.78, (0, -0.6, z0 + 2.05), 0.0, m["plank"], porch, thick=0.06)
+    S.box("banner", (0.45, 0.04, 0.85), (-1.45, face - 0.03, 1.55), m["team"], ch)
+    # The bell turret on the west end of the ridge: a boarded base, open posts round a bell,
+    # a little hipped roof, a needle spire and the cross. Named as roof parts, so the build
+    # stages leave it out and a burning church drops it with the roof.
+    tw = S.empty("turret", (-nw / 2 + 0.8, 0, nave_top + 3.1), ch)
+    S.box("turret_roof_base", (0.8, 0.8, 1.1), (0, 0, -0.2), m["plank"], tw)
+    for i, (x, y) in enumerate(((-0.32, -0.32), (0.32, -0.32), (0.32, 0.32), (-0.32, 0.32))):
+        S.cyl(f"turret_roof_post_{i}", 0.05, 0.05, 0.8, (x, y, 0.35), m["logs"], tw, seg=5)
+    S.box("turret_roof_rail", (0.82, 0.82, 0.1), (0, 0, 0.4), m["plank"], tw)
+    bronze = S.mat("bell_bronze", "#8a6a2e", 0.45, metal=0.8)
+    S.cyl("turret_roof_bell", 0.17, 0.08, 0.3, (0, 0, 0.62), bronze, tw, seg=10)
+    kit.hip_roof("turret_roof_hip", 0.8, 0.8, 0.35, 0.12, 1.15, m["shingle"], tw)
+    S.cyl("turret_roof_spire", 0.24, 0.02, 1.1, (0, 0, 1.45), m["shingle"], tw, seg=8, smooth=False)
+    _wooden_cross("turret_roof_cross", (0, 0, 2.5), 0.7, m["iron"], tw, arm=0.36)
+    # A tall wooden cross in the yard, a log bench by the porch.
+    _wooden_cross("yard_cross", (2.2, -2.2, 0), 2.6, m["logs_old"], root)
+    S.cyl("bench", 0.13, 0.13, 1.4, (-2.6, -1.9, 0.13), m["logs"], root, rot=(0, math.pi / 2, 0.05), seg=7)
+    return root
+
+
 BUILDINGS = {
     "gdl_granary": (gdl_granary, (2, 2), 5),
     "gdl_farm": (gdl_farm, (3, 3), 2),
@@ -478,6 +544,7 @@ BUILDINGS = {
     "gdl_tower": (gdl_tower, (1, 1), 11),
     "gdl_gate_v": (gate(True), (1, 1), 6),
     "gdl_palisade": (palisade_piece(""), (1, 1), 3),
+    "gdl_temple": (gdl_temple, (3, 3), 10),
 }
 for _arm in "ewns":
     BUILDINGS[f"gdl_palisade_{_arm}"] = (palisade_piece(_arm), (1, 1), 3)

@@ -1,5 +1,6 @@
-"""Units of the Grunwald mission (ВКЛ 2, 1410), on the figure of people.py and the horse of
-beasts.py (visual assets doc, «Юниты» and «Герои»).
+"""Units of the Grunwald mission (ВКЛ 2, 1410) and of the Baptism of Samogitia (ВКЛ 3,
+1413–1417), on the figure of people.py and the horse of beasts.py (visual assets doc,
+«Юниты» and «Герои»).
 
 On foot:
 - gdl_samogitian: hides over linen, a Lithuanian shield on the arm, a spear and a battle axe
@@ -24,6 +25,12 @@ Heroes (doc «Герои»; `sovereign` is a rider with a standard-bearer beside
 - hero_jungingen: the Grand Master about 50 in the white cloak with the Grand Master's arms
   (black cross, gold cross fleury, a gold escutcheon with the black eagle), which his bearer
   also carries on the banner.
+ВКЛ 3 (no weapons on the spy, the priest and the envoys; they never fight but the priest):
+- to_spy: an inconspicuous wayfarer: a grey hood, a staff, a bag; no weapons, no crosses.
+- nt_pagan: like the Samogitian but poorer: hides, a club, no mail, no shield, no cap.
+- nt_pagan_priest: an old man in a light linen robe, a staff, a leather bag; no horns, no idols.
+- hero_council_envoys (`civilian`): two clerics of the council in travelling cloaks over dark
+  cassocks, one in a wide-brimmed hat with a staff, the other hooded with a letter case.
 Machines:
 - to_wagon: the GDL wagon with a white cover and black crosses, a German driver.
 - to_bombard: a thick wrought-iron barrel with hoops on a wooden bed (колода) without wheels,
@@ -417,6 +424,136 @@ def hero_jungingen():
     return Sovereign("hero_jungingen", h, r, m["team"], b)
 
 
+# --- ВКЛ 3: the Baptism -----------------------------------------------------------------------
+
+def _staff(f, m, length=1.8, knot=False):
+    """A walking staff upright in the right hand."""
+    f.held_r = True
+    staff = S.empty("staff", (0, 0, -0.02), f.j("hand_r"))
+    staff.rotation_euler = (math.radians(-80), 0, 0)
+    S.cyl("staff_pole", 0.022, 0.018, length, (0, 0, -0.85), m["wood"], staff, seg=6)
+    if knot:
+        S.ball("staff_knot", 0.04, (0, 0, length - 0.85), m["wood"], staff)
+    return staff
+
+
+def _shoulder_bag(f, bag_mat, strap_mat, side=-1, size=(0.09, 0.22, 0.24)):
+    """A bag at the hip (side -1 left, 1 right) on a strap over the opposite shoulder."""
+    S.box("bag", size, (side * 0.25, 0.02, -0.2), bag_mat, f.hips, rot=(0, math.radians(-8 * side), 0))
+    S.box("bag_flap", (size[0] + 0.01, size[1] + 0.01, 0.07), (side * 0.25, 0.02, -0.1), bag_mat, f.hips)
+    strap = S.box("bag_strap", (0.05, 0.3, 0.7), (0, 0, 0.17), strap_mat, f.chest, rot=(0, math.radians(38 * side), 0))
+    strap.scale = (1.0, 0.82, 1.0)
+    return strap
+
+
+def to_spy():
+    m = _m()
+    f = people.Figure("to_spy")
+    tunic = S.mat("wayfarer_tunic", "#6a6255", 0.95, noise=0.2)
+    grey = S.mat("wayfarer_grey", "#80807a", 0.95, noise=0.18)
+    f.body(m["skin"], tunic, m["hose"], m["leather"])
+    f.hair(m["hair"])
+    folk._legs_skirt(f, tunic, -0.36, 0.29)
+    folk._belt(f, m["team"])
+    # A grey hood with a shoulder cape, its point hanging at the back.
+    folk._hood(f, grey)
+    S.cyl("hood_tail", 0.05, 0.01, 0.3, (0, -0.18, -0.02), grey, f.head, rot=(math.radians(160), 0, 0), seg=6)
+    _shoulder_bag(f, m["sack"], m["leather"])
+    _staff(f, m)
+    return f
+
+
+def nt_pagan():
+    m = _m()
+    f = people.Figure("nt_pagan")
+    hides = S.mat("hides_poor", "#6a4c32", 1.0, noise=0.6)
+    worn = S.mat("linen_worn", "#b8ab8e", 0.95, noise=0.25)
+    f.body(m["skin"], hides, m["trousers"], m["lapti"], sleeve=worn, wraps=m["wraps"])
+    f.hair(m["hair"])
+    # Long uncut hair down the neck, no cap.
+    S.cyl("hair_long", 0.11, 0.08, 0.22, (0, -0.06, -0.2), m["hair"], f.head, seg=8)
+    f.skirt("shirt_hem", 0.05, -0.4, 0.2, 0.27, worn)
+    f.skirt("hide_skirt", 0.06, -0.24, 0.23, 0.3, hides)
+    # A ragged hide thrown over the left shoulder only.
+    cape = S.cyl("hide_cape", 0.27, 0.12, 0.24, (-0.06, -0.03, 0.3), S.mat("fur_poor", "#5b4430", 1.0, noise=0.6),
+                 f.chest, rot=(0, math.radians(-14), 0), seg=8)
+    cape.scale = (1.0, 0.9, 1.0)
+    rope = S.cyl("belt", 0.235, 0.235, 0.04, (0, 0, 0.03), m["team"], f.hips, seg=12)
+    rope.scale = (1.0, 0.8, 1.0)
+    # A knotty club, thick at the end, held upright.
+    f.held_r = True
+    club = S.empty("club", (0, 0, -0.02), f.j("hand_r"))
+    club.rotation_euler = (math.radians(-80), 0, 0)
+    S.cyl("club_haft", 0.026, 0.05, 0.78, (0, 0, -0.14), m["wood"], club, seg=7)
+    S.ball("club_head", 0.075, (0, 0, 0.62), m["wood"], club, scale=(1.0, 1.0, 1.3))
+    for k, (x, y, z) in enumerate(((0.06, 0.0, 0.58), (-0.04, 0.05, 0.66), (0.0, -0.06, 0.52))):
+        S.ball(f"club_knot_{k}", 0.028, (x, y, z), m["wood"], club)
+    return f
+
+
+def nt_pagan_priest():
+    m = _m()
+    f = people.Figure("nt_pagan_priest")
+    robe = S.mat("robe_linen", "#ddd5c0", 0.9, noise=0.12)
+    f.body(m["skin"], robe, robe, m["lapti"], wraps=m["wraps"])
+    f.hair(m["grey_hair"])
+    S.ball("long_beard", 0.085, (0, 0.08, -0.14), m["grey_hair"], f.head, scale=(1.0, 0.8, 1.5))
+    S.cyl("hair_long", 0.115, 0.09, 0.26, (0, -0.05, -0.24), m["grey_hair"], f.head, seg=8)
+    # A long robe to the ankles, a woven belt in the player colour.
+    f.skirt("robe", 0.06, -0.84, 0.21, 0.31, robe)
+    f.skirt("robe_hem", -0.78, -0.86, 0.305, 0.315, S.mat("robe_hem", "#b9a98a", 0.95, noise=0.2))
+    folk._belt(f, m["team"])
+    _shoulder_bag(f, m["leather"], m["leather"], side=-1, size=(0.09, 0.2, 0.2))
+    _staff(f, m, length=1.95, knot=True)
+    f.stoop = math.radians(8)
+    return f
+
+
+class Envoys:
+    """Two clerics walking side by side as one unit (hero template `civilian`)."""
+
+    def __init__(self, name, members):
+        self.root = S.empty(name)
+        self.members = members
+        for fig, (x, y) in members:
+            fig.root.parent = self.root
+            fig.root.location = (x, y, 0)
+
+    def pose(self, anim, frame, frames):
+        for i, (fig, _) in enumerate(self.members):
+            fig.pose(anim, (frame + i * frames // 3) % frames, frames)
+
+
+def _cleric(name, m, cloak, hair, beard):
+    c = people.Figure(name)
+    cassock = S.mat("cassock", "#26232a", 0.95, noise=0.1)
+    c.body(m["skin"], cassock, cassock, m["leather"])
+    c.hair(hair, beard=beard)
+    c.skirt("cassock", 0.06, -0.86, 0.21, 0.3, cassock)
+    folk._belt(c, m["team"], r=0.215)
+    folk._cloak(c, cloak, bottom=-0.78, r_bottom=0.33)
+    return c
+
+
+def hero_council_envoys():
+    m = _m()
+    elder = _cleric("envoy_elder", m, S.mat("travel_cloak", "#4a3f36", 0.95, noise=0.18), m["grey_hair"], True)
+    # A wide-brimmed travelling hat with a team-coloured band, and a staff.
+    hat = S.mat("travel_hat", "#2e2a26", 0.9, noise=0.12)
+    S.cyl("hat_brim", 0.26, 0.25, 0.025, (0, -0.01, 0.06), hat, elder.head, seg=16)
+    S.cyl("hat_crown", 0.13, 0.11, 0.12, (0, -0.01, 0.07), hat, elder.head, seg=12)
+    S.cyl("hat_band", 0.133, 0.13, 0.03, (0, -0.01, 0.08), m["team"], elder.head, seg=12)
+    _staff(elder, m, length=1.9)
+    young = _cleric("envoy_young", m, S.mat("travel_cloak_grey", "#6b665d", 0.95, noise=0.18), m["hair"], False)
+    folk._hood(young, S.mat("travel_hood", "#5a554d", 0.95, noise=0.18))
+    # A leather case with the council's letters on a strap, held in front.
+    young.held_r = True
+    S.box("letter_case", (0.08, 0.1, 0.3), (0.0, 0.06, -0.06), m["leather"], young.j("hand_r"))
+    S.cyl("case_seal", 0.03, 0.03, 0.02, (0.0, 0.11, -0.02), m["red_cloth"], young.j("hand_r"),
+          rot=(-math.pi / 2, 0, 0), seg=8)
+    return Envoys("hero_council_envoys", [(elder, (0.36, 0.05)), (young, (-0.38, -0.08))])
+
+
 # --- machines ------------------------------------------------------------------------------
 
 def _order_cover(cart, m):
@@ -554,6 +691,10 @@ UNITS = {
     "gdl_samogitian": gdl_samogitian,
     "pl_spearman": pl_spearman,
     "pl_crossbow": pl_crossbow,
+    "to_spy": to_spy,
+    "nt_pagan": nt_pagan,
+    "nt_pagan_priest": nt_pagan_priest,
+    "hero_council_envoys": hero_council_envoys,
 }
 MOUNTED_UNITS = {
     "nt_steppe_archer": nt_steppe_archer,
