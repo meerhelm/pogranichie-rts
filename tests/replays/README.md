@@ -13,6 +13,7 @@ and fail on the first checkpoint whose hash differs, on Linux and Windows alike.
 | `m7_samogitia_magic_3000.json` | 3000 ticks of the same with magic: units take and retake places of power, shrines are ordered on them and spells cast (seed 1, fuzz seed 5, `--economy 1 --magic 1`) |
 | `m9_gdl01_playthrough.json` | `MissionBot` plays the campaign mission «ВКЛ 1. Жемайтский огонь» (normal) from the start to victory, 61 901 ticks (51:35); checkpoints every 200 ticks. The test also requires the mission to end in victory |
 | `gdl02_playthrough.json` | `GrunwaldBot` plays «ВКЛ 2. Грюнвальд, 1410» (normal) from the start to victory, 12 471 ticks (10:23); checkpoints every 200 ticks. Also required to end in victory |
+| `gdl03_playthrough.json` | `BaptismBot` plays «ВКЛ 3. Крещение, 1413–1417» (normal) from the start to victory, 29 461 ticks (24:33); checkpoints every 200 ticks. Also required to end in victory |
 
 ## When a replay fails
 
@@ -34,6 +35,8 @@ $GODOT --headless -s tools/sim/sim_cli.gd -- record --seed 1 --fuzz-seed 5 --tic
 $GODOT --headless -s tools/sim/sim_cli.gd -- mission --out tests/replays/m9_gdl01_playthrough.json
 $GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission gdl_02 \
   --out tests/replays/gdl02_playthrough.json
+$GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission gdl_03 \
+  --out tests/replays/gdl03_playthrough.json
 ```
 
 The mission replay is recorded by the bot, so a change to the mission, its map or the rules can
@@ -71,3 +74,8 @@ The bot now wins «ВКЛ 1» at 40:18.
 Then for `sim_version` 10 (taking own buildings apart: the `DISMANTLE` order, salvage piles only
 their owner picks up, and `data_version` changed with the dismantling rules in
 `rules/economy.tres`). The fuzzer now also orders peasants to take buildings apart.
+Then for `sim_version` 11 (towers and gates shoot).
+Then for `sim_version` 12 («ВКЛ 3»: the `CHOOSE` command, spies nobody strikes without an
+order, places of power that go out; `data_version` changed with the church, the Samogitian
+footman and the mission's new units in the prototype catalog). The fuzzer picks unit types from
+the prototype catalog, so its spawn orders changed too. `gdl03_playthrough.json` is new.
