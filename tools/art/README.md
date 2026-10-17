@@ -44,6 +44,14 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
   arms: a white zigzag on green; Jurij's lance carries the woven belt under the pennon),
   Mikhail Sigismundovich with the Pogoń, Jakub of Kobylany (arms unverified: plain white and
   red), the Livonian brother Nesselrode and the Master Kerskorf (`Sovereign`, with a bearer).
+- `folk_1500.py` — Vedrosha (ВКЛ 5): the noble lancer (plate, sallet, two-tailed pennon,
+  chanfron), the field gun (`FieldGun`: bronze barrel on a wheeled carriage, two gunners; a
+  horse pulls it trail first on the march, it fires like the bombard), the first Muscovite
+  units (syn boyarsky with bow and saadak, boyar in a bakhterets with a round shield, the monk
+  with the icon on a pole: `cast` lifts it over his head, so he has a taller frame) on an
+  eastern saddle with short stirrups (`EasternMounted`), and the heroes Andrei Gintovt (the
+  khorugv with the Gintovt arms, the woven belt), Ostrogski (bulawa; arms unverified, none
+  drawn) and Shchenya (`EasternSovereign`: his bearer carries the rider and serpent of coa_mo).
 - `kit.py` — building materials (log, thatch, shingle, brick, roof tile, plaster and timber
   framing) and parts (roofs, stepped gables, windows, sheds, fences, barrels);
   `buildings_gdl.py` and `buildings_to.py` — the Duchy's and the Order's buildings.
@@ -61,8 +69,8 @@ The game reads them through `game/world/SpriteDB`; ids without art keep their pl
 at a job, else idle, turned to the target or the work. `--add` renders only the animations a
 sheet lacks and copies the old rows back, so a new animation does not re-render the rest.
 Building frames are rendered large and cropped to what all stages cover. Unit frames: 160×144
-on foot, 224×256 mounted (an upright lance), 224×176 big beasts, 320×240 the wagon and the
-bombard; `bar_y` in `sheet.json` is where the HP bar goes.
+on foot (160×216 the monk with his raised icon), 224×256 mounted (an upright lance), 224×176
+big beasts, 320×240 the wagon, the bombard and the field gun; `bar_y` in `sheet.json` is where the HP bar goes.
 
 Line pieces: a palisade cell is its post cluster (`<id>`) plus arms toward the neighbours
 (`<id>_e`, `_w`, `_n`, `_s`, model axes +X, -X, +Y, -Y), which BuildingLayer picks per cell.

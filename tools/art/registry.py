@@ -2,7 +2,7 @@
 
 from typing import Callable, NamedTuple
 
-from tools.art import beasts, buildings_gdl, buildings_to, folk, folk_1410, folk_1435, models
+from tools.art import beasts, buildings_gdl, buildings_to, folk, folk_1410, folk_1435, folk_1500, models
 
 
 class Unit(NamedTuple):
@@ -22,13 +22,18 @@ class Building(NamedTuple):
 MOUNTED = {"frame": (224, 256), "pivot": (108, 184)}
 BEAST = {"frame": (224, 176), "pivot": (108, 124)}
 WAGON = {"frame": (320, 240), "pivot": (156, 150)}
+## A man on foot who raises a pole over his head (mo_inok lifts the icon).
+TALL = {"frame": (160, 216), "pivot": (64, 176)}
+TALL_UNITS = {"mo_inok"}
 
-UNITS: dict[str, Unit] = {uid: Unit(fn) for uid, fn in {**models.UNITS, **folk.UNITS, **folk_1410.UNITS}.items()}
+UNITS: dict[str, Unit] = {uid: Unit(fn, **TALL) if uid in TALL_UNITS else Unit(fn) for uid, fn in {
+    **models.UNITS, **folk.UNITS, **folk_1410.UNITS, **folk_1500.UNITS}.items()}
 for _uid, _fn in beasts.UNITS.items():
     UNITS[_uid] = Unit(_fn, **BEAST) if _uid in beasts.BIG_BEASTS else Unit(_fn)
-for _uid, _fn in {**beasts.MOUNTED_UNITS, **folk_1410.MOUNTED_UNITS, **folk_1435.MOUNTED_UNITS}.items():
+for _uid, _fn in {**beasts.MOUNTED_UNITS, **folk_1410.MOUNTED_UNITS, **folk_1435.MOUNTED_UNITS,
+                  **folk_1500.MOUNTED_UNITS}.items():
     UNITS[_uid] = Unit(_fn, **MOUNTED)
-for _uid, _fn in {**beasts.WAGONS, **folk_1410.WAGONS}.items():
+for _uid, _fn in {**beasts.WAGONS, **folk_1410.WAGONS, **folk_1500.WAGONS}.items():
     UNITS[_uid] = Unit(_fn, **WAGON)
 
 BUILDINGS: dict[str, Building] = {
@@ -46,8 +51,9 @@ DEPOSIT_VARIANTS = models.DEPOSIT_VARIANTS
 
 ## Animations every unit has, and the extra ones: `work` for peasants (felling, digging,
 ## building), `attack` in a style of people.ATTACK_STYLES (beasts lunge, riders use the style
-## too while the horse stands). Wagons neither work nor fight; the bombard fires (flash,
-## smoke, recoil: folk_1410.Bombard). Civilians (to_spy, hero_council_envoys) only idle and walk.
+## too while the horse stands). Wagons neither work nor fight; the bombard and the field gun
+## fire (flash, smoke, recoil: folk_1410.Bombard, folk_1500.FieldGun). Civilians (to_spy,
+## hero_council_envoys) only idle and walk.
 BASE_ANIMS = [("idle", 8, 6), ("walk", 12, 15)]  # name, frames, fps
 WORK_ANIM = ("work", 8, 9)
 ATTACK_ANIM = ("attack", 8, 12)
@@ -66,6 +72,8 @@ ATTACK_STYLE = {
     "hero_jungingen": "swing", "to_bombard": "fire", "nt_pagan": "swing", "nt_pagan_priest": "cast",
     "hero_mikolaj": "swing", "hero_jurij_gintovt": "thrust", "hero_mikhail_sigismundovich": "swing",
     "hero_jakub_kobylany": "thrust", "hero_nesselrode": "thrust", "hero_kerskorf": "swing",
+    "gdl_szlachta_lance": "thrust", "gdl_field_gun": "fire", "mo_syn_boyarsky": "bow", "mo_boyar": "thrust",
+    "mo_inok": "cast", "hero_andrei": "thrust", "hero_ostrogski": "swing", "hero_shchenya": "swing",
     **{uid: "lunge" for uid in beasts.UNITS},
 }
 
