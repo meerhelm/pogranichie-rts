@@ -195,9 +195,9 @@
    "mo_zaseka": 2,
    "mo_watchtower": 12
   },
-  "_reload_source": "Towers shooting (2026-10-16): ticks between a tower's arrows → params.reload_ticks. Not in the catalog (it gives only «5 С, дальн. 7»), temporary: 2 s, as the archers' «2,0».",
+  "_reload_source": "Towers shooting (2026-10-16): ticks between a tower's arrows → params.reload_ticks. Not in the catalog (it gives only «5 С, дальн. 7»), temporary: 0.6 s, about 3–4 archers at «2,0» shooting from it (Valentin 2026-10-17: «в башне сидят 3-4 лучника»).",
   "reload_ticks": {
-   "tower": 40
+   "tower": 12
   }
  },
  "vision_rules": {
