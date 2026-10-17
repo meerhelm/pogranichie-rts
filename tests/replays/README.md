@@ -11,7 +11,7 @@ and fail on the first checkpoint whose hash differs, on Linux and Windows alike.
 | `m3_samogitia_fuzz_1000.json` | The same kind of orders, with formations, on `map_proto_samogitia` (seed 1, fuzz seed 3) |
 | `m5_samogitia_economy_2000.json` | 2000 ticks with the economy: both players join with town centres and peasants, then gather, build, wall, repair, assault, queue, cancel and set rally points among the other orders (seed 1, fuzz seed 4, `--economy 1`) |
 | `m7_samogitia_magic_3000.json` | 3000 ticks of the same with magic: units take and retake places of power, shrines are ordered on them and spells cast (seed 1, fuzz seed 5, `--economy 1 --magic 1`) |
-| `m9_gdl01_playthrough.json` | `MissionBot` plays the campaign mission «ВКЛ 1. Жемайтский огонь» (normal) from the start to victory, 60 301 ticks (50:15); checkpoints every 200 ticks. The test also requires the mission to end in victory |
+| `m9_gdl01_playthrough.json` | `MissionBot` plays the campaign mission «ВКЛ 1. Жемайтский огонь» (normal) from the start to victory, 61 901 ticks (51:35); checkpoints every 200 ticks. The test also requires the mission to end in victory |
 | `gdl02_playthrough.json` | `GrunwaldBot` plays «ВКЛ 2. Грюнвальд, 1410» (normal) from the start to victory, 12 471 ticks (10:23); checkpoints every 200 ticks. Also required to end in victory |
 
 ## When a replay fails
