@@ -14,6 +14,7 @@ and fail on the first checkpoint whose hash differs, on Linux and Windows alike.
 | `m9_gdl01_playthrough.json` | `MissionBot` plays the campaign mission «ВКЛ 1. Жемайтский огонь» (normal) from the start to victory, 61 901 ticks (51:35); checkpoints every 200 ticks. The test also requires the mission to end in victory |
 | `gdl02_playthrough.json` | `GrunwaldBot` plays «ВКЛ 2. Грюнвальд, 1410» (normal) from the start to victory, 12 471 ticks (10:23); checkpoints every 200 ticks. Also required to end in victory |
 | `gdl03_playthrough.json` | `BaptismBot` plays «ВКЛ 3. Крещение, 1413–1417» (normal) from the start to victory, 29 461 ticks (24:33); checkpoints every 200 ticks. Also required to end in victory |
+| `gdl04_playthrough.json` | `VilkomirBot` plays «ВКЛ 4. Вилькомир, 1435» (normal) from the start to victory, 18 001 ticks (15:00); checkpoints every 200 ticks. Also required to end in victory |
 
 ## When a replay fails
 
@@ -37,6 +38,8 @@ $GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission gdl_02 \
   --out tests/replays/gdl02_playthrough.json
 $GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission gdl_03 \
   --out tests/replays/gdl03_playthrough.json
+$GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission gdl_04 \
+  --out tests/replays/gdl04_playthrough.json
 ```
 
 The mission replay is recorded by the bot, so a change to the mission, its map or the rules can
@@ -79,3 +82,7 @@ Then for `sim_version` 12 («ВКЛ 3»: the `CHOOSE` command, spies nobody stri
 order, places of power that go out; `data_version` changed with the church, the Samogitian
 footman and the mission's new units in the prototype catalog). The fuzzer picks unit types from
 the prototype catalog, so its spawn orders changed too. `gdl03_playthrough.json` is new.
+Then for `sim_version` 13 («ВКЛ 4»: the marching column, captives, the spared hero's HP floor,
+camp supply and raids in the hashes; `data_version` changed with the mission's heroes and the
+field camp in the prototype catalog). The fuzzer picks unit types from the prototype catalog, so
+its spawn orders changed too. `gdl04_playthrough.json` is new.
