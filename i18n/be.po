@@ -152,6 +152,9 @@ msgstr "Сцяна з завостраных калоў: пацягніце, к�
 msgid "A wise woman: heals those around her and casts the Duchy's spells."
 msgstr "Знахарка: лечыць тых, хто побач, і чаруе заклёны Княства."
 
+msgid "A wooden church. In the campaign the peasants who work near it are baptized; its priests and improvements are not in the game yet."
+msgstr "Драўляны касцёл. У кампаніі сяляне, што працуюць побач, прымаюць хрост; яго ксяндзоў і паляпшэнняў у гульні пакуль няма."
+
 msgid "Abilities"
 msgstr "Здольнасці"
 
@@ -188,8 +191,23 @@ msgstr "Лучнік, для якога лес — родны дом."
 msgid "An oak can be cut down. But the place where it grew is still here. Set stones in a circle, as your grandfather did, and the fire will come back."
 msgstr "Дуб можна ссячы. Але месца, дзе ён рос, засталося. Пастаў камяні ў кола, як рабіў твой дзед, і агонь вернецца."
 
+msgid "And about the grove?"
+msgstr "А пра гай?"
+
+msgid "And the next year the churches in Samogitia burned again. Great-grandfather took no part in it. But he gave away none of the people who burned them."
+msgstr "А на наступны год касцёлы ў Жамойці зноў гарэлі. Прадзед у гэтым не ўдзельнічаў. Але нікога з тых, хто паліў, не выдаў."
+
+msgid "And who saw it, apart from you?"
+msgstr "А хто гэта бачыў, акрамя цябе?"
+
 msgid "And whose man are you?"
 msgstr "А ты чый чалавек?"
+
+msgid "And you?"
+msgstr "А ты?"
+
+msgid "Archbishop Jan"
+msgstr "Арцыбіскуп Ян"
 
 msgid "Archers among the trees are harder to hit. Let the spearmen hold the Order's men while your archers shoot from the forest."
 msgstr "У стралкоў сярод дрэў цяжэй трапіць. Няхай кап’яносцы стрымліваюць ордэнскіх, а лучнікі страляюць з лесу."
@@ -221,17 +239,35 @@ msgstr "B далей, F павярнуць, Shift ставіць яшчэ, Esc �
 msgid "Back"
 msgstr "Назад"
 
+msgid "Baptize 10 peasants at the church"
+msgstr "Ахрысціце 10 сялян пры касцёле"
+
+msgid "Baptized: %d"
+msgstr "Ахрышчана: %d"
+
+msgid "Beat back the raid across the border ford"
+msgstr "Адбіце набег праз памежны брод"
+
 msgid "Being taken apart"
 msgstr "Яе разбіраюць"
 
 msgid "Being taken apart: %d%%"
 msgstr "Разбіраюць: %d%%"
 
+msgid "Better my hands than someone else's."
+msgstr "Лепш мае рукі, чым чужыя."
+
+msgid "Bishop Piotr"
+msgstr "Біскуп Пётр"
+
 msgid "Bog ore"
 msgstr "Балотная руда"
 
 msgid "Bog ore (brown blocks in the bog) gives iron."
 msgstr "Балотная руда (карычневыя блокі ў балоце) дае жалеза."
+
+msgid "Boyar"
+msgstr "Баярын"
 
 msgid "Boyar lances strike hard in a charge. To set wood on fire, select units and Alt+right-click an enemy building: they will carry torches to it."
 msgstr "Баярскія коп’і моцна б’юць з разгону. Каб падпаліць дрэва, вылучыце атрады і націсніце Alt+правую кнопку на варожай пабудове: яны панясуць да яе паходні."
@@ -245,8 +281,26 @@ msgstr "Здымае чужыя чары; істота губляе 150 здар
 msgid "Brickworks: while one stands, your towers, walls and castles cost less."
 msgstr "Цагельня: пакуль яна стаіць, вашы вежы, сцены і замкі каштуюць танней."
 
+msgid "Brother Konrad"
+msgstr "Брат Конрад"
+
 msgid "Brother priests: +50% HP; Exorcism reaches 2 cells farther."
 msgstr "Браты-святары: +50% здароўя; «Экзарцызм» дзейнічае на 2 клеткі далей."
+
+msgid "Build a church in the village by the ford"
+msgstr "Пабудуйце касцёл у вёсцы каля броду"
+
+msgid "Build a church in the village on the Medininkai road"
+msgstr "Пабудуйце касцёл у вёсцы на Мядзінінкскай дарозе"
+
+msgid "Build a church in the village south of the yard"
+msgstr "Пабудуйце касцёл у вёсцы на поўдзень ад двара"
+
+msgid "Build a wooden church"
+msgstr "Пабудуйце драўляны касцёл"
+
+msgid "Build the church near the yard. Peasants who work near it are baptized one by one."
+msgstr "Пабудуйце касцёл каля двара. Сяляне, што працуюць побач, прымаюць хрост адзін за адным."
 
 msgid "Build «%s» on a place of power: it gives Power for spells."
 msgstr "Пабудуйце «%s» на месцы сілы: яна дае Сілу для чараў."
@@ -326,6 +380,9 @@ msgstr "Зборшчык"
 msgid "Column"
 msgstr "Калона"
 
+msgid "Come to terms with the pagans and never fight them"
+msgstr "Дамоўцеся з язычнікамі і ні разу з імі не біцеся"
+
 msgid "Conditions not met"
 msgstr "Умовы не выкананы"
 
@@ -343,6 +400,9 @@ msgstr "Ctrl+правы пстрык: рух з атакай. Alt+правы п�
 
 msgid "Ctrl+right-click moves in attack. Blows to the flank and rear break the enemy's spirit."
 msgstr "Ctrl + правая кнопка: рух з атакай. Удары ў фланг і тыл ламаюць дух ворага."
+
+msgid "Cut down the oak"
+msgstr "Ссекчы дуб"
 
 msgid "Damage %d (%s)"
 msgstr "Урон %d (%s)"
@@ -367,6 +427,9 @@ msgstr "Не дайце загінуць усім тром смаленскім 
 
 msgid "Do not let the knight brothers reach the boats"
 msgstr "Не дапусціць братоў-рыцараў да чоўнаў"
+
+msgid "Do not let the raiders burn the church"
+msgstr "Не дайце налётчыкам спаліць касцёл"
 
 msgid "Does not burn"
 msgstr "Не гарыць"
@@ -398,11 +461,20 @@ msgstr "Роўныя грошы"
 msgid "Esc or right click cancel"
 msgstr "Esc або правая кнопка — адмена"
 
+msgid "Evidence: %d of %d"
+msgstr "Сведчанні: %d з %d"
+
 msgid "F1: how to play."
 msgstr "F1: як гуляць."
 
 msgid "Fall back to the forest without losing Gintaut's banner"
 msgstr "Адыдзіце да лесу, не страціўшы харугвы Гінтаўта"
+
+msgid "Father Stanisław"
+msgstr "Айцец Станіслаў"
+
+msgid "Father Stanisław, my lord. And their mothers, after him."
+msgstr "Айцец Станіслаў, ваша міласць. А за ім іх маці."
 
 msgid "Fields give food faster: +15%."
 msgstr "Палі даюць ежу хутчэй: +15%."
@@ -412,6 +484,12 @@ msgstr "Біцца з ворагамі, што падыйшлі, потым вя
 
 msgid "Fight!"
 msgstr "У бой!"
+
+msgid "Finish the mission with the evidence below 30"
+msgstr "Скончыце місію, калі сведчанняў менш за 30"
+
+msgid "Fire at the stone. Write it down."
+msgstr "Агонь каля каменя. Запішыце."
 
 msgid "First steps"
 msgstr "Першыя крокі"
@@ -464,6 +542,15 @@ msgstr "Строй: %s (%s)"
 msgid "Forward, at the marshal!"
 msgstr "Наперад, на маршалка!"
 
+msgid "Fourteen hundred and fifteen. Winter."
+msgstr "Тысяча чатырыста пятнаццаты. Зіма."
+
+msgid "Fourteen hundred and seventeen. Autumn. The council sent its own men to baptize Samogitia and to found a church here: Jan, Archbishop of Lviv, and Piotr, Bishop of Vilnius."
+msgstr "Тысяча чатырыста семнаццаты. Восень. Сабор прыслаў сваіх людзей хрысціць Жамойць і закласці тут царкву: Яна, арцыбіскупа львоўскага, і Пятра, біскупа віленскага."
+
+msgid "Fourteen hundred and sixteen. Summer. Across the ford the Order's men were gathering."
+msgstr "Тысяча чатырыста шаснаццаты. Лета. За бродам збіраліся людзі Ордэна."
+
 msgid "From the darkness you live in. Half of it. And all the rye."
 msgstr "Ад цемры, у якой вы жывяце. Палову. І ўсё жыта."
 
@@ -479,6 +566,9 @@ msgstr "ВКЛ 1. Жамойцкі агонь"
 msgid "GDL 2. Grunwald"
 msgstr "ВКЛ 2. Грунвальд"
 
+msgid "GDL 3. Baptism"
+msgstr "ВКЛ 3. Хрышчэнне"
+
 msgid "Game"
 msgstr "Гульня"
 
@@ -491,6 +581,9 @@ msgstr "Час гульні: %s"
 msgid "Gather 300 food so the village lives through the summer"
 msgstr "Сабраць 300 ежы, каб вёска перажыла лета"
 
+msgid "Gather 400 silver and 200 food for the delegation's journey"
+msgstr "Збярыце 400 срэбра і 200 ежы на дарогу пасольства"
+
 msgid "Gathers food, wood, iron and silver, builds and repairs."
 msgstr "Збірае ежу, дрэва, жалеза і срэбра, будуе і рамантуе."
 
@@ -499,6 +592,9 @@ msgstr "Збірае рэсурсы і будуе."
 
 msgid "Get off the horse and fight on foot: more armor, the speed of foot soldiers."
 msgstr "Злезці з каня і біцца пешшу: больш брані, хуткасць пяхоты."
+
+msgid "Gintaut has fallen. Nobody is left to answer for Samogitia before the council."
+msgstr "Гінтаўт загінуў. Няма каму адказаць за Жамойць перад саборам."
 
 msgid "Gintaut is wounded and carried off the field. The khorugv has lost its leader."
 msgstr "Гінтаўт паранены, яго выносяць з поля. Харугва страціла важака."
@@ -512,6 +608,12 @@ msgstr "Харугва Гінтаўта ўпала, і ніхто яе не па
 msgid "Gintaut's khorugv has been cut to pieces."
 msgstr "Харугву Гінтаўта пасеклі."
 
+msgid "Give 100 silver"
+msgstr "Даць 100 срэбра"
+
+msgid "Give 150 food"
+msgstr "Даць 150 ежы"
+
 msgid "Gives"
 msgstr "Дае"
 
@@ -520,6 +622,9 @@ msgstr "Дае %d ежы, калі заб'юць"
 
 msgid "Gives back: %s"
 msgstr "Верне: %s"
+
+msgid "Go, then. While this lasts, we will not come to your new house."
+msgstr "Ідзі ўжо. Пакуль гэтага стане, мы не прыйдзем да твайго новага дома."
 
 msgid "Goal"
 msgstr "Мэта"
@@ -563,6 +668,9 @@ msgstr "Падказка %d з %d"
 msgid "Hints in skirmish"
 msgstr "Падказкі ў сутычцы"
 
+msgid "His name shall be Jan."
+msgstr "Імя яму будзе Ян."
+
 msgid "Hold on, Prince Semyon. We will come back."
 msgstr "Трымайся, князь Сямён. Мы вернемся."
 
@@ -602,14 +710,29 @@ msgstr "Я думаю, што зямля іх не хоча."
 msgid "I was at Orsha and heard the guns roar. What I write below I heard from my grandfather, and he from his father. What is true here and what is a tale, judge for yourselves."
 msgstr "Я быў пад Оршай і чуў, як равуць гарматы. Тое, што пішу ніжэй, я чуў ад дзеда, а ён — ад свайго бацькі. Што тут праўда, а што казка, судзіце самі."
 
+msgid "I was baptized so that the grove would stand. And so that the Germans would go."
+msgstr "Я ахрысціўся, каб гай стаяў. І каб немцы пайшлі."
+
+msgid "If not us, the Germans will come and baptize us with the sword. Better the Poles, and with water."
+msgstr "Калі не мы, прыйдуць немцы і ахрысцяць нас мячом. Лепш палякі, і вадой."
+
 msgid "In August Master Ulrich declared war on King Jogaila and marched on Dobrzyń. In autumn they made a truce until Midsummer Day. All winter both sides forged spears. And our great-grandfather rode beyond the Neman for the first time in his life."
 msgstr "У жніўні магістр Ульрых абвясціў вайну каралю Ягайлу і пайшоў на Добжынь. Увосень заключылі замірэнне да Яна. Усю зіму абодва бакі кавалі коп’і. А наш прапрадзед упершыню ў жыцці паехаў за Нёман."
+
+msgid "In Konstanz the fathers of the council had gathered to judge three popes at once. Our people were to go there too and tell how the Order baptized Samogitia."
+msgstr "У Канстанцы сабраліся айцы сабора, каб судзіць адразу трох пап. Нашы людзі таксама мелі паехаць туды і расказаць, як Ордэн хрысціў Жамойць."
+
+msgid "In October fourteen hundred and seventeen Samogitia got its own bishop, Matthias of Trakai. He spoke our tongue. Now the Order had nothing to tell the council: the Samogitians were baptized, and it was not the Order that baptized them."
+msgstr "У кастрычніку тысяча чатырыста семнаццатага Жамойць атрымала свайго біскупа, Мацея з Трок. Ён гаварыў на нашай мове. Цяпер Ордэну не было чаго сказаць сабору: жамойты ахрышчаныя, і ахрысціў іх не Ордэн."
 
 msgid "In spring they stood on the bog, they drink river water and eat old grain. Think what you like."
 msgstr "Яны вясной стаялі на балоце, п'юць рачную ваду і ядуць старое зерне. А ты думай як хочаш."
 
 msgid "In the year of our Lord fourteen hundred and ten, on the fifteenth of July, our great-grandfather Gintaut stood in the right wing, under the hand of Vytautas. They stood a long time, in the sun, in iron."
 msgstr "Лета Гасподняга тысяча чатырыста дзясятага, пятнаццатага ліпеня, наш прадзед Гінтаўт стаяў у правым крыле, пад рукой Вітаўта. Стаялі доўга, на сонцы, у жалезе."
+
+msgid "In two minutes the Order's raid will come across the border ford in the west."
+msgstr "Праз дзве хвіліны набег Ордэна пяройдзе памежны брод на захадзе."
 
 msgid "In work: %s, %d%%"
 msgstr "У рабоце: %s, %d%%"
@@ -629,20 +752,41 @@ msgstr "Жалеза: правы пстрык сялянамі па балотн
 msgid "Is Samogitia ours now, prince?"
 msgstr "Жамойць цяпер наша, князь?"
 
+msgid "Is that their oak?"
+msgstr "Гэта іх дуб?"
+
+msgid "It has gone out for good"
+msgstr "Яно згасла назаўсёды"
+
+msgid "It is an oak, my lord. Just an old one."
+msgstr "Гэта дуб, ваша міласць. Проста стары."
+
 msgid "It needs two other first-age buildings and opens new units."
 msgstr "Патрэбны два іншыя будынкі першай эпохі; адкрывае новыя атрады."
 
 msgid "It rained in the night. Their powder is as wet as their prayers. Hold!"
 msgstr "Ноччу ішоў дождж. Порах у іх такі ж мокры, як іх малітвы. Стаяць!"
 
+msgid "It was your men who came across the ford."
+msgstr "Гэта твае людзі прыйшлі праз брод."
+
 msgid "It will be ours. By peace, not by the sword. With the sword we have done all we could."
 msgstr "Будзе наша. Мірам, а не мячом. Мячом мы зрабілі ўсё, што маглі."
+
+msgid "Jan. So be it. Only my grandfather called me Gintaut, and the grove knows me by that name."
+msgstr "Ян. Хай так. Толькі дзед зваў мяне Гінтаўтам, і гай ведае мяне пад гэтым імем."
 
 msgid "Javelin: %d damage at %d cells, every %d s"
 msgstr "Суліца: %d урону на %d клеткі, раз на %d с"
 
+msgid "Keep all 5 places of power"
+msgstr "Захавайце ўсе 5 месцаў сілы"
+
 msgid "Keep at least two Smolensk banners"
 msgstr "Захавайце хоць дзве смаленскія харугвы"
+
+msgid "Keep peasants working near the church: every ten seconds it baptizes one of them."
+msgstr "Трымайце сялян за працай каля касцёла: кожныя дзесяць секунд адзін з іх прымае хрост."
 
 msgid "Keep watching"
 msgstr "Глядзець далей"
@@ -659,6 +803,15 @@ msgstr "Вялікі"
 msgid "Lead forest archers past the Order's watch to the spring"
 msgstr "Правесці лясных лучнікаў міма ордэнскай варты да крыніцы"
 
+msgid "Lead the council's envoys from the ford to the Medininkai road"
+msgstr "Правядзіце пасланцаў сабора ад броду да Мядзінінкскай дарогі"
+
+msgid "Lead the delegation's cart along the trail to the sea in the north"
+msgstr "Правядзіце воз пасольства па сцежцы да мора на поўнач"
+
+msgid "Lead the envoys round the grove"
+msgstr "Павесці пасланцаў у абыход гаю"
+
 msgid "Left (you)"
 msgstr "Злева (вы)"
 
@@ -670,6 +823,9 @@ msgstr "Левы пстрык ці рамка — вылучыць."
 
 msgid "Left click selects; drag a box to select several."
 msgstr "Левы пстрык вылучае; рамка вылучае некалькі."
+
+msgid "Let them come and see what Samogitian faith is worth."
+msgstr "Хай прыйдуць і пабачаць, чаго вартая жамойцкая вера."
 
 msgid "Line"
 msgstr "Шарэнга"
@@ -692,11 +848,17 @@ msgstr "Пан Гінтаўт, немцы ў нашым гаі. Ставяць �
 msgid "Main menu"
 msgstr "Галоўнае меню"
 
+msgid "Many of them know it, my lord. In Lithuanian."
+msgstr "Многія ведаюць, ваша міласць. Па-літоўску."
+
 msgid "Menu (F10)"
 msgstr "Меню (F10)"
 
 msgid "Messenger"
 msgstr "Ганец"
+
+msgid "Mikołaj looked towards the forest. There, at the edge, for a moment a woman's figure was seen."
+msgstr "Мікалай глядзеў у бок лесу. Там, на ўскрайку, на міг паказалася жаночая постаць."
 
 msgid "Mist over the bog: your people and buildings in it are hidden from the enemy farther than 2 cells."
 msgstr "Туман над балотам: вашых людзей і пабудовы ў ім вораг не бачыць далей за 2 клеткі."
@@ -740,6 +902,9 @@ msgstr "Няма захаваных гульняў"
 msgid "Nobody holds it"
 msgstr "Нічыё"
 
+msgid "Nobody moved."
+msgstr "Ніхто не крануўся з месца."
+
 msgid "Normal"
 msgstr "Звычайны"
 
@@ -761,6 +926,9 @@ msgstr "Не для гэтага боку"
 msgid "Not ready yet"
 msgstr "Яшчэ не гатова"
 
+msgid "Nothing"
+msgstr "Нічога"
+
 msgid "Nothing selected"
 msgstr "Нічога не вылучана"
 
@@ -778,6 +946,9 @@ msgstr "Задачы"
 
 msgid "Off the map"
 msgstr "Па-за картай"
+
+msgid "On the twenty-eighth of November the Samogitians came to Konstanz. In February their complaint against the Order was read to the council. The Order answered: the baptism is shallow, and Vytautas stirs up the Samogitians."
+msgstr "Дваццаць восьмага лістапада жамойты прыехалі ў Канстанц. У лютым іх скаргу на Ордэн прачыталі сабору. Ордэн адказаў: хрост павярхоўны, а Вітаўт падбухторвае жамойтаў."
 
 msgid "Only in the forest"
 msgstr "Толькі ў лесе"
@@ -800,8 +971,14 @@ msgstr "Або ўтрымлівайце ўсе месцы сілы на мапе
 msgid "Our great-grandfather Gintaut was neither prince nor lord. A boyar with three farmsteads, one horse and one grove where his grandfathers still prayed. And in the spring of fourteen hundred and nine he decided he would bear it no longer."
 msgstr "Наш прапрадзед Гінтаўт не быў ні князем, ні панам. Баярын з трыма дварамі, адным канём і адным гаем, дзе яшчэ маліліся ягоныя дзяды. І вясной тысяча чатырыста дзявятага году ён вырашыў, што болей цярпець не будзе."
 
+msgid "Over the hills, then, pan Jan. There will be no grove in the report to the council."
+msgstr "Праз узгоркі дык праз узгоркі, пане Ян. Гаю ў справаздачы сабору не будзе."
+
 msgid "P pauses, Esc or F10 opens the menu, F1 shows this page."
 msgstr "P — паўза, Esc ці F10 — меню, F1 — гэта старонка."
+
+msgid "Pagan elder"
+msgstr "Старэйшына язычнікаў"
 
 msgid "Passive"
 msgstr "Пасіўная"
@@ -872,6 +1049,9 @@ msgstr "Сіла ×%.1f"
 msgid "Power: build a shrine on a place of power; spells spend it."
 msgstr "Сіла: пабудуйце свяцілішча на месцы сілы; чары яе выдаткоўваюць."
 
+msgid "Prussian riders of the Order are watching the northern ford."
+msgstr "Прускія коннікі Ордэна вартуюць паўночны брод."
+
 msgid "Q E R: line, column, wedge."
 msgstr "Q E R: шарэнга, калона, клін."
 
@@ -914,6 +1094,9 @@ msgstr "Вылучыце сялян і правы пстрык па лесе: я
 msgid "Salvage"
 msgstr "Разабранае"
 
+msgid "Samogitia has its own bishop. The Order has nothing left to tell the council."
+msgstr "У Жамойці свой біскуп. Ордэну больш няма чаго сказаць сабору."
+
 msgid "Samogitian warrior"
 msgstr "Жамойцкі ваяр"
 
@@ -944,11 +1127,17 @@ msgstr "Налады"
 msgid "Shoots: %d damage (%s), range %d, an arrow every %s s"
 msgstr "Страляе: %d урону (%s), далёкасць %d, страла кожныя %s с"
 
+msgid "Show us your land, pan Jan. And your Christians."
+msgstr "Пакажыце нам вашу зямлю, пане Ян. І вашых хрысціян."
+
 msgid "Side %d: %d units, %d HP, %d fleeing"
 msgstr "Бок %d: атрадаў %d, здароўя %d, уцякае %d"
 
 msgid "Silver"
 msgstr "Срэбра"
+
+msgid "Silver comes from the mine on the hill north-east of the yard."
+msgstr "Срэбра даюць рудні на ўзгорку на паўночны ўсход ад двара."
 
 msgid "Silver is mined faster: +20%."
 msgstr "Срэбра здабываюць хутчэй: +20%."
@@ -976,6 +1165,9 @@ msgstr "Малы"
 
 msgid "Smolensk stands! Tell Vytautas: we will stand as long as we can."
 msgstr "Смаленск стаіць! Скажыце Вітаўту: стаяць будзем, колькі зможам."
+
+msgid "So many children. Who taught them to cross themselves?"
+msgstr "Колькі дзяцей. Хто навучыў іх хрысціцца?"
 
 msgid "Some write that the Lithuanians fled. Others, that they fled on purpose. Grandfather Mikołaj asked his father about it. He laughed and did not answer."
 msgstr "Адны пішуць, што літвіны ўцяклі. Іншыя, што ўцякалі знарок. Дзед Мікалай пытаўся пра тое ў бацькі. Той смяяўся і не адказваў."
@@ -1040,14 +1232,23 @@ msgstr "Памер тэксту"
 msgid "That year Samogitia was German. Vytautas gave it to the Order by treaty, and nobody asked us. Last winter there was hunger. King Jogaila sent us grain down the river, but the Germans stopped the boats and said they would feed Samogitia themselves."
 msgstr "У той год Жамойць была нямецкай. Вітаўт аддаў яе Ордэну паводле дагавору, і нас ніхто не пытаў. Мінулай зімой быў голад. Кароль Ягайла паслаў нам збожжа ўніз па рацэ, але немцы спынілі чоўны і сказалі, што самі пракормяць Жамойць."
 
+msgid "The Germans will go. The grove will go too. Not at once. The fire will go under the ground and stay there while somebody remembers it."
+msgstr "Немцы пойдуць. Гай таксама пойдзе. Не адразу. Агонь сыдзе пад зямлю і будзе там, пакуль хтосьці пра яго памятае."
+
 msgid "The Grand Master's reserve broke the Polish centre while the Lithuanians were away."
 msgstr "Рэзерв вялікага магістра прарваў польскі цэнтр, пакуль літвіноў не было."
 
 msgid "The Master is gone! Killed in the melee!"
 msgstr "Магістра няма! Забіты ў сечы!"
 
+msgid "The Order has gathered enough evidence. The council believed that the Samogitians were baptized in name only."
+msgstr "Ордэн сабраў досыць сведчанняў. Сабор паверыў, што жамойты ахрышчаныя толькі на словах."
+
 msgid "The Order is beaten at Grunwald."
 msgstr "Ордэн разбіты пад Грунвальдам."
+
+msgid "The Order is gathering evidence for the council. Every rite a spy sees brings defeat closer. A spy is struck only on your order, and a killed spy is evidence too."
+msgstr "Ордэн збірае сведчанні для сабора. Кожны абрад, які ўбачыць выведнік, набліжае паразу. Выведніка б'юць толькі па вашым загадзе, і забіты выведнік — таксама сведчанне."
 
 msgid "The Order's knechts hold out behind the chained wagons. Break in and cut them down."
 msgstr "Кнехты Ордэна трымаюцца за скаванымі ланцугамі вазамі. Урвіцеся і пасячыце іх."
@@ -1067,11 +1268,35 @@ msgstr "Харугва ўпала! Дашліце да яе вершніка з�
 msgid "The banner is up again."
 msgstr "Харугва зноў узнятая."
 
+msgid "The burned church gave the Order 25 evidence. Build a new one: chapter 4 needs churches."
+msgstr "Спалены касцёл даў Ордэну 25 сведчанняў. Пабудуйце новы: у 4-м раздзеле патрэбныя касцёлы."
+
 msgid "The capital and castles of the losing side are destroyed."
 msgstr "Сталіца і замкі пераможанага боку знішчаны."
 
+msgid "The cart goes by itself along the trail to the north. It cannot fight: guard it."
+msgstr "Воз едзе сам па сцежцы на поўнач. Біцца ён не можа: ахоўвайце яго."
+
 msgid "The castle at Skirsnemune burned, and the knights who sat in it were killed. Both our books and the German ones write of it. But there was still Dubysa, where the vogt himself sat."
 msgstr "Замак у Скірснемунэ згарэў, а рыцары, што сядзелі ў ім, загінулі. Пра тое пішуць і нашы кнігі, і нямецкія. Але заставалася Дубіса, дзе сядзеў сам фогт."
+
+msgid "The church stands on the hill over the stream. The place of power there has gone out for good, but faith grows twice as fast."
+msgstr "Касцёл стаіць на ўзгорку над ручаём. Месца сілы там згасла назаўсёды, затое вера расце ўдвая хутчэй."
+
+msgid "The council's envoys have been killed on Samogitian land."
+msgstr "Пасланцы сабора забітыя на жамойцкай зямлі."
+
+msgid "The delegation's cart has been destroyed. Nobody will speak for Samogitia at Konstanz."
+msgstr "Воз пасольства знішчаны. У Канстанцы ніхто не загаворыць за Жамойць."
+
+msgid "The envoys stop in each of the three villages on the way and go on once a church stands there. Lay the next church before they come."
+msgstr "Пасланцы спыняюцца ў кожнай з трох вёсак па дарозе і рушаць далей, калі там стаіць касцёл. Закладайце наступны касцёл загадзя."
+
+msgid "The evidence at the top right is what the Order can show the council. At 100 the mission is lost. Every baptized peasant slows it down."
+msgstr "Сведчанні справа ўверсе — тое, што Ордэн можа паказаць сабору. На 100 місія прайграна. Кожны ахрышчаны селянін іх запавольвае."
+
+msgid "The fire in the alka has gone under the ground: the grove gives half its Power from now on."
+msgstr "Агонь у алцы сышоў пад зямлю: адгэтуль гай дае палову сваёй Сілы."
 
 msgid "The heart of your land: trains peasants, takes in every resource and leads your people into the next age. In a skirmish, a side that loses every town centre and castle is out."
 msgstr "Сэрца вашага краю: навучае сялян, прымае ўсе рэсурсы і вядзе ваш народ у наступную эпоху. У схватцы бок, які страціў усе двары і замкі, выбывае."
@@ -1091,11 +1316,35 @@ msgstr "Кап’ё побач з Гінтаўтам нясе яго харуг�
 msgid "The last capital cannot be taken apart"
 msgstr "Апошнюю сталіцу нельга разабраць"
 
+msgid "The last village, my lord. From here the road goes to Medininkai."
+msgstr "Апошняя вёска, ваша міласць. Адсюль дарога ідзе на Мядзінінкі."
+
 msgid "The lone oak on the hill is a place of power. Take it, and the znakharka can lay an alka there for Power."
 msgstr "Самотны дуб на ўзгорку — месца сілы. Займіце яго, і знахарка зможа закласці там алку для Сілы."
 
 msgid "The lord vogt demands grain for the castles. You wanted to be protected, did you not?"
 msgstr "Пан фогт патрабуе збожжа для замкаў. Вы ж хацелі абароны, ці не так?"
+
+msgid "The mist lies over the grove. The envoys pass by without seeing the oak."
+msgstr "Над гаем ляжыць туман. Пасланцы праходзяць міма і не бачаць дуба."
+
+msgid "The oak has fallen and the alka with it: the evidence fell by 20. The pagans at the farmstead grow in number."
+msgstr "Дуб паваліўся, а з ім і алка: сведчанняў стала на 20 менш. Язычнікаў на хутары пабольшала."
+
+msgid "The pagans are coming out of the farmstead again."
+msgstr "Язычнікі зноў выходзяць з хутара."
+
+msgid "The pagans are going for the new church."
+msgstr "Язычнікі ідуць на новы касцёл."
+
+msgid "The pagans from the farmstead are coming for the church. You can buy peace at the farmstead: bring Gintaut there."
+msgstr "Язычнікі з хутара ідуць на касцёл. Мір можна купіць на хутары: прывядзіце туды Гінтаўта."
+
+msgid "The pagans lie in wait on the hills!"
+msgstr "Язычнікі чакаюць у засадзе на ўзгорках!"
+
+msgid "The pagans will leave you alone for the rest of this chapter."
+msgstr "Да канца гэтага раздзела язычнікі вас не зачэпяць."
 
 msgid "The pier is ours. No more boats will come to Skirsnemune."
 msgstr "Прыстань наша. Больш ніводзін човен не прыйдзе ў Скірснемунэ."
@@ -1114,6 +1363,12 @@ msgstr "Пагоня страціла строй. Паварочвайце на 
 
 msgid "The queue is full"
 msgstr "Чарга поўная"
+
+msgid "The road through the grove is boggy. Let us go over the hills, my lord."
+msgstr "Дарога праз гай гразкая. Пойдзем праз узгоркі, ваша міласць."
+
+msgid "The truth. That we were baptized. That for years the Germans burned our yards and took our people. That we want the cross, but not the German cross."
+msgstr "Праўду. Што нас ахрысцілі. Што гадамі немцы палілі нашы двары і забіралі нашых людзей. Што мы хочам крыжа, але не нямецкага."
 
 msgid "The village has burned down."
 msgstr "Вёска згарэла."
@@ -1153,6 +1408,12 @@ msgstr "Кажуць, туман падняўся з балота сярод б�
 
 msgid "They took the bread, now the grove. Take up your spears."
 msgstr "Забралі хлеб, цяпер гай. Бярыце коп’і."
+
+msgid "They will not ask about the grove. And if they ask, say that we have plenty of firewood."
+msgstr "Пра гай не спытаюць. А спытаюць — скажы, што дроў у нас удосталь."
+
+msgid "Three years after the great battle, King Jogaila and Grand Duke Vytautas came to Samogitia themselves. Długosz writes that they cut down the groves and put out the fires. Great-grandfather did not tell it so. He said that it was cold, and that the king spoke to the people in our tongue."
+msgstr "Праз тры гады пасля вялікай бітвы кароль Ягайла і вялікі князь Вітаўт самі прыехалі ў Жамойць. Длугаш піша, што яны секлі гаі і тушылі агні. Прадзед расказваў не так. Ён казаў, што было холадна і што кароль гаварыў з людзьмі на нашай мове."
 
 msgid "Thunder without lightning!"
 msgstr "Гром без маланкі!"
@@ -1241,11 +1502,23 @@ msgstr "Штурмаваць Дубісу нам так і не давялося
 msgid "Wedge"
 msgstr "Клін"
 
+msgid "What are we to say there, before the holy fathers?"
+msgstr "Што нам там казаць, перад святымі айцамі?"
+
+msgid "What will Gintaut do with the oak?"
+msgstr "Што Гінтаўт зробіць з дубам?"
+
+msgid "What will Gintaut offer the pagans for peace?"
+msgstr "Што Гінтаўт прапануе язычнікам за мір?"
+
 msgid "Where is the nearest German castle?"
 msgstr "Дзе бліжэйшы нямецкі замак?"
 
 msgid "Where it stands"
 msgstr "Дзе стаіць"
+
+msgid "Who will be the first to step into the water?"
+msgstr "Хто першы ўвойдзе ў ваду?"
 
 msgid "Wild, nobody's"
 msgstr "Дзікі, нічый"
@@ -1271,14 +1544,35 @@ msgstr "Дрэва: правы пстрык сялянамі па лесе."
 msgid "Woodcutters work faster: +20%."
 msgstr "Дрывасекі працуюць хутчэй: +20%."
 
+msgid "Write: in this village so many souls were baptized. And write it honestly. The fathers of the council will ask how many of them know the Our Father."
+msgstr "Пішыце: у гэтай вёсцы ахрышчана столькі душ. І пішыце сумленна. Айцы сабора спытаюць, колькі з іх ведаюць «Ойча наш»."
+
 msgid "Y with peasants, then a click on your building: they take it apart."
 msgstr "Y з сялянамі, потым пстрычка па сваёй пабудове: яны яе разбяруць."
+
+msgid "You came to our fire with a cross round your neck, Gintaut. What do you bring?"
+msgstr "Ты прыйшоў да нашага агню з крыжам на шыі, Гінтаўт. Што ты прынёс?"
+
+msgid "You have not seen me. Tell your priests so."
+msgstr "Ты мяне не бачыў. Так і скажы сваім ксяндзам."
 
 msgid "You lead Lithuania from the north-west; the Order is in the south-east."
 msgstr "Вы вядзеце Літву з паўночнага захаду; Ордэн — на паўднёвым усходзе."
 
+msgid "You let their water on your head, Gintaut. Now let us see whether their god saves your new house."
+msgstr "Ты дазволіў ліць іх ваду сабе на галаву, Гінтаўт. Пабачым цяпер, ці ўратуе іх бог твой новы дом."
+
+msgid "You promise what you do not have. Go away, Christian."
+msgstr "Ты абяцаеш тое, чаго ў цябе няма. Ідзі прэч, хрысціянін."
+
+msgid "You see? They burn their own churches. The council will not accept such a baptism."
+msgstr "Бачыце? Яны паляць свае ж касцёлы. Сабор не прызнае такога хросту."
+
 msgid "You took your time, son of Gintaut. For three days I kept the fire in a pot, the way our old women carry it from house to house."
 msgstr "Доўга ж ты ішоў, сын Гінтаўта. Тры дні я трымала агонь у гаршку, як нашы бабы носяць яго з хаты ў хату."
+
+msgid "You were baptized, Gintaut."
+msgstr "Ты ахрысціўся, Гінтаўт."
 
 msgid "Your men near the relic do not flee while their morale is above 10; enemies nearby lose 10 morale."
 msgstr "Свае побач з рэліквіяй не ўцякаюць, пакуль дух вышэй за 10; ворагі побач губляюць 10 духу."
@@ -1370,6 +1664,9 @@ msgstr "Селянін"
 msgid "gdl_range"
 msgstr "Стрэльбішча"
 
+msgid "gdl_samogitian"
+msgstr "Жамойцкі пяхотнік"
+
 msgid "gdl_shrine"
 msgstr "Алка"
 
@@ -1381,6 +1678,9 @@ msgstr "Апалчэнец з рагацінай"
 
 msgid "gdl_stable"
 msgstr "Стайня"
+
+msgid "gdl_temple"
+msgstr "Касцёл"
 
 msgid "gdl_tower"
 msgstr "Вежа"
@@ -1399,6 +1699,9 @@ msgstr "Знахарка"
 
 msgid "heavy cavalry"
 msgstr "цяжкая конніца"
+
+msgid "hero_council_envoys"
+msgstr "Пасланцы сабора"
 
 msgid "hero_gintaut"
 msgstr "Гінтаўт"
@@ -1450,6 +1753,12 @@ msgstr "Дзік"
 
 msgid "nt_elk"
 msgstr "Лось"
+
+msgid "nt_pagan"
+msgstr "Непрымірымы язычнік"
+
+msgid "nt_pagan_priest"
+msgstr "Жрэц непрымірымых"
 
 msgid "nt_steppe_archer"
 msgstr "Татарскі конны лучнік"
@@ -1669,6 +1978,9 @@ msgstr "Майстэрня"
 
 msgid "to_smithy"
 msgstr "Кузня"
+
+msgid "to_spy"
+msgstr "Брат-выведнік"
 
 msgid "to_stable"
 msgstr "Конны завод"

@@ -200,6 +200,10 @@ msgid "A wise woman: heals those around her and casts the Duchy's spells."
 msgstr ""
 
 #: ui/tips.gd
+msgid "A wooden church. In the campaign the peasants who work near it are baptized; its priests and improvements are not in the game yet."
+msgstr ""
+
+#: ui/tips.gd
 msgid "Abilities"
 msgstr ""
 
@@ -247,8 +251,28 @@ msgstr ""
 msgid "An oak can be cut down. But the place where it grew is still here. Set stones in a circle, as your grandfather did, and the fire will come back."
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "And about the grove?"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "And the next year the churches in Samogitia burned again. Great-grandfather took no part in it. But he gave away none of the people who burned them."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "And who saw it, apart from you?"
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "And whose man are you?"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "And you?"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Archbishop Jan"
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -292,6 +316,18 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "Baptize 10 peasants at the church"
+msgstr ""
+
+#: ui/mission_panel.gd
+msgid "Baptized: %d"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Beat back the raid across the border ford"
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Being taken apart"
 msgstr ""
@@ -300,12 +336,24 @@ msgstr ""
 msgid "Being taken apart: %d%%"
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "Better my hands than someone else's."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Bishop Piotr"
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Bog ore"
 msgstr ""
 
 #: ui/help_panel.gd
 msgid "Bog ore (brown blocks in the bog) gives iron."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Boyar"
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -324,8 +372,32 @@ msgstr ""
 msgid "Brickworks: while one stands, your towers, walls and castles cost less."
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "Brother Konrad"
+msgstr ""
+
 #: ui/tips.gd
 msgid "Brother priests: +50% HP; Exorcism reaches 2 cells farther."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Build a church in the village by the ford"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Build a church in the village on the Medininkai road"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Build a church in the village south of the yard"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Build a wooden church"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Build the church near the yard. Peasants who work near it are baptized one by one."
 msgstr ""
 
 #: ui/advisor.gd
@@ -410,6 +482,7 @@ msgstr ""
 
 #: missions/gdl_01/mission.json
 #: missions/gdl_02/mission.json
+#: missions/gdl_03/mission.json
 msgid "Chronicler"
 msgstr ""
 
@@ -431,6 +504,10 @@ msgstr ""
 
 #: ui/ui_text.gd
 msgid "Column"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Come to terms with the pagans and never fight them"
 msgstr ""
 
 #: ui/ui_text.gd
@@ -455,6 +532,10 @@ msgstr ""
 
 #: missions/gdl_02/mission.json
 msgid "Ctrl+right-click moves in attack. Blows to the flank and rear break the enemy's spirit."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Cut down the oak"
 msgstr ""
 
 #: ui/tips.gd
@@ -488,6 +569,10 @@ msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "Do not let the knight brothers reach the boats"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Do not let the raiders burn the church"
 msgstr ""
 
 #: ui/tips.gd
@@ -530,12 +615,24 @@ msgstr ""
 msgid "Esc or right click cancel"
 msgstr ""
 
+#: ui/mission_panel.gd
+msgid "Evidence: %d of %d"
+msgstr ""
+
 #: ui/advisor.gd
 msgid "F1: how to play."
 msgstr ""
 
 #: missions/gdl_02/mission.json
 msgid "Fall back to the forest without losing Gintaut's banner"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Father Stanisław"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Father Stanisław, my lord. And their mothers, after him."
 msgstr ""
 
 #: ui/tips.gd
@@ -548,6 +645,14 @@ msgstr ""
 
 #: game/arena/arena.gd
 msgid "Fight!"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Finish the mission with the evidence below 30"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Fire at the stone. Write it down."
 msgstr ""
 
 #: ui/help_panel.gd
@@ -620,6 +725,18 @@ msgstr ""
 msgid "Forward, at the marshal!"
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "Fourteen hundred and fifteen. Winter."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Fourteen hundred and seventeen. Autumn. The council sent its own men to baptize Samogitia and to found a church here: Jan, Archbishop of Lviv, and Piotr, Bishop of Vilnius."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Fourteen hundred and sixteen. Summer. Across the ford the Order's men were gathering."
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "From the darkness you live in. Half of it. And all the rye."
 msgstr ""
@@ -640,6 +757,10 @@ msgstr ""
 msgid "GDL 2. Grunwald"
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "GDL 3. Baptism"
+msgstr ""
+
 #: ui/help_panel.gd
 msgid "Game"
 msgstr ""
@@ -656,6 +777,10 @@ msgstr ""
 msgid "Gather 300 food so the village lives through the summer"
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "Gather 400 silver and 200 food for the delegation's journey"
+msgstr ""
+
 #: ui/tips.gd
 msgid "Gathers food, wood, iron and silver, builds and repairs."
 msgstr ""
@@ -666,6 +791,10 @@ msgstr ""
 
 #: ui/command_panel.gd
 msgid "Get off the horse and fight on foot: more armor, the speed of foot soldiers."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Gintaut has fallen. Nobody is left to answer for Samogitia before the council."
 msgstr ""
 
 #: missions/gdl_02/mission.json
@@ -684,6 +813,14 @@ msgstr ""
 msgid "Gintaut's khorugv has been cut to pieces."
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "Give 100 silver"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Give 150 food"
+msgstr ""
+
 #: ui/tips.gd
 msgid "Gives"
 msgstr ""
@@ -694,6 +831,10 @@ msgstr ""
 
 #: ui/unit_card.gd
 msgid "Gives back: %s"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Go, then. While this lasts, we will not come to your new house."
 msgstr ""
 
 #: ui/help_panel.gd
@@ -752,6 +893,10 @@ msgstr ""
 msgid "Hints in skirmish"
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "His name shall be Jan."
+msgstr ""
+
 #: missions/gdl_02/mission.json
 msgid "Hold on, Prince Semyon. We will come back."
 msgstr ""
@@ -805,8 +950,24 @@ msgstr ""
 msgid "I was at Orsha and heard the guns roar. What I write below I heard from my grandfather, and he from his father. What is true here and what is a tale, judge for yourselves."
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "I was baptized so that the grove would stand. And so that the Germans would go."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "If not us, the Germans will come and baptize us with the sword. Better the Poles, and with water."
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "In August Master Ulrich declared war on King Jogaila and marched on Dobrzyń. In autumn they made a truce until Midsummer Day. All winter both sides forged spears. And our great-grandfather rode beyond the Neman for the first time in his life."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "In Konstanz the fathers of the council had gathered to judge three popes at once. Our people were to go there too and tell how the Order baptized Samogitia."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "In October fourteen hundred and seventeen Samogitia got its own bishop, Matthias of Trakai. He spoke our tongue. Now the Order had nothing to tell the council: the Samogitians were baptized, and it was not the Order that baptized them."
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -815,6 +976,10 @@ msgstr ""
 
 #: missions/gdl_02/mission.json
 msgid "In the year of our Lord fourteen hundred and ten, on the fifteenth of July, our great-grandfather Gintaut stood in the right wing, under the hand of Vytautas. They stood a long time, in the sun, in iron."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "In two minutes the Order's raid will come across the border ford in the west."
 msgstr ""
 
 #: ui/unit_card.gd
@@ -842,6 +1007,18 @@ msgstr ""
 msgid "Is Samogitia ours now, prince?"
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "Is that their oak?"
+msgstr ""
+
+#: ui/unit_card.gd
+msgid "It has gone out for good"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "It is an oak, my lord. Just an old one."
+msgstr ""
+
 #: ui/help_panel.gd
 msgid "It needs two other first-age buildings and opens new units."
 msgstr ""
@@ -850,16 +1027,32 @@ msgstr ""
 msgid "It rained in the night. Their powder is as wet as their prayers. Hold!"
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "It was your men who came across the ford."
+msgstr ""
+
 #: missions/gdl_02/mission.json
 msgid "It will be ours. By peace, not by the sword. With the sword we have done all we could."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Jan. So be it. Only my grandfather called me Gintaut, and the grove knows me by that name."
 msgstr ""
 
 #: ui/tips.gd
 msgid "Javelin: %d damage at %d cells, every %d s"
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "Keep all 5 places of power"
+msgstr ""
+
 #: missions/gdl_02/mission.json
 msgid "Keep at least two Smolensk banners"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Keep peasants working near the church: every ten seconds it baptizes one of them."
 msgstr ""
 
 #: ui/end_screen.gd
@@ -882,6 +1075,18 @@ msgstr ""
 msgid "Lead forest archers past the Order's watch to the spring"
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "Lead the council's envoys from the ford to the Medininkai road"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Lead the delegation's cart along the trail to the sea in the north"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Lead the envoys round the grove"
+msgstr ""
+
 #: game/arena/arena.gd
 msgid "Left (you)"
 msgstr ""
@@ -896,6 +1101,10 @@ msgstr ""
 
 #: ui/help_panel.gd
 msgid "Left click selects; drag a box to select several."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Let them come and see what Samogitian faith is worth."
 msgstr ""
 
 #: ui/ui_text.gd
@@ -929,6 +1138,10 @@ msgstr ""
 msgid "Main menu"
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "Many of them know it, my lord. In Lithuanian."
+msgstr ""
+
 #: ui/hud.gd
 msgid "Menu (F10)"
 msgstr ""
@@ -936,6 +1149,10 @@ msgstr ""
 #: missions/gdl_01/mission.json
 #: missions/gdl_02/mission.json
 msgid "Messenger"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Mikołaj looked towards the forest. There, at the edge, for a moment a woman's figure was seen."
 msgstr ""
 
 #: ui/tips.gd
@@ -995,6 +1212,10 @@ msgstr ""
 msgid "Nobody holds it"
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "Nobody moved."
+msgstr ""
+
 #: ui/settings_panel.gd
 msgid "Normal"
 msgstr ""
@@ -1023,6 +1244,10 @@ msgstr ""
 msgid "Not ready yet"
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "Nothing"
+msgstr ""
+
 #: ui/unit_card.gd
 msgid "Nothing selected"
 msgstr ""
@@ -1045,6 +1270,10 @@ msgstr ""
 
 #: ui/ui_text.gd
 msgid "Off the map"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "On the twenty-eighth of November the Samogitians came to Konstanz. In February their complaint against the Order was read to the council. The Order answered: the baptism is shallow, and Vytautas stirs up the Samogitians."
 msgstr ""
 
 #: ui/tips.gd
@@ -1076,8 +1305,16 @@ msgstr ""
 msgid "Our great-grandfather Gintaut was neither prince nor lord. A boyar with three farmsteads, one horse and one grove where his grandfathers still prayed. And in the spring of fourteen hundred and nine he decided he would bear it no longer."
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "Over the hills, then, pan Jan. There will be no grove in the report to the council."
+msgstr ""
+
 #: ui/help_panel.gd
 msgid "P pauses, Esc or F10 opens the menu, F1 shows this page."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Pagan elder"
 msgstr ""
 
 #: ui/ui_text.gd
@@ -1172,6 +1409,10 @@ msgstr ""
 msgid "Power: build a shrine on a place of power; spells spend it."
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "Prussian riders of the Order are watching the northern ford."
+msgstr ""
+
 #: ui/help_panel.gd
 msgid "Q E R: line, column, wedge."
 msgstr ""
@@ -1230,6 +1471,10 @@ msgstr ""
 msgid "Salvage"
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "Samogitia has its own bishop. The Order has nothing left to tell the council."
+msgstr ""
+
 #: missions/gdl_02/mission.json
 msgid "Samogitian warrior"
 msgstr ""
@@ -1272,12 +1517,20 @@ msgstr ""
 msgid "Shoots: %d damage (%s), range %d, an arrow every %s s"
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "Show us your land, pan Jan. And your Christians."
+msgstr ""
+
 #: game/arena/arena.gd
 msgid "Side %d: %d units, %d HP, %d fleeing"
 msgstr ""
 
 #: ui/ui_text.gd
 msgid "Silver"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Silver comes from the mine on the hill north-east of the yard."
 msgstr ""
 
 #: ui/tips.gd
@@ -1314,6 +1567,10 @@ msgstr ""
 
 #: missions/gdl_02/mission.json
 msgid "Smolensk stands! Tell Vytautas: we will stand as long as we can."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "So many children. Who taught them to cross themselves?"
 msgstr ""
 
 #: missions/gdl_02/mission.json
@@ -1401,6 +1658,10 @@ msgstr ""
 msgid "That year Samogitia was German. Vytautas gave it to the Order by treaty, and nobody asked us. Last winter there was hunger. King Jogaila sent us grain down the river, but the Germans stopped the boats and said they would feed Samogitia themselves."
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "The Germans will go. The grove will go too. Not at once. The fire will go under the ground and stay there while somebody remembers it."
+msgstr ""
+
 #: missions/gdl_02/mission.json
 msgid "The Grand Master's reserve broke the Polish centre while the Lithuanians were away."
 msgstr ""
@@ -1409,8 +1670,16 @@ msgstr ""
 msgid "The Master is gone! Killed in the melee!"
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "The Order has gathered enough evidence. The council believed that the Samogitians were baptized in name only."
+msgstr ""
+
 #: missions/gdl_02/mission.json
 msgid "The Order is beaten at Grunwald."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "The Order is gathering evidence for the council. Every rite a spy sees brings defeat closer. A spy is struck only on your order, and a killed spy is evidence too."
 msgstr ""
 
 #: missions/gdl_02/mission.json
@@ -1437,12 +1706,44 @@ msgstr ""
 msgid "The banner is up again."
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "The burned church gave the Order 25 evidence. Build a new one: chapter 4 needs churches."
+msgstr ""
+
 #: ui/end_screen.gd
 msgid "The capital and castles of the losing side are destroyed."
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "The cart goes by itself along the trail to the north. It cannot fight: guard it."
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "The castle at Skirsnemune burned, and the knights who sat in it were killed. Both our books and the German ones write of it. But there was still Dubysa, where the vogt himself sat."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "The church stands on the hill over the stream. The place of power there has gone out for good, but faith grows twice as fast."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "The council's envoys have been killed on Samogitian land."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "The delegation's cart has been destroyed. Nobody will speak for Samogitia at Konstanz."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "The envoys stop in each of the three villages on the way and go on once a church stands there. Lay the next church before they come."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "The evidence at the top right is what the Order can show the council. At 100 the mission is lost. Every baptized peasant slows it down."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "The fire in the alka has gone under the ground: the grove gives half its Power from now on."
 msgstr ""
 
 #: ui/tips.gd
@@ -1469,12 +1770,44 @@ msgstr ""
 msgid "The last capital cannot be taken apart"
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "The last village, my lord. From here the road goes to Medininkai."
+msgstr ""
+
 #: missions/gdl_02/mission.json
 msgid "The lone oak on the hill is a place of power. Take it, and the znakharka can lay an alka there for Power."
 msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "The lord vogt demands grain for the castles. You wanted to be protected, did you not?"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "The mist lies over the grove. The envoys pass by without seeing the oak."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "The oak has fallen and the alka with it: the evidence fell by 20. The pagans at the farmstead grow in number."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "The pagans are coming out of the farmstead again."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "The pagans are going for the new church."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "The pagans from the farmstead are coming for the church. You can buy peace at the farmstead: bring Gintaut there."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "The pagans lie in wait on the hills!"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "The pagans will leave you alone for the rest of this chapter."
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -1499,6 +1832,14 @@ msgstr ""
 
 #: ui/ui_text.gd
 msgid "The queue is full"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "The road through the grove is boggy. Let us go over the hills, my lord."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "The truth. That we were baptized. That for years the Germans burned our yards and took our people. That we want the cross, but not the German cross."
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -1551,6 +1892,14 @@ msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "They took the bread, now the grove. Take up your spears."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "They will not ask about the grove. And if they ask, say that we have plenty of firewood."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Three years after the great battle, King Jogaila and Grand Duke Vytautas came to Samogitia themselves. Długosz writes that they cut down the groves and put out the fires. Great-grandfather did not tell it so. He said that it was cold, and that the king spoke to the people in our tongue."
 msgstr ""
 
 #: missions/gdl_02/mission.json
@@ -1669,12 +2018,28 @@ msgstr ""
 msgid "Wedge"
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "What are we to say there, before the holy fathers?"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "What will Gintaut do with the oak?"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "What will Gintaut offer the pagans for peace?"
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "Where is the nearest German castle?"
 msgstr ""
 
 #: ui/tips.gd
 msgid "Where it stands"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "Who will be the first to step into the water?"
 msgstr ""
 
 #: ui/unit_card.gd
@@ -1709,16 +2074,44 @@ msgstr ""
 msgid "Woodcutters work faster: +20%."
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "Write: in this village so many souls were baptized. And write it honestly. The fathers of the council will ask how many of them know the Our Father."
+msgstr ""
+
 #: ui/help_panel.gd
 msgid "Y with peasants, then a click on your building: they take it apart."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "You came to our fire with a cross round your neck, Gintaut. What do you bring?"
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "You have not seen me. Tell your priests so."
 msgstr ""
 
 #: ui/help_panel.gd
 msgid "You lead Lithuania from the north-west; the Order is in the south-east."
 msgstr ""
 
+#: missions/gdl_03/mission.json
+msgid "You let their water on your head, Gintaut. Now let us see whether their god saves your new house."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "You promise what you do not have. Go away, Christian."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "You see? They burn their own churches. The council will not accept such a baptism."
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "You took your time, son of Gintaut. For three days I kept the fire in a pot, the way our old women carry it from house to house."
+msgstr ""
+
+#: missions/gdl_03/mission.json
+msgid "You were baptized, Gintaut."
 msgstr ""
 
 #: ui/tips.gd
@@ -1842,6 +2235,10 @@ msgstr ""
 msgid "gdl_range"
 msgstr ""
 
+#: catalog:prototype_units
+msgid "gdl_samogitian"
+msgstr ""
+
 #: catalog:prototype_buildings
 msgid "gdl_shrine"
 msgstr ""
@@ -1856,6 +2253,10 @@ msgstr ""
 
 #: catalog:prototype_buildings
 msgid "gdl_stable"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "gdl_temple"
 msgstr ""
 
 #: catalog:prototype_buildings
@@ -1883,8 +2284,13 @@ msgid "heavy cavalry"
 msgstr ""
 
 #: catalog:prototype_units
+msgid "hero_council_envoys"
+msgstr ""
+
+#: catalog:prototype_units
 #: missions/gdl_01/mission.json
 #: missions/gdl_02/mission.json
+#: missions/gdl_03/mission.json
 msgid "hero_gintaut"
 msgstr ""
 
@@ -1894,6 +2300,7 @@ msgstr ""
 
 #: catalog:prototype_units
 #: missions/gdl_01/mission.json
+#: missions/gdl_03/mission.json
 msgid "hero_keeper"
 msgstr ""
 
@@ -1954,6 +2361,14 @@ msgstr ""
 
 #: catalog:prototype_units
 msgid "nt_elk"
+msgstr ""
+
+#: catalog:prototype_units
+msgid "nt_pagan"
+msgstr ""
+
+#: catalog:prototype_units
+msgid "nt_pagan_priest"
 msgstr ""
 
 #: catalog:prototype_units
@@ -2247,6 +2662,10 @@ msgstr ""
 
 #: catalog:prototype_buildings
 msgid "to_smithy"
+msgstr ""
+
+#: catalog:prototype_units
+msgid "to_spy"
 msgstr ""
 
 #: catalog:prototype_buildings

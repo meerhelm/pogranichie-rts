@@ -153,6 +153,11 @@ static func purpose(def: BuildingDef) -> String:
 				# gdlint:ignore = max-line-length
 				"An alka, a pagan sanctuary. It gathers Power for spells and trains wise women; near it their spells recharge faster."
 			)
+		&"gdl_temple":
+			return t(
+				# gdlint:ignore = max-line-length
+				"A wooden church. In the campaign the peasants who work near it are baptized; its priests and improvements are not in the game yet."
+			)
 		&"to_shrine":
 			return t(
 				# gdlint:ignore = max-line-length

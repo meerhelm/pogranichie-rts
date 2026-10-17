@@ -148,6 +148,7 @@ def mission_texts(mission: dict) -> list[str]:
                 out.append(action["text"])
             for speaker, line in action.get("lines", []):
                 out += [speaker, line]
+            out += action.get("options", [])
     return [t for t in out if t]
 
 

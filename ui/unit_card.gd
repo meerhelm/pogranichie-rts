@@ -343,5 +343,8 @@ func _place(i: int) -> void:
 		lines.append(tr("Held by: %s") % _owner(places.holders[i]))
 	if places.shrines[i] != BuildingStore.NO_ID:
 		lines.append(tr("A shrine stands on it"))
-	lines.append(tr("Power x%.1f") % (places.defs[i].power_permille / 1000.0))
+	if places.is_gone(i):
+		lines.append(tr("It has gone out for good"))
+	var left: int = places.quenched.get(i, 1000)
+	lines.append(tr("Power x%.1f") % (places.defs[i].power_permille * left / 1.0e6))
 	_lines.text = "\n".join(lines)

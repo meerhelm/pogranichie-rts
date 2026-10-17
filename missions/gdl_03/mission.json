@@ -1,0 +1,1213 @@
+{
+ "_comment": "Mission «ВКЛ 3. Крещение, 1413–1417» (mission card in the missions doc, docs/03-missions/05-gdl_03_baptism_1413-1417.md). Four chapters in one mission: the church and the baptism (1413), the delegation's cart to the council (1415), the Order's raid across the border ford (1416), the council's envoys led through three villages to the Medininkai road (1417). Player 1 is Gintaut's yard, 2 the Order (spies and raids), 3 the pagans of the farmstead (a side of their own), 4 the envoys (an ally with no economy, moved by the script). Evidence, baptism and spies are rules (MissionRuntime); the oak and the pagans' price are questions (ask, CHOOSE). Against the card: the church, the village chapels and the plebania are the catalog's Temple (Храм); seasons are only named in the chapter cards; the school is left out. Read by core/mission/mission_def.gd; cells are map cells, ticks 1/20 s, texts are English keys translated through i18n/*.po.",
+ "id": "gdl_03",
+ "title": "GDL 3. Baptism",
+ "map": "map_gdl_03",
+ "player": 1,
+ "players": [[1, "gdl"], [2, "to"], [3, "gdl"], [4, "gdl"]],
+ "camera": [100, 76],
+ "difficulties": ["easy", "normal"],
+ "setup": {
+  "sides": {"1": 1, "4": 1, "2": 2, "3": 3},
+  "age": {"1": 2},
+  "stock": {"1": [200, 250, 50, 80], "2": [0, 0, 0, 0], "3": [0, 0, 0, 0], "4": [0, 0, 0, 0]},
+  "locked": {"1": ["gdl_wagon"]},
+  "buildings": [
+   {"name": "yard", "player": 1, "type": "gdl_town_center", "at": [98, 70]},
+   {"player": 1, "type": "gdl_house", "at": [93, 68]},
+   {"player": 1, "type": "gdl_house", "at": [93, 72]},
+   {"player": 1, "type": "gdl_house", "at": [104, 68]},
+   {"player": 1, "type": "gdl_barracks", "at": [104, 72]},
+   {"name": "alka", "player": 1, "type": "gdl_shrine", "at": [66, 80]},
+   {"player": 3, "type": "gdl_house", "at": [36, 142]},
+   {"player": 3, "type": "gdl_house", "at": [42, 147]},
+   {"player": 3, "type": "gdl_house", "at": [46, 139]}
+  ],
+  "groups": [
+   {"name": "gintaut", "player": 1, "units": [["hero_gintaut", 1]], "at": [102, 77]},
+   {"player": 1, "units": [["gdl_peasant", 15]], "at": [94, 76]},
+   {"name": "samogitians", "player": 1, "units": [["gdl_samogitian", 6]], "at": [106, 77]},
+   {"name": "boyars", "player": 1, "units": [["gdl_lit_lance", 3]], "at": [108, 72]},
+   {"player": 0, "units": [["nt_elk", 3]], "at": [120, 62]},
+   {"player": 0, "units": [["nt_boar", 2]], "at": [84, 92]},
+   {"player": 0, "units": [["nt_elk", 2]], "at": [128, 112]},
+   {"player": 0, "units": [["nt_villager", 4]], "at": [48, 102]},
+   {"player": 0, "units": [["nt_villager", 4]], "at": [102, 110]},
+   {"player": 0, "units": [["nt_villager", 4]], "at": [130, 90]},
+   {
+    "name": "pagans",
+    "player": 3,
+    "stance": "defensive",
+    "units": [["nt_pagan_priest", 1], ["nt_pagan", 8]],
+    "at": [45, 143]
+   },
+   {
+    "name": "stone_guard",
+    "player": 3,
+    "stance": "defensive",
+    "units": [["nt_pagan", 2]],
+    "at": [38, 131]
+   }
+  ]
+ },
+ "rules": {
+  "baptism": {"player": 1, "base": "temple", "unit": "gdl_peasant", "radius": 12, "every_ticks": 200},
+  "evidence": {
+   "player": 1,
+   "spy": "to_spy",
+   "sight": 7,
+   "mist_sight": 2,
+   "alka_milli": 100,
+   "cast": 10,
+   "kill": 10,
+   "faith_step_permille": 25,
+   "faith_floor_permille": 400,
+   "max": 100
+  },
+  "spies": {
+   "player": 2,
+   "unit": "to_spy",
+   "at": [31, 101],
+   "respawn_ticks": 1200,
+   "route": [[50, 104], [71, 82], [86, 78], [102, 82], [94, 56], [70, 70], [56, 96]]
+  }
+ },
+ "triggers": [
+  {
+   "id": "defeat_gintaut",
+   "when": {"type": "group_dead", "group": "gintaut"},
+   "do": [
+    {
+     "do": "defeat",
+     "text": "Gintaut has fallen. Nobody is left to answer for Samogitia before the council."
+    }
+   ]
+  },
+  {
+   "id": "defeat_evidence",
+   "when": {"type": "evidence", "at_least": 100},
+   "do": [
+    {
+     "do": "defeat",
+     "text": "The Order has gathered enough evidence. The council believed that the Samogitians were baptized in name only."
+    }
+   ]
+  },
+  {
+   "id": "defeat_cart",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "5"},
+     {"type": "not", "of": {"type": "group_exited", "group": "delegation"}},
+     {"type": "group_dead", "group": "delegation"}
+    ]
+   },
+   "do": [
+    {
+     "do": "defeat",
+     "text": "The delegation's cart has been destroyed. Nobody will speak for Samogitia at Konstanz."
+    }
+   ]
+  },
+  {
+   "id": "defeat_envoys",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "9"},
+     {"type": "not", "of": {"type": "group_exited", "group": "envoys"}},
+     {"type": "group_dead", "group": "envoys"}
+    ]
+   },
+   "do": [{"do": "defeat", "text": "The council's envoys have been killed on Samogitian land."}]
+  },
+  {
+   "id": "1",
+   "when": {"type": "start"},
+   "do": [
+    {
+     "do": "cutscene",
+     "id": "princes_on_river",
+     "at": [98, 70],
+     "lines": [
+      [
+       "Chronicler",
+       "Three years after the great battle, King Jogaila and Grand Duke Vytautas came to Samogitia themselves. Długosz writes that they cut down the groves and put out the fires. Great-grandfather did not tell it so. He said that it was cold, and that the king spoke to the people in our tongue."
+      ],
+      ["Father Stanisław", "Who will be the first to step into the water?"],
+      ["Chronicler", "Nobody moved."],
+      [
+       "hero_gintaut",
+       "If not us, the Germans will come and baptize us with the sword. Better the Poles, and with water."
+      ]
+     ]
+    },
+    {"do": "objective", "id": "church", "text": "Build a wooden church"},
+    {"do": "objective", "id": "baptize", "text": "Baptize 10 peasants at the church"},
+    {"do": "objective", "id": "places", "text": "Keep all 5 places of power", "optional": true},
+    {
+     "do": "objective",
+     "id": "peace",
+     "text": "Come to terms with the pagans and never fight them",
+     "optional": true
+    },
+    {
+     "do": "objective",
+     "id": "trust",
+     "text": "Finish the mission with the evidence below 30",
+     "optional": true
+    },
+    {
+     "do": "hint",
+     "text": "Build the church near the yard. Peasants who work near it are baptized one by one."
+    },
+    {
+     "do": "hint",
+     "text": "The evidence at the top right is what the Order can show the council. At 100 the mission is lost. Every baptized peasant slows it down."
+    },
+    {"do": "ping", "at": [94, 49], "radius": 4}
+   ]
+  },
+  {
+   "id": "2",
+   "when": {"type": "built", "player": 1, "base": "temple"},
+   "do": [
+    {"do": "name_built", "player": 1, "base": "temple", "name": "church"},
+    {"do": "objective", "id": "church", "state": "done"},
+    {
+     "do": "dialogue",
+     "id": "new_name",
+     "lines": [
+      ["Father Stanisław", "His name shall be Jan."],
+      [
+       "hero_gintaut",
+       "Jan. So be it. Only my grandfather called me Gintaut, and the grove knows me by that name."
+      ]
+     ]
+    },
+    {
+     "do": "hint",
+     "text": "Keep peasants working near the church: every ten seconds it baptizes one of them."
+    }
+   ]
+  },
+  {
+   "id": "3",
+   "when": {
+    "type": "any",
+    "of": [{"type": "flag", "flag": "power_spent"}, {"type": "after", "trigger": "1", "ticks": 7200}]
+   },
+   "do": [
+    {"do": "spies", "count": 1},
+    {
+     "do": "dialogue",
+     "id": "first_spy",
+     "lines": [["Brother Konrad", "Fire at the stone. Write it down."]]
+    },
+    {
+     "do": "hint",
+     "text": "The Order is gathering evidence for the council. Every rite a spy sees brings defeat closer. A spy is struck only on your order, and a killed spy is evidence too."
+    },
+    {"do": "ping", "at": [36, 100], "radius": 4}
+   ]
+  },
+  {
+   "id": "hill",
+   "when": {"type": "built_near", "player": 1, "base": "temple", "at": [93, 48], "radius": 7},
+   "do": [
+    {"do": "quench", "place": 1, "permille": 0},
+    {"do": "baptism_rate", "every_ticks": 100},
+    {"do": "objective", "id": "places", "state": "failed"},
+    {
+     "do": "hint",
+     "text": "The church stands on the hill over the stream. The place of power there has gone out for good, but faith grows twice as fast."
+    }
+   ]
+  },
+  {
+   "id": "talk_1",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "not", "of": {"type": "fired", "trigger": "4"}},
+     {"type": "near", "player": 1, "unit": "hero_gintaut", "at": [46, 144], "radius": 14}
+    ]
+   },
+   "do": [
+    {
+     "do": "dialogue",
+     "id": "talk_1",
+     "lines": [
+      [
+       "Pagan elder",
+       "You came to our fire with a cross round your neck, Gintaut. What do you bring?"
+      ]
+     ]
+    },
+    {
+     "do": "ask",
+     "id": "pagans_1",
+     "text": "What will Gintaut offer the pagans for peace?",
+     "options": ["Give 150 food", "Give 100 silver", "Nothing"]
+    }
+   ]
+  },
+  {
+   "id": "truce_1_food",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "chose", "question": "pagans_1", "option": 0},
+     {"type": "not", "of": {"type": "fired", "trigger": "short_1_food"}},
+     {"type": "stock", "player": 1, "res": "food", "at_least": 150}
+    ]
+   },
+   "do": [
+    {"do": "pay", "player": 1, "cost": [150, 0, 0, 0]},
+    {"do": "flag", "flag": "truce_1"},
+    {
+     "do": "dialogue",
+     "lines": [["Pagan elder", "Go, then. While this lasts, we will not come to your new house."]]
+    },
+    {"do": "hint", "text": "The pagans will leave you alone for the rest of this chapter."}
+   ]
+  },
+  {
+   "id": "short_1_food",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "chose", "question": "pagans_1", "option": 0},
+     {"type": "not", "of": {"type": "fired", "trigger": "truce_1_food"}},
+     {"type": "stock", "player": 1, "res": "food", "at_most": 149}
+    ]
+   },
+   "do": [
+    {
+     "do": "dialogue",
+     "lines": [["Pagan elder", "You promise what you do not have. Go away, Christian."]]
+    }
+   ]
+  },
+  {
+   "id": "truce_1_silver",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "chose", "question": "pagans_1", "option": 1},
+     {"type": "not", "of": {"type": "fired", "trigger": "short_1_silver"}},
+     {"type": "stock", "player": 1, "res": "silver", "at_least": 100}
+    ]
+   },
+   "do": [
+    {"do": "pay", "player": 1, "cost": [0, 0, 0, 100]},
+    {"do": "flag", "flag": "truce_1"},
+    {
+     "do": "dialogue",
+     "lines": [["Pagan elder", "Go, then. While this lasts, we will not come to your new house."]]
+    },
+    {"do": "hint", "text": "The pagans will leave you alone for the rest of this chapter."}
+   ]
+  },
+  {
+   "id": "short_1_silver",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "chose", "question": "pagans_1", "option": 1},
+     {"type": "not", "of": {"type": "fired", "trigger": "truce_1_silver"}},
+     {"type": "stock", "player": 1, "res": "silver", "at_most": 99}
+    ]
+   },
+   "do": [
+    {
+     "do": "dialogue",
+     "lines": [["Pagan elder", "You promise what you do not have. Go away, Christian."]]
+    }
+   ]
+  },
+  {
+   "id": "p1",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "after", "trigger": "2", "ticks": 6000},
+     {"type": "not", "of": {"type": "fired", "trigger": "4"}},
+     {"type": "not", "of": {"type": "flag", "flag": "truce_1"}}
+    ]
+   },
+   "do": [
+    {
+     "do": "spawn",
+     "group": "pagan_raid_1",
+     "player": 3,
+     "at": [48, 138],
+     "stance": "aggressive",
+     "units": [["nt_pagan", 5]]
+    },
+    {"do": "assault", "group": "pagan_raid_1", "building": "church", "else": [100, 74]},
+    {
+     "do": "dialogue",
+     "id": "pagans_come",
+     "lines": [
+      [
+       "Pagan elder",
+       "You let their water on your head, Gintaut. Now let us see whether their god saves your new house."
+      ]
+     ]
+    },
+    {
+     "do": "hint",
+     "text": "The pagans from the farmstead are coming for the church. You can buy peace at the farmstead: bring Gintaut there."
+    },
+    {"do": "ping", "at": [48, 138], "radius": 5}
+   ]
+  },
+  {
+   "id": "4",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "2"}, {"type": "baptized", "count": 10}]},
+   "do": [
+    {"do": "objective", "id": "baptize", "state": "done"},
+    {
+     "do": "cutscene",
+     "id": "winter_1415",
+     "at": [98, 70],
+     "lines": [
+      ["Chronicler", "Fourteen hundred and fifteen. Winter."],
+      [
+       "Chronicler",
+       "In Konstanz the fathers of the council had gathered to judge three popes at once. Our people were to go there too and tell how the Order baptized Samogitia."
+      ]
+     ]
+    },
+    {
+     "do": "objective",
+     "id": "delegation",
+     "text": "Gather 400 silver and 200 food for the delegation's journey"
+    },
+    {"do": "hint", "text": "Silver comes from the mine on the hill north-east of the yard."}
+   ]
+  },
+  {
+   "id": "5",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "4"},
+     {"type": "stock", "player": 1, "res": "silver", "at_least": 400},
+     {"type": "stock", "player": 1, "res": "food", "at_least": 200}
+    ]
+   },
+   "do": [
+    {"do": "pay", "player": 1, "cost": [200, 0, 0, 400]},
+    {
+     "do": "spawn",
+     "group": "delegation",
+     "player": 1,
+     "at": [104, 79],
+     "units": [["gdl_wagon", 1]]
+    },
+    {
+     "do": "cutscene",
+     "id": "what_to_tell",
+     "at": [102, 76],
+     "lines": [
+      ["Boyar", "What are we to say there, before the holy fathers?"],
+      [
+       "hero_gintaut",
+       "The truth. That we were baptized. That for years the Germans burned our yards and took our people. That we want the cross, but not the German cross."
+      ],
+      ["Boyar", "And about the grove?"],
+      [
+       "hero_gintaut",
+       "They will not ask about the grove. And if they ask, say that we have plenty of firewood."
+      ]
+     ]
+    },
+    {"do": "objective", "id": "delegation", "state": "done"},
+    {
+     "do": "objective",
+     "id": "cart",
+     "text": "Lead the delegation's cart along the trail to the sea in the north"
+    },
+    {"do": "exit", "group": "delegation", "at": [45, 1], "radius": 3},
+    {"do": "move", "group": "delegation", "to": [45, 1]},
+    {
+     "do": "hint",
+     "text": "The cart goes by itself along the trail to the north. It cannot fight: guard it."
+    },
+    {"do": "ping", "at": [45, 1], "radius": 4}
+   ]
+  },
+  {
+   "id": "5b",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "5"},
+     {"type": "group_near", "group": "delegation", "at": [56, 40], "radius": 8}
+    ]
+   },
+   "do": [
+    {
+     "do": "spawn",
+     "group": "trail_patrol",
+     "player": 2,
+     "at": [6, 26],
+     "stance": "aggressive",
+     "units": [["to_prussian_rider", 3]]
+    },
+    {"do": "attack_move", "group": "trail_patrol", "to": [50, 30]},
+    {"do": "hint", "text": "Prussian riders of the Order are watching the northern ford."},
+    {"do": "ping", "at": [28, 32], "radius": 4}
+   ]
+  },
+  {
+   "id": "6",
+   "when": {"type": "group_exited", "group": "delegation"},
+   "do": [
+    {"do": "objective", "id": "cart", "state": "done"},
+    {
+     "do": "cutscene",
+     "id": "summer_1416",
+     "at": [40, 100],
+     "lines": [
+      [
+       "Chronicler",
+       "On the twenty-eighth of November the Samogitians came to Konstanz. In February their complaint against the Order was read to the council. The Order answered: the baptism is shallow, and Vytautas stirs up the Samogitians."
+      ],
+      [
+       "Chronicler",
+       "Fourteen hundred and sixteen. Summer. Across the ford the Order's men were gathering."
+      ]
+     ]
+    },
+    {"do": "spies", "count": 2},
+    {"do": "objective", "id": "raid", "text": "Beat back the raid across the border ford"},
+    {
+     "do": "objective",
+     "id": "church_stands",
+     "text": "Do not let the raiders burn the church",
+     "optional": true
+    },
+    {
+     "do": "hint",
+     "text": "In two minutes the Order's raid will come across the border ford in the west."
+    },
+    {"do": "ping", "at": [30, 101], "radius": 5}
+   ]
+  },
+  {
+   "id": "6b",
+   "when": {"type": "after", "trigger": "6", "ticks": 2400},
+   "do": [
+    {"do": "name_built", "player": 1, "base": "temple", "name": "church"},
+    {
+     "do": "spawn",
+     "group": "raid",
+     "player": 2,
+     "at": [3, 100],
+     "stance": "aggressive",
+     "units": [["to_halfbrother", 2], ["to_knecht", 4], ["to_crossbow", 3]]
+    },
+    {"do": "assault", "group": "raid", "building": "church", "else": [100, 74]},
+    {
+     "do": "dialogue",
+     "id": "raid_comes",
+     "lines": [["Brother Konrad", "Let them come and see what Samogitian faith is worth."]]
+    },
+    {"do": "ping", "at": [30, 101], "radius": 5}
+   ]
+  },
+  {
+   "id": "7b",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "6b"},
+     {"type": "not", "of": {"type": "fired", "trigger": "7"}},
+     {"type": "destroyed", "building": "church"}
+    ]
+   },
+   "do": [
+    {"do": "evidence", "add": 25},
+    {"do": "objective", "id": "church_stands", "state": "failed"},
+    {
+     "do": "dialogue",
+     "id": "church_burned",
+     "lines": [
+      [
+       "Brother Konrad",
+       "You see? They burn their own churches. The council will not accept such a baptism."
+      ],
+      ["hero_gintaut", "It was your men who came across the ford."],
+      ["Brother Konrad", "And who saw it, apart from you?"]
+     ]
+    },
+    {
+     "do": "hint",
+     "text": "The burned church gave the Order 25 evidence. Build a new one: chapter 4 needs churches."
+    }
+   ]
+  },
+  {
+   "id": "7",
+   "when": {
+    "type": "all",
+    "of": [{"type": "fired", "trigger": "6b"}, {"type": "group_dead", "group": "raid"}]
+   },
+   "do": [
+    {"do": "objective", "id": "raid", "state": "done"},
+    {"do": "objective", "id": "church_stands", "state": "done"}
+   ]
+  },
+  {
+   "id": "talk_3",
+   "when": {
+    "type": "all",
+    "of": [
+     {
+      "type": "all",
+      "of": [{"type": "fired", "trigger": "6"}, {"type": "not", "of": {"type": "fired", "trigger": "8"}}]
+     },
+     {"type": "near", "player": 1, "unit": "hero_gintaut", "at": [46, 144], "radius": 14}
+    ]
+   },
+   "do": [
+    {
+     "do": "dialogue",
+     "id": "talk_3",
+     "lines": [
+      [
+       "Pagan elder",
+       "You came to our fire with a cross round your neck, Gintaut. What do you bring?"
+      ]
+     ]
+    },
+    {
+     "do": "ask",
+     "id": "pagans_3",
+     "text": "What will Gintaut offer the pagans for peace?",
+     "options": ["Give 150 food", "Give 100 silver", "Nothing"]
+    }
+   ]
+  },
+  {
+   "id": "truce_3_food",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "chose", "question": "pagans_3", "option": 0},
+     {"type": "not", "of": {"type": "fired", "trigger": "short_3_food"}},
+     {"type": "stock", "player": 1, "res": "food", "at_least": 150}
+    ]
+   },
+   "do": [
+    {"do": "pay", "player": 1, "cost": [150, 0, 0, 0]},
+    {"do": "flag", "flag": "truce_3"},
+    {
+     "do": "dialogue",
+     "lines": [["Pagan elder", "Go, then. While this lasts, we will not come to your new house."]]
+    },
+    {"do": "hint", "text": "The pagans will leave you alone for the rest of this chapter."}
+   ]
+  },
+  {
+   "id": "short_3_food",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "chose", "question": "pagans_3", "option": 0},
+     {"type": "not", "of": {"type": "fired", "trigger": "truce_3_food"}},
+     {"type": "stock", "player": 1, "res": "food", "at_most": 149}
+    ]
+   },
+   "do": [
+    {
+     "do": "dialogue",
+     "lines": [["Pagan elder", "You promise what you do not have. Go away, Christian."]]
+    }
+   ]
+  },
+  {
+   "id": "truce_3_silver",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "chose", "question": "pagans_3", "option": 1},
+     {"type": "not", "of": {"type": "fired", "trigger": "short_3_silver"}},
+     {"type": "stock", "player": 1, "res": "silver", "at_least": 100}
+    ]
+   },
+   "do": [
+    {"do": "pay", "player": 1, "cost": [0, 0, 0, 100]},
+    {"do": "flag", "flag": "truce_3"},
+    {
+     "do": "dialogue",
+     "lines": [["Pagan elder", "Go, then. While this lasts, we will not come to your new house."]]
+    },
+    {"do": "hint", "text": "The pagans will leave you alone for the rest of this chapter."}
+   ]
+  },
+  {
+   "id": "short_3_silver",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "chose", "question": "pagans_3", "option": 1},
+     {"type": "not", "of": {"type": "fired", "trigger": "truce_3_silver"}},
+     {"type": "stock", "player": 1, "res": "silver", "at_most": 99}
+    ]
+   },
+   "do": [
+    {
+     "do": "dialogue",
+     "lines": [["Pagan elder", "You promise what you do not have. Go away, Christian."]]
+    }
+   ]
+  },
+  {
+   "id": "p3",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "after", "trigger": "6", "ticks": 4800},
+     {"type": "not", "of": {"type": "fired", "trigger": "8"}},
+     {"type": "not", "of": {"type": "flag", "flag": "truce_3"}}
+    ]
+   },
+   "do": [
+    {"do": "name_built", "player": 1, "base": "temple", "name": "church"},
+    {
+     "do": "spawn",
+     "group": "pagan_raid_3",
+     "player": 3,
+     "at": [48, 138],
+     "stance": "aggressive",
+     "units": [["nt_pagan", 6]]
+    },
+    {"do": "assault", "group": "pagan_raid_3", "building": "church", "else": [100, 74]},
+    {"do": "hint", "text": "The pagans are coming out of the farmstead again."},
+    {"do": "ping", "at": [48, 138], "radius": 5}
+   ]
+  },
+  {
+   "id": "8",
+   "when": {"type": "after", "trigger": "7", "ticks": 300},
+   "do": [
+    {
+     "do": "spawn",
+     "group": "keeper",
+     "player": 1,
+     "at": [69, 79],
+     "untouchable": true,
+     "stance": "passive",
+     "units": [["hero_keeper", 1]]
+    },
+    {
+     "do": "cutscene",
+     "id": "fire_underground",
+     "at": [67, 81],
+     "lines": [
+      ["hero_keeper", "You were baptized, Gintaut."],
+      [
+       "hero_gintaut",
+       "I was baptized so that the grove would stand. And so that the Germans would go."
+      ],
+      [
+       "hero_keeper",
+       "The Germans will go. The grove will go too. Not at once. The fire will go under the ground and stay there while somebody remembers it."
+      ],
+      ["hero_gintaut", "And you?"],
+      ["hero_keeper", "You have not seen me. Tell your priests so."]
+     ]
+    },
+    {"do": "quench", "place": 0, "permille": 500},
+    {"do": "exit", "group": "keeper", "at": [56, 72], "radius": 2},
+    {"do": "move", "group": "keeper", "to": [56, 72]},
+    {
+     "do": "hint",
+     "text": "The fire in the alka has gone under the ground: the grove gives half its Power from now on."
+    }
+   ]
+  },
+  {
+   "id": "9",
+   "when": {"type": "after", "trigger": "8", "ticks": 600},
+   "do": [
+    {
+     "do": "cutscene",
+     "id": "autumn_1417",
+     "at": [40, 100],
+     "lines": [
+      [
+       "Chronicler",
+       "Fourteen hundred and seventeen. Autumn. The council sent its own men to baptize Samogitia and to found a church here: Jan, Archbishop of Lviv, and Piotr, Bishop of Vilnius."
+      ],
+      ["Archbishop Jan", "Show us your land, pan Jan. And your Christians."]
+     ]
+    },
+    {
+     "do": "spawn",
+     "group": "envoys",
+     "player": 4,
+     "at": [36, 103],
+     "stance": "passive",
+     "units": [["hero_council_envoys", 1]]
+    },
+    {
+     "do": "spawn",
+     "group": "vilnius",
+     "player": 1,
+     "at": [38, 98],
+     "units": [["gdl_lit_lance", 2]]
+    },
+    {"do": "spies", "count": 2},
+    {
+     "do": "objective",
+     "id": "envoys",
+     "text": "Lead the council's envoys from the ford to the Medininkai road"
+    },
+    {"do": "objective", "id": "village_1", "text": "Build a church in the village by the ford"},
+    {"do": "move", "group": "envoys", "to": [50, 104]},
+    {
+     "do": "hint",
+     "text": "The envoys stop in each of the three villages on the way and go on once a church stands there. Lay the next church before they come."
+    },
+    {"do": "ping", "at": [50, 104], "radius": 5}
+   ]
+  },
+  {
+   "id": "talk_4",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "9"},
+     {"type": "near", "player": 1, "unit": "hero_gintaut", "at": [46, 144], "radius": 14}
+    ]
+   },
+   "do": [
+    {
+     "do": "dialogue",
+     "id": "talk_4",
+     "lines": [
+      [
+       "Pagan elder",
+       "You came to our fire with a cross round your neck, Gintaut. What do you bring?"
+      ]
+     ]
+    },
+    {
+     "do": "ask",
+     "id": "pagans_4",
+     "text": "What will Gintaut offer the pagans for peace?",
+     "options": ["Give 150 food", "Give 100 silver", "Nothing"]
+    }
+   ]
+  },
+  {
+   "id": "truce_4_food",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "chose", "question": "pagans_4", "option": 0},
+     {"type": "not", "of": {"type": "fired", "trigger": "short_4_food"}},
+     {"type": "stock", "player": 1, "res": "food", "at_least": 150}
+    ]
+   },
+   "do": [
+    {"do": "pay", "player": 1, "cost": [150, 0, 0, 0]},
+    {"do": "flag", "flag": "truce_4"},
+    {
+     "do": "dialogue",
+     "lines": [["Pagan elder", "Go, then. While this lasts, we will not come to your new house."]]
+    },
+    {"do": "hint", "text": "The pagans will leave you alone for the rest of this chapter."}
+   ]
+  },
+  {
+   "id": "short_4_food",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "chose", "question": "pagans_4", "option": 0},
+     {"type": "not", "of": {"type": "fired", "trigger": "truce_4_food"}},
+     {"type": "stock", "player": 1, "res": "food", "at_most": 149}
+    ]
+   },
+   "do": [
+    {
+     "do": "dialogue",
+     "lines": [["Pagan elder", "You promise what you do not have. Go away, Christian."]]
+    }
+   ]
+  },
+  {
+   "id": "truce_4_silver",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "chose", "question": "pagans_4", "option": 1},
+     {"type": "not", "of": {"type": "fired", "trigger": "short_4_silver"}},
+     {"type": "stock", "player": 1, "res": "silver", "at_least": 100}
+    ]
+   },
+   "do": [
+    {"do": "pay", "player": 1, "cost": [0, 0, 0, 100]},
+    {"do": "flag", "flag": "truce_4"},
+    {
+     "do": "dialogue",
+     "lines": [["Pagan elder", "Go, then. While this lasts, we will not come to your new house."]]
+    },
+    {"do": "hint", "text": "The pagans will leave you alone for the rest of this chapter."}
+   ]
+  },
+  {
+   "id": "short_4_silver",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "chose", "question": "pagans_4", "option": 1},
+     {"type": "not", "of": {"type": "fired", "trigger": "truce_4_silver"}},
+     {"type": "stock", "player": 1, "res": "silver", "at_most": 99}
+    ]
+   },
+   "do": [
+    {
+     "do": "dialogue",
+     "lines": [["Pagan elder", "You promise what you do not have. Go away, Christian."]]
+    }
+   ]
+  },
+  {
+   "id": "10.1",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "9"},
+     {"type": "group_near", "group": "envoys", "at": [50, 104], "radius": 8},
+     {"type": "built_near", "player": 1, "base": "temple", "at": [50, 104], "radius": 12}
+    ]
+   },
+   "do": [
+    {"do": "faith", "add": 5},
+    {"do": "objective", "id": "village_1", "state": "done"},
+    {
+     "do": "objective",
+     "id": "village_2",
+     "text": "Build a church in the village south of the yard"
+    },
+    {
+     "do": "dialogue",
+     "id": "village_baptism",
+     "lines": [
+      [
+       "Archbishop Jan",
+       "Write: in this village so many souls were baptized. And write it honestly. The fathers of the council will ask how many of them know the Our Father."
+      ],
+      ["Bishop Piotr", "Many of them know it, my lord. In Lithuanian."]
+     ]
+    },
+    {"do": "move", "group": "envoys", "to": [75, 82]},
+    {"do": "ping", "at": [104, 112], "radius": 5}
+   ]
+  },
+  {
+   "id": "11m",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "10.1"},
+     {"type": "group_near", "group": "envoys", "at": [75, 82], "radius": 4},
+     {"type": "mist_over", "player": 1, "at": [67, 81]}
+    ]
+   },
+   "do": [
+    {
+     "do": "hint",
+     "text": "The mist lies over the grove. The envoys pass by without seeing the oak."
+    },
+    {"do": "move", "group": "envoys", "to": [104, 112]}
+   ]
+  },
+  {
+   "id": "11",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "10.1"},
+     {"type": "not", "of": {"type": "fired", "trigger": "11m"}},
+     {"type": "group_near", "group": "envoys", "at": [75, 82], "radius": 4}
+    ]
+   },
+   "do": [
+    {
+     "do": "cutscene",
+     "id": "holy_tree",
+     "at": [67, 81],
+     "lines": [
+      ["Archbishop Jan", "Is that their oak?"],
+      ["hero_gintaut", "It is an oak, my lord. Just an old one."]
+     ]
+    },
+    {
+     "do": "ask",
+     "id": "oak",
+     "text": "What will Gintaut do with the oak?",
+     "options": ["Cut down the oak", "Lead the envoys round the grove"]
+    }
+   ]
+  },
+  {
+   "id": "11a",
+   "when": {"type": "chose", "question": "oak", "option": 0},
+   "do": [
+    {
+     "do": "dialogue",
+     "id": "cut_oak",
+     "lines": [["hero_gintaut", "Better my hands than someone else's."]]
+    },
+    {"do": "quench", "place": 0, "permille": 0},
+    {"do": "evidence", "add": -20},
+    {"do": "objective", "id": "places", "state": "failed"},
+    {
+     "do": "spawn",
+     "group": "pagans_angry",
+     "player": 3,
+     "at": [44, 140],
+     "stance": "defensive",
+     "units": [["nt_pagan", 4]]
+    },
+    {
+     "do": "hint",
+     "text": "The oak has fallen and the alka with it: the evidence fell by 20. The pagans at the farmstead grow in number."
+    },
+    {"do": "move", "group": "envoys", "to": [104, 112]}
+   ]
+  },
+  {
+   "id": "11b",
+   "when": {"type": "chose", "question": "oak", "option": 1},
+   "do": [
+    {
+     "do": "dialogue",
+     "id": "round_grove",
+     "lines": [
+      ["hero_gintaut", "The road through the grove is boggy. Let us go over the hills, my lord."],
+      [
+       "Bishop Piotr",
+       "Over the hills, then, pan Jan. There will be no grove in the report to the council."
+      ]
+     ]
+    },
+    {"do": "move", "group": "envoys", "to": [76, 126]},
+    {"do": "ping", "at": [76, 126], "radius": 5}
+   ]
+  },
+  {
+   "id": "11c",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "11b"},
+     {"type": "not", "of": {"type": "flag", "flag": "truce_4"}},
+     {"type": "group_near", "group": "envoys", "at": [76, 126], "radius": 14}
+    ]
+   },
+   "do": [
+    {
+     "do": "spawn",
+     "group": "ambush",
+     "player": 3,
+     "at": [64, 136],
+     "stance": "aggressive",
+     "units": [["nt_pagan", 6]]
+    },
+    {"do": "attack_move", "group": "ambush", "to": [76, 126]},
+    {"do": "hint", "text": "The pagans lie in wait on the hills!"},
+    {"do": "ping", "at": [64, 136], "radius": 4}
+   ]
+  },
+  {
+   "id": "11d",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "11b"},
+     {"type": "group_near", "group": "envoys", "at": [76, 126], "radius": 3}
+    ]
+   },
+   "do": [{"do": "move", "group": "envoys", "to": [104, 112]}]
+  },
+  {
+   "id": "10.2",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "10.1"},
+     {"type": "group_near", "group": "envoys", "at": [104, 112], "radius": 8},
+     {"type": "built_near", "player": 1, "base": "temple", "at": [104, 112], "radius": 12}
+    ]
+   },
+   "do": [
+    {"do": "faith", "add": 5},
+    {"do": "objective", "id": "village_2", "state": "done"},
+    {
+     "do": "objective",
+     "id": "village_3",
+     "text": "Build a church in the village on the Medininkai road"
+    },
+    {
+     "do": "dialogue",
+     "lines": [
+      ["Archbishop Jan", "So many children. Who taught them to cross themselves?"],
+      ["hero_gintaut", "Father Stanisław, my lord. And their mothers, after him."]
+     ]
+    },
+    {"do": "move", "group": "envoys", "to": [132, 92]},
+    {"do": "ping", "at": [132, 92], "radius": 5}
+   ]
+  },
+  {
+   "id": "10.3",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "10.2"},
+     {"type": "group_near", "group": "envoys", "at": [132, 92], "radius": 8},
+     {"type": "built_near", "player": 1, "base": "temple", "at": [132, 92], "radius": 12}
+    ]
+   },
+   "do": [
+    {"do": "faith", "add": 5},
+    {"do": "objective", "id": "village_3", "state": "done"},
+    {
+     "do": "dialogue",
+     "lines": [["Bishop Piotr", "The last village, my lord. From here the road goes to Medininkai."]]
+    },
+    {"do": "exit", "group": "envoys", "at": [158, 80], "radius": 3},
+    {"do": "move", "group": "envoys", "to": [158, 80]},
+    {"do": "ping", "at": [158, 80], "radius": 4}
+   ]
+  },
+  {
+   "id": "p4",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "after", "trigger": "10.1", "ticks": 1200},
+     {"type": "not", "of": {"type": "fired", "trigger": "12"}},
+     {"type": "not", "of": {"type": "flag", "flag": "truce_4"}}
+    ]
+   },
+   "do": [
+    {"do": "name_built", "player": 1, "base": "temple", "name": "church"},
+    {
+     "do": "spawn",
+     "group": "pagan_raid_4",
+     "player": 3,
+     "at": [48, 138],
+     "stance": "aggressive",
+     "units": [["nt_pagan", 6]]
+    },
+    {"do": "assault", "group": "pagan_raid_4", "building": "church", "else": [100, 74]},
+    {"do": "hint", "text": "The pagans are going for the new church."},
+    {"do": "ping", "at": [48, 138], "radius": 5}
+   ]
+  },
+  {
+   "id": "12",
+   "when": {"type": "group_exited", "group": "envoys"},
+   "do": [
+    {"do": "objective", "id": "envoys", "state": "done"},
+    {
+     "do": "cutscene",
+     "id": "bishop_of_samogitia",
+     "at": [94, 50],
+     "lines": [
+      [
+       "Chronicler",
+       "In October fourteen hundred and seventeen Samogitia got its own bishop, Matthias of Trakai. He spoke our tongue. Now the Order had nothing to tell the council: the Samogitians were baptized, and it was not the Order that baptized them."
+      ],
+      [
+       "Chronicler",
+       "Mikołaj looked towards the forest. There, at the edge, for a moment a woman's figure was seen."
+      ],
+      [
+       "Chronicler",
+       "And the next year the churches in Samogitia burned again. Great-grandfather took no part in it. But he gave away none of the people who burned them."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "trust_ok",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "12"}, {"type": "evidence", "at_most": 29}]},
+   "do": [{"do": "objective", "id": "trust", "state": "done"}]
+  },
+  {
+   "id": "trust_lost",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "12"}, {"type": "evidence", "at_least": 30}]},
+   "do": [{"do": "objective", "id": "trust", "state": "failed"}]
+  },
+  {
+   "id": "places_ok",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "12"},
+     {"type": "not", "of": {"type": "fired", "trigger": "hill"}},
+     {"type": "not", "of": {"type": "fired", "trigger": "11a"}}
+    ]
+   },
+   "do": [{"do": "objective", "id": "places", "state": "done"}]
+  },
+  {
+   "id": "peace_lost",
+   "when": {
+    "type": "any",
+    "of": [
+     {"type": "group_lost", "group": "pagans"},
+     {"type": "group_lost", "group": "stone_guard"},
+     {"type": "group_lost", "group": "pagan_raid_1"},
+     {"type": "group_lost", "group": "pagan_raid_3"},
+     {"type": "group_lost", "group": "pagan_raid_4"},
+     {"type": "group_lost", "group": "ambush"},
+     {"type": "group_lost", "group": "pagans_angry"}
+    ]
+   },
+   "do": [{"do": "objective", "id": "peace", "state": "failed"}]
+  },
+  {
+   "id": "peace_ok",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "12"},
+     {"type": "not", "of": {"type": "fired", "trigger": "peace_lost"}},
+     {
+      "type": "any",
+      "of": [
+       {"type": "flag", "flag": "truce_1"},
+       {"type": "flag", "flag": "truce_3"},
+       {"type": "flag", "flag": "truce_4"}
+      ]
+     }
+    ]
+   },
+   "do": [{"do": "objective", "id": "peace", "state": "done"}]
+  },
+  {
+   "id": "victory",
+   "when": {"type": "after", "trigger": "12", "ticks": 300},
+   "do": [
+    {
+     "do": "victory",
+     "text": "Samogitia has its own bishop. The Order has nothing left to tell the council."
+    }
+   ]
+  }
+ ]
+}

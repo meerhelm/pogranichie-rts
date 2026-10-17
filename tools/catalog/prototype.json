@@ -10,17 +10,19 @@
   "nt_villager", "nt_bison", "nt_bear", "nt_elk", "nt_boar", "nt_wolf",
   "hero_gintaut", "hero_rumbaudas", "hero_keeper", "hero_kuchmeister",
   "nt_steppe_archer", "pl_kopia", "pl_spearman", "pl_crossbow", "to_guest_knight", "to_bombard",
-  "to_wagon", "hero_vytautas", "hero_lengvenis", "hero_wallenrode", "hero_jungingen"
+  "to_wagon", "hero_vytautas", "hero_lengvenis", "hero_wallenrode", "hero_jungingen",
+  "gdl_samogitian", "to_spy", "nt_pagan", "nt_pagan_priest", "hero_council_envoys"
  ],
  "buildings": [
   "gdl_town_center", "gdl_house", "gdl_granary", "gdl_farm", "gdl_lumber_yard", "gdl_mine",
   "gdl_barracks", "gdl_range", "gdl_stable", "gdl_shrine", "gdl_palisade", "gdl_zaseka",
-  "gdl_siege_workshop", "gdl_bort", "gdl_gate", "gdl_tower",
+  "gdl_siege_workshop", "gdl_bort", "gdl_gate", "gdl_tower", "gdl_temple",
   "to_town_center", "to_house", "to_granary", "to_farm", "to_lumber_yard", "to_mine",
   "to_barracks", "to_range", "to_stable", "to_shrine", "to_palisade", "to_gate", "to_tower",
   "to_market", "to_smithy", "to_temple", "to_siege_workshop", "to_castle", "to_brickworks"
  ],
  "_mission_only": "Prototype units only missions use: exported as campaign_only, so skirmish build menus and the AI leave them out (ВКЛ 2 Грюнвальд).",
- "mission_only": ["nt_steppe_archer", "pl_kopia", "pl_spearman", "pl_crossbow", "to_guest_knight", "to_bombard", "to_wagon"],
+ "mission_only": ["nt_steppe_archer", "pl_kopia", "pl_spearman", "pl_crossbow", "to_guest_knight", "to_bombard", "to_wagon",
+  "gdl_samogitian", "to_spy", "nt_pagan", "nt_pagan_priest", "hero_council_envoys"],
  "spells": ["sp_bog_mist", "sp_consecration", "sp_exorcism", "sp_relic", "sp_perkunas"]
 }

@@ -7,8 +7,8 @@ extends SceneTree
 ##   godot --headless -s tools/sim/sim_cli.gd -- arena --seeds 50 --out arena.csv [--pairs a,b]
 ##     [--parity 1]
 ##   godot --headless -s tools/sim/sim_cli.gd -- aivsai --games 20 --difficulty normal --out g.csv
-##   godot --headless -s tools/sim/sim_cli.gd -- mission --out m9.json [--mission gdl_01|gdl_02]
-##     [--difficulty normal] [--ticks 90000] [--every 200]
+##   godot --headless -s tools/sim/sim_cli.gd -- mission --out m9.json
+##     [--mission gdl_01|gdl_02|gdl_03] [--difficulty normal] [--ticks 90000] [--every 200]
 ##     (MissionBot plays the campaign mission until it is over; fails unless it is won)
 ## record, determinism and bench take --map <map id> (see MapText); without it, open grass;
 ## and --economy 1 to have the fuzzer play the economy too (players, buildings, gathering);
@@ -118,7 +118,13 @@ func _mission(opts: Dictionary) -> int:
 	var bots: Array[RefCounted] = []
 	var orders := func(sim: Simulation) -> void:
 		if bots.is_empty():
-			bots.append(GrunwaldBot.new(sim) if mission_id == "gdl_02" else MissionBot.new(sim))
+			match mission_id:
+				"gdl_02":
+					bots.append(GrunwaldBot.new(sim))
+				"gdl_03":
+					bots.append(BaptismBot.new(sim))
+				_:
+					bots.append(MissionBot.new(sim))
 		bots[0].call(&"think")
 	var over := func(sim: Simulation) -> bool: return sim.mission.is_over()
 	var replay := Replay.record(

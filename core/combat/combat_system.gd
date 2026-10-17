@@ -963,6 +963,9 @@ func _nearest_enemy(slot: int, radius: int) -> int:
 			continue
 		if untouchable.has(other) or defs[o].tags.has(&"not_targeted"):
 			continue
+		# A spy (ВКЛ 3) is struck only on an order: killing one is a choice, it adds evidence.
+		if defs[o].tags.has(&"witness_meter"):
+			continue
 		if _hidden_from(o, owner) or (vision != null and not vision.sees_unit(owner, other)):
 			continue
 		var d := Fixed.distance(px, py, e.pos_x[o], e.pos_y[o])

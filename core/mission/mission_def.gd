@@ -94,7 +94,7 @@ func faction_of(p: int) -> StringName:
 
 
 ## Every text the player reads, for the translation extractor's tests: objectives, hints,
-## dialogue and cutscene lines (speakers too) and end texts.
+## dialogue and cutscene lines (speakers too), end texts and the options of questions.
 func texts() -> PackedStringArray:
 	var out := PackedStringArray([title])
 	for t: Dictionary in triggers:
@@ -104,4 +104,6 @@ func texts() -> PackedStringArray:
 			for line: Array in action.get("lines", []):
 				out.append(line[0])
 				out.append(line[1])
+			for option: String in action.get("options", []):
+				out.append(option)
 	return out

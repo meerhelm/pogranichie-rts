@@ -39,6 +39,10 @@ var consecrated := PackedByteArray()
 ## Sites a mission says another side has consecrated from afar (M9: «освящены орденом»): site ->
 ## the building that does it; the site stays consecrated for others while it stands.
 var consecrated_by: Dictionary[int, int] = {}
+## Sites a mission has put out (ВКЛ 3: «место силы гаснет», «огонь уходит под землю»): site ->
+## what is left of its Сила, permille. At 0 the site is gone: nobody holds or takes it, no
+## shrine may stand there. MissionRuntime writes it into the state hash.
+var quenched: Dictionary[int, int] = {}
 
 ## Unit and building ids that consecrate, and how far (sp_consecration).
 var _consecrators: Dictionary[StringName, bool] = {}
@@ -119,7 +123,12 @@ func site_near(cx: int, cy: int, radius: int) -> int:
 ## the player holds it and nothing stands on it.
 func site_free_for(p: int, cx: int, cy: int) -> bool:
 	var i := site_at(cx, cy)
-	return i >= 0 and holders[i] == p and shrines[i] == BuildingStore.NO_ID
+	return i >= 0 and holders[i] == p and shrines[i] == BuildingStore.NO_ID and not is_gone(i)
+
+
+## Whether a mission has put the site out for good.
+func is_gone(i: int) -> bool:
+	return quenched.get(i, 1000) == 0
 
 
 ## Centre of the site, fixed units.
@@ -139,13 +148,15 @@ func rate_milli(i: int) -> int:
 	var rate := buildings.defs[b - 1].power_rate_milli * defs[i].power_permille / 1000
 	if consecrated[i] == 1:
 		rate = rate * rules.consecration_permille / 1000
+	if quenched.has(i):
+		rate = rate * quenched[i] / 1000
 	return rate
 
 
 func step(tick: int) -> void:
 	for i in count():
 		_track_shrine(i)
-		if shrines[i] == BuildingStore.NO_ID:
+		if shrines[i] == BuildingStore.NO_ID and not is_gone(i):
 			_capture(i)
 	if tick % CONSECRATION_EVERY == 0:
 		for i in count():

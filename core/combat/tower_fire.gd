@@ -98,6 +98,8 @@ func _nearest_enemy(b: int) -> int:
 			continue
 		if combat.untouchable.has(id) or combat.defs[o].tags.has(&"not_targeted"):
 			continue
+		if combat.defs[o].tags.has(&"witness_meter"):
+			continue
 		if combat.is_hidden(id) or (vision != null and not vision.sees_unit(owner, id)):
 			continue
 		var d := buildings.distance_sq(b, e.pos_x[o], e.pos_y[o])

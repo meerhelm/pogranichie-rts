@@ -131,6 +131,13 @@ RULES: list[Rule] = [
     (r"лес и болото без штрафа", _tags("forest_walker")),
     (r"в лесу \+(\d+)/\+(\d+) брони", _params(forest_armor_melee=1, forest_armor_pierce=2)),
     (r"в лесу невидим(?:, пока не выстрелит)?", _tags("forest_stealth")),
+    (
+        r"как жемайт: лес без штрафа, в лесу \+(\d+)/\+(\d+)",
+        lambda sp, m, _u: (
+            sp.tag("forest_walker"),
+            sp.params.update(forest_armor_melee=int(m.group(1)), forest_armor_pierce=int(m.group(2))),
+        ),
+    ),
     (r"из леса \+(\d+) к дальности", _params(forest_range_bonus=1)),
     (
         r"сулица: бросок (\d+) С на (\d+) клетки раз в (\d+) с",
@@ -207,6 +214,8 @@ RULES: list[Rule] = [
     (r"платит налог или фураж", _tags("pays_tribute")),
     (r"бежит от солдат", _tags("flees_soldiers")),
     (r"серый плащ", _tags()),
+    (r"умеет «Болотный туман»", _tags()),
+    (r"сторона переговоров", _tags()),
     (r"разведка", _tags()),
     (r"та же модель в стае волколака", _tags()),
     (r"у Ордена доступен уже в Уделе", _tags()),

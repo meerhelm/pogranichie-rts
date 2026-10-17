@@ -5,7 +5,7 @@ extends Control
 
 const GAME_SCENE := "res://game/main.tscn"
 ## Campaign missions, one button each, in campaign order.
-const MISSIONS: Array[String] = ["gdl_01", "gdl_02"]
+const MISSIONS: Array[String] = ["gdl_01", "gdl_02", "gdl_03"]
 const BACKGROUND := preload("res://ui/art/menu_background.jpg")
 
 var _title := Label.new()

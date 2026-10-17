@@ -30,6 +30,7 @@ enum Kind {
 	CAST,
 	IGNITE,
 	DISMANTLE,
+	CHOOSE,
 }
 
 ## Kinds whose x and y are a point on the map.
@@ -47,9 +48,11 @@ const POINT_KINDS: Array[Kind] = [
 ]
 ## Kinds that name a type: unit, faction, building, or queued unit, tech or age.
 const TYPE_KINDS: Array[Kind] = [
-	Kind.SPAWN, Kind.JOIN, Kind.PLACE, Kind.BUILD, Kind.WALL, Kind.QUEUE, Kind.CAST
+	Kind.SPAWN, Kind.JOIN, Kind.PLACE, Kind.BUILD, Kind.WALL, Kind.QUEUE, Kind.CAST, Kind.CHOOSE
 ]
-const VALUE_KINDS: Array[Kind] = [Kind.STANCE, Kind.PLACE, Kind.BUILD, Kind.GATHER, Kind.CANCEL]
+const VALUE_KINDS: Array[Kind] = [
+	Kind.STANCE, Kind.PLACE, Kind.BUILD, Kind.GATHER, Kind.CANCEL, Kind.CHOOSE
+]
 
 ## Tick at whose start the command is applied.
 var tick: int
@@ -62,7 +65,7 @@ var y: int
 var x2: int
 var y2: int
 ## Unit type for SPAWN; faction for JOIN; building for PLACE, BUILD, WALL; item for QUEUE;
-## spell for CAST.
+## spell for CAST; the mission's question for CHOOSE.
 var type_id: StringName
 ## Formation.Kind for a group MOVE.
 var formation := 0
@@ -70,7 +73,7 @@ var formation := 0
 ## DISMANTLE (take an own building apart); node or animal for GATHER.
 var target := 0
 ## EntityStore.Stance for STANCE; 1 for a building turned on its side (PLACE, BUILD);
-## EconomySystem.Target for GATHER; queue index for CANCEL.
+## EconomySystem.Target for GATHER; queue index for CANCEL; the option picked for CHOOSE.
 var value := 0
 ## Order of arrival, set by CommandQueue; breaks ties between commands of one player and tick.
 var seq := -1
@@ -338,6 +341,20 @@ static func ignite(at_tick: int, by: int, units: PackedInt32Array, building: int
 	c.kind = Kind.IGNITE
 	c.ids = units
 	c.target = building
+	return c
+
+
+# --- missions (ВКЛ 3) -----------------------------------------------------------------------
+
+
+## The player answers a question the mission asked (MissionRuntime.choices): option index.
+static func choose(at_tick: int, by: int, question: StringName, option: int) -> SimCommand:
+	var c := SimCommand.new()
+	c.tick = at_tick
+	c.player = by
+	c.kind = Kind.CHOOSE
+	c.type_id = question
+	c.value = option
 	return c
 
 

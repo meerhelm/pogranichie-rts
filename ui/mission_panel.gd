@@ -4,8 +4,9 @@ extends Control
 ## ones ticked, failed ones crossed), hints (top middle, each for a while), the characters'
 ## lines in the mission through Dialogic, and cutscenes on the engine: the game stops, black
 ## bars close in, the camera flies to the place and the lines run as subtitles (click, Space or
-## Enter for the next one, Esc skips the rest). Reads MissionRuntime.events and never changes
-## the simulation; all texts are translation keys.
+## Enter for the next one, Esc skips the rest). Reads MissionRuntime.events; the only thing it
+## sends is the player's answer to a mission's question (ВКЛ 3), as a CHOOSE command. All texts
+## are translation keys.
 
 signal cutscene_started
 signal cutscene_finished
@@ -26,6 +27,14 @@ var _objectives := VBoxContainer.new()
 var _objective_panel := PanelContainer.new()
 ## The blockade's state under the objectives (phase 4 of ВКЛ 1), hidden while it is off.
 var _blockade := Label.new()
+## ВКЛ 3: the evidence and the baptized under the objectives, and the question being asked.
+var _evidence := Label.new()
+var _question := PanelContainer.new()
+var _question_text := Label.new()
+var _answers := VBoxContainer.new()
+## Questions waiting to be shown (choice events), the one on screen ("" for none).
+var _questions: Array = []
+var _asking := ""
 var _hints := VBoxContainer.new()
 ## Waiting dialogues (lists of [speaker, text]) while one is on screen.
 var _dialogues: Array = []
@@ -54,6 +63,9 @@ func _ready() -> void:
 	_blockade.visible = false
 	_blockade.add_theme_color_override("font_color", Color(0.95, 0.8, 0.45))
 	column.add_child(_blockade)
+	_evidence.visible = false
+	_evidence.add_theme_color_override("font_color", Color(0.95, 0.8, 0.45))
+	column.add_child(_evidence)
 	_objective_panel.add_child(column)
 	add_child(_objective_panel)
 	_hints.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
@@ -61,6 +73,19 @@ func _ready() -> void:
 	_hints.position.y = 96
 	_hints.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_hints)
+	_question.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	_question.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	_question.grow_vertical = Control.GROW_DIRECTION_BOTH
+	_question.visible = false
+	var ask := VBoxContainer.new()
+	ask.add_theme_constant_override("separation", 10)
+	_question_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_question_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_question_text.custom_minimum_size.x = 420
+	ask.add_child(_question_text)
+	ask.add_child(_answers)
+	_question.add_child(ask)
+	add_child(_question)
 	for bar: ColorRect in [_top_bar, _bottom_bar]:
 		bar.color = Color.BLACK
 		bar.visible = false
@@ -91,6 +116,10 @@ func attach(p_sim: Simulation, p_clock: SimClock, p_camera: RtsCamera) -> void:
 	camera = p_camera
 	# A loaded game shows its objectives but does not replay what was already said.
 	_read = sim.mission.events.size()
+	# ...except a question still open.
+	for e: Dictionary in sim.mission.events:
+		if e["kind"] == "choice" and sim.mission.choices.has(e["id"]):
+			_questions.append(e)
 	_fill_objectives()
 	clock.ticked.connect(func(_t: int) -> void: poll())
 
@@ -115,9 +144,17 @@ func poll() -> void:
 				_dialogues.append(e["lines"])
 			"cutscene":
 				_cutscenes.append(e)
+			"choice":
+				_questions.append(e)
+			"chosen":
+				if _asking == e["id"]:
+					_close_question()
 			"ping":
 				pass
 	_show_blockade()
+	_show_evidence()
+	if _asking.is_empty() and _line < 0 and not _questions.is_empty():
+		_ask(_questions.pop_front())
 	if _line < 0 and not _cutscenes.is_empty():
 		_start_cutscene(_cutscenes.pop_front())
 	elif _line < 0 and not _in_dialogue and not _dialogues.is_empty():
@@ -179,6 +216,61 @@ func _show_blockade() -> void:
 		+ "\n"
 		+ tr("Posts held: %d of %d") % [held, posts.size()]
 	)
+
+
+## «Evidence: 34 of 100 · Baptized: 12» while the mission keeps evidence (ВКЛ 3).
+func _show_evidence() -> void:
+	var m := sim.mission
+	_evidence.visible = m.def.rules.has("evidence")
+	if not _evidence.visible:
+		return
+	var most := int(m.def.rules["evidence"].get("max", 100))
+	_evidence.text = (
+		tr("Evidence: %d of %d") % [m.evidence / 1000, most]
+		+ "\n"
+		+ tr("Baptized: %d") % m.baptized_alive()
+	)
+
+
+## The evidence lines as shown, for tests ("" while hidden).
+func evidence_text() -> String:
+	return _evidence.text if _evidence.visible else ""
+
+
+## The question on screen, for tests ("" for none).
+func asking() -> String:
+	return _asking
+
+
+func _ask(e: Dictionary) -> void:
+	if not sim.mission.choices.has(e["id"]):
+		return
+	_asking = e["id"]
+	_question_text.text = tr(e["text"])
+	for child in _answers.get_children():
+		_answers.remove_child(child)
+		child.queue_free()
+	var options: Array = e["options"]
+	for i in options.size():
+		var b := Button.new()
+		b.text = tr(options[i])
+		b.custom_minimum_size = Vector2(360, 44)
+		b.pressed.connect(answer.bind(i))
+		_answers.add_child(b)
+	_question.visible = true
+
+
+## The player picks an option (a button, or a test).
+func answer(option: int) -> void:
+	if _asking.is_empty():
+		return
+	sim.enqueue(SimCommand.choose(sim.tick, sim.mission.def.player, StringName(_asking), option))
+	_close_question()
+
+
+func _close_question() -> void:
+	_asking = ""
+	_question.visible = false
 
 
 ## The blockade line as shown, for tests ("" while hidden).

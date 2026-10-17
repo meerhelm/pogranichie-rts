@@ -14,7 +14,9 @@ extends RefCounted
 ## 8: M9 fire (arson, burning, spreading, dousing), heroes' own auras, mission locks and the
 ## mission script (MissionRuntime) in the world.
 ## 10: taking own buildings apart (DISMANTLE, salvage piles carried to storage).
-const SIM_VERSION := 11
+## 11: towers and gates shoot.
+## 12: ВКЛ 3: the CHOOSE command, spies nobody strikes unordered, quenched places of power.
+const SIM_VERSION := 12
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).
@@ -306,6 +308,9 @@ func _apply(cmd: SimCommand) -> void:
 			combat.drop_targets(ids)
 			fire.drop(ids)
 			magic.order(cmd, ids)
+		SimCommand.Kind.CHOOSE:
+			if mission != null:
+				mission.choose(cmd.player, String(cmd.type_id), cmd.value, tick)
 		SimCommand.Kind.IGNITE:
 			var ids := _obedient(cmd)
 			economy.drop_jobs(ids)

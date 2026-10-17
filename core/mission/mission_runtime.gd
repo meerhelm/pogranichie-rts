@@ -18,6 +18,10 @@ extends RefCounted
 ##   units_at_most {player, count} (all the player's units, heroes included);
 ##   retreating {player} (some unit of the player is in a «Литовский отход»); place_held
 ##   {player, place} (by index in the map's list);
+##   baptized {count} (living baptized units, rules.baptism); evidence {at_least | at_most}
+##   (whole points, rules.evidence); built_near {player, base, at, radius} (a finished building
+##   of that kind, any time); mist_over {player, at} (the player's «Болотный туман» lies there);
+##   chose {question, option} (the player picked that option, see `ask`);
 ##   any / all {of: [...]}; not {of}; for_ticks {ticks, of} (true for that long in a row; one
 ##   per trigger).
 ## Actions (`do`): objective {id, text?, state? (active, done, failed), optional?}; hint {text};
@@ -28,9 +32,18 @@ extends RefCounted
 ##   amount}; lock / unlock {player, items}; flag {flag}; boats {on}; blockade {on};
 ##   ignite {building}; rally {player, at}; volley {player, at, radius, damage} (a cannon ball
 ##   lands: the player's enemies there lose HP and morale); kill {group, by} (scripted deaths);
-##   victory / defeat {text}.
+##   victory / defeat {text};
+##   ВКЛ 3: evidence {add} (points, may be negative); faith {add} (counts as that many more
+##   baptized against evidence); baptism_rate {every_ticks}; spies {count} (how many spies walk
+##   the map now); quench {place, permille} (what is left of a place of power, 0: gone, its
+##   shrine falls); ask {id, text, options: [text, ...]} (a question the player answers with a
+##   CHOOSE command; the interface shows it); pay {player, cost: [food, wood, iron, silver]};
+##   destroy {building}; name_built {player, base, name} (names the player's newest finished
+##   building of that kind); assault {group, building, else?} (storm a named building, or
+##   attack-move to `else` when it is gone).
 ## Setup may also give sides: {player: lead player} (allies, Sides) and age: {player: index}.
-## Rules: hunger, boats, blockade (ВКЛ 1) and banner (ВКЛ 2, see _banner).
+## Rules: hunger, boats, blockade (ВКЛ 1), banner (ВКЛ 2, see _banner), baptism, evidence and
+## spies (ВКЛ 3, see MissionFaith).
 
 enum Outcome { NONE, VICTORY, DEFEAT }
 enum Objective { ACTIVE, DONE, FAILED }
@@ -88,6 +101,23 @@ var bearer := 0
 var banner_x := 0
 var banner_y := 0
 var banner_down := -1
+## ВКЛ 3. Baptism (rules.baptism): the baptized units by id, extra faith from scripted mass
+## baptisms, and how often each church baptizes (ticks).
+var baptized: Dictionary[int, bool] = {}
+var faith_bonus := 0
+var baptism_every := 0
+## The evidence the Order gathers for the council (rules.evidence), thousandths of a point; the
+## spies on the map and the next waypoint of each; how many spies should walk now, when the next
+## one comes (-1: at once) and how many were killed; the last spell effect looked at.
+var evidence := 0
+var spies := PackedInt32Array()
+var spy_waypoint: Dictionary[int, int] = {}
+var spies_wanted := 0
+var spy_next := -1
+var spies_killed := 0
+var fx_seen := 0
+## Questions put to the player (`ask`) and not answered yet: id -> number of options.
+var choices: Dictionary[String, int] = {}
 var outcome := Outcome.NONE
 var outcome_text := ""
 ## What the interface shows, in order: {kind, tick, ...} (kind: objective, hint, dialogue,
@@ -168,6 +198,7 @@ func set_up(tick: int) -> void:
 		if not carriers.is_empty():
 			_raise_banner(carriers[0])
 	setup_buildings = economy.buildings.next_id - 1
+	baptism_every = int(def.rules.get("baptism", {}).get("every_ticks", 0))
 
 
 func _place(tick: int, p: int, type: String, cx: int, cy: int) -> int:
@@ -230,6 +261,9 @@ func step(tick: int) -> void:
 	_boats(tick)
 	_blockade(tick)
 	_banner(tick)
+	MissionFaith.baptism(self, tick)
+	MissionFaith.spies(self, tick, _spawn, _apply)
+	MissionFaith.evidence(self, tick)
 	for t: Dictionary in def.triggers:
 		var tid: String = t["id"]
 		if fired.has(tid):
@@ -299,6 +333,19 @@ func test(c: Dictionary, tid: String, tick: int) -> bool:
 		"place_held":
 			var i := int(c["place"])
 			ok = i < magic.places.count() and magic.places.holders[i] == int(c["player"])
+		"baptized":
+			ok = baptized_alive() >= int(c["count"])
+		"evidence":
+			var points := evidence / 1000
+			ok = not c.has("at_least") or points >= int(c["at_least"])
+			ok = ok and (not c.has("at_most") or points <= int(c["at_most"]))
+		"built_near":
+			ok = _built_near(c["player"], StringName(c["base"]), c["at"], c["radius"])
+		"mist_over":
+			var at: Array = c["at"]
+			ok = magic.mist.hides(c["player"], at[0], at[1], -1)
+		"chose":
+			ok = flags.has(choice_flag(c["question"], int(c["option"])))
 		"any":
 			for sub: Dictionary in c["of"]:
 				ok = ok or test(sub, tid, tick)
@@ -393,6 +440,47 @@ func run(a: Dictionary, tick: int) -> void:
 				combat.lightning(id, int(a.get("by", 0)), entities.hp[id - 1])
 		"victory", "defeat":
 			_end(a["do"] == "victory", a.get("text", ""), tick)
+		"evidence":
+			evidence = clampi(evidence + int(a["add"]) * 1000, 0, MissionFaith.evidence_max(self))
+		"faith":
+			faith_bonus += int(a["add"])
+		"baptism_rate":
+			baptism_every = int(a["every_ticks"])
+		"spies":
+			spies_wanted = int(a["count"])
+		"quench":
+			_quench(int(a["place"]), int(a["permille"]))
+		"ask":
+			choices[a["id"]] = (a["options"] as Array).size()
+			var e := a.duplicate(true)
+			e["kind"] = "choice"
+			e.erase("do")
+			e["tick"] = tick
+			events.append(e)
+		"pay":
+			var state := economy.player(a["player"])
+			if state != null:
+				var cost: Array = a["cost"]
+				for r in cost.size():
+					state.stock[r] = maxi(state.stock[r] - int(cost[r]), 0)
+		"destroy":
+			economy.destroy(named.get(a["building"], 0))
+		"name_built":
+			var b := _last_built(a["player"], StringName(a["base"]))
+			if b != 0:
+				named[a["name"]] = b
+		"assault":
+			var ids := alive_of(a["group"])
+			var b: int = named.get(a["building"], 0)
+			if not ids.is_empty() and economy.buildings.is_alive(b):
+				var owner := entities.owners[ids[0] - 1]
+				_apply.call(SimCommand.on_building(tick, owner, SimCommand.Kind.ASSAULT, ids, b))
+			elif not ids.is_empty() and a.has("else"):
+				var to: Array = a["else"]
+				var x := Fixed.from_cells(to[0]) + Fixed.HALF
+				var y := Fixed.from_cells(to[1]) + Fixed.HALF
+				var owner := entities.owners[ids[0] - 1]
+				_apply.call(SimCommand.attack_move(tick, owner, ids, x, y))
 		_:
 			push_warning("mission %s: unknown action %s" % [def.id, a["do"]])
 
@@ -559,8 +647,50 @@ func _places_held(p: int) -> int:
 	return n
 
 
+## The newest finished building of that kind of the player, or 0.
+func _last_built(p: int, base: StringName) -> int:
+	var store := economy.buildings
+	var found := 0
+	for b in store.alive_ids:
+		var s := b - 1
+		if store.owners[s] == p and store.done[s] == 1 and store.defs[s].base_id == base:
+			found = b
+	return found
+
+
+func _built_near(p: int, base: StringName, at: Array, radius: int) -> bool:
+	var store := economy.buildings
+	var x := Fixed.from_cells(at[0]) + Fixed.HALF
+	var y := Fixed.from_cells(at[1]) + Fixed.HALF
+	var r := Fixed.from_cells(radius)
+	for b in store.alive_ids:
+		var s := b - 1
+		if store.owners[s] != p or store.done[s] != 1 or store.defs[s].base_id != base:
+			continue
+		if _dist_sq(store.center_x(b) - x, store.center_y(b) - y) <= r * r:
+			return true
+	return false
+
+
 static func _dist_sq(dx: int, dy: int) -> int:
 	return dx * dx + dy * dy
+
+
+## The flag a picked option sets.
+static func choice_flag(question: String, option: int) -> String:
+	return "choice:%s:%d" % [question, option]
+
+
+## The player answers an open question (a CHOOSE command): the option's flag is set and the
+## question closes. Answers to questions that are not open, or from others, are ignored.
+func choose(p: int, question: String, option: int, tick: int) -> void:
+	if p != def.player or not choices.has(question):
+		return
+	if option < 0 or option >= choices[question]:
+		return
+	choices.erase(question)
+	flags[choice_flag(question, option)] = tick
+	events.append({"kind": "chosen", "tick": tick, "id": question, "option": option})
 
 
 # --- the mission's own rules ----------------------------------------------------------------
@@ -741,6 +871,27 @@ func _raise_banner(id: int) -> void:
 	combat.banners.bearers[id] = true
 
 
+## A place of power goes out (ВКЛ 3): `permille` of its Сила is left. At 0 it is gone for good:
+## its shrine falls and nobody holds it.
+func _quench(i: int, permille: int) -> void:
+	var places := magic.places
+	if i < 0 or i >= places.count():
+		return
+	places.quenched[i] = permille
+	if permille > 0:
+		return
+	economy.destroy(places.shrines[i])
+	places.shrines[i] = BuildingStore.NO_ID
+	places.holders[i] = 0
+	places.takers[i] = 0
+	places.progress[i] = 0
+
+
+## Living baptized units (ВКЛ 3).
+func baptized_alive() -> int:
+	return MissionFaith.baptized_alive(self)
+
+
 # --- state ----------------------------------------------------------------------------------
 
 
@@ -773,3 +924,30 @@ func write_to(buf: StreamPeerBuffer) -> void:
 			buf.put_32(id)
 	for oid in objectives:
 		buf.put_utf8_string(oid)
+	# ВКЛ 3.
+	var ids := baptized.keys()
+	ids.sort()
+	buf.put_32(ids.size())
+	for id: int in ids:
+		buf.put_32(id)
+	buf.put_32(faith_bonus)
+	buf.put_32(baptism_every)
+	buf.put_64(evidence)
+	buf.put_32(spies.size())
+	for id in spies:
+		buf.put_32(id)
+		buf.put_32(spy_waypoint.get(id, 0))
+	buf.put_32(spies_wanted)
+	buf.put_64(spy_next)
+	buf.put_32(spies_killed)
+	buf.put_32(fx_seen)
+	var open := choices.keys()
+	open.sort()
+	for q: String in open:
+		buf.put_utf8_string(q)
+		buf.put_32(choices[q])
+	var places := magic.places.quenched.keys()
+	places.sort()
+	for i: int in places:
+		buf.put_32(i)
+		buf.put_32(magic.places.quenched[i])
