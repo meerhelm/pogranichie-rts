@@ -103,10 +103,15 @@ class ValidatorTest(unittest.TestCase):
 
     def test_prototype_stays_within_two_ages(self):
         proto = json.loads((HERE / "prototype.json").read_text(encoding="utf-8"))
-        proto["units"].append("gdl_szlachta_lance")
+        proto["units"].append("gdl_hakownica")
         self.assertIn(
-            "prototype gdl_szlachta_lance: age 3 is above the prototype's ages", errors_for(CATALOG, proto)
+            "prototype gdl_hakownica: age 3 is above the prototype's ages", errors_for(CATALOG, proto)
         )
+
+    def test_mission_only_units_may_be_of_a_later_age(self):
+        proto = json.loads((HERE / "prototype.json").read_text(encoding="utf-8"))
+        self.assertIn("gdl_szlachta_lance", proto["mission_only"])
+        self.assertEqual([], [e for e in errors_for(CATALOG, proto) if "above" in e])
 
 
 class SchemaTest(unittest.TestCase):

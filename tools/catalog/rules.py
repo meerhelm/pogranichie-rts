@@ -194,6 +194,10 @@ RULES: list[Rule] = [
     (r"несёт икону", _tags("sp_icon")),
     (r"в дождь не стреляет", _tags("rain_silenced")),
     (r"отходит без потери духа", _tags("lithuanian_retreat")),
+    (r"при отходе теряет вдвое меньше духа", _tags("steady_retreat")),
+    (r"стреляет на ходу, вблизи сабля (\d+) Б", lambda sp, m, _u: (
+        sp.tag("fires_while_moving"), sp.params.update(close_melee_damage=int(m.group(1))))),
+    (r"в Державе заменяет литовское копьё", _tags()),
     (r"грабит обозы", _tags("plunders_wagons")),
     (
         r"−(\d+) урона после (\d+) с сечи",

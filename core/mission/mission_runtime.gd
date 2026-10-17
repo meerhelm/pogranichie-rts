@@ -21,11 +21,9 @@ extends RefCounted
 ##   baptized {count} (living baptized units, rules.baptism); evidence {at_least | at_most}
 ##   (whole points, rules.evidence); built_near {player, base, at, radius} (a finished building
 ##   of that kind, any time); mist_over {player, at} (the player's «Болотный туман» lies there);
-##   chose {question, option} (the player picked that option, see `ask`);
-##   group_exited also takes count (at least that many left the map); ВКЛ 4: groups_near,
-##   captured, groups_taken, spared (see MissionMarch.test);
-##   any / all {of: [...]}; not {of}; for_ticks {ticks, of} (true for that long in a row; one
-##   per trigger).
+##   chose {question, option} (see `ask`); group_exited also takes count; ВКЛ 4 and 5: see
+##   MissionMarch.test, MissionRetreat.test; any / all {of: [...]}; not {of}; for_ticks
+##   {ticks, of} (true for that long in a row; one per trigger).
 ## Actions (`do`): objective {id, text?, state? (active, done, failed), optional?}; hint {text};
 ##   dialogue {lines}; cutscene {id, at, lines}; ping {at, radius} (these four only reach the
 ##   interface through `events`); spawn {group?, player, at, units, stance?, untouchable?};
@@ -43,12 +41,12 @@ extends RefCounted
 ##   destroy {building}; name_built {player, base, name} (names the player's newest finished
 ##   building of that kind); assault {group, building, else?} (storm a named building, or
 ##   attack-move to `else` when it is gone).
-##   ВКЛ 4: merge, protect, march, morale, countdown (see MissionMarch.run).
-## Setup may also give sides: {player: lead player} (allies, Sides), age: {player: index} and
-## pop: {player: places} (population room without houses, a field camp's army).
-## Rules: hunger, boats, blockade (ВКЛ 1), banner (ВКЛ 2, see _banner), baptism, evidence and
-## spies (ВКЛ 3, see MissionFaith), supply, raids, march, capture and spare (ВКЛ 4, see
-## MissionMarch).
+##   ВКЛ 4: merge, protect, march, morale, countdown (see MissionMarch.run). ВКЛ 5: the bridge,
+##   the ford, the men brought back over the river, waves, transfer, cast (see MissionRetreat).
+## Setup may also give sides: {player: lead player} (allies, Sides), age: {player: index},
+## pop: {player: places} (population room without houses) and power (MissionRetreat). Rules:
+## hunger, boats, blockade (ВКЛ 1), banner (ВКЛ 2), baptism, evidence and spies (MissionFaith),
+## supply, raids, march, capture and spare (MissionMarch), bridge, ford, rescue, waves.
 
 enum Outcome { NONE, VICTORY, DEFEAT }
 enum Objective { ACTIVE, DONE, FAILED }
@@ -135,6 +133,8 @@ var raids := 0
 ## The panel's countdown (`countdown`): its text and the tick it ends (-1: none).
 var countdown_text := ""
 var countdown_end := -1
+## ВКЛ 5: the bridge, the ford, the rescue and the waves (MissionRetreat).
+var retreat := MissionRetreat.new()
 var outcome := Outcome.NONE
 var outcome_text := ""
 ## What the interface shows, in order: {kind, tick, ...} (kind: objective, hint, dialogue,
@@ -222,6 +222,7 @@ func set_up(tick: int) -> void:
 	setup_buildings = economy.buildings.next_id - 1
 	baptism_every = int(def.rules.get("baptism", {}).get("every_ticks", 0))
 	MissionMarch.set_up(self)
+	retreat.set_up(self)
 
 
 func _place(tick: int, p: int, type: String, cx: int, cy: int) -> int:
@@ -292,6 +293,7 @@ func step(tick: int) -> void:
 	MissionMarch.march(self, tick)
 	MissionMarch.capture(self, tick, _remove)
 	MissionMarch.spare(self, tick)
+	retreat.step(self, tick)
 	for t: Dictionary in def.triggers:
 		var tid: String = t["id"]
 		if fired.has(tid):
@@ -325,7 +327,9 @@ func test(c: Dictionary, tid: String, tick: int) -> bool:
 		"destroyed":
 			ok = not economy.buildings.is_alive(named.get(c["building"], 0))
 		"building_hp_below":
-			ok = _hp_below(named.get(c["building"], 0), int(c["permille"]))
+			var b: int = named.get(c["building"], 0)
+			var bs := economy.buildings
+			ok = bs.is_alive(b) and bs.hp[b - 1] * 1000 < bs.max_hp[b - 1] * int(c["permille"])
 		"near":
 			ok = _near(c["player"], StringName(c.get("unit", "")), c["at"], c["radius"])
 		"group_near":
@@ -391,14 +395,11 @@ func test(c: Dictionary, tid: String, tick: int) -> bool:
 			ok = counters[tid] >= int(c["ticks"])
 		_ when MissionMarch.CONDITIONS.has(c["type"]):
 			ok = MissionMarch.test(self, c)
+		_ when MissionRetreat.CONDITIONS.has(c["type"]):
+			ok = retreat.test(self, c)
 		_:
 			push_warning("mission %s: unknown condition %s" % [def.id, c["type"]])
 	return ok
-
-
-func _hp_below(b: int, permille: int) -> bool:
-	var store := economy.buildings
-	return store.is_alive(b) and store.hp[b - 1] * 1000 < store.max_hp[b - 1] * permille
 
 
 func run(a: Dictionary, tick: int) -> void:
@@ -513,6 +514,8 @@ func run(a: Dictionary, tick: int) -> void:
 				_apply.call(SimCommand.attack_move(tick, owner, ids, x, y))
 		_ when MissionMarch.ACTIONS.has(a["do"]):
 			MissionMarch.run(self, a, tick)
+		_ when MissionRetreat.ACTIONS.has(a["do"]):
+			retreat.run(self, a, tick)
 		_:
 			push_warning("mission %s: unknown action %s" % [def.id, a["do"]])
 
@@ -993,3 +996,4 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_32(i)
 		buf.put_32(magic.places.quenched[i])
 	MissionMarch.write_to(self, buf)
+	retreat.write_to(buf)

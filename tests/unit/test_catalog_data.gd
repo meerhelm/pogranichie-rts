@@ -102,9 +102,12 @@ func test_spell_and_age() -> void:
 
 func test_prototype_loads_only_prototype() -> void:
 	var proto := CatalogDB.load_prototype()
-	assert_eq(proto.factions.keys(), [&"gdl", &"to"])
+	assert_eq(proto.factions.keys(), [&"gdl", &"to", &"mo"], "Muscovy only for missions (ВКЛ 5)")
 	assert_not_null(proto.unit(&"gdl_lit_lance"))
-	assert_null(proto.unit(&"gdl_szlachta_lance"), "Держава units stay out of the prototype")
+	assert_null(proto.unit(&"gdl_hakownica"), "Держава units stay out of the prototype")
+	var late := proto.unit(&"gdl_szlachta_lance")
+	assert_true(late != null and late.campaign_only, "...but for the missions that need them")
+	assert_null(proto.tech(&"t_mo_big_regiment"), "no Muscovite techs")
 	assert_not_null(proto.unit(&"pl_kopia"), "the Crown allies of ВКЛ 2 are in")
 	assert_null(proto.unit(&"pl_hussar"))
 	for id: StringName in proto.techs:

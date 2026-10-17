@@ -335,6 +335,18 @@ GLYPHS: dict[str, dict[str, str]] = {
             + f'<circle cx="32" cy="16" r="3" fill="{R}" {O}/>'
             + "".join(f'<circle cx="{x}" cy="54" r="5" fill="{S}" {O}/>' for x in (12, 22, 42, 52))
         ),
+        # An icon before the army: a gilded icon board with a haloed face on a staff over the
+        # men, glowing.
+        "sp_icon": (
+            f'<circle cx="32" cy="20" r="18" fill="#f0d070" opacity="0.3"/>'
+            f'<rect x="30" y="34" width="4" height="26" fill="{WD}" {O}/>'
+            f'<path d="M19 36 V12 Q32 2 45 12 V36 Z" fill="{G}" {O}/>'
+            f'<path d="M23 33 V14 Q32 7 41 14 V33 Z" fill="#7a3a2a"/>'
+            f'<circle cx="32" cy="18" r="6.5" fill="#f0d070" {O}/>'
+            f'<circle cx="32" cy="19" r="3.5" fill="#d8b890"/>'
+            f'<path d="M26 33 Q32 23 38 33 Z" fill="#2a4a7a"/>'
+            + "".join(f'<circle cx="{x}" cy="56" r="5" fill="{S}" {O}/>' for x in (10, 20, 44, 54))
+        ),
         # Perkūnas's Wrath: a dark storm cloud, a lightning bolt and slanting rain.
         "sp_perkunas": (
             "".join(f'<path d="M{x} {y} l-4 9" stroke="#8fb4d8" stroke-width="1.8" opacity="0.8"/>'

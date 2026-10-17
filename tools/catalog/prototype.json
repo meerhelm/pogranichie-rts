@@ -1,6 +1,8 @@
 {
  "_comment": "What the prototype loads (plan, section 1 «Цель и объём»). The exporter is strict about these: every «Особое» clause must parse and every reference must resolve.",
  "factions": ["gdl", "to"],
+ "_mission_factions": "Factions only missions' scripted sides join as (ВКЛ 5: Muscovy). The prototype loads their FactionDef so a mission player can be of that faction, but none of their techs or buildings, and skirmish does not offer them.",
+ "mission_factions": ["mo"],
  "max_age": 2,
  "units": [
   "gdl_peasant", "gdl_spearman", "gdl_forest_archer", "gdl_light_horse", "gdl_znakharka",
@@ -13,7 +15,9 @@
   "to_wagon", "hero_vytautas", "hero_lengvenis", "hero_wallenrode", "hero_jungingen",
   "gdl_samogitian", "to_spy", "nt_pagan", "nt_pagan_priest", "hero_council_envoys",
   "hero_mikolaj", "hero_mikhail_sigismundovich", "hero_jakub_kobylany", "hero_jurij_gintovt",
-  "hero_nesselrode", "hero_kerskorf"
+  "hero_nesselrode", "hero_kerskorf",
+  "gdl_szlachta_lance", "gdl_field_gun", "mo_syn_boyarsky", "mo_boyar", "mo_inok",
+  "hero_andrei", "hero_ostrogski", "hero_shchenya"
  ],
  "buildings": [
   "gdl_town_center", "gdl_house", "gdl_granary", "gdl_farm", "gdl_lumber_yard", "gdl_mine",
@@ -24,8 +28,9 @@
   "to_market", "to_smithy", "to_temple", "to_siege_workshop", "to_castle", "to_brickworks",
   "gdl_field_camp"
  ],
- "_mission_only": "Prototype units only missions use: exported as campaign_only, so skirmish build menus and the AI leave them out (ВКЛ 2 Грюнвальд).",
+ "_mission_only": "Prototype units only missions use: exported as campaign_only, so skirmish build menus and the AI leave them out (ВКЛ 2 Грюнвальд). They may be of a later age than max_age (ВКЛ 5 Ведроша: Держава), since nobody trains them.",
  "mission_only": ["nt_steppe_archer", "pl_kopia", "pl_spearman", "pl_crossbow", "to_guest_knight", "to_bombard", "to_wagon",
-  "gdl_samogitian", "to_spy", "nt_pagan", "nt_pagan_priest", "hero_council_envoys"],
- "spells": ["sp_bog_mist", "sp_consecration", "sp_exorcism", "sp_relic", "sp_perkunas"]
+  "gdl_samogitian", "to_spy", "nt_pagan", "nt_pagan_priest", "hero_council_envoys",
+  "gdl_szlachta_lance", "gdl_field_gun", "mo_syn_boyarsky", "mo_boyar", "mo_inok"],
+ "spells": ["sp_bog_mist", "sp_consecration", "sp_exorcism", "sp_relic", "sp_perkunas", "sp_icon"]
 }

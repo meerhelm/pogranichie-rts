@@ -88,6 +88,9 @@ func _fill() -> void:
 		SkirmishVictory.Reason.MISSION:
 			why = tr(v.message)
 	_reason.text = "%s %s" % [why, tr("Game time: %s") % UiText.clock(v.end_tick + 1)]
+	var m := _sim.mission
+	if m != null and m.def.rules.has("rescue"):
+		_reason.text += "\n" + tr("Brought back over the river: %d") % m.retreat.saved(m)
 	_watch.text = tr("Keep watching")
 	_to_menu.text = tr("Main menu")
 	_quit.text = tr("Quit")

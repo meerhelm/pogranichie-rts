@@ -13,6 +13,8 @@ extends RefCounted
 ##     beyond VisionRulesDef.cover_reveal_cells, a unit until it attacks (MistField);
 ##   relic («Реликвия в строю»): the caster's units near it do not fall below relic_morale_floor
 ##     morale while above it; others' units coming near lose relic_enemy_morale once;
+##   icon («Икона перед войском»): like a relic carried by the caster, the caster's units near it
+##     do not fall below icon_morale_floor percent of their full morale (nobody else is shaken);
 ##   dispel («Экзорцизм»): others' spell effects touching its circle end; others' creatures in
 ##     it lose exorcism_creature_damage HP and are driven off;
 ##   storm («Гнев Перкуна»): storm_strikes lightning bolts of storm_damage HP hit the heaviest
@@ -232,7 +234,7 @@ func _cast(id: int, spell: SpellDef, x: int, y: int) -> void:
 		_dispel(p, x, y, r)
 	elif spell.tags.has(&"mist"):
 		_add_effect(spell, p, 0, x, y, r)
-	elif spell.tags.has(&"relic"):
+	elif spell.tags.has(&"relic") or spell.tags.has(&"icon"):
 		_add_effect(spell, p, id, entities.pos_x[slot], entities.pos_y[slot], r)
 	elif spell.tags.has(&"storm"):
 		_add_effect(spell, p, 0, x, y, r)
@@ -448,19 +450,29 @@ func _sync_mist() -> void:
 			)
 
 
-## For CombatSystem.morale_floor: inside a relic of its own side a unit keeps at least
-## relic_morale_floor morale while it has more.
+## For CombatSystem.morale_floor: inside a relic (or an icon) of its own side a unit keeps at
+## least relic_morale_floor morale (icon_morale_floor percent of its full) while it has more;
+## the highest counts.
 func morale_floor(slot: int) -> int:
 	var owner := entities.owners[slot]
+	var best := 0
 	for i in fx_ids.size():
-		if fx_owner[i] != owner or not spells[fx_spell[i]].tags.has(&"relic"):
+		if fx_owner[i] != owner:
+			continue
+		var tags := spells[fx_spell[i]].tags
+		var floor_points := 0
+		if tags.has(&"relic"):
+			floor_points = rules.relic_morale_floor
+		elif tags.has(&"icon") and combat.defs[slot] != null:
+			floor_points = combat.defs[slot].morale * rules.icon_morale_floor / 100
+		if floor_points <= best:
 			continue
 		var r := Fixed.from_cells(fx_radius[i])
 		var dx := entities.pos_x[slot] - fx_x[i]
 		var dy := entities.pos_y[slot] - fx_y[i]
 		if dx * dx + dy * dy <= r * r:
-			return rules.relic_morale_floor
-	return 0
+			best = floor_points
+	return best
 
 
 ## Once a second each healer gives its HP a second to every hurt unit of its side in reach.

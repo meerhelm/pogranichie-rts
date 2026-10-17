@@ -57,6 +57,7 @@ MAGIC_RULE_KEYS = (
     "capture_ticks", "capture_radius", "power_cap", "consecration_permille",
     "alka_recharge_permille", "alka_recharge_radius", "cast_range", "relic_morale_floor",
     "relic_enemy_morale", "exorcism_creature_damage", "storm_strikes", "storm_damage",
+    "icon_morale_floor",
 )
 # Skirmish victory (M8), in data/rules/skirmish.tres; values from manual.json.
 SKIRMISH_RULE_KEYS = ("hold_all_places_ticks",)
@@ -68,7 +69,7 @@ FIRE_RULE_KEYS = (
 # What a spell does in the game (manual.json → spell_effects, appended to SpellDef.tags): how it
 # is aimed and which effect the simulation runs. A prototype spell must have both or be passive.
 SPELL_TARGETS = ("target_point", "target_self", "passive")
-SPELL_EFFECTS = ("mist", "dispel", "relic", "consecration", "storm")
+SPELL_EFFECTS = ("mist", "dispel", "relic", "icon", "consecration", "storm")
 # Keys of tech effects (manual.json → tech_effects). Gathering and farm keys are per-mille
 # increases; "<class or unit id>.<stat>" keys change unit stats (see TECH_STATS).
 TECH_EFFECT_KEYS = (
@@ -1004,7 +1005,9 @@ class Builder:
                 if eid not in table:
                     self.rep.error(f"prototype {key}", f"unknown id {eid!r}")
                     continue
-                if table[eid].get("age", 0) > self.proto["max_age"]:
+                # Mission-only units are never trained, so they may be of a later age.
+                late_ok = eid in self.proto.get("mission_only", [])
+                if table[eid].get("age", 0) > self.proto["max_age"] and not late_ok:
                     self.rep.error(
                         f"prototype {eid}", f"age {table[eid]['age']} is above the prototype's ages"
                     )
@@ -1042,7 +1045,7 @@ class Builder:
             ages=sorted(self.ages),
             power_places=sorted(self.power_places),
             terrains=sorted(self.terrains),
-            prototype_factions=list(self.proto["factions"]),
+            prototype_factions=list(self.proto["factions"]) + list(self.proto.get("mission_factions", [])),
             prototype_units=sorted(self.proto["units"]),
             prototype_buildings=sorted(self.proto["buildings"]),
             prototype_techs=self.prototype_techs(),

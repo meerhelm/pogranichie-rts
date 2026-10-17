@@ -1,0 +1,320 @@
+{
+ "_comment": "Mission «ВКЛ 5. Ведроша, 1500» (mission card in the missions doc, docs/03-missions/07-gdl_05_vedrosha_1500.md). A battle that cannot be won: player 1 is Andrei Gintovt's banner in Prince Konstanty Ostrogski's army (player 3, an ally that does not take orders), against Muscovy (player 2: the forward regiment west of the Trosna, the Large Regiment on Mitkovo field, the ambush regiment hidden in the forest on the north flank, Shchenya's camp in the east). The forward regiment is beaten and the army crosses the one bridge; after the battle on the field the ambush strikes, its axemen bring the bridge down, and the player brings what men he can back over the ford below it while the hetman's ring holds. Rules (core/mission/mission_retreat.gd): the bridge, the ford, the rescue count, the Muscovite waves; captives (MissionMarch) are now taken from the player. Muscovy joins as faction mo, the allies as gdl; they have no economy. Read by core/mission/mission_def.gd; cells are map cells, ticks 1/20 s, texts are English keys translated through i18n/*.po.",
+ "id": "gdl_05",
+ "title": "GDL 5. Vedrosha, 1500",
+ "map": "map_gdl_05",
+ "player": 1,
+ "players": [[1, "gdl"], [2, "mo"], [3, "gdl"]],
+ "camera": [26, 52],
+ "difficulties": ["easy", "normal"],
+ "briefing": {
+  "place": "Mitkovo field on the rivers Vedrosha and Trosna, near Dorogobuzh. 14 July 1500.",
+  "story": "In the spring of 1500 border princes went over to Ivan III with their lands, and war began. In May the Muscovites of Yuri Koshkin took Dorogobuzh. Hetman Prince Konstanty Ostrogski has come from Smolensk through Yelnya to win it back; Prince Daniil Shchenya has joined the Muscovite army and leads it now. Their camp stands on Mitkovo field beyond the Trosna, and there is one bridge over the Trosna. Andrei Gintovt, of the family's younger branch on the Dnieper, carries his banner for the first time.",
+  "goal": "Scout the way to the Trosna, beat the forward regiment and take the bridge, hold the right edge of the line on Mitkovo field, and when it all goes wrong, bring your men and your banner back over the river.",
+  "lose": [
+   "Andrei Gintovt falls or is left on the far bank",
+   "Fewer than 5 units come back over the river"
+  ]
+ },
+ "setup": {
+  "sides": {"1": 1, "3": 1, "2": 2},
+  "age": {"1": 2, "2": 2},
+  "pop": {"1": 80},
+  "power": {"2": 300},
+  "stock": {"1": [300, 300, 100, 60], "2": [0, 0, 0, 0], "3": [0, 0, 0, 0]},
+  "locked": {
+   "1": ["gdl_town_center", "gdl_house", "gdl_granary", "gdl_farm", "gdl_lumber_yard", "gdl_mine", "gdl_barracks", "gdl_palisade", "gdl_zaseka", "gdl_siege_workshop", "gdl_bort", "gdl_gate", "gdl_tower", "gdl_temple", "gdl_field_camp", "gdl_lit_lance", "gdl_forest_archer"]
+  },
+  "buildings": [
+   {"name": "camp", "player": 1, "type": "gdl_field_camp", "at": [20, 58]}
+  ],
+  "groups": [
+   {"name": "andrei", "player": 1, "units": [["hero_andrei", 1]], "at": [27, 52]},
+   {"name": "lances", "player": 1, "units": [["gdl_szlachta_lance", 10]], "at": [30, 54]},
+   {"name": "riders", "player": 1, "units": [["gdl_light_horse", 12]], "at": [30, 45]},
+   {"name": "strelets", "player": 1, "units": [["gdl_castle_archer", 8]], "at": [24, 46]},
+   {"name": "znakharka", "player": 1, "units": [["gdl_znakharka", 1]], "at": [23, 52]},
+   {"name": "servants", "player": 1, "units": [["gdl_camp_servant", 8]], "at": [14, 54]},
+   {"name": "ostrogski", "player": 3, "stance": "defensive", "units": [["hero_ostrogski", 1]], "at": [16, 48]},
+   {"name": "hetman_guard", "player": 3, "stance": "defensive", "units": [["gdl_szlachta_lance", 6]], "at": [12, 46]},
+   {"name": "host_lances", "player": 3, "stance": "defensive", "units": [["gdl_szlachta_lance", 16]], "at": [6, 40]},
+   {"name": "host_riders", "player": 3, "stance": "defensive", "units": [["gdl_light_horse", 16]], "at": [6, 58]},
+   {"name": "orphans", "player": 3, "stance": "defensive", "units": [["gdl_light_horse", 4]], "at": [12, 62]},
+   {"name": "guns", "player": 3, "stance": "stand", "units": [["gdl_field_gun", 2]], "at": [10, 52]},
+   {"name": "train", "player": 3, "stance": "stand", "units": [["gdl_wagon", 4]], "at": [4, 52]},
+   {"name": "forward", "player": 2, "stance": "defensive", "units": [["mo_syn_boyarsky", 15]], "at": [57, 44]},
+   {"name": "main", "player": 2, "stance": "defensive", "units": [["mo_syn_boyarsky", 36], ["mo_boyar", 10]], "at": [118, 46]},
+   {"name": "icon", "player": 2, "stance": "passive", "units": [["mo_inok", 1]], "at": [126, 50]},
+   {"name": "ambush", "player": 2, "stance": "passive", "untouchable": true, "units": [["mo_syn_boyarsky", 16], ["mo_boyar", 6]], "at": [96, 13]},
+   {"name": "axemen", "player": 2, "stance": "passive", "untouchable": true, "units": [["mo_syn_boyarsky", 8]], "at": [110, 15]},
+   {"name": "shchenya", "player": 2, "stance": "passive", "untouchable": true, "units": [["hero_shchenya", 1], ["mo_boyar", 8]], "at": [150, 47]}
+  ]
+ },
+ "rules": {
+  "supply": {"player": 1, "building": "camp", "every_ticks": 1200, "amount": [60, 40, 20, 10]},
+  "capture": {"player": 2, "players": [1], "morale_permille": 200, "radius": 3},
+  "bridge": {"cells": [71, 49, 73, 50], "at": [75, 49], "radius": 4, "hp": 1000, "group": "axemen", "per_unit": 1, "fall_ticks": 3000},
+  "ford": {"cells": [71, 74, 73, 75], "capacity": 2, "drown_permille": 150},
+  "rescue": {"player": 1, "east_of": 75, "west_of": 68},
+  "waves": {"player": 2, "units": [["mo_syn_boyarsky", 6]], "at": [158, 54], "to": [96, 54], "every_ticks": 1800}
+ },
+ "triggers": [
+  {
+   "id": "defeat_andrei",
+   "when": {"type": "group_dead", "group": "andrei"},
+   "do": [
+    {"do": "defeat", "text": "Andrei Gintovt has fallen. His banner has nobody to carry it home."}
+   ]
+  },
+  {
+   "id": "1.1",
+   "when": {"type": "start"},
+   "do": [
+    {"do": "merge", "group": "host", "of": ["host_lances", "host_riders", "orphans"]},
+    {"do": "merge", "group": "moscow", "of": ["main", "forward"]},
+    {"do": "protect", "group": "ostrogski"},
+    {"do": "rally", "player": 1, "at": [26, 54]},
+    {"do": "cutscene", "id": "review_at_yelnya", "at": [22, 50], "lines": [["Chronicler", "The old branch of our family stayed in Samogitia and Vilnius. The younger went to the Dnieper, became Orthodox and served the princes. Andrei Gintovt was of the younger branch. That year he was twenty, and he carried the banner for the first time."], ["hero_ostrogski", "Whose banner?"], ["hero_andrei", "The Gintovts', prince. From the Dnieper."], ["hero_ostrogski", "You hold it young. Never mind, hold it tighter. Moscow has taken Dorogobuzh and thinks we will not come. Send two men ahead to the river. I want to know what is there."]]},
+    {"do": "objective", "id": "scout", "text": "Scout the way to the Trosna"},
+    {"do": "objective", "id": "spot", "optional": true, "text": "Find the ambush before it strikes"},
+    {"do": "hint", "text": "Send light horse east along the road. Camp servants can put up a stable, an archery range and an alka at the field camp; the wagons bring food, wood, iron and silver every minute. You can hire only until the battle begins."},
+    {"do": "ping", "at": [50, 49], "radius": 4}
+   ]
+  },
+  {
+   "id": "1.2",
+   "when": {"type": "any", "of": [{"type": "near", "player": 1, "at": [56, 48], "radius": 12}, {"type": "after", "trigger": "1.1", "ticks": 7200}]},
+   "do": [
+    {"do": "objective", "id": "scout", "state": "done"},
+    {"do": "dialogue", "id": "forward_regiment", "lines": [["Scout", "Lord standard-bearer, they stand on this side of the Trosna, before the bridge. Horse with bows, a regiment of them."], ["hero_andrei", "That is their forward regiment. Tell the prince."]]},
+    {"do": "objective", "id": "forward", "text": "Beat the forward regiment and take the bridge"},
+    {"do": "stance", "group": "host", "stance": "aggressive"},
+    {"do": "attack_move", "group": "host_lances", "to": [56, 44]},
+    {"do": "attack_move", "group": "host_riders", "to": [56, 50]},
+    {"do": "attack_move", "group": "orphans", "to": [54, 52]},
+    {"do": "move", "group": "ostrogski", "to": [44, 50]},
+    {"do": "move", "group": "hetman_guard", "to": [42, 48]},
+    {"do": "hint", "text": "Prince Ostrogski's army goes for the forward regiment. Strike it with him; horse archers shoot as they ride and fall back easily."},
+    {"do": "ping", "at": [57, 46], "radius": 6}
+   ]
+  },
+  {
+   "id": "2",
+   "when": {"type": "all", "of": [{"type": "not", "of": {"type": "fired", "trigger": "6"}}, {"type": "any", "of": [{"type": "near", "player": 1, "unit": "gdl_light_horse", "at": [101, 16], "radius": 10}, {"type": "near", "player": 1, "at": [101, 16], "radius": 6}, {"type": "near", "player": 1, "at": [110, 16], "radius": 6}]}]},
+   "do": [
+    {"do": "objective", "id": "spot", "state": "done"},
+    {"do": "flag", "flag": "spotted"},
+    {"do": "dialogue", "id": "horses_in_forest", "lines": [["Scout", "Lord standard-bearer! Horses in the forest. Many of them, saddled."], ["hero_andrei", "Ride to the prince. Quickly."], ["Scout", "The prince says: he has seen. And that we are to hold the right edge."]]},
+    {"do": "ping", "at": [100, 16], "radius": 8}
+   ]
+  },
+  {
+   "id": "3",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "1.2"}, {"type": "group_alive_at_most", "group": "forward", "count": 6}]},
+   "do": [
+    {"do": "objective", "id": "forward", "state": "done"},
+    {"do": "dialogue", "id": "they_run", "lines": [["Nobleman", "They run! Moscow runs!"], ["hero_andrei", "They are not running. They are leaving. See how evenly? Hold the line!"]]},
+    {"do": "stance", "group": "forward", "stance": "passive"},
+    {"do": "move", "group": "forward", "to": [122, 52]},
+    {"do": "attack_move", "group": "host_lances", "to": [104, 46]},
+    {"do": "attack_move", "group": "host_riders", "to": [104, 54]},
+    {"do": "attack_move", "group": "orphans", "to": [104, 58]},
+    {"do": "move", "group": "ostrogski", "to": [88, 50]},
+    {"do": "move", "group": "hetman_guard", "to": [86, 48]},
+    {"do": "move", "group": "guns", "to": [80, 52]},
+    {"do": "lock", "player": 1, "items": ["gdl_light_horse", "gdl_castle_archer", "gdl_znakharka", "gdl_stable", "gdl_range", "gdl_shrine"]},
+    {"do": "objective", "id": "right", "text": "Hold the right edge of the line on Mitkovo field"},
+    {"do": "hint", "text": "The army crosses the bridge onto Mitkovo field. Your place is the right edge of the line, towards the Dnieper. There is no more hiring: the battle has begun."},
+    {"do": "ping", "at": [100, 68], "radius": 8}
+   ]
+  },
+  {
+   "id": "4",
+   "when": {"type": "after", "trigger": "3", "ticks": 600},
+   "do": [
+    {"do": "stance", "group": "moscow", "stance": "aggressive"},
+    {"do": "attack_move", "group": "moscow", "to": [96, 52]},
+    {"do": "waves", "on": true}
+   ]
+  },
+  {
+   "id": "5",
+   "when": {"type": "after", "trigger": "3", "ticks": 900},
+   "do": [
+    {"do": "move", "group": "icon", "to": [112, 52]},
+    {"do": "dialogue", "id": "icon", "lines": [["Chronicler", "Over the Muscovite ranks they raised an icon, and singing came across the field."], ["Nobleman", "They have an icon, and we have an icon. Whom will God help, then?"], ["hero_andrei", "Whoever stands longer."]]},
+    {"do": "hint", "text": "«An icon before the army»: Muscovite men near the icon do not lose heart below half. The chronicler calls it no miracle: men with an icon at their backs stand firmer."}
+   ]
+  },
+  {
+   "id": "5.1",
+   "when": {"type": "after", "trigger": "5", "ticks": 200},
+   "do": [
+    {"do": "cast", "group": "icon", "spell": "sp_icon"}
+   ]
+  },
+  {
+   "id": "5.2",
+   "when": {"type": "after", "trigger": "5", "ticks": 3800},
+   "do": [
+    {"do": "cast", "group": "icon", "spell": "sp_icon"},
+    {"do": "hint", "text": "The sun goes down to the west, the shadows grow long. Moscow brings fresh men into the field again and again."}
+   ]
+  },
+  {
+   "id": "5.3",
+   "when": {"type": "after", "trigger": "5", "ticks": 7400},
+   "do": [
+    {"do": "cast", "group": "icon", "spell": "sp_icon"}
+   ]
+  },
+  {
+   "id": "warn",
+   "when": {"type": "all", "of": [{"type": "flag", "flag": "spotted"}, {"type": "after", "trigger": "3", "ticks": 9000}]},
+   "do": [
+    {"do": "hint", "text": "The horses in the forest are moving! The ambush will strike in half a minute."},
+    {"do": "ping", "at": [96, 26], "radius": 8}
+   ]
+  },
+  {
+   "id": "6",
+   "when": {"type": "after", "trigger": "3", "ticks": 9600},
+   "do": [
+    {"do": "unprotect", "group": "ambush"},
+    {"do": "stance", "group": "ambush", "stance": "aggressive"},
+    {"do": "attack_move", "group": "ambush", "to": [86, 48]},
+    {"do": "morale", "group": "host", "permille": 400},
+    {"do": "objective", "id": "spot", "state": "failed"},
+    {"do": "cutscene", "id": "forest_moves", "at": [92, 30], "lines": [["Chronicler", "Evening was coming. Out of the forest on the flank, without trumpets or shouting, came fresh hundreds. They had stood in the forest all day. All day they had watched the others fight, and waited until ours were tired."], ["hero_andrei", "To the bridge! Everyone to the bridge!"]]}
+   ]
+  },
+  {
+   "id": "right_held",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "6"}, {"type": "not", "of": {"type": "fired", "trigger": "right_lost"}}, {"type": "near", "player": 1, "at": [100, 68], "radius": 14}]},
+   "do": [
+    {"do": "objective", "id": "right", "state": "done"}
+   ]
+  },
+  {
+   "id": "right_lost",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "6"}, {"type": "not", "of": {"type": "fired", "trigger": "right_held"}}]},
+   "do": [
+    {"do": "objective", "id": "right", "state": "failed"}
+   ]
+  },
+  {
+   "id": "7",
+   "when": {"type": "after", "trigger": "6", "ticks": 300},
+   "do": [
+    {"do": "unprotect", "group": "axemen"},
+    {"do": "stance", "group": "axemen", "stance": "stand"},
+    {"do": "move", "group": "axemen", "to": [76, 49]},
+    {"do": "bridge", "on": true},
+    {"do": "move", "group": "host", "to": [80, 50]},
+    {"do": "move", "group": "ostrogski", "to": [80, 52]},
+    {"do": "move", "group": "hetman_guard", "to": [80, 54]},
+    {"do": "objective", "id": "out", "text": "Bring your men and the banner back over the river"},
+    {"do": "objective", "id": "fifteen", "optional": true, "text": "Bring back at least 15 units"},
+    {"do": "hint", "text": "Axemen ride for the bridge with axes and fire. Drive them off to win time: the bridge cannot be saved, but every minute brings more men over it."},
+    {"do": "ping", "at": [76, 49], "radius": 4}
+   ]
+  },
+  {
+   "id": "8",
+   "when": {"type": "bridge_down"},
+   "do": [
+    {"do": "dialogue", "id": "to_the_ford", "lines": [["Chronicler", "A crash. A span of the bridge fell into the water, and the men on it with it."], ["hero_andrei", "There is a ford lower down, I watered my horse there! Two at a time, not in a crowd! Whoever goes in all at once will drown."]]},
+    {"do": "ford", "on": true},
+    {"do": "waves", "on": false},
+    {"do": "transfer", "group": "orphans", "player": 1},
+    {"do": "objective", "id": "orphans", "optional": true, "text": "Bring out the banner that lost its standard-bearer"},
+    {"do": "move", "group": "ostrogski", "to": [79, 52]},
+    {"do": "move", "group": "hetman_guard", "to": [80, 53]},
+    {"do": "protect", "group": "hetman_guard"},
+    {"do": "spawn", "group": "ring", "player": 2, "stance": "aggressive", "at": [88, 56], "units": [["mo_syn_boyarsky", 12]]},
+    {"do": "attack_move", "group": "ring", "to": [80, 52]},
+    {"do": "countdown", "text": "The hetman's ring holds: %s", "ticks": 6000},
+    {"do": "hint", "text": "The ford lies below the bridge, towards the Dnieper. No more than two in it at once: whoever crowds in drowns. Leave a rearguard on the near bank. Four light horse whose standard-bearer fell have joined you."},
+    {"do": "ping", "at": [72, 74], "radius": 4}
+   ]
+  },
+  {
+   "id": "9",
+   "when": {"type": "after", "trigger": "8", "ticks": 200},
+   "do": [
+    {"do": "dialogue", "id": "lead_the_men", "lines": [["hero_andrei", "Prince, there is a ford lower down. Come with us."], ["hero_ostrogski", "The hetman leaves last, standard-bearer. Lead your men away. That is an order."]]}
+   ]
+  },
+  {
+   "id": "9.1",
+   "when": {"type": "after", "trigger": "8", "ticks": 600},
+   "do": [
+    {"do": "merge", "group": "pursuit", "of": ["moscow", "ambush"]},
+    {"do": "attack_move", "group": "pursuit", "to": [80, 72]}
+   ]
+  },
+  {
+   "id": "drowning",
+   "when": {"type": "flag", "flag": "crowding"},
+   "do": [
+    {"do": "hint", "text": "Men are drowning in the ford! Send them across two at a time."}
+   ]
+  },
+  {
+   "id": "10",
+   "when": {"type": "after", "trigger": "8", "ticks": 6000},
+   "do": [
+    {"do": "countdown", "ticks": 0},
+    {"do": "cutscene", "id": "horse_under_hetman", "at": [79, 52], "lines": [["Chronicler", "By the broken bridge the ring of Muscovite horse closed in. The bodyguards fell one after another. An arrow struck the hetman's horse, and it went down on its side. Ostrogski, wounded, rose to one knee with his sabre. The boyars' sons stood round him, and none struck: such a captive is taken alive."], ["Muscovite centurion", "Prince, give up your sabre. We will take you to the voivodes with honour."], ["Chronicler", "Ostrogski looked across the river, to the ford, where the last of Andrei's riders were coming out on the far bank. Then he gave up his sabre, hilt first. Who exactly took the hetman the Muscovite lists do not say. They say only that he was wounded and was taken to the sovereign in chains."]]},
+    {"do": "stance", "group": "ostrogski", "stance": "passive"},
+    {"do": "move", "group": "ostrogski", "to": [150, 50]},
+    {"do": "exit", "group": "ostrogski", "at": [150, 50], "radius": 3},
+    {"do": "kill", "group": "hetman_guard", "by": 2}
+   ]
+  },
+  {
+   "id": "fifteen_done",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "10"}, {"type": "saved", "at_least": 15}]},
+   "do": [
+    {"do": "objective", "id": "fifteen", "state": "done"}
+   ]
+  },
+  {
+   "id": "orphans_done",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "10"}, {"type": "saved", "group": "orphans", "at_least": 2}]},
+   "do": [
+    {"do": "objective", "id": "orphans", "state": "done"}
+   ]
+  },
+  {
+   "id": "11",
+   "when": {"type": "after", "trigger": "10", "ticks": 100},
+   "do": [
+    {"do": "objective", "id": "fifteen", "state": "failed"},
+    {"do": "objective", "id": "orphans", "state": "failed"},
+    {"do": "cutscene", "id": "the_list", "at": [40, 72], "lines": [["Chronicler", "Night. The far bank. Wet men sit by a fire without their horses. Andrei dries the banner. Beyond the river there are torches: they are gathering the captives."], ["Chronicler", "That day they took the hetman captive, Prince Konstanty, wounded. And with him Marshal Hryhory Ostikovich, Marshal Litavor Khreptovich, the princes Drutsky and Mosalsky and many others. The wagons and the guns stayed beyond the river."], ["Nobleman", "How many of us are there?"], ["hero_andrei", "As many as there are. We will count in the morning."], ["Chronicler", "Seven years the hetman was in Muscovite captivity. Andrei said later that all those years he thought of the ford: he had shown it to his men, and he had not managed to show it to the prince."]]}
+   ]
+  },
+  {
+   "id": "defeat_left",
+   "when": {"type": "all", "of": [{"type": "after", "trigger": "11", "ticks": 100}, {"type": "not", "of": {"type": "saved", "group": "andrei", "at_least": 1}}]},
+   "do": [
+    {"do": "defeat", "text": "Andrei Gintovt stayed on the far bank and was taken captive along with the hetman."}
+   ]
+  },
+  {
+   "id": "defeat_few",
+   "when": {"type": "all", "of": [{"type": "after", "trigger": "11", "ticks": 100}, {"type": "not", "of": {"type": "saved", "at_least": 5}}]},
+   "do": [
+    {"do": "defeat", "text": "Fewer than five units came back over the Trosna. Andrei's banner is no more."}
+   ]
+  },
+  {
+   "id": "victory",
+   "when": {"type": "after", "trigger": "11", "ticks": 100},
+   "do": [
+    {"do": "victory", "text": "The battle on the Vedrosha is lost, but Andrei has brought his men back over the Trosna."}
+   ]
+  }
+ ]
+}

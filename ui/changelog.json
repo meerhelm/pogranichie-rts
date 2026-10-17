@@ -2,6 +2,33 @@
 	"_comment": "What each build has. Newest version first; the first entry must match application/config/version in project.godot. Every new build: bump the version there and in export_presets.cfg, add an entry on top. Texts per game language; a missing language falls back to en.",
 	"versions": [
 		{
+			"version": "0.0.3",
+			"date": "2026-10-17",
+			"items": [
+				{
+					"en": "New campaign mission «GDL 5. Vedrosha, 1500»: a lost battle where the goal is to bring your men back over the Trosna before the bridge falls.",
+					"be": "Новая місія кампаніі «ВКЛ 5. Ведраша, 1500»: прайграная бітва, дзе мэта — вывесці сваіх людзей праз Трасну, пакуль не абрынуўся мост.",
+					"pl": "Nowa misja kampanii «WKL 5. Wiedrosza, 1500»: przegrana bitwa, w której celem jest wyprowadzić swoich ludzi za Trosnę, zanim runie most.",
+					"uk": "Нова місія кампанії «ВКЛ 5. Ведроша, 1500»: програна битва, де мета — вивести своїх людей за Тросну, поки не впав міст.",
+					"lt": "Nauja kampanijos misija «LDK 5. Vedroša, 1500»: pralaimėtas mūšis, kuriame tikslas — išvesti savo žmones per Trosną, kol neįgriuvo tiltas."
+				},
+				{
+					"en": "Muscovy takes the field: boyar's sons, boyars with their households, a monk with an icon that keeps the army from breaking.",
+					"be": "На поле выходзіць Масква: сыны баярскія, баяры з дваровымі, інак з абразам, які не дае войску пабегчы.",
+					"pl": "Na pole wychodzi Moskwa: synowie bojarscy, bojarzy z dworzanami, mnich z ikoną, która nie pozwala wojsku pierzchnąć.",
+					"uk": "На поле виходить Москва: сини боярські, бояри з двірськими, інок з іконою, що не дає війську побігти.",
+					"lt": "Į lauką išeina Maskva: bajorų sūnūs, bajorai su dvariškiais, vienuolis su ikona, neleidžiančia kariuomenei bėgti."
+				},
+				{
+					"en": "A bridge that can be brought down, a narrow ford where men drown if they crowd, and a count of the men brought back.",
+					"be": "Мост, які можна абрынуць, вузкі брод, дзе тонуць, калі ціснуцца, і лік выведзеных людзей.",
+					"pl": "Most, który można zwalić, wąski bród, w którym toną, gdy się tłoczą, i licznik wyprowadzonych ludzi.",
+					"uk": "Міст, який можна обвалити, вузький брід, де тонуть, коли тиснуться, і лік виведених людей.",
+					"lt": "Tiltas, kurį galima sugriauti, siauras brastas, kuriame skęstama susigrūdus, ir išvestų žmonių skaičius."
+				}
+			]
+		},
+		{
 			"version": "0.0.2",
 			"date": "2026-10-17",
 			"items": [

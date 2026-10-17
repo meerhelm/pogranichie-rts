@@ -8,7 +8,8 @@ extends SceneTree
 ##     [--parity 1]
 ##   godot --headless -s tools/sim/sim_cli.gd -- aivsai --games 20 --difficulty normal --out g.csv
 ##   godot --headless -s tools/sim/sim_cli.gd -- mission --out m9.json
-##     [--mission gdl_01|gdl_02|gdl_03|gdl_04] [--difficulty normal] [--ticks 90000] [--every 200]
+##     [--mission gdl_01|gdl_02|gdl_03|gdl_04|gdl_05] [--difficulty normal] [--ticks 90000]
+##     [--every 200]
 ##     (MissionBot plays the campaign mission until it is over; fails unless it is won)
 ## record, determinism and bench take --map <map id> (see MapText); without it, open grass;
 ## and --economy 1 to have the fuzzer play the economy too (players, buildings, gathering);
@@ -125,6 +126,8 @@ func _mission(opts: Dictionary) -> int:
 					bots.append(BaptismBot.new(sim))
 				"gdl_04":
 					bots.append(VilkomirBot.new(sim))
+				"gdl_05":
+					bots.append(VedroshaBot.new(sim))
 				_:
 					bots.append(MissionBot.new(sim))
 		bots[0].call(&"think")

@@ -206,7 +206,7 @@
   }
  },
  "magic_rules": {
-  "_source": "Places of power and spells (M7). capture_ticks (15 s) and power_cap: plan M7 «захват 15 секунд без чужих в радиусе», «потолок 500». consecration_permille: «Магия и места силы» → Орденская часовня «вдвое меньше». alka_recharge_permille: Алка «знахарки рядом перезаряжаются на 20% быстрее». relic_morale_floor and relic_enemy_morale: sp_relic «Свои не бегут, пока дух выше 10; враги рядом −10 духа». exorcism_creature_damage: sp_exorcism «существо теряет 150 HP». storm_strikes and storm_damage: sp_perkunas «3 молнии по 80 урона в самые тяжёлые цели». Keys in `_temporary` are not in the catalog: capture_radius (cells around the site), alka_recharge_radius («рядом»), cast_range (how far from the caster a spell aimed at a point may land).",
+  "_source": "Places of power and spells (M7). capture_ticks (15 s) and power_cap: plan M7 «захват 15 секунд без чужих в радиусе», «потолок 500». consecration_permille: «Магия и места силы» → Орденская часовня «вдвое меньше». alka_recharge_permille: Алка «знахарки рядом перезаряжаются на 20% быстрее». relic_morale_floor and relic_enemy_morale: sp_relic «Свои не бегут, пока дух выше 10; враги рядом −10 духа». exorcism_creature_damage: sp_exorcism «существо теряет 150 HP». storm_strikes and storm_damage: sp_perkunas «3 молнии по 80 урона в самые тяжёлые цели». icon_morale_floor: sp_icon «Дух отрядов рядом с иконой не падает ниже 50», read as percent of full morale, as the ВКЛ 5 card puts it («не падает ниже половины»). Keys in `_temporary` are not in the catalog: capture_radius (cells around the site), alka_recharge_radius («рядом»), cast_range (how far from the caster a spell aimed at a point may land).",
   "_temporary": ["capture_radius", "alka_recharge_radius", "cast_range"],
   "values": {
    "capture_ticks": 300,
@@ -220,7 +220,8 @@
    "relic_enemy_morale": 10,
    "exorcism_creature_damage": 150,
    "storm_strikes": 3,
-   "storm_damage": 80
+   "storm_damage": 80,
+   "icon_morale_floor": 50
   }
  },
  "skirmish_rules": {
@@ -256,14 +257,15 @@
    "lady": ["hero"],
    "civilian": ["hero", "civilian"]
   },
-  "factions": {"hero_gintaut": "gdl", "hero_rumbaudas": "gdl", "hero_keeper": "gdl", "hero_kuchmeister": "to", "hero_vytautas": "gdl", "hero_lengvenis": "gdl", "hero_wallenrode": "to", "hero_jungingen": "to", "hero_council_envoys": "gdl", "hero_mikolaj": "gdl", "hero_mikhail_sigismundovich": "gdl", "hero_jakub_kobylany": "gdl", "hero_jurij_gintovt": "gdl", "hero_nesselrode": "to", "hero_kerskorf": "to"}
+  "factions": {"hero_gintaut": "gdl", "hero_rumbaudas": "gdl", "hero_keeper": "gdl", "hero_kuchmeister": "to", "hero_vytautas": "gdl", "hero_lengvenis": "gdl", "hero_wallenrode": "to", "hero_jungingen": "to", "hero_council_envoys": "gdl", "hero_mikolaj": "gdl", "hero_mikhail_sigismundovich": "gdl", "hero_jakub_kobylany": "gdl", "hero_jurij_gintovt": "gdl", "hero_nesselrode": "to", "hero_kerskorf": "to", "hero_andrei": "gdl", "hero_ostrogski": "gdl", "hero_shchenya": "mo"}
  },
  "spell_effects": {
-  "_source": "How each spell is aimed (target_point: a point within magic_rules.cast_range of the caster; target_self: around the caster, moving with it; passive) and the effect the simulation runs (mist, dispel, relic, consecration), read from «Эффект» in «Заклинания». Spells without an entry are not in the game yet and cannot be cast.",
+  "_source": "How each spell is aimed (target_point: a point within magic_rules.cast_range of the caster; target_self: around the caster, moving with it; passive) and the effect the simulation runs (mist, dispel, relic, icon, consecration), read from «Эффект» in «Заклинания». Spells without an entry are not in the game yet and cannot be cast.",
   "sp_bog_mist": ["target_point", "mist"],
   "sp_perkunas": ["target_point", "storm"],
   "sp_exorcism": ["target_point", "dispel"],
   "sp_relic": ["target_self", "relic"],
+  "sp_icon": ["target_self", "icon"],
   "sp_consecration": ["passive", "consecration"]
  },
  "tech_effects": {

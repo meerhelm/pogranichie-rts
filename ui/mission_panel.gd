@@ -263,8 +263,19 @@ func _show_march() -> void:
 	if c.has("banners") and m.objective_state.has("captives"):
 		var taken := MissionMarch.groups_taken(m, c["banners"])
 		lines.append(tr("Banners taken captive: %d") % taken)
+	_retreat_lines(m, lines)
 	_march.visible = not lines.is_empty()
 	_march.text = "\n".join(lines)
+
+
+## ВКЛ 5: «Bridge: 64%» while the axemen are at it, «Brought back over the river: 12» once the
+## retreat begins.
+func _retreat_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
+	var r := m.retreat
+	if r.bridge_from >= 0 and not r.bridge_fell:
+		lines.append(tr("Bridge: %d%%") % (r.bridge_permille(m) / 10))
+	if m.def.rules.has("rescue") and m.objective_state.has("out"):
+		lines.append(tr("Brought back over the river: %d") % r.saved(m))
 
 
 ## The countdown and captives lines as shown, for tests ("" while hidden).

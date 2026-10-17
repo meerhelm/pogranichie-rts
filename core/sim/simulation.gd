@@ -18,7 +18,9 @@ extends RefCounted
 ## 12: ВКЛ 3: the CHOOSE command, spies nobody strikes unordered, quenched places of power.
 ## 13: ВКЛ 4: a column on the march, captives, a spared hero (HP floor), camp supply, raids.
 ## 14: walkers meeting head-on sidestep to their right (Separation.SIDESTEP).
-const SIM_VERSION := 14
+## 15: the mission state hash includes MissionRetreat (ВКЛ 5: bridge, ford, rescue, waves);
+##   the Сила rules add icon_morale_floor.
+const SIM_VERSION := 15
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).

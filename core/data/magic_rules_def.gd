@@ -26,3 +26,6 @@ extends Resource
 ## «Гнев Перкуна»: lightning strikes on the heaviest enemies under the storm, and HP each takes.
 @export var storm_strikes: int
 @export var storm_damage: int
+## «Икона перед войском»: own units near the icon do not fall below this percent of their full
+## morale while above it.
+@export var icon_morale_floor: int
