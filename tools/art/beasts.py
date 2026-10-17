@@ -223,9 +223,10 @@ def nt_wolf():
 
 # --- horses and riders ---------------------------------------------------------------------
 
-def horse(name, coat, small=False, mane=None):
+def horse(name, coat, small=False, mane=None, size=None):
+    """A horse; `size` scales it (default 0.92 small, 1.0 otherwise; 1.08 a heavy destrier)."""
     hoof = S.mat("hoof", "#2a2420", 0.5)
-    s = 0.92 if small else 1.0
+    s = size or (0.92 if small else 1.0)
     h = Beast(name, length=1.7 * s, height=1.15 * s, rx=0.27 * s, rz=0.33 * s, upper=0.5 * s, lower=0.56 * s,
               leg_r=0.05, hide=coat, hoof=hoof, neck=(0.7 * s, 38.0), neck_r=0.13, head=(0.13, 0.6 * s),
               head_tilt=105.0, tail=0.6 * s, front_z=0.08)
@@ -402,12 +403,22 @@ def hero_gintaut():
 
 # --- the wagon ------------------------------------------------------------------------------
 
+def _wagon_driver(d, m):
+    d.body(m["skin"], m["svita"], m["trousers"], m["lapti"], wraps=m["wraps"])
+    d.hair(m["hair"])
+    S.cyl("cap", 0.135, 0.12, 0.09, (0, 0, 0.05), m["felt"], d.head, seg=12)
+    folk._belt(d, m["team"])
+
+
 class Wagon:
-    def __init__(self):
+    """`cover`: colour of the matting; `dress(driver, m)` clothes the driver; `mark(cart,
+    m)` adds signs on the cover (the Order's cross)."""
+
+    def __init__(self, name="gdl_wagon", cover="#b8a273", dress=_wagon_driver, mark=None, coat="#6e4428"):
         m = folk._m()
         plank = S.mat("plank", "#9a7a52", 0.85, noise=0.3)
-        mat_cover = S.mat("matting", "#b8a273", 1.0, noise=0.5)
-        self.root = S.empty("gdl_wagon")
+        mat_cover = S.mat("matting", cover, 1.0, noise=0.5 if name == "gdl_wagon" else 0.15)
+        self.root = S.empty(name)
         self.cart = S.empty("cart", (0, -1.0, 0), self.root)
         S.box("bed", (1.2, 2.5, 0.08), (0, 0, 0.75), plank, self.cart)
         for x in (-0.6, 0.6):
@@ -417,6 +428,8 @@ class Wagon:
         cover = S.cyl("cover", 0.62, 0.62, 1.6, (0, -0.3, 1.2), mat_cover, self.cart, rot=(-math.pi / 2, 0, 0), seg=14)
         cover.scale = (1.0, 0.75, 1.0)
         S.box("cover_band", (1.27, 0.12, 0.05), (0, 0.6, 1.2), m["team"], self.cart)
+        if mark is not None:
+            mark(self.cart, m)
         S.ball("cargo_sack", 0.25, (-0.25, -0.95, 1.05), m["sack"], self.cart, scale=(1, 0.9, 0.8))
         S.cyl("cargo_barrel", 0.22, 0.22, 0.5, (0.25, -1.0, 0.8), S.mat("barrel", "#7c5a36", 0.8, noise=0.3),
               self.cart, seg=10)
@@ -431,17 +444,15 @@ class Wagon:
         S.cyl("pole", 0.04, 0.04, 1.9, (0, 1.2, 0.7), m["wood"], self.cart, rot=(-math.pi / 2 + 0.12, 0, 0), seg=6)
         self.horses = []
         for x in (-0.42, 0.42):
-            h = horse(f"horse_{x}", S.mat("bay", "#6e4428", 0.9, noise=0.25), small=True)
+            h = horse(f"horse_{x}", S.mat("bay" if coat == "#6e4428" else "wagon_horse", coat, 0.9, noise=0.25),
+                      small=True)
             h.root.parent = self.root
             h.root.location = (x, 1.35, 0)
             S.box(f"collar_{x}", (0.3, 0.12, 0.35), (0, 0.6, 0.25), m["leather"], h.body)
             self.horses.append(h)
         # The driver on the front of the bed.
         d = people.Figure("driver")
-        d.body(m["skin"], m["svita"], m["trousers"], m["lapti"], wraps=m["wraps"])
-        d.hair(m["hair"])
-        S.cyl("cap", 0.135, 0.12, 0.09, (0, 0, 0.05), m["felt"], d.head, seg=12)
-        folk._belt(d, m["team"])
+        dress(d, m)
         d.root.parent = self.cart
         d.root.location = (0, 1.0, 0.85 - 0.3)
         self.driver = d

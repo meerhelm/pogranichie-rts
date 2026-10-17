@@ -30,10 +30,14 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
   (8 frames: a two-handed chop, for peasants and camp servants) and attack (8 frames, played
   once per blow) in one of `ATTACK_STYLES`: swing, thrust, throw, bow, crossbow, cast. Which
   units get work and which attack style is in `registry.py` (`WORKERS`, `ATTACK_STYLE`); beasts
-  lunge (`beasts.py`), riders strike while the horse stands, the wagon only walks.
+  lunge (`beasts.py`), riders strike while the horse stands, wagons only walk, the bombard
+  fires (flash, smoke, recoil).
 - `models.py` — the first assets (peasant, spearman, house, town centre, trees, deposits).
 - `folk.py` — the other people on foot; `beasts.py` — a four-legged rig for animals and horses,
   riders sitting on them, the wagon.
+- `folk_1410.py` — the units of the Grunwald mission (ВКЛ 2): Samogitian, Polish and Tatar
+  troops, the guest knight, the Order's wagon and bombard, and the heroes; the `sovereign`
+  hero template (a rider with a standard-bearer on foot) is `Sovereign` there.
 - `kit.py` — building materials (log, thatch, shingle, brick, roof tile, plaster and timber
   framing) and parts (roofs, stepped gables, windows, sheds, fences, barrels);
   `buildings_gdl.py` and `buildings_to.py` — the Duchy's and the Order's buildings.
@@ -51,8 +55,8 @@ The game reads them through `game/world/SpriteDB`; ids without art keep their pl
 at a job, else idle, turned to the target or the work. `--add` renders only the animations a
 sheet lacks and copies the old rows back, so a new animation does not re-render the rest.
 Building frames are rendered large and cropped to what all stages cover. Unit frames: 160×144
-on foot, 224×256 mounted (an upright lance), 224×176 big beasts, 320×240 the wagon; `bar_y`
-in `sheet.json` is where the HP bar goes.
+on foot, 224×256 mounted (an upright lance), 224×176 big beasts, 320×240 the wagon and the
+bombard; `bar_y` in `sheet.json` is where the HP bar goes.
 
 Line pieces: a palisade cell is its post cluster (`<id>`) plus arms toward the neighbours
 (`<id>_e`, `_w`, `_n`, `_s`, model axes +X, -X, +Y, -Y), which BuildingLayer picks per cell.

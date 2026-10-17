@@ -2,7 +2,7 @@
 
 from typing import Callable, NamedTuple
 
-from tools.art import beasts, buildings_gdl, buildings_to, folk, models
+from tools.art import beasts, buildings_gdl, buildings_to, folk, folk_1410, models
 
 
 class Unit(NamedTuple):
@@ -23,12 +23,12 @@ MOUNTED = {"frame": (224, 256), "pivot": (108, 184)}
 BEAST = {"frame": (224, 176), "pivot": (108, 124)}
 WAGON = {"frame": (320, 240), "pivot": (156, 150)}
 
-UNITS: dict[str, Unit] = {uid: Unit(fn) for uid, fn in {**models.UNITS, **folk.UNITS}.items()}
+UNITS: dict[str, Unit] = {uid: Unit(fn) for uid, fn in {**models.UNITS, **folk.UNITS, **folk_1410.UNITS}.items()}
 for _uid, _fn in beasts.UNITS.items():
     UNITS[_uid] = Unit(_fn, **BEAST) if _uid in beasts.BIG_BEASTS else Unit(_fn)
-for _uid, _fn in beasts.MOUNTED_UNITS.items():
+for _uid, _fn in {**beasts.MOUNTED_UNITS, **folk_1410.MOUNTED_UNITS}.items():
     UNITS[_uid] = Unit(_fn, **MOUNTED)
-for _uid, _fn in beasts.WAGONS.items():
+for _uid, _fn in {**beasts.WAGONS, **folk_1410.WAGONS}.items():
     UNITS[_uid] = Unit(_fn, **WAGON)
 
 BUILDINGS: dict[str, Building] = {
@@ -46,7 +46,8 @@ DEPOSIT_VARIANTS = models.DEPOSIT_VARIANTS
 
 ## Animations every unit has, and the extra ones: `work` for peasants (felling, digging,
 ## building), `attack` in a style of people.ATTACK_STYLES (beasts lunge, riders use the style
-## too while the horse stands). The wagon neither works nor fights.
+## too while the horse stands). Wagons neither work nor fight; the bombard fires (flash,
+## smoke, recoil: folk_1410.Bombard).
 BASE_ANIMS = [("idle", 8, 6), ("walk", 12, 15)]  # name, frames, fps
 WORK_ANIM = ("work", 8, 9)
 ATTACK_ANIM = ("attack", 8, 12)
@@ -59,6 +60,10 @@ ATTACK_STYLE = {
     "nt_villager": "swing", "hero_rumbaudas": "bow", "hero_keeper": "cast",
     "gdl_light_horse": "throw", "gdl_lit_lance": "thrust", "to_knight_brother": "thrust",
     "to_prussian_rider": "thrust", "hero_gintaut": "thrust", "hero_kuchmeister": "swing",
+    "gdl_samogitian": "thrust", "pl_spearman": "thrust", "pl_crossbow": "crossbow",
+    "nt_steppe_archer": "bow", "pl_kopia": "thrust", "to_guest_knight": "thrust",
+    "hero_vytautas": "swing", "hero_lengvenis": "thrust", "hero_wallenrode": "thrust",
+    "hero_jungingen": "swing", "to_bombard": "fire",
     **{uid: "lunge" for uid in beasts.UNITS},
 }
 
