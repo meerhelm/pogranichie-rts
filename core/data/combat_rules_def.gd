@@ -83,6 +83,11 @@ extends Resource
 @export var turn_charge_permille: int
 @export var retreat_cooldown_ticks: int
 
+@export_group("Banner")
+## A khorugv's banner (ВКЛ 2): own units this close to a bearer get this much morale.
+@export var banner_morale: int
+@export var banner_radius: int
+
 @export_group("Balance arena")
 ## Armies for equal money: 1200 resources, iron counts ×1,5 and silver ×2.
 @export var arena_budget: int

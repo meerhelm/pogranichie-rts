@@ -23,3 +23,6 @@ extends Resource
 @export var relic_enemy_morale: int
 ## «Экзорцизм»: HP a creature loses before it is driven off.
 @export var exorcism_creature_damage: int
+## «Гнев Перкуна»: lightning strikes on the heaviest enemies under the storm, and HP each takes.
+@export var storm_strikes: int
+@export var storm_damage: int

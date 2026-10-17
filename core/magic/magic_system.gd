@@ -14,7 +14,10 @@ extends RefCounted
 ##   relic («Реликвия в строю»): the caster's units near it do not fall below relic_morale_floor
 ##     morale while above it; others' units coming near lose relic_enemy_morale once;
 ##   dispel («Экзорцизм»): others' spell effects touching its circle end; others' creatures in
-##     it lose exorcism_creature_damage HP and are driven off.
+##     it lose exorcism_creature_damage HP and are driven off;
+##   storm («Гнев Перкуна»): storm_strikes lightning bolts of storm_damage HP hit the heaviest
+##     (most max HP) enemy units under it at once; while it lasts, the rain keeps every bow,
+##     crossbow and gun under it from shooting.
 ## Cooldowns run per caster and spell; casters near their own building tagged spell_recharge
 ## (the alka) recharge alka_recharge_permille faster. Healers («лечит N HP/с в радиусе R»)
 ## heal their side's units around them once a second.
@@ -231,6 +234,45 @@ func _cast(id: int, spell: SpellDef, x: int, y: int) -> void:
 		_add_effect(spell, p, 0, x, y, r)
 	elif spell.tags.has(&"relic"):
 		_add_effect(spell, p, id, entities.pos_x[slot], entities.pos_y[slot], r)
+	elif spell.tags.has(&"storm"):
+		_add_effect(spell, p, 0, x, y, r)
+		_lightning(p, x, y, r)
+
+
+## «Гнев Перкуна»: bolts on the enemy units with the most max HP under the storm (ties: lower id).
+func _lightning(p: int, x: int, y: int, r: int) -> void:
+	var reach := Fixed.from_cells(r)
+	var near := combat.buckets.near(x, y, reach)
+	near.sort()
+	var picked := PackedInt32Array()
+	for k in rules.storm_strikes:
+		var best := 0
+		for id in near:
+			var slot := id - 1
+			if not combat.sides.hostile(p, entities.owners[slot]) or entities.hp[slot] <= 0:
+				continue
+			if id in picked:
+				continue
+			if Fixed.distance(x, y, entities.pos_x[slot], entities.pos_y[slot]) > reach:
+				continue
+			if best == 0 or entities.max_hp[slot] > entities.max_hp[best - 1]:
+				best = id
+		if best == 0:
+			break
+		picked.append(best)
+	for id in picked:
+		combat.lightning(id, p, rules.storm_damage)
+
+
+## True while the unit stands in the rain of a storm: its bow, crossbow or gun is silent.
+func silenced(slot: int) -> bool:
+	for i in fx_ids.size():
+		if not spells[fx_spell[i]].tags.has(&"storm"):
+			continue
+		var reach := Fixed.from_cells(fx_radius[i])
+		if Fixed.distance(entities.pos_x[slot], entities.pos_y[slot], fx_x[i], fx_y[i]) <= reach:
+			return true
+	return false
 
 
 func _add_effect(spell: SpellDef, p: int, caster: int, x: int, y: int, r: int) -> void:

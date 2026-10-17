@@ -76,6 +76,8 @@ var fire: FireSystem
 var towers: TowerFire
 ## The mission's script (M9): triggers, objectives and its own units' orders; null in a skirmish.
 var mission: MissionRuntime
+## Which players are allies (ВКЛ 2); empty in a skirmish.
+var sides := Sides.new()
 var data_version: String
 ## Every accepted command, in arrival order, for recording replays.
 var command_log: Array[SimCommand] = []
@@ -126,14 +128,19 @@ func _init(
 	economy = EconomySystem.new(entities, nav, db, combat, walk_unit, stop_unit, spawn_unit)
 	vision = VisionSystem.new(entities, nav, db, economy)
 	combat.vision = vision
+	combat.sides = sides
+	vision.sides = sides
 	magic = MagicSystem.new(entities, nav, db, economy, combat, walk_unit, stop_unit, remove_unit)
 	combat.morale_floor = magic.morale_floor
+	combat.silenced = magic.silenced
 	combat.on_kill = _count_kill
 	vision.mist = magic.mist
 	victory = SkirmishVictory.new(db.skirmish if db != null else null, economy, magic.places)
 	fire = FireSystem.new(economy, rng, db.fire if db != null else null, stop_unit)
 	towers = TowerFire.new(economy.buildings, entities, combat)
 	towers.vision = vision
+	fire.sides = sides
+	economy.sides = sides
 
 
 ## Queues a command for its tick. Commands for a tick already simulated are refused,
@@ -232,6 +239,7 @@ func state_hash() -> String:
 	magic.write_to(buf)
 	victory.write_to(buf)
 	fire.write_to(buf)
+	sides.write_to(buf)
 	if mission != null:
 		mission.write_to(buf)
 	var ctx := HashingContext.new()

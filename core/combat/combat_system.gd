@@ -55,6 +55,13 @@ var defs: Array[UnitDef] = []
 var flags := PackedInt32Array()
 ## Rally point of each player, fixed units; units without one flee to where they were created.
 var rally: Dictionary[int, Vector2i] = {}
+## «Гнев Перкуна» (set by Simulation): `silenced(slot) -> bool`, true while rain keeps the
+## unit's bow, crossbow or gun from shooting.
+var silenced: Callable
+## Khorugv banners (ВКЛ 2): who carries one; the mission sets them.
+var banners := Banners.new()
+## Allies (set by Simulation): units never pick fights with their side.
+var sides := Sides.new()
 
 ## Fog of war (set by Simulation): units only pick fights with enemies their side can see.
 var vision: VisionSystem
@@ -112,7 +119,7 @@ func enabled() -> bool:
 ## Called by Simulation right after a unit is created.
 func on_spawn(id: int, def: UnitDef) -> void:
 	defs.append(def)
-	flags.append(_flags_for(def, false))
+	flags.append(CombatFlags.of(def, false))
 	if def == null or rules == null:
 		return
 	var e := entities
@@ -124,35 +131,6 @@ func on_spawn(id: int, def: UnitDef) -> void:
 	e.stance[slot] = (
 		EntityStore.Stance.PASSIVE if flags[slot] & F_PASSIVE else EntityStore.Stance.AGGRESSIVE
 	)
-
-
-static func _flags_for(def: UnitDef, is_dismounted: bool) -> int:
-	if def == null:
-		return F_NEVER_FLEES | F_PASSIVE
-	var f := 0
-	var classes := DISMOUNTED_CLASSES if is_dismounted else def.classes
-	if classes.has(&"infantry"):
-		f |= F_INFANTRY
-	if def.has_class(&"hero"):
-		f |= F_HERO
-	if (
-		def.never_flees
-		or def.has_class(&"spiritual")
-		or def.has_class(&"creature")
-		or def.has_class(&"hero")
-	):
-		f |= F_NEVER_FLEES
-	if def.attack_range > 0:
-		f |= F_RANGED
-	for tag: StringName in TAG_FLAGS:
-		if def.tags.has(tag):
-			f |= TAG_FLAGS[tag]
-	for cls in PASSIVE_CLASSES:
-		if def.has_class(cls):
-			f |= F_PASSIVE
-	if def.damage <= 0:
-		f |= F_PASSIVE
-	return f
 
 
 # --- orders --------------------------------------------------------------------------------
@@ -216,7 +194,9 @@ func drop_targets(ids: PackedInt32Array) -> void:
 
 func _order_attack(player: int, ids: PackedInt32Array, enemy: int) -> void:
 	var e := entities
-	if not e.is_alive(enemy) or e.owners[enemy - 1] == player or _hidden_from(enemy - 1, player):
+	if not e.is_alive(enemy) or sides.friendly(e.owners[enemy - 1], player):
+		return
+	if _hidden_from(enemy - 1, player):
 		return
 	if untouchable.has(enemy):
 		return
@@ -298,7 +278,11 @@ func _order_turn(id: int, enemy: int) -> void:
 	e.turn_ticks[slot] = rules.turn_window_ticks
 	e.attack_move[slot] = 0
 	var owner := e.owners[slot]
-	if e.is_alive(enemy) and e.owners[enemy - 1] != owner and not _hidden_from(enemy - 1, owner):
+	if (
+		e.is_alive(enemy)
+		and not sides.friendly(e.owners[enemy - 1], owner)
+		and not _hidden_from(enemy - 1, owner)
+	):
 		e.target[slot] = enemy
 		e.target_kind[slot] = EntityStore.TargetKind.ORDERED
 	else:
@@ -315,7 +299,7 @@ func _toggle_dismount(id: int) -> void:
 		return
 	var down := e.dismounted[slot] == 0
 	e.dismounted[slot] = 1 if down else 0
-	flags[slot] = _flags_for(def, down)
+	flags[slot] = CombatFlags.of(def, down)
 	var speed_milli := rules.dismount_speed_milli if down else def.speed_milli
 	e.speed[slot] = Fixed.speed_per_tick(speed_milli)
 	e.move_class[slot] = NavGrid.MoveClass.FOOT if down else NavGrid.move_class_for(def)
@@ -509,6 +493,8 @@ func _engage(id: int) -> void:
 			_stop.call(id)
 		_face(slot, dx, dy, dist)
 		if e.cooldown[slot] == 0:
+			if flags[slot] & F_RANGED and silenced.is_valid() and silenced.call(slot):
+				return
 			if flags[slot] & F_RANGED:
 				_shoot(slot, t, dist)
 			else:
@@ -718,6 +704,15 @@ func _apply_hit(
 			e.post_y[t] = e.pos_y[t]
 
 
+## A lightning strike («Гнев Перкуна») by player `by`: `damage` HP off the unit (no armour), and
+## its side around it loses morale as from a cannon volley.
+func lightning(id: int, by: int, damage: int) -> void:
+	var slot := id - 1
+	if not entities.is_alive(id) or entities.hp[slot] <= 0:
+		return
+	_apply_hit(EntityStore.NO_ID, by, slot, damage, Damage.Side.FRONT, &"", true)
+
+
 ## Units of the hit unit's side within cannon_volley_radius of it lose cannon_volley_morale.
 func _cannon_volley(t: int) -> void:
 	var e := entities
@@ -782,6 +777,9 @@ func morale_bonus(slot: int) -> int:
 	var py := e.pos_y[slot]
 	if _heroes > 0:
 		bonus += _aura_at(slot, owner, px, py)
+	if not banners.is_empty():
+		if banners.near(e, owner, px, py, Fixed.from_cells(rules.banner_radius)):
+			bonus += rules.banner_morale
 	if flags[slot] & F_INFANTRY:
 		var r := Fixed.from_milli(rules.formation_radius_milli)
 		var n := 0
@@ -938,7 +936,7 @@ func _in_terrain(slot: int, terrain_index: int) -> bool:
 ## A forest archer in the forest is invisible to the other side until it shoots.
 func _hidden_from(slot: int, viewer: int) -> bool:
 	var e := entities
-	if not flags[slot] & F_STEALTH or e.owners[slot] == viewer or e.reveal[slot] > 0:
+	if not flags[slot] & F_STEALTH or sides.friendly(e.owners[slot], viewer) or e.reveal[slot] > 0:
 		return false
 	return _in_terrain(slot, _forest)
 
@@ -961,7 +959,7 @@ func _nearest_enemy(slot: int, radius: int) -> int:
 	var best_d := 0
 	for other in buckets.near(px, py, radius):
 		var o := other - 1
-		if e.owners[o] == owner or e.owners[o] == 0 or e.hp[o] <= 0 or defs[o] == null:
+		if not sides.hostile(e.owners[o], owner) or e.hp[o] <= 0 or defs[o] == null:
 			continue
 		if untouchable.has(other) or defs[o].tags.has(&"not_targeted"):
 			continue
@@ -988,6 +986,7 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_64(rally[p].x)
 		buf.put_64(rally[p].y)
 	shots.write_to(buf)
+	banners.write_to(buf)
 	var guarded := untouchable.keys()
 	guarded.sort()
 	buf.put_32(guarded.size())

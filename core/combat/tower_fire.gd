@@ -67,7 +67,7 @@ func _nearest_enemy(b: int) -> int:
 	var best_d := 0
 	for id in combat.buckets.near(cx, cy, radius):
 		var o := id - 1
-		if e.owners[o] == owner or e.owners[o] == 0 or e.hp[o] <= 0 or combat.defs[o] == null:
+		if not combat.sides.hostile(e.owners[o], owner) or e.hp[o] <= 0 or combat.defs[o] == null:
 			continue
 		if combat.untouchable.has(id) or combat.defs[o].tags.has(&"not_targeted"):
 			continue

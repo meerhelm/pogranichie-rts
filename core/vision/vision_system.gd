@@ -32,6 +32,8 @@ var mist := MistField.new()
 var sight_default := 0
 ## Grid by player (created when the player first has something that sees).
 var grids: Dictionary[int, VisionGrid] = {}
+## Allies share one grid, kept under their side's lead player (ВКЛ 2).
+var sides := Sides.new()
 
 ## Per unit slot: its own sight in cells, and the cell and radius it is stamped with now
 ## (NO_CELL when not stamped).
@@ -81,7 +83,7 @@ func on_remove(id: int) -> void:
 	var slot := id - 1
 	if slot >= _unit_cell.size() or _unit_cell[slot] == NO_CELL:
 		return
-	var g := grids[entities.owners[slot]]
+	var g := grids[sides.team_of(entities.owners[slot])]
 	_stamp(g, _unit_cell[slot], _unit_radius[slot], -1)
 	_unit_cell[slot] = NO_CELL
 
@@ -104,7 +106,7 @@ func step() -> void:
 		var old_radius := _unit_radius[slot]
 		if old == cell and old_radius == radius:
 			continue
-		var g := _grid(owner)
+		var g := _grid(sides.team_of(owner))
 		if old != NO_CELL and old_radius == radius and _is_step(old, cell):
 			_shift(g, old, cell, radius)
 		else:
@@ -124,7 +126,8 @@ func _step_buildings() -> void:
 		if store.is_alive(id):
 			kept.append(id)
 		else:
-			_stamp(grids[store.owners[slot]], _bld_cell[slot], _bld_radius[slot], -1)
+			var team := sides.team_of(store.owners[slot])
+			_stamp(grids[team], _bld_cell[slot], _bld_radius[slot], -1)
 	_bld_stamped = kept
 	while _bld_cell.size() < store.next_id - 1:
 		_bld_cell.append(NO_CELL)
@@ -141,7 +144,7 @@ func _step_buildings() -> void:
 		var old := _bld_cell[slot]
 		if old == cell and _bld_radius[slot] == radius:
 			continue
-		var g := _grid(owner)
+		var g := _grid(sides.team_of(owner))
 		if old != NO_CELL:
 			_stamp(g, old, _bld_radius[slot], -1)
 		else:
@@ -171,7 +174,7 @@ func building_sight(id: int) -> int:
 func state(player: int, cell: int) -> State:
 	if not enabled():
 		return State.VISIBLE
-	var g: VisionGrid = grids.get(player)
+	var g: VisionGrid = grids.get(sides.team_of(player))
 	if g == null or g.explored[cell] == 0:
 		return State.UNEXPLORED
 	return State.VISIBLE if g.far[cell] > 0 else State.EXPLORED
@@ -181,7 +184,7 @@ func state(player: int, cell: int) -> State:
 func sees_cell(player: int, cell: int) -> bool:
 	if not enabled():
 		return true
-	var g: VisionGrid = grids.get(player)
+	var g: VisionGrid = grids.get(sides.team_of(player))
 	return g != null and g.far[cell] > 0
 
 
@@ -190,7 +193,7 @@ func sees_cell(player: int, cell: int) -> bool:
 func sees_unit_at(player: int, cell: int) -> bool:
 	if not enabled():
 		return true
-	var g: VisionGrid = grids.get(player)
+	var g: VisionGrid = grids.get(sides.team_of(player))
 	if g == null:
 		return false
 	if g.near[cell] > 0:
@@ -213,7 +216,7 @@ func sees_unit(player: int, id: int) -> bool:
 
 ## Something of the player's is within cover_reveal_cells of the cell.
 func _sees_near(player: int, cell: int) -> bool:
-	var g: VisionGrid = grids.get(player)
+	var g: VisionGrid = grids.get(sides.team_of(player))
 	return g != null and g.near[cell] > 0
 
 

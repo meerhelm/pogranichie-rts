@@ -21,6 +21,8 @@ var entities: EntityStore
 var economy: EconomySystem
 var rng: SimRng
 var rules: FireRulesDef
+## Allies (set by Simulation): nobody sets fire to an ally's building.
+var sides := Sides.new()
 ## Burning buildings -> damage in thousandths of HP not yet dealt.
 var burning: Dictionary[int, int] = {}
 ## Burning buildings -> unit-ticks of dousing done.
@@ -81,7 +83,9 @@ func order(cmd: SimCommand, ids: PackedInt32Array) -> void:
 		return
 	var b := cmd.target
 	var store := economy.buildings
-	if not store.is_alive(b) or store.owners[b - 1] == cmd.player or not flammable(b):
+	if not store.is_alive(b) or sides.friendly(store.owners[b - 1], cmd.player):
+		return
+	if not flammable(b):
 		return
 	for id in ids:
 		if can_ignite(id):

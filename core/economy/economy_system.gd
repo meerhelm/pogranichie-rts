@@ -63,6 +63,8 @@ var nav: NavGrid
 var db: CatalogDB
 var rules: EconomyRulesDef
 var combat: CombatSystem
+## Allies (set by Simulation): their buildings cannot be assaulted.
+var sides := Sides.new()
 var tick := 0
 var players: Dictionary[int, PlayerState] = {}
 var buildings := BuildingStore.new()
@@ -411,7 +413,7 @@ func start_gather(slot: int, source: int, target: int, ref: int) -> bool:
 
 func _order_assault(cmd: SimCommand, units: PackedInt32Array) -> void:
 	var b := cmd.target
-	if not buildings.is_alive(b) or buildings.owners[b - 1] == cmd.player:
+	if not buildings.is_alive(b) or sides.friendly(buildings.owners[b - 1], cmd.player):
 		return
 	combat.drop_targets(units)
 	for id in units:
