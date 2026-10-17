@@ -1,17 +1,17 @@
 extends Control
-## Main menu: start a skirmish (against the Order AI, easy or normal), the campaign mission
-## (M9, at the same difficulty), load a saved mission, how to play, settings, quit. The first
+## Main menu: start a skirmish (against the Order AI, easy or normal), the campaign missions
+## (at the same difficulty), load a saved mission, how to play, settings, quit. The first
 ## scene the game opens.
 
 const GAME_SCENE := "res://game/main.tscn"
-## The prototype's one campaign mission.
-const MISSION := "gdl_01"
+## Campaign missions, one button each, in campaign order.
+const MISSIONS: Array[String] = ["gdl_01", "gdl_02"]
 const BACKGROUND := preload("res://ui/art/menu_background.jpg")
 
 var _title := Label.new()
 var _subtitle := Label.new()
 var _skirmish := Button.new()
-var _campaign := Button.new()
+var _campaign: Array[Button] = []
 var _load := Button.new()
 var _saves := VBoxContainer.new()
 var _difficulty := OptionButton.new()
@@ -59,13 +59,17 @@ func _ready() -> void:
 	_menu.add_theme_constant_override("separation", 12)
 	panel.add_child(_menu)
 	_panel = panel
-	for b: Button in [
-		_campaign, _skirmish, _difficulty, _load, _help_button, _settings_button, _quit
-	]:
+	for id in MISSIONS:
+		var mission := Button.new()
+		mission.pressed.connect(_on_campaign.bind(id))
+		_campaign.append(mission)
+	var buttons: Array[Control] = []
+	buttons.append_array(_campaign)
+	buttons.append_array([_skirmish, _difficulty, _load, _help_button, _settings_button, _quit])
+	for b: Control in buttons:
 		b.custom_minimum_size = Vector2(340, 50)
 		_menu.add_child(b)
 	_menu.add_child(_saves)
-	_campaign.pressed.connect(_on_campaign)
 	_load.pressed.connect(_list_saves)
 	for level in GameSettings.DIFFICULTIES:
 		_difficulty.add_item(String(level))
@@ -129,7 +133,8 @@ func _retranslate() -> void:
 	_title.text = tr("Pogranichie")
 	_subtitle.text = tr("Grand Duchy of Lithuania against the Teutonic Order")
 	_skirmish.text = tr("Skirmish")
-	_campaign.text = tr("Campaign: %s") % tr(MissionDef.load_id(MISSION).title)
+	for i in MISSIONS.size():
+		_campaign[i].text = tr("Campaign: %s") % tr(MissionDef.load_id(MISSIONS[i]).title)
 	_load.text = tr("Load game")
 	# The locale can change before _ready() has filled the list (GameSettings.ensure_loaded).
 	var levels := [tr("Opponent: easy"), tr("Opponent: normal")]
@@ -156,8 +161,8 @@ func _on_skirmish() -> void:
 	get_tree().change_scene_to_file(GAME_SCENE)
 
 
-func _on_campaign() -> void:
-	GameSettings.mission_id = MISSION
+func _on_campaign(id: String) -> void:
+	GameSettings.mission_id = id
 	GameSettings.mission_difficulty = String(GameSettings.ai_difficulty)
 	GameSettings.load_path = ""
 	get_tree().change_scene_to_file(GAME_SCENE)

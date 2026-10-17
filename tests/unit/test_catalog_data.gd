@@ -105,6 +105,7 @@ func test_prototype_loads_only_prototype() -> void:
 	assert_eq(proto.factions.keys(), [&"gdl", &"to"])
 	assert_not_null(proto.unit(&"gdl_lit_lance"))
 	assert_null(proto.unit(&"gdl_szlachta_lance"), "Держава units stay out of the prototype")
-	assert_null(proto.unit(&"pl_kopia"))
+	assert_not_null(proto.unit(&"pl_kopia"), "the Crown allies of ВКЛ 2 are in")
+	assert_null(proto.unit(&"pl_hussar"))
 	for id: StringName in proto.techs:
 		assert_true(proto.techs[id].age <= 2, "%s is within Удел and Хоругвь" % id)

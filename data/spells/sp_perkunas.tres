@@ -13,5 +13,5 @@ debt_cost = 0
 cooldown_ticks = 3600
 radius = 8
 duration_ticks = 800
-tags = Array[StringName]([])
+tags = Array[StringName]([&"target_point", &"storm"])
 params = Dictionary[StringName, int]({})

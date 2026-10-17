@@ -69,6 +69,7 @@ $GODOT --headless -s tools/sim/sim_cli.gd -- bench --units 200 --ticks 600 --map
 $GODOT --headless -s tools/sim/sim_cli.gd -- bench --units 200 --ticks 1200 --map map_proto_samogitia --battle 1
 $GODOT -s tools/sim/frame_bench.gd -- --units 200 --seconds 30   # кадры настоящей сцены (в окне — реальный fps)
 $GODOT --headless -s tools/sim/sim_cli.gd -- mission --out tests/replays/m9_gdl01_playthrough.json   # бот проходит ВКЛ 1
+$GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission gdl_02 --out tests/replays/gdl02_playthrough.json   # бот проходит ВКЛ 2
 ```
 
 Тесты кладутся в `tests/unit/` или `tests/integration/`, файл `test_*.gd`, класс `extends GutTest`.
@@ -193,7 +194,7 @@ godot --headless -s tools/sim/sim_cli.gd -- arena --seeds 50 --out arena.csv [--
 - Герои Гинтаут и Румбаудас: числа из шаблонов каталога («Конный» и «Лёгкий»): аура духа +15 в 8 клетках у Гинтаута и +10 в 6 у Румбаудаса, ауры не складываются, берётся лучшая. Хранительница рощи (`not_targeted`) не цель для врага.
 - Интерфейс (`ui/mission_panel.gd`): цели справа вверху, подсказки посередине, реплики через Dialogic, ролики на движке (игра на паузе, чёрные полосы, камера летит к месту, субтитры; клик, пробел или Enter — дальше, Esc — пропустить). Сила на панели появляется только после алки в роще.
 - Сохранение: в меню паузы миссии «Сохранить» и «Загрузить» (`user://saves/*.save`). `SimSave` пишет заголовок и `Snapshot` — копию всех переменных объектов симуляции с триггерами; загрузка строит мир миссии заново и перезаписывает его снимком, хеш совпадает, и дальше игра идёт так же, как шла бы без сохранения. Сохранение другой версии правил или данных не загружается.
-- `MissionBot` (`tools/sim/mission_bot.gd`) проходит миссию обычными командами игрока; `sim_cli.gd -- mission` пишет повтор и падает, если бот не победил. `tests/replays/m9_gdl01_playthrough.json` — его победа на 50:15 игрового времени, тест повторов требует, чтобы повтор миссии кончался победой. На каждый триггер — тест в `tests/integration/test_mission.gd`.
+- `MissionBot` (`tools/sim/mission_bot.gd`) проходит миссию обычными командами игрока; `sim_cli.gd -- mission` пишет повтор и падает, если бот не победил. `tests/replays/m9_gdl01_playthrough.json` — его победа на 50:15 игрового времени, тест повторов требует, чтобы повтор миссии кончался победой. На каждый триггер — тест в `tests/integration/test_mission.gd`. «ВКЛ 2. Грюнвальд» проходит `GrunwaldBot` (`tools/sim/grunwald_bot.gd`), повтор `tests/replays/gdl02_playthrough.json`, тесты триггеров в `tests/integration/test_mission_gdl02.gd`; союзники, хоругви и «Гнев Перкуна» в `tests/integration/test_allies.gd`.
 
 Тексты миссии по-английски прямо в `mission.json`; `tools/i18n/extract.py` собирает их в `.po`, переводы там же (с M10).
 

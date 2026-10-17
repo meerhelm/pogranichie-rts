@@ -7,7 +7,7 @@ extends SceneTree
 ##   godot --headless -s tools/sim/sim_cli.gd -- arena --seeds 50 --out arena.csv [--pairs a,b]
 ##     [--parity 1]
 ##   godot --headless -s tools/sim/sim_cli.gd -- aivsai --games 20 --difficulty normal --out g.csv
-##   godot --headless -s tools/sim/sim_cli.gd -- mission --out m9.json [--mission gdl_01]
+##   godot --headless -s tools/sim/sim_cli.gd -- mission --out m9.json [--mission gdl_01|gdl_02]
 ##     [--difficulty normal] [--ticks 90000] [--every 200]
 ##     (MissionBot plays the campaign mission until it is over; fails unless it is won)
 ## record, determinism and bench take --map <map id> (see MapText); without it, open grass;
@@ -115,11 +115,11 @@ func _mission(opts: Dictionary) -> int:
 	var db := CatalogDB.load_prototype()
 	var mission_id: String = opts.get("mission", "gdl_01")
 	# The bot is made on the first tick, once the recording has built the world.
-	var bots: Array[MissionBot] = []
+	var bots: Array[RefCounted] = []
 	var orders := func(sim: Simulation) -> void:
 		if bots.is_empty():
-			bots.append(MissionBot.new(sim))
-		bots[0].think()
+			bots.append(GrunwaldBot.new(sim) if mission_id == "gdl_02" else MissionBot.new(sim))
+		bots[0].call(&"think")
 	var over := func(sim: Simulation) -> bool: return sim.mission.is_over()
 	var replay := Replay.record(
 		int(opts.get("seed", "1")),

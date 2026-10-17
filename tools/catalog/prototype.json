@@ -8,7 +8,9 @@
   "to_peasant", "to_knight_brother", "to_halfbrother", "to_knecht", "to_crossbow",
   "to_prussian_rider", "to_priest", "to_tithe_collector",
   "nt_villager", "nt_bison", "nt_bear", "nt_elk", "nt_boar", "nt_wolf",
-  "hero_gintaut", "hero_rumbaudas", "hero_keeper", "hero_kuchmeister"
+  "hero_gintaut", "hero_rumbaudas", "hero_keeper", "hero_kuchmeister",
+  "nt_steppe_archer", "pl_kopia", "pl_spearman", "pl_crossbow", "to_guest_knight", "to_bombard",
+  "to_wagon", "hero_vytautas", "hero_lengvenis", "hero_wallenrode", "hero_jungingen"
  ],
  "buildings": [
   "gdl_town_center", "gdl_house", "gdl_granary", "gdl_farm", "gdl_lumber_yard", "gdl_mine",
@@ -18,5 +20,7 @@
   "to_barracks", "to_range", "to_stable", "to_shrine", "to_palisade", "to_gate", "to_tower",
   "to_market", "to_smithy", "to_temple", "to_siege_workshop", "to_castle", "to_brickworks"
  ],
- "spells": ["sp_bog_mist", "sp_consecration", "sp_exorcism", "sp_relic"]
+ "_mission_only": "Prototype units only missions use: exported as campaign_only, so skirmish build menus and the AI leave them out (ВКЛ 2 Грюнвальд).",
+ "mission_only": ["nt_steppe_archer", "pl_kopia", "pl_spearman", "pl_crossbow", "to_guest_knight", "to_bombard", "to_wagon"],
+ "spells": ["sp_bog_mist", "sp_consecration", "sp_exorcism", "sp_relic", "sp_perkunas"]
 }

@@ -12,7 +12,12 @@ extends Node2D
 enum Mood { STEADY, WAVERING, FLEEING }
 
 const PLAYER_COLORS: Array[Color] = [
-	Color(0.7, 0.7, 0.7), Color(0.85, 0.2, 0.15), Color(0.95, 0.95, 0.9), Color(0.2, 0.4, 0.9)
+	Color(0.7, 0.7, 0.7),
+	Color(0.85, 0.2, 0.15),
+	Color(0.95, 0.95, 0.9),
+	Color(0.2, 0.4, 0.9),
+	Color(0.25, 0.6, 0.3),
+	Color(0.9, 0.7, 0.2),
 ]
 const RADIUS := 7.0
 ## Outline of what the player looks at (not his own: no orders).

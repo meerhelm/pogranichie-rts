@@ -227,6 +227,10 @@ msgstr ""
 msgid "All places of power held for five minutes."
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "All three Smolensk banners have fallen. The wings are torn apart."
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Always on"
 msgstr ""
@@ -360,6 +364,10 @@ msgstr ""
 msgid "Burn the castle of Skirsnemune"
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "By evening there was no Order left on the field. The Master lay among his own, and with him many of the elder brothers. Their banners the king later had hung in Kraków."
+msgstr ""
+
 #: ui/main_menu.gd
 msgid "Campaign: %s"
 msgstr ""
@@ -401,6 +409,7 @@ msgid "Cheaper towers, walls and castles"
 msgstr ""
 
 #: missions/gdl_01/mission.json
+#: missions/gdl_02/mission.json
 msgid "Chronicler"
 msgstr ""
 
@@ -444,6 +453,10 @@ msgstr ""
 msgid "Ctrl+right click: attack-move. Alt+right click: set a building on fire."
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "Ctrl+right-click moves in attack. Blows to the flank and rear break the enemy's spirit."
+msgstr ""
+
 #: ui/tips.gd
 #: ui/unit_card.gd
 msgid "Damage %d (%s)"
@@ -467,6 +480,10 @@ msgstr ""
 
 #: ui/command_panel.gd
 msgid "Dismount"
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "Do not let all three Smolensk banners fall"
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -515,6 +532,10 @@ msgstr ""
 
 #: ui/advisor.gd
 msgid "F1: how to play."
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "Fall back to the forest without losing Gintaut's banner"
 msgstr ""
 
 #: ui/tips.gd
@@ -595,6 +616,10 @@ msgstr ""
 msgid "Formation: %s (%s)"
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "Forward, at the marshal!"
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "From the darkness you live in. Half of it. And all the rye."
 msgstr ""
@@ -609,6 +634,10 @@ msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "GDL 1. Samogitian Fire"
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "GDL 2. Grunwald"
 msgstr ""
 
 #: ui/help_panel.gd
@@ -639,8 +668,20 @@ msgstr ""
 msgid "Get off the horse and fight on foot: more armor, the speed of foot soldiers."
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "Gintaut is wounded and carried off the field. The khorugv has lost its leader."
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "Gintaut is wounded. The uprising has lost its leader."
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "Gintaut's banner has fallen and nobody raised it. The khorugv is running."
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "Gintaut's khorugv has been cut to pieces."
 msgstr ""
 
 #: ui/tips.gd
@@ -711,6 +752,10 @@ msgstr ""
 msgid "Hints in skirmish"
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "Hold on, Prince Semyon. We will come back."
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "Hold the pier with no enemies near, and the boats with reinforcements will stop coming."
 msgstr ""
@@ -768,6 +813,10 @@ msgstr ""
 msgid "In spring they stood on the bog, they drink river water and eat old grain. Think what you like."
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "In the year of our Lord fourteen hundred and ten, on the fifteenth of July, our great-grandfather Gintaut stood in the right wing, under the hand of Vytautas. They stood a long time, in the sun, in iron."
+msgstr ""
+
 #: ui/unit_card.gd
 msgid "In work: %s, %d%%"
 msgstr ""
@@ -789,12 +838,28 @@ msgstr ""
 msgid "Iron: right-click bog ore (brown blocks in the bog) with peasants."
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "Is Samogitia ours now, prince?"
+msgstr ""
+
 #: ui/help_panel.gd
 msgid "It needs two other first-age buildings and opens new units."
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "It rained in the night. Their powder is as wet as their prayers. Hold!"
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "It will be ours. By peace, not by the sword. With the sword we have done all we could."
+msgstr ""
+
 #: ui/tips.gd
 msgid "Javelin: %d damage at %d cells, every %d s"
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "Keep at least two Smolensk banners"
 msgstr ""
 
 #: ui/end_screen.gd
@@ -869,6 +934,7 @@ msgid "Menu (F10)"
 msgstr ""
 
 #: missions/gdl_01/mission.json
+#: missions/gdl_02/mission.json
 msgid "Messenger"
 msgstr ""
 
@@ -882,6 +948,10 @@ msgstr ""
 
 #: ui/unit_card.gd
 msgid "Morale: never flees"
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "Mother of God, Virgin, by God glorified Mary..."
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -1062,6 +1132,10 @@ msgstr ""
 msgid "Pogranichie"
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "Polish warriors"
+msgstr ""
+
 #: ui/hud.gd
 msgid "Population %d/%d"
 msgstr ""
@@ -1156,6 +1230,10 @@ msgstr ""
 msgid "Salvage"
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "Samogitian warrior"
+msgstr ""
+
 #: ui/pause_menu.gd
 msgid "Save game"
 msgstr ""
@@ -1174,6 +1252,10 @@ msgstr ""
 
 #: ui/help_panel.gd
 msgid "Select peasants and right-click what they should gather."
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "Select the light horse and press «Lithuanian retreat»: they ride for the forest in the south-east without losing heart, and right after can turn on their pursuers. Lead the rest there too."
 msgstr ""
 
 #: ui/advisor.gd
@@ -1230,6 +1312,18 @@ msgstr ""
 msgid "Small"
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "Smolensk stands! Tell Vytautas: we will stand as long as we can."
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "Some write that the Lithuanians fled. Others, that they fled on purpose. Grandfather Mikołaj asked his father about it. He laughed and did not answer."
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "Sound the retreat. Hold the banner! Let the Germans run after us, not we from them."
+msgstr ""
+
 #: ui/tips.gd
 #: ui/unit_card.gd
 msgid "Speed %.2f cells/s"
@@ -1255,6 +1349,14 @@ msgstr ""
 msgid "Stop what they are doing and stand."
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "Strike the flank of the Grand Master's reserve"
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "Take all 3 places of power"
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "Take all 7 places of power"
 msgstr ""
@@ -1271,12 +1373,24 @@ msgstr ""
 msgid "Take back the sacred grove and lay an alka there"
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "Take the Order's bombards"
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "Take the wagenburg"
+msgstr ""
+
 #: ui/tips.gd
 msgid "Takes %d population"
 msgstr ""
 
 #: ui/unit_card.gd
 msgid "Takes in: %s"
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "Tatar captain"
 msgstr ""
 
 #: ui/settings_panel.gd
@@ -1287,12 +1401,40 @@ msgstr ""
 msgid "That year Samogitia was German. Vytautas gave it to the Order by treaty, and nobody asked us. Last winter there was hunger. King Jogaila sent us grain down the river, but the Germans stopped the boats and said they would feed Samogitia themselves."
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "The Grand Master's reserve broke the Polish centre while the Lithuanians were away."
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "The Master is gone! Killed in the melee!"
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "The Order is beaten at Grunwald."
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "The Order's knechts hold out behind the chained wagons. Break in and cut them down."
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "The Order's tithe collector is coming up the road."
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "The Poles are still singing. So it is time. To horse!"
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "The alka gives Power. Every place of power you hold with an alka adds more; near the Order's castles and priests it gives less."
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "The banner has fallen! Bring a rider to it within 20 seconds."
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "The banner is up again."
 msgstr ""
 
 #: ui/end_screen.gd
@@ -1311,12 +1453,24 @@ msgstr ""
 msgid "The hints at the top left can be turned off in the settings."
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "The khan is taking his men away. Don't stand there, Lithuanian, or you will stay here for good."
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "The knights are coming out! Don't let them reach the boats!"
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "The lance beside Gintaut carries his banner. Units near it keep their spirit. If the bearer falls, bring a rider to the banner within 20 seconds, or the khorugv runs."
+msgstr ""
+
 #: ui/hud.gd
 msgid "The last capital cannot be taken apart"
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "The lone oak on the hill is a place of power. Take it, and the znakharka can lay an alka there for Power."
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -1339,6 +1493,10 @@ msgstr ""
 msgid "The prince's. Prince Vytautas has not sent us yet. But the Germans held back the king's grain, and now the prince says he did not send us far enough."
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "The pursuers have lost their order. Turn on them now: a turn right after a retreat strikes hard."
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "The queue is full"
 msgstr ""
@@ -1351,12 +1509,20 @@ msgstr ""
 msgid "The village ran out of food and starved."
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "The wagon fort! Strike the wagon fort before they come to their senses!"
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "The znakharka can call Bog Mist: your units in it cannot be seen until they attack."
 msgstr ""
 
 #: ui/command_panel.gd
 msgid "Then click your building."
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "Then two heralds came from the Master and brought two swords. On one shield was the black eagle of the King of the Romans, on the other the griffin of Szczecin. They said: here are swords for you, if your own are too few, and choose the field, if you are afraid."
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -1371,12 +1537,24 @@ msgstr ""
 msgid "They have been coughing for a whole week. Did you do this to them?"
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "They have long been waiting for it, prince."
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "They say a thunderstorm passed over the field in that hour, and lightning struck where the Germans stood. They say. I would like to believe it."
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "They say the mist rose from the bog in broad daylight, and a German patrol passed ten steps from our men and saw no one. Such mists do happen in Samogitia. But grandfather said that one was special."
 msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "They took the bread, now the grove. Take up your spears."
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "Thunder without lightning!"
 msgstr ""
 
 #: game/arena/arena.gd
@@ -1413,6 +1591,10 @@ msgstr ""
 
 #: ui/command_panel.gd
 msgid "Turn around"
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "Two fresh Lithuanian banners have gathered at the forest. The reserve is going for the Poles: strike it in the flank before it breaks through. The znakharka can call Perkūnas's Wrath on it."
 msgstr ""
 
 #: ui/unit_card.gd
@@ -1463,6 +1645,18 @@ msgstr ""
 msgid "Wavering"
 msgstr ""
 
+#: missions/gdl_02/mission.json
+msgid "We are going on to Malbork now. I need your men in Samogitia. Go home."
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "We had to wait a long time for peace. But grandfather told how great-grandfather that evening, for the first time in his life, fell asleep without fear."
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "We have swords enough. Gintaut! Your Samogitians will be the first to hear the trumpet."
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "We lit it. Others stacked the firewood."
 msgstr ""
@@ -1493,6 +1687,10 @@ msgstr ""
 
 #: ui/help_panel.gd
 msgid "With peasants selected, the buttons at the bottom right are buildings."
+msgstr ""
+
+#: missions/gdl_02/mission.json
+msgid "Withstand the cannonade and attack the Order's left wing"
 msgstr ""
 
 #: ui/ui_text.gd
@@ -1686,7 +1884,12 @@ msgstr ""
 
 #: catalog:prototype_units
 #: missions/gdl_01/mission.json
+#: missions/gdl_02/mission.json
 msgid "hero_gintaut"
+msgstr ""
+
+#: catalog:prototype_units
+msgid "hero_jungingen"
 msgstr ""
 
 #: catalog:prototype_units
@@ -1699,8 +1902,22 @@ msgid "hero_kuchmeister"
 msgstr ""
 
 #: catalog:prototype_units
+#: missions/gdl_02/mission.json
+msgid "hero_lengvenis"
+msgstr ""
+
+#: catalog:prototype_units
 #: missions/gdl_01/mission.json
 msgid "hero_rumbaudas"
+msgstr ""
+
+#: catalog:prototype_units
+#: missions/gdl_02/mission.json
+msgid "hero_vytautas"
+msgstr ""
+
+#: catalog:prototype_units
+msgid "hero_wallenrode"
 msgstr ""
 
 #: ui/tips.gd
@@ -1740,6 +1957,10 @@ msgid "nt_elk"
 msgstr ""
 
 #: catalog:prototype_units
+msgid "nt_steppe_archer"
+msgstr ""
+
+#: catalog:prototype_units
 msgid "nt_villager"
 msgstr ""
 
@@ -1753,6 +1974,18 @@ msgstr ""
 
 #: catalog:factions
 msgid "pl"
+msgstr ""
+
+#: catalog:prototype_units
+msgid "pl_crossbow"
+msgstr ""
+
+#: catalog:prototype_units
+msgid "pl_kopia"
+msgstr ""
+
+#: catalog:prototype_units
+msgid "pl_spearman"
 msgstr ""
 
 #: catalog:power_places
@@ -1814,6 +2047,10 @@ msgstr ""
 
 #: catalog:prototype_spells
 msgid "sp_exorcism"
+msgstr ""
+
+#: catalog:prototype_spells
+msgid "sp_perkunas"
 msgstr ""
 
 #: catalog:prototype_spells
@@ -1920,6 +2157,10 @@ msgstr ""
 msgid "to_barracks"
 msgstr ""
 
+#: catalog:prototype_units
+msgid "to_bombard"
+msgstr ""
+
 #: catalog:prototype_buildings
 msgid "to_brickworks"
 msgstr ""
@@ -1942,6 +2183,10 @@ msgstr ""
 
 #: catalog:prototype_buildings
 msgid "to_granary"
+msgstr ""
+
+#: catalog:prototype_units
+msgid "to_guest_knight"
 msgstr ""
 
 #: catalog:prototype_units
@@ -2022,6 +2267,10 @@ msgstr ""
 
 #: catalog:prototype_buildings
 msgid "to_town_center"
+msgstr ""
+
+#: catalog:prototype_units
+msgid "to_wagon"
 msgstr ""
 
 #: ui/help_panel.gd

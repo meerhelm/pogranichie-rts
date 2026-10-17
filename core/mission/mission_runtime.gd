@@ -15,6 +15,7 @@ extends RefCounted
 ##   map); group_dead / group_lost / group_exited {group}; places_held {player, count};
 ##   blockade_held (every blockade post is held now); garrison_at_most {permille};
 ##   group_near_count {group, at, radius, count}; group_alive_at_most {group, count};
+##   units_at_most {player, count} (all the player's units, heroes included);
 ##   retreating {player} (some unit of the player is in a «Литовский отход»); place_held
 ##   {player, place} (by index in the map's list);
 ##   any / all {of: [...]}; not {of}; for_ticks {ticks, of} (true for that long in a row; one
@@ -291,6 +292,8 @@ func test(c: Dictionary, tid: String, tick: int) -> bool:
 			ok = _group_near_count(c["group"], c["at"], c["radius"]) >= int(c["count"])
 		"group_alive_at_most":
 			ok = groups.has(c["group"]) and alive_of(c["group"]).size() <= int(c["count"])
+		"units_at_most":
+			ok = _units_of(c["player"]) <= int(c["count"])
 		"retreating":
 			ok = _retreating(c["player"])
 		"place_held":
@@ -496,6 +499,14 @@ func _group_near_count(group: String, at: Array, radius: int) -> int:
 	var n := 0
 	for id in alive_of(group):
 		if _dist_sq(entities.pos_x[id - 1] - x, entities.pos_y[id - 1] - y) <= r * r:
+			n += 1
+	return n
+
+
+func _units_of(p: int) -> int:
+	var n := 0
+	for id in entities.alive_ids:
+		if entities.owners[id - 1] == p:
 			n += 1
 	return n
 

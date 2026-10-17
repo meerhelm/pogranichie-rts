@@ -186,6 +186,16 @@ RULES: list[Rule] = [
     (r"поёт «Богородицу»", _tags("sp_bogurodzica")),
     (r"несёт икону", _tags("sp_icon")),
     (r"в дождь не стреляет", _tags("rain_silenced")),
+    (r"отходит без потери духа", _tags("lithuanian_retreat")),
+    (r"грабит обозы", _tags("plunders_wagons")),
+    (
+        r"−(\d+) урона после (\d+) с сечи",
+        lambda sp, m, _u: sp.params.update(
+            melee_fatigue_damage=int(m.group(1)), melee_fatigue_ticks=cells.ticks(m.group(2))
+        ),
+    ),
+    (r"в жару теряет дух \(кампания\)", _tags("heat_morale")),
+    (r"стреляет и без батареи", _tags()),
     (r"в дождь перезарядка вдвое дольше", _tags("rain_slow_reload")),
     (r"из (\d+) возов собирается (?:табор|вагенбург.*)", _params(tabor_wagons=1)),
     # Animals and villagers.

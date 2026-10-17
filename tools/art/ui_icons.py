@@ -335,6 +335,15 @@ GLYPHS: dict[str, dict[str, str]] = {
             + f'<circle cx="32" cy="16" r="3" fill="{R}" {O}/>'
             + "".join(f'<circle cx="{x}" cy="54" r="5" fill="{S}" {O}/>' for x in (12, 22, 42, 52))
         ),
+        # Perkūnas's Wrath: a dark storm cloud, a lightning bolt and slanting rain.
+        "sp_perkunas": (
+            "".join(f'<path d="M{x} {y} l-4 9" stroke="#8fb4d8" stroke-width="1.8" opacity="0.8"/>'
+                    for x, y in ((12, 34), (20, 42), (46, 36), (54, 44), (40, 50), (16, 52)))
+            + f'<path d="M34 26 L24 44 H32 L26 60 L44 36 H35 L41 26 Z" fill="#ffe27a" {O}/>'
+            + "".join(f'<circle cx="{x}" cy="{y}" r="{r}" fill="#4a4e60" {O}/>' for x, y, r in
+                      ((18, 20, 10), (32, 15, 12), (46, 20, 10)))
+            + f'<rect x="10" y="20" width="44" height="10" rx="5" fill="#4a4e60"/>'
+        ),
     },
 }
 

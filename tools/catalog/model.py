@@ -34,7 +34,7 @@ COMBAT_RULE_KEYS = (
     "dismount_speed_milli", "retreat_cells", "retreat_fearless_ticks", "retreat_speed_permille",
     "retreat_disorder_ticks", "retreat_disorder_armor", "turn_window_ticks", "turn_damage_bonus",
     "turn_charge_permille", "retreat_cooldown_ticks", "arena_budget", "arena_iron_permille",
-    "arena_silver_permille",
+    "arena_silver_permille", "banner_morale", "banner_radius",
 )
 
 # Economy and construction numbers (M5), in data/rules/economy.tres; values from manual.json.
@@ -56,7 +56,7 @@ VISION_RULE_KEYS = (
 MAGIC_RULE_KEYS = (
     "capture_ticks", "capture_radius", "power_cap", "consecration_permille",
     "alka_recharge_permille", "alka_recharge_radius", "cast_range", "relic_morale_floor",
-    "relic_enemy_morale", "exorcism_creature_damage",
+    "relic_enemy_morale", "exorcism_creature_damage", "storm_strikes", "storm_damage",
 )
 # Skirmish victory (M8), in data/rules/skirmish.tres; values from manual.json.
 SKIRMISH_RULE_KEYS = ("hold_all_places_ticks",)
@@ -68,7 +68,7 @@ FIRE_RULE_KEYS = (
 # What a spell does in the game (manual.json → spell_effects, appended to SpellDef.tags): how it
 # is aimed and which effect the simulation runs. A prototype spell must have both or be passive.
 SPELL_TARGETS = ("target_point", "target_self", "passive")
-SPELL_EFFECTS = ("mist", "dispel", "relic", "consecration")
+SPELL_EFFECTS = ("mist", "dispel", "relic", "consecration", "storm")
 # Keys of tech effects (manual.json → tech_effects). Gathering and farm keys are per-mille
 # increases; "<class or unit id>.<stat>" keys change unit stats (see TECH_STATS).
 TECH_EFFECT_KEYS = (
@@ -516,7 +516,8 @@ class Builder:
         if kind == "neutral":
             return
         d["age"] = cells.age(row["age"])
-        d["campaign_only"] = d["age"] == 0
+        # Units the prototype carries only for its missions stay out of skirmish build menus.
+        d["campaign_only"] = d["age"] == 0 or d["id"] in self.proto.get("mission_only", [])
         d["pop"] = cells.integer(row["pop"])
         cost = cells.cost(row["cost"]) if not cells.is_empty(row["cost"]) else cells.Cost()
         _set_cost(d, cost)

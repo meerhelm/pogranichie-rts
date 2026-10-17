@@ -1,0 +1,279 @@
+{
+ "_comment": "Mission «ВКЛ 2. Грюнвальд, 1410» (mission card in the missions doc, docs/03-missions/04-gdl_02_grunwald_1410.md). A field battle without a base: player 1 is Gintaut's khorugv and the Lithuanian wing, player 2 the Order, allies (setup.sides) 3 the Crown's centre, 4 Lingvenis's Smolensk banners, 5 Vytautas and Jalal ad-Din's Tatars. Allies join as faction gdl: they have no economy, the faction only names their side. Balance against the card (prototype numbers): Wallenrode's wing is split, only the pursuit group chases the player to the forest, Wallenrode himself strikes the first Smolensk banner and pulls back, the khan also leaves once 6 of the 16 light horse are lost, and the reserve is 12 knights and the Grand Master. Read by core/mission/mission_def.gd; cells are map cells, ticks 1/20 s, texts are English keys translated through i18n/*.po.",
+ "id": "gdl_02",
+ "title": "GDL 2. Grunwald",
+ "map": "map_gdl_02",
+ "player": 1,
+ "players": [[1, "gdl"], [2, "to"], [3, "gdl"], [4, "gdl"], [5, "gdl"]],
+ "camera": [120, 112],
+ "difficulties": ["easy", "normal"],
+ "setup": {
+  "sides": {"1": 1, "3": 1, "4": 1, "5": 1, "2": 2},
+  "age": {"1": 2},
+  "stock": {"1": [0, 150, 0, 0], "2": [0, 0, 0, 0], "3": [0, 0, 0, 0], "4": [0, 0, 0, 0], "5": [0, 0, 0, 0]},
+  "locked": {"1": ["gdl_town_center", "gdl_house", "gdl_granary", "gdl_farm", "gdl_lumber_yard", "gdl_mine", "gdl_barracks", "gdl_range", "gdl_stable", "gdl_palisade", "gdl_zaseka", "gdl_siege_workshop", "gdl_bort", "gdl_gate"]},
+  "groups": [
+   {"name": "gintaut", "player": 1, "units": [["hero_gintaut", 1]], "at": [122, 115]},
+   {"name": "banner", "player": 1, "units": [["gdl_lit_lance", 1]], "at": [123, 117]},
+   {"name": "riders", "player": 1, "units": [["gdl_light_horse", 16]], "at": [108, 110]},
+   {"name": "lances", "player": 1, "units": [["gdl_lit_lance", 6]], "at": [126, 110]},
+   {"name": "archers", "player": 1, "units": [["gdl_forest_archer", 5]], "at": [116, 119]},
+   {"name": "znakharka", "player": 1, "units": [["gdl_znakharka", 1]], "at": [130, 120]},
+   {"name": "tatars", "player": 5, "units": [["nt_steppe_archer", 8]], "at": [136, 108]},
+   {"name": "vytautas", "player": 5, "stance": "passive", "untouchable": true, "units": [["hero_vytautas", 1]], "at": [140, 124]},
+   {"name": "lengvenis", "player": 4, "stance": "defensive", "units": [["hero_lengvenis", 1]], "at": [97, 118]},
+   {"name": "smolensk_1", "player": 4, "stance": "defensive", "units": [["gdl_lit_lance", 3], ["gdl_spearman", 4]], "at": [98, 112]},
+   {"name": "smolensk_2", "player": 4, "stance": "stand", "units": [["gdl_lit_lance", 3], ["gdl_spearman", 4]], "at": [91, 114]},
+   {"name": "smolensk_3", "player": 4, "stance": "stand", "units": [["gdl_lit_lance", 3], ["gdl_spearman", 4]], "at": [84, 114]},
+   {"name": "crown", "player": 3, "stance": "stand", "units": [["pl_kopia", 14], ["pl_spearman", 12], ["pl_crossbow", 8]], "at": [62, 110]},
+   {"name": "wallenrode", "player": 2, "stance": "stand", "units": [["hero_wallenrode", 1], ["to_knight_brother", 2], ["to_halfbrother", 4]], "at": [116, 56]},
+   {"name": "pursuit", "player": 2, "stance": "stand", "units": [["to_guest_knight", 3], ["to_halfbrother", 3]], "at": [124, 58]},
+   {"name": "wing_foot", "player": 2, "stance": "stand", "units": [["to_knecht", 6], ["to_crossbow", 6]], "at": [104, 60]},
+   {"name": "bombards", "player": 2, "stance": "passive", "units": [["to_bombard", 2]], "at": [113, 66]},
+   {"name": "order_centre", "player": 2, "stance": "stand", "units": [["to_knight_brother", 3], ["to_halfbrother", 6], ["to_knecht", 8], ["to_crossbow", 6]], "at": [64, 58]},
+   {"player": 2, "stance": "stand", "units": [["to_wagon", 3]], "at": [60, 24]},
+   {"player": 2, "stance": "stand", "units": [["to_wagon", 3]], "at": [70, 24]},
+   {"player": 2, "stance": "stand", "units": [["to_wagon", 3]], "at": [60, 35]},
+   {"player": 2, "stance": "stand", "units": [["to_wagon", 3]], "at": [70, 35]},
+   {"name": "wagon_guard", "player": 2, "stance": "defensive", "units": [["to_knecht", 10], ["to_crossbow", 6]], "at": [63, 28]}
+  ]
+ },
+ "rules": {
+  "banner": {"player": 1, "group": "banner", "raise_ticks": 400, "raise_radius": 2}
+ },
+ "triggers": [
+  {
+   "id": "defeat_gintaut", "when": {"type": "group_dead", "group": "gintaut"},
+   "do": [{"do": "defeat", "text": "Gintaut is wounded and carried off the field. The khorugv has lost its leader."}]
+  },
+  {
+   "id": "defeat_army", "when": {"type": "units_at_most", "player": 1, "count": 3},
+   "do": [{"do": "defeat", "text": "Gintaut's khorugv has been cut to pieces."}]
+  },
+  {
+   "id": "defeat_banner", "when": {"type": "flag", "flag": "banner_lost"},
+   "do": [{"do": "defeat", "text": "Gintaut's banner has fallen and nobody raised it. The khorugv is running."}]
+  },
+  {
+   "id": "defeat_smolensk",
+   "when": {"type": "all", "of": [{"type": "group_dead", "group": "smolensk_1"}, {"type": "group_dead", "group": "smolensk_2"}, {"type": "group_dead", "group": "smolensk_3"}]},
+   "do": [{"do": "defeat", "text": "All three Smolensk banners have fallen. The wings are torn apart."}]
+  },
+  {
+   "id": "defeat_reserve",
+   "when": {"type": "all", "of": [{"type": "after", "trigger": "9", "ticks": 7200}, {"type": "not", "of": {"type": "fired", "trigger": "10"}}]},
+   "do": [{"do": "defeat", "text": "The Grand Master's reserve broke the Polish centre while the Lithuanians were away."}]
+  },
+  {
+   "id": "1", "when": {"type": "start"},
+   "do": [
+    {"do": "rally", "player": 1, "at": [138, 142]},
+    {
+     "do": "cutscene", "id": "two_swords", "at": [118, 90],
+     "lines": [
+      ["Chronicler", "In the year of our Lord fourteen hundred and ten, on the fifteenth of July, our great-grandfather Gintaut stood in the right wing, under the hand of Vytautas. They stood a long time, in the sun, in iron."],
+      ["Chronicler", "Then two heralds came from the Master and brought two swords. On one shield was the black eagle of the King of the Romans, on the other the griffin of Szczecin. They said: here are swords for you, if your own are too few, and choose the field, if you are afraid."],
+      ["hero_vytautas", "We have swords enough. Gintaut! Your Samogitians will be the first to hear the trumpet."],
+      ["hero_gintaut", "They have long been waiting for it, prince."]
+     ]
+    },
+    {"do": "hint", "text": "The lance beside Gintaut carries his banner. Units near it keep their spirit. If the bearer falls, bring a rider to the banner within 20 seconds, or the khorugv runs."},
+    {"do": "hint", "text": "The lone oak on the hill is a place of power. Take it, and the znakharka can lay an alka there for Power."},
+    {"do": "objective", "id": "places", "optional": true, "text": "Take all 3 places of power"},
+    {"do": "ping", "at": [128, 96], "radius": 4}
+   ]
+  },
+  {
+   "id": "2",
+   "when": {"type": "any", "of": [{"type": "after", "trigger": "1", "ticks": 3600}, {"type": "near", "player": 1, "at": [118, 84], "radius": 12}]},
+   "do": [
+    {"do": "volley", "player": 2, "at": [116, 104], "radius": 3, "damage": 30},
+    {
+     "do": "dialogue", "id": "wet_powder",
+     "lines": [
+      ["Samogitian warrior", "Thunder without lightning!"],
+      ["hero_gintaut", "It rained in the night. Their powder is as wet as their prayers. Hold!"]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "2b", "when": {"type": "after", "trigger": "2", "ticks": 300},
+   "do": [{"do": "volley", "player": 2, "at": [124, 106], "radius": 2, "damage": 15}]
+  },
+  {
+   "id": "3", "when": {"type": "after", "trigger": "2b", "ticks": 200},
+   "do": [
+    {"do": "dialogue", "lines": [["hero_vytautas", "Forward, at the marshal!"]]},
+    {"do": "objective", "id": "attack", "text": "Withstand the cannonade and attack the Order's left wing"},
+    {"do": "objective", "id": "bombards", "optional": true, "text": "Take the Order's bombards"},
+    {"do": "hint", "text": "Ctrl+right-click moves in attack. Blows to the flank and rear break the enemy's spirit."},
+    {"do": "stance", "group": "tatars", "stance": "aggressive"},
+    {"do": "attack_move", "group": "tatars", "to": [126, 62]},
+    {"do": "stance", "group": "wallenrode", "stance": "defensive"},
+    {"do": "stance", "group": "pursuit", "stance": "defensive"},
+    {"do": "stance", "group": "wing_foot", "stance": "defensive"},
+    {"do": "stance", "group": "crown", "stance": "aggressive"},
+    {"do": "attack_move", "group": "crown", "to": [66, 62]},
+    {"do": "stance", "group": "order_centre", "stance": "aggressive"},
+    {"do": "ping", "at": [118, 58], "radius": 10}
+   ]
+  },
+  {
+   "id": "bombards_taken", "when": {"type": "all", "of": [{"type": "fired", "trigger": "3"}, {"type": "group_dead", "group": "bombards"}]},
+   "do": [{"do": "objective", "id": "bombards", "state": "done"}]
+  },
+  {
+   "id": "4", "when": {"type": "any", "of": [{"type": "after", "trigger": "3", "ticks": 6000}, {"type": "all", "of": [{"type": "fired", "trigger": "3"}, {"type": "group_alive_at_most", "group": "riders", "count": 10}]}]},
+   "do": [
+    {"do": "move", "group": "tatars", "to": [140, 140]},
+    {"do": "stance", "group": "tatars", "stance": "passive"},
+    {
+     "do": "dialogue", "id": "khan_leaves",
+     "lines": [
+      ["Tatar captain", "The khan is taking his men away. Don't stand there, Lithuanian, or you will stay here for good."],
+      ["hero_gintaut", "Sound the retreat. Hold the banner! Let the Germans run after us, not we from them."],
+      ["Chronicler", "Some write that the Lithuanians fled. Others, that they fled on purpose. Grandfather Mikołaj asked his father about it. He laughed and did not answer."]
+     ]
+    },
+    {"do": "objective", "id": "attack", "state": "done"},
+    {"do": "objective", "id": "retreat", "text": "Fall back to the forest without losing Gintaut's banner"},
+    {"do": "hint", "text": "Select the light horse and press «Lithuanian retreat»: they ride for the forest in the south-east without losing heart, and right after can turn on their pursuers. Lead the rest there too."},
+    {"do": "ping", "at": [138, 142], "radius": 6}
+   ]
+  },
+  {
+   "id": "5",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "4"},
+     {"type": "any", "of": [{"type": "retreating", "player": 1}, {"type": "group_alive_at_most", "group": "riders", "count": 8}, {"type": "after", "trigger": "4", "ticks": 1200}]}
+    ]
+   },
+   "do": [
+    {"do": "stance", "group": "pursuit", "stance": "aggressive"},
+    {"do": "attack_move", "group": "pursuit", "to": [136, 138]},
+    {"do": "objective", "id": "smolensk", "text": "Do not let all three Smolensk banners fall"},
+    {"do": "objective", "id": "smolensk2", "optional": true, "text": "Keep at least two Smolensk banners"}
+   ]
+  },
+  {
+   "id": "6", "when": {"type": "after", "trigger": "5", "ticks": 600},
+   "do": [
+    {"do": "hint", "text": "The pursuers have lost their order. Turn on them now: a turn right after a retreat strikes hard."},
+    {"do": "stance", "group": "wallenrode", "stance": "aggressive"},
+    {"do": "attack_move", "group": "wallenrode", "to": [98, 112]}
+   ]
+  },
+  {
+   "id": "7", "when": {"type": "after", "trigger": "5", "ticks": 1200},
+   "do": [
+    {
+     "do": "dialogue", "id": "smolensk_stands",
+     "lines": [
+      ["hero_lengvenis", "Smolensk stands! Tell Vytautas: we will stand as long as we can."],
+      ["hero_gintaut", "Hold on, Prince Semyon. We will come back."]
+     ]
+    },
+    {"do": "kill", "group": "smolensk_1", "by": 2},
+    {"do": "stance", "group": "wallenrode", "stance": "defensive"},
+    {"do": "move", "group": "wallenrode", "to": [104, 80]}
+   ]
+  },
+  {
+   "id": "smolensk2_lost",
+   "when": {"type": "any", "of": [{"type": "group_dead", "group": "smolensk_2"}, {"type": "group_dead", "group": "smolensk_3"}]},
+   "do": [{"do": "objective", "id": "smolensk2", "state": "failed"}]
+  },
+  {
+   "id": "8",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "5"}, {"type": "after", "trigger": "4", "ticks": 2400}, {"type": "near", "player": 1, "at": [138, 142], "radius": 10}]},
+   "do": [
+    {"do": "objective", "id": "retreat", "state": "done"},
+    {
+     "do": "cutscene", "id": "banner_falls", "at": [66, 100],
+     "lines": [
+      ["Polish warriors", "Mother of God, Virgin, by God glorified Mary..."],
+      ["hero_gintaut", "The Poles are still singing. So it is time. To horse!"]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "9", "when": {"type": "after", "trigger": "8", "ticks": 100},
+   "do": [
+    {"do": "spawn", "group": "jungingen", "player": 2, "stance": "aggressive", "at": [27, 26], "units": [["hero_jungingen", 1]]},
+    {"do": "spawn", "group": "reserve", "player": 2, "stance": "aggressive", "at": [30, 30], "units": [["to_knight_brother", 4], ["to_guest_knight", 4], ["to_halfbrother", 4]]},
+    {"do": "attack_move", "group": "jungingen", "to": [64, 104]},
+    {"do": "attack_move", "group": "reserve", "to": [64, 108]},
+    {"do": "spawn", "group": "fresh", "player": 1, "at": [136, 136], "units": [["gdl_lit_lance", 6], ["gdl_light_horse", 8]]},
+    {"do": "stance", "group": "tatars", "stance": "aggressive"},
+    {"do": "attack_move", "group": "tatars", "to": [64, 90]},
+    {"do": "objective", "id": "flank", "text": "Strike the flank of the Grand Master's reserve"},
+    {"do": "hint", "text": "Two fresh Lithuanian banners have gathered at the forest. The reserve is going for the Poles: strike it in the flank before it breaks through. The znakharka can call Perkūnas's Wrath on it."},
+    {"do": "ping", "at": [40, 50], "radius": 10}
+   ]
+  },
+  {
+   "id": "9b", "when": {"type": "all", "of": [{"type": "fired", "trigger": "9"}, {"type": "place_held", "player": 1, "place": 2}]},
+   "do": [{"do": "dialogue", "lines": [["Chronicler", "They say a thunderstorm passed over the field in that hour, and lightning struck where the Germans stood. They say. I would like to believe it."]]}]
+  },
+  {
+   "id": "places", "when": {"type": "places_held", "player": 1, "count": 3},
+   "do": [{"do": "objective", "id": "places", "state": "done"}]
+  },
+  {
+   "id": "10", "when": {"type": "all", "of": [{"type": "fired", "trigger": "9"}, {"type": "group_alive_at_most", "group": "reserve", "count": 8}]},
+   "do": [
+    {"do": "objective", "id": "flank", "state": "done"},
+    {"do": "kill", "group": "jungingen", "by": 3},
+    {
+     "do": "dialogue", "id": "master_fell",
+     "lines": [
+      ["Messenger", "The Master is gone! Killed in the melee!"],
+      ["hero_gintaut", "The wagon fort! Strike the wagon fort before they come to their senses!"]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "11", "when": {"type": "all", "of": [{"type": "fired", "trigger": "10"}, {"type": "group_alive_at_most", "group": "reserve", "count": 3}]},
+   "do": [
+    {"do": "objective", "id": "smolensk", "state": "done"},
+    {"do": "objective", "id": "wagenburg", "text": "Take the wagenburg"},
+    {"do": "hint", "text": "The Order's knechts hold out behind the chained wagons. Break in and cut them down."},
+    {"do": "ping", "at": [66, 30], "radius": 8}
+   ]
+  },
+  {
+   "id": "12", "when": {"type": "all", "of": [{"type": "fired", "trigger": "11"}, {"type": "group_dead", "group": "wagon_guard"}]},
+   "do": [
+    {"do": "objective", "id": "wagenburg", "state": "done"},
+    {"do": "objective", "id": "smolensk2", "state": "done"},
+    {
+     "do": "cutscene", "id": "evening", "at": [66, 30],
+     "lines": [
+      ["Chronicler", "By evening there was no Order left on the field. The Master lay among his own, and with him many of the elder brothers. Their banners the king later had hung in Kraków."],
+      ["hero_vytautas", "We are going on to Malbork now. I need your men in Samogitia. Go home."],
+      ["hero_gintaut", "Is Samogitia ours now, prince?"],
+      ["hero_vytautas", "It will be ours. By peace, not by the sword. With the sword we have done all we could."],
+      ["Chronicler", "We had to wait a long time for peace. But grandfather told how great-grandfather that evening, for the first time in his life, fell asleep without fear."]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "victory", "when": {"type": "after", "trigger": "12", "ticks": 100},
+   "do": [{"do": "victory", "text": "The Order is beaten at Grunwald."}]
+  },
+  {
+   "id": "banner_down", "when": {"type": "flag", "flag": "banner_down"},
+   "do": [{"do": "hint", "text": "The banner has fallen! Bring a rider to it within 20 seconds."}]
+  },
+  {
+   "id": "banner_up", "when": {"type": "flag", "flag": "banner_raised"},
+   "do": [{"do": "hint", "text": "The banner is up again."}]
+  }
+ ]
+}

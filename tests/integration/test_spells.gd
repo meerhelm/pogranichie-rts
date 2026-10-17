@@ -11,7 +11,9 @@ func test_cast_needs_power_and_then_cools_down() -> void:
 	var m := sim.magic
 	assert_eq(m.can_cast(1, z, MIST), MagicSystem.Cast.POWER)
 	assert_eq(m.can_cast(1, z, EXORCISM), MagicSystem.Cast.NOT_CASTER)
-	assert_eq(m.can_cast(1, z, &"sp_perkunas"), MagicSystem.Cast.NOT_READY, "no effect yet")
+	assert_eq(
+		m.can_cast(1, z, &"sp_perkunas"), MagicSystem.Cast.AGE, "the storm needs the second age"
+	)
 	_give_power(sim, 1, 150)
 	assert_eq(m.can_cast(1, z, MIST), MagicSystem.Cast.OK)
 	sim.enqueue(SimCommand.cast(sim.tick, 1, _ids(z), MIST, _at(8.5), _at(5.5)))
