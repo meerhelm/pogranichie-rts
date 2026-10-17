@@ -16,7 +16,8 @@ extends RefCounted
 ## 10: taking own buildings apart (DISMANTLE, salvage piles carried to storage).
 ## 11: towers and gates shoot.
 ## 12: ВКЛ 3: the CHOOSE command, spies nobody strikes unordered, quenched places of power.
-const SIM_VERSION := 12
+## 13: ВКЛ 4: a column on the march, captives, a spared hero (HP floor), camp supply, raids.
+const SIM_VERSION := 13
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).

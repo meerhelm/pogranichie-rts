@@ -1,0 +1,380 @@
+{
+ "_comment": "Mission «ВКЛ 4. Вилькомир, 1435» (mission card in the missions doc, docs/03-missions/06-gdl_04_vilkomir_1435.md). A field battle from a field camp: player 1 is Mikołaj Gintovt's banner on the east shore of lake Žirnajai, allies (setup.sides) 4 Prince Michael's Lithuanian banners and 5 Jakub of Kobylany's Crown corps; the enemy side is 2 the Livonians (the column's vanguard) and 3 Švitrigaila's Ruthenian banners, Tatars and wagons. Allies and enemies join as factions gdl and to: they have no economy, the faction only names their side. Two nights of 6 minutes (the countdown), then the column marches north along the west shore. Rules (core/mission/mission_march.gd): supply from the wagons, Tatar raids in the first phase, the column on the march, captives, Jurij spared at 20% HP. Read by core/mission/mission_def.gd; cells are map cells, ticks 1/20 s, texts are English keys translated through i18n/*.po.",
+ "id": "gdl_04",
+ "title": "GDL 4. Vilkomir, 1435",
+ "map": "map_gdl_04",
+ "player": 1,
+ "players": [[1, "gdl"], [2, "to"], [3, "gdl"], [4, "gdl"], [5, "gdl"]],
+ "camera": [114, 56],
+ "difficulties": ["easy", "normal"],
+ "setup": {
+  "sides": {"1": 1, "4": 1, "5": 1, "2": 2, "3": 2},
+  "age": {"1": 2},
+  "pop": {"1": 140},
+  "stock": {"1": [200, 400, 60, 40], "2": [0, 0, 0, 0], "3": [0, 0, 0, 0], "4": [0, 0, 0, 0], "5": [0, 0, 0, 0]},
+  "locked": {
+   "1": ["gdl_town_center", "gdl_house", "gdl_granary", "gdl_farm", "gdl_lumber_yard", "gdl_mine", "gdl_barracks", "gdl_palisade", "gdl_zaseka", "gdl_siege_workshop", "gdl_bort", "gdl_gate", "gdl_tower", "gdl_temple", "gdl_field_camp", "gdl_lit_lance", "gdl_forest_archer"]
+  },
+  "buildings": [
+   {"name": "camp", "player": 1, "type": "gdl_field_camp", "at": [124, 56]},
+   {"name": "alka", "player": 1, "type": "gdl_shrine", "at": [110, 46]},
+   {"name": "chapel", "player": 2, "type": "to_shrine", "at": [58, 60]}
+  ],
+  "groups": [
+   {"name": "mikolaj", "player": 1, "units": [["hero_mikolaj", 1]], "at": [118, 53]},
+   {"name": "lances", "player": 1, "units": [["gdl_lit_lance", 12]], "at": [111, 53]},
+   {"name": "riders", "player": 1, "units": [["gdl_light_horse", 16]], "at": [111, 59]},
+   {"name": "strelets", "player": 1, "units": [["gdl_castle_archer", 20]], "at": [117, 60]},
+   {"name": "forest_archers", "player": 1, "units": [["gdl_forest_archer", 6]], "at": [108, 66]},
+   {"name": "znakharka", "player": 1, "units": [["gdl_znakharka", 1]], "at": [114, 49]},
+   {"name": "servants", "player": 1, "units": [["gdl_camp_servant", 10]], "at": [129, 62]},
+   {"name": "mikhail", "player": 4, "stance": "defensive", "units": [["hero_mikhail_sigismundovich", 1]], "at": [131, 50]},
+   {"name": "mikhail_army", "player": 4, "stance": "defensive", "units": [["gdl_lit_lance", 30]], "at": [135, 38]},
+   {"name": "kobylany", "player": 5, "stance": "defensive", "units": [["hero_jakub_kobylany", 1]], "at": [138, 58]},
+   {"name": "kobylany_army", "player": 5, "stance": "defensive", "units": [["pl_kopia", 16], ["pl_crossbow", 12]], "at": [137, 61]},
+   {"name": "kerskorf", "player": 2, "stance": "defensive", "units": [["hero_kerskorf", 1]], "at": [32, 84]},
+   {"name": "nesselrode", "player": 2, "stance": "defensive", "units": [["hero_nesselrode", 1]], "at": [34, 84]},
+   {"name": "knights", "player": 2, "stance": "defensive", "units": [["to_knight_brother", 14]], "at": [30, 78]},
+   {"name": "knechts", "player": 2, "stance": "defensive", "units": [["to_knecht", 30]], "at": [17, 80]},
+   {"name": "crossbows", "player": 2, "stance": "defensive", "units": [["to_crossbow", 16]], "at": [36, 76]},
+   {"name": "chapel_guard", "player": 2, "stance": "defensive", "units": [["to_crossbow", 4]], "at": [56, 64]},
+   {"name": "prince_1", "player": 3, "stance": "defensive", "units": [["gdl_lit_lance", 3]], "at": [14, 92]},
+   {"name": "prince_2", "player": 3, "stance": "defensive", "units": [["gdl_lit_lance", 3]], "at": [18, 92]},
+   {"name": "prince_3", "player": 3, "stance": "defensive", "units": [["gdl_lit_lance", 3]], "at": [22, 92]},
+   {"name": "prince_4", "player": 3, "stance": "defensive", "units": [["gdl_lit_lance", 3]], "at": [14, 96]},
+   {"name": "prince_5", "player": 3, "stance": "defensive", "units": [["gdl_lit_lance", 3]], "at": [18, 96]},
+   {"name": "prince_6", "player": 3, "stance": "defensive", "units": [["gdl_lit_lance", 3]], "at": [22, 96]},
+   {"name": "prince_7", "player": 3, "stance": "defensive", "units": [["gdl_lit_lance", 3]], "at": [14, 100]},
+   {"name": "riders_1", "player": 3, "stance": "defensive", "units": [["gdl_light_horse", 4]], "at": [30, 92]},
+   {"name": "riders_2", "player": 3, "stance": "defensive", "units": [["gdl_light_horse", 4]], "at": [34, 92]},
+   {"name": "riders_3", "player": 3, "stance": "defensive", "units": [["gdl_light_horse", 4]], "at": [30, 96]},
+   {"name": "riders_4", "player": 3, "stance": "defensive", "units": [["gdl_light_horse", 4]], "at": [34, 96]},
+   {"name": "yuri", "player": 3, "stance": "defensive", "units": [["hero_jurij_gintovt", 1], ["gdl_light_horse", 4]], "at": [26, 92]},
+   {"name": "guard", "player": 3, "stance": "passive", "untouchable": true, "units": [["gdl_lit_lance", 3]], "at": [26, 100]},
+   {"name": "tatars", "player": 3, "stance": "defensive", "units": [["nt_steppe_archer", 12]], "at": [36, 100]},
+   {"name": "wagons", "player": 3, "stance": "stand", "units": [["gdl_wagon", 4]], "at": [22, 104]},
+   {"name": "patrol", "player": 3, "stance": "defensive", "units": [["gdl_light_horse", 4]], "at": [84, 71]}
+  ]
+ },
+ "rules": {
+  "supply": {"player": 1, "building": "camp", "every_ticks": 1200, "amount": [80, 40, 30, 10]},
+  "raids": {"player": 3, "units": [["nt_steppe_archer", 3]], "at": [62, 20], "to": [125, 60], "first_ticks": 2400, "every_ticks": 2400, "until": "2.1"},
+  "march": {"morale_permille": 600, "reform_ticks": 500},
+  "capture": {
+   "player": 1,
+   "players": [3],
+   "morale_permille": 200,
+   "radius": 3,
+   "banners": ["prince_1", "prince_2", "prince_3", "prince_4", "prince_5", "prince_6", "prince_7", "riders_1", "riders_2", "riders_3", "riders_4"]
+  },
+  "spare": {"group": "yuri", "permille": 200, "to": [36, 44]}
+ },
+ "triggers": [
+  {
+   "id": "defeat_mikolaj",
+   "when": {"type": "group_dead", "group": "mikolaj"},
+   "do": [
+    {"do": "defeat", "text": "Mikołaj Gintovt is wounded and carried off the field. His banner has lost its leader."}
+   ]
+  },
+  {
+   "id": "defeat_mikhail",
+   "when": {"type": "group_dead", "group": "mikhail"},
+   "do": [
+    {"do": "defeat", "text": "Prince Michael has fallen. Sigismund's army is left without its commander."}
+   ]
+  },
+  {
+   "id": "defeat_vanguard",
+   "when": {"type": "all", "of": [{"type": "not", "of": {"type": "fired", "trigger": "3.4"}}, {"type": "group_exited", "group": "vanguard", "count": 32}]},
+   "do": [
+    {"do": "defeat", "text": "The Livonian vanguard got away to Vilkomir with most of its men. Švitrigaila will come back."}
+   ]
+  },
+  {
+   "id": "defeat_army",
+   "when": {"type": "units_at_most", "player": 1, "count": 3},
+   "do": [
+    {"do": "defeat", "text": "Mikołaj's banner has been cut to pieces."}
+   ]
+  },
+  {
+   "id": "1.1",
+   "when": {"type": "start"},
+   "do": [
+    {"do": "merge", "group": "vanguard", "of": ["kerskorf", "nesselrode", "knights", "knechts", "crossbows"]},
+    {"do": "merge", "group": "middle", "of": ["prince_1", "prince_2", "prince_3", "prince_4", "prince_5", "prince_6", "prince_7", "riders_1", "riders_2", "riders_3", "riders_4", "yuri"]},
+    {"do": "merge", "group": "tail", "of": ["tatars", "wagons"]},
+    {"do": "merge", "group": "allies", "of": ["mikhail_army", "kobylany_army", "kobylany"]},
+    {"do": "rally", "player": 1, "at": [124, 58]},
+    {"do": "cutscene", "id": "two_shores", "at": [84, 60], "lines": [["Chronicler", "After the death of great Vytautas the Grand Duchy became like one coat for two. Vilnius pulls one way, Polotsk the other, and the seams crack."], ["Chronicler", "Prince Sigismund, son of Kęstutis, fell on Grand Duke Švitrigaila by night at Ashmyany, as on a thief. Švitrigaila went to Polotsk, and after him went Polotsk, Vitebsk, Smolensk, Kyiv and all Volhynia. Vilnius, Trakai and our Samogitia stayed with Sigismund."], ["hero_mikolaj", "Father gave you land near Vitebsk to sit on. Not to fight for."], ["hero_jurij_gintovt", "I swear to the one the whole land of Vitebsk swears to. As you swear to the one Samogitia swears to. Our faith is one, Mikołaj. Our land is not."], ["hero_mikolaj", "Our land is not, but our blood is one."], ["Chronicler", "For three years the Grand Duchy burned itself. And in August of fourteen hundred and thirty-five Švitrigaila came out of Vitebsk, joined the Livonian knights and marched on Vilnius. Sigismund sent his son Michael against him, and the king in Kraków sent Poles under Lord Jakub of Kobylany."], ["Chronicler", "They met at a lake near Vilkomir and stood. And my grandfather Mikołaj stood on the east shore and counted the fires on the west. He hoped his brother was not sitting at one of them."]]},
+    {"do": "dialogue", "id": "no_crossing", "lines": [["hero_mikhail_sigismundovich", "Lord Gintovt, your banner stands closest to the water. Nobody crosses to that side without my word. And nobody comes over from there either."], ["hero_mikolaj", "It will be done, prince."]]},
+    {"do": "objective", "id": "hold", "text": "Hold your shore until dawn"},
+    {"do": "countdown", "text": "Dawn in %s", "ticks": 14400},
+    {"do": "hint", "text": "The wagons bring food, wood, iron and silver to the field camp every minute. Camp servants can put up a stable, an archery range and an alka; hire light horse and archers there."},
+    {"do": "ping", "at": [125, 57], "radius": 3}
+   ]
+  },
+  {
+   "id": "1.2",
+   "when": {"type": "any", "of": [{"type": "near", "player": 1, "at": [93, 50], "radius": 3}, {"type": "near", "player": 1, "at": [94, 60], "radius": 3}, {"type": "near", "player": 1, "at": [95, 84], "radius": 3}, {"type": "near", "player": 1, "at": [93, 96], "radius": 3}]},
+   "do": [
+    {"do": "hint", "text": "From the water you see across the lake: the fires of Švitrigaila's camp burn on the west shore."},
+    {"do": "ping", "at": [26, 94], "radius": 10}
+   ]
+  },
+  {
+   "id": "1.3",
+   "when": {"type": "flag", "flag": "raid"},
+   "do": [
+    {"do": "dialogue", "id": "tatars_at_wagons", "lines": [["Servant at the wagons", "Tatars at the wagons! They came round on dry land, along the lake!"], ["hero_mikolaj", "Švitrigaila has brought Tatars too. Light horse to the northern edge, and let them not get off their horses until morning."]]},
+    {"do": "hint", "text": "Every two minutes Tatars come round the lake's northern end at the camp. Keep light horse on the dry strip north of the lake."},
+    {"do": "ping", "at": [88, 32], "radius": 6}
+   ]
+  },
+  {
+   "id": "1.4",
+   "when": {"type": "near", "player": 1, "at": [85, 72], "radius": 7},
+   "do": [
+    {"do": "hint", "text": "Švitrigaila's patrol holds the spring on the island. Drive it off and stand at the spring to take it."}
+   ]
+  },
+  {
+   "id": "1.4b",
+   "when": {"type": "place_held", "player": 1, "place": 1},
+   "do": [
+    {"do": "dialogue", "id": "voice_over_water", "lines": [["Sentry", "Lord standard-bearer, over there they sing the same song we sing at harvest."], ["hero_mikolaj", "Don't sing tomorrow. Tomorrow you won't tell your own by the song."]]}
+   ]
+  },
+  {
+   "id": "night_2",
+   "when": {"type": "after", "trigger": "1.1", "ticks": 7200},
+   "do": [
+    {"do": "hint", "text": "The second night. At dawn Švitrigaila's army will move."}
+   ]
+  },
+  {
+   "id": "1.5",
+   "when": {"type": "after", "trigger": "1.1", "ticks": 10800},
+   "do": [
+    {"do": "dialogue", "id": "night_council", "lines": [["Scout", "They are tying up the wagons and putting out the fires early. They are leaving for Vilkomir."], ["hero_jakub_kobylany", "Good. An army on the road is long and thin, like a straw. It must be broken in the middle."], ["hero_mikhail_sigismundovich", "In the middle is the stream. Gintovt, do your Samogitians know the ford?"], ["hero_mikolaj", "They know three. The middle one leads straight to their wagons."], ["hero_jakub_kobylany", "Then the prince and I take the head, and you the middle. And mind, lord, in the middle ride the Ruthenian banners. Won't your hand shake?"], ["hero_mikolaj", "A Samogitian's hand does not shake, Lord Jakub. The heart shakes, and in battle it is not needed."]]},
+    {"do": "hint", "text": "At dawn cross the stream by the middle ford and stand on the road in the column's middle. The znakharka's «Bog mist» can hide the crossing."},
+    {"do": "move", "group": "mikhail_army", "to": [68, 22]},
+    {"do": "move", "group": "kobylany_army", "to": [64, 18]},
+    {"do": "move", "group": "kobylany", "to": [72, 22]},
+    {"do": "ping", "at": [56, 37], "radius": 3},
+    {"do": "ping", "at": [25, 37], "radius": 2},
+    {"do": "ping", "at": [70, 37], "radius": 2}
+   ]
+  },
+  {
+   "id": "early",
+   "when": {"type": "all", "of": [{"type": "not", "of": {"type": "fired", "trigger": "2.1"}}, {"type": "near", "player": 1, "at": [34, 80], "radius": 26}]},
+   "do": [
+    {"do": "hint", "text": "Prince Michael's word: nobody crosses to the west shore before dawn. Švitrigaila's camp is awake."}
+   ]
+  },
+  {
+   "id": "2.1",
+   "when": {"type": "after", "trigger": "1.1", "ticks": 14400},
+   "do": [
+    {"do": "dialogue", "id": "dawn", "lines": [["Chronicler", "At dawn on the first of September they went. In front the Germans in white cloaks, behind them the princes, at the back the wagons and the Tatars. A long column, and all of it side-on to us."], ["hero_mikhail_sigismundovich", "With God. Gintovt, your ford."]]},
+    {"do": "objective", "id": "hold", "state": "done"},
+    {"do": "countdown", "ticks": 0},
+    {"do": "objective", "id": "cut", "text": "Cross the stream and cut Švitrigaila's column in two"},
+    {"do": "objective", "id": "captives", "optional": true, "text": "Take at least 5 princely banners captive"},
+    {"do": "objective", "id": "kurgan", "optional": true, "text": "Take the kurgan on the west shore"},
+    {"do": "spawn", "group": "podlasie", "player": 1, "at": [121, 64], "units": [["gdl_lit_lance", 8]]},
+    {"do": "march", "groups": ["vanguard", "middle", "tail", "guard"], "on": true},
+    {"do": "stance", "group": "vanguard", "stance": "stand"},
+    {"do": "stance", "group": "middle", "stance": "stand"},
+    {"do": "stance", "group": "tail", "stance": "stand"},
+    {"do": "move", "group": "vanguard", "to": [50, 47]},
+    {"do": "move", "group": "middle", "to": [38, 82]},
+    {"do": "move", "group": "guard", "to": [36, 86]},
+    {"do": "hint", "text": "Eight lances from Podlasie have come. Men on the march are weak in armour and spirit until they form up, 20–30 seconds after the first blow. Hold the road in the column's middle for a minute and it falls in two."},
+    {"do": "ping", "at": [50, 46], "radius": 6}
+   ]
+  },
+  {
+   "id": "2.1b",
+   "when": {"type": "after", "trigger": "2.1", "ticks": 1600},
+   "do": [
+    {"do": "move", "group": "vanguard", "to": [36, 18]},
+    {"do": "move", "group": "middle", "to": [50, 49]},
+    {"do": "move", "group": "guard", "to": [47, 56]},
+    {"do": "move", "group": "tail", "to": [47, 70]}
+   ]
+  },
+  {
+   "id": "2.1c",
+   "when": {"type": "all", "of": [{"type": "after", "trigger": "2.1", "ticks": 4400}, {"type": "not", "of": {"type": "fired", "trigger": "2.3"}}]},
+   "do": [
+    {"do": "move", "group": "vanguard", "to": [25, 1]},
+    {"do": "exit", "group": "vanguard", "at": [25, 1], "radius": 3},
+    {"do": "move", "group": "middle", "to": [40, 26]},
+    {"do": "move", "group": "guard", "to": [44, 32]},
+    {"do": "move", "group": "tail", "to": [50, 48]},
+    {"do": "stance", "group": "allies", "stance": "aggressive"},
+    {"do": "attack_move", "group": "mikhail_army", "to": [30, 12]},
+    {"do": "attack_move", "group": "kobylany_army", "to": [28, 10]},
+    {"do": "hint", "text": "The column's head is making for the Šventoji ford and Vilkomir! If most of the Livonians get away, the battle is lost."},
+    {"do": "ping", "at": [25, 6], "radius": 4}
+   ]
+  },
+  {
+   "id": "2.2",
+   "when": {"type": "after", "trigger": "2.1", "ticks": 400},
+   "do": [
+    {"do": "stance", "group": "allies", "stance": "aggressive"},
+    {"do": "attack_move", "group": "mikhail_army", "to": [40, 20]},
+    {"do": "attack_move", "group": "kobylany_army", "to": [36, 16]},
+    {"do": "attack_move", "group": "kobylany", "to": [46, 22]},
+    {"do": "move", "group": "mikhail", "to": [80, 28]},
+    {"do": "hint", "text": "Kobylański and Prince Michael strike the column's head beyond the stream. The middle ford is yours."},
+    {"do": "ping", "at": [56, 37], "radius": 3}
+   ]
+  },
+  {
+   "id": "2.3",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "2.1"}, {"type": "for_ticks", "ticks": 1200, "of": {"type": "near", "player": 1, "at": [50, 46], "radius": 6}}]},
+   "do": [
+    {"do": "objective", "id": "cut", "state": "done"},
+    {"do": "dialogue", "id": "straw_breaks", "lines": [["Chronicler", "And the straw broke, as Lord Jakub had said. The ones in front did not know what was with the ones behind, and the ones behind thought the ones in front were already being beaten."]]},
+    {"do": "march", "groups": ["vanguard"], "on": false},
+    {"do": "stance", "group": "vanguard", "stance": "aggressive"},
+    {"do": "attack_move", "group": "vanguard", "to": [46, 34]},
+    {"do": "stance", "group": "allies", "stance": "aggressive"},
+    {"do": "attack_move", "group": "mikhail_army", "to": [40, 22]},
+    {"do": "attack_move", "group": "kobylany_army", "to": [38, 18]},
+    {"do": "attack_move", "group": "kobylany", "to": [44, 22]},
+    {"do": "stance", "group": "middle", "stance": "aggressive"},
+    {"do": "move", "group": "tail", "to": [52, 64]},
+    {"do": "move", "group": "guard", "to": [44, 30]}
+   ]
+  },
+  {
+   "id": "2.4",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "2.1"}, {"type": "any", "of": [{"type": "groups_near", "group": "yuri", "other": "mikolaj", "radius": 10}, {"type": "spared", "group": "yuri"}]}]},
+   "do": [
+    {"do": "dialogue", "id": "brothers_sign", "lines": [["Old squire", "Lord… that is the lady mother's belt. That is Lord Jurij."], ["hero_mikolaj", "I see. Drive that banner off, don't cut it down. Whoever touches Lord Jurij will answer to me."]]},
+    {"do": "hint", "text": "Jurij Gintovt's banner can be put to flight but not destroyed."}
+   ]
+  },
+  {
+   "id": "3.1",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "2.3"}, {"type": "any", "of": [{"type": "group_near", "group": "vanguard", "at": [46, 34], "radius": 8}, {"type": "after", "trigger": "2.3", "ticks": 1200}, {"type": "group_dead", "group": "kerskorf"}, {"type": "group_dead", "group": "nesselrode"}]}]},
+   "do": [
+    {"do": "objective", "id": "banners", "text": "Break the Livonian banners of Nesselrode and Kerskorf"},
+    {"do": "attack_move", "group": "vanguard", "to": [88, 32]},
+    {"do": "attack_move", "group": "mikhail_army", "to": [44, 28]},
+    {"do": "attack_move", "group": "kobylany_army", "to": [42, 26]},
+    {"do": "hint", "text": "The Livonians turn back and push along the dry strip. Their marshal Nesselrode and Master Kerskorf ride with them."},
+    {"do": "ping", "at": [46, 34], "radius": 6}
+   ]
+  },
+  {
+   "id": "3.2",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "2.1"}, {"type": "group_dead", "group": "nesselrode"}]},
+   "do": [
+    {"do": "morale", "group": "vanguard", "permille": 250},
+    {"do": "dialogue", "id": "marshal_banner", "lines": [["hero_jakub_kobylany", "The marshal's banner is down! Press on, lords, before they raise another!"]]}
+   ]
+  },
+  {
+   "id": "3.3",
+   "when": {"type": "after", "trigger": "2.3", "ticks": 3600},
+   "do": [
+    {"do": "spawn", "group": "reserve", "player": 3, "stance": "defensive", "at": [1, 58], "units": [["gdl_lit_lance", 10]]},
+    {"do": "march", "groups": ["reserve"], "on": true},
+    {"do": "move", "group": "reserve", "to": [52, 64]},
+    {"do": "dialogue", "id": "reserve", "lines": [["Sentry", "More horsemen from the west! Coming to help their own, and there is no one left to help."], ["hero_mikolaj", "Meet them at the kurgan. Surround them, don't cut them down: let them lay down their arms."]]},
+    {"do": "objective", "id": "reserve", "optional": true, "text": "Stop the reserve before it joins the column's tail at the kurgan"},
+    {"do": "ping", "at": [8, 58], "radius": 6}
+   ]
+  },
+  {
+   "id": "reserve_joined",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "3.3"}, {"type": "group_near_count", "group": "reserve", "at": [52, 64], "radius": 8, "count": 5}]},
+   "do": [
+    {"do": "objective", "id": "reserve", "state": "failed"},
+    {"do": "stance", "group": "reserve", "stance": "aggressive"},
+    {"do": "attack_move", "group": "reserve", "to": [50, 46]}
+   ]
+  },
+  {
+   "id": "reserve_stopped",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "3.3"}, {"type": "group_dead", "group": "reserve"}]},
+   "do": [
+    {"do": "objective", "id": "reserve", "state": "done"}
+   ]
+  },
+  {
+   "id": "kurgan_taken",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "2.1"}, {"type": "place_held", "player": 1, "place": 2}]},
+   "do": [
+    {"do": "objective", "id": "kurgan", "state": "done"}
+   ]
+  },
+  {
+   "id": "first_captives",
+   "when": {"type": "flag", "flag": "captured"},
+   "do": [
+    {"do": "hint", "text": "Beaten men surrounded from two sides lay down their arms. Captive princes count for the extra objective."}
+   ]
+  },
+  {
+   "id": "captives_done",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "2.1"}, {"type": "groups_taken", "groups": ["prince_1", "prince_2", "prince_3", "prince_4", "prince_5", "prince_6", "prince_7", "riders_1", "riders_2", "riders_3", "riders_4"], "count": 5}]},
+   "do": [
+    {"do": "objective", "id": "captives", "state": "done"}
+   ]
+  },
+  {
+   "id": "3.4",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "2.1"}, {"type": "group_dead", "group": "kerskorf"}]},
+   "do": [
+    {"do": "dialogue", "id": "master_fell", "lines": [["Chronicler", "The Livonian Master fell, and his marshal, and many commanders. And Švitrigaila got away to Polotsk with thirty men, as three years before. That road must have been well known to him."]]},
+    {"do": "march", "groups": ["vanguard"], "on": false},
+    {"do": "stance", "group": "vanguard", "stance": "passive"},
+    {"do": "move", "group": "vanguard", "to": [25, 2]},
+    {"do": "exit", "group": "vanguard", "at": [25, 1], "radius": 4},
+    {"do": "move", "group": "guard", "to": [25, 2]},
+    {"do": "exit", "group": "guard", "at": [25, 1], "radius": 4},
+    {"do": "ping", "at": [25, 6], "radius": 4}
+   ]
+  },
+  {
+   "id": "banners_done",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "3.1"}, {"type": "group_dead", "group": "nesselrode"}, {"type": "group_dead", "group": "kerskorf"}]},
+   "do": [
+    {"do": "objective", "id": "banners", "state": "done"}
+   ]
+  },
+  {
+   "id": "3.5",
+   "when": {"type": "all", "of": [{"type": "after", "trigger": "2.4", "ticks": 200}, {"type": "any", "of": [{"type": "spared", "group": "yuri"}, {"type": "group_alive_at_most", "group": "yuri", "count": 1}]}]},
+   "do": [
+    {"do": "protect", "group": "yuri"},
+    {"do": "stance", "group": "yuri", "stance": "passive"},
+    {"do": "cutscene", "id": "at_the_ford", "at": [46, 38], "lines": [["hero_jurij_gintovt", "Take me to your prince. Let him count us along with the princes."], ["hero_mikolaj", "Princes live well enough in captivity. You they will write down as a traitor and take your land along with your head."], ["hero_jurij_gintovt", "They will take the land anyway."], ["hero_mikolaj", "I know. So ride not to Vitebsk, but further. To the Dnieper, where Sigismund cannot reach."], ["Chronicler", "Jurij took the woven belt off the staff and threw it across the stream. It fell into the water at the feet of Mikołaj's horse."], ["hero_jurij_gintovt", "Give it to mother. Tell her you found it on the field."]]},
+    {"do": "move", "group": "yuri", "to": [158, 46]},
+    {"do": "exit", "group": "yuri", "at": [158, 46], "radius": 3}
+   ]
+  },
+  {
+   "id": "victory_scene",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "3.5"}, {"type": "fired", "trigger": "banners_done"}, {"type": "fired", "trigger": "2.3"}]},
+   "do": [
+    {"do": "cutscene", "id": "field_of_battle", "at": [50, 46], "lines": [["Chronicler", "They took forty-two princes captive. They took Prince Sigismund Korybutovich too, who had fought alongside the Czech heretics, and he soon died. Of what he died they write differently, and I will not choose."], ["Chronicler", "On that place the prince ordered a church of the Holy Trinity to be built. And the village by the church people called the Slaughter, Pabaiskas in our tongue. After that day neither Švitrigaila nor the Germans came against Vilnius again. That winter at Brest the Order promised to support him no more."], ["Chronicler", "Grandfather Mikołaj brought mother the belt and said he had found it on the field. Her second son we never saw again. They said he settled on the Dnieper and took a wife of the Ruthenian faith, and his children were baptized in the Greek way. The old Samogitian blood ran away east, like the water of that stream. And it came back only sixty-five years later, when we had a common enemy."]]}
+   ]
+  },
+  {
+   "id": "victory",
+   "when": {"type": "after", "trigger": "victory_scene", "ticks": 100},
+   "do": [
+    {"do": "victory", "text": "Švitrigaila's army is beaten at Vilkomir."}
+   ]
+  }
+ ]
+}

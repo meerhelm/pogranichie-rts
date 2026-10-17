@@ -22,6 +22,8 @@ extends RefCounted
 ##   (whole points, rules.evidence); built_near {player, base, at, radius} (a finished building
 ##   of that kind, any time); mist_over {player, at} (the player's «Болотный туман» lies there);
 ##   chose {question, option} (the player picked that option, see `ask`);
+##   group_exited also takes count (at least that many left the map); ВКЛ 4: groups_near,
+##   captured, groups_taken, spared (see MissionMarch.test);
 ##   any / all {of: [...]}; not {of}; for_ticks {ticks, of} (true for that long in a row; one
 ##   per trigger).
 ## Actions (`do`): objective {id, text?, state? (active, done, failed), optional?}; hint {text};
@@ -41,9 +43,12 @@ extends RefCounted
 ##   destroy {building}; name_built {player, base, name} (names the player's newest finished
 ##   building of that kind); assault {group, building, else?} (storm a named building, or
 ##   attack-move to `else` when it is gone).
-## Setup may also give sides: {player: lead player} (allies, Sides) and age: {player: index}.
+##   ВКЛ 4: merge, protect, march, morale, countdown (see MissionMarch.run).
+## Setup may also give sides: {player: lead player} (allies, Sides), age: {player: index} and
+## pop: {player: places} (population room without houses, a field camp's army).
 ## Rules: hunger, boats, blockade (ВКЛ 1), banner (ВКЛ 2, see _banner), baptism, evidence and
-## spies (ВКЛ 3, see MissionFaith).
+## spies (ВКЛ 3, see MissionFaith), supply, raids, march, capture and spare (ВКЛ 4, see
+## MissionMarch).
 
 enum Outcome { NONE, VICTORY, DEFEAT }
 enum Objective { ACTIVE, DONE, FAILED }
@@ -118,6 +123,18 @@ var spies_killed := 0
 var fx_seen := 0
 ## Questions put to the player (`ask`) and not answered yet: id -> number of options.
 var choices: Dictionary[String, int] = {}
+## ВКЛ 4. The marching column (rules.march): unit id -> -1 while in column, or the tick it has
+## formed up after being struck. Captives (rules.capture) per group and in all. The next camp
+## supply and the next raid (-1: none), and how many raids came.
+var marching: Dictionary[int, int] = {}
+var captured: Dictionary[String, int] = {}
+var captives := 0
+var next_supply := -1
+var next_raid := -1
+var raids := 0
+## The panel's countdown (`countdown`): its text and the tick it ends (-1: none).
+var countdown_text := ""
+var countdown_end := -1
 var outcome := Outcome.NONE
 var outcome_text := ""
 ## What the interface shows, in order: {kind, tick, ...} (kind: objective, hint, dialogue,
@@ -197,8 +214,14 @@ func set_up(tick: int) -> void:
 		var carriers := alive_of(b["group"])
 		if not carriers.is_empty():
 			_raise_banner(carriers[0])
+	var pop: Dictionary = s.get("pop", {})
+	for key: String in pop:
+		var state := economy.player(key.to_int())
+		if state != null:
+			state.pop_provided += int(pop[key])
 	setup_buildings = economy.buildings.next_id - 1
 	baptism_every = int(def.rules.get("baptism", {}).get("every_ticks", 0))
+	MissionMarch.set_up(self)
 
 
 func _place(tick: int, p: int, type: String, cx: int, cy: int) -> int:
@@ -264,6 +287,11 @@ func step(tick: int) -> void:
 	MissionFaith.baptism(self, tick)
 	MissionFaith.spies(self, tick, _spawn, _apply)
 	MissionFaith.evidence(self, tick)
+	MissionMarch.supply(self, tick)
+	MissionMarch.raids(self, tick)
+	MissionMarch.march(self, tick)
+	MissionMarch.capture(self, tick, _remove)
+	MissionMarch.spare(self, tick)
 	for t: Dictionary in def.triggers:
 		var tid: String = t["id"]
 		if fired.has(tid):
@@ -315,7 +343,7 @@ func test(c: Dictionary, tid: String, tick: int) -> bool:
 			var g: String = c["group"]
 			ok = groups.has(g) and alive_of(g).size() + exited.get(g, 0) < groups[g].size()
 		"group_exited":
-			ok = exited.get(c["group"], 0) > 0
+			ok = exited.get(c["group"], 0) >= int(c.get("count", 1))
 		"places_held":
 			ok = _places_held(c["player"]) >= int(c["count"])
 		"blockade_held":
@@ -361,6 +389,8 @@ func test(c: Dictionary, tid: String, tick: int) -> bool:
 			else:
 				counters[tid] = 0
 			ok = counters[tid] >= int(c["ticks"])
+		_ when MissionMarch.CONDITIONS.has(c["type"]):
+			ok = MissionMarch.test(self, c)
 		_:
 			push_warning("mission %s: unknown condition %s" % [def.id, c["type"]])
 	return ok
@@ -481,6 +511,8 @@ func run(a: Dictionary, tick: int) -> void:
 				var y := Fixed.from_cells(to[1]) + Fixed.HALF
 				var owner := entities.owners[ids[0] - 1]
 				_apply.call(SimCommand.attack_move(tick, owner, ids, x, y))
+		_ when MissionMarch.ACTIONS.has(a["do"]):
+			MissionMarch.run(self, a, tick)
 		_:
 			push_warning("mission %s: unknown action %s" % [def.id, a["do"]])
 
@@ -578,6 +610,15 @@ func _group_near(group: String, at: Array, radius: int) -> bool:
 		if _dist_sq(entities.pos_x[id - 1] - x, entities.pos_y[id - 1] - y) <= r * r:
 			return true
 	return false
+
+
+## Whether the two players are enemies (ВКЛ 4: who takes whom captive).
+func are_hostile(a: int, b: int) -> bool:
+	return _sides.hostile(a, b)
+
+
+func are_friendly(a: int, b: int) -> bool:
+	return _sides.friendly(a, b)
 
 
 func _group_near_count(group: String, at: Array, radius: int) -> int:
@@ -951,3 +992,4 @@ func write_to(buf: StreamPeerBuffer) -> void:
 	for i: int in places:
 		buf.put_32(i)
 		buf.put_32(magic.places.quenched[i])
+	MissionMarch.write_to(self, buf)

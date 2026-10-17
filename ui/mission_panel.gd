@@ -29,6 +29,8 @@ var _objective_panel := PanelContainer.new()
 var _blockade := Label.new()
 ## ВКЛ 3: the evidence and the baptized under the objectives, and the question being asked.
 var _evidence := Label.new()
+## ВКЛ 4: the countdown to dawn and the captive banners under the objectives.
+var _march := Label.new()
 var _question := PanelContainer.new()
 var _question_text := Label.new()
 var _answers := VBoxContainer.new()
@@ -66,6 +68,9 @@ func _ready() -> void:
 	_evidence.visible = false
 	_evidence.add_theme_color_override("font_color", Color(0.95, 0.8, 0.45))
 	column.add_child(_evidence)
+	_march.visible = false
+	_march.add_theme_color_override("font_color", Color(0.95, 0.8, 0.45))
+	column.add_child(_march)
 	_objective_panel.add_child(column)
 	add_child(_objective_panel)
 	_hints.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
@@ -153,6 +158,7 @@ func poll() -> void:
 				pass
 	_show_blockade()
 	_show_evidence()
+	_show_march()
 	if _asking.is_empty() and _line < 0 and not _questions.is_empty():
 		_ask(_questions.pop_front())
 	if _line < 0 and not _cutscenes.is_empty():
@@ -230,6 +236,27 @@ func _show_evidence() -> void:
 		+ "\n"
 		+ tr("Baptized: %d") % m.baptized_alive()
 	)
+
+
+## «Dawn in 04:12» while the mission counts down, «Banners taken captive: 3» once the mission
+## asks for captives (ВКЛ 4).
+func _show_march() -> void:
+	var m := sim.mission
+	var lines := PackedStringArray()
+	if m.countdown_end >= 0 and not m.countdown_text.is_empty():
+		var left := maxi(m.countdown_end - sim.tick, 0)
+		lines.append(tr(m.countdown_text) % UiText.clock(left))
+	var c: Dictionary = m.def.rules.get("capture", {})
+	if c.has("banners") and m.objective_state.has("captives"):
+		var taken := MissionMarch.groups_taken(m, c["banners"])
+		lines.append(tr("Banners taken captive: %d") % taken)
+	_march.visible = not lines.is_empty()
+	_march.text = "\n".join(lines)
+
+
+## The countdown and captives lines as shown, for tests ("" while hidden).
+func march_text() -> String:
+	return _march.text if _march.visible else ""
 
 
 ## The evidence lines as shown, for tests ("" while hidden).

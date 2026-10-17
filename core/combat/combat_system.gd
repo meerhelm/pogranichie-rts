@@ -76,6 +76,8 @@ var shots := Projectiles.new()
 var buckets: UnitBuckets
 ## Units nobody may attack (M9: a mission's tithe collector and his escort).
 var untouchable: Dictionary[int, bool] = {}
+## Units that cannot be brought below this many HP, by id (ВКЛ 4, hashed by MissionMarch).
+var hp_floor: Dictionary[int, int] = {}
 
 # Simulation callbacks (Callables do not keep the simulation alive, so no reference cycle).
 var _walk: Callable
@@ -665,7 +667,8 @@ func _apply_hit(
 ) -> void:
 	var e := entities
 	var was_alive := e.hp[t] > 0
-	e.hp[t] -= dmg
+	var left := e.hp[t] - dmg
+	e.hp[t] = maxi(left, mini(hp_floor.get(t + 1, left), e.hp[t]))  # ВКЛ 4: a spared hero
 	e.calm[t] = 0
 	if e.is_alive(attacker):
 		e.calm[attacker - 1] = 0
