@@ -171,5 +171,9 @@ func _on_ticked(_tick: int) -> void:
 	if sim.victory.is_over() and not _ended:
 		_ended = true
 		if sim.mission != null and sim.victory.winner == PLAYER:
-			CampaignProgress.mark_won(sim.mission.def.id)
+			var kept := PackedStringArray()
+			for flag in sim.mission.def.carry:
+				if sim.mission.flags.has(flag):
+					kept.append(flag)
+			CampaignProgress.mark_won(sim.mission.def.id, kept)
 		end_screen.open(sim, PLAYER)

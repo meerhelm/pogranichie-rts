@@ -35,13 +35,16 @@ func test_missions_open_one_after_another_and_are_kept() -> void:
 	assert_true(CampaignProgress.is_open("gdl_02"))
 
 
-func test_every_gdl_mission_is_made_and_the_crown_is_planned() -> void:
+func test_every_gdl_mission_is_made_and_the_crown_is_begun() -> void:
 	for id: String in CampaignProgress.MISSIONS["gdl"]:
 		assert_true(CampaignProgress.is_made(id), id)
 		assert_eq(CampaignProgress.campaign_of(id), "gdl")
+	assert_true(CampaignProgress.is_open("crown_01"), "Корона 1 is made and opens first")
 	for id: String in CampaignProgress.MISSIONS["crown"]:
-		assert_false(CampaignProgress.is_open(id), "%s cannot be played yet" % id)
+		if id != "crown_01":
+			assert_false(CampaignProgress.is_open(id), "%s cannot be played yet" % id)
 		assert_string_starts_with(CampaignProgress.title_key(id), "Crown ")
+	assert_eq(CampaignProgress.title_key("crown_01"), "Crown 1. Grunwald, 1410")
 	assert_eq(CampaignProgress.title_key("gdl_08"), "GDL 8. Orsha, 1514")
 
 
@@ -79,9 +82,11 @@ func test_campaign_leads_to_countries_and_missions() -> void:
 	menu._back[1].pressed.emit()
 	menu._country[1].pressed.emit()
 	assert_eq(menu._campaign.size(), 6)
-	for b: Button in menu._campaign:
-		assert_true(b.disabled)
-	assert_eq(menu._mission_state[0].text, "not made yet")
+	assert_false(menu._campaign[0].disabled, "Корона 1 is open")
+	assert_eq(menu._mission_state[0].text, "open")
+	for i in range(1, 6):
+		assert_true(menu._campaign[i].disabled)
+	assert_eq(menu._mission_state[1].text, "not made yet")
 
 
 func test_won_missions_show_and_open_the_next() -> void:
@@ -95,6 +100,18 @@ func test_won_missions_show_and_open_the_next() -> void:
 	assert_eq(menu._mission_state[2].text, "open")
 	assert_false(menu._campaign[2].disabled)
 	assert_true(menu._campaign[3].disabled)
+
+
+func test_a_won_mission_keeps_its_carried_flags() -> void:
+	CampaignProgress.mark_won("crown_01", PackedStringArray(["captive"]))
+	assert_true(CampaignProgress.is_won("crown_01"))
+	assert_true(CampaignProgress.has_mark("crown_01", "captive"))
+	assert_false(CampaignProgress.has_mark("crown_01", "pact"))
+	CampaignProgress.reset()
+	assert_true(CampaignProgress.has_mark("crown_01", "captive"), "read back from the file")
+	CampaignProgress.mark_won("crown_01", PackedStringArray(["pact"]))
+	assert_false(CampaignProgress.has_mark("crown_01", "captive"), "the new victory replaces it")
+	assert_true(CampaignProgress.has_mark("crown_01", "pact"))
 
 
 func test_back_from_a_mission_opens_its_campaign() -> void:

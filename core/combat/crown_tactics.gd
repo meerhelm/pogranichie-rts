@@ -51,6 +51,9 @@ var spell_morale: Dictionary[int, int] = {}
 var spell_armor: Dictionary[int, int] = {}
 var spell_damage: Dictionary[int, int] = {}
 var pact: Dictionary[int, bool] = {}
+## Morale every unit of a player gets (catalog points), by player: the great banner of the
+## kingdom while it stands (Корона 1, MissionField; the mission's state carries it).
+var army_morale: Dictionary[int, int] = {}
 
 ## Units that need watching, by id (wagons, pavisiers, bombards, escorts and steadiers).
 var _watched: Dictionary[int, bool] = {}
@@ -262,6 +265,8 @@ func pavise_set(id: int) -> bool:
 ## Morale from the Crown's rules: the servant beside his knight's lance, and spells.
 func morale_bonus(slot: int) -> int:
 	var bonus: int = spell_morale.get(slot + 1, 0)
+	if not army_morale.is_empty():
+		bonus += army_morale.get(entities.owners[slot], 0)
 	var def := defs[slot]
 	if def == null or not def.tags.has(&"lance_escort"):
 		return bonus

@@ -16,7 +16,9 @@ extends RefCounted
 ## - triggers: [{id, when: condition, do: [actions]}], each fires once, in file order;
 ## - briefing: what the briefing window shows before the mission and from the game menu (F2):
 ##   place (where and when), story (a paragraph), goal (the whole mission in a sentence),
-##   lose (the ways to lose, one line each). The objectives come from the triggers.
+##   lose (the ways to lose, one line each). The objectives come from the triggers;
+## - carry: mission flags the campaign keeps once the mission is won (CampaignProgress marks;
+##   Корона 1: a guest knight taken for ransom, «The Pact» used and so the debt grown).
 ## MissionRuntime's comments list the conditions and actions.
 
 const DIR := "res://missions/%s/mission.json"
@@ -34,6 +36,8 @@ var rules: Dictionary = {}
 var triggers: Array = []
 ## {place, story, goal, lose: [lines]}, every text a translation key; {} if the mission has none.
 var briefing: Dictionary = {}
+## Flags kept by the campaign after a victory (see above).
+var carry := PackedStringArray()
 
 
 static func path_for(mission_id: String) -> String:
@@ -66,6 +70,7 @@ static func from_dict(d: Dictionary) -> MissionDef:
 	m.rules = d.get("rules", {})
 	m.triggers = d.get("triggers", [])
 	m.briefing = d.get("briefing", {})
+	m.carry = PackedStringArray(d.get("carry", []))
 	return m
 
 

@@ -267,6 +267,7 @@ func _show_march() -> void:
 	_stealth_lines(m, lines)
 	_siege_lines(m, lines)
 	_battle_lines(m, lines)
+	_field_lines(m, lines)
 	_march.visible = not lines.is_empty()
 	_march.text = "\n".join(lines)
 
@@ -334,6 +335,18 @@ func _battle_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
 		lines.append(tr("The patrol has raised the alarm"))
 	if not bt.held.is_empty():
 		lines.append(tr("Hidden in the ambush: %d") % bt.hidden.size())
+
+
+## Корона 1: «Heat on your lances: 30%» while it is hot and the lances feel it, «Guest knights
+## taken captive: 2» once any is.
+func _field_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
+	if not m.def.rules.get("field", {}).has("heat"):
+		return
+	var heat := m.field.player_heat(m)
+	if heat > 0:
+		lines.append(tr("Heat on your lances: %d%%") % (heat / 10))
+	if m.field.captured > 0:
+		lines.append(tr("Guest knights taken captive: %d") % m.field.captured)
 
 
 ## The countdown and captives lines as shown, for tests ("" while hidden).

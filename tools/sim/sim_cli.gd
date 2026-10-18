@@ -135,6 +135,8 @@ func _mission(opts: Dictionary) -> int:
 					bots.append(SlutskBot.new(sim))
 				"gdl_08":
 					bots.append(OrshaBot.new(sim))
+				"crown_01":
+					bots.append(CrownGrunwaldBot.new(sim))
 				_:
 					bots.append(MissionBot.new(sim))
 		bots[0].call(&"think")

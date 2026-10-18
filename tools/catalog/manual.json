@@ -274,7 +274,9 @@
    "lady": ["hero"],
    "civilian": ["hero", "civilian"]
   },
-  "factions": {"hero_gintaut": "gdl", "hero_rumbaudas": "gdl", "hero_keeper": "gdl", "hero_kuchmeister": "to", "hero_vytautas": "gdl", "hero_lengvenis": "gdl", "hero_wallenrode": "to", "hero_jungingen": "to", "hero_council_envoys": "gdl", "hero_mikolaj": "gdl", "hero_mikhail_sigismundovich": "gdl", "hero_jakub_kobylany": "gdl", "hero_jurij_gintovt": "gdl", "hero_nesselrode": "to", "hero_kerskorf": "to", "hero_andrei": "gdl", "hero_ostrogski": "gdl", "hero_shchenya": "mo", "hero_nezhdan": "mo", "hero_anastasia": "gdl", "hero_yuri_olelkovich": "gdl", "hero_glinski_envoy": "gdl", "hero_swierczowski": "pl", "hero_sampolinski": "pl", "hero_chelyadnin": "mo", "hero_bulgakov": "mo", "hero_maciej": "gdl"}
+  "factions": {"hero_gintaut": "gdl", "hero_rumbaudas": "gdl", "hero_keeper": "gdl", "hero_kuchmeister": "to", "hero_vytautas": "gdl", "hero_lengvenis": "gdl", "hero_wallenrode": "to", "hero_jungingen": "to", "hero_council_envoys": "gdl", "hero_mikolaj": "gdl", "hero_mikhail_sigismundovich": "gdl", "hero_jakub_kobylany": "gdl", "hero_jurij_gintovt": "gdl", "hero_nesselrode": "to", "hero_kerskorf": "to", "hero_andrei": "gdl", "hero_ostrogski": "gdl", "hero_shchenya": "mo", "hero_nezhdan": "mo", "hero_anastasia": "gdl", "hero_yuri_olelkovich": "gdl", "hero_glinski_envoy": "gdl", "hero_swierczowski": "pl", "hero_sampolinski": "pl", "hero_chelyadnin": "mo", "hero_bulgakov": "mo", "hero_maciej": "gdl",
+   "hero_jasko": "pl", "hero_zyndram": "pl", "hero_marcin": "pl", "hero_olesnicki": "pl",
+   "hero_jagiello": "pl", "hero_stranger": "pl", "hero_order_k1": "to"}
  },
  "spell_effects": {
   "_source": "How each spell is aimed (target_point: a point within magic_rules.cast_range of the caster; target_self: around the caster, moving with it; passive) and the effect the simulation runs (mist, dispel, relic, icon, consecration), read from «Эффект» in «Заклинания». Spells without an entry are not in the game yet and cannot be cast.",

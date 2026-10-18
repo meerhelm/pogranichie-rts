@@ -41,7 +41,8 @@ extends RefCounted
 ##   destroy {building}; name_built {player, base, name} (names the player's newest finished
 ##   building of that kind); assault {group, building, else?} (storm a named building, or
 ##   attack-move to `else` when it is gone).
-##   ВКЛ 4–8: MissionMarch, MissionRetreat, MissionStealth, MissionSiege, MissionBattle. Setup
+##   ВКЛ 4–8, Корона 1: MissionMarch, MissionRetreat, MissionStealth, MissionSiege,
+##   MissionBattle, MissionField. Setup
 ## may also give sides {player: lead player}, age, pop {player: places}, power, props, buildings
 ## turned:true. Rules: hunger, boats, blockade, banner and those of the mission modules.
 
@@ -136,6 +137,7 @@ var retreat := MissionRetreat.new()
 var stealth := MissionStealth.new()
 var siege := MissionSiege.new()
 var battle := MissionBattle.new()
+var field := MissionField.new()
 var outcome := Outcome.NONE
 var outcome_text := ""
 ## What the interface shows, in order: {kind, tick, ...} (kind: objective, hint, dialogue,
@@ -227,6 +229,7 @@ func set_up(tick: int) -> void:
 	stealth.set_up(self)
 	siege.set_up(self)
 	battle.set_up(self)
+	field.set_up(self)
 
 
 func _place(tick: int, p: int, type: String, cx: int, cy: int, turned := false) -> int:
@@ -301,6 +304,7 @@ func step(tick: int) -> void:
 	stealth.step(self, tick)
 	siege.step(self, tick)
 	battle.step(self, tick)
+	field.step(self, tick)
 	for t: Dictionary in def.triggers:
 		var tid: String = t["id"]
 		if fired.has(tid):
@@ -410,6 +414,8 @@ func test(c: Dictionary, tid: String, tick: int) -> bool:
 			ok = siege.test(self, c)
 		_ when MissionBattle.CONDITIONS.has(c["type"]):
 			ok = battle.test(self, c)
+		_ when MissionField.CONDITIONS.has(c["type"]):
+			ok = field.test(self, c)
 		_:
 			push_warning("mission %s: unknown condition %s" % [def.id, c["type"]])
 	return ok
@@ -531,6 +537,8 @@ func run(a: Dictionary, tick: int) -> void:
 			siege.run(self, a, tick)
 		_ when MissionBattle.ACTIONS.has(a["do"]):
 			battle.run(self, a, tick)
+		_ when MissionField.ACTIONS.has(a["do"]):
+			field.run(self, a, tick)
 		_:
 			push_warning("mission %s: unknown action %s" % [def.id, a["do"]])
 
@@ -987,3 +995,4 @@ func write_to(buf: StreamPeerBuffer) -> void:
 	stealth.write_to(buf)
 	siege.write_to(buf)
 	battle.write_to(buf)
+	field.write_to(buf)

@@ -19,6 +19,8 @@ const FACTION := {"gdl": &"gdl", "crown": &"pl"}
 ## Where the progress is kept; tests point it elsewhere.
 static var path := PATH
 static var _won := {}
+## What won missions left for the next ones: "<mission id>:<flag>" (MissionDef.carry).
+static var _marks := {}
 static var _loaded := false
 
 
@@ -27,17 +29,21 @@ static func ensure_loaded() -> void:
 		return
 	_loaded = true
 	_won = {}
+	_marks = {}
 	var cfg := ConfigFile.new()
 	if cfg.load(path) != OK:
 		return
 	for id: String in cfg.get_value("campaign", "won", PackedStringArray()):
 		_won[id] = true
+	for mark: String in cfg.get_value("campaign", "marks", PackedStringArray()):
+		_marks[mark] = true
 
 
 ## Forgets what was loaded, so the next call reads `path` again (tests).
 static func reset() -> void:
 	_loaded = false
 	_won = {}
+	_marks = {}
 
 
 static func is_won(mission_id: String) -> bool:
@@ -45,19 +51,34 @@ static func is_won(mission_id: String) -> bool:
 	return _won.has(mission_id)
 
 
-## Records a won mission and saves; the next mission of its campaign opens.
-static func mark_won(mission_id: String) -> void:
+## Records a won mission and saves; the next mission of its campaign opens. `flags`: the
+## mission's flags the campaign keeps (MissionDef.carry that were set), replacing earlier ones.
+static func mark_won(mission_id: String, flags: PackedStringArray = PackedStringArray()) -> void:
 	ensure_loaded()
-	if _won.has(mission_id):
+	if _won.has(mission_id) and flags.is_empty():
 		return
 	_won[mission_id] = true
+	for mark: String in _marks.keys():
+		if mark.begins_with(mission_id + ":") and not flags.is_empty():
+			_marks.erase(mark)
+	for flag in flags:
+		_marks["%s:%s" % [mission_id, flag]] = true
 	var cfg := ConfigFile.new()
 	var ids := PackedStringArray(_won.keys())
 	ids.sort()
 	cfg.set_value("campaign", "won", ids)
+	var marks := PackedStringArray(_marks.keys())
+	marks.sort()
+	cfg.set_value("campaign", "marks", marks)
 	var err := cfg.save(path)
 	if err != OK:
 		push_warning("cannot save campaign progress: %s" % error_string(err))
+
+
+## Whether a won mission left that flag (Корона 1: "captive", "pact").
+static func has_mark(mission_id: String, flag: String) -> bool:
+	ensure_loaded()
+	return _marks.has("%s:%s" % [mission_id, flag])
 
 
 ## Whether the mission is made (its mission.json is in the game).

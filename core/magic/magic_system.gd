@@ -28,7 +28,8 @@ extends RefCounted
 ##     blessing_armor to both armors and blessing_morale while it lasts;
 ##   pact («Договор»): carried by the caster, own units near it lose no morale and strike for
 ##     pact_damage_permille.
-## A tech may make a spell cheaper («sp_bogurodzica.cost_permille»).
+## A tech may make a spell cheaper («sp_bogurodzica.cost_permille»). A mission may lock a spell
+## (PlayerState.locked, by spell id); one tagged once_per_mission locks itself once cast.
 ## A spell tagged hero_at_power_place («герой у места силы») may also be cast by a hero of the
 ## spell's faction standing within capture_radius of a place of power nobody hides.
 ## Cooldowns run per caster and spell; casters near their own building tagged spell_recharge
@@ -37,7 +38,17 @@ extends RefCounted
 
 ## Why a spell cannot be cast now.
 enum Cast {
-	OK, NO_PLAYER, UNKNOWN, NOT_CASTER, AGE, PASSIVE, NOT_READY, COOLDOWN, POWER, NOT_AT_PLACE
+	OK,
+	NO_PLAYER,
+	UNKNOWN,
+	NOT_CASTER,
+	AGE,
+	PASSIVE,
+	NOT_READY,
+	COOLDOWN,
+	POWER,
+	NOT_AT_PLACE,
+	LOCKED
 }
 
 ## PlayerState.power per point of Сила: thousandths of a point times ticks per second, so a
@@ -218,6 +229,9 @@ func _caster_fail(p: int, id: int, spell_id: StringName) -> Cast:
 		return Cast.PASSIVE
 	if not (spell.tags.has(&"target_point") or spell.tags.has(&"target_self")):
 		return Cast.NOT_READY
+	var state: PlayerState = players.get(p)
+	if state != null and state.locked.has(spell_id):
+		return Cast.LOCKED
 	return Cast.OK
 
 
@@ -279,6 +293,8 @@ func _cast(id: int, spell: SpellDef, x: int, y: int) -> void:
 	players[p].power -= power_cost(p, spell) * POWER_UNIT
 	_cooldown[id * SPELL_SLOTS + spell_index[spell.id]] = spell.cooldown_ticks * COOLDOWN_SCALE
 	_pending.erase(id)
+	if spell.tags.has(&"once_per_mission"):
+		players[p].locked[spell.id] = true
 	var r := radius_of(p, spell)
 	if spell.tags.has(&"dispel"):
 		_dispel(p, x, y, r)

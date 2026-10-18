@@ -139,6 +139,8 @@ static func cast_fail(reason: int) -> String:
 			return t("Always on")
 		MagicSystem.Cast.NOT_AT_PLACE:
 			return t("Only at a place of power")
+		MagicSystem.Cast.LOCKED:
+			return t("Not available now")
 	return t("Not available")
 
 
