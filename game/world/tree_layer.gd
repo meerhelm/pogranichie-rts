@@ -2,8 +2,9 @@ class_name TreeLayer
 extends Node
 ## Trees on forest cells (rendered art from SpriteDB): one pine or birch per cell, a little off
 ## centre, as Sprite2Ds in the y-sorted unit layer so units walk behind and in front of them.
-## Old forest is all pine and darker. A felled cell loses its tree when the grid changes, and
-## trees on ground the local player has not explored yet stay hidden under the fog.
+## Old forest is all pine and darker. A felled cell loses its tree when the grid changes (a cell
+## that turns back to forest gets one again), and trees on ground the local player has not
+## explored yet stay hidden under the fog.
 ## Shadow and colour are merged into one texture per tree kind at start, so a forest of
 ## thousands of trees is one texture per kind and batches well.
 
@@ -79,28 +80,31 @@ func _is_forest(cell: int) -> bool:
 
 func _plant() -> void:
 	_version = sim.nav.version
-	var nav := sim.nav
-	for cell in nav.cell_count():
-		if not _is_forest(cell):
-			continue
-		var x := cell % nav.width
-		var y := cell / nav.width
-		var h := absi(hash(Vector2i(x, y)))
-		var old := nav.terrain_ids[nav.terrain[cell]] == &"t_old_forest"
-		var kind := 0 if old or h % 100 < 65 else 1
-		var t := Sprite2D.new()
-		t.texture = _textures[kind]
-		t.centered = false
-		t.offset = -_pivots[kind]
-		t.scale = Vector2.ONE * _scales[kind] * (0.9 + (h >> 8) % 20 / 100.0)
-		if old:
-			t.modulate = OLD_TINT
-		var jitter := Vector2(((h >> 4) % 31) / 100.0 - 0.15, ((h >> 12) % 31) / 100.0 - 0.15)
-		t.position = Iso.cell_to_screen(Vector2(x + 0.5, y + 0.5) + jitter)
-		t.name = "Tree%d" % cell
-		_trees[cell] = t
-		depth_layer.add_child(t)
+	for cell in sim.nav.cell_count():
+		if _is_forest(cell):
+			_plant_cell(cell)
 	_fog()
+
+
+func _plant_cell(cell: int) -> void:
+	var nav := sim.nav
+	var x := cell % nav.width
+	var y := cell / nav.width
+	var h := absi(hash(Vector2i(x, y)))
+	var old := nav.terrain_ids[nav.terrain[cell]] == &"t_old_forest"
+	var kind := 0 if old or h % 100 < 65 else 1
+	var t := Sprite2D.new()
+	t.texture = _textures[kind]
+	t.centered = false
+	t.offset = -_pivots[kind]
+	t.scale = Vector2.ONE * _scales[kind] * (0.9 + (h >> 8) % 20 / 100.0)
+	if old:
+		t.modulate = OLD_TINT
+	var jitter := Vector2(((h >> 4) % 31) / 100.0 - 0.15, ((h >> 12) % 31) / 100.0 - 0.15)
+	t.position = Iso.cell_to_screen(Vector2(x + 0.5, y + 0.5) + jitter)
+	t.name = "Tree%d" % cell
+	_trees[cell] = t
+	depth_layer.add_child(t)
 
 
 func _fell() -> void:
@@ -109,6 +113,11 @@ func _fell() -> void:
 		if not _is_forest(cell):
 			_trees[cell].queue_free()
 			_trees.erase(cell)
+	# A forest that comes back (a «Волчья тропа» closing, ВКЛ 6) gets its trees again.
+	for cell in sim.nav.cell_count():
+		if not _trees.has(cell) and _is_forest(cell):
+			_plant_cell(cell)
+	_fog()
 
 
 func _fog() -> void:

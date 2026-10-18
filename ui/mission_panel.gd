@@ -264,6 +264,7 @@ func _show_march() -> void:
 		var taken := MissionMarch.groups_taken(m, c["banners"])
 		lines.append(tr("Banners taken captive: %d") % taken)
 	_retreat_lines(m, lines)
+	_stealth_lines(m, lines)
 	_march.visible = not lines.is_empty()
 	_march.text = "\n".join(lines)
 
@@ -276,6 +277,24 @@ func _retreat_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
 		lines.append(tr("Bridge: %d%%") % (r.bridge_permille(m) / 10))
 	if m.def.rules.has("rescue") and m.objective_state.has("out"):
 		lines.append(tr("Brought back over the river: %d") % r.saved(m))
+
+
+## ВКЛ 6: «Suspicion: 40%» while the watch looks, «The chase sets out in 03:10» until it does,
+## «Horses: 62%» (the most tired horse of the band, «Tired» when one only walks).
+func _stealth_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
+	var st := m.stealth
+	if st.on:
+		lines.append(tr("Suspicion: %d%%") % (st.meter / 10))
+	if st.pursuit_at >= 0 and sim.tick < st.pursuit_at:
+		lines.append(tr("The chase sets out in %s") % UiText.clock(st.pursuit_at - sim.tick))
+	if st.on and not st.stamina.is_empty():
+		var least := MissionStealth.FULL
+		for id: int in st.stamina:
+			least = mini(least, st.stamina[id])
+		var line := tr("Horses: %d%%") % (least / 10)
+		if not st.tired.is_empty():
+			line += " · " + tr("Tired")
+		lines.append(line)
 
 
 ## The countdown and captives lines as shown, for tests ("" while hidden).

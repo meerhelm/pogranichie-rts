@@ -220,6 +220,14 @@ func _unit_orders() -> void:
 			tr("Get off the horse and fight on foot: more armor, the speed of foot soldiers."),
 			input.order_kind.bind(SimCommand.Kind.DISMOUNT)
 		)
+	if _fugitives_selected():
+		_order(
+			"dismount",
+			tr("Lead the horses / mount"),
+			"V",
+			tr("Get down and lead the horses at a walk: quiet, and the horses rest. Again: ride."),
+			input.order_kind.bind(SimCommand.Kind.DISMOUNT)
+		)
 	for spell in input.spells():
 		var b := _button(
 			_orders,
@@ -363,3 +371,13 @@ func _refresh_spells() -> void:
 			if reason == MagicSystem.Cast.COOLDOWN:
 				fail += " " + tr("(%d s)") % ceili(ready_in / float(Fixed.TICKS_PER_SECOND))
 		_set_tip(button, Tips.spell(spell, fail))
+
+
+## ВКЛ 6: whether a selected unit is one of the fugitives (who lead their horses with V).
+func _fugitives_selected() -> bool:
+	if sim.mission == null:
+		return false
+	for id in input.selection.ids:
+		if sim.mission.stealth.stamina.has(id):
+			return true
+	return false

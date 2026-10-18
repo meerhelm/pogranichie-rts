@@ -19,13 +19,19 @@ extends RefCounted
 ##     it lose exorcism_creature_damage HP and are driven off;
 ##   storm («Гнев Перкуна»): storm_strikes lightning bolts of storm_damage HP hit the heaviest
 ##     (most max HP) enemy units under it at once; while it lasts, the rain keeps every bow,
-##     crossbow and gun under it from shooting.
+##     crossbow and gun under it from shooting;
+##   wolf_path («Волчья тропа»): an effect where the caster stands, for the spell's duration; the
+##     mission opens the trail of the place of power there (MissionStealth).
+## A spell tagged hero_at_power_place («герой у места силы») may also be cast by a hero of the
+## spell's faction standing within capture_radius of a place of power nobody hides.
 ## Cooldowns run per caster and spell; casters near their own building tagged spell_recharge
 ## (the alka) recharge alka_recharge_permille faster. Healers («лечит N HP/с в радиусе R»)
 ## heal their side's units around them once a second.
 
 ## Why a spell cannot be cast now.
-enum Cast { OK, NO_PLAYER, UNKNOWN, NOT_CASTER, AGE, PASSIVE, NOT_READY, COOLDOWN, POWER }
+enum Cast {
+	OK, NO_PLAYER, UNKNOWN, NOT_CASTER, AGE, PASSIVE, NOT_READY, COOLDOWN, POWER, NOT_AT_PLACE
+}
 
 ## PlayerState.power per point of Сила: thousandths of a point times ticks per second, so a
 ## shrine adds its rate in thousandths a second every tick without rounding.
@@ -189,8 +195,16 @@ func _caster_fail(p: int, id: int, spell_id: StringName) -> Cast:
 	if not spell_index.has(spell_id) or not entities.is_alive(id):
 		return Cast.UNKNOWN
 	var spell := spells[spell_index[spell_id]]
-	if entities.owners[id - 1] != p or not spell.casters.has(entities.type_ids[id - 1]):
-		return Cast.NOT_CASTER
+	var fail := Cast.OK
+	if entities.owners[id - 1] != p:
+		fail = Cast.NOT_CASTER
+	elif not spell.casters.has(entities.type_ids[id - 1]):
+		if not _hero_of(id, spell):
+			fail = Cast.NOT_CASTER
+		elif not at_place(id):
+			fail = Cast.NOT_AT_PLACE
+	if fail != Cast.OK:
+		return fail
 	if spell.tags.has(&"passive"):
 		return Cast.PASSIVE
 	if not (spell.tags.has(&"target_point") or spell.tags.has(&"target_self")):
@@ -198,14 +212,32 @@ func _caster_fail(p: int, id: int, spell_id: StringName) -> Cast:
 	return Cast.OK
 
 
-## Spells the unit's type casts, by index order (passive ones left out).
+## Spells the unit's type casts, by index order (passive ones left out); a hero has those
+## tagged hero_at_power_place while he stands at a place of power.
 func spells_of(id: int) -> Array[SpellDef]:
 	var out: Array[SpellDef] = []
 	var type_id := entities.type_ids[id - 1]
 	for spell in spells:
-		if spell.casters.has(type_id) and not spell.tags.has(&"passive"):
+		if spell.tags.has(&"passive"):
+			continue
+		if spell.casters.has(type_id) or (_hero_of(id, spell) and at_place(id)):
 			out.append(spell)
 	return out
+
+
+## Whether the unit is a hero of the spell's faction and the spell is cast by heroes at a place.
+func _hero_of(id: int, spell: SpellDef) -> bool:
+	var def := combat.defs[id - 1] if id - 1 < combat.defs.size() else null
+	if def == null or not spell.tags.has(&"hero_at_power_place"):
+		return false
+	return def.has_class(&"hero") and def.faction == spell.faction
+
+
+## Whether the unit stands within capture_radius of a place of power nobody hides.
+func at_place(id: int) -> bool:
+	var cx := Fixed.to_cells(entities.pos_x[id - 1])
+	var cy := Fixed.to_cells(entities.pos_y[id - 1])
+	return places.site_near(cx, cy, rules.capture_radius) >= 0
 
 
 ## Whole ticks left before the unit may cast the spell again.
@@ -239,6 +271,8 @@ func _cast(id: int, spell: SpellDef, x: int, y: int) -> void:
 	elif spell.tags.has(&"storm"):
 		_add_effect(spell, p, 0, x, y, r)
 		_lightning(p, x, y, r)
+	elif spell.tags.has(&"wolf_path"):
+		_add_effect(spell, p, 0, entities.pos_x[slot], entities.pos_y[slot], r)
 
 
 ## «Гнев Перкуна»: bolts on the enemy units with the most max HP under the storm (ties: lower id).

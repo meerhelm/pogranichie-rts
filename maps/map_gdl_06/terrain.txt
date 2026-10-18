@@ -1,0 +1,99 @@
+; map_gdl_06 «ВКЛ 6. Волчья тропа, 1507» (mission), 160x90.
+; First draft by tools/maps/gen_gdl_06.py, seed 1507; edit by hand from here.
+; East to west: the border camp, the chapel, the zaseka with its gap on the road
+; (x 106-108, rows 45-46), the village, the old forest, the bog with the
+; island, the border ford (x 14-16, rows 44-46); no names: the route is not known.
+; Buildings, units and props: missions/gdl_06/mission.json. Legend: core/nav/map_text.gd.
+@place pp_old_tree 116 30
+@place pp_footprint_stone 76 60
+@place pp_bog_island 44 44
+f..........f.s~~~fffffffffFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFffffffffffffffffffffffffffffffffffffffffFFFFFFFffffffffff.....fffffffffffffffffffffffff....fffff
+..f..........s~~~fffffffffFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF.fffffffffffffffffffffffffffffffffffffffFFFFFFFfffffffff......ffffffffffffffffffffffff.....fffff
+....f........s~~~fffff...fFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF..ffffffffffffffffffffffffffffffffffffffFFFFFFFfffffffff......fffffffff.fffffffffffff......fffff
+......f......s~~~ffff....fFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF..ffffffffffffffffffffffffffffffffffffffFFFFFFFfffffffff.....ffffffff....fffffffffffff.....fffff
+........f....s~~~fff.....fFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF...fffffffffffffffffffffffffffffffffffffFFFFFFFffffffffff..ffffffff......fffffffffffff....ffffff
+..........f..s~~~fff.....fFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF..ffffffffffffffffffffffffffffffffffffffFFFFFFFffffff...ffffffffff.......fffffffffffff....ffffff
+.f..........fs~~~ffff...fffffffffffffffffffffffffffffffffffff....fffffffffffffffffffffffffffffffffffffffFFFFFFFfffff....ffffffffff......ffffffffffffffffffffffff
+...f.........s~~~ff......ffffffffffffffffffffffffffffffffffffffffffffffffffffff....ffffffffffffffffffff.FFFFFFFfffff....fffffffff.......ffffffffffffffffffffffff
+.....f.......s~~~f.......ffffffffffffffffffffffffffffffffffffffffffffffffffffff....ffffffffffffffffff...FFFFFFFfffff....fffffffff.......ffffffffffffffffffffffff
+.......f.....s~~~f.......ff..fffffffffffffffffffffffffffffffffffffffffffffffff.....fffffffffffffffff....FFFFFFFfffff...ffffffffff......fffffffffffffffffffffffff
+.........f...s~~~f......ff.........fffffffffffffffffffff..ffffffffffffffffffff......fffffffffffffff.....FFFFFFFffffffffffffffffff......ffffffffffffffffff.ffffff
+f..........f.s~~~f......ff.........fffffffffffffff..fff...ffffff..ffffffffffff.....ffffffffffffffff.....FFFFFFFffffffffffffffffff.....ffffffffffffffffff...fffff
+..f..........s~~~ff....fff.........ffffffffffffff....ff............fffffffffff....fffffffffffffffff.....FFFFFFFfffffffffffffffffff..fffffffffffffffffff.........
+....f........s~~~ff...ffffff.......fffffffffffff.....f...............fffffffffffffffffffffffffffff......FFFFFFFffffffffffffffffffffffffffffffffffffffff.........
+......f......s~~~ffffffffffff.....fffffffffffff......f................ffffffffffffffffffffffffffff......FFFFFFFffffffffffffffffffffffffffffffffffffffff.........
+........f....s~~~ffffffffffff.....fffffffffffff......f................ffffffffffffffffffffffffffff......FFFFFFFffffffffffffffffffffffffffffffffffffffff.........
+..........f..s~~~fffffffffffff...fffffffffffff......ff..........ff....ffffffffffffffffffffffffffff....ffFFFFFFFfffffffffffffffffffffffffffffffffffffffffff......
+.f..........fs~~~fffffffffffffffffffffffffffff......fffff.......fff..ffffffff....f,,ffffffffffffffffffffFFFFFFFffffffffffffffffffffffffffffffffffffffffffff....f
+...f.........s~~~ffffffffffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb..fffffffffffff.....f,,,fffffffffffffffffffFFFFFFFffffffffffffffffffffffffffffffffffffffffffff...ff
+.....f.......s~~~ffffffffffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.fffffffffffff......ff,ffffffffffffffffffffFFFFFFFfffffffffffffffffffffffffffffffffffffffffffffffff
+.......f.....s~~~ffffffffffffbbbBBBBBBBBBBBBBBBBBBBBBBBBBBBbbffffffffffffff.....,,,,,,,,.,,,,,,,,.,,,,ffFFFFFFFfffffffffffffffffffffffffffffffffffffffffffffffff
+.........f...s~~~ffffffffffffbbbBBBBBBBBBBBBBBBBBBBBBBBBBBbbbffffffffffffff.....,,,,,,,.,,,,,,,,.,,,,,ffFFFFFFFfffffffffffffffffffffffffffffffffffffffffffffffff
+f..........f.s~~~ffffffffffffbbbbBBBBBBBBBBBBBBBBBBBBBBBBBbbbffffffffffffff.....,,,,,,.,,,,,,,,.,,,,,,ffFFFFFFFfffffffffffffffffffffffffffffffffffffffffffffffff
+..f..........s~~~fffffff...ffbbbbBBBBBBBBBBBBBBBBBBBBBBBBBbbbffffffffffffff....f,,,,,.,,,,,,,,.,,,,,,,ffFFFFFFFfffffffffffffffffffffffffffffffffffffffffffffffff
+....f........s~~~ffffff....ffbbbbBBBBBBBBBBBBBBBBBBBBBBBBBbbbffffffffffffff...ff,,,,.,,,,,,,,.,,,,,,,,ffFFFFFFFffffff....ffffffff.fffffffff...ffffffffffffffffff
+......f......s~~~fffff......fbbbbBBBBBBBBBBBBBBBBBBBBBBBBBbbbffff....fffffffffff,,,.,,,,,,,,.,,,,,,,,.f.FFFFFFFfffffff....fffff....fffffff....ffffffffffffffffff
+........f....s~~~fffff......fbbbbBBBBBBBBBBBBBBBBBBBBBBBBBbbbfffff....ffffffffff,,.,,,,,,,,.,,,,,,,,.,..FFFFFFFfffffff.....fff.....ffffff.....ffffff.fffff...fff
+..........f..s~~~ffff.......fbbbBBBBBBBBBBBBBBBBBBBBBBBBBBBbbfffff....ffffffffff,.,,,,,,,,.,,,,,,,,.,,..FFFFFFFffffffff....ff......fffff......fffff...ff.....fff
+.f..........fs~~~ffff........bbBBBBBBBBBBBBBBBBBBBBBBBBBBBBbbfffffff.fffffffffff.,,,,,,,,.,,,,,,,,.,,,..FFFFFFFffff........ff.....ffffff......fffff..........fff
+...f.........s~~~ffff........bbBBBBBBBBBBBBBBBBBBBBBBBBBBBBbbfffffffffffffffffff,,,,,,,,.,,,,,,,,.,,,,..FFFFFFFfff.........ff.....fff.........fffff..........fff
+.....f.......s~~~f...........bbBBBBBBBBBBBBBBBBBBBBBBBBBBBBbbfffffffffffffffffff,,,,,,,.,,,,,,,,.,,,,,....fff..ff..........fff...fff.........ffffffff........fff
+.......f.....s~~~............bbBBBBBBBBBBBBBBBBBBBBBBBBBBBBbbfffffffffffffffffff,,,,,,.,,,,,,,,.,,,,,,....fff..ff..........ffffffff.........ffff...fff......ffff
+.........f...s~~~...f........bbBBBBBBBBBBBBBBBBBBBBBBBBBBBBbbfffff...fffffffffff,,,,,.,,,,,,,,.,,,,,,,....fff..ff.........fff...................................
+f..........f.s~~~.f......f...bBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBbffff.....fffffffff,,,,,.,,,,,,,,.,,,,,,,,....fff..ff.........ff....................................
+..f..........s~~~......f....fbbBBBBBBBBBBBBBBBBBBBBBBBBBBBBbbffff.....ffffffffff,,,.,,,,,,,,.,,,,,,,,.....fff..ff.........ff....................................
+....f........s~~~....f......fbbBBBBBBBBBBBBBBBBBBBBBBBBBBBBbbffff......fffffffff,,.,,,,,,,,.,,,,,,,,.,....fff..fffffff...fff....................................
+......f......s~~~..f......f.fbbBBBBBBBBBBBBBBBBBBBBBBBBBBBBbbffff......fffffffff,.,,,,,,,,.,,,,,,,,.,,ff..fff..fffffff..ffff..........................,,,,,,,,,,
+........f....s~~~f......f...fbbBBBBBBBBBBBBBBBBBBBBBBBBBBBBbb...ffff...fffffffff.,,,,,,,,.,,,,,,,,.,,,ff..fff..fffffffffffff..........................,,,,,,,,,,
+..........f..s~~~.....f.....fbbBBBBBBBBBBBBBBBBBBBBBBBBBBBBbb...ffffffffffffffffffffff,,,,,ffff,,,ffff....fff..fffffffffffffffff......................,,,,,,,,,,
+.f..........fs~~~...f......ffbbbBBBBBBBBBBBBBBBBBBBBBBBBBBBbb...ffffffffffffffffffffff,,,,fffff,,ffff.....fff..fffffffffffffffff......................,,,,,,,,,,
+...f.........s~~~.f......f..fbbbbBBBBBBBBBBBBBBBBBBBBBBBBBbbb...fffffffffffffff=fffffff,,,ffffffffff......fff..fffffffffffffffff......................,,,,,,,,,,
+.....f.......s~~~......f....fbbbbBBBBBBBBBBBBBBBBBBBBBBBBBbbbfffffffffffffffffff=ffffff...ffffffffff......fff..fffffffffffffffff......................,,,,,,,,,,
+.......f.....s~~~....f......fbbbbBBBBBBBBBBBBBBBBBBBBBBBBBbbbfffffffffffffffffff=fffff....fffffffff.......fff..fffffffffffffffff......................,,,,,,,,,,
+.........f...s~~~..f......f.fbbbbBBBBBBBBBBbbbbBBBBBBBBBBBbbbfffffffffffffffffff=ffff.....fffffffff.......fff..fffffffffffffffff......................,,,,,,,,,,
+f..........f..===f......f...fbbbbBBBBBBBBBBbbbbbBBBBBBBBBBbbbfffffffffffffffffff=fff......fffffffff.......fff..fffffffffffffffff......................,,,,,,,,,,
+..f...........===##...f.....fbbbBBBBBBBBBBBbbbbbBBBBBBBBBBbbbfffffffffffffffffff=fff......ffffffffff..ff#######...ffffffffffffff......................,,,,,,,,,,
+....f.........===###f......ffbbbBBBBBBBBBBBbbbbbBBBBBBBBBBBbbf##################=###############################################################################
+......f......s~~~###........fbbBBBBBBBBBBBBBbbbBBBBBBBBBBBBbbf##################=###############################################################################
+........f....s~~~.###..f.....bbBBBBBBBBBBBBBBBBBBBBBBBBBBBBbb###ffffffffffffffff=ff..........fffffffffff..fff.........ffffffffff......................,,,,,,,,,,
+..........f..s~~~.###f.......bbBBBBBBBBBBBBBBBBBBBBBBBBBBBBb###fffffffffffffffff=ff.....ff...fffffffffff..fff.........ffffffffff......................,,,,,,,,,,
+.f..........fs~~~..###.......bbBBBBBBBBBBBBBBBBBBBBBBBBBBBBb##ffffffffffffffffff=ff...ffff..ffffffffffff..fff.........ffffffffff......................,,,,,,,,,,
+...f.........s~~~f.###..f....bbBBBBBBBBBBBBBBBBBBBBBBBBBBBBb##ffFFFFFFFFFfffffff=fffffffffffffffffffffff..fff.........ffffffffff......................,,,,,,,,,,
+.....f.......s~~~...##f......bBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB##ffFFFFFFFFFfffffff=fffffffffffffffffffffff..fff........fffffffffff......................,,,,,,,,,,
+.......f.....s~~~...###......bbBBBBBBBBBBBBBBBBBBBBBBBBBBBBb##ffFFFFFFFFFfffffff=fffffffffffffffffffffff..fff....f..ffffffffffff......................,,,,,,,,,,
+.........f...s~~~.f..##......bbBBBBBBBBBBBBBBBBBBBBBBBBBBBBb##ffFFFFFFFFFffffff=ffffffffffffffffffffffff..fff...ffffffffffffffff......................,,,,,,,,,,
+f..........f.s~~~....###.....bbBBBBBBBBBBBBBBBBBBBBBBBBBBBBb##ffFFFFFFFFFffffff=ffffffffffffffffffffffff..fff..fffffffffffffffff......................,,,,,,,,,,
+..f..........s~~~....f##.....bbBBBBBBBBBBBBBBBBBBBBBBBBBBBBb##ffFFFFFFFFFffffff=ffffffffffffffffffffffff..fff..fffffffffffffffff................................
+....f........s~~~..f..###....bbbBBBBBBBBBBBBBBBBBBBBBBBBBBBb##ffFFFFFFFFFffffff=ffffffffffffffffffffffff..fff..fffffffffffffffff................................
+......f......s~~~f.....##...fbbbBBBBBBBBBBBBBBBBBBBBBBBBBBBb##ffFFFFFFFFFffffff=ffffffffffffffffffffffff..fff..fffffffffffffffff................................
+........f....s~~~......###..fbbbbBBBBBBBBBBBBBBBBBBBBBBBBBbb##ffFFFFFFFFFffffff=ffffffffffffffffffffffff..fff..fffffffffffffffff................................
+..........f..s~~~...f...##...bbbbBBBBBBBBBBBBBBBBBBBBBBBBBbb##ffFFFFFFFFFfffff=fffffffffffffffffffffffff..fff..fffffffffffffffff................................
+.f..........fs~~~.f.....##...bbbbBBBBBBBBBBBBBBBBBBBBBBBBBbb##ffFFFFFFFFFfffff=fffffffffffffffffffffffffFFFFFFFfffffffffffffffff................................
+...f.........s~~~fffffff###..bbbbBBBBBBBBBBBBBBBBBBBBBBBBBbb##ffFFFFFFFFFfffff=fffffffffffffffffffffffffFFFFFFFffffffffffffffffffffffffffffffffffffffffff.......
+.....f.......s~~~fffffff###..bbbbBBBBBBBBBBBBBBBBBBBBBBBBBbb##ffFFFFFFFFFfffff=fffffffffffffffffffffffffFFFFFFFffffffffffffffffffffffffffffffffff..ffffff.......
+.......f.....s~~~fffffff.##..bbbBBBBBBBBBBBBBBBBBBBBBBBBBBbb##ffFFFFFFFFFfffff=fffffffffffffffffffffffffFFFFFFFfffffffffffffffffffffffff...ffff.....fffff....f..
+.........f...s~~~fffffff.###.bbbBBBBBBBBBBBBBBBBBBBBBBBBBBBb##ffFFFFFFFFFfffff=fffffffffffffffffffffffffFFFFFFFffffffffffffffffffffffff....fff......fffffffffff.
+f..........f.s~~~ffffffff.##fbbBBBBBBBBBBBBBBBBBBBBBBBBBBBBb##ffFFFFFFFFF.ffff=..fffffffffffffffffffffffFFFFFFFfffffffffffffffffffffff......ff......ffffffffffff
+..f..........s~~~fffffffff##fbbBBBBBBBBBBBBBBBBBBBBBBBBBBBBb##ffFFFFFFFFF.ff..=..fffffffffffffffffffffffFFFFFFFffff...ffffffffffffffff.............fffffffffffff
+....f........s~~~fffffffff###bbBBBBBBBBBBBBBBBBBBBBBBBBBBBBb##ffFFFFFFFFF.....=..fffffffffffffffffffffffFFFFFFFff.....fffffffffffffff..............fff....ffffff
+......f......s~~~fffffffff###bbBBBBBBBBBBBBBBBBBBBBBBBBBBBBb##ffFFFFFFFFF.....=..fffffffffffffffffffffffFFFFFFF.......fffffffffffffff.............fff.....ffffff
+........f....s~~~ffffffffff##bBBBBBBBBBBBBBBBBBBBBBBBBBBBBBb##ffFFFFFFFFF.....=..fffffffffffffffffffffffFFFFFFF.......fffffffffffffff...........ffff......ffffff
+..........f..s~~~ffffffffff##bBBBBBBBBBBBBBBBBBBBBBBBBBBBBBb##ffFFFFFFFFF.....=..fffffffffffffffffffffffFFFFFFF.......fffffffffffffff..........fffff......ffffff
+.f..........fs~~~fffffffff.###bBBBBBBBBBBBBBBBBBBBBBBBBBBBBb##ffFFFFFFFFF.....=.ffffffffffffffffffffffffFFFFFFF......fffffffffffffffffffff.....ffffff....fffffff
+...f.........s~~~ffffffff..###bBBBBBBBBBBBBBBBBBBBBBBBBBBBBb##ffFFFFFFFFF......=ffffffffff...fffffffffffFFFFFFF......fffffffffffffffffffff....fffffff...ffffffff
+.....f.......s~~~ffffffff...##bBBBBBBBBBBBBBBBBBBBBBBBBBBBBb##ffFFFFFFFFF......=fffffffff....fffffffffffFFFFFFF.....fffffffffffffffffffffff..fffffffffffffffffff
+.......f.....s~~~ffffffff...##bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb##ffFFFFFFFFFf...ff=ffffffff.....fffffffffffFFFFFFF....fffffffffffffffffffffffffffffffffffffffffffff
+.........f...s~~~ffffffff...###bbbbbbbbbbbbbbbbbbbbbbbbbbbbb##ffFFFFFFFFFffffff=fffffff.......ffffffffffFFFFFFF...ffffffffffffffffffffffffffffffffffffffffffffff
+f..........f.s~~~ffffffff....##ff....fffffffffffffffffffffff##ffFFFFFFFFFffffff=fffffff..........fffffffFFFFFFFfffffffffffffffffffffffffffffffffffffffffffffffff
+..f..........s~~~fffffffff...###ffffffffffffffffffffffffffff##ffFFFFFFFFFfffffff=f....f..........fffffffFFFFFFFfffffffffffffffffffffffffffffffffffffffffffffffff
+....f........s~~~ffffffffffff###ffffffffffffffffffffffffffff##ffFFFFFFFFFfffffff=f...............fffffffFFFFFFFfffffffffffffffffffffffffffff...fffffffffffffffff
+......f......s~~~fffffffffffff################################ffFFFFFFFFFfffffff=ff..............fffffffFFFFFFFffffffffffffffffffffffffffff....fffffffffffffffff
+........f....s~~~fffffffffffff################################ffFFFFFFFFFfffffff=fffff..........ffffffffFFFFFFFfffffffffffffffffffffffffff......ffffffffffffffff
+..........f..s~~~fffffffffffffffffffffffffffffffffffffffff....ffFFFFFFFFFfffffff=fffff..........ffffffffFFFFFFFfffffffffffffffffffffffffff.........fffffffffffff
+.f..........fs~~~ffffffffffffff.fffffffffffffffffffffffff.....ffFFFFFFFFFfffffff=fffff......f..fffffffffFFFFFFFfffffffffffffffffffffffffff.........fffffffffffff
+...f.........s~~~ffffffffffff...ffffffffffffffffffffffff......ffFFFFFFFFFfffffff=ffffff..fffff..ffffffffFFFFFFFfffffffffffffffffffffffffff.........fffffffffffff
+.....f.......s~~~ffffffffff......fffffffffffffffffffffff......ffFFFFFFFFFfffffff=ffffff...fff...ffffffffFFFFFFFfffffffffffffffffffffffffff.........fffffffffffff
+.......f.....s~~~fffffffff.......fffffffffffffffffffffff......ffFFFFFFFFFfffffff=fffff....fff..........fFFFFFFFffffffffffffffffffffffffffffffff...ffffffffffffff
+.........f...s~~~fffffffff......ffffffffffffffffffffffff.....fffFFFFFFFFFfffffff=fffff.....f...........fFFFFFFFffffffffffffffffffffffffffffffff..fffffffffffffff
+f..........f.s~~~ffffffff.......ffffffffffffffffffffffff.....fffFFFFFFFFFfffffff=fffff.................fFFFFFFFfffffffffffffffffffffffffffffffffffffffffffffffff
+..f..........s~~~ffffffff.......ffffffffffffffffffffffff...fffffFFFFFFFFFfffffff=fffff................ffFFFFFFFfffffffffffffffffffffffffffffffffffffffffffffffff

@@ -69,7 +69,7 @@ FIRE_RULE_KEYS = (
 # What a spell does in the game (manual.json → spell_effects, appended to SpellDef.tags): how it
 # is aimed and which effect the simulation runs. A prototype spell must have both or be passive.
 SPELL_TARGETS = ("target_point", "target_self", "passive")
-SPELL_EFFECTS = ("mist", "dispel", "relic", "icon", "consecration", "storm")
+SPELL_EFFECTS = ("mist", "dispel", "relic", "icon", "consecration", "storm", "wolf_path")
 # Keys of tech effects (manual.json → tech_effects). Gathering and farm keys are per-mille
 # increases; "<class or unit id>.<stat>" keys change unit stats (see TECH_STATS).
 TECH_EFFECT_KEYS = (
@@ -613,6 +613,10 @@ class Builder:
             lambda m: (["not_targeted"], {}),
         ),
         (
+            re.compile(r"Собаки: видит скрытых в радиусе (\d+)"),
+            lambda m: (["dogs"], {"dogs_radius": int(m[1])}),
+        ),
+        (
             re.compile(r"Поджог постройки за (\d+) с"),
             lambda m: (["arsonist"], {"ignite_ticks": cells.ticks(m[1])}),
         ),
@@ -697,6 +701,11 @@ class Builder:
                 tags=list(base["tags"]),
                 params=dict(base["params"]),
             )
+            variant = self.FUGITIVE.fullmatch(row["ability"].strip())
+            if variant is not None:
+                self._fugitive(d, row, templates, variant)
+                self.units[hid] = d
+                continue
             ability = self._hero_ability(row["ability"])
             if ability is None:
                 # Abilities of other missions' heroes wait for their mission.
@@ -708,6 +717,35 @@ class Builder:
         for hid in factions:
             if hid not in self.units:
                 self.rep.error("manual heroes", f"faction for unknown hero {hid!r}")
+
+    # «В 6 одиночный беглец: 250 HP, без ауры, шкала обнаружения» with the template «mounted; в 6
+    # light»: in that mission the hero is another unit, <id>_fugitive, of the second template.
+    FUGITIVE = re.compile(r"В (\d+) одиночный беглец: (\d+) HP, без ауры, шкала обнаружения")
+    TEMPLATE_IN = re.compile(r"в (\d+) (\w+)")
+
+    def _fugitive(self, d: dict, row: dict, templates: dict, m: re.Match[str]) -> None:
+        """Ostrogski in ВКЛ 6: a lone fugitive of the light template, with his own HP, no aura."""
+        hid = row["id"]
+        where = f"hero {hid}"
+        other = None
+        for part in row["template"].split(";")[1:]:
+            t = self.TEMPLATE_IN.fullmatch(part.strip())
+            if t and t[1] == m[1]:
+                other = t[2]
+        if other not in templates:
+            self.rep.error(where, f"no template for mission {m[1]} in {row['template']!r}")
+            return
+        base = templates[other]
+        v = {**d, "id": f"{hid}_fugitive", "classes": list(base["classes"])}
+        for key in ("armor_melee", "armor_pierce", "speed_milli", "damage", "damage_type", "shots",
+                    "reload_ticks"):
+            v[key] = base[key]
+        v["hp"] = int(m[2])
+        v["tags"] = [t for t in base["tags"]] + ["fugitive"]
+        v["params"] = {k: x for k, x in base["params"].items() if not k.startswith("aura_")}
+        if f"{hid}_fugitive" in self.units:
+            self.rep.error(where, "duplicate fugitive id")
+        self.units[v["id"]] = v
 
     # --- techs, spells, ages, power places -------------------------------------------
 

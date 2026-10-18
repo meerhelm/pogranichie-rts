@@ -43,6 +43,9 @@ var consecrated_by: Dictionary[int, int] = {}
 ## what is left of its Сила, permille. At 0 the site is gone: nobody holds or takes it, no
 ## shrine may stand there. MissionRuntime writes it into the state hash.
 var quenched: Dictionary[int, int] = {}
+## Sites a mission keeps off the map until someone finds them (ВКЛ 6: «скрытые места силы»):
+## nobody sees, takes or picks them while they are here.
+var hidden: Dictionary[int, bool] = {}
 
 ## Unit and building ids that consecrate, and how far (sp_consecration).
 var _consecrators: Dictionary[StringName, bool] = {}
@@ -102,7 +105,8 @@ func count() -> int:
 func site_at(cx: int, cy: int) -> int:
 	if not nav.in_bounds(cx, cy):
 		return -1
-	return cells.find(nav.cell_at(cx, cy))
+	var i := cells.find(nav.cell_at(cx, cy))
+	return -1 if hidden.has(i) else i
 
 
 ## The site with any of its cells within `radius` cells of (cx, cy), the nearest first; -1.
@@ -110,6 +114,8 @@ func site_near(cx: int, cy: int, radius: int) -> int:
 	var best := -1
 	var best_d := 0
 	for i in count():
+		if hidden.has(i):
+			continue
 		var dx := cx - (cells[i] % nav.width) - SITE / 2
 		var dy := cy - (cells[i] / nav.width) - SITE / 2
 		var d := maxi(absi(dx), absi(dy))
@@ -156,7 +162,7 @@ func rate_milli(i: int) -> int:
 func step(tick: int) -> void:
 	for i in count():
 		_track_shrine(i)
-		if shrines[i] == BuildingStore.NO_ID and not is_gone(i):
+		if shrines[i] == BuildingStore.NO_ID and not is_gone(i) and not hidden.has(i):
 			_capture(i)
 	if tick % CONSECRATION_EVERY == 0:
 		for i in count():
@@ -275,3 +281,4 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_32(shrines[i])
 		buf.put_8(consecrated[i])
 		buf.put_32(consecrated_by.get(i, 0))
+		buf.put_8(1 if hidden.has(i) else 0)

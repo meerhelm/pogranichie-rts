@@ -13,5 +13,5 @@ debt_cost = 0
 cooldown_ticks = 2400
 radius = 0
 duration_ticks = 1200
-tags = Array[StringName]([&"hero_at_power_place"])
+tags = Array[StringName]([&"hero_at_power_place", &"target_self", &"wolf_path"])
 params = Dictionary[StringName, int]({&"path_length": 20})

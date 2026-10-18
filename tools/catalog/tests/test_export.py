@@ -290,6 +290,23 @@ class MagicExportTest(unittest.TestCase):
         self.assertEqual(defs["TechDef"]["t_gdl_herbs"]["effects"], {"gdl_znakharka.heal": 1})
         self.assertEqual(defs["TechDef"]["t_to_reliquary"]["effects"]["sp_exorcism.radius"], 2)
 
+    def test_wolf_trail_dogs_and_the_fugitive_hetman(self):
+        """ВКЛ 6: «Волчья тропа» by a hero at a place of power, dogs that find the hidden, and
+        Ostrogski as a lone fugitive of the light template (250 HP, no aura)."""
+        defs, _index, rep = export.build(copy.deepcopy(CATALOG))
+        self.assertEqual(rep.errors, [])
+        s = defs["SpellDef"]["sp_wolf_path"]
+        for tag in ("hero_at_power_place", "target_self", "wolf_path"):
+            self.assertIn(tag, s["tags"])
+        u = defs["UnitDef"]
+        self.assertEqual(u["mo_storozha"]["params"], {"sight": 10, "dogs_radius": 4})
+        self.assertEqual(u["hero_nezhdan"]["params"]["dogs_radius"], 6)
+        f = u["hero_ostrogski_fugitive"]
+        self.assertEqual((f["hp"], f["speed_milli"], f["faction"]), (250, 1600, "gdl"))
+        self.assertIn("forest_stealth", f["tags"])
+        self.assertFalse(any(k.startswith("aura_") for k in f["params"]))
+        self.assertEqual(u["hero_ostrogski"]["hp"], 400, "the hetman of ВКЛ 5 and 8 stays as he was")
+
     def test_prototype_spell_without_effect_and_unknown_effect_are_errors(self):
         rep = self.build_with(lambda m: m["spell_effects"].pop("sp_relic"))[2]
         self.assertTrue(any("sp_relic" in e and "no target" in e for e in rep.errors))

@@ -12,6 +12,15 @@ const SHADOW_ALPHA := 0.7
 const STAGES: Array[StringName] = [
 	&"found", &"build_33", &"build_66", &"done", &"damaged_1", &"damaged_2", &"rubble"
 ]
+## Buildings drawn with another's art: Muscovite village and border buildings (ВКЛ 6) are of
+## the same timber as the Duchy's.
+const ALIASES: Dictionary[StringName, StringName] = {
+	&"mo_house": &"gdl_house",
+	&"mo_stable": &"gdl_stable",
+	&"mo_field_camp": &"gdl_field_camp",
+	&"mo_zaseka": &"gdl_zaseka",
+	&"mo_zaseka_v": &"gdl_zaseka_v",
+}
 
 
 ## One view (a building or a tree) or a sheet of frames (a unit).
@@ -58,7 +67,8 @@ static func unit(type_id: StringName) -> Sprite:
 
 ## A building's view in one of its stages (STAGES), or null.
 static func building(def_id: StringName, stage: StringName = &"done") -> Sprite:
-	return _load("buildings/%s_%s_" % [def_id, stage], "buildings/%s.json" % def_id)
+	var id: StringName = ALIASES.get(def_id, def_id)
+	return _load("buildings/%s_%s_" % [id, stage], "buildings/%s.json" % id)
 
 
 ## Stage of a building under construction (`progress` 0..1) or standing with `hp` 0..1.
@@ -104,6 +114,11 @@ static func deposit_at(source: int, cell: int) -> Sprite:
 ## A tree's view, or null.
 static func tree(tree_id: StringName) -> Sprite:
 	return _load("trees/%s_" % tree_id, "trees/%s.json" % tree_id)
+
+
+## A map prop's view (prop_chapel, prop_campfire: mission setup props), or null.
+static func prop(prop_id: StringName) -> Sprite:
+	return _load("props/%s_" % prop_id, "props/%s.json" % prop_id)
 
 
 static func _load(prefix: String, meta_name: String) -> Sprite:

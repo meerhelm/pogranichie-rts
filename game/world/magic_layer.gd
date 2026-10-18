@@ -35,7 +35,7 @@ func _draw() -> void:
 		var cell := places.cells[i]
 		if sim.vision.state(local_player, cell) == VisionSystem.State.UNEXPLORED:
 			continue
-		if places.is_gone(i):
+		if places.is_gone(i) or places.hidden.has(i):
 			continue
 		var rect := Rect2(cell % w, cell / w, PowerPlaces.SITE, PowerPlaces.SITE)
 		var c := FREE_COLOR if places.holders[i] == 0 else _color(places.holders[i])

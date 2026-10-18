@@ -131,6 +131,8 @@ static func cast_fail(reason: int) -> String:
 			return t("Not enough Power")
 		MagicSystem.Cast.PASSIVE:
 			return t("Always on")
+		MagicSystem.Cast.NOT_AT_PLACE:
+			return t("Only at a place of power")
 	return t("Not available")
 
 

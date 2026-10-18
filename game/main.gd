@@ -77,6 +77,11 @@ func _ready() -> void:
 	trees.attach(sim, _clock, _units)
 	_magic.local_player = PLAYER
 	_magic.attach(sim, _clock)
+	if StealthLayer.wanted(sim):
+		var stealth := StealthLayer.new()
+		stealth.local_player = PLAYER
+		_magic.add_sibling(stealth)
+		stealth.attach(sim, _clock, _units)
 	_fog.attach(sim, _clock, PLAYER)
 	_camera.bounds = Iso.map_rect(grid.width, grid.height)
 	var home: Vector2i = SkirmishSetup.BASES[0][2] + Vector2i(2, 4)

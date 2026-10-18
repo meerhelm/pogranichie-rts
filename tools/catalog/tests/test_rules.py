@@ -54,6 +54,10 @@ class ClauseTest(unittest.TestCase):
         sp = parse_special("Конный стрелок. Та же модель, что у ВКЛ; не больше 12", "mo_tatar")
         self.assertEqual((sp.same_as, sp.params), ("gdl_tatar", {"limit": 12}))
 
+    def test_watch_with_dogs(self):
+        sp = parse_special("Конница лёгкая. Обзор 10; с собаками видит скрытых в радиусе 4")
+        self.assertEqual((sp.tags, sp.params, sp.unparsed), (["dogs"], {"sight": 10, "dogs_radius": 4}, []))
+
     def test_unknown_clause_is_reported_not_dropped(self):
         sp = parse_special("Пехота. Поёт песни; +6 к коннице")
         self.assertEqual(sp.unparsed, ["Поёт песни"])

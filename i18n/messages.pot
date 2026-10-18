@@ -100,6 +100,10 @@ msgstr ""
 msgid "A castle, the stronghold of the land: trains the best troops and houses many people. Like a town centre, it keeps your side in the game."
 msgstr ""
 
+#: missions/gdl_06/mission.json
+msgid "A chapel by the road. The prince gets down from his horse and goes inside for a moment. A lamp burns before the icon."
+msgstr ""
+
 #: ui/tips.gd
 msgid "A chapel of the Order. It gathers Power for spells and consecrates the land: shrines of other sides near it give half the Power."
 msgstr ""
@@ -134,6 +138,10 @@ msgstr ""
 
 #: ui/tips.gd
 msgid "A heavy Lithuanian lancer."
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "A hidden place of power gives one charge of Power. Stand the prince on it and cast «Wolf Trail»: a trail opens from it through the old forest or the bog for a minute, and on it the dogs find no scent."
 msgstr ""
 
 #: ui/tips.gd
@@ -202,6 +210,10 @@ msgstr ""
 
 #: ui/tips.gd
 msgid "A wall of sharpened stakes: drag to lay a line. Holds enemies off until they break through; it burns."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A watchtower of the border watch: it sees all round, by day further still."
 msgstr ""
 
 #: ui/tips.gd
@@ -358,6 +370,10 @@ msgstr ""
 msgid "At most %d for each castle"
 msgstr ""
 
+#: missions/gdl_06/mission.json
+msgid "At the end of September Prince Konstanty was in Vilnius, and at the end of November King Sigismund made him hetman again. Of the oath given in Moscow he never once spoke in our hearing."
+msgstr ""
+
 #: ui/command_panel.gd
 msgid "Attack any enemy they see and chase it."
 msgstr ""
@@ -456,6 +472,10 @@ msgstr ""
 
 #: ui/mission_panel.gd
 msgid "Bridge: %d%%"
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "Bring all three servants through"
 msgstr ""
 
 #: missions/gdl_05/mission.json
@@ -596,6 +616,7 @@ msgstr ""
 #: missions/gdl_03/mission.json
 #: missions/gdl_04/mission.json
 #: missions/gdl_05/mission.json
+#: missions/gdl_06/mission.json
 msgid "Chronicler"
 msgstr ""
 
@@ -666,6 +687,10 @@ msgstr ""
 
 #: missions/gdl_04/mission.json
 msgid "Dawn in %s"
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "Dawn. By day the watch sees anyone moving in the open from far off: sit in the forest and do not ride over fields and roads."
 msgstr ""
 
 #: ui/end_screen.gd
@@ -804,6 +829,10 @@ msgstr ""
 msgid "Fight!"
 msgstr ""
 
+#: missions/gdl_06/mission.json
+msgid "Find all 3 places of power"
+msgstr ""
+
 #: missions/gdl_05/mission.json
 msgid "Find the ambush before it strikes"
 msgstr ""
@@ -826,6 +855,10 @@ msgstr ""
 
 #: ui/unit_card.gd
 msgid "Fleeing!"
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "Follow the old woman over the causeway: while you keep near her, the watch suspects nothing."
 msgstr ""
 
 #: ui/ui_text.gd
@@ -867,6 +900,10 @@ msgstr ""
 
 #: ui/tips.gd
 msgid "Foot spearman of the Order, good against horsemen."
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "For seven years the hetman lived in Muscovy. First in chains, then in honour. When the old sovereign died, the prince kissed the cross to the new one, Vasily, and received a voivodeship and lands. Some say the metropolitan himself stood surety for him. And in the summer of fifteen hundred and seven he was sent to the border."
 msgstr ""
 
 #: missions/gdl_04/mission.json
@@ -942,6 +979,10 @@ msgstr ""
 msgid "GDL 5. Vedrosha, 1500"
 msgstr ""
 
+#: missions/gdl_06/mission.json
+msgid "GDL 6. The Wolf Trail, 1507"
+msgstr ""
+
 #: ui/help_panel.gd
 msgid "Game"
 msgstr ""
@@ -975,7 +1016,15 @@ msgid "Gathers resources and builds."
 msgstr ""
 
 #: ui/command_panel.gd
+msgid "Get down and lead the horses at a walk: quiet, and the horses rest. Again: ride."
+msgstr ""
+
+#: ui/command_panel.gd
 msgid "Get off the horse and fight on foot: more armor, the speed of foot soldiers."
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "Get past the zaseka"
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -1113,6 +1162,10 @@ msgstr ""
 msgid "Hold on, Prince Semyon. We will come back."
 msgstr ""
 
+#: missions/gdl_06/mission.json
+msgid "Hold the ford until the prince is across"
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "Hold the pier with no enemies near, and the boats with reinforcements will stop coming."
 msgstr ""
@@ -1145,6 +1198,10 @@ msgstr ""
 msgid "Horsemen: +1 melee and +1 pierce armor."
 msgstr ""
 
+#: ui/mission_panel.gd
+msgid "Horses: %d%%"
+msgstr ""
+
 #: ui/unit_card.gd
 msgid "Houses %d"
 msgstr ""
@@ -1166,8 +1223,16 @@ msgstr ""
 msgid "How to play (F1)"
 msgstr ""
 
+#: missions/gdl_06/mission.json
+msgid "Hunters' marks. Hunters go where there is no watch. We follow them."
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "I am asking what you think."
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "I kissed the cross in captivity, and I break it myself. Nobody released me and nobody will excuse me. Ask it of me alone."
 msgstr ""
 
 #: missions/gdl_04/mission.json
@@ -1212,6 +1277,10 @@ msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "In spring they stood on the bog, they drink river water and eat old grain. Think what you like."
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "In the camp they have found him gone. The centurion Nezhdan's chase will set out for the ford; every new alarm brings it nearer."
 msgstr ""
 
 #: missions/gdl_04/mission.json
@@ -1357,6 +1426,26 @@ msgstr ""
 
 #: missions/gdl_03/mission.json
 msgid "Lead the envoys round the grove"
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "Lead the horses (V) to go quietly at a walk; then the horses rest too. At a trot they tire, and a tired horse only walks. A full meter of suspicion raises the alarm."
+msgstr ""
+
+#: ui/command_panel.gd
+msgid "Lead the horses / mount"
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "Leave the border camp at night without raising the alarm, get past the zaseka, wait out the day in the forest and reach the border ford. There Andrei Gintovt must hold the ford until the prince is across."
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "Leave the border camp without raising the alarm"
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "Leave the kaftan. I will leave in what I came in."
 msgstr ""
 
 #: game/arena/arena.gd
@@ -1507,6 +1596,10 @@ msgstr ""
 msgid "Muscovite centurion"
 msgstr ""
 
+#: missions/gdl_06/mission.json
+msgid "Muscovites. Let them sort it out among themselves."
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Must stand in the forest"
 msgstr ""
@@ -1527,6 +1620,10 @@ msgstr ""
 msgid "Never flees"
 msgstr ""
 
+#: missions/gdl_06/mission.json
+msgid "Never raise the alarm"
+msgstr ""
+
 #: ui/tips.gd
 msgid "New buildings"
 msgstr ""
@@ -1539,6 +1636,18 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
+#: missions/gdl_06/mission.json
+msgid "Nezhdan's chase has set out from the camp along the road to the ford."
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "Night again. The bog is near: the road goes round it to the south, past the watch."
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "Night. The edge of the bog. At the start of an old log causeway stands an old herb woman with a lantern and a bunch of herbs at her belt. Far off, dogs are barking. Silently she raises the lantern and points at the causeway: thin poles going out into the quagmire."
+msgstr ""
+
 #: missions/gdl_05/mission.json
 msgid "Night. The far bank. Wet men sit by a fire without their horses. Andrei dries the banner. Beyond the river there are torches: they are gathering the captives."
 msgstr ""
@@ -1548,7 +1657,12 @@ msgstr ""
 msgid "No saved games"
 msgstr ""
 
+#: missions/gdl_06/mission.json
+msgid "No. I know how he sits in the saddle. Seven years have passed, and I know it. To the ford!"
+msgstr ""
+
 #: missions/gdl_05/mission.json
+#: missions/gdl_06/mission.json
 msgid "Nobleman"
 msgstr ""
 
@@ -1582,6 +1696,10 @@ msgstr ""
 
 #: ui/ui_text.gd
 msgid "Not for this faction"
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "Not myself. What news in Vilnius?"
 msgstr ""
 
 #: ui/ui_text.gd
@@ -1629,6 +1747,10 @@ msgstr ""
 msgid "On the twenty-eighth of November the Samogitians came to Konstanz. In February their complaint against the Order was read to the council. The Order answered: the baptism is shallow, and Vytautas stirs up the Samogitians."
 msgstr ""
 
+#: ui/ui_text.gd
+msgid "Only at a place of power"
+msgstr ""
+
 #: ui/tips.gd
 msgid "Only in the forest"
 msgstr ""
@@ -1656,6 +1778,10 @@ msgstr ""
 
 #: missions/gdl_05/mission.json
 msgid "Ostrogski looked across the river, to the ford, where the last of Andrei's riders were coming out on the far bank. Then he gave up his sabre, hilt first. Who exactly took the hetman the Muscovite lists do not say. They say only that he was wounded and was taken to the sovereign in chains."
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "Ostrogski rides up onto the bank, wet to the waist. Andrei gets down from his horse."
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -1783,6 +1909,18 @@ msgstr ""
 msgid "Prince Michael's word: nobody crosses to the west shore before dawn. Švitrigaila's camp is awake."
 msgstr ""
 
+#: missions/gdl_06/mission.json
+msgid "Prince Ostrogski has fallen. Lithuania will not see its hetman again."
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "Prince Ostrogski is on the Lithuanian bank. In November the king will make him hetman again."
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "Prince Ostrogski is taken or killed"
+msgstr ""
+
 #: missions/gdl_05/mission.json
 msgid "Prince Ostrogski's army goes for the forward regiment. Strike it with him; horse archers shoot as they ride and fall back easily."
 msgstr ""
@@ -1793,6 +1931,10 @@ msgstr ""
 
 #: missions/gdl_05/mission.json
 msgid "Prince, give up your sabre. We will take you to the voivodes with honour."
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "Prince, it will be light soon."
 msgstr ""
 
 #: missions/gdl_05/mission.json
@@ -1938,6 +2080,10 @@ msgstr ""
 msgid "Sentry"
 msgstr ""
 
+#: missions/gdl_06/mission.json
+msgid "Servant"
+msgstr ""
+
 #: missions/gdl_04/mission.json
 msgid "Servant at the wagons"
 msgstr ""
@@ -1946,6 +2092,10 @@ msgstr ""
 #: ui/pause_menu.gd
 #: ui/settings_panel.gd
 msgid "Settings"
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "Seven years after the Vedrosha, Prince Konstanty Ostrogski, the hetman taken captive there, still lives in Muscovy: first in chains, then in honour. In October 1506, after the death of Ivan III, he swore loyal service to Vasily III and received the rank of voivode and lands. In the summer of 1507 he was sent to the border, and there is war between Moscow and Lithuania. Where he slipped away and who rode with him, the sources do not say: this road is the game's."
 msgstr ""
 
 #: missions/gdl_05/mission.json
@@ -2016,6 +2166,14 @@ msgstr ""
 msgid "Some write that the Lithuanians fled. Others, that they fled on purpose. Grandfather Mikołaj asked his father about it. He laughed and did not answer."
 msgstr ""
 
+#: missions/gdl_06/mission.json
+msgid "Someone has cut marks on this pine. Like wolf tracks, and all of them one way."
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "Someone is riding there. Four of them. And dogs behind them."
+msgstr ""
+
 #: missions/gdl_02/mission.json
 msgid "Sound the retreat. Hold the banner! Let the Germans run after us, not we from them."
 msgstr ""
@@ -2037,6 +2195,10 @@ msgstr ""
 msgid "Stand ground"
 msgstr ""
 
+#: missions/gdl_06/mission.json
+msgid "Standard-bearer Gintovt. So you found the ford after all."
+msgstr ""
+
 #: ui/command_panel.gd
 msgid "Stop"
 msgstr ""
@@ -2051,6 +2213,14 @@ msgstr ""
 
 #: missions/gdl_02/mission.json
 msgid "Strike the flank of the Grand Master's reserve"
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "Sunset in %s"
+msgstr ""
+
+#: ui/mission_panel.gd
+msgid "Suspicion: %d%%"
 msgstr ""
 
 #: missions/gdl_02/mission.json
@@ -2189,6 +2359,10 @@ msgstr ""
 msgid "The Poles are still singing. So it is time. To horse!"
 msgstr ""
 
+#: missions/gdl_06/mission.json
+msgid "The alarm is up! The watch rides to where it saw you, and the chase will come sooner. Get away into the forest."
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "The alka gives Power. Every place of power you hold with an alka adds more; near the Order's castles and priests it gives less."
 msgstr ""
@@ -2227,6 +2401,22 @@ msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "The castle at Skirsnemune burned, and the knights who sat in it were killed. Both our books and the German ones write of it. But there was still Dubysa, where the vogt himself sat."
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "The chase holds the ford before the prince is across"
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "The chase is at the ford! Cross to meet it or strike from the bank."
+msgstr ""
+
+#: ui/mission_panel.gd
+msgid "The chase sets out in %s"
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "The chase took the ford before the prince was across."
 msgstr ""
 
 #: missions/gdl_03/mission.json
@@ -2269,8 +2459,16 @@ msgstr ""
 msgid "The ford lies below the bridge, towards the Dnieper. No more than two in it at once: whoever crowds in drowns. Leave a rearguard on the near bank. Four light horse whose standard-bearer fell have joined you."
 msgstr ""
 
+#: missions/gdl_06/mission.json
+msgid "The forest borderland of Muscovy and the Grand Duchy of Lithuania. The end of August or September 1507."
+msgstr ""
+
 #: ui/tips.gd
 msgid "The heart of your land: trains peasants, takes in every resource and leads your people into the next age. In a skirmish, a side that loses every town centre and castle is out."
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "The hetman himself said afterwards that a local woman who knew the paths led him through the bog. But Andrei swore that he saw wolves that night, going along the bank in a pack, and all of them one way."
 msgstr ""
 
 #: missions/gdl_05/mission.json
@@ -2283,6 +2481,10 @@ msgstr ""
 
 #: ui/help_panel.gd
 msgid "The hints at the top left can be turned off in the settings."
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "The horses are ready, prince."
 msgstr ""
 
 #: missions/gdl_05/mission.json
@@ -2333,6 +2535,14 @@ msgstr ""
 msgid "The old branch of our family stayed in Samogitia and Vilnius. The younger went to the Dnieper, became Orthodox and served the princes. Andrei Gintovt was of the younger branch. That year he was twenty, and he carried the banner for the first time."
 msgstr ""
 
+#: missions/gdl_06/mission.json
+msgid "The old woman does not answer and goes ahead without looking back. The prince gets down and leads his horse by the bridle. The barking behind them falters and goes off to one side, as if the patrol had turned the wrong way. In the middle of the causeway the old woman is gone; only the lantern hangs on a pole."
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "The other bank. Dawn twilight. Andrei with a patrol by the water."
+msgstr ""
+
 #: missions/gdl_03/mission.json
 msgid "The pagans are coming out of the farmstead again."
 msgstr ""
@@ -2363,6 +2573,10 @@ msgstr ""
 
 #: ui/tips.gd
 msgid "The price is for each cell of the line."
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "The prince is gone! Bring the dogs! And tell the voivode: if we do not find him, they will ask it of us as of traitors."
 msgstr ""
 
 #: missions/gdl_05/mission.json
@@ -2415,6 +2629,10 @@ msgstr ""
 
 #: missions/gdl_04/mission.json
 msgid "The wagons bring food, wood, iron and silver to the field camp every minute. Camp servants can put up a stable, an archery range and an alka; hire light horse and archers there."
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "The watch sees in a cone the way it faces: half as far at night, further with a torch, twice as far into a campfire's light. Their dogs smell whoever comes near, and a trot is heard even behind their backs. Keep to the forest: the prince is not seen there at all, his servants only close up."
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -2501,6 +2719,10 @@ msgstr ""
 msgid "They will take the land anyway."
 msgstr ""
 
+#: missions/gdl_06/mission.json
+msgid "This time you found it yourself, prince."
+msgstr ""
+
 #: missions/gdl_03/mission.json
 msgid "Three years after the great battle King Jogaila and Grand Duke Vytautas came to Samogitia to baptize it, and Gintaut was among the first to step into the river. Now the Order says that the Samogitians are baptized in name only, and its spies are gathering evidence for the council at Konstanz."
 msgstr ""
@@ -2515,6 +2737,10 @@ msgstr ""
 
 #: game/arena/arena.gd
 msgid "Time: %d s"
+msgstr ""
+
+#: ui/mission_panel.gd
+msgid "Tired"
 msgstr ""
 
 #: missions/gdl_05/mission.json
@@ -2598,12 +2824,20 @@ msgstr ""
 msgid "W A S D, the arrows or the screen edge move the view."
 msgstr ""
 
+#: missions/gdl_06/mission.json
+msgid "Wait out the day and reach the border ford"
+msgstr ""
+
 #: ui/command_panel.gd
 msgid "Walk and stand in a broad line."
 msgstr ""
 
 #: ui/command_panel.gd
 msgid "Walk in a narrow column, for roads and the forest."
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "War, prince. Prince Glinski has quarrelled with the lords, and they say no good will come of it."
 msgstr ""
 
 #: ui/unit_card.gd
@@ -2636,6 +2870,10 @@ msgstr ""
 
 #: missions/gdl_03/mission.json
 msgid "What are we to say there, before the holy fathers?"
+msgstr ""
+
+#: missions/gdl_06/mission.json
+msgid "What do I pay, mother?"
 msgstr ""
 
 #: missions/gdl_03/mission.json
@@ -2933,6 +3171,7 @@ msgstr ""
 
 #: catalog:prototype_units
 #: missions/gdl_05/mission.json
+#: missions/gdl_06/mission.json
 msgid "hero_andrei"
 msgstr ""
 
@@ -2995,8 +3234,18 @@ msgid "hero_nesselrode"
 msgstr ""
 
 #: catalog:prototype_units
+#: missions/gdl_06/mission.json
+msgid "hero_nezhdan"
+msgstr ""
+
+#: catalog:prototype_units
 #: missions/gdl_05/mission.json
 msgid "hero_ostrogski"
+msgstr ""
+
+#: catalog:prototype_units
+#: missions/gdl_06/mission.json
+msgid "hero_ostrogski_fugitive"
 msgstr ""
 
 #: catalog:prototype_units
@@ -3041,12 +3290,36 @@ msgstr ""
 msgid "mo_boyar"
 msgstr ""
 
+#: catalog:prototype_buildings
+msgid "mo_field_camp"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "mo_house"
+msgstr ""
+
 #: catalog:prototype_units
 msgid "mo_inok"
 msgstr ""
 
+#: catalog:prototype_buildings
+msgid "mo_stable"
+msgstr ""
+
+#: catalog:prototype_units
+msgid "mo_storozha"
+msgstr ""
+
 #: catalog:prototype_units
 msgid "mo_syn_boyarsky"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "mo_watchtower"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "mo_zaseka"
 msgstr ""
 
 #: catalog:prototype_units
@@ -3176,6 +3449,10 @@ msgstr ""
 
 #: catalog:prototype_spells
 msgid "sp_relic"
+msgstr ""
+
+#: catalog:prototype_spells
+msgid "sp_wolf_path"
 msgstr ""
 
 #: ui/tips.gd

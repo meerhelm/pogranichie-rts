@@ -20,7 +20,9 @@ extends RefCounted
 ## 14: walkers meeting head-on sidestep to their right (Separation.SIDESTEP).
 ## 15: the mission state hash includes MissionRetreat (ВКЛ 5: bridge, ford, rescue, waves);
 ##   the Сила rules add icon_morale_floor.
-const SIM_VERSION := 15
+## 16: ВКЛ 6: the watch and its detection meter, hidden places of power (in the hash), the trails
+##   of «Волчья тропа», horses that tire and are led on foot (MissionStealth).
+const SIM_VERSION := 16
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).
@@ -309,6 +311,12 @@ func _apply(cmd: SimCommand) -> void:
 		SimCommand.Kind.CHOOSE:
 			if mission != null:
 				mission.choose(cmd.player, String(cmd.type_id), cmd.value, tick)
+		SimCommand.Kind.DISMOUNT:
+			# ВКЛ 6: fugitives lead their horses on foot or ride again instead.
+			var ids := _obedient(cmd)
+			if mission != null:
+				ids = mission.stealth.pace(mission, ids)
+			combat.order(cmd, ids)
 		SimCommand.Kind.IGNITE:
 			var ids := _obedient(cmd)
 			economy.drop_jobs(ids)
@@ -641,6 +649,8 @@ func _advance(id: int) -> void:
 	var budget := e.move_speed[slot]
 	if e.intents[slot] == EntityStore.Intent.RETREAT and _db != null:
 		budget = budget * _db.rules.retreat_speed_permille / 1000
+	if mission != null and not mission.stealth.stamina.is_empty():
+		budget = mission.stealth.speed(id, budget, mission)
 	_walk(id, budget)
 	var dx := e.pos_x[slot] - x0
 	var dy := e.pos_y[slot] - y0

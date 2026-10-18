@@ -122,6 +122,10 @@ RULES: list[Rule] = [
     (r"(\d+) на каждую слободу", _params(limit_per_sloboda=1)),
     (r"обзор (\d+)", _params(sight=1)),
     (
+        r"с собаками видит скрытых в радиусе (\d+)",
+        lambda sp, m, _u: (sp.tag("dogs"), sp.params.update(dogs_radius=int(m.group(1)))),
+    ),
+    (
         r"жалованье (\d+) С в минуту(?:, без него уходит через (\d+) с)?",
         _params(upkeep_silver_per_min=1, desert_after_s=2),
     ),

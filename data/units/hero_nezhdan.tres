@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"hero_nezhdan"
-faction = &""
+faction = &"mo"
 age = 0
 campaign_only = true
 trained_at = Array[StringName]([])
@@ -32,8 +32,8 @@ morale = 0
 never_flees = true
 classes = Array[StringName]([&"hero", &"light_cavalry", &"cavalry"])
 bonuses = Dictionary[StringName, int]({})
-tags = Array[StringName]([&"forest_stealth"])
-params = Dictionary[StringName, int]({&"aura_morale": 10, &"aura_radius": 6})
+tags = Array[StringName]([&"forest_stealth", &"dogs"])
+params = Dictionary[StringName, int]({&"aura_morale": 10, &"aura_radius": 6, &"dogs_radius": 6})
 same_as = &""
 food_yield = 0
 lifetime_ticks = 0

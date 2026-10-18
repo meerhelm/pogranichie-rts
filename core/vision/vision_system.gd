@@ -242,6 +242,17 @@ func in_cover(cell: int) -> bool:
 	return nav.terrain[cell] == _forest
 
 
+## The player knows the whole map from the start (ВКЛ 6: the prince served on this border): every
+## cell explored, units still seen only in sight.
+func explore_all(player: int) -> void:
+	var g := _grid(sides.team_of(player))
+	g.explored.fill(1)
+	for cell in g.shade.size():
+		if g.shade[cell] == 0:
+			g.shade[cell] = VisionGrid.SHADE_EXPLORED
+	g.version += 1
+
+
 ## Alive units the player can see, own included, ascending: the filter for the AI.
 func visible_units(player: int) -> PackedInt32Array:
 	var out := PackedInt32Array()

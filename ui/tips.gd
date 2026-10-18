@@ -142,10 +142,12 @@ static func purpose(def: BuildingDef) -> String:
 				# gdlint:ignore = max-line-length
 				"A hive hollowed out in a forest tree. Two peasants take honey from it: food that never runs out."
 			)
-		&"gdl_zaseka":
+		&"gdl_zaseka", &"mo_zaseka":
 			return t(
 				"A barrier of felled trees laid in the forest. Nobody passes it; fire burns it away."
 			)
+		&"mo_watchtower":
+			return t("A watchtower of the border watch: it sees all round, by day further still.")
 		&"to_brickworks":
 			return t("Brickworks: while one stands, your towers, walls and castles cost less.")
 		&"gdl_shrine":

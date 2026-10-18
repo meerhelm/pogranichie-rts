@@ -21,8 +21,8 @@ extends RefCounted
 ##   baptized {count} (living baptized units, rules.baptism); evidence {at_least | at_most}
 ##   (whole points, rules.evidence); built_near {player, base, at, radius} (a finished building
 ##   of that kind, any time); mist_over {player, at} (the player's «Болотный туман» lies there);
-##   chose {question, option} (see `ask`); group_exited also takes count; ВКЛ 4 and 5: see
-##   MissionMarch.test, MissionRetreat.test; any / all {of: [...]}; not {of}; for_ticks
+##   chose {question, option} (see `ask`); group_exited also takes count; ВКЛ 4–6: see
+##   MissionMarch, MissionRetreat, MissionStealth; any / all {of: [...]}; not {of}; for_ticks
 ##   {ticks, of} (true for that long in a row; one per trigger).
 ## Actions (`do`): objective {id, text?, state? (active, done, failed), optional?}; hint {text};
 ##   dialogue {lines}; cutscene {id, at, lines}; ping {at, radius} (these four only reach the
@@ -41,12 +41,10 @@ extends RefCounted
 ##   destroy {building}; name_built {player, base, name} (names the player's newest finished
 ##   building of that kind); assault {group, building, else?} (storm a named building, or
 ##   attack-move to `else` when it is gone).
-##   ВКЛ 4: merge, protect, march, morale, countdown (see MissionMarch.run). ВКЛ 5: the bridge,
-##   the ford, the men brought back over the river, waves, transfer, cast (see MissionRetreat).
-## Setup may also give sides: {player: lead player} (allies, Sides), age: {player: index},
-## pop: {player: places} (population room without houses) and power (MissionRetreat). Rules:
-## hunger, boats, blockade (ВКЛ 1), banner (ВКЛ 2), baptism, evidence and spies (MissionFaith),
-## supply, raids, march, capture and spare (MissionMarch), bridge, ford, rescue, waves.
+##   ВКЛ 4: MissionMarch.run; ВКЛ 5: MissionRetreat (bridge, ford, waves...); ВКЛ 6: stealth.
+## Setup may also give sides {player: lead player}, age {player: index}, pop {player: places},
+## power (MissionRetreat), props (MissionStealth), buildings turned:true. Rules: hunger, boats,
+## blockade, banner, MissionFaith's, MissionMarch's, MissionRetreat's and stealth.
 
 enum Outcome { NONE, VICTORY, DEFEAT }
 enum Objective { ACTIVE, DONE, FAILED }
@@ -133,8 +131,9 @@ var raids := 0
 ## The panel's countdown (`countdown`): its text and the tick it ends (-1: none).
 var countdown_text := ""
 var countdown_end := -1
-## ВКЛ 5: the bridge, the ford, the rescue and the waves (MissionRetreat).
+## ВКЛ 5: the bridge, the ford, the rescue and the waves (MissionRetreat); ВКЛ 6: the watch.
 var retreat := MissionRetreat.new()
+var stealth := MissionStealth.new()
 var outcome := Outcome.NONE
 var outcome_text := ""
 ## What the interface shows, in order: {kind, tick, ...} (kind: objective, hint, dialogue,
@@ -187,7 +186,7 @@ func set_up(tick: int) -> void:
 	for key: String in locked:
 		_lock(key.to_int(), locked[key], true)
 	for b: Dictionary in s.get("buildings", []):
-		var id := _place(tick, b["player"], b["type"], b["at"][0], b["at"][1])
+		var id := _place(tick, b["player"], b["type"], b["at"][0], b["at"][1], b.has("turned"))
 		if id == 0:
 			push_warning("mission %s: cannot place %s at %s" % [def.id, b["type"], b["at"]])
 			continue
@@ -223,13 +222,14 @@ func set_up(tick: int) -> void:
 	baptism_every = int(def.rules.get("baptism", {}).get("every_ticks", 0))
 	MissionMarch.set_up(self)
 	retreat.set_up(self)
+	stealth.set_up(self)
 
 
-func _place(tick: int, p: int, type: String, cx: int, cy: int) -> int:
+func _place(tick: int, p: int, type: String, cx: int, cy: int, turned := false) -> int:
 	var before := economy.buildings.next_id
 	var x := Fixed.from_cells(cx) + Fixed.HALF
 	var y := Fixed.from_cells(cy) + Fixed.HALF
-	_apply.call(SimCommand.place(tick, p, StringName(type), x, y))
+	_apply.call(SimCommand.place(tick, p, StringName(type), x, y, turned))
 	return before if economy.buildings.next_id > before else 0
 
 
@@ -294,6 +294,7 @@ func step(tick: int) -> void:
 	MissionMarch.capture(self, tick, _remove)
 	MissionMarch.spare(self, tick)
 	retreat.step(self, tick)
+	stealth.step(self, tick)
 	for t: Dictionary in def.triggers:
 		var tid: String = t["id"]
 		if fired.has(tid):
@@ -335,7 +336,7 @@ func test(c: Dictionary, tid: String, tick: int) -> bool:
 		"group_near":
 			ok = _group_near(c["group"], c["at"], c["radius"])
 		"has_unit":
-			ok = _has_unit(c["player"], StringName(c["unit"]))
+			ok = _units_of(c["player"], StringName(c["unit"])) > 0
 		"age":
 			var state := economy.player(c["player"])
 			ok = state != null and state.age >= int(c["at_least"])
@@ -397,6 +398,8 @@ func test(c: Dictionary, tid: String, tick: int) -> bool:
 			ok = MissionMarch.test(self, c)
 		_ when MissionRetreat.CONDITIONS.has(c["type"]):
 			ok = retreat.test(self, c)
+		_ when MissionStealth.CONDITIONS.has(c["type"]):
+			ok = stealth.test(self, c)
 		_:
 			push_warning("mission %s: unknown condition %s" % [def.id, c["type"]])
 	return ok
@@ -516,6 +519,8 @@ func run(a: Dictionary, tick: int) -> void:
 			MissionMarch.run(self, a, tick)
 		_ when MissionRetreat.ACTIONS.has(a["do"]):
 			retreat.run(self, a, tick)
+		_ when MissionStealth.ACTIONS.has(a["do"]):
+			stealth.run(self, a, tick)
 		_:
 			push_warning("mission %s: unknown action %s" % [def.id, a["do"]])
 
@@ -635,10 +640,11 @@ func _group_near_count(group: String, at: Array, radius: int) -> int:
 	return n
 
 
-func _units_of(p: int) -> int:
+## The player's living units (of that type, if given).
+func _units_of(p: int, unit: StringName = &"") -> int:
 	var n := 0
 	for id in entities.alive_ids:
-		if entities.owners[id - 1] == p:
+		if entities.owners[id - 1] == p and (unit == &"" or entities.type_ids[id - 1] == unit):
 			n += 1
 	return n
 
@@ -667,13 +673,6 @@ func _volley(a: Dictionary) -> void:
 			hit.append(id)
 	for id in hit:
 		combat.lightning(id, by, int(a["damage"]))
-
-
-func _has_unit(p: int, unit: StringName) -> bool:
-	for id in entities.alive_ids:
-		if entities.owners[id - 1] == p and entities.type_ids[id - 1] == unit:
-			return true
-	return false
 
 
 func _cast(p: int, spell: StringName) -> bool:
@@ -997,3 +996,4 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_32(magic.places.quenched[i])
 	MissionMarch.write_to(self, buf)
 	retreat.write_to(buf)
+	stealth.write_to(buf)

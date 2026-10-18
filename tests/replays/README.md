@@ -16,6 +16,7 @@ and fail on the first checkpoint whose hash differs, on Linux and Windows alike.
 | `gdl03_playthrough.json` | `BaptismBot` plays «ВКЛ 3. Крещение, 1413–1417» (normal) from the start to victory, 28 431 ticks (23:41); checkpoints every 200 ticks. Also required to end in victory |
 | `gdl04_playthrough.json` | `VilkomirBot` plays «ВКЛ 4. Вилькомир, 1435» (normal) from the start to victory, 18 001 ticks (15:00); checkpoints every 200 ticks. Also required to end in victory |
 | `gdl05_playthrough.json` | `VedroshaBot` plays «ВКЛ 5. Ведроша, 1500» (normal) from the start to victory, 19 851 ticks (16:32); checkpoints every 200 ticks. Also required to end in victory |
+| `gdl06_playthrough.json` | `WolfTrailBot` plays «ВКЛ 6. Волчья тропа, 1507» (normal) from the start to victory without raising the alarm, 13 711 ticks (11:25); checkpoints every 200 ticks. Also required to end in victory |
 
 ## When a replay fails
 
@@ -43,6 +44,8 @@ $GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission gdl_04 \
   --out tests/replays/gdl04_playthrough.json
 $GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission gdl_05 \
   --out tests/replays/gdl05_playthrough.json
+$GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission gdl_06 \
+  --out tests/replays/gdl06_playthrough.json
 ```
 
 The mission replay is recorded by the bot, so a change to the mission, its map or the rules can
@@ -92,3 +95,7 @@ its spawn orders changed too. `gdl04_playthrough.json` is new.
 Then for `sim_version` 15 («ВКЛ 5»: the bridge, the ford, the men brought back and the
 Muscovite waves in the hashes; `data_version` changed with Muscovy and the mission's units in the
 prototype catalog and the icon's morale floor). `gdl05_playthrough.json` is new.
+Then for `sim_version` 16 («ВКЛ 6»: the watch, the detection meter and alarms, day and night,
+the horses, hidden places of power and open trails in the hashes; `data_version` changed with the
+mission's units, Muscovite buildings and «Волчья тропа» in the prototype catalog).
+`gdl06_playthrough.json` is new.

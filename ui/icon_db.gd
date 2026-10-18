@@ -22,8 +22,10 @@ static func of(id: StringName) -> Texture2D:
 	if _cache.has(key):
 		return _cache[key]
 	var tex: Texture2D = null
+	# Buildings drawn with another's art have its icon too (SpriteDB.ALIASES).
+	var art := String(SpriteDB.ALIASES.get(id, id))
 	for kind in KINDS:
-		var path := ROOT.path_join(kind % key)
+		var path := ROOT.path_join(kind % art)
 		if ResourceLoader.exists(path):
 			tex = load(path)
 			break
