@@ -200,7 +200,7 @@ def _crop_box(paths: list[str]) -> tuple[int, int, int, int]:
 
 
 def render_static(kind: str, uid: str, builder, cells, out: str, preview: bool, tall: float = 8.0,
-                  props: bool = True) -> None:
+                  props: bool = True, frame=None) -> None:
     """One view of a tree or a map prop (one cell), or of a building (w x h cells) in each of its stages
     (stages.STAGES: `<id>_<stage>_<pass>.png`). Buildings render into a generous frame that is
     then cropped to what all stages cover; the pivot (footprint centre) moves with the crop."""
@@ -214,8 +214,7 @@ def render_static(kind: str, uid: str, builder, cells, out: str, preview: bool, 
         names = ["done"] if preview else stages.STAGES
     else:
         fw, fh = 1, 1
-        width, height = 320, 560
-        pivot = (64, 360)
+        width, height, pivot = frame or (320, 560, (64, 360))
         names = [""]
     dest = os.path.join(out, kind)
     os.makedirs(dest, exist_ok=True)
@@ -302,7 +301,8 @@ def main(argv: list[str]) -> None:
         elif uid in registry.TREES:
             render_static("trees", uid, registry.TREES[uid], 1, args.out, args.preview)
         elif uid in registry.PROPS:
-            render_static("props", uid, registry.PROPS[uid], 1, args.out, args.preview)
+            render_static("props", uid, registry.PROPS[uid], 1, args.out, args.preview,
+                          frame=registry.PROP_FRAMES.get(uid))
         else:
             sys.exit(f"unknown asset id {uid}")
         print("rendered", uid, flush=True)

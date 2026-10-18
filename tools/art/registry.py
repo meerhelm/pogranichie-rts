@@ -2,7 +2,8 @@
 
 from typing import Callable, NamedTuple
 
-from tools.art import beasts, buildings_gdl, buildings_to, folk, folk_1410, folk_1435, folk_1500, folk_1507, folk_1508, models
+from tools.art import (beasts, buildings_gdl, buildings_to, folk, folk_1410, folk_1435, folk_1500, folk_1507,
+                       folk_1508, folk_1514, models)
 
 
 class Unit(NamedTuple):
@@ -25,15 +26,21 @@ WAGON = {"frame": (320, 240), "pivot": (156, 150)}
 ## A man on foot who raises a pole over his head (mo_inok lifts the icon).
 TALL = {"frame": (160, 216), "pivot": (64, 176)}
 TALL_UNITS = {"mo_inok"}
+## Long weapons levelled forward reach past the usual frame (pl_drab's pike, the handgunner's smoke).
+PIKE = {"frame": (288, 216), "pivot": (144, 176)}
+WIDE = {"frame": (224, 144), "pivot": (112, 104)}
+FRAMES = {"pl_drab": PIKE, "pl_handgunner": WIDE}
 
 UNITS: dict[str, Unit] = {uid: Unit(fn, **TALL) if uid in TALL_UNITS else Unit(fn) for uid, fn in {
     **models.UNITS, **folk.UNITS, **folk_1410.UNITS, **folk_1500.UNITS, **folk_1507.UNITS,
-    **folk_1508.UNITS}.items()}
+    **folk_1508.UNITS, **folk_1514.UNITS}.items()}
+for _uid, _frame in FRAMES.items():
+    UNITS[_uid] = Unit(UNITS[_uid].build, **_frame)
 for _uid, _fn in beasts.UNITS.items():
     UNITS[_uid] = Unit(_fn, **BEAST) if _uid in beasts.BIG_BEASTS else Unit(_fn)
 for _uid, _fn in {**beasts.MOUNTED_UNITS, **folk_1410.MOUNTED_UNITS, **folk_1435.MOUNTED_UNITS,
                   **folk_1500.MOUNTED_UNITS, **folk_1507.MOUNTED_UNITS,
-                  **folk_1508.MOUNTED_UNITS}.items():
+                  **folk_1508.MOUNTED_UNITS, **folk_1514.MOUNTED_UNITS}.items():
     UNITS[_uid] = Unit(_fn, **MOUNTED)
 for _uid, _fn in {**beasts.WAGONS, **folk_1410.WAGONS, **folk_1500.WAGONS, **folk_1508.WAGONS}.items():
     UNITS[_uid] = Unit(_fn, **WAGON)
@@ -51,7 +58,9 @@ for _uid, (_fn, _cells, _tall) in {**buildings_gdl.BUILDINGS, **buildings_to.BUI
 
 TREES = models.TREES
 ## Static map props drawn like trees (one view, color and shadow, no team pass): props/<id>_*.
-PROPS = {**folk_1507.PROPS, **folk_1508.PROPS}
+PROPS = {**folk_1507.PROPS, **folk_1508.PROPS, **folk_1514.PROPS}
+## Props too big for the usual frame (the old oak): id -> (width, height, pivot) to render at.
+PROP_FRAMES = folk_1514.PROP_FRAMES
 DEPOSITS = models.DEPOSITS
 DEPOSIT_VARIANTS = models.DEPOSIT_VARIANTS
 
@@ -59,7 +68,7 @@ DEPOSIT_VARIANTS = models.DEPOSIT_VARIANTS
 ## building), `attack` in a style of people.ATTACK_STYLES (beasts lunge, riders use the style
 ## too while the horse stands). Wagons neither work nor fight; the bombard and the field gun
 ## fire (flash, smoke, recoil: folk_1410.Bombard, folk_1500.FieldGun). Civilians (to_spy,
-## hero_council_envoys) only idle and walk.
+## hero_council_envoys, hero_maciej) only idle and walk.
 BASE_ANIMS = [("idle", 8, 6), ("walk", 12, 15)]  # name, frames, fps
 WORK_ANIM = ("work", 8, 9)
 ATTACK_ANIM = ("attack", 8, 12)
@@ -82,6 +91,8 @@ ATTACK_STYLE = {
     "mo_inok": "cast", "hero_andrei": "thrust", "hero_ostrogski": "swing", "hero_shchenya": "swing",
     "hero_ostrogski_fugitive": "swing", "mo_storozha": "bow", "hero_nezhdan": "bow",
     "gdl_burgher": "swing", "gdl_hakownica": "crossbow", "hero_yuri_olelkovich": "swing", "mo_cannon": "fire",
+    "pl_drab": "thrust", "pl_handgunner": "crossbow", "pl_hussar": "thrust", "hero_swierczowski": "swing",
+    "hero_sampolinski": "thrust", "hero_chelyadnin": "swing", "hero_bulgakov": "thrust",
     **{uid: "lunge" for uid in beasts.UNITS},
 }
 

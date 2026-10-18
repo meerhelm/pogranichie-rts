@@ -59,6 +59,20 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
   watchtower `mo_watchtower` (four leaning posts, a roofed platform, the signal barrel) and
   the map props `prop_chapel` (a log chapel with an onion dome and an eight-pointed cross) and
   `prop_campfire` (stones, logs, still flames, an emissive glow on the ground).
+- `folk_1508.py` — the siege of Slutsk (ВКЛ 7): the townsman with bucket and axe, the hook
+  gun, princess Anastasia, prince Yuri, Glinski's envoy, the Muscovite light gun (`FieldGun`
+  with a Muscovite crew), the log wall `gdl_wall` and the props `prop_well`, `prop_barrels`,
+  `prop_ladders`.
+- `folk_1514.py` — Orsha (ВКЛ 8): the Crown's mercenary pikeman `pl_drab` (kettle hat, quilted
+  coat, pike, a spade on the back; a wider, taller frame for the levelled pike), the handgunner
+  (`Gunner`: a muzzle flash and a puff of smoke in the attack), the light Serbian-style hussar
+  (tall cloth cap, tarcza, lance; no wings, no armour), the heroes Świerczowski (blackened half
+  armour, beret), Sampoliński (armet, the court banner with the White Eagle), Chelyadnin (green
+  ferjaz, white horse), Bulgakov-Golitsa (kolontar, yalovets on the shishak) and the chronicler
+  Maciej (civilian: idle and walk); the props `prop_boats`, `prop_logs` and the old oak
+  `prop_oak`, which renders in a bigger frame (`registry.PROP_FRAMES`). `pl_field_gun` and
+  `mo_tatar` have no model of their own: `SpriteDB.ALIASES` draws them as `gdl_field_gun` and
+  `nt_steppe_archer`.
 - `kit.py` — building materials (log, thatch, shingle, brick, roof tile, plaster and timber
   framing) and parts (roofs, stepped gables, windows, sheds, fences, barrels);
   `buildings_gdl.py` and `buildings_to.py` — the Duchy's and the Order's buildings.
@@ -77,7 +91,8 @@ The game reads them through `game/world/SpriteDB`; ids without art keep their pl
 at a job, else idle, turned to the target or the work. `--add` renders only the animations a
 sheet lacks and copies the old rows back, so a new animation does not re-render the rest.
 Building frames are rendered large and cropped to what all stages cover. Unit frames: 160×144
-on foot (160×216 the monk with his raised icon), 224×256 mounted (an upright lance), 224×176
+on foot (160×216 the monk with his raised icon, 288×216 the drab with his pike, 224×144 the
+handgunner), 224×256 mounted (an upright lance), 224×176
 big beasts, 320×240 the wagon, the bombard and the field gun; `bar_y` in `sheet.json` is where the HP bar goes.
 
 Line pieces: a palisade cell is its post cluster (`<id>`) plus arms toward the neighbours

@@ -12,14 +12,17 @@ const SHADOW_ALPHA := 0.7
 const STAGES: Array[StringName] = [
 	&"found", &"build_33", &"build_66", &"done", &"damaged_1", &"damaged_2", &"rubble"
 ]
-## Buildings drawn with another's art: Muscovite village and border buildings (ВКЛ 6) are of
-## the same timber as the Duchy's.
+## Buildings and units drawn with another's art: Muscovite village and border buildings (ВКЛ 6)
+## are of the same timber as the Duchy's; the Crown's field gun is the Duchy's model, and the
+## Muscovite service Tatar the same steppe horse archer as the Duchy's (ВКЛ 8).
 const ALIASES: Dictionary[StringName, StringName] = {
 	&"mo_house": &"gdl_house",
 	&"mo_stable": &"gdl_stable",
 	&"mo_field_camp": &"gdl_field_camp",
 	&"mo_zaseka": &"gdl_zaseka",
 	&"mo_zaseka_v": &"gdl_zaseka_v",
+	&"pl_field_gun": &"gdl_field_gun",
+	&"mo_tatar": &"nt_steppe_archer",
 }
 
 
@@ -62,7 +65,8 @@ static var _missing: Dictionary[String, bool] = {}
 
 ## Sprite sheet of a unit type, or null when it has no art yet.
 static func unit(type_id: StringName) -> Sprite:
-	return _load("units/%s/" % type_id, "units/%s/sheet.json" % type_id)
+	var id: StringName = ALIASES.get(type_id, type_id)
+	return _load("units/%s/" % id, "units/%s/sheet.json" % id)
 
 
 ## A building's view in one of its stages (STAGES), or null.
