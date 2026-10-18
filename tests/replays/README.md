@@ -17,6 +17,7 @@ and fail on the first checkpoint whose hash differs, on Linux and Windows alike.
 | `gdl04_playthrough.json` | `VilkomirBot` plays «ВКЛ 4. Вилькомир, 1435» (normal) from the start to victory, 18 001 ticks (15:00); checkpoints every 200 ticks. Also required to end in victory |
 | `gdl05_playthrough.json` | `VedroshaBot` plays «ВКЛ 5. Ведроша, 1500» (normal) from the start to victory, 19 851 ticks (16:32); checkpoints every 200 ticks. Also required to end in victory |
 | `gdl06_playthrough.json` | `WolfTrailBot` plays «ВКЛ 6. Волчья тропа, 1507» (normal) from the start to victory without raising the alarm, 13 711 ticks (11:25); checkpoints every 200 ticks. Also required to end in victory |
+| `gdl07_playthrough.json` | `SlutskBot` plays «ВКЛ 7. Слуцк, 1508» (normal) from the start to victory: the walls held, the workshops burned in a sortie through the secret passage, the night assault beaten back, 32 131 ticks (26:46); checkpoints every 200 ticks. Also required to end in victory |
 
 ## When a replay fails
 
@@ -46,6 +47,8 @@ $GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission gdl_05 \
   --out tests/replays/gdl05_playthrough.json
 $GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission gdl_06 \
   --out tests/replays/gdl06_playthrough.json
+$GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission gdl_07 \
+  --out tests/replays/gdl07_playthrough.json
 ```
 
 The mission replay is recorded by the bot, so a change to the mission, its map or the rules can
@@ -99,3 +102,9 @@ Then for `sim_version` 16 («ВКЛ 6»: the watch, the detection meter and alar
 the horses, hidden places of power and open trails in the hashes; `data_version` changed with the
 mission's units, Muscovite buildings and «Волчья тропа» in the prototype catalog).
 `gdl06_playthrough.json` is new.
+Then for `sim_version` 17 («ВКЛ 7»: ladders, castle belts, wall bonuses, the townsmen's water,
+the princess, starvation, the posad, boats, the secret passage, ladder workshops and fire arrows
+in the hashes, and fires that do not spread to the walls; `data_version` changed with the
+mission's units, the log wall and the light gun in the prototype catalog). The fuzzer picks unit
+types from the prototype catalog, so its spawn orders changed too. `gdl07_playthrough.json` is
+new.
