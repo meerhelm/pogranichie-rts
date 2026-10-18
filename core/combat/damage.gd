@@ -65,6 +65,12 @@ static func against_building(
 	hit.bonus = bonus_against(def.bonuses, [&"building"])
 	hit.armor_melee = bdef.armor_melee
 	hit.armor_pierce = bdef.armor_pierce
+	# A cannon of ВКЛ 7 («+30 по воротам и деревянным постройкам, по каменным стенам вдвое
+	# слабее»): stone and brick are what does not burn.
+	var wood := def.param(&"wood_bonus", 0)
+	if wood > 0 and bdef.tags.has(&"fireproof"):
+		return compute(hit, rules) * def.param(&"stone_permille", 1000) / 1000
+	hit.bonus += wood
 	return compute(hit, rules)
 
 

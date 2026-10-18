@@ -146,7 +146,7 @@ func _refresh() -> void:
 			_boxes[key].done = _standing(s)
 			var back: Array[SpriteDB.Sprite] = []
 			var front: Array[SpriteDB.Sprite] = []
-			if b.defs[s].base_id == &"palisade":
+			if b.defs[s].base_id == &"palisade" or b.defs[s].base_id == &"wall":
 				_arms(s, stage, back, front)
 			_boxes[key].set_sprite(SpriteDB.building(_art_id(s), stage), tint, back, front)
 	for key: StringName in _boxes.keys():
@@ -248,7 +248,7 @@ func _line_neighbours(s: int) -> Array[bool]:
 	return out
 
 
-## Arms of a palisade cell toward its neighbours in the line (both ways along x when alone):
+## Arms of a palisade or wall cell toward its neighbours in the line (both ways along x when alone):
 ## the ones toward the back of the screen go behind the post, the others in front.
 func _arms(
 	s: int, stage: StringName, back: Array[SpriteDB.Sprite], front: Array[SpriteDB.Sprite]

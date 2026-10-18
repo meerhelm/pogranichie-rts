@@ -201,6 +201,18 @@ RULES: list[Rule] = [
     (r"при отходе теряет вдвое меньше духа", _tags("steady_retreat")),
     (r"стреляет на ходу, вблизи сабля (\d+) Б", lambda sp, m, _u: (
         sp.tag("fires_while_moving"), sp.params.update(close_melee_damage=int(m.group(1))))),
+    # ВКЛ 7 (Слуцк): burghers who douse fires and take up arms in a siege, the hook gun on the
+    # wall, the Muscovite cannon against gates and wood.
+    (r"тушит пожары, носит воду", _tags("douses")),
+    (r"в осаде берёт оружие и бьёт на (\d+) Б", _params(militia_damage=1)),
+    (
+        r"стреляет только с крюка на стене или в укреплении \(установка (\d+) с\)",
+        lambda sp, m, _u: (sp.tag("wall_mounted"), sp.params.update(mount_ticks=cells.ticks(m.group(1)))),
+    ),
+    (
+        r"\+(\d+) по воротам и деревянным постройкам, по каменным стенам вдвое слабее",
+        lambda sp, m, _u: sp.params.update(wood_bonus=int(m.group(1)), stone_permille=500),
+    ),
     (r"в Державе заменяет литовское копьё", _tags()),
     (r"грабит обозы", _tags("plunders_wagons")),
     (

@@ -21,9 +21,9 @@ extends RefCounted
 ##   baptized {count} (living baptized units, rules.baptism); evidence {at_least | at_most}
 ##   (whole points, rules.evidence); built_near {player, base, at, radius} (a finished building
 ##   of that kind, any time); mist_over {player, at} (the player's «Болотный туман» lies there);
-##   chose {question, option} (see `ask`); group_exited also takes count; ВКЛ 4–6: see
-##   MissionMarch, MissionRetreat, MissionStealth; any / all {of: [...]}; not {of}; for_ticks
-##   {ticks, of} (true for that long in a row; one per trigger).
+##   chose {question, option} (see `ask`); group_exited also takes count; ВКЛ 4–7: see
+##   MissionMarch, MissionRetreat, MissionStealth, MissionSiege; any / all {of: [...]}; not {of};
+##   for_ticks {ticks, of} (true for that long in a row; one per trigger).
 ## Actions (`do`): objective {id, text?, state? (active, done, failed), optional?}; hint {text};
 ##   dialogue {lines}; cutscene {id, at, lines}; ping {at, radius} (these four only reach the
 ##   interface through `events`); spawn {group?, player, at, units, stance?, untouchable?};
@@ -41,10 +41,10 @@ extends RefCounted
 ##   destroy {building}; name_built {player, base, name} (names the player's newest finished
 ##   building of that kind); assault {group, building, else?} (storm a named building, or
 ##   attack-move to `else` when it is gone).
-##   ВКЛ 4: MissionMarch.run; ВКЛ 5: MissionRetreat (bridge, ford, waves...); ВКЛ 6: stealth.
+##   ВКЛ 4: MissionMarch.run; ВКЛ 5: MissionRetreat; ВКЛ 6: stealth; ВКЛ 7: siege (MissionSiege).
 ## Setup may also give sides {player: lead player}, age {player: index}, pop {player: places},
 ## power (MissionRetreat), props (MissionStealth), buildings turned:true. Rules: hunger, boats,
-## blockade, banner, MissionFaith's, MissionMarch's, MissionRetreat's and stealth.
+## blockade, banner, MissionFaith's, MissionMarch's, MissionRetreat's, stealth and siege.
 
 enum Outcome { NONE, VICTORY, DEFEAT }
 enum Objective { ACTIVE, DONE, FAILED }
@@ -131,9 +131,11 @@ var raids := 0
 ## The panel's countdown (`countdown`): its text and the tick it ends (-1: none).
 var countdown_text := ""
 var countdown_end := -1
-## ВКЛ 5: the bridge, the ford, the rescue and the waves (MissionRetreat); ВКЛ 6: the watch.
+## ВКЛ 5: the bridge, the ford, the rescue and the waves (MissionRetreat); ВКЛ 6: the watch;
+## ВКЛ 7: the siege.
 var retreat := MissionRetreat.new()
 var stealth := MissionStealth.new()
+var siege := MissionSiege.new()
 var outcome := Outcome.NONE
 var outcome_text := ""
 ## What the interface shows, in order: {kind, tick, ...} (kind: objective, hint, dialogue,
@@ -223,6 +225,7 @@ func set_up(tick: int) -> void:
 	MissionMarch.set_up(self)
 	retreat.set_up(self)
 	stealth.set_up(self)
+	siege.set_up(self)
 
 
 func _place(tick: int, p: int, type: String, cx: int, cy: int, turned := false) -> int:
@@ -295,6 +298,7 @@ func step(tick: int) -> void:
 	MissionMarch.spare(self, tick)
 	retreat.step(self, tick)
 	stealth.step(self, tick)
+	siege.step(self, tick)
 	for t: Dictionary in def.triggers:
 		var tid: String = t["id"]
 		if fired.has(tid):
@@ -400,6 +404,8 @@ func test(c: Dictionary, tid: String, tick: int) -> bool:
 			ok = retreat.test(self, c)
 		_ when MissionStealth.CONDITIONS.has(c["type"]):
 			ok = stealth.test(self, c)
+		_ when MissionSiege.CONDITIONS.has(c["type"]):
+			ok = siege.test(self, c)
 		_:
 			push_warning("mission %s: unknown condition %s" % [def.id, c["type"]])
 	return ok
@@ -510,17 +516,15 @@ func run(a: Dictionary, tick: int) -> void:
 				var owner := entities.owners[ids[0] - 1]
 				_apply.call(SimCommand.on_building(tick, owner, SimCommand.Kind.ASSAULT, ids, b))
 			elif not ids.is_empty() and a.has("else"):
-				var to: Array = a["else"]
-				var x := Fixed.from_cells(to[0]) + Fixed.HALF
-				var y := Fixed.from_cells(to[1]) + Fixed.HALF
-				var owner := entities.owners[ids[0] - 1]
-				_apply.call(SimCommand.attack_move(tick, owner, ids, x, y))
+				run({"do": "attack_move", "group": a["group"], "to": a["else"]}, tick)
 		_ when MissionMarch.ACTIONS.has(a["do"]):
 			MissionMarch.run(self, a, tick)
 		_ when MissionRetreat.ACTIONS.has(a["do"]):
 			retreat.run(self, a, tick)
 		_ when MissionStealth.ACTIONS.has(a["do"]):
 			stealth.run(self, a, tick)
+		_ when MissionSiege.ACTIONS.has(a["do"]):
+			siege.run(self, a, tick)
 		_:
 			push_warning("mission %s: unknown action %s" % [def.id, a["do"]])
 
@@ -611,13 +615,7 @@ func _near(p: int, unit: StringName, at: Array, radius: int) -> bool:
 
 
 func _group_near(group: String, at: Array, radius: int) -> bool:
-	var x := Fixed.from_cells(at[0]) + Fixed.HALF
-	var y := Fixed.from_cells(at[1]) + Fixed.HALF
-	var r := Fixed.from_cells(radius)
-	for id in alive_of(group):
-		if _dist_sq(entities.pos_x[id - 1] - x, entities.pos_y[id - 1] - y) <= r * r:
-			return true
-	return false
+	return _group_near_count(group, at, radius) > 0
 
 
 ## Whether the two players are enemies (ВКЛ 4: who takes whom captive).
@@ -997,3 +995,4 @@ func write_to(buf: StreamPeerBuffer) -> void:
 	MissionMarch.write_to(self, buf)
 	retreat.write_to(buf)
 	stealth.write_to(buf)
+	siege.write_to(buf)

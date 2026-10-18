@@ -8,7 +8,7 @@ extends SceneTree
 ##     [--parity 1]
 ##   godot --headless -s tools/sim/sim_cli.gd -- aivsai --games 20 --difficulty normal --out g.csv
 ##   godot --headless -s tools/sim/sim_cli.gd -- mission --out m9.json
-##     [--mission gdl_01|gdl_02|gdl_03|gdl_04|gdl_05|gdl_06] [--difficulty normal] [--ticks 90000]
+##     [--mission gdl_01|...|gdl_07] [--difficulty normal] [--ticks 90000]
 ##     [--every 200]
 ##     (MissionBot plays the campaign mission until it is over; fails unless it is won)
 ## record, determinism and bench take --map <map id> (see MapText); without it, open grass;
@@ -130,6 +130,8 @@ func _mission(opts: Dictionary) -> int:
 					bots.append(VedroshaBot.new(sim))
 				"gdl_06":
 					bots.append(WolfTrailBot.new(sim))
+				"gdl_07":
+					bots.append(SlutskBot.new(sim))
 				_:
 					bots.append(MissionBot.new(sim))
 		bots[0].call(&"think")

@@ -29,6 +29,9 @@ var burning: Dictionary[int, int] = {}
 var doused: Dictionary[int, int] = {}
 ## Buildings a mission made wooden (they burn even if their kind is fireproof).
 var wooden: Dictionary[int, bool] = {}
+## Buildings a mission keeps from catching a fire next to them (ВКЛ 7: walls of earth-filled
+## log cribs); they still burn when set on fire.
+var no_spread: Dictionary[int, bool] = {}
 ## Units setting a building on fire -> the building, and the ticks they have worked at it.
 var arson: Dictionary[int, int] = {}
 var arson_ticks: Dictionary[int, int] = {}
@@ -193,7 +196,7 @@ func _spread() -> void:
 	var caught := PackedInt32Array()
 	for b: int in ids:
 		for o in store.alive_ids:
-			if o == b or not flammable(o) or caught.has(o):
+			if o == b or not flammable(o) or caught.has(o) or no_spread.has(o):
 				continue
 			if _gap_sq(b, o) > reach * reach:
 				continue
@@ -265,6 +268,11 @@ func _douse() -> void:
 			_put_out(b)
 
 
+## The fire at the building goes out (dousing done, or a mission's rain: ВКЛ 7).
+func put_out(b: int) -> void:
+	_put_out(b)
+
+
 func _put_out(b: int) -> void:
 	burning.erase(b)
 	doused.erase(b)
@@ -284,7 +292,7 @@ func on_remove(id: int) -> void:
 func write_to(buf: StreamPeerBuffer) -> void:
 	if not enabled():
 		return
-	for d: Dictionary in [burning, doused, wooden, arson, arson_ticks, dousers, tries]:
+	for d: Dictionary in [burning, doused, wooden, no_spread, arson, arson_ticks, dousers, tries]:
 		var keys := d.keys()
 		keys.sort()
 		buf.put_32(keys.size())

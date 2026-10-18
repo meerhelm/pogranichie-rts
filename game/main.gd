@@ -82,6 +82,11 @@ func _ready() -> void:
 		stealth.local_player = PLAYER
 		_magic.add_sibling(stealth)
 		stealth.attach(sim, _clock, _units)
+	if SiegeLayer.wanted(sim):
+		var siege := SiegeLayer.new()
+		siege.local_player = PLAYER
+		_magic.add_sibling(siege)
+		siege.attach(sim, _clock, _units)
 	_fog.attach(sim, _clock, PLAYER)
 	_camera.bounds = Iso.map_rect(grid.width, grid.height)
 	var home: Vector2i = SkirmishSetup.BASES[0][2] + Vector2i(2, 4)

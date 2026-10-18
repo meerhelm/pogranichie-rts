@@ -265,6 +265,7 @@ func _show_march() -> void:
 		lines.append(tr("Banners taken captive: %d") % taken)
 	_retreat_lines(m, lines)
 	_stealth_lines(m, lines)
+	_siege_lines(m, lines)
 	_march.visible = not lines.is_empty()
 	_march.text = "\n".join(lines)
 
@@ -295,6 +296,24 @@ func _stealth_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
 		if not st.tired.is_empty():
 			line += " · " + tr("Tired")
 		lines.append(line)
+
+
+## ВКЛ 7: «Next assault in 03:20» while the rebels get ready, «Ladders at the walls: 2» while
+## any stand, «The Lower castle is lost» while it is, «Posad standing: 70%».
+func _siege_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
+	var r: Dictionary = m.def.rules.get("siege", {})
+	if r.is_empty():
+		return
+	var sg := m.siege
+	if sg.assault_base >= 0 and sim.tick < sg.assault_due(m):
+		lines.append(tr("Next assault in %s") % UiText.clock(sg.assault_due(m) - sim.tick))
+	if sg.ladders_up() > 0:
+		lines.append(tr("Ladders at the walls: %d") % sg.ladders_up())
+	if sg.lost.get("lower", false):
+		lines.append(tr("The Lower castle is lost"))
+	var posad: Array = r.get("posad", {}).get("buildings", [])
+	if not posad.is_empty():
+		lines.append(tr("Posad standing: %d%%") % (sg.standing_permille(m, posad) / 10))
 
 
 ## The countdown and captives lines as shown, for tests ("" while hidden).

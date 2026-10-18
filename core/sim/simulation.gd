@@ -22,7 +22,9 @@ extends RefCounted
 ##   the Сила rules add icon_morale_floor.
 ## 16: ВКЛ 6: the watch and its detection meter, hidden places of power (in the hash), the trails
 ##   of «Волчья тропа», horses that tire and are led on foot (MissionStealth).
-const SIM_VERSION := 16
+## 17: ВКЛ 7: the siege (MissionSiege in the mission hash): ladders, belts of walls, shooters on
+##   the walls, quicker dousing, food in a siege, the secret passage.
+const SIM_VERSION := 17
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).

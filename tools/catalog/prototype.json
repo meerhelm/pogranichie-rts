@@ -18,7 +18,9 @@
   "hero_nesselrode", "hero_kerskorf",
   "gdl_szlachta_lance", "gdl_field_gun", "mo_syn_boyarsky", "mo_boyar", "mo_inok",
   "hero_andrei", "hero_ostrogski", "hero_shchenya",
-  "mo_storozha", "hero_nezhdan", "hero_ostrogski_fugitive"
+  "mo_storozha", "hero_nezhdan", "hero_ostrogski_fugitive",
+  "gdl_burgher", "gdl_hakownica", "hero_anastasia", "hero_yuri_olelkovich", "hero_glinski_envoy",
+  "mo_cannon"
  ],
  "buildings": [
   "gdl_town_center", "gdl_house", "gdl_granary", "gdl_farm", "gdl_lumber_yard", "gdl_mine",
@@ -28,11 +30,13 @@
   "to_barracks", "to_range", "to_stable", "to_shrine", "to_palisade", "to_gate", "to_tower",
   "to_market", "to_smithy", "to_temple", "to_siege_workshop", "to_castle", "to_brickworks",
   "gdl_field_camp",
-  "mo_field_camp", "mo_house", "mo_stable", "mo_zaseka", "mo_watchtower"
+  "mo_field_camp", "mo_house", "mo_stable", "mo_zaseka", "mo_watchtower",
+  "gdl_wall"
  ],
- "_mission_only": "Prototype units only missions use: exported as campaign_only, so skirmish build menus and the AI leave them out (ВКЛ 2 Грюнвальд). They may be of a later age than max_age (ВКЛ 5 Ведроша: Держава), since nobody trains them.",
+ "_mission_only": "Prototype units (and buildings: ВКЛ 7's log wall) only missions use: exported as campaign_only, so skirmish build menus and the AI leave them out (ВКЛ 2 Грюнвальд). They may be of a later age than max_age (ВКЛ 5 Ведроша: Держава), since nobody trains them.",
  "mission_only": ["nt_steppe_archer", "pl_kopia", "pl_spearman", "pl_crossbow", "to_guest_knight", "to_bombard", "to_wagon",
   "gdl_samogitian", "to_spy", "nt_pagan", "nt_pagan_priest", "hero_council_envoys",
-  "gdl_szlachta_lance", "gdl_field_gun", "mo_syn_boyarsky", "mo_boyar", "mo_inok", "mo_storozha"],
+  "gdl_szlachta_lance", "gdl_field_gun", "mo_syn_boyarsky", "mo_boyar", "mo_inok", "mo_storozha",
+  "gdl_hakownica", "mo_cannon", "gdl_wall"],
  "spells": ["sp_bog_mist", "sp_consecration", "sp_exorcism", "sp_relic", "sp_perkunas", "sp_icon", "sp_wolf_path"]
 }

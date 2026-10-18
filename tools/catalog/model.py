@@ -310,7 +310,7 @@ class Builder:
             age, exceptions = cells.age_with_exceptions(row["age"])
             faction_age = {FACTION_BY_NAME[k]: v for k, v in exceptions.items()}
             d["age"] = faction_age.get(d["faction"], age)
-            d["campaign_only"] = d["age"] == 0
+            d["campaign_only"] = d["age"] == 0 or d["id"] in self.proto.get("mission_only", [])
             cost = cells.cost(row["cost"])
             # "как конюшня": a faction variant keeps the cost of the building it replaces.
             if not cost.same_as:

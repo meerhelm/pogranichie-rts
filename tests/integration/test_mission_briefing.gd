@@ -3,7 +3,9 @@ extends GutTest
 ## tick and the mission's own ones later, and while it is open before the mission the intro
 ## cutscene waits.
 
-const MISSIONS: Array[String] = ["gdl_01", "gdl_02", "gdl_03", "gdl_04", "gdl_05", "gdl_06"]
+const MISSIONS: Array[String] = [
+	"gdl_01", "gdl_02", "gdl_03", "gdl_04", "gdl_05", "gdl_06", "gdl_07"
+]
 
 var _db: CatalogDB
 

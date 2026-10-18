@@ -58,6 +58,19 @@ class ClauseTest(unittest.TestCase):
         sp = parse_special("Конница лёгкая. Обзор 10; с собаками видит скрытых в радиусе 4")
         self.assertEqual((sp.tags, sp.params, sp.unparsed), (["dogs"], {"sight": 10, "dogs_radius": 4}, []))
 
+    def test_siege_of_slutsk(self):
+        sp = parse_special("Пехота. Тушит пожары, носит воду; в осаде берёт оружие и бьёт на 5 Б")
+        self.assertEqual((sp.tags, sp.params, sp.unparsed), (["douses"], {"militia_damage": 5}, []))
+        sp = parse_special(
+            "Огнестрел. Стреляет только с крюка на стене или в укреплении (установка 5 с); попадание −10 духа цели"
+        )
+        self.assertIn("wall_mounted", sp.tags)
+        self.assertEqual(sp.params["mount_ticks"], 100)
+        self.assertEqual(sp.unparsed, [])
+        sp = parse_special("Осадное, огнестрел. +30 по воротам и деревянным постройкам, по каменным стенам вдвое слабее")
+        self.assertEqual(sp.params, {"wood_bonus": 30, "stone_permille": 500})
+        self.assertEqual(sp.unparsed, [])
+
     def test_unknown_clause_is_reported_not_dropped(self):
         sp = parse_special("Пехота. Поёт песни; +6 к коннице")
         self.assertEqual(sp.unparsed, ["Поёт песни"])

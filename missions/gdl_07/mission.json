@@ -1,0 +1,401 @@
+{
+ "_comment": "Mission «ВКЛ 7. Слуцк, 1508» (mission card in the missions doc, docs/03-missions/09-gdl_07_slutsk_1508.md). Defence of a wooden castle of two belts: player 1 is Andrei Gintovt with the veterans of the Vedrosha, Princess Anastasia, her son Prince Yuri and the castle service and townsmen of Slutsk; player 2 the rebels of Prince Michael Glinski (the Duchy's own lances and light horse, foot with ladders, his envoy), player 3 the Muscovite detachments (local cavalry, two light guns, a monk with the icon). No siege guns that harm a wall: ladders, fire and cavalry. The siege rules are MissionSiege (rules.siege); the hunger rule eats the food. Phases follow the card's triggers 1-10. Departures from the card: /mnt/project-files/gdl07 and the README section of the mission.",
+ "id": "gdl_07",
+ "title": "GDL 7. Slutsk, 1508",
+ "map": "map_gdl_07",
+ "player": 1,
+ "players": [[1, "gdl"], [2, "gdl"], [3, "mo"]],
+ "camera": [44, 46],
+ "difficulties": ["easy", "normal"],
+ "briefing": {
+  "place": "Slutsk on the Sluch: the Upper and the Lower castle, the posad. Summer 1508.",
+  "story": "In February 1508 the men of Prince Michael Glinski killed his enemy, Marshal Jan Zabrzeziński, near Grodno, and Glinski went over to Vasily III. With two or three thousand horse and Muscovite detachments he marched on the towns of the Duchy. Slutsk is ruled by the widowed Princess Anastasia for her son Yuri, sixteen years old. The rebels have no guns that can break a wall: only ladders, fire and cavalry. Andrei Gintovt has come with the men who came back from the Vedrosha.",
+  "goal": "Prepare the castle, beat back the first assault, burn the ladder workshops in a sortie, hold the night assault and the fire, and hold out until the rebels leave.",
+  "lose": ["The Upper castle is taken", "Andrei Gintovt, Princess Anastasia or Prince Yuri falls"]
+ },
+ "setup": {
+  "sides": {"1": 1, "2": 2, "3": 2},
+  "age": {"1": 3, "2": 3},
+  "pop": {"1": 90},
+  "power": {"1": 60, "3": 300},
+  "stock": {"1": [600, 300, 80, 40], "2": [0, 0, 0, 0], "3": [0, 0, 0, 0]},
+  "locked": {
+   "1": ["gdl_town_center", "gdl_farm", "gdl_lumber_yard", "gdl_mine", "gdl_barracks", "gdl_range", "gdl_stable", "gdl_zaseka", "gdl_siege_workshop", "gdl_bort", "gdl_temple", "gdl_field_camp", "gdl_shrine", "gdl_peasant", "gdl_spearman", "gdl_castle_archer", "gdl_forest_archer", "gdl_light_horse", "gdl_lit_lance", "gdl_szlachta_lance", "gdl_znakharka", "gdl_field_gun", "gdl_hakownica", "gdl_burgher"]
+  },
+  "props": [
+   {"kind": "prop_well", "at": [34, 47]},
+   {"kind": "prop_well", "at": [46, 44]},
+   {"kind": "prop_barrels", "at": [36, 55]},
+   {"kind": "prop_barrels", "at": [26, 40]},
+   {"kind": "prop_barrels", "at": [58, 40]},
+   {"kind": "prop_barrels", "at": [55, 55]},
+   {"kind": "prop_ladders", "at": [115, 18]},
+   {"kind": "prop_ladders", "at": [121, 25]},
+   {"kind": "prop_ladders", "at": [111, 26]},
+   {"kind": "prop_campfire", "at": [124, 30]},
+   {"kind": "prop_campfire", "at": [118, 26]},
+   {"kind": "prop_campfire", "at": [128, 50]}
+  ],
+  "buildings": [
+   {"name": "gate_lower_n", "player": 1, "type": "gdl_gate", "at": [62, 48]},
+   {"name": "gate_lower_s", "player": 1, "type": "gdl_gate", "at": [62, 49]},
+   {"name": "gate_upper_n", "player": 1, "type": "gdl_gate", "at": [38, 48]},
+   {"name": "gate_upper_s", "player": 1, "type": "gdl_gate", "at": [38, 49]},
+   {"player": 1, "type": "gdl_tower", "at": [62, 32]},
+   {"player": 1, "type": "gdl_tower", "at": [62, 64]},
+   {"player": 1, "type": "gdl_tower", "at": [22, 38]},
+   {"player": 1, "type": "gdl_tower", "at": [22, 58]},
+   {"player": 1, "type": "gdl_tower", "at": [38, 32]},
+   {"player": 1, "type": "gdl_tower", "at": [38, 64]},
+   {"name": "court", "player": 1, "type": "gdl_town_center", "at": [27, 43]},
+   {"name": "church", "player": 1, "type": "gdl_temple", "at": [32, 50]},
+   {"name": "granary_upper", "player": 1, "type": "gdl_granary", "at": [33, 41]},
+   {"player": 1, "type": "gdl_house", "at": [25, 54]},
+   {"name": "granary_lower", "player": 1, "type": "gdl_granary", "at": [41, 35]},
+   {"player": 1, "type": "gdl_house", "at": [46, 35]},
+   {"player": 1, "type": "gdl_house", "at": [56, 59]},
+   {"player": 1, "type": "gdl_house", "at": [41, 59]},
+   {"name": "alka", "player": 1, "type": "gdl_shrine", "at": [50, 58]},
+   {"name": "posad_1", "player": 1, "type": "gdl_house", "at": [66, 42]},
+   {"name": "posad_2", "player": 1, "type": "gdl_house", "at": [66, 53]},
+   {"name": "posad_3", "player": 1, "type": "gdl_house", "at": [71, 40]},
+   {"name": "posad_4", "player": 1, "type": "gdl_house", "at": [72, 54]},
+   {"name": "posad_5", "player": 1, "type": "gdl_house", "at": [77, 43]},
+   {"name": "posad_6", "player": 1, "type": "gdl_house", "at": [78, 52]},
+   {"name": "posad_7", "player": 1, "type": "gdl_house", "at": [84, 41]},
+   {"name": "posad_8", "player": 1, "type": "gdl_house", "at": [85, 54]},
+   {"name": "posad_granary_1", "player": 1, "type": "gdl_granary", "at": [90, 44]},
+   {"name": "posad_granary_2", "player": 1, "type": "gdl_granary", "at": [90, 52]},
+   {"name": "rebel_camp_1", "player": 2, "type": "gdl_field_camp", "at": [128, 14]},
+   {"name": "rebel_camp_2", "player": 2, "type": "gdl_field_camp", "at": [134, 24]},
+   {"name": "workshop_1", "player": 2, "type": "gdl_siege_workshop", "at": [116, 14]},
+   {"name": "workshop_2", "player": 2, "type": "gdl_siege_workshop", "at": [122, 21]},
+   {"name": "workshop_3", "player": 2, "type": "gdl_siege_workshop", "at": [112, 22]},
+   {"name": "moscow_camp", "player": 3, "type": "mo_field_camp", "at": [131, 45]}
+  ],
+  "walls": [
+   {"player": 1, "type": "gdl_wall", "from": [22, 38], "to": [37, 38]},
+   {"player": 1, "type": "gdl_wall", "from": [22, 58], "to": [37, 58]},
+   {"player": 1, "type": "gdl_wall", "from": [38, 32], "to": [38, 64]},
+   {"player": 1, "type": "gdl_wall", "from": [39, 32], "to": [62, 32]},
+   {"player": 1, "type": "gdl_wall", "from": [62, 33], "to": [62, 64]},
+   {"player": 1, "type": "gdl_wall", "from": [39, 64], "to": [61, 64]}
+  ],
+  "groups": [
+   {"name": "andrei", "player": 1, "units": [["hero_andrei", 1]], "at": [47, 46]},
+   {"name": "veterans", "player": 1, "units": [["gdl_szlachta_lance", 6], ["gdl_light_horse", 8]], "at": [43, 39]},
+   {"name": "yuri", "player": 1, "units": [["hero_yuri_olelkovich", 1]], "at": [31, 47]},
+   {"name": "yuri_guard", "player": 1, "units": [["gdl_light_horse", 2]], "at": [32, 45]},
+   {"name": "lady", "player": 1, "stance": "passive", "units": [["hero_anastasia", 1]], "at": [28, 49]},
+   {"name": "spears", "player": 1, "units": [["gdl_spearman", 6]], "at": [50, 44]},
+   {"name": "archers", "player": 1, "stance": "defensive", "units": [["gdl_castle_archer", 10]], "at": [54, 42]},
+   {"name": "hakownica", "player": 1, "stance": "defensive", "units": [["gdl_hakownica", 2]], "at": [58, 47]},
+   {"name": "burghers", "player": 1, "units": [["gdl_burgher", 20]], "at": [68, 45]},
+   {"name": "servants", "player": 1, "units": [["gdl_peasant", 5]], "at": [32, 54]},
+   {"name": "znakharka", "player": 1, "units": [["gdl_znakharka", 1]], "at": [48, 55]}
+  ]
+ },
+ "rules": {
+  "hunger": {"player": 1, "every_ticks": 600, "units_per_food": 1, "until": "10"},
+  "siege": {"player": 1, "lines_catch": false, "belts": {"lower": [39, 33, 61, 63], "upper": [22, 39, 37, 57]}, "fall": {"enemies": 3}, "ladder": {"raise_ticks": 200, "climb_ticks": 60, "push_ticks": 160, "push_radius": 2, "fall_damage": 25, "tries": 2}, "wall": {"range": 1, "armor_m": 2, "armor_p": 2}, "militia": {"unit": "gdl_burgher"}, "water": {"units": ["gdl_burgher"], "kinds": ["prop_well", "prop_barrels"], "radius": 6, "unit_permille": 1000, "water_permille": 1000}, "lady": {"group": "lady", "belt": "upper", "home": [28, 49], "floor_permille": 600, "douse_permille": 1000}, "starve": {"morale": 1}, "posad": {"buildings": ["posad_1", "posad_2", "posad_3", "posad_4", "posad_5", "posad_6", "posad_7", "posad_8", "posad_granary_1", "posad_granary_2"], "every_ticks": 600, "food": 4}, "boats": {"pier": [23, 49], "radius": 6, "every_ticks": 1200, "food": 40}, "tunnel": {"from": [24, 41], "to": [18, 27], "radius": 1, "out_from": [1, 0], "out_to": [1, 0]}, "workshops": {"buildings": ["workshop_1", "workshop_2", "workshop_3"], "delay_ticks": 1200}, "fire_arrows": {"group": "fire_archers", "every_ticks": 500, "belts": ["upper", "lower"]}}
+ },
+ "triggers": [
+  {
+   "id": "defeat_andrei",
+   "when": {"type": "group_dead", "group": "andrei"},
+   "do": [
+    {"do": "defeat", "text": "Andrei Gintovt has fallen. Slutsk is left without his men."}
+   ]
+  },
+  {
+   "id": "defeat_lady",
+   "when": {"type": "group_dead", "group": "lady"},
+   "do": [
+    {"do": "defeat", "text": "Princess Anastasia has fallen. Slutsk opens its gates."}
+   ]
+  },
+  {
+   "id": "defeat_yuri",
+   "when": {"type": "group_dead", "group": "yuri"},
+   "do": [
+    {"do": "defeat", "text": "Prince Yuri has fallen. His mother has nothing left to hold the castle for."}
+   ]
+  },
+  {
+   "id": "defeat_upper",
+   "when": {"type": "any", "of": [{"type": "belt_lost", "belt": "upper"}, {"type": "destroyed", "building": "court"}]},
+   "do": [
+    {"do": "defeat", "text": "The rebels have taken the Upper castle."}
+   ]
+  },
+  {
+   "id": "1",
+   "when": {"type": "start"},
+   "do": [
+    {"do": "protect", "group": "lady"},
+    {"do": "cutscene", "id": "the_princess", "at": [29, 47], "lines": [["Chronicler", "That year Prince Michael Glinski, a learned and proud man, killed his enemy, Lord Zabrzeziński, and raised a revolt. He called the Ruthenian princes to follow him, and he called for help from Moscow. The princess of Slutsk did not follow him."], ["hero_andrei", "Princess, standard-bearer Gintovt with his men. The hetman is gathering the army and has sent us ahead."], ["hero_anastasia", "How many of you?"], ["hero_andrei", "As many as came back from the Vedrosha."], ["hero_anastasia", "Then men who know how to retreat. You will not need that skill here. We have nowhere to retreat to."]]},
+    {"do": "objective", "id": "prepare", "text": "Prepare the castle: shooters on the walls, the townsmen inside"},
+    {"do": "objective", "id": "never_lower", "optional": true, "text": "Never lose the Lower castle"},
+    {"do": "objective", "id": "keep_posad", "optional": true, "text": "Keep more than half of the posad"},
+    {"do": "countdown", "text": "The rebels come in %s", "ticks": 7200},
+    {"do": "hint", "text": "Put archers and the hook guns right by the walls: there they shoot further and are harder to hit (at least 6). Bring the townsmen in from the posad: they put out fires quicker, faster still by a well or barrels of water. The posad and the boats on the Sluch bring food; with no food your men lose heart."},
+    {"do": "ping", "at": [62, 48], "radius": 4}
+   ]
+  },
+  {
+   "id": "prepared",
+   "when": {"type": "all", "of": [{"type": "not", "of": {"type": "fired", "trigger": "2"}}, {"type": "manned", "at_least": 6}, {"type": "in_belt", "group": "burghers"}]},
+   "do": [
+    {"do": "objective", "id": "prepare", "state": "done"}
+   ]
+  },
+  {
+   "id": "2",
+   "when": {"type": "after", "trigger": "1", "ticks": 7200},
+   "do": [
+    {"do": "countdown", "text": "", "ticks": 0},
+    {"do": "spawn", "name": "camp_guard", "player": 2, "stance": "defensive", "units": [["gdl_szlachta_lance", 4], ["gdl_light_horse", 6]], "at": [122, 28]},
+    {"do": "spawn", "name": "party_1", "player": 2, "units": [["gdl_spearman", 16]], "at": [100, 30]},
+    {"do": "spawn", "name": "lances_1", "player": 2, "stance": "defensive", "units": [["gdl_szlachta_lance", 8]], "at": [104, 44]},
+    {"do": "spawn", "name": "raiders", "player": 2, "stance": "defensive", "units": [["gdl_light_horse", 8]], "at": [100, 54]},
+    {"do": "spawn", "name": "boyars", "player": 3, "stance": "defensive", "units": [["mo_syn_boyarsky", 10]], "at": [116, 50]},
+    {"do": "spawn", "name": "cannons", "player": 3, "stance": "defensive", "units": [["mo_cannon", 2]], "at": [108, 47]},
+    {"do": "spawn", "name": "icon", "player": 3, "stance": "passive", "units": [["mo_inok", 1]], "at": [120, 48]},
+    {"do": "spawn", "name": "envoy", "player": 2, "stance": "passive", "untouchable": true, "units": [["hero_glinski_envoy", 1]], "at": [68, 48]},
+    {"do": "ignite", "building": "posad_7"},
+    {"do": "ignite", "building": "posad_8"},
+    {"do": "cutscene", "id": "parley_at_the_gate", "at": [64, 48], "lines": [["hero_glinski_envoy", "Prince Michael stands for the Ruthenian faith and for the Ruthenian people who suffer from the Lithuanian lords. Open, and no one will be harmed."], ["hero_yuri_olelkovich", "I am of the Ruthenian faith too. And how long has Prince Michael been of it?"], ["hero_andrei", "Tell your prince: we and he have the same sovereign. And let him not tell us about faith."]]},
+    {"do": "ping", "at": [85, 48], "radius": 6}
+   ]
+  },
+  {
+   "id": "prepare_late",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "2"}, {"type": "not", "of": {"type": "fired", "trigger": "prepared"}}]},
+   "do": [
+    {"do": "objective", "id": "prepare", "state": "failed"}
+   ]
+  },
+  {
+   "id": "3",
+   "when": {"type": "after", "trigger": "2", "ticks": 600},
+   "do": [
+    {"do": "move", "group": "envoy", "to": [130, 20]},
+    {"do": "merge", "group": "assault_1", "of": ["party_1", "lances_1", "raiders"]},
+    {"do": "objective", "id": "first", "text": "Beat back the first assault"},
+    {"do": "militia"},
+    {"do": "ladders", "group": "party_1", "spots": [[46, 32, 46, 31], [54, 32, 54, 31], [62, 40, 63, 40], [62, 56, 63, 56]], "goal": [50, 48], "else": [70, 48]},
+    {"do": "stance", "group": "lances_1", "stance": "aggressive"},
+    {"do": "assault", "group": "lances_1", "building": "gate_lower_s", "else": [56, 48]},
+    {"do": "stance", "group": "raiders", "stance": "aggressive"},
+    {"do": "attack_move", "group": "raiders", "to": [72, 50]},
+    {"do": "stance", "group": "boyars", "stance": "aggressive"},
+    {"do": "attack_move", "group": "boyars", "to": [74, 46]},
+    {"do": "stance", "group": "cannons", "stance": "aggressive"},
+    {"do": "assault", "group": "cannons", "building": "gate_lower_n", "else": [64, 48]},
+    {"do": "cast", "group": "icon", "spell": "sp_icon"},
+    {"do": "hint", "text": "Ladders! Keep men right behind the wall where a ladder stands: they push it off and the climber falls. Townsmen now take up arms. The guns are aimed at the gate: they hardly harm the walls."},
+    {"do": "ping", "at": [54, 32], "radius": 6}
+   ]
+  },
+  {
+   "id": "3b",
+   "when": {"type": "after", "trigger": "3", "ticks": 1200},
+   "do": [
+    {"do": "ignite", "building": "posad_5"},
+    {"do": "ignite", "building": "posad_granary_1"}
+   ]
+  },
+  {
+   "id": "4",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "3"}, {"type": "any", "of": [{"type": "all", "of": [{"type": "ladders_spent", "group": "party_1"}, {"type": "not", "of": {"type": "in_belt", "group": "party_1"}}]}, {"type": "all", "of": [{"type": "after", "trigger": "3", "ticks": 6000}, {"type": "not", "of": {"type": "belt_lost", "belt": "lower"}}]}]}]},
+   "do": [
+    {"do": "objective", "id": "first", "state": "done"},
+    {"do": "stance", "group": "party_1", "stance": "defensive"},
+    {"do": "move", "group": "party_1", "to": [138, 34]},
+    {"do": "stance", "group": "lances_1", "stance": "defensive"},
+    {"do": "move", "group": "lances_1", "to": [138, 34]},
+    {"do": "stance", "group": "raiders", "stance": "defensive"},
+    {"do": "move", "group": "raiders", "to": [138, 34]},
+    {"do": "stance", "group": "boyars", "stance": "defensive"},
+    {"do": "move", "group": "boyars", "to": [138, 34]},
+    {"do": "stance", "group": "cannons", "stance": "defensive"},
+    {"do": "move", "group": "cannons", "to": [138, 34]},
+    {"do": "stance", "group": "icon", "stance": "defensive"},
+    {"do": "move", "group": "icon", "to": [138, 34]},
+    {"do": "assault_at", "ticks": 7200},
+    {"do": "tunnel", "on": true},
+    {"do": "cutscene", "id": "yuri_asks", "at": [29, 47], "lines": [["hero_yuri_olelkovich", "Mother, let me go. I know the passage to the river, it was built in father's time."], ["hero_anastasia", "Your father did not live to see this day. I want you to live to see many."], ["hero_yuri_olelkovich", "Then the castle must stand until tomorrow, mother."], ["hero_anastasia", "Lord standard-bearer. You go together. And you come back together."]]},
+    {"do": "objective", "id": "sortie", "text": "Sortie: burn the ladder workshops in the rebel camp"},
+    {"do": "objective", "id": "yuri", "optional": true, "text": "Bring Yuri back from the sortie alive and unhurt"},
+    {"do": "hint", "text": "The secret passage starts by the court in the Upper castle and comes out on the river bank to the north. Every workshop burned puts the next assault off by a minute. Order your men to set a workshop on fire, then come back."},
+    {"do": "ping", "at": [24, 41], "radius": 2},
+    {"do": "ping", "at": [116, 18], "radius": 8}
+   ]
+  },
+  {
+   "id": "yuri_out",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "4"}, {"type": "not", "of": {"type": "in_belt", "group": "yuri"}}]},
+   "do": [
+    {"do": "flag", "flag": "yuri_out"}
+   ]
+  },
+  {
+   "id": "5",
+   "when": {"type": "tunnel_used"},
+   "do": [
+    {"do": "dialogue", "lines": [["Chronicler", "In Slutsk they still tell of a passage under the castle hill. I have not seen it. But Andrei saw it, and said it was narrow there and smelled of the river."]]}
+   ]
+  },
+  {
+   "id": "6",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "4"}, {"type": "burned", "at_least": 1}]},
+   "do": [
+    {"do": "objective", "id": "sortie", "state": "done"},
+    {"do": "stance", "group": "camp_guard", "stance": "aggressive"},
+    {"do": "attack_move", "group": "camp_guard", "to": [114, 20]},
+    {"do": "hint", "text": "The camp is up in arms! Bring the sortie back into the castle before the riders close in."}
+   ]
+  },
+  {
+   "id": "sortie_failed",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "4"}, {"type": "not", "of": {"type": "fired", "trigger": "6"}}, {"type": "assault_due"}]},
+   "do": [
+    {"do": "objective", "id": "sortie", "state": "failed"}
+   ]
+  },
+  {
+   "id": "yuri_done",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "6"}, {"type": "fired", "trigger": "yuri_out"}, {"type": "in_belt", "group": "yuri"}, {"type": "hp_at_least", "group": "yuri", "permille": 750}]},
+   "do": [
+    {"do": "objective", "id": "yuri", "state": "done"}
+   ]
+  },
+  {
+   "id": "yuri_hurt",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "yuri_out"}, {"type": "not", "of": {"type": "fired", "trigger": "yuri_done"}}, {"type": "not", "of": {"type": "hp_at_least", "group": "yuri", "permille": 750}}]},
+   "do": [
+    {"do": "objective", "id": "yuri", "state": "failed"}
+   ]
+  },
+  {
+   "id": "yuri_stayed",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "7"}, {"type": "not", "of": {"type": "fired", "trigger": "yuri_out"}}]},
+   "do": [
+    {"do": "objective", "id": "yuri", "state": "failed"}
+   ]
+  },
+  {
+   "id": "7",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "4"}, {"type": "assault_due"}]},
+   "do": [
+    {"do": "daylight", "night": true},
+    {"do": "spawn", "name": "party_2u", "player": 2, "units": [["gdl_spearman", 16]], "at": [44, 24]},
+    {"do": "spawn", "name": "party_2l", "player": 2, "units": [["gdl_spearman", 10]], "at": [72, 66]},
+    {"do": "spawn", "name": "lances_2", "player": 2, "stance": "defensive", "units": [["gdl_szlachta_lance", 8]], "at": [96, 46]},
+    {"do": "spawn", "name": "fire_archers", "player": 2, "units": [["gdl_castle_archer", 6]], "at": [72, 28]},
+    {"do": "merge", "group": "assault_2", "of": ["party_2u", "party_2l", "lances_2", "fire_archers"]},
+    {"do": "objective", "id": "night", "text": "Beat back the night assault and the fire"},
+    {"do": "ladders", "group": "party_2u", "spots": [[26, 38, 26, 37], [32, 38, 32, 37], [30, 58, 30, 59]], "goal": [29, 48], "else": [34, 34]},
+    {"do": "ladders", "group": "party_2l", "spots": [[62, 44, 63, 44], [50, 64, 50, 65]], "goal": [44, 48], "else": [66, 60]},
+    {"do": "fire_arrows", "on": true},
+    {"do": "stance", "group": "lances_2", "stance": "aggressive"},
+    {"do": "assault", "group": "lances_2", "building": "gate_lower_n", "else": [44, 48]},
+    {"do": "stance", "group": "assault_1", "stance": "aggressive"},
+    {"do": "attack_move", "group": "assault_1", "to": [66, 46]},
+    {"do": "stance", "group": "boyars", "stance": "aggressive"},
+    {"do": "attack_move", "group": "boyars", "to": [72, 46]},
+    {"do": "stance", "group": "cannons", "stance": "aggressive"},
+    {"do": "assault", "group": "cannons", "building": "gate_lower_n", "else": [64, 48]},
+    {"do": "cast", "group": "icon", "spell": "sp_icon"},
+    {"do": "cutscene", "id": "night_assault", "at": [40, 40], "lines": [["Chronicler", "Fresh banners came to the rebels by evening. They did not wait for morning: at dusk the ladders went up against both castles at once, and fire arrows flew over the walls."]]},
+    {"do": "hint", "text": "Fire arrows set the roofs alight: keep the townsmen by the wells and barrels, and near the princess they work quicker. The rain of «Perkūnas' Wrath» puts out every fire under it."},
+    {"do": "ping", "at": [29, 38], "radius": 6}
+   ]
+  },
+  {
+   "id": "7n",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "7"}, {"type": "difficulty", "at_least": "normal"}]},
+   "do": [
+    {"do": "spawn", "name": "party_2x", "player": 2, "units": [["gdl_spearman", 10]], "at": [40, 22]},
+    {"do": "spawn", "name": "lances_2x", "player": 2, "units": [["gdl_szlachta_lance", 6]], "at": [96, 52]},
+    {"do": "assault", "group": "lances_2x", "building": "gate_lower_s", "else": [44, 49]},
+    {"do": "ladders", "group": "party_2x", "spots": [[28, 38, 28, 37]], "goal": [29, 48], "else": [34, 34]}
+   ]
+  },
+  {
+   "id": "8",
+   "when": {"type": "belt_lost", "belt": "lower"},
+   "do": [
+    {"do": "dialogue", "lines": [["hero_andrei", "The Lower cannot be held! Everyone to the Upper, townsmen first, spears close the way!"]]},
+    {"do": "objective", "id": "never_lower", "state": "failed"},
+    {"do": "destroy", "building": "alka"},
+    {"do": "ping", "at": [38, 48], "radius": 3}
+   ]
+  },
+  {
+   "id": "9",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "7"}, {"type": "not", "of": {"type": "belt_lost", "belt": "upper"}}, {"type": "any", "of": [{"type": "all", "of": [{"type": "ladders_spent", "group": "party_2u"}, {"type": "ladders_spent", "group": "party_2l"}, {"type": "group_alive_at_most", "group": "assault_2", "count": 8}]}, {"type": "after", "trigger": "7", "ticks": 9600}]}]},
+   "do": [
+    {"do": "daylight", "night": false},
+    {"do": "fire_arrows", "on": false},
+    {"do": "objective", "id": "night", "state": "done"},
+    {"do": "stance", "group": "assault_1", "stance": "defensive"},
+    {"do": "move", "group": "assault_1", "to": [138, 34]},
+    {"do": "stance", "group": "assault_2", "stance": "defensive"},
+    {"do": "move", "group": "assault_2", "to": [138, 34]},
+    {"do": "stance", "group": "party_2x", "stance": "defensive"},
+    {"do": "move", "group": "party_2x", "to": [138, 34]},
+    {"do": "stance", "group": "lances_2x", "stance": "defensive"},
+    {"do": "move", "group": "lances_2x", "to": [138, 34]},
+    {"do": "stance", "group": "boyars", "stance": "defensive"},
+    {"do": "move", "group": "boyars", "to": [138, 34]},
+    {"do": "stance", "group": "cannons", "stance": "defensive"},
+    {"do": "move", "group": "cannons", "to": [138, 34]},
+    {"do": "stance", "group": "icon", "stance": "defensive"},
+    {"do": "move", "group": "icon", "to": [138, 34]},
+    {"do": "morale", "group": "assault_1", "permille": 400},
+    {"do": "morale", "group": "assault_2", "permille": 400},
+    {"do": "morale", "group": "boyars", "permille": 400},
+    {"do": "spawn", "name": "messenger", "player": 1, "stance": "passive", "units": [["gdl_peasant", 1]], "at": [24, 49]},
+    {"do": "cutscene", "id": "messenger", "at": [25, 49], "lines": [["Messenger", "The hetman and his army are on the road to Orsha. Glinski has no time for Slutsk now."], ["hero_andrei", "Hear that? Hold a little longer."]]},
+    {"do": "objective", "id": "hold", "text": "Hold until the rebels leave"},
+    {"do": "countdown", "text": "The rebels break camp in %s", "ticks": 4800}
+   ]
+  },
+  {
+   "id": "10",
+   "when": {"type": "after", "trigger": "9", "ticks": 4800},
+   "do": [
+    {"do": "countdown", "text": "", "ticks": 0},
+    {"do": "objective", "id": "hold", "state": "done"},
+    {"do": "move", "group": "assault_1", "to": [149, 22]},
+    {"do": "move", "group": "assault_2", "to": [149, 22]},
+    {"do": "move", "group": "party_2x", "to": [149, 22]},
+    {"do": "move", "group": "lances_2x", "to": [149, 22]},
+    {"do": "move", "group": "camp_guard", "to": [149, 22]},
+    {"do": "move", "group": "envoy", "to": [149, 22]},
+    {"do": "move", "group": "boyars", "to": [149, 50]},
+    {"do": "move", "group": "cannons", "to": [149, 50]},
+    {"do": "move", "group": "icon", "to": [149, 50]},
+    {"do": "cutscene", "id": "smoke_over_the_sluch", "at": [36, 46], "lines": [["hero_yuri_olelkovich", "They are leaving. They did not even take the ladders."], ["hero_anastasia", "Let the townsmen break them up for firewood. They will come in useful in winter."], ["Chronicler", "Glinski took neither Slutsk nor Minsk. In July the hetman stood against the Muscovite voivodes at Orsha, and there was no battle. In the autumn peace was made, and Glinski went to Moscow for good. Andrei said afterwards: the most frightening thing was not on the wall but at the gate, when the envoy spoke with him in the same language."]]}
+   ]
+  },
+  {
+   "id": "posad_lost",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "2"}, {"type": "not", "of": {"type": "standing", "buildings": ["posad_1", "posad_2", "posad_3", "posad_4", "posad_5", "posad_6", "posad_7", "posad_8", "posad_granary_1", "posad_granary_2"], "permille": 501}}]},
+   "do": [
+    {"do": "objective", "id": "keep_posad", "state": "failed"}
+   ]
+  },
+  {
+   "id": "victory",
+   "when": {"type": "after", "trigger": "10", "ticks": 100},
+   "do": [
+    {"do": "objective", "id": "never_lower", "state": "done"},
+    {"do": "objective", "id": "keep_posad", "state": "done"},
+    {"do": "objective", "id": "yuri", "state": "failed"},
+    {"do": "victory", "text": "The rebels have gone. Slutsk has held."}
+   ]
+  }
+ ]
+}
