@@ -159,3 +159,19 @@ static func _seen_by(
 		if dx * dx + dy * dy <= reach * reach:
 			return true
 	return false
+
+
+## A place of power goes out (ВКЛ 3): `permille` of its Сила is left. At 0 it is gone for good:
+## its shrine falls and nobody holds it.
+static func quench(m: MissionRuntime, i: int, permille: int) -> void:
+	var places := m.magic.places
+	if i < 0 or i >= places.count():
+		return
+	places.quenched[i] = permille
+	if permille > 0:
+		return
+	m.economy.destroy(places.shrines[i])
+	places.shrines[i] = BuildingStore.NO_ID
+	places.holders[i] = 0
+	places.takers[i] = 0
+	places.progress[i] = 0

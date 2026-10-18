@@ -21,9 +21,9 @@ extends RefCounted
 ##   baptized {count} (living baptized units, rules.baptism); evidence {at_least | at_most}
 ##   (whole points, rules.evidence); built_near {player, base, at, radius} (a finished building
 ##   of that kind, any time); mist_over {player, at} (the player's «Болотный туман» lies there);
-##   chose {question, option} (see `ask`); group_exited also takes count; ВКЛ 4–7: see
-##   MissionMarch, MissionRetreat, MissionStealth, MissionSiege; any / all {of: [...]}; not {of};
-##   for_ticks {ticks, of} (true for that long in a row; one per trigger).
+##   chose {question, option} (see `ask`); group_exited also takes count; ВКЛ 4–8: see
+##   MissionMarch, MissionRetreat, MissionStealth, MissionSiege, MissionBattle; any / all {of:
+##   [...]}; not {of}; for_ticks {ticks, of} (true for that long in a row; one per trigger).
 ## Actions (`do`): objective {id, text?, state? (active, done, failed), optional?}; hint {text};
 ##   dialogue {lines}; cutscene {id, at, lines}; ping {at, radius} (these four only reach the
 ##   interface through `events`); spawn {group?, player, at, units, stance?, untouchable?};
@@ -41,10 +41,9 @@ extends RefCounted
 ##   destroy {building}; name_built {player, base, name} (names the player's newest finished
 ##   building of that kind); assault {group, building, else?} (storm a named building, or
 ##   attack-move to `else` when it is gone).
-##   ВКЛ 4: MissionMarch.run; ВКЛ 5: MissionRetreat; ВКЛ 6: stealth; ВКЛ 7: siege (MissionSiege).
-## Setup may also give sides {player: lead player}, age {player: index}, pop {player: places},
-## power (MissionRetreat), props (MissionStealth), buildings turned:true. Rules: hunger, boats,
-## blockade, banner, MissionFaith's, MissionMarch's, MissionRetreat's, stealth and siege.
+##   ВКЛ 4–8: MissionMarch, MissionRetreat, MissionStealth, MissionSiege, MissionBattle. Setup
+## may also give sides {player: lead player}, age, pop {player: places}, power, props, buildings
+## turned:true. Rules: hunger, boats, blockade, banner and those of the mission modules.
 
 enum Outcome { NONE, VICTORY, DEFEAT }
 enum Objective { ACTIVE, DONE, FAILED }
@@ -132,10 +131,11 @@ var raids := 0
 var countdown_text := ""
 var countdown_end := -1
 ## ВКЛ 5: the bridge, the ford, the rescue and the waves (MissionRetreat); ВКЛ 6: the watch;
-## ВКЛ 7: the siege.
+## ВКЛ 7: the siege; ВКЛ 8: the crossing and the battle.
 var retreat := MissionRetreat.new()
 var stealth := MissionStealth.new()
 var siege := MissionSiege.new()
+var battle := MissionBattle.new()
 var outcome := Outcome.NONE
 var outcome_text := ""
 ## What the interface shows, in order: {kind, tick, ...} (kind: objective, hint, dialogue,
@@ -226,6 +226,7 @@ func set_up(tick: int) -> void:
 	retreat.set_up(self)
 	stealth.set_up(self)
 	siege.set_up(self)
+	battle.set_up(self)
 
 
 func _place(tick: int, p: int, type: String, cx: int, cy: int, turned := false) -> int:
@@ -299,6 +300,7 @@ func step(tick: int) -> void:
 	retreat.step(self, tick)
 	stealth.step(self, tick)
 	siege.step(self, tick)
+	battle.step(self, tick)
 	for t: Dictionary in def.triggers:
 		var tid: String = t["id"]
 		if fired.has(tid):
@@ -406,6 +408,8 @@ func test(c: Dictionary, tid: String, tick: int) -> bool:
 			ok = stealth.test(self, c)
 		_ when MissionSiege.CONDITIONS.has(c["type"]):
 			ok = siege.test(self, c)
+		_ when MissionBattle.CONDITIONS.has(c["type"]):
+			ok = battle.test(self, c)
 		_:
 			push_warning("mission %s: unknown condition %s" % [def.id, c["type"]])
 	return ok
@@ -489,7 +493,7 @@ func run(a: Dictionary, tick: int) -> void:
 		"spies":
 			spies_wanted = int(a["count"])
 		"quench":
-			_quench(int(a["place"]), int(a["permille"]))
+			MissionFaith.quench(self, int(a["place"]), int(a["permille"]))
 		"ask":
 			choices[a["id"]] = (a["options"] as Array).size()
 			var e := a.duplicate(true)
@@ -525,6 +529,8 @@ func run(a: Dictionary, tick: int) -> void:
 			stealth.run(self, a, tick)
 		_ when MissionSiege.ACTIONS.has(a["do"]):
 			siege.run(self, a, tick)
+		_ when MissionBattle.ACTIONS.has(a["do"]):
+			battle.run(self, a, tick)
 		_:
 			push_warning("mission %s: unknown action %s" % [def.id, a["do"]])
 
@@ -912,22 +918,6 @@ func _raise_banner(id: int) -> void:
 	combat.banners.bearers[id] = true
 
 
-## A place of power goes out (ВКЛ 3): `permille` of its Сила is left. At 0 it is gone for good:
-## its shrine falls and nobody holds it.
-func _quench(i: int, permille: int) -> void:
-	var places := magic.places
-	if i < 0 or i >= places.count():
-		return
-	places.quenched[i] = permille
-	if permille > 0:
-		return
-	economy.destroy(places.shrines[i])
-	places.shrines[i] = BuildingStore.NO_ID
-	places.holders[i] = 0
-	places.takers[i] = 0
-	places.progress[i] = 0
-
-
 ## Living baptized units (ВКЛ 3).
 func baptized_alive() -> int:
 	return MissionFaith.baptized_alive(self)
@@ -996,3 +986,4 @@ func write_to(buf: StreamPeerBuffer) -> void:
 	retreat.write_to(buf)
 	stealth.write_to(buf)
 	siege.write_to(buf)
+	battle.write_to(buf)

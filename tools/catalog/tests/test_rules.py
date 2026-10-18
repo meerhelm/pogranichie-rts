@@ -71,6 +71,17 @@ class ClauseTest(unittest.TestCase):
         self.assertEqual(sp.params, {"wood_bonus": 30, "stone_permille": 500})
         self.assertEqual(sp.unparsed, [])
 
+    def test_orsha_crown_troops(self):
+        sp = parse_special(
+            "Конница лёгкая. Копьё и сабля, таран ×1,5 после 4 клеток; "
+            "это лёгкая сербская конница около 1500 года, не крылатая гусария"
+        )
+        self.assertEqual(sp.unparsed, [])
+        self.assertIn("charge", sp.tags)
+        sp = parse_special("Пехота, копейщик. +8 к коннице; роет ров у табора; жалованье 1 С в минуту")
+        self.assertEqual(sp.unparsed, [])
+        self.assertEqual(sp.bonuses, {"cavalry": 8})
+
     def test_unknown_clause_is_reported_not_dropped(self):
         sp = parse_special("Пехота. Поёт песни; +6 к коннице")
         self.assertEqual(sp.unparsed, ["Поёт песни"])

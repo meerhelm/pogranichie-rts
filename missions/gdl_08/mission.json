@@ -1,0 +1,429 @@
+{
+ "_comment": "Mission «ВКЛ 8. Орша, 1514» (mission card in the missions doc, docs/03-missions/10-gdl_08_orsha_1514.md), the end of the Duchy's campaign. Player 1 is Andrei Gintovt with a part of the Lithuanian horse, the mercenary foot and the guns; player 3 the Polish horse of Janusz Świerczowski and the royal court banners of Wojciech Sampoliński (allies); player 4 the hetman Prince Konstanty Ostrogski with his guard and foot, the rest of the Lithuanian horse, and the scribe Maciej Gintowt (allies that do not take orders); player 2 Muscovy (the Forward, the Large Regiment of the boyar Ivan Chelyadnin, the Right Hand of Prince Mikhail Bulgakov-Golitsa, the Left Hand with service Tatars, the patrol and the guard at the Orsha bridges, the camp). At night the horse fords the Dnieper and the servants lay two bridges of boats, barrels and logs for the foot and the guns; at dawn the player sets out the army and hides the guns; the Right Hand strikes the court banners on its own; the Left Hand is led by a false retreat onto the hidden guns; the general attack takes the Muscovite camp. Rules (core/mission/mission_battle.gd): the bridges, the patrol, the ambush held and hidden, the feint, the chase, the Kropivna, the captive commander, the old oak. Read by core/mission/mission_def.gd; cells are map cells, ticks 1/20 s, texts are English keys translated through i18n/*.po.",
+ "id": "gdl_08",
+ "title": "GDL 8. Orsha, 1514",
+ "map": "map_gdl_08",
+ "player": 1,
+ "players": [[1, "gdl"], [2, "mo"], [3, "gdl"], [4, "gdl"]],
+ "camera": [78, 96],
+ "difficulties": ["easy", "normal"],
+ "briefing": {
+  "place": "The Dnieper above Orsha and the field between the Dnieper and the Kropivna. The night of 7 to 8 September 1514.",
+  "story": "At the end of July Smolensk opened its gates to Vasily III. Hetman Prince Konstanty Ostrogski, seven years out of Muscovite captivity, has gathered the army of the Duchy and the Polish horse and foot of King Sigismund. The Muscovites under the boyar Ivan Chelyadnin stand beyond the Dnieper and guard the bridges at Orsha. The hetman will cross elsewhere, by night. Andrei Gintovt once found him a ford; tonight he must find another one. In the hetman's tent there is a scribe with an inkwell at his belt, and he too is a Gintovt.",
+  "goal": "By night take the horse over the ford and lay two bridges for the foot and the guns; at dawn set out the army and hide the guns; help the court banners hold the first blow; lead the chase onto the guns with a false retreat; take the Muscovite camp.",
+  "lose": [
+   "Andrei Gintovt falls",
+   "At dawn the guns are still on the far bank",
+   "The hetman's headquarters falls or the army is thrown into the Dnieper"
+  ]
+ },
+ "setup": {
+  "sides": {"1": 1, "3": 1, "4": 1, "2": 2},
+  "age": {"1": 3, "2": 3},
+  "pop": {"1": 80},
+  "power": {"2": 300},
+  "stock": {"1": [400, 300, 60, 40], "2": [0, 0, 0, 0], "3": [0, 0, 0, 0], "4": [0, 0, 0, 0]},
+  "locked": {
+   "1": ["gdl_town_center", "gdl_house", "gdl_granary", "gdl_farm", "gdl_lumber_yard", "gdl_mine", "gdl_barracks", "gdl_range", "gdl_palisade", "gdl_zaseka", "gdl_siege_workshop", "gdl_bort", "gdl_gate", "gdl_tower", "gdl_temple", "gdl_field_camp", "gdl_shrine", "gdl_wall", "gdl_peasant", "gdl_spearman", "gdl_castle_archer", "gdl_forest_archer", "gdl_lit_lance", "gdl_znakharka", "gdl_field_gun", "gdl_hakownica", "gdl_burgher"]
+  },
+  "props": [
+   {"kind": "prop_boats", "at": [67, 96]},
+   {"kind": "prop_boats", "at": [88, 96]},
+   {"kind": "prop_logs", "at": [73, 97]},
+   {"kind": "prop_logs", "at": [82, 97]},
+   {"kind": "prop_barrels", "at": [77, 97]},
+   {"kind": "prop_oak", "at": [134, 79]},
+   {"kind": "prop_campfire", "at": [12, 86]},
+   {"kind": "prop_campfire", "at": [76, 18]},
+   {"kind": "prop_campfire", "at": [86, 34]}
+  ],
+  "buildings": [
+   {"name": "camp", "player": 1, "type": "gdl_field_camp", "at": [70, 101]},
+   {"player": 1, "type": "gdl_stable", "at": [92, 104]},
+   {"name": "camp_moscow", "player": 2, "type": "mo_field_camp", "at": [78, 9]},
+   {"player": 2, "type": "mo_house", "at": [68, 12]},
+   {"player": 2, "type": "mo_house", "at": [88, 12]},
+   {"player": 2, "type": "mo_house", "at": [72, 18]},
+   {"player": 2, "type": "mo_stable", "at": [90, 18]},
+   {"name": "orsha_tower", "player": 2, "type": "mo_watchtower", "at": [15, 85]}
+  ],
+  "groups": [
+   {"name": "andrei", "player": 1, "units": [["hero_andrei", 1]], "at": [80, 99]},
+   {"name": "riders", "player": 1, "units": [["gdl_light_horse", 16]], "at": [96, 97]},
+   {"name": "lances", "player": 1, "units": [["gdl_szlachta_lance", 8]], "at": [86, 99]},
+   {"name": "znakharka", "player": 1, "units": [["gdl_znakharka", 1]], "at": [76, 99]},
+   {"name": "servants", "player": 1, "units": [["gdl_camp_servant", 8]], "at": [76, 96]},
+   {"name": "foot", "player": 1, "units": [["pl_drab", 4], ["pl_handgunner", 4]], "at": [58, 98]},
+   {"name": "guns", "player": 1, "units": [["pl_field_gun", 4]], "at": [62, 104]},
+   {"name": "swierczowski", "player": 3, "stance": "defensive", "units": [["hero_swierczowski", 1]], "at": [104, 104]},
+   {"name": "polish_horse", "player": 3, "stance": "defensive", "units": [["pl_kopia", 6], ["pl_hussar", 4]], "at": [100, 99]},
+   {"name": "sampolinski", "player": 3, "stance": "defensive", "units": [["hero_sampolinski", 1]], "at": [112, 104]},
+   {"name": "court", "player": 3, "stance": "defensive", "units": [["pl_kopia", 6]], "at": [110, 99]},
+   {"name": "ostrogski", "player": 4, "stance": "defensive", "units": [["hero_ostrogski", 1]], "at": [84, 104]},
+   {"name": "hetman_guard", "player": 4, "stance": "defensive", "units": [["gdl_szlachta_lance", 4]], "at": [86, 106]},
+   {"name": "stavka_foot", "player": 4, "stance": "defensive", "units": [["pl_drab", 4], ["pl_handgunner", 2]], "at": [50, 104]},
+   {"name": "maciej", "player": 4, "stance": "passive", "untouchable": true, "units": [["hero_maciej", 1]], "at": [82, 103]},
+   {"name": "radziwill", "player": 4, "stance": "defensive", "units": [["gdl_light_horse", 14]], "at": [118, 98]},
+   {"name": "patrol", "player": 2, "stance": "passive", "units": [["mo_storozha", 2]], "at": [40, 84]},
+   {"name": "orsha_guard", "player": 2, "stance": "stand", "units": [["mo_syn_boyarsky", 8]], "at": [11, 84]},
+   {"name": "forward", "player": 2, "stance": "defensive", "units": [["mo_syn_boyarsky", 14]], "at": [74, 44]},
+   {"name": "bulgakov", "player": 2, "stance": "defensive", "units": [["hero_bulgakov", 1]], "at": [42, 38]},
+   {"name": "right", "player": 2, "stance": "defensive", "units": [["mo_syn_boyarsky", 16], ["mo_boyar", 3]], "at": [36, 40]},
+   {"name": "left", "player": 2, "stance": "defensive", "units": [["mo_syn_boyarsky", 14], ["mo_tatar", 6]], "at": [114, 38]},
+   {"name": "chelyadnin", "player": 2, "stance": "defensive", "units": [["hero_chelyadnin", 1]], "at": [80, 26]},
+   {"name": "large", "player": 2, "stance": "defensive", "units": [["mo_syn_boyarsky", 20], ["mo_boyar", 8]], "at": [74, 28]},
+   {"name": "icon", "player": 2, "stance": "passive", "units": [["mo_inok", 1]], "at": [84, 32]},
+   {"name": "camp_guard", "player": 2, "stance": "defensive", "units": [["mo_syn_boyarsky", 8]], "at": [76, 14]}
+  ]
+ },
+ "rules": {
+  "supply": {"player": 1, "building": "camp", "every_ticks": 1200, "amount": [40, 40, 0, 0]},
+  "capture": {"player": 1, "players": [2], "morale_permille": 200, "radius": 3},
+  "waves": {"player": 2, "units": [["mo_syn_boyarsky", 8], ["mo_boyar", 2]], "at": [104, 2], "to": [76, 44], "every_ticks": 1000},
+  "battle": {
+   "player": 1,
+   "known_map": true,
+   "worker": "gdl_camp_servant",
+   "deck": "t_bog",
+   "bridges": [
+    {"cells": [70, 88, 71, 93], "sections": 3, "work": 9600, "cost": [0, 40, 0, 0], "radius": 2},
+    {"cells": [84, 88, 85, 93], "sections": 3, "work": 9600, "cost": [0, 40, 0, 0], "radius": 2}
+   ],
+   "patrol": {"group": "patrol", "route": [[34, 84], [62, 84], [92, 84], [110, 84]], "radius": 6, "ticks": 120},
+   "cover": [[92, 60, 108, 70], [102, 68, 121, 86]],
+   "ambush": "ambush",
+   "oak": {"place": 0, "unit": "hero_andrei", "radius": 4, "charge": 100},
+   "press": {"group": "left", "cells": [138, 0, 146, 87]},
+   "take": {"group": "chelyadnin", "permille": 250, "radius": 3, "to": [80, 1]},
+   "chase_leash": 40
+  }
+ },
+ "triggers": [
+  {
+   "id": "defeat_andrei",
+   "when": {"type": "group_dead", "group": "andrei"},
+   "do": [
+    {"do": "defeat", "text": "Andrei Gintovt has fallen. The chronicler wrote his name in the list of the dead."}
+   ]
+  },
+  {
+   "id": "defeat_stavka",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "4"}, {"type": "destroyed", "building": "stavka"}]},
+   "do": [
+    {"do": "defeat", "text": "The hetman's headquarters has fallen. The army breaks and runs for the river."}
+   ]
+  },
+  {
+   "id": "defeat_army",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "6"}, {"type": "units_at_most", "player": 1, "count": 6}]},
+   "do": [
+    {"do": "defeat", "text": "Andrei's men are thrown back into the Dnieper."}
+   ]
+  },
+  {
+   "id": "1",
+   "when": {"type": "start"},
+   "do": [
+    {"do": "daylight", "night": true},
+    {"do": "merge", "group": "ambush", "of": ["foot", "guns"]},
+    {"do": "merge", "group": "allies", "of": ["polish_horse", "court", "radziwill", "swierczowski", "sampolinski"]},
+    {"do": "merge", "group": "moscow", "of": ["forward", "large", "chelyadnin", "camp_guard"]},
+    {"do": "protect", "group": "ostrogski"},
+    {"do": "rally", "player": 2, "at": [80, 6]},
+    {"do": "cutscene", "id": "two_gintovts", "at": [82, 102], "lines": [["Chronicler", "The evening of the seventh of September. The camp by the Dnieper. At the entrance to the hetman's tent sits a scribe with an inkwell at his belt. Andrei comes up. The scribe reads his name in the list and looks up."], ["hero_maciej", "Gintovt? Which Gintovts?"], ["hero_andrei", "From the Dnieper. Grandfather said our family came from Samogitia and that there was a grove there."], ["hero_maciej", "The grove is there still. My grandfather Mikołaj used to say he had a brother, Jurij, who went away east."], ["hero_andrei", "And my grandfather Jurij asked all his life that his brother be told he bore him no grudge."], ["Chronicler", "So I first saw Andrei, my kinsman. He crossed himself in the Ruthenian way, I in the Latin, and neither of us minded. An hour later they began to lay the bridges."], ["hero_ostrogski", "Standard-bearer Gintovt. Once you found a ford for me. Find another one."]]},
+    {"do": "objective", "id": "cross", "text": "By dawn: the horse over the ford, the foot and the guns over two bridges"},
+    {"do": "objective", "id": "quiet", "optional": true, "text": "Lay both bridges without raising the alarm on the far bank"},
+    {"do": "countdown", "text": "Dawn in %s", "ticks": 10800},
+    {"do": "hint", "text": "The ford is upstream, to the east: the light horse and the lances can cross it, the guns cannot. Send the camp servants to the two marked places on the bank: standing there they lay a bridge section by section (40 wood each, the wagons bring more). A Muscovite patrol rides the far bank at night: if it watches your men for long, the alarm goes up."},
+    {"do": "ping", "at": [70, 95], "radius": 2},
+    {"do": "ping", "at": [84, 95], "radius": 2},
+    {"do": "ping", "at": [123, 91], "radius": 3}
+   ]
+  },
+  {
+   "id": "1.1",
+   "when": {"type": "after", "trigger": "1", "ticks": 400},
+   "do": [
+    {"do": "move", "group": "radziwill", "to": [76, 72]},
+    {"do": "move", "group": "polish_horse", "to": [58, 75]},
+    {"do": "move", "group": "swierczowski", "to": [60, 78]}
+   ]
+  },
+  {
+   "id": "1.2",
+   "when": {"type": "after", "trigger": "1", "ticks": 2000},
+   "do": [
+    {"do": "move", "group": "court", "to": [40, 76]},
+    {"do": "move", "group": "sampolinski", "to": [42, 79]},
+    {"do": "move", "group": "ostrogski", "to": [80, 84]},
+    {"do": "move", "group": "hetman_guard", "to": [82, 85]},
+    {"do": "move", "group": "maciej", "to": [78, 85]}
+   ]
+  },
+  {
+   "id": "2",
+   "when": {"type": "near", "player": 1, "at": [123, 90], "radius": 3},
+   "do": [
+    {"do": "dialogue", "id": "their_bridges", "lines": [["Nobleman", "And what if they are watching from the far bank?"], ["hero_andrei", "They are watching their own bridges, at Orsha. And we are building ours."]]}
+   ]
+  },
+  {
+   "id": "no_wood",
+   "when": {"type": "flag", "flag": "no_wood"},
+   "do": [
+    {"do": "hint", "text": "Not enough wood for the next section of the bridge. The wagons at the camp bring wood every minute."}
+   ]
+  },
+  {
+   "id": "oak",
+   "when": {"type": "flag", "flag": "oak"},
+   "do": [
+    {"do": "dialogue", "id": "the_oak", "lines": [["hero_andrei", "An old oak above the stream. Grandfather spoke of such trees."], ["Chronicler", "Andrei stood by that oak longer than he needed to. The znakharka who rode with his men said afterwards that the oak gave her one mist, and no more."]]},
+    {"do": "hint", "text": "The old oak above the Kropivna has given one charge of Power: the znakharka can lay «Bog Mist» once. Under the mist the guns stay hidden even outside the ravine."}
+   ]
+  },
+  {
+   "id": "alarm",
+   "when": {"type": "flag", "flag": "alarm"},
+   "do": [
+    {"do": "objective", "id": "quiet", "state": "failed"},
+    {"do": "dialogue", "id": "alarm", "lines": [["Nobleman", "The patrol has seen us! They are riding off to Orsha!"], ["hero_andrei", "Let them. By the time they come back the bridges must stand."]]},
+    {"do": "stance", "group": "orsha_guard", "stance": "aggressive"},
+    {"do": "attack_move", "group": "orsha_guard", "to": [72, 84]}
+   ]
+  },
+  {
+   "id": "bridge_0",
+   "when": {"type": "flag", "flag": "bridge_0"},
+   "do": [
+    {"do": "hint", "text": "The first bridge stands. The foot and the guns can go over it slowly, a few at a time."}
+   ]
+  },
+  {
+   "id": "3",
+   "when": {"type": "bridges_built", "at_least": 2},
+   "do": [
+    {"do": "move", "group": "foot", "to": [78, 82]},
+    {"do": "move", "group": "guns", "to": [84, 82]},
+    {"do": "move", "group": "stavka_foot", "to": [74, 80]},
+    {"do": "dialogue", "id": "let_them_see", "lines": [["Chronicler", "Later they said that Chelyadnin knew of the crossing and did not hinder it on purpose, so as to beat us all at once. Whether that is so I do not know. I know that by dawn we were on that bank, and the Dnieper was at our backs."]]},
+    {"do": "hint", "text": "Both bridges stand. The foot and the guns are going over them."}
+   ]
+  },
+  {
+   "id": "quiet_done",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "3"}, {"type": "not", "of": {"type": "flag", "flag": "alarm"}}]},
+   "do": [
+    {"do": "objective", "id": "quiet", "state": "done"}
+   ]
+  },
+  {
+   "id": "cross_done",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "3"}, {"type": "north_of", "group": "guns", "y": 88, "at_least": 2}, {"type": "north_of", "group": "riders", "y": 88, "at_least": 6}]},
+   "do": [
+    {"do": "objective", "id": "cross", "state": "done"}
+   ]
+  },
+  {
+   "id": "defeat_guns",
+   "when": {"type": "all", "of": [{"type": "after", "trigger": "1", "ticks": 10800}, {"type": "not", "of": {"type": "fired", "trigger": "4"}}, {"type": "not", "of": {"type": "north_of", "group": "guns", "y": 88, "at_least": 2}}]},
+   "do": [
+    {"do": "defeat", "text": "Dawn has come and the guns are still on the far bank. The hetman will not give battle without them."}
+   ]
+  },
+  {
+   "id": "4",
+   "when": {"type": "after", "trigger": "1", "ticks": 10800},
+   "do": [
+    {"do": "daylight", "night": false},
+    {"do": "countdown", "ticks": 0},
+    {"do": "objective", "id": "cross", "state": "done"},
+    {"do": "objective", "id": "quiet", "state": "failed"},
+    {"do": "place", "player": 4, "type": "gdl_field_camp", "at": [82, 80], "name": "stavka"},
+    {"do": "objective", "id": "deploy", "text": "Set out the army and hide the foot and the guns"},
+    {"do": "hint", "text": "Dawn. Set out your men south of the line of the field. Put the foot and the guns in the ravine or at the forest's edge on the right flank: there the enemy will not see them until they fire. After you begin the battle they wait for the signal and do not take your orders."},
+    {"do": "ask", "id": "deploy", "text": "Is the army set out?", "options": ["Begin the battle"]},
+    {"do": "ping", "at": [100, 66], "radius": 6}
+   ]
+  },
+  {
+   "id": "5",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "4"}, {"type": "mist_over", "player": 1, "at": [100, 65]}]},
+   "do": [
+    {"do": "dialogue", "id": "haze", "lines": [["Chronicler", "Afterwards they told that a mist stood over the ravine and hid our guns. I was there. It was the usual morning haze in the bushes, and a ravine deeper than it looks from the saddle. And yet Andrei stood by the oak longer than I did."]]}
+   ]
+  },
+  {
+   "id": "6",
+   "when": {"type": "any", "of": [{"type": "chose", "question": "deploy", "option": 0}, {"type": "after", "trigger": "4", "ticks": 4800}]},
+   "do": [
+    {"do": "objective", "id": "deploy", "state": "done"},
+    {"do": "hold", "on": true},
+    {"do": "cutscene", "id": "standing", "at": [80, 56], "lines": [["Chronicler", "Two armies face each other. Over both of them icons. On both sides they sing the same words."], ["Nobleman", "They sing the same as we do, lord standard-bearer."], ["hero_andrei", "They sing the same. But they came for something else."]]},
+    {"do": "cast", "group": "icon", "spell": "sp_icon"}
+   ]
+  },
+  {
+   "id": "not_hidden",
+   "when": {"type": "all", "of": [{"type": "after", "trigger": "6", "ticks": 20}, {"type": "not", "of": {"type": "fired", "trigger": "9"}}, {"type": "not", "of": {"type": "hidden_count", "at_least": 1}}]},
+   "do": [
+    {"do": "hint", "text": "None of the foot and the guns stand hidden: the enemy sees them."}
+   ]
+  },
+  {
+   "id": "7",
+   "when": {"type": "after", "trigger": "6", "ticks": 2400},
+   "do": [
+    {"do": "merge", "group": "right_hand", "of": ["bulgakov", "right"]},
+    {"do": "stance", "group": "right_hand", "stance": "aggressive"},
+    {"do": "attack_move", "group": "right_hand", "to": [40, 76]},
+    {"do": "objective", "id": "court", "text": "Help the court banners hold the blow of the Right Hand"},
+    {"do": "dialogue", "id": "not_from_fear", "lines": [["Chronicler", "About noon Prince Bulgakov-Golitsa, without waiting for Chelyadnin, struck our left flank, where the royal court banners stood."], ["hero_sampolinski", "Tell the Lithuanians: we fall back behind the foot not from fear. Let them not mistake it."]]},
+    {"do": "move", "group": "court", "to": [66, 82]},
+    {"do": "move", "group": "sampolinski", "to": [66, 84]},
+    {"do": "ping", "at": [40, 72], "radius": 8}
+   ]
+  },
+  {
+   "id": "7.1",
+   "when": {"type": "after", "trigger": "7", "ticks": 500},
+   "do": [
+    {"do": "stance", "group": "court", "stance": "aggressive"},
+    {"do": "stance", "group": "polish_horse", "stance": "aggressive"},
+    {"do": "attack_move", "group": "court", "to": [44, 72]},
+    {"do": "attack_move", "group": "polish_horse", "to": [44, 70]},
+    {"do": "attack_move", "group": "sampolinski", "to": [46, 74]}
+   ]
+  },
+  {
+   "id": "court_lost",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "7"}, {"type": "not", "of": {"type": "fired", "trigger": "8"}}, {"type": "group_alive_at_most", "group": "court", "count": 1}]},
+   "do": [
+    {"do": "objective", "id": "court", "state": "failed"}
+   ]
+  },
+  {
+   "id": "8",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "7"}, {"type": "group_alive_at_most", "group": "right", "count": 4}]},
+   "do": [
+    {"do": "objective", "id": "court", "state": "done"},
+    {"do": "stance", "group": "right_hand", "stance": "passive"},
+    {"do": "move", "group": "right_hand", "to": [60, 20]},
+    {"do": "move", "group": "court", "to": [50, 78]},
+    {"do": "move", "group": "polish_horse", "to": [56, 76]},
+    {"do": "move", "group": "sampolinski", "to": [52, 80]},
+    {"do": "stance", "group": "left", "stance": "aggressive"},
+    {"do": "chase", "group": "left", "on": true},
+    {"do": "feint", "on": true},
+    {"do": "objective", "id": "feint", "text": "Lead the Left Hand onto the hidden guns with a false retreat"},
+    {"do": "dialogue", "id": "to_the_forest", "lines": [["hero_ostrogski", "Standard-bearer, lead them to the forest. Only not too fast: let them think they will catch you."], ["hero_andrei", "They say old Gintaut laughed when he was asked whether the Lithuanians ran at Grunwald. Now I understand why. Sound the retreat!"]]},
+    {"do": "hint", "text": "The Left Hand rides at your horse. Set the rally point by the guns (Shift + right click), then order the «Lithuanian retreat»: today the riders go all the way to the rally point, and the chase follows them."},
+    {"do": "ping", "at": [114, 40], "radius": 8}
+   ]
+  },
+  {
+   "id": "9",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "8"}, {"type": "groups_near", "group": "left", "other": "ambush", "radius": 6}]},
+   "do": [
+    {"do": "ambush_fire", "radius": 7, "damage": 30, "morale": 30},
+    {"do": "chase", "group": "left", "on": false},
+    {"do": "objective", "id": "feint", "state": "done"},
+    {"do": "rally", "player": 2, "at": [152, 40]},
+    {"do": "press", "on": true},
+    {"do": "cutscene", "id": "thunder_from_the_ravine", "at": [100, 64], "lines": [["Chronicler", "The Muscovite horse flies into the ravine at full gallop. Out of the bushes the foot rises. A volley. The smoke covers half the field."], ["Chronicler", "This I saw myself. Thunder without lightning, as a Samogitian once said at Grunwald. Only now the powder was dry, and the guns were ours."]]}
+   ]
+  },
+  {
+   "id": "9_late",
+   "when": {"type": "all", "of": [{"type": "after", "trigger": "8", "ticks": 6000}, {"type": "not", "of": {"type": "fired", "trigger": "9"}}]},
+   "do": [
+    {"do": "objective", "id": "feint", "state": "failed"},
+    {"do": "chase", "group": "left", "on": false},
+    {"do": "hold", "on": false},
+    {"do": "rally", "player": 2, "at": [152, 40]},
+    {"do": "press", "on": true},
+    {"do": "hint", "text": "The chase did not come to the guns. The hetman orders the general attack all the same."}
+   ]
+  },
+  {
+   "id": "10",
+   "when": {"type": "any", "of": [{"type": "after", "trigger": "9", "ticks": 200}, {"type": "fired", "trigger": "9_late"}]},
+   "do": [
+    {"do": "spawn", "group": "reserve", "player": 1, "at": [80, 78], "units": [["gdl_light_horse", 6], ["gdl_szlachta_lance", 4]]},
+    {"do": "stance", "group": "allies", "stance": "aggressive"},
+    {"do": "attack_move", "group": "radziwill", "to": [76, 30]},
+    {"do": "attack_move", "group": "polish_horse", "to": [68, 30]},
+    {"do": "attack_move", "group": "court", "to": [60, 34]},
+    {"do": "attack_move", "group": "swierczowski", "to": [66, 36]},
+    {"do": "attack_move", "group": "sampolinski", "to": [60, 38]},
+    {"do": "stance", "group": "moscow", "stance": "aggressive"},
+    {"do": "attack_move", "group": "forward", "to": [76, 66]},
+    {"do": "waves", "on": true},
+    {"do": "objective", "id": "camp", "text": "Take the Muscovite camp"},
+    {"do": "objective", "id": "kropivna", "optional": true, "text": "Press the Left Hand into the Kropivna"},
+    {"do": "objective", "id": "chelyadnin", "optional": true, "text": "Take the boyar Chelyadnin captive"},
+    {"do": "hint", "text": "The general attack! The foot and the guns are yours again, and the hetman gives you ten more banners of horse. Chelyadnin will throw his reserves into the field one after another. Muscovite banners that have lost heart and are caught between your men from two sides give themselves up."},
+    {"do": "ping", "at": [78, 10], "radius": 8}
+   ]
+  },
+  {
+   "id": "reserves_spent",
+   "when": {"type": "after", "trigger": "10", "ticks": 4000},
+   "do": [
+    {"do": "waves", "on": false},
+    {"do": "dialogue", "id": "reserves_spent", "lines": [["Chronicler", "Chelyadnin sent his reserves into the field one after another, and one after another they broke. Then the boyars' sons began to look back towards the Kropivna."]]}
+   ]
+  },
+  {
+   "id": "kropivna_done",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "10"}, {"type": "pressed", "at_least": 4}]},
+   "do": [
+    {"do": "objective", "id": "kropivna", "state": "done"}
+   ]
+  },
+  {
+   "id": "chelyadnin_taken",
+   "when": {"type": "flag", "flag": "taken:chelyadnin"},
+   "do": [
+    {"do": "objective", "id": "chelyadnin", "state": "done"},
+    {"do": "dialogue", "id": "the_master_of_horse", "lines": [["Nobleman", "The boyar! We have taken the boyar himself!"], ["hero_andrei", "Take him to the hetman. Alive, and with honour."]]}
+   ]
+  },
+  {
+   "id": "chelyadnin_gone",
+   "when": {"type": "flag", "flag": "escaped:chelyadnin"},
+   "do": [
+    {"do": "objective", "id": "chelyadnin", "state": "failed"},
+    {"do": "hint", "text": "Chelyadnin has broken away to the north."}
+   ]
+  },
+  {
+   "id": "11",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "reserves_spent"}, {"type": "any", "of": [{"type": "destroyed", "building": "camp_moscow"}, {"type": "for_ticks", "ticks": 200, "of": {"type": "all", "of": [{"type": "near", "player": 1, "at": [79, 10], "radius": 8}, {"type": "not", "of": {"type": "near", "player": 2, "at": [79, 10], "radius": 10}}]}}]}]},
+   "do": [
+    {"do": "objective", "id": "camp", "state": "done"},
+    {"do": "waves", "on": false},
+    {"do": "objective", "id": "kropivna", "state": "failed"},
+    {"do": "objective", "id": "chelyadnin", "state": "failed"},
+    {"do": "spawn", "group": "keeper", "player": 4, "stance": "passive", "untouchable": true, "at": [134, 82], "units": [["hero_keeper", 1]]},
+    {"do": "cutscene", "id": "oak_over_kropivna", "at": [133, 81], "lines": [["Chronicler", "Evening. The field empties; somewhere men still shout, the chase goes off into the distance. Andrei is alone by the old oak above the stream. An old woman sits under the oak."], ["hero_keeper", "You are of Gintaut's blood."], ["hero_andrei", "How do you know?"], ["hero_keeper", "You all stand by a tree the same way. As if you were waiting for it to say something."], ["hero_andrei", "And will it?"], ["hero_keeper", "Not any more. This is the last one. Go to your own, standard-bearer."], ["Chronicler", "Andrei turns at a call. When he looks at the oak again, there is nobody under it."], ["Chronicler", "Andrei takes off the old woven belt with the Samogitian pattern, his great-grandfather's, the one grandfather Jurij carried away east, and ties it on the lowest branch of the oak. Then he goes to his own and does not look back."]]}
+   ]
+  },
+  {
+   "id": "12",
+   "when": {"type": "after", "trigger": "11", "ticks": 40},
+   "do": [
+    {"do": "quench", "place": 0, "permille": 0},
+    {"do": "kill", "group": "keeper", "by": 0},
+    {"do": "cutscene", "id": "epilogue", "at": [80, 96], "lines": [["Chronicler", "Vilnius, in the 1520s. A room full of books. Old Maciej is writing the last page."], ["Chronicler", "The king wrote afterwards to the sovereigns and to Rome that the Muscovites were eighty thousand and that thirty thousand of them fell or were taken. I wrote the lists of captives in my own hand, and I know that kings count otherwise than scribes do. The master of the horse Chelyadnin we took captive, and Smolensk we never won back."], ["Chronicler", "My great-grandfather Gintaut burned a German castle and hid a grove. My grandfather Mikołaj stood against his own brother. Andrei served a prince who broke his oath and sought no excuses. And the groves I wrote of have been cut down or fenced in with church walls. They say the fire went under the earth. I do not believe it. But I wrote it down, because that is what they say."], ["Chronicler", "He closes the book. Outside the window the wind rocks an old oak."]]}
+   ]
+  },
+  {
+   "id": "victory",
+   "when": {"type": "after", "trigger": "12", "ticks": 40},
+   "do": [
+    {"do": "victory", "text": "Orsha is won. The campaign of the Grand Duchy is over."}
+   ]
+  }
+ ]
+}

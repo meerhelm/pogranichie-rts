@@ -4,7 +4,7 @@ extends GutTest
 ## cutscene waits.
 
 const MISSIONS: Array[String] = [
-	"gdl_01", "gdl_02", "gdl_03", "gdl_04", "gdl_05", "gdl_06", "gdl_07"
+	"gdl_01", "gdl_02", "gdl_03", "gdl_04", "gdl_05", "gdl_06", "gdl_07", "gdl_08"
 ]
 
 var _db: CatalogDB

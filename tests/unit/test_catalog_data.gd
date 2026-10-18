@@ -113,6 +113,8 @@ func test_prototype_loads_only_prototype() -> void:
 	assert_true(late != null and late.campaign_only, "...but for the missions that need them")
 	assert_null(proto.tech(&"t_mo_big_regiment"), "no Muscovite techs")
 	assert_not_null(proto.unit(&"pl_kopia"), "the Crown allies of ВКЛ 2 are in")
-	assert_null(proto.unit(&"pl_hussar"))
+	var hussar := proto.unit(&"pl_hussar")
+	assert_true(hussar != null and hussar.campaign_only, "the Serbian horse of ВКЛ 8 only")
+	assert_null(proto.unit(&"pl_merc_horse"), "the rest of the Crown stays out")
 	for id: StringName in proto.techs:
 		assert_true(proto.techs[id].age <= 2, "%s is within Удел and Хоругвь" % id)

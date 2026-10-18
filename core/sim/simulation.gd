@@ -24,7 +24,9 @@ extends RefCounted
 ##   of «Волчья тропа», horses that tire and are led on foot (MissionStealth).
 ## 17: ВКЛ 7: the siege (MissionSiege in the mission hash): ladders, belts of walls, shooters on
 ##   the walls, quicker dousing, food in a siege, the secret passage.
-const SIM_VERSION := 17
+## 18: ВКЛ 8: bridges laid by servants, the patrol, an ambush held deaf to orders and hidden in
+##   cover, the feint to the rally point, the chase (MissionBattle in the mission hash).
+const SIM_VERSION := 18
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).
@@ -334,6 +336,8 @@ func _apply(cmd: SimCommand) -> void:
 				magic.drop_casts(ids)
 				fire.drop(ids)
 			combat.order(cmd, ids)
+			if cmd.kind == SimCommand.Kind.RETREAT and mission != null:
+				mission.battle.feint(self, cmd.player, ids)
 
 
 ## Work orders: the units stop what they were doing (walk, fight) and the economy takes over.
@@ -403,8 +407,12 @@ func _owned(cmd: SimCommand) -> PackedInt32Array:
 ## Like _owned(), without units that flee and ignore orders.
 func _obedient(cmd: SimCommand) -> PackedInt32Array:
 	var result := PackedInt32Array()
+	var held: Dictionary[int, bool] = {}
+	if mission != null:
+		held = mission.battle.held
 	for id in _owned(cmd):
-		if not combat.is_fleeing(id):
+		# ВКЛ 8: the ambush waits for the signal, deaf to its player's orders.
+		if not combat.is_fleeing(id) and not held.has(id):
 			result.append(id)
 	return result
 

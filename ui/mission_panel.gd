@@ -266,6 +266,7 @@ func _show_march() -> void:
 	_retreat_lines(m, lines)
 	_stealth_lines(m, lines)
 	_siege_lines(m, lines)
+	_battle_lines(m, lines)
 	_march.visible = not lines.is_empty()
 	_march.text = "\n".join(lines)
 
@@ -314,6 +315,25 @@ func _siege_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
 	var posad: Array = r.get("posad", {}).get("buildings", [])
 	if not posad.is_empty():
 		lines.append(tr("Posad standing: %d%%") % (sg.standing_permille(m, posad) / 10))
+
+
+## ВКЛ 8: «Bridge 1: 2 of 3 sections (40%)» while the bridges are laid, «The patrol has raised
+## the alarm» once it has, «Hidden in the ambush: 9» while the foot and the guns wait.
+func _battle_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
+	var r: Dictionary = m.def.rules.get("battle", {})
+	if r.is_empty():
+		return
+	var bt := m.battle
+	var bridges: Array = r.get("bridges", [])
+	for i in bridges.size():
+		var sections := int(bridges[i]["sections"])
+		if bt.built[i] < sections and m.stealth.night:
+			var line := tr("Bridge %d: %d of %d sections") % [i + 1, bt.built[i], sections]
+			lines.append(line + " (%d%%)" % (bt.section_permille(m, i) / 10))
+	if bt.alarm and m.stealth.night:
+		lines.append(tr("The patrol has raised the alarm"))
+	if not bt.held.is_empty():
+		lines.append(tr("Hidden in the ambush: %d") % bt.hidden.size())
 
 
 ## The countdown and captives lines as shown, for tests ("" while hidden).

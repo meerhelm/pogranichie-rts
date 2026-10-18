@@ -213,6 +213,11 @@ RULES: list[Rule] = [
         r"\+(\d+) по воротам и деревянным постройкам, по каменным стенам вдвое слабее",
         lambda sp, m, _u: sp.params.update(wood_bonus=int(m.group(1)), stone_permille=500),
     ),
+    # ВКЛ 8 (Орша): the drabs' ditch belongs to the Crown's wagon fort, not in the game yet; the
+    # hussar's lance and sabre charge like any other; the note on what a hussar was in 1514.
+    (r"роет ров у табора", _tags()),
+    (r"копьё и сабля, таран ×(\d+(?:,\d+)?) после (\d+) клет(?:ки|ок)", _charge),
+    (r"это лёгкая сербская конница около 1500 года, не крылатая гусария", _tags()),
     (r"в Державе заменяет литовское копьё", _tags()),
     (r"грабит обозы", _tags("plunders_wagons")),
     (

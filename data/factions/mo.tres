@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"mo"
-unit_ids = Array[StringName]([&"hero_nezhdan", &"hero_shchenya", &"mo_archer", &"mo_boyar", &"mo_cannon", &"mo_inok", &"mo_moroz", &"mo_peasant", &"mo_pishchalnik", &"mo_porok", &"mo_posokha", &"mo_storozha", &"mo_syn_boyarsky", &"mo_tatar", &"mo_tyufyak", &"mo_wagon", &"mo_yurodivy"])
+unit_ids = Array[StringName]([&"hero_bulgakov", &"hero_chelyadnin", &"hero_nezhdan", &"hero_shchenya", &"mo_archer", &"mo_boyar", &"mo_cannon", &"mo_inok", &"mo_moroz", &"mo_peasant", &"mo_pishchalnik", &"mo_porok", &"mo_posokha", &"mo_storozha", &"mo_syn_boyarsky", &"mo_tatar", &"mo_tyufyak", &"mo_wagon", &"mo_yurodivy"])
 building_ids = Array[StringName]([&"mo_barracks", &"mo_castle", &"mo_dock", &"mo_farm", &"mo_field_camp", &"mo_foundry", &"mo_gate", &"mo_granary", &"mo_house", &"mo_lumber_yard", &"mo_market", &"mo_mine", &"mo_palisade", &"mo_pomestie", &"mo_range", &"mo_shrine", &"mo_siege_workshop", &"mo_smithy", &"mo_stable", &"mo_temple", &"mo_tower", &"mo_town_center", &"mo_wall", &"mo_watchtower", &"mo_yam", &"mo_zaseka"])
 tech_ids = Array[StringName]([&"t_arrows", &"t_assay", &"t_banners", &"t_bloomery", &"t_cav_armor_1", &"t_cav_armor_2", &"t_horse_collar", &"t_inf_armor_1", &"t_inf_armor_2", &"t_mo_big_regiment", &"t_mo_italians", &"t_mo_monastery_estate", &"t_mo_sudebnik", &"t_mo_town_gunners", &"t_mo_wonder_icon", &"t_powder", &"t_saw", &"t_three_field", &"t_wagons", &"t_watch", &"t_weapons_1", &"t_weapons_2"])
 spell_ids = Array[StringName]([&"sp_icon", &"sp_prophecy", &"sp_winter"])
