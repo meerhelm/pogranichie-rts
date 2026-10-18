@@ -2,7 +2,7 @@
 
 from typing import Callable, NamedTuple
 
-from tools.art import beasts, buildings_gdl, buildings_to, folk, folk_1410, folk_1435, folk_1500, models
+from tools.art import beasts, buildings_gdl, buildings_to, folk, folk_1410, folk_1435, folk_1500, folk_1507, models
 
 
 class Unit(NamedTuple):
@@ -27,11 +27,11 @@ TALL = {"frame": (160, 216), "pivot": (64, 176)}
 TALL_UNITS = {"mo_inok"}
 
 UNITS: dict[str, Unit] = {uid: Unit(fn, **TALL) if uid in TALL_UNITS else Unit(fn) for uid, fn in {
-    **models.UNITS, **folk.UNITS, **folk_1410.UNITS, **folk_1500.UNITS}.items()}
+    **models.UNITS, **folk.UNITS, **folk_1410.UNITS, **folk_1500.UNITS, **folk_1507.UNITS}.items()}
 for _uid, _fn in beasts.UNITS.items():
     UNITS[_uid] = Unit(_fn, **BEAST) if _uid in beasts.BIG_BEASTS else Unit(_fn)
 for _uid, _fn in {**beasts.MOUNTED_UNITS, **folk_1410.MOUNTED_UNITS, **folk_1435.MOUNTED_UNITS,
-                  **folk_1500.MOUNTED_UNITS}.items():
+                  **folk_1500.MOUNTED_UNITS, **folk_1507.MOUNTED_UNITS}.items():
     UNITS[_uid] = Unit(_fn, **MOUNTED)
 for _uid, _fn in {**beasts.WAGONS, **folk_1410.WAGONS, **folk_1500.WAGONS}.items():
     UNITS[_uid] = Unit(_fn, **WAGON)
@@ -40,12 +40,15 @@ BUILDINGS: dict[str, Building] = {
     "gdl_house": Building(models.gdl_house, (2, 2), 6),
     "gdl_town_center": Building(models.gdl_town_center, (4, 4), 9),
 }
-for _uid, (_fn, _cells, _tall) in {**buildings_gdl.BUILDINGS, **buildings_to.BUILDINGS}.items():
+for _uid, (_fn, _cells, _tall) in {**buildings_gdl.BUILDINGS, **buildings_to.BUILDINGS,
+                                   **folk_1507.BUILDINGS}.items():
     # Palisade arms are drawn beside the post piece, which alone carries the site props.
     _props = not (_uid.startswith("gdl_palisade_") or _uid.startswith("to_palisade_"))
     BUILDINGS[_uid] = Building(_fn, _cells, _tall, _props)
 
 TREES = models.TREES
+## Static map props drawn like trees (one view, color and shadow, no team pass): props/<id>_*.
+PROPS = folk_1507.PROPS
 DEPOSITS = models.DEPOSITS
 DEPOSIT_VARIANTS = models.DEPOSIT_VARIANTS
 
@@ -74,6 +77,7 @@ ATTACK_STYLE = {
     "hero_jakub_kobylany": "thrust", "hero_nesselrode": "thrust", "hero_kerskorf": "swing",
     "gdl_szlachta_lance": "thrust", "gdl_field_gun": "fire", "mo_syn_boyarsky": "bow", "mo_boyar": "thrust",
     "mo_inok": "cast", "hero_andrei": "thrust", "hero_ostrogski": "swing", "hero_shchenya": "swing",
+    "hero_ostrogski_fugitive": "swing", "mo_storozha": "bow", "hero_nezhdan": "bow",
     **{uid: "lunge" for uid in beasts.UNITS},
 }
 

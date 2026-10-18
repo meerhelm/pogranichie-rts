@@ -52,6 +52,13 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
   eastern saddle with short stirrups (`EasternMounted`), and the heroes Andrei Gintovt (the
   khorugv with the Gintovt arms, the woven belt), Ostrogski (bulawa; arms unverified, none
   drawn) and Shchenya (`EasternSovereign`: his bearer carries the rider and serpent of coa_mo).
+- `folk_1507.py` — the Wolf Trail (ВКЛ 6): Ostrogski in flight (`hero_ostrogski_fugitive`: no
+  armour, a plain dark riding coat, a fur cap, a drawn sabre), the Muscovite border watchman
+  (`mo_storozha`: a faded tegilyai, a fur-banded cap, bow and saadak) and the invented centurion
+  Nezhdan (`hero_nezhdan`: a dark red tegilyai, a gilt-rimmed spheroconical helmet); the
+  watchtower `mo_watchtower` (four leaning posts, a roofed platform, the signal barrel) and
+  the map props `prop_chapel` (a log chapel with an onion dome and an eight-pointed cross) and
+  `prop_campfire` (stones, logs, still flames, an emissive glow on the ground).
 - `kit.py` — building materials (log, thatch, shingle, brick, roof tile, plaster and timber
   framing) and parts (roofs, stepped gables, windows, sheds, fences, barrels);
   `buildings_gdl.py` and `buildings_to.py` — the Duchy's and the Order's buildings.
@@ -61,8 +68,9 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
   - `team` — only the TEAM surfaces, lit and white; the game multiplies it by the player colour;
   - `shadow` — the ground shadow alone, drawn first at 70 % so it never covers neighbours.
   Units: `units/<id>/{color,team,shadow}.png` + `sheet.json` (frame, pivot, rows per animation;
-  row offset = facing). Buildings: `buildings/<id>_<stage>_<pass>.png`, trees: `trees/<id>_<pass>.png`; each with `<id>.json`
-  (pivot = centre of the footprint). Trees have no team pass.
+  row offset = facing). Buildings: `buildings/<id>_<stage>_<pass>.png`, trees: `trees/<id>_<pass>.png`,
+  map props: `props/<id>_<pass>.png`; each with `<id>.json` (`size`, `pivot` = centre of the
+  footprint, `scale`, `cells`). Trees and props have no team pass.
 
 The game reads them through `game/world/SpriteDB`; ids without art keep their placeholders.
 `UnitView` plays walk while moving, else attack once after each blow (`last_attack`), else work
@@ -78,6 +86,7 @@ Turned views end in `_v`: a zaseka placed along y, a gate in a line running alon
 
 ```sh
 python3 -m tools.art.render all          # every asset of the registry (about an hour on 4 cores)
+python3 -m tools.art.render prop_chapel prop_campfire   # map props (registry.PROPS), like trees
 python3 -c "from tools.art.preview import buildings_sheet; buildings_sheet('art/sprites', ['to_castle'], '/tmp/b.png')"
 ```
 Rendered PNGs are plain git (see `.gitattributes`), not LFS: they are small and regenerable.

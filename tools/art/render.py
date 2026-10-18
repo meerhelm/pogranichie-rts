@@ -5,7 +5,8 @@
 Units: 8 directions x (idle 8 + walk 12 frames, work 8 for peasants, attack 8 for fighters
 and beasts; registry.anims) in three passes, packed into
 `<out>/units/<id>/{color,team,shadow}.png` (one row per direction and animation) with
-`sheet.json`. Buildings and trees: one view in the same three passes.
+`sheet.json`. Buildings, trees and map props: one view in the same three passes (no team
+pass for trees and props).
 Passes (visual assets doc): color with alpha; team = the TEAM material alone, lit, white,
 for the game to tint with the player colour; shadow = ground shadow alone, so it never
 draws over neighbours. `--preview` renders one frame per direction for a quick look.
@@ -200,7 +201,7 @@ def _crop_box(paths: list[str]) -> tuple[int, int, int, int]:
 
 def render_static(kind: str, uid: str, builder, cells, out: str, preview: bool, tall: float = 8.0,
                   props: bool = True) -> None:
-    """One view of a tree (one cell), or of a building (w x h cells) in each of its stages
+    """One view of a tree or a map prop (one cell), or of a building (w x h cells) in each of its stages
     (stages.STAGES: `<id>_<stage>_<pass>.png`). Buildings render into a generous frame that is
     then cropped to what all stages cover; the pivot (footprint centre) moves with the crop."""
     if kind == "buildings":
@@ -229,8 +230,8 @@ def render_static(kind: str, uid: str, builder, cells, out: str, preview: bool, 
         passes = Passes(rig.shadow_catcher())
         prefix = f"{uid}_{stage}_" if stage else f"{uid}_"
         for p in PASSES:
-            if p == "team" and kind == "trees":
-                continue  # nothing of a tree takes the player colour
+            if p == "team" and kind in ("trees", "props"):
+                continue  # nothing of a tree or a map prop takes the player colour
             passes.use(p)
             path = os.path.join(dest, f"{prefix}{p}.png")
             _render(path)
@@ -289,7 +290,7 @@ def main(argv: list[str]) -> None:
     ap.add_argument("--add", action="store_true", help="units: render only animations their sheet lacks")
     args = ap.parse_args(argv)
     if args.ids == ["all"]:
-        args.ids = [*registry.UNITS, *registry.BUILDINGS, *registry.TREES, *registry.DEPOSITS]
+        args.ids = [*registry.UNITS, *registry.BUILDINGS, *registry.TREES, *registry.PROPS, *registry.DEPOSITS]
     for uid in args.ids:
         if uid in registry.UNITS:
             render_unit(uid, args.out, args.preview, args.add)
@@ -300,6 +301,8 @@ def main(argv: list[str]) -> None:
             render_deposit(uid, args.out, args.preview)
         elif uid in registry.TREES:
             render_static("trees", uid, registry.TREES[uid], 1, args.out, args.preview)
+        elif uid in registry.PROPS:
+            render_static("props", uid, registry.PROPS[uid], 1, args.out, args.preview)
         else:
             sys.exit(f"unknown asset id {uid}")
         print("rendered", uid, flush=True)

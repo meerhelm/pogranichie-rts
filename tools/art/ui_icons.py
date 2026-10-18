@@ -78,6 +78,24 @@ def _horse_head(x: float = 0, y: float = 0, fill: str = W, mane: str = WD) -> st
     )
 
 
+def _paw(x: float, y: float, rot: float, s: float = 1.0, fill: str = P) -> str:
+    """A wolf's paw print (a pad and four toes) at (x, y), pointing up turned by `rot` degrees."""
+    toes = "".join(f'<ellipse cx="{tx}" cy="{ty}" rx="1.5" ry="2" fill="{fill}" stroke="{D}" stroke-width="0.8"/>'
+                   for tx, ty in ((-3.2, -2.6), (-1.1, -4.6), (1.1, -4.6), (3.2, -2.6)))
+    return (f'<g transform="translate({x} {y}) rotate({rot}) scale({s})">'
+            f'<path d="M-3 2 Q-3 -1.5 0 -1.5 Q3 -1.5 3 2 Q0 4 -3 2 Z" fill="{fill}" stroke="{D}" stroke-width="0.8"/>'
+            f"{toes}</g>")
+
+
+def _fir(x: float, base: float, h: float, fill: str = "#24361f") -> str:
+    """A dark fir: three stacked triangles on a short trunk."""
+    w = h * 0.42
+    tiers = "".join(f'<path d="M{x} {base - h + k * h * 0.22} L{x + w * (0.6 + 0.2 * k)} {base - h * (0.45 - 0.2 * k)} '
+                    f'L{x - w * (0.6 + 0.2 * k)} {base - h * (0.45 - 0.2 * k)} Z" fill="{fill}" {O}/>'
+                    for k in range(3))
+    return f'<rect x="{x - 1.2}" y="{base - h * 0.08}" width="2.4" height="{h * 0.1}" fill="{WD}"/>' + tiers
+
+
 def _cross(cx: float, cy: float, s: float, fill: str) -> str:
     a, b = s, s * 0.3
     return (
@@ -311,6 +329,16 @@ GLYPHS: dict[str, dict[str, str]] = {
         ),
     },
     "spells": {
+        # Wolf Trail: a pale path winding through dark firs, wolf tracks along it.
+        "sp_wolf_path": (
+            _fir(9, 40, 30) + _fir(55, 36, 30) + _fir(19, 22, 18, "#1c2a18") + _fir(46, 20, 16, "#1c2a18")
+            + f'<path d="M18 64 Q34 52 27 41 Q21 31 32 22 Q38 16 35 9 L39 9 Q43 17 37 23 Q29 31 35 41 '
+            f'Q43 53 36 64 Z" fill="#a49c78" opacity="0.45"/>'
+            + "".join(_paw(x, y, r, sc) for x, y, r, sc in
+                      ((24, 58, 25, 0.8), (33, 50, -5, 0.72), (27, 41, -20, 0.64), (33, 33, -30, 0.58),
+                       (31, 25, 20, 0.52), (37, 18, 15, 0.46), (36, 12, -10, 0.4)))
+            + f'<circle cx="52" cy="9" r="4" fill="#e8e2c4" opacity="0.85"/>'
+        ),
         # Bog mist: reeds and bands of mist over the bog.
         "sp_bog_mist": (
             f'<ellipse cx="32" cy="56" rx="26" ry="5" fill="#3f5a3a" {O}/>'

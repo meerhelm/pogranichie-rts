@@ -89,7 +89,9 @@ def _load(prefix: str):
 
 def building_icon(def_id: str) -> Image.Image:
     color, team, shadow = _load(os.path.join(SPRITES, "buildings", f"{def_id}_done_"))
-    return _fit(_compose(color, team, shadow, FACTION_TEAM[def_id.split("_")[0]]), "building")
+    # Muscovy has no colour of its own yet: red, as its unit portraits.
+    rgb = FACTION_TEAM.get(def_id.split("_")[0], (217, 51, 38))
+    return _fit(_compose(color, team, shadow, rgb), "building")
 
 
 def unit_icon(type_id: str) -> Image.Image:
