@@ -18,6 +18,7 @@ and fail on the first checkpoint whose hash differs, on Linux and Windows alike.
 | `gdl05_playthrough.json` | `VedroshaBot` plays «ВКЛ 5. Ведроша, 1500» (normal) from the start to victory, 19 851 ticks (16:32); checkpoints every 200 ticks. Also required to end in victory |
 | `gdl06_playthrough.json` | `WolfTrailBot` plays «ВКЛ 6. Волчья тропа, 1507» (normal) from the start to victory without raising the alarm, 13 711 ticks (11:25); checkpoints every 200 ticks. Also required to end in victory |
 | `gdl07_playthrough.json` | `SlutskBot` plays «ВКЛ 7. Слуцк, 1508» (normal) from the start to victory: the walls held, the workshops burned in a sortie through the secret passage, the night assault beaten back, 32 131 ticks (26:46); checkpoints every 200 ticks. Also required to end in victory |
+| `gdl08_playthrough.json` | `OrshaBot` plays «ВКЛ 8. Орша, 1514» (normal) from the start to victory: both bridges laid at night without the alarm, the court banners held, the false retreat onto the hidden guns, Chelyadnin taken and the Muscovite camp stormed, 19 931 ticks (16:36); checkpoints every 200 ticks. Also required to end in victory |
 
 ## When a replay fails
 
@@ -49,6 +50,8 @@ $GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission gdl_06 \
   --out tests/replays/gdl06_playthrough.json
 $GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission gdl_07 \
   --out tests/replays/gdl07_playthrough.json
+$GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission gdl_08 \
+  --out tests/replays/gdl08_playthrough.json
 ```
 
 The mission replay is recorded by the bot, so a change to the mission, its map or the rules can
@@ -108,3 +111,9 @@ in the hashes, and fires that do not spread to the walls; `data_version` changed
 mission's units, the log wall and the light gun in the prototype catalog). The fuzzer picks unit
 types from the prototype catalog, so its spawn orders changed too. `gdl07_playthrough.json` is
 new.
+Then for `sim_version` 18 («ВКЛ 8»: bridges laid section by section, the night patrol and its
+alarm, the held ambush deaf to its player's orders, the false retreat to the rally point, the
+chase, the Kropivna and the captive commander in the hashes; `data_version` changed with the
+Crown's mercenary foot, field gun and hussars, the service Tatars and the mission's heroes in the
+prototype catalog). The fuzzer picks unit types from the prototype catalog, so its spawn orders
+changed too. Every mission bot wins at the same tick as before. `gdl08_playthrough.json` is new.
