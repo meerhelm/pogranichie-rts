@@ -88,6 +88,14 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
   Crown's flag (`crown_flag`) is the White Eagle on red with a team pennon. `pl_camp_servant`,
   `pl_bombard` and `pl_field_camp` have no model: `SpriteDB.ALIASES` draws them as
   `gdl_camp_servant`, `to_bombard` and `gdl_field_camp`.
+- `folk_crown_1410.py` — the heroes of the Crown's Grunwald (Корона 1): Jaśko of Łęczyca in
+  borrowed old mail with a plain small shield on a plain horse, Zyndram of Maszkowice (stocky,
+  a plain red surcoat, a mace; arms unverified, none drawn), Marcin of Wrocimowice with the
+  great banner of the Kingdom (the crowned White Eagle on red), Oleśnicki in a dark cleric's
+  gown on a light horse with a broken lance stump, the king Jagiełło (`Sovereign`: a crown on
+  an open bascinet, a red mantle; beside him a guard with a spear, not a bearer: his banner is
+  hidden in the story), the stranger in red (civilian: a red kaftan and cap, no weapons) and
+  the Grand Commander Lichtenstein (a knight brother like hero_wallenrode).
 - `kit.py` — building materials (log, thatch, shingle, brick, roof tile, plaster and timber
   framing) and parts (roofs, stepped gables, windows, sheds, fences, barrels);
   `buildings_gdl.py` and `buildings_to.py` — the Duchy's and the Order's buildings.

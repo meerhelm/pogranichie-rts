@@ -3,7 +3,7 @@
 from typing import Callable, NamedTuple
 
 from tools.art import (beasts, buildings_gdl, buildings_pl, buildings_to, folk, folk_1410, folk_1435, folk_1500,
-                       folk_1507, folk_1508, folk_1514, folk_crown, models)
+                       folk_1507, folk_1508, folk_1514, folk_crown, folk_crown_1410, models)
 
 
 class Unit(NamedTuple):
@@ -33,14 +33,15 @@ FRAMES = {"pl_drab": PIKE, "pl_handgunner": WIDE}
 
 UNITS: dict[str, Unit] = {uid: Unit(fn, **TALL) if uid in TALL_UNITS else Unit(fn) for uid, fn in {
     **models.UNITS, **folk.UNITS, **folk_1410.UNITS, **folk_1500.UNITS, **folk_1507.UNITS,
-    **folk_1508.UNITS, **folk_1514.UNITS, **folk_crown.UNITS}.items()}
+    **folk_1508.UNITS, **folk_1514.UNITS, **folk_crown.UNITS, **folk_crown_1410.UNITS}.items()}
 for _uid, _frame in FRAMES.items():
     UNITS[_uid] = Unit(UNITS[_uid].build, **_frame)
 for _uid, _fn in beasts.UNITS.items():
     UNITS[_uid] = Unit(_fn, **BEAST) if _uid in beasts.BIG_BEASTS else Unit(_fn)
 for _uid, _fn in {**beasts.MOUNTED_UNITS, **folk_1410.MOUNTED_UNITS, **folk_1435.MOUNTED_UNITS,
                   **folk_1500.MOUNTED_UNITS, **folk_1507.MOUNTED_UNITS,
-                  **folk_1508.MOUNTED_UNITS, **folk_1514.MOUNTED_UNITS, **folk_crown.MOUNTED_UNITS}.items():
+                  **folk_1508.MOUNTED_UNITS, **folk_1514.MOUNTED_UNITS, **folk_crown.MOUNTED_UNITS,
+                  **folk_crown_1410.MOUNTED_UNITS}.items():
     UNITS[_uid] = Unit(_fn, **MOUNTED)
 for _uid, _fn in {**beasts.WAGONS, **folk_1410.WAGONS, **folk_1500.WAGONS, **folk_1508.WAGONS,
                   **folk_crown.WAGONS}.items():
@@ -68,7 +69,7 @@ DEPOSIT_VARIANTS = models.DEPOSIT_VARIANTS
 ## building), `attack` in a style of people.ATTACK_STYLES (beasts lunge, riders use the style
 ## too while the horse stands). Wagons neither work nor fight; the bombard and the field gun
 ## fire (flash, smoke, recoil: folk_1410.Bombard, folk_1500.FieldGun). Civilians (to_spy,
-## hero_council_envoys, hero_maciej) only idle and walk.
+## hero_council_envoys, hero_maciej, hero_stranger) only idle and walk.
 BASE_ANIMS = [("idle", 8, 6), ("walk", 12, 15)]  # name, frames, fps
 WORK_ANIM = ("work", 8, 9)
 ATTACK_ANIM = ("attack", 8, 12)
@@ -95,6 +96,8 @@ ATTACK_STYLE = {
     "hero_sampolinski": "thrust", "hero_chelyadnin": "swing", "hero_bulgakov": "thrust",
     "pl_kmet": "swing", "pl_bowman": "bow", "pl_light_horse": "thrust", "pl_foot_servant": "thrust",
     "pl_pavise": "swing", "pl_priest": "cast",
+    "hero_jasko": "thrust", "hero_zyndram": "swing", "hero_marcin": "thrust", "hero_olesnicki": "swing",
+    "hero_jagiello": "swing", "hero_order_k1": "thrust",
     **{uid: "lunge" for uid in beasts.UNITS},
 }
 
