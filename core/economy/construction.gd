@@ -69,6 +69,9 @@ func build(id: int) -> void:
 		var s := b - 1
 		finished = e.buildings.done[s] == 1 and e.buildings.hp[s] >= e.buildings.max_hp[s]
 	if finished:
+		# A field or hive it put up: the builder works it at once (if there is room on it).
+		if _work_it(slot, b):
+			return
 		# Walls: go on to the next foundation of the line.
 		var next := _nearest_foundation(id)
 		if next == BuildingStore.NO_ID:
@@ -81,6 +84,21 @@ func build(id: int) -> void:
 		return
 	e.phase[slot] = EconomySystem.Phase.WORK
 	_builders[b] = _builders.get(b, 0) + 1
+
+
+## The builder of a finished field or hive starts working it, when there is room on it.
+func _work_it(slot: int, b: int) -> bool:
+	var e := _e()
+	if not e.buildings.is_alive(b):
+		return false
+	var source := e.building_source(e.entities.owners[slot], b)
+	if source < 0:
+		return false
+	var farm := source == ResourceNodes.Source.FARM
+	var limit := e.rules.farm_workers if farm else e.rules.bort_workers
+	if e.buildings.workers[b - 1] >= limit:
+		return false
+	return e.start_gather(slot, source, EconomySystem.Target.BUILDING, b)
 
 
 func _nearest_foundation(id: int) -> int:

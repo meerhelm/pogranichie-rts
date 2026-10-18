@@ -91,3 +91,18 @@ func test_buildings_sort_by_depth_with_units() -> void:
 	var in_front := Iso.cell_to_screen(Vector2(a.x + 1.5, e.y + 0.5))
 	assert_lt(behind.y, box.position.y, "a unit by a back face is drawn behind")
 	assert_gt(in_front.y, box.position.y, "a unit by a front face is drawn in front")
+
+
+func test_a_zaseka_is_taken_apart_with_a_click() -> void:
+	var at := Vector2i(31, 3)
+	var p := SkirmishAi.point(at)
+	var b := _sim.economy.buildings.next_id
+	_sim.apply_now(SimCommand.place(_sim.tick, 1, &"gdl_zaseka", p.x, p.y))
+	assert_true(_sim.economy.buildings.is_alive(b), "a finished zaseka in the wood")
+	_input.start_taking_apart()
+	assert_true(_input.taking_apart)
+	# Its felled trees stand up over the cell behind it: a click there takes it too.
+	_click(MOUSE_BUTTON_LEFT, _screen_of_cell(at + Vector2i(1, -1)))
+	_sim.step()
+	assert_eq(_sim.economy.buildings.dismantling[b - 1], 1, "the peasants go to take it apart")
+	assert_eq(_sim.economy.construction.salvage(b), PackedInt32Array([0, 0, 0, 0]), "it was free")

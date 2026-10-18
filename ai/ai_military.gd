@@ -57,8 +57,26 @@ const CAPITAL_FIRST := 1000
 ## scouts for the enemy base first and takes them only when there is nowhere left to look.
 const OUTPOST_CELLS := 40
 const OUTPOST_LAST := 100000
-## Buildings not worth a wave's time.
-const IGNORED: Array[StringName] = [&"palisade", &"gate", &"wall"]
+## Buildings a wave goes for only when it knows no other (it still breaks through them when
+## they shut its target in, and puts down a gate that shoots at it).
+const ENCLOSURE: Array[StringName] = [&"palisade", &"gate", &"wall"]
+## Palisades, walls and gates count as this many cells farther than other buildings.
+const ENCLOSURE_LAST := 10000
+## A wave of more than this many units breaks a gap of BREACH_PIECES pieces (or one gate).
+const BREACH_SMALL := 3
+const BREACH_PIECES := 3
+## A gate this many cells farther round than the nearest piece may still be the one broken.
+const GATE_SLACK := 6
+## Towers (1000 HP) count as this many cells farther when picking what to break.
+const TOWER_LAST := 20
+## A way round counts as unseen when it passes this close to the enemy pieces over ground the
+## AI has not explored.
+const UNSEEN_WAY_CELLS := 6
+## While breaking, it looks again for a way round once in this many thinks.
+const BREACH_RECHECK := 5
+## An enemy tower that shoots is put down first when wave units are within its range
+## and this many cells more: the wave does not walk on under its arrows.
+const SHOOTER_SLACK := 3
 
 var ai: SkirmishAi
 ## Units out on the current wave, and how many waves have left.
@@ -87,6 +105,18 @@ var _wave_peak := 0
 var _retreat_tick := -(1 << 30)
 var _defend_think := -(1 << 30)
 var _reserved: Dictionary[int, bool] = {}
+## The enemy tower or gate the wave is putting down (0 for none).
+var _shooter := 0
+## The pieces of an enemy palisade, wall or gate the wave is breaking a way through, and what
+## the way was last checked for (goal, target, nav version) so it is not searched every think.
+var _breach := PackedInt32Array()
+var _breach_key := ""
+## The cells of the planned breach, and the thinks left before it looks again whether it has
+## seen a way round meanwhile (only until the first piece is down).
+var _breach_cells := PackedInt32Array()
+var _breach_recheck := 0
+## The AI's own path search (the simulation's runs in slices across ticks: never touch it).
+var _paths: Pathfinder = null
 var _rally_set: Dictionary[int, bool] = {}
 
 
@@ -203,6 +233,10 @@ func _bring_wave_home() -> void:
 	ai.order(SimCommand.move(ai.sim.tick, ai.player, wave, p.x, p.y))
 	wave = PackedInt32Array()
 	assaulting = 0
+	_shooter = 0
+	_breach = PackedInt32Array()
+	_breach_key = ""
+	_breach_cells = PackedInt32Array()
 	_retreat_tick = ai.sim.tick
 
 
@@ -252,6 +286,10 @@ func launch_wave() -> bool:
 	target_building = 0
 	target_cell = Vector2i(-1, -1)
 	assaulting = 0
+	_shooter = 0
+	_breach = PackedInt32Array()
+	_breach_key = ""
+	_breach_cells = PackedInt32Array()
 	_staged = false
 	_stage_tick = -1
 	_launch_tick = ai.sim.tick
@@ -278,17 +316,11 @@ func press_attack() -> bool:
 		_wave_peak = maxi(_wave_peak, wave.size())
 		_march(fresh)
 	var center := ai.center_of(wave)
-	if target_building == 0:
-		var reached := target_cell.x < 0 or _cells_apart(center, target_cell) <= 4
-		if reached or ai.view.explored(ai.sim.nav.cell_at(target_cell.x, target_cell.y)):
-			if _pick_target():
-				_march(wave)
-				return true
+	if _clear_the_way(center):
+		return true
+	var clear := ai.fighters(ai.near(ai.view.enemy_units(), center, CLEAR_CELLS)).is_empty()
 	if not _staged and target_building != 0 and not _form_up(center):
 		return true
-	# Peasants about the target do not hold the assault up.
-	var enemies := ai.fighters(ai.near(ai.view.enemy_units(), center, CLEAR_CELLS))
-	var clear := enemies.is_empty()
 	if target_building != 0 and clear and assaulting != target_building:
 		if _cells_apart(center, target_cell) <= ASSAULT_CELLS:
 			var assault := SimCommand.Kind.ASSAULT
@@ -305,6 +337,316 @@ func press_attack() -> bool:
 	return true
 
 
+## Before the target: a tower or gate shooting at the wave, a new target when there is none,
+## and a way through an enemy fence. True when it gave the wave its orders for this think.
+func _clear_the_way(center: Vector2i) -> bool:
+	if _silence_shooter():
+		return true
+	# Peasants about the target do not hold the assault up.
+	var enemies := ai.fighters(ai.near(ai.view.enemy_units(), center, CLEAR_CELLS))
+	if not enemies.is_empty() and not _breach.is_empty():
+		# Defenders came out: fight them first, look at the fence again after.
+		_breach = PackedInt32Array()
+		_breach_key = ""
+		assaulting = 0
+		_march(wave)
+		return true
+	if enemies.is_empty() and _go_on_breaking():
+		return true
+	if target_building == 0:
+		var reached := target_cell.x < 0 or _cells_apart(center, target_cell) <= 4
+		if reached or ai.view.explored(ai.sim.nav.cell_at(target_cell.x, target_cell.y)):
+			if _pick_target():
+				_march(wave)
+				return true
+	return enemies.is_empty() and _press_breach(center)
+
+
+## An enemy tower or gate shooting at the wave (or about to): the wave units near it go at it
+## until it falls, unless enemy fighters stand about it. True while it does.
+func _silence_shooter() -> bool:
+	var store := ai.sim.economy.buildings
+	if _shooter != 0 and not (store.is_alive(_shooter) and ai.view.known_buildings.has(_shooter)):
+		_shooter = 0
+		assaulting = 0
+	var b := _shooter if _shooter != 0 else _shooter_near()
+	if b == 0:
+		return false
+	var at := Vector2i(store.center_x(b), store.center_y(b))
+	at = Vector2i(Fixed.to_cells(at.x), Fixed.to_cells(at.y))
+	if not ai.fighters(ai.near(ai.view.enemy_units(), at, CLEAR_CELLS)).is_empty():
+		# Its defenders first: the wave's attack-move takes them on.
+		_shooter = 0
+		return false
+	var mine := ai.near(wave, at, WAVE_SIGHT + store.defs[b - 1].attack_range)
+	if mine.is_empty():
+		_shooter = 0
+		return false
+	var assault := SimCommand.Kind.ASSAULT
+	if b != _shooter:
+		_shooter = b
+		ai.order(SimCommand.on_building(ai.sim.tick, ai.player, assault, mine, b))
+	else:
+		var idle := _idle(mine)
+		if not idle.is_empty():
+			ai.order(SimCommand.on_building(ai.sim.tick, ai.player, assault, idle, b))
+	assaulting = b
+	return true
+
+
+## The finished enemy tower or gate that shoots with a wave unit nearest to it within its range
+## and SHOOTER_SLACK; 0 for none.
+func _shooter_near() -> int:
+	var store := ai.sim.economy.buildings
+	var e := ai.sim.entities
+	var best := 0
+	var best_d := 0
+	for b in ai.view.enemy_buildings():
+		if not store.is_alive(b) or store.done[b - 1] == 0:
+			continue
+		var def := store.defs[b - 1]
+		# A gate is a piece of the fence: broken when the breach needs it (_plan_breach).
+		if not TowerFire.shoots(def) or ENCLOSURE.has(def.base_id):
+			continue
+		var reach := Fixed.from_cells(def.attack_range + SHOOTER_SLACK)
+		var r2 := reach * reach
+		for id in wave:
+			var d := store.distance_sq(b, e.pos_x[id - 1], e.pos_y[id - 1])
+			if d <= r2 and (best == 0 or d < best_d):
+				best = b
+				best_d = d
+	return best
+
+
+## The breach under way: units that are done go at the pieces left; once all are down the wave
+## walks on to where it was going. True while there was a breach.
+func _go_on_breaking() -> bool:
+	if _breach.is_empty():
+		return false
+	var store := ai.sim.economy.buildings
+	var left := PackedInt32Array()
+	for b in _breach:
+		if store.is_alive(b) and ai.view.known_buildings.has(b):
+			left.append(b)
+	_breach = left
+	_breach_recheck -= 1
+	# Once a piece is down it finishes the gap; before that it may yet find a way round.
+	var untouched := _breach.size() == _breach_cells.size()
+	if untouched and _breach_recheck <= 0:
+		_breach_recheck = BREACH_RECHECK
+		var center := ai.center_of(wave)
+		if not _way_blocked(center, target_cell, _pieces_near(center, WAVE_SIGHT)):
+			# A way round came in sight while it broke the fence: that way, then.
+			_breach = PackedInt32Array()
+	if not _breach.is_empty():
+		_send_breakers(_idle(wave))
+		return true
+	_breach_cells = PackedInt32Array()
+	assaulting = 0
+	_march(wave)
+	return true
+
+
+## Breaking through an enemy palisade, wall or gate on the way to the target (or the point the
+## wave goes to): only when it sees no way round. A way it has not seen does not count, so it
+## does not walk along a fence looking for one. A wave of more than BREACH_SMALL units makes a
+## gap of BREACH_PIECES palisade or wall pieces in a row (as many as there are) or breaks one
+## gate; a smaller one breaks a single piece. True while it is at it.
+func _press_breach(center: Vector2i) -> bool:
+	var store := ai.sim.economy.buildings
+	var goal := target_cell
+	if goal.x < 0 or wave.is_empty():
+		return false
+	var fence := store.is_alive(target_building)
+	fence = fence and ENCLOSURE.has(store.defs[target_building - 1].base_id)
+	if fence and _cells_apart(center, goal) > ASSAULT_CELLS:
+		return false
+	var pieces := _pieces_near(center, WAVE_SIGHT)
+	if pieces.is_empty() and not fence:
+		return false
+	var key := "%d:%d:%d:%d" % [goal.x, goal.y, target_building, ai.sim.nav.version]
+	if key == _breach_key:
+		return false
+	_breach_key = key
+	if fence:
+		# Gone for the fence itself (nothing else known): a gap in it, not one hole.
+		_breach = _plan_breach(center, goal, pieces, target_building)
+	elif _way_blocked(center, goal, pieces):
+		_breach = _plan_breach(center, goal, pieces)
+	if _breach.is_empty():
+		return false
+	_breach_cells = PackedInt32Array()
+	for b in _breach:
+		_breach_cells.append(ai.view.known_buildings[b])
+	_breach_recheck = BREACH_RECHECK
+	_staged = true
+	_send_breakers(wave)
+	return true
+
+
+## Known enemy palisade, wall, gate and tower pieces within `cells` of `at`, by id.
+func _pieces_near(at: Vector2i, cells: int) -> PackedInt32Array:
+	var store := ai.sim.economy.buildings
+	var w := ai.sim.nav.width
+	var out := PackedInt32Array()
+	for b in ai.view.enemy_buildings():
+		if not store.is_alive(b) or not Breach.BASES.has(store.defs[b - 1].base_id):
+			continue
+		var cell := ai.view.known_buildings[b]
+		if _cells_apart(at, Vector2i(cell % w, cell / w)) <= cells:
+			out.append(b)
+	return out
+
+
+## True when the wave has no way it knows to `goal`: none at all (the target is shut in), or one
+## that goes past the enemy pieces near it over ground it has not seen.
+func _way_blocked(center: Vector2i, goal: Vector2i, pieces: PackedInt32Array) -> bool:
+	var nav := ai.sim.nav
+	var store := ai.sim.economy.buildings
+	var foot := NavGrid.MoveClass.FOOT
+	var from := _wave_cell(center)
+	if nav.area(foot, from) < 0:
+		return false
+	if target_building != 0 and store.is_alive(target_building):
+		if Breach.cut_off(nav, store, foot, ai.player, from, target_building):
+			return true
+	else:
+		var to := nav.nearest_passable(foot, nav.cell_at(goal.x, goal.y), 2)
+		if to == NavGrid.NO_CELL:
+			return false
+		var a := nav.area(foot, from)
+		var b := nav.area(foot, to)
+		if b >= 0 and a != b and not nav.gate_linked(ai.player, foot, a, b):
+			return true
+	return _way_unseen(from, goal, pieces)
+
+
+## A way round exists: true when it goes past the enemy pieces over ground the wave has not
+## seen.
+func _way_unseen(from: int, goal: Vector2i, pieces: PackedInt32Array) -> bool:
+	var nav := ai.sim.nav
+	var foot := NavGrid.MoveClass.FOOT
+	if _paths == null:
+		_paths = Pathfinder.new(nav)
+	var path := _paths.find_path(foot, from, nav.cell_at(goal.x, goal.y), ai.player)
+	var w := nav.width
+	for cell in path:
+		if ai.view.explored(cell):
+			continue
+		var at := Vector2i(cell % w, cell / w)
+		for p in pieces:
+			var pc := ai.view.known_buildings[p]
+			if _cells_apart(at, Vector2i(pc % w, pc / w)) <= UNSEEN_WAY_CELLS:
+				return true
+	return false
+
+
+## A cell the wave stands on: of a unit near its centre (the centre itself may be in a wall).
+func _wave_cell(center: Vector2i) -> int:
+	var nav := ai.sim.nav
+	var on := ai.near(wave, center, STAGE_SLACK)
+	var u := ai.unit_cell(on[0] if not on.is_empty() else wave[0])
+	return nav.cell_at(u.x, u.y)
+
+
+## What to break: the piece `first` (when given) or the one nearest the way from the wave to
+## `goal`; for a wave of more than BREACH_SMALL it and the palisade or wall pieces next to it in
+## the line, up to BREACH_PIECES, or a gate close by when it has fewer HP than they have
+## together (or there are not that many). A gate or tower alone is enough. Towers are broken
+## only when nothing else stands there.
+func _plan_breach(
+	center: Vector2i, goal: Vector2i, pieces: PackedInt32Array, first: int = 0
+) -> PackedInt32Array:
+	var store := ai.sim.economy.buildings
+	var w := ai.sim.nav.width
+	var best := 0
+	var best_d := 0
+	var gate := 0
+	var gate_d := 0
+	for b in pieces if first == 0 else PackedInt32Array([first]):
+		var base := store.defs[b - 1].base_id
+		var d := _way_score(b, center, goal)
+		if base == &"tower":
+			d += TOWER_LAST
+		if base == &"gate" and (gate == 0 or d < gate_d):
+			gate = b
+			gate_d = d
+		if best == 0 or d < best_d:
+			best = b
+			best_d = d
+	if best == 0:
+		return PackedInt32Array()
+	var plan := PackedInt32Array([best])
+	var lone := [&"tower", &"gate"].has(store.defs[best - 1].base_id)
+	if wave.size() <= BREACH_SMALL or lone:
+		return plan
+	# Grow the gap along the line: the next piece touching it, nearest the way, each time.
+	var first_cell := ai.view.known_buildings[best]
+	pieces = _pieces_near(Vector2i(first_cell % w, first_cell / w), BREACH_PIECES + 1)
+	while plan.size() < BREACH_PIECES:
+		var next := 0
+		var next_d := 0
+		for b in pieces:
+			if plan.has(b) or not [&"palisade", &"wall"].has(store.defs[b - 1].base_id):
+				continue
+			var cell := ai.view.known_buildings[b]
+			var at := Vector2i(cell % w, cell / w)
+			var touches := false
+			for q in plan:
+				var qc := ai.view.known_buildings[q]
+				if _cells_apart(at, Vector2i(qc % w, qc / w)) <= 1:
+					touches = true
+					break
+			if not touches:
+				continue
+			var d := _way_score(b, center, goal)
+			if next == 0 or d < next_d:
+				next = b
+				next_d = d
+		if next == 0:
+			break
+		plan.append(next)
+	# A gate close by instead, when it holds less than the gap (or there is no full gap).
+	if gate != 0 and gate_d <= best_d + GATE_SLACK:
+		var hp := 0
+		for b in plan:
+			hp += store.hp[b - 1]
+		if plan.size() < BREACH_PIECES or store.hp[gate - 1] <= hp:
+			return PackedInt32Array([gate])
+	return plan
+
+
+func _way_score(b: int, center: Vector2i, goal: Vector2i) -> int:
+	var cell := ai.view.known_buildings[b]
+	var at := Vector2i(cell % ai.sim.nav.width, cell / ai.sim.nav.width)
+	return _cells_apart(center, at) + _cells_apart(at, goal)
+
+
+## Each unit goes at the piece of the breach nearest to it.
+func _send_breakers(ids: PackedInt32Array) -> void:
+	if ids.is_empty() or _breach.is_empty():
+		return
+	var store := ai.sim.economy.buildings
+	var e := ai.sim.entities
+	var groups: Dictionary[int, PackedInt32Array] = {}
+	for id in ids:
+		var best := _breach[0]
+		var best_d := -1
+		for b in _breach:
+			var d := store.distance_sq(b, e.pos_x[id - 1], e.pos_y[id - 1])
+			if best_d < 0 or d < best_d:
+				best = b
+				best_d = d
+		if not groups.has(best):
+			groups[best] = PackedInt32Array()
+		groups[best].append(id)
+	var assault := SimCommand.Kind.ASSAULT
+	for b in _breach:
+		if groups.has(b):
+			ai.order(SimCommand.on_building(ai.sim.tick, ai.player, assault, groups[b], b))
+	assaulting = _breach[0]
+
+
 ## The nearest remembered enemy capital (town centre or castle: taking them wins), else the
 ## building worth attacking nearest the likely enemy start (the cell opposite home across the
 ## map's centre), else the unexplored point nearest that cell, else an outpost. False if there
@@ -319,8 +661,6 @@ func _pick_target() -> bool:
 	var best_d := 0
 	for b in ai.view.enemy_buildings():
 		var def := store.defs[b - 1] if store.is_alive(b) else null
-		if def != null and IGNORED.has(def.base_id):
-			continue
 		var cell := ai.view.known_buildings[b]
 		var at := Vector2i(cell % ai.sim.nav.width, cell / ai.sim.nav.width)
 		var d := _cells_apart(from, at)
@@ -330,6 +670,10 @@ func _pick_target() -> bool:
 			if d > OUTPOST_CELLS:
 				d += OUTPOST_LAST
 			d += CAPITAL_FIRST
+			# A palisade, wall or gate only when no other building is known: the base it
+			# shuts in lies behind it, so it is broken rather than searched round for ever.
+			if def != null and ENCLOSURE.has(def.base_id):
+				d += ENCLOSURE_LAST
 		if best == 0 or d < best_d:
 			best = b
 			best_d = d

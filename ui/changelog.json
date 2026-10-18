@@ -81,6 +81,41 @@
 					"pl": "Nowe menu główne: Kampania, Gra pojedyncza i Gra sieciowa (później). W Kampanii wybierasz kraj, Wielkie Księstwo albo Koronę, a potem misję; misje otwierają się jedna po drugiej, gdy je wygrywasz, a misje Korony są już na liście, zanim zostaną zrobione.",
 					"uk": "Нове головне меню: Кампанія, Одиночна гра і Гра по мережі (згодом). У Кампанії обираєш країну, Велике князівство або Корону, а потім місію; місії відкриваються одна за одною, коли їх виграєш, а місії Корони вже в списку, поки їх роблять.",
 					"lt": "Naujas pagrindinis meniu: Kampanija, Vieno žaidėjo žaidimas ir Žaidimas tinkle (vėliau). Kampanijoje renkiesi šalį, Didžiąją Kunigaikštystę ar Karūną, o tada misiją; misijos atsiveria viena po kitos, kai jas laimi, o Karūnos misijos jau sąraše, kol jos kuriamos."
+				},
+				{
+					"en": "Skirmish AI: its waves now shoot down towers that fire at them, and break through palisades: a gap of three pieces or one gate when there is no way round they have seen; a way round they have seen they use.",
+					"be": "ШІ ў бітве: яго хвалі цяпер разбураюць вежы, што страляюць па іх, і праломваюць частакол: праём у тры звёны або адны вароты, калі абыходу, які яны бачылі, няма; бачны абыход яны выкарыстоўваюць.",
+					"pl": "SI w potyczce: jej fale niszczą teraz wieże, które do nich strzelają, i przebijają się przez częstokół: wyłom z trzech przęseł albo jedna brama, gdy nie widziały drogi naokoło; widzianą drogą naokoło idą.",
+					"uk": "ШІ в сутичці: його хвилі тепер руйнують вежі, що стріляють по них, і проламують частокіл: пролом у три ланки або одна брама, коли обходу, який вони бачили, немає; видимим обходом вони йдуть.",
+					"lt": "Susirėmimo DI: jo bangos dabar griauna į jas šaudančius bokštus ir pralaužia palisadą: trijų dalių spragą arba vienus vartus, kai nematė kelio aplink; matytu keliu aplink jos eina."
+				},
+				{
+					"en": "Skirmish AI: the Order on normal keeps 40 peasants like the Grand Duchy (it had 55).",
+					"be": "ШІ ў бітве: Ордэн на звычайнай складанасці трымае 40 сялян, як ВКЛ (было 55).",
+					"pl": "SI w potyczce: Zakon na normalnym poziomie trzyma 40 chłopów, jak WKL (było 55).",
+					"uk": "ШІ в сутичці: Орден на звичайній складності тримає 40 селян, як ВКЛ (було 55).",
+					"lt": "Susirėmimo DI: Ordinas įprastu sunkumu laiko 40 valstiečių, kaip LDK (buvo 55)."
+				},
+				{
+					"en": "A peasant who builds a field (or a hive) starts working it at once.",
+					"be": "Селянін, які пабудаваў поле (або борць), адразу пачынае на ім працаваць.",
+					"pl": "Chłop, który zbudował pole (albo barć), od razu zaczyna na nim pracować.",
+					"uk": "Селянин, який збудував поле (або борть), одразу починає на ньому працювати.",
+					"lt": "Valstietis, pastatęs lauką (ar drevę), iškart pradeda jame dirbti."
+				},
+				{
+					"en": "Woodcutters start with the trees nearest to where the wood is carried and keep cutting from that side.",
+					"be": "Лесарубы пачынаюць з дрэў, бліжэйшых да месца, куды носяць дровы, і сякуць далей з гэтага боку.",
+					"pl": "Drwale zaczynają od drzew najbliższych miejscu, dokąd noszą drewno, i dalej tną od tej strony.",
+					"uk": "Лісоруби починають з дерев, найближчих до місця, куди носять деревину, і рубають далі з цього боку.",
+					"lt": "Medkirčiai pradeda nuo medžių, artimiausių vietai, kur nešama mediena, ir toliau kerta iš tos pusės."
+				},
+				{
+					"en": "A zaseka can be taken apart like other buildings (it gives nothing back: it cost nothing); a click just beside a zaseka or a palisade picks it.",
+					"be": "Засеку можна разабраць, як іншыя пабудовы (нічога не вяртае: яна нічога не каштавала); пстрычка побач з засекай або частаколам таксама яе выбірае.",
+					"pl": "Zasiekę można rozebrać jak inne budynki (nic nie zwraca: nic nie kosztowała); kliknięcie tuż obok zasieki lub częstokołu też ją wybiera.",
+					"uk": "Засіку можна розібрати, як інші будівлі (нічого не повертає: вона нічого не коштувала); клік поруч із засікою чи частоколом теж її вибирає.",
+					"lt": "Medžių užkardą galima išardyti kaip kitus pastatus (nieko negrąžina: ji nieko nekainavo); spustelėjimas šalia užkardos ar palisado taip pat ją parenka."
 				}
 			]
 		},

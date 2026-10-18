@@ -52,6 +52,9 @@ const MAX_WALK_TRIES := 3
 const STAND_RINGS := 3
 const FOREST := &"t_forest"
 const GRASS := &"t_grass"
+## A click on the forest: the peasant starts on the cell within this many cells of it that is
+## nearest to where the wood is carried.
+const WOOD_PICK_CELLS := 3
 const GATE := &"gate"
 const TOWN_CENTER := &"town_center"
 const MELEE := &"melee"
@@ -354,7 +357,12 @@ func _order_gather(cmd: SimCommand, units: PackedInt32Array) -> void:
 				var cell := nav.cell_of(cmd.x, cmd.y)
 				if nodes.wood[cell] > 0 and buildings.occupant[cell] == 0:
 					source = ResourceNodes.Source.WOOD
-					ref = cell
+					# The edge of that wood nearest to where the wood is carried, first.
+					var fx := cell % nav.width
+					var fy := cell / nav.width
+					ref = _wood_by_drop(cmd.player, fx, fy, WOOD_PICK_CELLS)
+					if ref < 0:
+						ref = cell
 			Target.NODE:
 				if nodes.is_alive(cmd.target) and nodes.open_to(cmd.target, cmd.player):
 					source = nodes.sources[cmd.target - 1]
@@ -772,6 +780,11 @@ func _retarget(slot: int) -> bool:
 	var best := -1
 	var best_d := 0
 	if target == Target.CELL:
+		best = _wood_by_drop(entities.owners[slot], fx, fy, r)
+		if best >= 0:
+			job_ref[slot] = best
+			tries[slot] = 0
+			return true
 		for y in range(fy - r, fy + r + 1):
 			for x in range(fx - r, fx + r + 1):
 				if not nav.in_bounds(x, y):
@@ -804,6 +817,16 @@ func _retarget(slot: int) -> bool:
 	job_ref[slot] = best
 	tries[slot] = 0
 	return true
+
+
+## The forest cell within `r` of (fx, fy) nearest to where player p carries wood (ResourceNodes
+## .wood_toward), -1 when there is none or nowhere to carry it.
+func _wood_by_drop(p: int, fx: int, fy: int, r: int) -> int:
+	var at := nav.cell_at(fx, fy)
+	var drop := drop_site(p, WOOD, nav.center_x(at), nav.center_y(at))
+	if drop == BuildingStore.NO_ID:
+		return -1
+	return nodes.wood_toward(nav, buildings, drop, fx, fy, r)
 
 
 func _to_resource(id: int) -> bool:

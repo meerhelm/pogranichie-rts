@@ -322,3 +322,41 @@ func test_brickworks_cheapens_order_walls() -> void:
 		wall.cost_silver * (1000 - rules.brick_wall_silver_discount_permille) / 1000
 	)
 	assert_eq(before[EconomySystem.WOOD], wall.cost_wood)
+
+
+func test_the_builder_of_a_field_works_it_at_once() -> void:
+	var sim := _drawn(20, 12)
+	var state := _join(sim, 1, ORDER)
+	_place(sim, 1, &"to_town_center", 2, 2)
+	state.stock[EconomySystem.WOOD] = 500
+	var builders := PackedInt32Array()
+	for i in sim.economy.rules.farm_workers + 1:
+		builders.append(_spawn(sim, 1, TO_PEASANT, 8.5 + i, 9.5))
+	var farm := _build(sim, 1, builders, &"to_farm", 10, 5)
+	assert_ne(farm, 0)
+	assert_gt(_until_done(sim, farm, 3000), 0)
+	sim.run(2)
+	var on_it := 0
+	for id in builders:
+		var s := id - 1
+		if sim.economy.job[s] == EconomySystem.Job.GATHER and sim.economy.job_ref[s] == farm:
+			on_it += 1
+	assert_eq(on_it, sim.economy.rules.farm_workers, "as many as the field takes")
+	assert_eq(sim.economy.buildings.workers[farm - 1], sim.economy.rules.farm_workers)
+
+
+func test_wood_is_cut_from_the_side_nearest_the_lumber_yard() -> void:
+	var sim := _drawn(30, 10, _fill({}, 12, 2, 20, 7, "f"))
+	_join(sim, 1, GDL)
+	_place(sim, 1, &"gdl_lumber_yard", 4, 4)
+	var p := _spawn(sim, 1, PEASANT, 10.5, 8.5)
+	# A click two cells into the wood: the peasant takes the edge facing the yard.
+	sim.enqueue(SimCommand.gather_at(sim.tick, 1, _ids(p), _cell(14), _cell(4)))
+	sim.step()
+	assert_eq(sim.economy.job_ref[p - 1] % 30, 12, "the near edge of the wood")
+	# Felled: the next tree is again the one nearest the yard.
+	var first := sim.economy.job_ref[p - 1]
+	sim.economy.nodes.wood[first] = 1
+	sim.run(400)
+	assert_eq(sim.economy.nodes.wood[first], 0)
+	assert_eq(sim.economy.job_ref[p - 1] % 30, 12, "still the near edge")

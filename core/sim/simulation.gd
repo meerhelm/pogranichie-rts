@@ -26,7 +26,9 @@ extends RefCounted
 ##   the walls, quicker dousing, food in a siege, the secret passage.
 ## 18: ВКЛ 8: bridges laid by servants, the patrol, an ambush held deaf to orders and hidden in
 ##   cover, the feint to the rally point, the chase (MissionBattle in the mission hash).
-const SIM_VERSION := 18
+## 19: the builder of a field or hive works it at once; wood is cut from the forest cell nearest
+##   to where it is carried.
+const SIM_VERSION := 19
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).

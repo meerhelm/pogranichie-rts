@@ -112,3 +112,27 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_8(blocks[s])
 		buf.put_32(from_unit[s])
 		buf.put_32(owners[s])
+
+
+## The forest cell within `r` of (fx, fy) nearest to building `drop` (ties: nearer to (fx, fy),
+## then the lower cell), so peasants cut a wood from the side they carry it to; -1 for none.
+func wood_toward(
+	nav: NavGrid, buildings: BuildingStore, drop: int, fx: int, fy: int, r: int
+) -> int:
+	var best := -1
+	var best_d := 0
+	var best_near := 0
+	for y in range(fy - r, fy + r + 1):
+		for x in range(fx - r, fx + r + 1):
+			if not nav.in_bounds(x, y):
+				continue
+			var c := nav.cell_at(x, y)
+			if wood[c] <= 0 or buildings.occupant[c] != 0:
+				continue
+			var d := buildings.distance_sq(drop, nav.center_x(c), nav.center_y(c))
+			var near := (x - fx) * (x - fx) + (y - fy) * (y - fy)
+			if best < 0 or d < best_d or (d == best_d and near < best_near):
+				best = c
+				best_d = d
+				best_near = near
+	return best

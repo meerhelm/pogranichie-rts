@@ -158,3 +158,17 @@ func test_the_last_capital_cannot_be_taken_apart() -> void:
 	assert_false(sim.economy.construction.can_dismantle(1, a))
 	_dismantle(sim, 1, _peasants(sim, 1, 2, 6.5, 9.5), a)
 	assert_eq(sim.economy.buildings.dismantling[a - 1], 0, "the last one stays")
+
+
+func test_a_zaseka_is_taken_apart_and_leaves_nothing() -> void:
+	var sim := _drawn(20, 10, _fill({}, 8, 2, 14, 7, "f"))
+	_join(sim, 1, GDL)
+	var builder := _spawn(sim, 1, PEASANT, 6.5, 4.5)
+	var b := _build(sim, 1, _ids(builder), &"gdl_zaseka", 8, 4)
+	assert_ne(b, 0)
+	assert_gt(_until_done(sim, b, 1000), 0)
+	assert_true(sim.economy.construction.can_dismantle(1, b))
+	_dismantle(sim, 1, _ids(builder), b)
+	assert_eq(sim.economy.buildings.dismantling[b - 1], 1)
+	assert_gt(_until_gone(sim, b, 3000), 0, "taken apart")
+	assert_eq(_salvage_nodes(sim).size(), 0, "a zaseka costs nothing, so nothing is left")

@@ -8,6 +8,11 @@ const ORDER := 2
 const MIDDLE := Vector2i(60, 40)
 ## Beside the Order's town centre (cells (108, 96) and on).
 const ORDER_DOOR := Vector2i(106, 100)
+## A GDL barracks in the open middle of the map, fenced round (cells RING_FROM..RING_TO), and
+## the Order's wave west of it.
+const RING_FROM := Vector2i(66, 21)
+const RING_TO := Vector2i(74, 29)
+const WAVE_AT := Vector2i(59, 25)
 
 var _db: CatalogDB
 
@@ -155,3 +160,139 @@ func _place(sim: Simulation, player: int, type_id: StringName, cell: Vector2i) -
 		if store.owners[b - 1] == player and store.defs[b - 1].id == type_id:
 			last = maxi(last, b)
 	return last
+
+
+# --- palisades, gates and towers in the way ---------------------------------------------------
+
+
+## The ring of `palisade` with `special` pieces at their cells and `gap` cells left open.
+func _fenced(
+	sim: Simulation, special: Dictionary = {}, gap: Array[Vector2i] = []
+) -> Dictionary[Vector2i, int]:
+	var pieces: Dictionary[Vector2i, int] = {}
+	for y in range(RING_FROM.y, RING_TO.y + 1):
+		for x in range(RING_FROM.x, RING_TO.x + 1):
+			var c := Vector2i(x, y)
+			var edge := x == RING_FROM.x or x == RING_TO.x or y == RING_FROM.y or y == RING_TO.y
+			if not edge or gap.has(c):
+				continue
+			pieces[c] = _place(sim, 1, special.get(c, &"gdl_palisade"), c)
+			assert_ne(pieces[c], 0, "piece at %s" % c)
+	return pieces
+
+
+## The Order's wave of `count` units, sent at `target`, pressing the attack for `ticks`.
+func _press(
+	sim: Simulation, target: int, count: int, ticks: int, unit: StringName = &"to_knecht"
+) -> SkirmishAi:
+	var ai := _ai(sim, ORDER)
+	var wave := PackedInt32Array()
+	for i in count:
+		wave.append(_spawn(sim, unit, ORDER, WAVE_AT + Vector2i(i % 3, i / 3)))
+	sim.run(3)
+	ai.view.refresh()
+	ai._sort_own()
+	var mil := ai.military_ai
+	var store := sim.economy.buildings
+	# Scouted before: the AI remembers where the target stands.
+	var at := sim.nav.cell_at(store.cell_x[target - 1], store.cell_y[target - 1])
+	ai.view.known_buildings[target] = at
+	mil.wave = wave
+	mil.target_building = target
+	mil.target_cell = Vector2i(store.cell_x[target - 1], store.cell_y[target - 1])
+	mil._staged = true
+	for i in ticks:
+		if i % 10 == 0:
+			ai.view.refresh()
+			ai._sort_own()
+			mil.press_attack()
+		sim.step()
+	return ai
+
+
+func _dead(sim: Simulation, pieces: Dictionary[Vector2i, int]) -> Array[Vector2i]:
+	var out: Array[Vector2i] = []
+	for c: Vector2i in pieces:
+		if not sim.economy.buildings.is_alive(pieces[c]):
+			out.append(c)
+	return out
+
+
+func test_a_wave_breaks_a_gap_of_three_into_a_closed_fence() -> void:
+	var sim := _start()
+	var pieces := _fenced(sim)
+	var barracks := _place(sim, 1, &"gdl_barracks", Vector2i(69, 24))
+	assert_ne(barracks, 0)
+	_press(sim, barracks, 9, 3000)
+	var dead := _dead(sim, pieces)
+	assert_gte(dead.size(), 3, "a gap of three, not one hole: %s" % [dead])
+	var store := sim.economy.buildings
+	assert_true(
+		not store.is_alive(barracks) or store.hp[barracks - 1] < store.max_hp[barracks - 1],
+		"then on at the barracks"
+	)
+
+
+func test_a_small_wave_breaks_one_piece() -> void:
+	var sim := _start()
+	var pieces := _fenced(sim)
+	var barracks := _place(sim, 1, &"gdl_barracks", Vector2i(69, 24))
+	_press(sim, barracks, 3, 1500)
+	assert_eq(_dead(sim, pieces).size(), 1)
+
+
+func test_a_gate_in_the_way_is_left_when_three_palisades_hold_less() -> void:
+	var sim := _start()
+	var gate_at := Vector2i(RING_FROM.x, 25)
+	var pieces := _fenced(sim, {gate_at: &"gdl_gate"})
+	var barracks := _place(sim, 1, &"gdl_barracks", Vector2i(69, 24))
+	_press(sim, barracks, 9, 3000)
+	var dead := _dead(sim, pieces)
+	assert_false(dead.has(gate_at), "250 HP a palisade, 1200 the gate")
+	assert_gte(dead.size(), 3)
+
+
+func test_one_gate_is_enough_where_no_palisade_is_near() -> void:
+	var sim := _start()
+	var gates := {}
+	for y in range(RING_FROM.y + 1, RING_TO.y):
+		gates[Vector2i(RING_FROM.x, y)] = &"gdl_gate"
+	var pieces := _fenced(sim, gates)
+	var barracks := _place(sim, 1, &"gdl_barracks", Vector2i(69, 24))
+	_press(sim, barracks, 9, 4000, &"to_halfbrother")
+	var dead := _dead(sim, pieces)
+	assert_eq(dead.size(), 1, "one gate: %s" % [dead])
+	assert_true(gates.has(dead[0]) if not dead.is_empty() else false)
+
+
+func test_a_wave_walks_through_a_gap_it_sees() -> void:
+	var sim := _start()
+	var gap: Array[Vector2i] = [Vector2i(RING_FROM.x, 24), Vector2i(RING_FROM.x, 25)]
+	var pieces := _fenced(sim, {}, gap)
+	var barracks := _place(sim, 1, &"gdl_barracks", Vector2i(69, 24))
+	_press(sim, barracks, 9, 2000)
+	assert_eq(_dead(sim, pieces).size(), 0, "nothing broken")
+	var store := sim.economy.buildings
+	assert_true(not store.is_alive(barracks) or store.hp[barracks - 1] < store.max_hp[barracks - 1])
+
+
+func test_a_gap_it_has_not_seen_does_not_count() -> void:
+	var sim := _start()
+	var gap: Array[Vector2i] = [Vector2i(RING_TO.x, 24), Vector2i(RING_TO.x, 25)]
+	var pieces := _fenced(sim, {}, gap)
+	var barracks := _place(sim, 1, &"gdl_barracks", Vector2i(69, 24))
+	var ai := _ai(sim, ORDER)
+	sim.run(3)
+	ai.view.refresh()
+	assert_false(ai.view.explored(sim.nav.cell_at(RING_TO.x + 1, 24)), "the far side is unseen")
+	_press(sim, barracks, 9, 3000)
+	assert_gte(_dead(sim, pieces).size(), 3, "breaks in on its own side")
+
+
+func test_a_wave_puts_down_a_tower_that_shoots_at_it() -> void:
+	var sim := _start()
+	var tower := _place(sim, 1, &"gdl_tower", WAVE_AT + Vector2i(6, 1))
+	var house := _place(sim, 1, &"gdl_house", WAVE_AT + Vector2i(30, 0))
+	assert_ne(tower, 0)
+	_press(sim, house, 12, 2400, &"to_halfbrother")
+	assert_false(sim.economy.buildings.is_alive(tower), "the tower is down")

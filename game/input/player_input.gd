@@ -43,6 +43,9 @@ const PICK_RADIUS := 14.0
 const DOUBLE_TAP_MS := 400
 ## A shrine being placed snaps to a place of power this many cells from the cursor.
 const SITE_SNAP := 3
+## Taking apart: a click this many cells off an own thin building (zaseka, palisade) still
+## picks it.
+const THIN_PICK_CELLS := 1
 
 var sim: Simulation
 var units: UnitLayer
@@ -683,13 +686,39 @@ func stop_taking_apart() -> void:
 	economy_changed.emit()
 
 
+## The building clicked to take apart: the one on the cell, else an own thin one (a zaseka, a
+## palisade, a wall piece: its picture stands up over the cells behind it) within
+## THIN_PICK_CELLS of it, the nearest.
+func _to_take_apart(c: Vector2i) -> int:
+	var store := sim.economy.buildings
+	var b := store.occupant[sim.nav.cell_at(c.x, c.y)]
+	if b != BuildingStore.NO_ID:
+		return b
+	var best := BuildingStore.NO_ID
+	var best_d := 0
+	for y in range(c.y - THIN_PICK_CELLS, c.y + THIN_PICK_CELLS + 1):
+		for x in range(c.x - THIN_PICK_CELLS, c.x + THIN_PICK_CELLS + 1):
+			if not sim.nav.in_bounds(x, y):
+				continue
+			var o := store.occupant[sim.nav.cell_at(x, y)]
+			if o == BuildingStore.NO_ID or store.owners[o - 1] != player:
+				continue
+			if mini(store.w[o - 1], store.h[o - 1]) != 1:
+				continue
+			var d := (x - c.x) * (x - c.x) + (y - c.y) * (y - c.y)
+			if best == BuildingStore.NO_ID or d < best_d:
+				best = o
+				best_d = d
+	return best
+
+
 func _take_apart_click(mb: InputEventMouseButton) -> void:
 	if not mb.pressed:
 		return
 	if mb.button_index == MOUSE_BUTTON_LEFT:
 		var c := Iso.screen_to_cell_index(_to_world(mb.position))
 		if sim.nav.in_bounds(c.x, c.y):
-			var b := sim.economy.buildings.occupant[sim.nav.cell_at(c.x, c.y)]
+			var b := _to_take_apart(c)
 			var workers := _peasants()
 			var allowed := sim.economy.construction.can_dismantle(player, b)
 			if b != BuildingStore.NO_ID and not allowed:
