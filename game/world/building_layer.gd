@@ -115,9 +115,7 @@ func _refresh() -> void:
 		var nkey := StringName("n%d" % n)
 		_tall(nkey, live, rect, c, 6.0, false, -1.0, -1.0)
 		if _boxes.has(nkey):
-			_boxes[nkey].set_sprite(
-				SpriteDB.deposit_at(eco.nodes.sources[n - 1], cell), Color.WHITE
-			)
+			_boxes[nkey].set_sprite(_deposit_art(eco.nodes.sources[n - 1], cell), Color.WHITE)
 	var b := eco.buildings
 	for id in b.alive_ids:
 		var s := id - 1
@@ -220,12 +218,23 @@ func _fire(id: int) -> float:
 	return float(b.hp[id - 1]) / maxf(b.max_hp[id - 1], 1.0)
 
 
+## Art of a deposit: a salt spring has its own, others the source's (SpriteDB.deposit_at).
+func _deposit_art(source: int, cell: int) -> SpriteDB.Sprite:
+	if sim.nav.object_at(cell) == SaltWorks.SPRING:
+		var spring := SpriteDB.deposit(SaltWorks.SPRING)
+		if spring != null:
+			return spring
+	return SpriteDB.deposit_at(source, cell)
+
+
 ## Catalog id of the art of building slot `s`: the turned view (`<id>_v`) of a zaseka placed
 ## along y or of a gate in a line running along y, when it has one.
 func _art_id(s: int) -> StringName:
 	var b := sim.economy.buildings
 	var id := b.defs[s].id
 	var turned := b.w[s] < b.h[s]
+	if b.upgraded[s] == 1 and SpriteDB.building(StringName("%s_chapel" % id)) != null:
+		return StringName("%s_chapel" % id)
 	if b.defs[s].base_id == &"gate":
 		var n := _line_neighbours(s)
 		turned = (n[2] or n[3]) and not (n[0] or n[1])

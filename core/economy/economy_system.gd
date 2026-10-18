@@ -37,6 +37,8 @@ enum Fail {
 	CONDITION,
 	LOCKED,
 	DISMANTLING,
+	NO_SPRING,
+	TOO_MANY,
 }
 
 const FOOD := 0
@@ -141,6 +143,9 @@ func _init(
 				nav.set_blocked(cell, true)
 			&"o_silver_mine":
 				nodes.add(ResourceNodes.Source.SILVER, cell, rules.silver_mine_silver, true)
+				nav.set_blocked(cell, true)
+			SaltWorks.SPRING:
+				nodes.add(ResourceNodes.Source.SILVER, cell, rules.salt_spring_silver, true)
 				nav.set_blocked(cell, true)
 
 
@@ -277,8 +282,11 @@ func _join(p: int, faction: StringName) -> void:
 	players[p] = state
 
 
-func _can_build(id: int) -> bool:
+## Peasants build everything; the Crown's priest (builds_shrine) only shrines.
+func _can_build(id: int, b: int) -> bool:
 	var def := unit_defs[id - 1]
+	if def != null and def.tags.has(&"builds_shrine"):
+		return buildings.defs[b - 1].tags.has(&"power_place_only")
 	return def != null and def.has_class(&"peasant")
 
 
@@ -333,7 +341,7 @@ func _order_wall(cmd: SimCommand, units: PackedInt32Array) -> void:
 
 
 func _set_build_job(id: int, b: int) -> void:
-	if not buildings.is_alive(b) or not _can_build(id):
+	if not buildings.is_alive(b) or not _can_build(id, b):
 		return
 	var slot := id - 1
 	if buildings.owners[b - 1] != entities.owners[slot]:
@@ -460,6 +468,8 @@ func _found(p: int, def: BuildingDef, cx: int, cy: int, vertical: bool) -> int:
 			var old := buildings.occupant[nav.cell_at(x, y)]
 			if old != 0 and placement.replaceable(p, def, old):
 				remove_building(old)
+	if def.tags.has(&"on_salt_spring"):
+		SaltWorks.take_spring(self, cx, cy, size)
 	var b := buildings.add(def, p, cx, cy, size.x, size.y, full_hp, maxi(ticks, 1) * 1000)
 	# A gate closes its cell like a wall; once finished it opens to its owner (NavGrid).
 	var blocking := not def.tags.has(&"walkable")
@@ -566,6 +576,7 @@ func step(at_tick: int) -> void:
 	for b in buildings.alive_ids.duplicate():
 		if buildings.is_alive(b):
 			production.produce(b)
+	SaltWorks.step(self)
 
 
 func _work(id: int) -> void:
@@ -923,34 +934,25 @@ func _assault(id: int) -> void:
 	var reach := _reach()
 	if def.attack_range > 0:
 		reach = Fixed.from_cells(def.attack_range + entities.up_range[slot])
-	if tries[slot] > 0 and entities.orders[slot] != EntityStore.Order.MOVE:
-		b = _break_in(id, b, reach)
-	if not to_building(id, b, reach):
-		return
-	if entities.cooldown[slot] > 0:
-		return
+	if combat.crown.anchored(slot):
+		# The bombard keeps to its battery: it fires at what is in range or gives up.
+		var far := buildings.distance_sq(b, entities.pos_x[slot], entities.pos_y[slot])
+		if far > reach * reach:
+			end_job(slot)
+			return
+		if entities.cooldown[slot] > 0 or not combat.crown.may_fire(slot):
+			return
+		combat.crown.fired(slot)
+	else:
+		if tries[slot] > 0 and entities.orders[slot] != EntityStore.Order.MOVE:
+			b = Breach.break_in(self, id, b, reach)
+		if not to_building(id, b, reach):
+			return
+		if entities.cooldown[slot] > 0:
+			return
 	entities.cooldown[slot] = maxi(def.reload_ticks, 1)
 	entities.last_attack[slot] = tick
 	hit_building(b, building_damage(slot, b))
-
-
-## Stopped short of building `b` with no way to it: the enemy palisade, gate or tower in the
-## way becomes the target (Breach), or `b` stays when there is none or the way is open.
-func _break_in(id: int, b: int, reach: int) -> int:
-	var slot := id - 1
-	var e := entities
-	if buildings.distance_sq(b, e.pos_x[slot], e.pos_y[slot]) <= reach * reach:
-		return b
-	var cell := nav.cell_of(e.pos_x[slot], e.pos_y[slot])
-	var cls: int = e.move_class[slot]
-	if not Breach.cut_off(nav, buildings, cls, e.owners[slot], cell, b):
-		return b
-	var wall := Breach.target(nav, buildings, e.owners[slot], cell, b)
-	if wall == BuildingStore.NO_ID:
-		return b
-	job_ref[slot] = wall
-	tries[slot] = 0
-	return wall
 
 
 ## One strike of a unit on a building (Damage.against_building).

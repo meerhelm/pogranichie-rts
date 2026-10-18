@@ -266,7 +266,7 @@ func _building(b: int) -> void:
 		var q: Array = store.queues[s]
 		if not q.is_empty():
 			var first: StringName = q[0]
-			var total := sim.economy.production.item_ticks(first)
+			var total := sim.economy.production.item_ticks(first, b)
 			var pct := store.queue_ticks[s] * 100 / maxi(total, 1)
 			lines.append(tr("In work: %s, %d%%") % [UiText.name_of(first), pct])
 		if store.defs[s].pop_provided > 0:

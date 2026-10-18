@@ -220,6 +220,18 @@ func _unit_orders() -> void:
 			tr("Get off the horse and fight on foot: more armor, the speed of foot soldiers."),
 			input.order_kind.bind(SimCommand.Kind.DISMOUNT)
 		)
+	if _wagons_selected() >= 2:
+		_order(
+			"tabor",
+			tr("Tabor"),
+			"U",
+			(
+				tr("Draw the wagons up in a ring.")
+				+ " "
+				+ tr("Foot soldiers and shooters inside get more armor and fear no flank attacks.")
+			),
+			input.order_kind.bind(SimCommand.Kind.TABOR)
+		)
 	if _fugitives_selected():
 		_order(
 			"dismount",
@@ -237,8 +249,23 @@ func _unit_orders() -> void:
 			input.start_casting.bind(spell)
 		)
 		_spell_buttons[spell.id] = b
-	if input.peasants().is_empty():
+	if input.builders().is_empty():
 		return
+	if not input.peasants().is_empty():
+		_take_apart_order()
+	var p := input.player
+	for def in _in_build_order(input.buildable()):
+		var b := _button(
+			_build,
+			IconDB.of(def.id),
+			UiText.name_of(def.id),
+			Tips.building(def, sim.economy, p),
+			input.start_placing.bind(def)
+		)
+		_build_buttons[def.id] = b
+
+
+func _take_apart_order() -> void:
 	_order(
 		"take_apart",
 		tr("Take apart"),
@@ -253,16 +280,6 @@ func _unit_orders() -> void:
 		),
 		input.start_taking_apart
 	)
-	var p := input.player
-	for def in _in_build_order(input.buildable()):
-		var b := _button(
-			_build,
-			IconDB.of(def.id),
-			UiText.name_of(def.id),
-			Tips.building(def, sim.economy, p),
-			input.start_placing.bind(def)
-		)
-		_build_buttons[def.id] = b
 
 
 static func _in_build_order(defs: Array[BuildingDef]) -> Array[BuildingDef]:
@@ -325,7 +342,7 @@ func _refresh_state() -> void:
 	var q: Array = eco.buildings.queues[b - 1]
 	if not q.is_empty() and _queue.get_child_count() > 0:
 		var first: StringName = q[0]
-		var total := maxi(eco.production.item_ticks(first), 1)
+		var total := maxi(eco.production.item_ticks(first, b), 1)
 		(_queue.get_child(0) as IconButton).progress = (
 			eco.buildings.queue_ticks[b - 1] / float(total)
 		)
@@ -335,9 +352,12 @@ func _refresh_state() -> void:
 		button.disabled = reason != EconomySystem.Fail.OK
 		var fail := UiText.fail(reason) if button.disabled else ""
 		var cost := eco.production.item_cost(p, b, item)
-		var ticks := eco.production.item_ticks(item)
+		var ticks := eco.production.item_ticks(item, b)
 		var tip: Tips.Tip
-		if eco.db.unit(item) != null:
+		if item == EconomyProduction.CHAPEL:
+			var bdef := eco.buildings.defs[b - 1]
+			tip = Tips.chapel(bdef, cost, ticks, fail, button.hotkey)
+		elif eco.db.unit(item) != null:
 			tip = Tips.unit(eco.db.unit(item), cost, ticks, fail, button.hotkey)
 		elif eco.db.techs.has(item):
 			tip = Tips.tech(eco.db.techs[item], cost, ticks, fail, button.hotkey)
@@ -371,6 +391,16 @@ func _refresh_spells() -> void:
 			if reason == MagicSystem.Cast.COOLDOWN:
 				fail += " " + tr("(%d s)") % ceili(ready_in / float(Fixed.TICKS_PER_SECOND))
 		_set_tip(button, Tips.spell(spell, fail))
+
+
+## How many selected units are wagons that make a tabor.
+func _wagons_selected() -> int:
+	var n := 0
+	for id in input.selection.ids:
+		var def := sim.combat.defs[id - 1] if sim.combat.enabled() else null
+		if def != null and def.param(&"tabor_wagons") > 0:
+			n += 1
+	return n
 
 
 ## ВКЛ 6: whether a selected unit is one of the fugitives (who lead their horses with V).

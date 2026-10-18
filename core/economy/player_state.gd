@@ -24,6 +24,13 @@ var zaseka_speed_bonus := 0
 var zaseka_hp_bonus := 0
 ## Extra cells of sight for towers and walls («Караулы», M6).
 var wall_sight_bonus := 0
+## The Crown's techs: wagons fewer a tabor needs and armor more inside it («Таборная наука»),
+## per-mille more silver from salt works («Соляной устав»).
+var tabor_wagons_bonus := 0
+var tabor_armor_bonus := 0
+var salt_rate_bonus := 0
+## Thousandths of silver from salt works not yet whole (EconomySystem.UNIT_ACC is one).
+var salt_acc := 0
 ## Сила (M7); MagicSystem.POWER_UNIT is one point (thousandths of a point a second, per tick).
 var power := 0
 ## Units, buildings, techs and ages a mission does not allow yet (M9), by id.
@@ -115,3 +122,5 @@ func write_to(buf: StreamPeerBuffer) -> void:
 	buf.put_32(shut.size())
 	for k in shut:
 		buf.put_utf8_string(k)
+	for v: int in [tabor_wagons_bonus, tabor_armor_bonus, salt_rate_bonus, salt_acc]:
+		buf.put_32(v)

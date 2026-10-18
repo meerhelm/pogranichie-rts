@@ -3,42 +3,67 @@ extends RefCounted
 ## The start of a skirmish on the prototype map (M8): each side joins with its faction and
 ## starting stock, gets a finished town centre and START_PEASANTS peasants beside it. All of it
 ## goes in as tick-0 commands, so a recorded game replays from the same start.
+## Any of FACTIONS may play either side (the Crown joined on 2026-10-18); without a choice GDL
+## plays the north-west and the Order the south-east.
 
 const MAP_ID := "map_proto_samogitia"
-## Player, faction and the top-left cell of its town centre: GDL north-west, the Order
-## south-east (as the map is drawn).
+## Player, default faction and the top-left cell of its town centre: north-west and south-east
+## (as the map is drawn).
 const BASES := [[1, &"gdl", Vector2i(5, 5)], [2, &"to", Vector2i(108, 96)]]
+## Factions a skirmish offers, in menu order.
+const FACTIONS: Array[StringName] = [&"gdl", &"pl", &"to"]
+const DEFAULT_FACTIONS: Array[StringName] = [&"gdl", &"to"]
 const START_PEASANTS := 5
 
 
 ## The skirmish map's world with both sides set up (their commands queued for tick 0).
-static func new_simulation(sim_seed: int, db: CatalogDB) -> Simulation:
+## `factions`: the faction of player 1 and of player 2.
+static func new_simulation(
+	sim_seed: int, db: CatalogDB, factions: Array[StringName] = DEFAULT_FACTIONS
+) -> Simulation:
 	var sim := Simulation.new(sim_seed, db, 0, 0, MapText.load_map(MAP_ID, db))
-	set_up(sim)
+	set_up(sim, factions)
 	return sim
 
 
-static func set_up(sim: Simulation) -> void:
-	for base: Array in BASES:
-		var player: int = base[0]
-		var faction: StringName = base[1]
-		var at: Vector2i = base[2]
+static func set_up(sim: Simulation, factions: Array[StringName] = DEFAULT_FACTIONS) -> void:
+	for i in BASES.size():
+		var player: int = BASES[i][0]
+		var faction: StringName = factions[i]
+		var at: Vector2i = BASES[i][2]
 		sim.enqueue(SimCommand.join(0, player, faction))
 		var center := StringName("%s_town_center" % faction)
 		var x := Fixed.from_cells(at.x) + Fixed.HALF
 		var y := Fixed.from_cells(at.y) + Fixed.HALF
 		sim.enqueue(SimCommand.place(0, player, center, x, y))
-		var peasant := StringName("%s_peasant" % faction)
-		for i in START_PEASANTS:
-			var px := Fixed.from_cells(at.x + i) + Fixed.HALF
+		var peasant := peasant_of(sim.economy.db, faction)
+		for k in START_PEASANTS:
+			var px := Fixed.from_cells(at.x + k) + Fixed.HALF
 			sim.enqueue(SimCommand.spawn(0, player, peasant, px, Fixed.from_cells(at.y + 5)))
 
 
-static func faction_of(player: int) -> StringName:
-	for base: Array in BASES:
-		if base[0] == player:
-			return base[1]
+static func faction_of(player: int, factions: Array[StringName] = DEFAULT_FACTIONS) -> StringName:
+	for i in BASES.size():
+		if BASES[i][0] == player:
+			return factions[i]
 	return &""
+
+
+## The faction's peasant: its unit of class peasant that gathers, trained at its town centre
+## (gdl_peasant, the Crown's pl_kmet), or <faction>_peasant without the catalog.
+static func peasant_of(db: CatalogDB, faction: StringName) -> StringName:
+	var fallback := StringName("%s_peasant" % faction)
+	if db == null or db.unit(fallback) != null:
+		return fallback
+	var center := StringName("%s_town_center" % faction)
+	var ids := PackedStringArray(db.units.keys())
+	ids.sort()
+	for id in ids:
+		var def := db.unit(StringName(id))
+		if def.faction == faction and def.has_class(&"peasant") and not def.campaign_only:
+			if def.trained_at.has(center) and not def.tags.has(&"no_gather"):
+				return def.id
+	return fallback
 
 
 ## The AI profile for a faction and difficulty (ai/profiles/<faction>_<difficulty>.tres).

@@ -63,3 +63,25 @@ static func target(
 				best = b
 				best_d = d
 	return best
+
+
+## An assaulting unit of the economy stopped short of building `b` with no way to it: the
+## enemy palisade, gate or tower in the way becomes its target, or `b` stays when there is none
+## or the way is open.
+static func break_in(eco: EconomySystem, id: int, b: int, reach: int) -> int:
+	var slot := id - 1
+	var e := eco.entities
+	var nav := eco.nav
+	var buildings := eco.buildings
+	if buildings.distance_sq(b, e.pos_x[slot], e.pos_y[slot]) <= reach * reach:
+		return b
+	var cell := nav.cell_of(e.pos_x[slot], e.pos_y[slot])
+	var cls: int = e.move_class[slot]
+	if not cut_off(nav, buildings, cls, e.owners[slot], cell, b):
+		return b
+	var wall := target(nav, buildings, e.owners[slot], cell, b)
+	if wall == BuildingStore.NO_ID:
+		return b
+	eco.job_ref[slot] = wall
+	eco.tries[slot] = 0
+	return wall

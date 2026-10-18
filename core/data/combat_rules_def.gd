@@ -93,3 +93,15 @@ extends Resource
 ## A khorugv's banner (ВКЛ 2): own units this close to a bearer get this much morale.
 @export var banner_morale: int
 @export var banner_radius: int
+
+@export_group("Crown")
+## The foot servant «рядом с копьём» (his knight's lance within this many thousandths of a cell).
+@export var escort_radius_milli: int
+## The pavise covers the shooters this many cells behind it.
+@export var pavise_cover_cells: int
+## Wagons standing this close (cells) to one another make one ring of a tabor...
+@export var tabor_link_cells: int
+## ...once they all have stood still this long; infantry and shooters inside get +tabor_armor
+## to both armors and lose no morale to blows in the flank.
+@export var tabor_link_ticks: int
+@export var tabor_armor: int

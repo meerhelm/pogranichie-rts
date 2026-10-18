@@ -12,6 +12,8 @@ static func t(text: String) -> String:
 
 ## Name of a unit, building, tech, age or faction from its catalog id.
 static func name_of(id: StringName) -> String:
+	if id == EconomyProduction.CHAPEL:
+		return t("Chapel")
 	return TranslationServer.translate(String(id))
 
 
@@ -115,6 +117,10 @@ static func fail(reason: int) -> String:
 			return t("Not available yet in this mission")
 		EconomySystem.Fail.DISMANTLING:
 			return t("Being taken apart")
+		EconomySystem.Fail.NO_SPRING:
+			return t("Only on a salt spring")
+		EconomySystem.Fail.TOO_MANY:
+			return t("No more of these allowed")
 	return t("Not available")
 
 

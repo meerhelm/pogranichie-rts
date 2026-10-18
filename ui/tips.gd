@@ -165,6 +165,21 @@ static func purpose(def: BuildingDef) -> String:
 				# gdlint:ignore = max-line-length
 				"A chapel of the Order. It gathers Power for spells and consecrates the land: shrines of other sides near it give half the Power."
 			)
+		&"pl_shrine":
+			return t(
+				# gdlint:ignore = max-line-length
+				"A wayside cross on a place of power. It gathers Power for spells; with a priest by it the cross can be made a chapel that gives twice as much."
+			)
+		&"pl_salt_works":
+			return t(
+				# gdlint:ignore = max-line-length
+				"Salt works over a salt spring: silver for the treasury without any workers. At most two."
+			)
+		&"pl_battery":
+			return t(
+				# gdlint:ignore = max-line-length
+				"A battery of wicker gabions. Bombards fire only from here: they stand by it and dig in, two at most."
+			)
 	match def.base_id:
 		&"town_center":
 			return t(
@@ -366,6 +381,23 @@ static func role(def: UnitDef) -> String:
 			return t("A brother priest: consecrates the land and casts the Order's spells.")
 		&"gdl_wagon":
 			return t("A wagon of the baggage train.")
+		&"pl_wagon":
+			return t("A wagon of the baggage train; four of them make a tabor.")
+		&"pl_kmet":
+			return t("Gathers food, wood, iron and silver, builds and repairs.")
+		&"pl_kopia":
+			return t("A knight's lance: the Crown's heavy horse, terrible in the charge.")
+		&"pl_foot_servant":
+			return t("A foot servant who follows the knight's lance and steadies the ranks.")
+		&"pl_pavise":
+			return t("A pavisier: sets up a big shield to cover the shooters behind him.")
+		&"pl_priest":
+			return t(
+				# gdlint:ignore = max-line-length
+				"A priest: sets up the wayside cross and the chapel, heals those around him and casts the Crown's spells."
+			)
+		&"pl_bombard":
+			return t("A heavy bombard that breaks walls, firing only from a battery.")
 	if def.has_class(&"peasant"):
 		return t("Gathers resources and builds.")
 	return ""
@@ -404,13 +436,16 @@ static func abilities(def: UnitDef) -> PackedStringArray:
 		lines.append(t("Can dismount to fight on foot (V)"))
 	if def.tags.has(&"no_pursuit"):
 		lines.append(t("Does not chase fleeing enemies"))
-	if def.param(&"heal_hp_per_s") > 0:
+	if def.param(&"heal_hp_per_s") > 0 and def.param(&"heal_radius") > 0:
 		lines.append(
 			(
 				t("Heals %d HP a second to her people within %d cells")
 				% [def.param(&"heal_hp_per_s"), def.param(&"heal_radius")]
 			)
 		)
+	elif def.param(&"heal_hp_per_s") > 0:
+		lines.append(t("Heals %d HP a second to his people nearby") % def.param(&"heal_hp_per_s"))
+	_crown_abilities(def, lines)
 	if def.never_flees:
 		lines.append(t("Never flees"))
 	if def.param(&"limit") > 0:
@@ -418,6 +453,41 @@ static func abilities(def: UnitDef) -> PackedStringArray:
 	if def.param(&"limit_per_castle") > 0:
 		lines.append(t("At most %d for each castle") % def.param(&"limit_per_castle"))
 	return lines
+
+
+## The Crown's own rules of a unit (CrownTactics).
+static func _crown_abilities(def: UnitDef, lines: PackedStringArray) -> void:
+	if def.param(&"melee_fatigue_ticks") > 0:
+		lines.append(
+			(
+				t("After %d s of melee without a new charge: −%d damage")
+				% [_seconds(def.param(&"melee_fatigue_ticks")), def.param(&"melee_fatigue_damage")]
+			)
+		)
+	if def.tags.has(&"lance_escort"):
+		lines.append(t("+%d morale beside an own knight's lance") % def.param(&"escort_morale"))
+	if def.tags.has(&"steadies_neighbours"):
+		lines.append(t("In close order the men around him lose half as much morale"))
+	if def.tags.has(&"pavise"):
+		lines.append(
+			(
+				t("Standing %d s sets up the pavise: shooters behind him +%d pierce armor")
+				% [_seconds(def.param(&"pavise_ticks")), def.param(&"pavise_armor")]
+			)
+		)
+	if def.param(&"tabor_wagons") > 0:
+		lines.append(
+			t("%d wagons standing in a ring make a tabor (U)") % def.param(&"tabor_wagons")
+		)
+	if def.tags.has(&"battery_only"):
+		lines.append(
+			(
+				t("Fires only from a battery (digs in for %d s), %d iron a shot")
+				% [_seconds(def.param(&"deploy_ticks")), def.param(&"shot_iron")]
+			)
+		)
+	if def.tags.has(&"builds_shrine"):
+		lines.append(t("Sets up wayside crosses and chapels"))
 
 
 ## A unit class as the player reads it ("against cavalry").
@@ -488,6 +558,12 @@ static func tech_effect(id: StringName) -> String:
 			return t("Heavy horse: +10% HP.")
 		&"t_to_reliquary":
 			return t("Brother priests: +50% HP; Exorcism reaches 2 cells farther.")
+		&"t_pl_tabor":
+			return t("A tabor takes 3 wagons; inside it +1 melee and +1 pierce armor more.")
+		&"t_pl_salt_statute":
+			return t("Salt works give 30% more silver.")
+		&"t_pl_procession":
+			return t("Bogurodzica costs 30% less Power.")
 	return ""
 
 
@@ -514,6 +590,25 @@ static func age(
 	var need := def.params.get(&"required_buildings", 0) as int
 	if need > 0:
 		tip.text(t("Needs %d finished buildings of the age before.") % need, MUTED)
+	_fail(tip, fail)
+	return tip
+
+
+## The Crown's wayside cross made a chapel (EconomyProduction.CHAPEL).
+static func chapel(
+	def: BuildingDef, cost: PackedInt32Array, ticks: int, fail := "", key := ""
+) -> Tip:
+	var tip := Tip.new()
+	var p := price(cost, _seconds(ticks))
+	var title := UiText.name_of(EconomyProduction.CHAPEL)
+	tip.header(IconDB.path_of(EconomyProduction.CHAPEL), title, key, p[0], p[1])
+	tip.text(
+		(
+			t("The cross becomes a chapel: Power %s a second instead of %s.")
+			% [_decimal(def.param(&"upgrade_power_rate_milli")), _decimal(def.power_rate_milli)]
+		)
+	)
+	tip.text(t("A priest must stand by the cross."), MUTED)
 	_fail(tip, fail)
 	return tip
 
@@ -545,6 +640,13 @@ static func spell(def: SpellDef, fail := "") -> Tip:
 					)
 				)
 			)
+	match def.id:
+		&"sp_bogurodzica":
+			tip.text(t("Your men around the priest: +25 morale; those fleeing turn back to fight."))
+		&"sp_banner_blessing":
+			tip.text(t("One of your units: +2 melee and +2 pierce armor and +10 morale."))
+		&"sp_pact":
+			tip.text(t("Your men around: morale does not fall, damage +25%."))
 	var facts := PackedStringArray()
 	if def.radius > 0:
 		facts.append(t("radius %d") % def.radius)

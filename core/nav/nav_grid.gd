@@ -25,7 +25,7 @@ const BOG := &"t_bog"
 ## The 8 cells around a cell, in order round it: sides at even indexes, corners at odd.
 const RING_DX: Array[int] = [0, 1, 1, 1, 0, -1, -1, -1]
 const RING_DY: Array[int] = [-1, -1, 0, 1, 1, 1, 0, -1]
-const OBJECT_IDS: Array[StringName] = [&"", &"o_bog_ore", &"o_silver_mine"]
+const OBJECT_IDS: Array[StringName] = [&"", &"o_bog_ore", &"o_silver_mine", &"o_salt_spring"]
 const NO_OBJECT := 0
 
 var width: int

@@ -22,10 +22,12 @@ const LEGEND := {
 	"a": &"t_ash",
 }
 ## Cells with a map object: the character gives the terrain under it and the object
-## (NavGrid.OBJECT_IDS): a bog ore deposit lies in a bog, a silver mine on a hill.
+## (NavGrid.OBJECT_IDS): a bog ore deposit lies in a bog, a silver mine on a hill, a salt
+## spring on grass.
 const OBJECTS := {
 	"o": [&"t_bog", &"o_bog_ore"],
 	"$": [&"t_hill", &"o_silver_mine"],
+	"%": [&"t_grass", &"o_salt_spring"],
 }
 
 

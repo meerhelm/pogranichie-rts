@@ -55,6 +55,8 @@ var dismantle_total := PackedInt64Array()
 var dismantle_left := PackedInt64Array()
 ## Towers: ticks until the next arrow (TowerFire).
 var cooldown := PackedInt32Array()
+## 1 once the building is upgraded (the Crown's wayside cross made a chapel).
+var upgraded := PackedByteArray()
 
 
 func resize_map(cells: int) -> void:
@@ -109,8 +111,17 @@ func add(
 	dismantle_total.append(0)
 	dismantle_left.append(0)
 	cooldown.append(0)
+	upgraded.append(0)
 	alive_ids.append(id)
 	return id
+
+
+## Сила a second (thousandths) the shrine gives: more once upgraded (the chapel).
+static func power_rate(store: BuildingStore, id: int) -> int:
+	var def := store.defs[id - 1]
+	if store.upgraded[id - 1] == 1:
+		return def.param(&"upgrade_power_rate_milli", def.power_rate_milli)
+	return def.power_rate_milli
 
 
 func remove(id: int) -> void:
@@ -185,3 +196,4 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_64(dismantle_total[s])
 		buf.put_64(dismantle_left[s])
 		buf.put_32(cooldown[s])
+		buf.put_8(upgraded[s])

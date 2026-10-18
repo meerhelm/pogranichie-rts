@@ -1,8 +1,8 @@
 class_name GameSettings
 extends RefCounted
 ## Player settings: language, edge scrolling, fullscreen, text size, skirmish hints, and the
-## skirmish AI's difficulty last picked. Kept in user://settings.cfg and applied at start (main
-## menu or game scene, whichever opens first).
+## skirmish AI's difficulty and both sides' factions last picked. Kept in user://settings.cfg
+## and applied at start (main menu or game scene, whichever opens first).
 
 const PATH := "user://settings.cfg"
 ## Locales the game ships (i18n/<locale>.po); English is the development language.
@@ -30,6 +30,9 @@ static var text_size := 1
 static var hints := true
 ## AiProfile.difficulty of the skirmish opponent (ai/profiles/*_<difficulty>.tres).
 static var ai_difficulty: StringName = &"normal"
+## Skirmish factions (SkirmishSetup.FACTIONS): the player's and the AI opponent's.
+static var player_faction: StringName = &"gdl"
+static var enemy_faction: StringName = &"to"
 ## What the game scene opens (M9), set by the menus before switching to it: a campaign
 ## mission by id (empty: a skirmish), and a save to load instead (empty: a new game).
 static var mission_id := ""
@@ -54,6 +57,10 @@ static func ensure_loaded() -> void:
 		hints = cfg.get_value("general", "hints", hints)
 		var level := StringName(cfg.get_value("skirmish", "ai_difficulty", String(ai_difficulty)))
 		ai_difficulty = level if DIFFICULTIES.has(level) else &"normal"
+		var mine := StringName(cfg.get_value("skirmish", "faction", String(player_faction)))
+		player_faction = mine if SkirmishSetup.FACTIONS.has(mine) else &"gdl"
+		var theirs := StringName(cfg.get_value("skirmish", "enemy", String(enemy_faction)))
+		enemy_faction = theirs if SkirmishSetup.FACTIONS.has(theirs) else &"to"
 	apply()
 
 
@@ -79,6 +86,8 @@ static func save() -> void:
 	cfg.set_value("video", "text_size", text_size)
 	cfg.set_value("general", "hints", hints)
 	cfg.set_value("skirmish", "ai_difficulty", String(ai_difficulty))
+	cfg.set_value("skirmish", "faction", String(player_faction))
+	cfg.set_value("skirmish", "enemy", String(enemy_faction))
 	var err := cfg.save(PATH)
 	if err != OK:
 		push_warning("cannot save settings: %s" % error_string(err))

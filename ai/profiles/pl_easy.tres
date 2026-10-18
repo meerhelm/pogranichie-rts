@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AiProfile" format=3]
+
+[ext_resource type="Script" path="res://ai/ai_profile.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+faction = &"pl"
+difficulty = &"easy"
+think_ticks = 20
+peasant_target = 18
+worker_split = PackedInt32Array(50, 35, 10, 5)
+build_order = Array[StringName]([&"lumber_yard", &"barracks", &"mine", &"range", &"age", &"stable"])
+army = Array[StringName]([&"pl_spearman", &"pl_bowman", &"pl_spearman", &"pl_light_horse", &"pl_kopia"])
+first_wave = 8
+wave_growth = 2
+max_wave = 20
+first_attack_tick = 16800
+retreat_permille = 0
+defend_cells = 10
+shrines = 1
+casts_spells = false

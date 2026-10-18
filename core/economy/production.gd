@@ -3,6 +3,13 @@ extends RefCounted
 ## The economy's production (M5): prices of units, techs and ages, building queues within the
 ## population limit, trained units coming out, research and what techs do to units. Part of
 ## EconomySystem, which owns the state it works on and calls it each tick.
+## The Crown's wayside cross becomes a chapel by the queue item CHAPEL at it (upgrade_wood,
+## upgrade_silver, its build time), queued while an own priest stands by.
+
+## Queue item that makes a shrine a chapel (BuildingStore.upgraded).
+const CHAPEL := &"chapel"
+## A priest this near a shrine (cells from its walls) lets its chapel be queued.
+const CHAPEL_PRIEST_CELLS := 3
 
 var entities: EntityStore
 var nav: NavGrid
@@ -64,7 +71,7 @@ func enqueue(p: int, b: int, item: StringName) -> int:
 	var state := players[p]
 	state.pay(item_cost(p, b, item))
 	buildings.queues[b - 1].append(item)
-	if db.unit(item) == null:
+	if db.unit(item) == null and item != CHAPEL:
 		state.researching[item] = true
 	return EconomySystem.Fail.OK
 
@@ -81,6 +88,8 @@ func can_queue(p: int, b: int, item: StringName) -> int:
 		fail = _tech_fail(state, bdef, db.tech(item))
 	elif db.age(item) != null:
 		fail = _age_fail(state, bdef, db.age(item))
+	elif item == CHAPEL:
+		fail = _chapel_fail(state, b)
 	if fail == EconomySystem.Fail.OK and buildings.dismantling[b - 1] == 1:
 		fail = EconomySystem.Fail.DISMANTLING
 	if fail != EconomySystem.Fail.OK:
@@ -118,6 +127,30 @@ func _tech_fail(state: PlayerState, bdef: BuildingDef, t: TechDef) -> int:
 	return EconomySystem.Fail.OK
 
 
+## The chapel: a shrine that has one (upgrade_power_rate_milli), not yet upgraded nor being
+## upgraded, with an own priest (tag builds_shrine) within CHAPEL_PRIEST_CELLS of it.
+func _chapel_fail(state: PlayerState, b: int) -> int:
+	var s := b - 1
+	if buildings.defs[s].param(&"upgrade_power_rate_milli") <= 0:
+		return EconomySystem.Fail.UNKNOWN
+	if buildings.upgraded[s] == 1 or buildings.queues[s].has(CHAPEL):
+		return EconomySystem.Fail.CONDITION
+	return EconomySystem.Fail.OK if priest_near(state.player, b) else EconomySystem.Fail.CONDITION
+
+
+## Whether an own unit tagged builds_shrine stands within CHAPEL_PRIEST_CELLS of building b.
+func priest_near(p: int, b: int) -> bool:
+	var r := Fixed.from_cells(CHAPEL_PRIEST_CELLS)
+	for id in entities.alive_ids:
+		var slot := id - 1
+		var def := unit_defs[slot]
+		if entities.owners[slot] != p or def == null or not def.tags.has(&"builds_shrine"):
+			continue
+		if buildings.distance_sq(b, entities.pos_x[slot], entities.pos_y[slot]) <= r * r:
+			return true
+	return false
+
+
 func _age_fail(state: PlayerState, bdef: BuildingDef, a: AgeDef) -> int:
 	if bdef.base_id != EconomySystem.TOWN_CENTER or a.index != state.age + 1:
 		return EconomySystem.Fail.UNKNOWN
@@ -136,6 +169,9 @@ func item_cost(p: int, b: int, item: StringName) -> PackedInt32Array:
 	var a := db.age(item)
 	if a != null:
 		return age_cost(a)
+	if item == CHAPEL and buildings.is_alive(b):
+		var def := buildings.defs[b - 1]
+		return PackedInt32Array([0, def.param(&"upgrade_wood"), 0, def.param(&"upgrade_silver")])
 	return PackedInt32Array([0, 0, 0, 0])
 
 
@@ -210,8 +246,10 @@ func cancel(p: int, b: int, index: int) -> void:
 	q.remove_at(index)
 
 
-## Ticks an item (unit, tech, age) takes in a queue.
-func item_ticks(item: StringName) -> int:
+## Ticks an item (unit, tech, age, the chapel at building b) takes in a queue.
+func item_ticks(item: StringName, b: int = BuildingStore.NO_ID) -> int:
+	if item == CHAPEL:
+		return buildings.defs[b - 1].build_ticks if buildings.is_alive(b) else 0
 	var u := db.unit(item)
 	if u != null:
 		return u.train_ticks
@@ -238,7 +276,7 @@ func produce(b: int) -> void:
 			state.pop_training += u.pop
 		buildings.queue_started[s] = 1
 	buildings.queue_ticks[s] += 1
-	if buildings.queue_ticks[s] < item_ticks(item):
+	if buildings.queue_ticks[s] < item_ticks(item, b):
 		return
 	q.remove_at(0)
 	buildings.queue_ticks[s] = 0
@@ -247,6 +285,8 @@ func produce(b: int) -> void:
 		state.pop_training -= u.pop
 		state.trained += 1
 		_release_unit(b, u)
+	elif item == CHAPEL:
+		buildings.upgraded[s] = 1
 	else:
 		_finish_research(state, item)
 
@@ -333,6 +373,12 @@ func _research_done(state: PlayerState, t: TechDef) -> void:
 				state.zaseka_hp_bonus += v
 			"wall_sight":
 				state.wall_sight_bonus += v
+			"tabor_wagons":
+				state.tabor_wagons_bonus += v
+			"tabor_armor":
+				state.tabor_armor_bonus += v
+			"salt_rate":
+				state.salt_rate_bonus += v
 			_:
 				var src := (
 					["gather_farm", "gather_hunt", "gather_bort", "gather_wood", "gather_iron"]

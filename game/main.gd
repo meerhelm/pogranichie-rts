@@ -4,8 +4,10 @@ extends Node2D
 ## sees through the fog of war, with the HUD, minimap and game menu; the main menu opens it.
 ## From M7 the map has places of power to take and shrines to lay, and casters cast spells.
 ## From M8 it is a real skirmish: each side starts with a town centre and peasants
-## (SkirmishSetup), the Order is played by the AI (SkirmishAi, at GameSettings.ai_difficulty),
-## and when one side wins the end screen shows the statistics.
+## (SkirmishSetup), the second side is played by the AI (SkirmishAi, at
+## GameSettings.ai_difficulty), and when one side wins the end screen shows the statistics.
+## The menu picks both factions (GameSettings.player_faction, enemy_faction): GDL, the Crown or
+## the Order.
 ## Left click or drag selects, right click moves or attacks, Ctrl+right click attack-moves;
 ## Q / E / R pick line, column or wedge; Z / X / C set the stance; with peasants, right click
 ## gathers or builds and B places a building; a selected building queues with Z X C V B N M
@@ -58,7 +60,7 @@ func _ready() -> void:
 	sim = _new_world(db)
 	var grid := sim.nav
 	if sim.mission == null:
-		var faction := SkirmishSetup.faction_of(AI_PLAYER)
+		var faction := SkirmishSetup.faction_of(AI_PLAYER, _factions())
 		var profile := SkirmishSetup.ai_profile(faction, GameSettings.ai_difficulty)
 		if profile != null:
 			ai = SkirmishAi.new()
@@ -142,7 +144,12 @@ func _new_world(db: CatalogDB) -> Simulation:
 		)
 		if started != null:
 			return started
-	return SkirmishSetup.new_simulation(SEED, db)
+	return SkirmishSetup.new_simulation(SEED, db, _factions())
+
+
+## The skirmish sides as the menu set them: the player's faction, then the AI's.
+static func _factions() -> Array[StringName]:
+	return [GameSettings.player_faction, GameSettings.enemy_faction]
 
 
 func _save_game() -> void:

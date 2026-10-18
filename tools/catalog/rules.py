@@ -230,6 +230,28 @@ RULES: list[Rule] = [
     (r"стреляет и без батареи", _tags()),
     (r"в дождь перезарядка вдвое дольше", _tags("rain_slow_reload")),
     (r"из (\d+) возов собирается (?:табор|вагенбург.*)", _params(tabor_wagons=1)),
+    # The Crown (skirmish faction): the foot servant by his knight's lance and in close order,
+    # the pavise set up in front of the shooters, the bombard firing only from its battery.
+    (r"рядом с копьём \+(\d+) духа", lambda sp, m, _u: (
+        sp.tag("lance_escort"), sp.params.update(escort_morale=int(m.group(1))))),
+    (r"в сомкнутом строю соседи теряют вдвое меньше духа", _tags("steadies_neighbours")),
+    (
+        r"ставит павезу за (\d+(?:,\d+)?) с: стрелки за ним \+(\d+) к С-броне",
+        lambda sp, m, _u: (
+            sp.tag("pavise"),
+            sp.params.update(pavise_ticks=cells.ticks(m.group(1)), pavise_armor=int(m.group(2))),
+        ),
+    ),
+    (
+        r"стреляет только из батареи \(развёртывание (\d+) с\), (\d+) железа пороха за выстрел",
+        lambda sp, m, _u: (
+            sp.tag("battery_only"),
+            sp.params.update(deploy_ticks=cells.ticks(m.group(1)), shot_iron=int(m.group(2))),
+        ),
+    ),
+    # Campaign-only notes (К5 calls the servant a worker; plague and rumours are mission rules).
+    (r"в кампании сбивает мор и слухи", _tags()),
+    (r"в К5 называется работником", _tags()),
     # Animals and villagers.
     (r"даёт сдачи, идёт на охотника", _tags("charges_hunter")),
     (r"бьёт в ответ", _tags("retaliates")),

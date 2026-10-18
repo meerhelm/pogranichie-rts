@@ -341,5 +341,36 @@ def carcass(seed=0):
     return root
 
 
-DEPOSITS = {"o_bog_ore": o_bog_ore, "o_silver_mine": o_silver_mine, "carcass": carcass}
-DEPOSIT_VARIANTS = {"o_bog_ore": 3, "o_silver_mine": 3, "carcass": 1}
+def o_salt_spring(seed=0):
+    """A brine spring (Соляной источник): a dark pool in a crust of white salt on the grass, a
+    low log curb round the outlet, a bucket beside it, a few stones."""
+    rng = random.Random(seed + 5)
+    salt = S.mat("salt_crust", "#ecebe4", 0.8, noise=0.15)
+    brine = S.mat("brine", "#3e5258", 0.08)
+    wet = S.mat("wet_ground", "#5a5440", 0.6, noise=0.3)
+    logs = S.mat("logs", "#8a6b47", 0.85, noise=0.35)
+    stone = S.mat("stone", "#7d776c", 0.9, noise=0.35)
+    root = S.empty("o_salt_spring")
+    S.cyl("wet", 0.85, 0.85, 0.02, (0, 0, 0.0), wet, root, seg=20).scale = (1.0, 0.85, 1.0)
+    for i in range(9):
+        a = i * math.tau / 9 + rng.uniform(-0.2, 0.2)
+        d = rng.uniform(0.45, 0.62)
+        S.ball(f"crust_{i}", rng.uniform(0.14, 0.22), (math.cos(a) * d, math.sin(a) * d * 0.85, 0.0), salt, root,
+               scale=(1.4, 1.0, 0.25), seg=10)
+    S.cyl("pool", 0.48, 0.48, 0.035, (0, 0, 0.0), brine, root, seg=20).scale = (1.0, 0.85, 1.0)
+    # The log curb round the spring's outlet, a bucket on its rim.
+    cx, cy = 0.15, 0.2
+    for i, (x, y, rz) in enumerate([(0, -0.2, 0), (0, 0.2, 0), (-0.2, 0, math.pi / 2), (0.2, 0, math.pi / 2)]):
+        S.cyl(f"curb_{i}", 0.045, 0.045, 0.5, (cx + x - 0.25 * math.cos(rz), cy + y - 0.25 * math.sin(rz),
+                                                0.05 + 0.07 * (i // 2)), logs, root, rot=(0, math.pi / 2, rz), seg=7)
+    S.cyl("bucket", 0.09, 0.11, 0.16, (cx + 0.45, cy - 0.45, 0.0), S.mat("barrel", "#7c5a36", 0.8, noise=0.3), root,
+          seg=10)
+    for i in range(4):
+        a = rng.uniform(0, math.tau)
+        S.rock(f"stone_{i}", rng.uniform(0.08, 0.13), (math.cos(a) * 0.75, math.sin(a) * 0.65, 0.03), stone, root,
+               seed=seed * 5 + i)
+    return root
+
+
+DEPOSITS = {"o_bog_ore": o_bog_ore, "o_silver_mine": o_silver_mine, "carcass": carcass, "o_salt_spring": o_salt_spring}
+DEPOSIT_VARIANTS = {"o_bog_ore": 3, "o_silver_mine": 3, "carcass": 1, "o_salt_spring": 1}

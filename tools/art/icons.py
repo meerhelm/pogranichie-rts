@@ -20,8 +20,9 @@ SPRITES = os.path.join(ROOT, "art", "sprites")
 OUT = os.path.join(ROOT, "ui", "icons")
 SIZE = 128
 MARGIN = 6
-## Team mask colour per faction: the Duchy's red (player 1 in a skirmish), the Order's white.
-FACTION_TEAM = {"gdl": (217, 51, 38), "to": (242, 242, 230), "nt": (180, 180, 180)}
+## Team mask colour per faction: the Duchy's red (player 1 in a skirmish), the Order's white,
+## the Crown's crimson (darker than the Duchy's, so the two read apart).
+FACTION_TEAM = {"gdl": (217, 51, 38), "to": (242, 242, 230), "nt": (180, 180, 180), "pl": (168, 24, 48)}
 ## Units are shown turned three-quarters to the viewer (UnitView.facing 3 = south-west).
 UNIT_FACING = 3
 ## No upscaling beyond this, so small figures stay crisp.
@@ -109,19 +110,24 @@ def unit_icon(type_id: str) -> Image.Image:
 def _prototype():
     proto = json.load(open(os.path.join(ROOT, "tools", "catalog", "prototype.json")))
     buildings = list(proto["buildings"])
-    units = [u for u in proto["units"] if u.startswith(("gdl_", "to_"))]
+    units = [u for u in proto["units"] if u.startswith(("gdl_", "to_", "pl_"))]
     return buildings, units
 
 
 def main(ids: list[str]) -> None:
+    """Tiles for the prototype's buildings and units, or for `ids` (also art ids outside the
+    prototype, such as pl_shrine_chapel). Ids drawn with another's art (SpriteDB.ALIASES) have
+    no sprite of their own and are skipped: IconDB gives them the icon of that art."""
     buildings, units = _prototype()
+    if ids:
+        buildings, units = ids, ids
     os.makedirs(os.path.join(OUT, "buildings"), exist_ok=True)
     os.makedirs(os.path.join(OUT, "units"), exist_ok=True)
     for b in buildings:
-        if not ids or b in ids:
+        if os.path.exists(os.path.join(SPRITES, "buildings", f"{b}_done_color.png")):
             building_icon(b).save(os.path.join(OUT, "buildings", b + ".png"), optimize=True)
     for u in units:
-        if not ids or u in ids:
+        if os.path.exists(os.path.join(SPRITES, "units", u, "sheet.json")):
             unit_icon(u).save(os.path.join(OUT, "units", u + ".png"), optimize=True)
 
 

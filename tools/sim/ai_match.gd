@@ -13,6 +13,8 @@ const CSV_HEADER := (
 )
 
 var db: CatalogDB
+## Factions of player 1 and player 2 (SkirmishSetup.FACTIONS).
+var factions: Array[StringName] = SkirmishSetup.DEFAULT_FACTIONS
 
 
 ## Outcome of one game.
@@ -32,12 +34,12 @@ func _init(p_db: CatalogDB) -> void:
 ## Plays one game; `on_tick` (if valid) is called with the simulation after every step.
 func play(game_seed: int, difficulty: StringName, max_ticks: int = MAX_TICKS) -> Game:
 	var g := Game.new()
-	var sim := SkirmishSetup.new_simulation(SkirmishAi.mix_seed(game_seed, 0), db)
+	var sim := SkirmishSetup.new_simulation(SkirmishAi.mix_seed(game_seed, 0), db, factions)
 	g.sim = sim
 	var ais: Array[SkirmishAi] = []
 	for base: Array in SkirmishSetup.BASES:
 		var ai := SkirmishAi.new()
-		var faction: StringName = base[1]
+		var faction := SkirmishSetup.faction_of(base[0], factions)
 		ai.setup(sim, base[0], SkirmishSetup.ai_profile(faction, difficulty), game_seed)
 		ais.append(ai)
 	var start := Time.get_ticks_usec()
@@ -60,7 +62,7 @@ func row(index: int, game_seed: int, difficulty: StringName, g: Game) -> String:
 		game_seed,
 		difficulty,
 		g.winner,
-		SkirmishSetup.faction_of(g.winner) if g.winner != 0 else "",
+		SkirmishSetup.faction_of(g.winner, factions) if g.winner != 0 else "",
 		SkirmishVictory.Reason.keys()[g.reason].to_lower() if g.winner != 0 else "timeout",
 		"%.1f" % (g.ticks / 1200.0),
 	]

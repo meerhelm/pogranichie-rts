@@ -151,7 +151,7 @@ func rate_milli(i: int) -> int:
 	var b := shrines[i]
 	if not buildings.is_done(b):
 		return 0
-	var rate := buildings.defs[b - 1].power_rate_milli * defs[i].power_permille / 1000
+	var rate := BuildingStore.power_rate(buildings, b) * defs[i].power_permille / 1000
 	if consecrated[i] == 1:
 		rate = rate * rules.consecration_permille / 1000
 	if quenched.has(i):

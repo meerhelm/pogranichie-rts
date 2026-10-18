@@ -58,6 +58,8 @@ var rally: Dictionary[int, Vector2i] = {}
 ## «Гнев Перкуна» (set by Simulation): `silenced(slot) -> bool`, true while rain keeps the
 ## unit's bow, crossbow or gun from shooting.
 var silenced: Callable
+## Spell boosts (set by Simulation): `boost()` fills crown's spell maps at the start of a step.
+var boost: Callable
 ## Khorugv banners (ВКЛ 2): who carries one; the mission sets them.
 var banners := Banners.new()
 ## Allies (set by Simulation): units never pick fights with their side.
@@ -78,6 +80,8 @@ var buckets: UnitBuckets
 var untouchable: Dictionary[int, bool] = {}
 ## Units that cannot be brought below this many HP, by id (ВКЛ 4, hashed by MissionMarch).
 var hp_floor: Dictionary[int, int] = {}
+## The Crown's tabor, pavise, lance, battery and spell boosts.
+var crown: CrownTactics
 
 # Simulation callbacks (Callables do not keep the simulation alive, so no reference cycle).
 var _walk: Callable
@@ -112,6 +116,7 @@ func _init(
 	_forest = nav.terrain_index(FOREST)
 	_hill = nav.terrain_index(HILL)
 	buckets = UnitBuckets.new(nav.width, nav.height)
+	crown = CrownTactics.new(entities, rules, buckets)
 
 
 func enabled() -> bool:
@@ -124,6 +129,7 @@ func on_spawn(id: int, def: UnitDef) -> void:
 	flags.append(CombatFlags.of(def, false))
 	if def == null or rules == null:
 		return
+	crown.on_spawn(id, def)
 	var e := entities
 	var slot := id - 1
 	if flags[slot] & F_HERO:
@@ -147,13 +153,15 @@ func order(cmd: SimCommand, ids: PackedInt32Array) -> void:
 			for id in ids:
 				_set_stance(id, clampi(cmd.value, 0, EntityStore.Stance.PASSIVE))
 		SimCommand.Kind.RETREAT:
-			_order_retreat(cmd.player, ids)
+			Maneuvers.retreat(self, cmd.player, ids)
 		SimCommand.Kind.TURN:
 			for id in ids:
-				_order_turn(id, cmd.target)
+				Maneuvers.turn(self, id, cmd.target)
 		SimCommand.Kind.DISMOUNT:
 			for id in ids:
-				_toggle_dismount(id)
+				Maneuvers.toggle_dismount(self, id)
+		SimCommand.Kind.TABOR:
+			Maneuvers.tabor(self, ids)
 		SimCommand.Kind.RALLY:
 			rally[cmd.player] = Vector2i(_clamp_x(cmd.x), _clamp_y(cmd.y))
 
@@ -227,87 +235,6 @@ func _set_stance(id: int, value: int) -> void:
 			_stop.call(id)
 
 
-## «Литовский отход»: the group turns and rides retreat_cells toward its rally point, faster and
-## without losing morale for a while; «Разворот» may follow within turn_window_ticks.
-func _order_retreat(player: int, ids: PackedInt32Array) -> void:
-	var e := entities
-	var ready := PackedInt32Array()
-	var sum_x := 0
-	var sum_y := 0
-	for id in ids:
-		var slot := id - 1
-		if flags[slot] & F_RETREAT and e.retreat_cd[slot] == 0:
-			ready.append(id)
-			sum_x += e.pos_x[slot]
-			sum_y += e.pos_y[slot]
-	if ready.is_empty():
-		return
-	var cx := Fixed.floor_div(sum_x, ready.size())
-	var cy := Fixed.floor_div(sum_y, ready.size())
-	var goal := _rally_of(player, ready[0] - 1)
-	var dx := goal.x - cx
-	var dy := goal.y - cy
-	var d := Fixed.isqrt(dx * dx + dy * dy)
-	if d < Fixed.ONE:
-		# Already at the rally point: ride away from where the first unit faces.
-		dx = -e.facing_x[ready[0] - 1]
-		dy = -e.facing_y[ready[0] - 1]
-		d = Fixed.ONE
-	var off_x := dx * Fixed.from_cells(rules.retreat_cells) / d
-	var off_y := dy * Fixed.from_cells(rules.retreat_cells) / d
-	for id in ready:
-		var slot := id - 1
-		_clear_target(slot)
-		e.attack_move[slot] = 0
-		e.intents[slot] = EntityStore.Intent.RETREAT
-		e.intent_ticks[slot] = rules.retreat_fearless_ticks
-		e.retreat_cd[slot] = rules.retreat_cooldown_ticks
-		e.turn_ticks[slot] = rules.turn_window_ticks
-		e.turn_bonus[slot] = 0
-		_walk.call(id, _clamp_x(e.pos_x[slot] + off_x), _clamp_y(e.pos_y[slot] + off_y))
-
-
-## «Разворот»: within the window after a retreat, turn on the enemy (the given one or the
-## nearest) with +turn_damage_bonus and a ×turn_charge_permille charge on the next hit. The
-## bonus waits up to turn_window_ticks for that hit; one turn per retreat.
-func _order_turn(id: int, enemy: int) -> void:
-	var e := entities
-	var slot := id - 1
-	if e.turn_ticks[slot] == 0 or e.turn_bonus[slot] == 1:
-		return
-	_end_retreat(slot)
-	e.turn_bonus[slot] = 1
-	e.turn_ticks[slot] = rules.turn_window_ticks
-	e.attack_move[slot] = 0
-	var owner := e.owners[slot]
-	if (
-		e.is_alive(enemy)
-		and not sides.friendly(e.owners[enemy - 1], owner)
-		and not _hidden_from(enemy - 1, owner)
-	):
-		e.target[slot] = enemy
-		e.target_kind[slot] = EntityStore.TargetKind.ORDERED
-	else:
-		_acquire(slot, _sight(slot))
-	e.chase_x[slot] = e.pos_x[slot]
-	e.chase_y[slot] = e.pos_y[slot]
-
-
-func _toggle_dismount(id: int) -> void:
-	var e := entities
-	var slot := id - 1
-	var def := defs[slot]
-	if not flags[slot] & F_DISMOUNT:
-		return
-	var down := e.dismounted[slot] == 0
-	e.dismounted[slot] = 1 if down else 0
-	flags[slot] = CombatFlags.of(def, down)
-	var speed_milli := rules.dismount_speed_milli if down else def.speed_milli
-	e.speed[slot] = Fixed.speed_per_tick(speed_milli)
-	e.move_class[slot] = NavGrid.MoveClass.FOOT if down else NavGrid.move_class_for(def)
-	_stop.call(id)
-
-
 func _end_retreat(slot: int) -> void:
 	var e := entities
 	if e.intents[slot] == EntityStore.Intent.RETREAT:
@@ -343,6 +270,10 @@ func step(at_tick: int) -> void:
 	if rules == null:
 		return
 	buckets.fill(entities)
+	crown.defs = defs
+	crown.refresh(tick)
+	if boost.is_valid():
+		boost.call()
 	var e := entities
 	for id in e.alive_ids:
 		_count_down(id - 1)
@@ -359,6 +290,7 @@ func after_move() -> void:
 	if rules == null:
 		return
 	var e := entities
+	crown.after_move()
 	for id in e.alive_ids:
 		var slot := id - 1
 		if e.moved[slot] == 0:
@@ -497,14 +429,17 @@ func _engage(id: int) -> void:
 		if e.cooldown[slot] == 0:
 			if flags[slot] & F_RANGED and silenced.is_valid() and silenced.call(slot):
 				return
+			if not crown.may_fire(slot):
+				return
+			crown.fired(slot)
 			if flags[slot] & F_RANGED:
 				_shoot(slot, t, dist)
 			else:
 				_strike(slot, t)
 			e.cooldown[slot] = maxi(def.reload_ticks, 1)
 		return
-	if e.stance[slot] == EntityStore.Stance.STAND:
-		if e.target_kind[slot] != EntityStore.TargetKind.ORDERED:
+	if e.stance[slot] == EntityStore.Stance.STAND or crown.anchored(slot):
+		if e.target_kind[slot] != EntityStore.TargetKind.ORDERED or crown.anchored(slot):
 			return
 	var drift := Fixed.distance(e.target_x[slot], e.target_y[slot], e.pos_x[t], e.pos_y[t])
 	if e.orders[slot] == EntityStore.Order.IDLE:
@@ -527,10 +462,13 @@ func _strike(slot: int, t: int) -> void:
 	var e := entities
 	var def := defs[slot]
 	var hit := _hit_from(slot, t, def.damage, def.damage_type)
+	var charged := false
 	if flags[slot] & F_CHARGE:
 		var run_up := def.param(&"charge_distance", rules.charge_distance_default)
 		if e.run[slot] >= Fixed.from_cells(run_up):
 			hit.multipliers.append(def.param(&"charge_permille", 1000))
+			charged = true
+	hit.damage -= crown.strike_penalty(slot, charged)
 	if e.turn_bonus[slot] == 1:
 		hit.multipliers.append(rules.turn_charge_permille)
 	e.run[slot] = 0
@@ -555,6 +493,8 @@ func _hit_from(slot: int, t: int, damage: int, damage_type: StringName) -> Damag
 	hit.side = _side(t, e.pos_x[slot], e.pos_y[slot])
 	if wavering(slot):
 		hit.multipliers.append(rules.waver_damage_permille)
+	if crown.damage_permille(slot) != 1000:
+		hit.multipliers.append(crown.damage_permille(slot))
 	return hit
 
 
@@ -681,7 +621,7 @@ func _apply_hit(
 	if tenths > e.lost_tenths[t]:
 		loss += (tenths - e.lost_tenths[t]) * rules.morale_per_tenth_hp
 		e.lost_tenths[t] = mini(tenths, 10)
-	if side == Damage.Side.FLANK:
+	if side == Damage.Side.FLANK and not crown.ignores_flank(t):
 		loss += rules.flank_hit_morale
 	elif side == Damage.Side.REAR:
 		loss += rules.rear_hit_morale
@@ -756,12 +696,13 @@ func lose_morale(slot: int, points: int) -> void:
 		return
 	if e.intents[slot] == EntityStore.Intent.RETREAT:
 		return
+	var lost := crown.morale_loss(slot, points)
 	var lowest := 0
 	if morale_floor.is_valid():
 		var floor_points: int = morale_floor.call(slot)
 		if e.morale[slot] > floor_points * MORALE_SCALE:
 			lowest = floor_points * MORALE_SCALE
-	e.morale[slot] = maxi(lowest, e.morale[slot] - points * MORALE_SCALE)
+	e.morale[slot] = maxi(lowest, e.morale[slot] - lost * MORALE_SCALE)
 	if e.morale[slot] == 0 and e.intents[slot] == EntityStore.Intent.NONE:
 		if morale_bonus(slot) <= 0:
 			_flee(slot)
@@ -774,7 +715,7 @@ func effective_morale(slot: int) -> int:
 
 func morale_bonus(slot: int) -> int:
 	var e := entities
-	var bonus := 0
+	var bonus := crown.morale_bonus(slot)
 	var owner := e.owners[slot]
 	var px := e.pos_x[slot]
 	var py := e.pos_y[slot]
@@ -891,7 +832,7 @@ func _armor_melee(t: int) -> int:
 		a += def.param(&"dismount_armor_melee")
 	if e.disorder[t] > 0:
 		a -= rules.retreat_disorder_armor
-	return a
+	return a + crown.armor_melee(t)
 
 
 func _armor_pierce(t: int) -> int:
@@ -903,7 +844,7 @@ func _armor_pierce(t: int) -> int:
 		a += def.param(&"forest_armor_pierce")
 	if entities.dismounted[t] == 1:
 		a += def.param(&"dismount_armor_pierce")
-	return a
+	return a + crown.armor_pierce(t)
 
 
 ## Striking distance in fixed units: melee reach, or range with the hill and forest bonuses.
@@ -993,6 +934,7 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_64(rally[p].y)
 	shots.write_to(buf)
 	banners.write_to(buf)
+	crown.write_to(buf)
 	var guarded := untouchable.keys()
 	guarded.sort()
 	buf.put_32(guarded.size())

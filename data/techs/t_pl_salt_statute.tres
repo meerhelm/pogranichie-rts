@@ -14,4 +14,4 @@ cost_iron = 0
 cost_silver = 150
 research_ticks = 800
 faith = false
-effects = Dictionary[StringName, int]({})
+effects = Dictionary[StringName, int]({&"salt_rate": 300})

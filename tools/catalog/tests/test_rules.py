@@ -82,6 +82,23 @@ class ClauseTest(unittest.TestCase):
         self.assertEqual(sp.unparsed, [])
         self.assertEqual(sp.bonuses, {"cavalry": 8})
 
+    def test_crown_skirmish_troops(self):
+        sp = parse_special(
+            "Пехота. Рядом с копьём +10 духа; в сомкнутом строю соседи теряют вдвое меньше духа"
+        )
+        self.assertEqual(sp.unparsed, [])
+        self.assertEqual(sp.tags, ["lance_escort", "steadies_neighbours"])
+        self.assertEqual(sp.params, {"escort_morale": 10})
+        sp = parse_special("Пехота. Ставит павезу за 3 с: стрелки за ним +3 к С-броне")
+        self.assertEqual(sp.params, {"pavise_ticks": 60, "pavise_armor": 3})
+        sp = parse_special(
+            "Осадное, огнестрел. Стреляет только из батареи (развёртывание 20 с), "
+            "5 железа пороха за выстрел"
+        )
+        self.assertEqual(sp.unparsed, [])
+        self.assertEqual(sp.tags, ["battery_only"])
+        self.assertEqual(sp.params, {"deploy_ticks": 400, "shot_iron": 5})
+
     def test_unknown_clause_is_reported_not_dropped(self):
         sp = parse_special("Пехота. Поёт песни; +6 к коннице")
         self.assertEqual(sp.unparsed, ["Поёт песни"])

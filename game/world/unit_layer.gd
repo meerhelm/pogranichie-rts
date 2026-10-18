@@ -96,6 +96,9 @@ func _show_action(id: int, v: UnitView, moved: bool) -> void:
 		job in [EconomySystem.Job.GATHER, EconomySystem.Job.BUILD, EconomySystem.Job.DISMANTLE]
 		and eco.phase[slot] == EconomySystem.Phase.WORK
 	)
+	# The Crown's pavisier crouches behind his set pavise (its work animation).
+	if sim.combat.enabled() and sim.combat.crown.pavise_set(id):
+		work = true
 	v.set_working(work)
 	var at := _work_point(slot, job) if work or job == EconomySystem.Job.ASSAULT else NO_POINT
 	var blow := e.last_attack[slot]

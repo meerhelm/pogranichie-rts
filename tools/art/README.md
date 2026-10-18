@@ -73,6 +73,21 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
   `prop_oak`, which renders in a bigger frame (`registry.PROP_FRAMES`). `pl_field_gun` and
   `mo_tatar` have no model of their own: `SpriteDB.ALIASES` draws them as `gdl_field_gun` and
   `nt_steppe_archer`.
+- `folk_crown.py` and `buildings_pl.py` — the Crown of Poland as a skirmish faction. Units:
+  the kmet (sermięga, an axe; works like the Duchy's peasant), the bowman (hood with a pelerine,
+  longbow), the light horse (mail, kapalin, a small shield with the White Eagle), the foot
+  servant (sulica, a small round shield), the pavise man (`PaviseMan`: a falchion, the pavise on
+  his back; his `work`, played while the pavise is set up, plants it in front of him and shows
+  him crouched behind it), the priest (cassock, surplice, stole, a cross on a staff raised in
+  `cast`, so the tall frame) and the wagon under a white canvas with red hoops. Buildings:
+  whitewashed timber under thatch and shingle for the village (the manor «Двор» with its porch
+  and brick lamus, the cottage «Хата», the wayside cross `pl_shrine` and the chapel it becomes,
+  `pl_shrine_chapel`, a separate art id), brick Gothic with white stone for the church
+  «Костёл» (green copper spire) and the castle «Замок» (round towers, a round keep, a palace in
+  an open court), the salt works with steam and a horse capstan, the gabion battery; the
+  Crown's flag (`crown_flag`) is the White Eagle on red with a team pennon. `pl_camp_servant`,
+  `pl_bombard` and `pl_field_camp` have no model: `SpriteDB.ALIASES` draws them as
+  `gdl_camp_servant`, `to_bombard` and `gdl_field_camp`.
 - `kit.py` — building materials (log, thatch, shingle, brick, roof tile, plaster and timber
   framing) and parts (roofs, stepped gables, windows, sheds, fences, barrels);
   `buildings_gdl.py` and `buildings_to.py` — the Duchy's and the Order's buildings.
@@ -91,8 +106,8 @@ The game reads them through `game/world/SpriteDB`; ids without art keep their pl
 at a job, else idle, turned to the target or the work. `--add` renders only the animations a
 sheet lacks and copies the old rows back, so a new animation does not re-render the rest.
 Building frames are rendered large and cropped to what all stages cover. Unit frames: 160×144
-on foot (160×216 the monk with his raised icon, 288×216 the drab with his pike, 224×144 the
-handgunner), 224×256 mounted (an upright lance), 224×176
+on foot (160×216 the monk with his raised icon and the Crown's priest with his cross,
+288×216 the drab with his pike, 224×144 the handgunner), 224×256 mounted (an upright lance), 224×176
 big beasts, 320×240 the wagon, the bombard and the field gun; `bar_y` in `sheet.json` is where the HP bar goes.
 
 Line pieces: a palisade cell is its post cluster (`<id>`) plus arms toward the neighbours
@@ -121,7 +136,8 @@ build_66, done, damaged_1, damaged_2, rubble. Normal maps are not rendered yet.
 - `tiles.py` — a seamless top-down texture per terrain (periodic FFT noise), cut into a 4×4
   atlas of isometric tiles in `art/tiles/<terrain>.png`; cell (x, y) uses tile (x % 4, y % 4).
   Tiles are 96×48: the 64×32 diamond plus a ragged fading rim that blends terrains.
-- `render.py o_bog_ore o_silver_mine carcass` — map resources in variants
+- `render.py o_bog_ore o_silver_mine o_salt_spring carcass` — map resources in variants (the salt
+  spring, a brine pool in a salt crust with a log curb, is where the Crown builds its salt works)
   (`art/sprites/deposits/<id>_<v>_{color,shadow}.png`), picked per cell by `SpriteDB.deposit_at`.
 
 ## HUD icons

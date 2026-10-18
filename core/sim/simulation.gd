@@ -28,7 +28,10 @@ extends RefCounted
 ##   cover, the feint to the rally point, the chase (MissionBattle in the mission hash).
 ## 19: the builder of a field or hive works it at once; wood is cut from the forest cell nearest
 ##   to where it is carried.
-const SIM_VERSION := 19
+## 20: the Crown as a skirmish faction: tabor rings, pavises, the tiring lance, the foot
+##   servant, the bombard's battery, the shrine's chapel, salt works on salt springs, and the
+##   spells «Богородица», «Благословение хоругви» and «Договор».
+const SIM_VERSION := 20
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).
@@ -141,6 +144,9 @@ func _init(
 	magic = MagicSystem.new(entities, nav, db, economy, combat, walk_unit, stop_unit, remove_unit)
 	combat.morale_floor = magic.morale_floor
 	combat.silenced = magic.silenced
+	combat.boost = magic.boost
+	combat.crown.buildings = economy.buildings
+	combat.crown.players = economy.players
 	combat.on_kill = _count_kill
 	vision.mist = magic.mist
 	victory = SkirmishVictory.new(db.skirmish if db != null else null, economy, magic.places)
@@ -333,7 +339,7 @@ func _apply(cmd: SimCommand) -> void:
 			fire.order(cmd, ids)
 		_:
 			var ids := _obedient(cmd)
-			if cmd.kind == SimCommand.Kind.ATTACK or cmd.kind == SimCommand.Kind.RETREAT:
+			if cmd.kind in [SimCommand.Kind.ATTACK, SimCommand.Kind.RETREAT, SimCommand.Kind.TABOR]:
 				economy.drop_jobs(ids)
 				magic.drop_casts(ids)
 				fire.drop(ids)

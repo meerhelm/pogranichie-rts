@@ -117,3 +117,9 @@ chase, the Kropivna and the captive commander in the hashes; `data_version` chan
 Crown's mercenary foot, field gun and hussars, the service Tatars and the mission's heroes in the
 prototype catalog). The fuzzer picks unit types from the prototype catalog, so its spawn orders
 changed too. Every mission bot wins at the same tick as before. `gdl08_playthrough.json` is new.
+All re-recorded for `sim_version` 20 (the Crown as a skirmish faction: tabor rings, pavises, the
+tiring lance, the foot servant, the bombard's battery, the chapel flag of buildings, salt works and
+the salt springs on `map_proto_samogitia`, the Crown's spells; `data_version` changed with the
+Crown's units, buildings, techs and spells in the prototype catalog). The fuzzer picks unit types
+from the prototype catalog, so its spawn orders changed too. Every mission bot wins at the same
+tick as before.

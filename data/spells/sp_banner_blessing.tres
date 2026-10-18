@@ -13,5 +13,5 @@ debt_cost = 0
 cooldown_ticks = 2400
 radius = 0
 duration_ticks = 1200
-tags = Array[StringName]([&"single_target"])
+tags = Array[StringName]([&"single_target", &"target_point", &"blessing"])
 params = Dictionary[StringName, int]({})

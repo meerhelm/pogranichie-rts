@@ -34,7 +34,8 @@ COMBAT_RULE_KEYS = (
     "dismount_speed_milli", "retreat_cells", "retreat_fearless_ticks", "retreat_speed_permille",
     "retreat_disorder_ticks", "retreat_disorder_armor", "turn_window_ticks", "turn_damage_bonus",
     "turn_charge_permille", "retreat_cooldown_ticks", "arena_budget", "arena_iron_permille",
-    "arena_silver_permille", "banner_morale", "banner_radius",
+    "arena_silver_permille", "banner_morale", "banner_radius", "escort_radius_milli",
+    "pavise_cover_cells", "tabor_link_cells", "tabor_link_ticks", "tabor_armor",
 )
 
 # Economy and construction numbers (M5), in data/rules/economy.tres; values from manual.json.
@@ -46,7 +47,7 @@ ECONOMY_RULE_KEYS = (
     "start_wood", "start_iron", "start_silver", "work_reach_milli", "resource_search_cells",
     "builder_extra_permille", "repair_cost_permille", "repair_time_permille", "queue_max",
     "cancel_refund_permille", "near_forest_cells", "dismantle_refund_permille",
-    "dismantle_time_permille", "gather_salvage_milli",
+    "dismantle_time_permille", "gather_salvage_milli", "salt_spring_silver",
 )
 # Fog of war numbers (M6), in data/rules/vision.tres; values from manual.json.
 VISION_RULE_KEYS = (
@@ -57,7 +58,8 @@ MAGIC_RULE_KEYS = (
     "capture_ticks", "capture_radius", "power_cap", "consecration_permille",
     "alka_recharge_permille", "alka_recharge_radius", "cast_range", "relic_morale_floor",
     "relic_enemy_morale", "exorcism_creature_damage", "storm_strikes", "storm_damage",
-    "icon_morale_floor",
+    "icon_morale_floor", "hymn_morale", "blessing_armor", "blessing_morale", "pact_damage_permille",
+    "heal_radius_default",
 )
 # Skirmish victory (M8), in data/rules/skirmish.tres; values from manual.json.
 SKIRMISH_RULE_KEYS = ("hold_all_places_ticks",)
@@ -69,16 +71,18 @@ FIRE_RULE_KEYS = (
 # What a spell does in the game (manual.json → spell_effects, appended to SpellDef.tags): how it
 # is aimed and which effect the simulation runs. A prototype spell must have both or be passive.
 SPELL_TARGETS = ("target_point", "target_self", "passive")
-SPELL_EFFECTS = ("mist", "dispel", "relic", "icon", "consecration", "storm", "wolf_path")
+SPELL_EFFECTS = (
+    "mist", "dispel", "relic", "icon", "consecration", "storm", "wolf_path", "hymn", "blessing", "pact",
+)
 # Keys of tech effects (manual.json → tech_effects). Gathering and farm keys are per-mille
 # increases; "<class or unit id>.<stat>" keys change unit stats (see TECH_STATS).
 TECH_EFFECT_KEYS = (
     "gather_farm", "gather_hunt", "gather_bort", "gather_wood", "gather_iron", "gather_silver",
-    "farm_food", "zaseka_speed", "zaseka_hp", "wall_sight",
+    "farm_food", "zaseka_speed", "zaseka_hp", "wall_sight", "tabor_wagons", "tabor_armor", "salt_rate",
 )
 TECH_STATS = (
     "damage_melee", "damage_pierce", "armor_melee", "armor_pierce", "range", "hp_permille",
-    "heal", "radius",
+    "heal", "radius", "cost_permille",
 )
 
 # Field types: int, bool, name (StringName), names (Array[StringName]),

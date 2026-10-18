@@ -4,7 +4,7 @@ and neck for mounted units, the whole wagon. Turned three-quarters to the viewer
 the sprites, with the team colour of the faction; laid on the plate of tools/art/icons.py
 as 128×128 PNG in ui/icons/units.
 
-    python3 -m tools.art.portraits              # every prototype unit of the two factions
+    python3 -m tools.art.portraits              # every prototype unit of gdl, to and pl
     python3 -m tools.art.portraits gdl_spearman
 """
 
@@ -90,8 +90,8 @@ def main(ids: list[str]) -> None:
     _, units = icons._prototype()
     out = os.path.join(icons.OUT, "units")
     os.makedirs(out, exist_ok=True)
-    for uid in units:
-        if not ids or uid in ids:
+    for uid in ids or units:
+        if uid in registry.UNITS:  # aliases (pl_camp_servant...) use the icon of their art
             print(render(uid, out))
 
 

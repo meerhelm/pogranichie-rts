@@ -11,7 +11,10 @@
   "gdl_farm": {"cost": "0/40/0/0", "params": {"food_capacity": 250}, "tags": ["near_forest_only"]},
   "gdl_wall": {"cost": "0/10/0/0 за клетку", "hp": "1200", "tags": ["burns_slowly"]},
   "mo_wall": {"cost": "0/8/0/2 за клетку", "hp": "1500", "tags": ["burns_slowly"]},
-  "pl_shrine": {"cost": "0/40/0/0", "params": {"upgrade_wood": 100, "upgrade_silver": 30}}
+  "pl_shrine": {"cost": "0/40/0/0", "params": {"upgrade_wood": 100, "upgrade_silver": 30}},
+  "_crown_source": "Корона tab, «Уникальные постройки»: pl_salt_works «Ставится на соляном источнике; 0,3 серебра/с без крестьян; не больше 2» (tag on_salt_spring, limit, silver_milli); pl_battery «1–2 бомбарды» (guns: how many bombards fire from one battery at a time)",
+  "pl_salt_works": {"params": {"limit": 2, "silver_milli": 300}, "tags": ["on_salt_spring"]},
+  "pl_battery": {"params": {"guns": 2}}
  },
  "excluded_techs": {
   "_source": "«Общие технологии», t_three_field: «нет у ВКЛ»",
@@ -42,8 +45,9 @@
  "combat_rules": {
   "_source": "Catalog «Обзор и правила» → «Урон», «Боевой дух», «Сверка статов»; ВКЛ tab → «Литовский отход»; banner_morale: «Боевой дух» → «знамя хоругви рядом +10» (ВКЛ 2). The catalog states these only in prose. Keys in `_temporary` are not in the catalog at all: guesses for M4, to confirm or move into the catalog.",
   "_temporary": [
-   "charge_distance_default", "neighbour_radius_milli", "out_of_combat_ticks", "formation_neighbours", "formation_radius_milli", "sight_default", "melee_reach_milli", "pursuit_cells", "defensive_leash_cells", "projectile_speed_milli", "stealth_reveal_ticks", "banner_radius"
+   "charge_distance_default", "neighbour_radius_milli", "out_of_combat_ticks", "formation_neighbours", "formation_radius_milli", "sight_default", "melee_reach_milli", "pursuit_cells", "defensive_leash_cells", "projectile_speed_milli", "stealth_reveal_ticks", "banner_radius", "escort_radius_milli", "pavise_cover_cells", "tabor_link_cells"
   ],
+  "_crown_source": "The Crown (2026-10-18). tabor_link_ticks and tabor_armor: Корона tab, «Табор» («сцепляются за 10 секунд», «+3/+3 брони»). Temporary: escort_radius_milli (how near the knight's lance «рядом с копьём» is), pavise_cover_cells (how far behind the pavise its cover reaches), tabor_link_cells (wagons this close to each other belong to one ring).",
   "values": {
    "flank_permille": 1250,
    "rear_permille": 1500,
@@ -90,12 +94,18 @@
    "arena_iron_permille": 1500,
    "arena_silver_permille": 2000,
    "banner_morale": 10,
-   "banner_radius": 8
+   "banner_radius": 8,
+   "escort_radius_milli": 3000,
+   "pavise_cover_cells": 2,
+   "tabor_link_cells": 3,
+   "tabor_link_ticks": 200,
+   "tabor_armor": 3
   }
  },
  "economy_rules": {
   "_source": "Catalog «Обзор и правила» → «Эпохи, население, сбор» (carry, pop_cap, gather rates, tree, ore and silver amounts); ВКЛ tab → «Засеки» (zaseka_cells) and gdl_bort «2 крестьянина» (bort_workers); Орден tab → «Кирпич» (brick discounts). The catalog states these only in prose. Keys in `_temporary` are not in the catalog at all: guesses for M5, to confirm or move into the catalog. dismantle_refund_permille: Valentin 2026-10-16, own buildings are taken apart by peasants for 80% of their price, carried to storage; lowered to 50% by Valentin the same day.",
   "_temporary": ["farm_workers", "start_food", "start_wood", "start_iron", "start_silver", "work_reach_milli", "resource_search_cells", "builder_extra_permille", "repair_cost_permille", "repair_time_permille", "queue_max", "cancel_refund_permille", "near_forest_cells", "dismantle_time_permille", "gather_salvage_milli"],
+  "_crown_source": "salt_spring_silver: «Локации» → o_salt_spring «другие могут поставить рудницу на 300 серебра» (the spring's own silver, mined like a deposit until a salt works covers it).",
   "values": {
    "carry": 10,
    "pop_cap": 200,
@@ -127,7 +137,8 @@
    "near_forest_cells": 2,
    "dismantle_refund_permille": 500,
    "dismantle_time_permille": 500,
-   "gather_salvage_milli": 1000
+   "gather_salvage_milli": 1000,
+   "salt_spring_silver": 300
   }
  },
  "building_layout": {
@@ -207,7 +218,8 @@
  },
  "magic_rules": {
   "_source": "Places of power and spells (M7). capture_ticks (15 s) and power_cap: plan M7 «захват 15 секунд без чужих в радиусе», «потолок 500». consecration_permille: «Магия и места силы» → Орденская часовня «вдвое меньше». alka_recharge_permille: Алка «знахарки рядом перезаряжаются на 20% быстрее». relic_morale_floor and relic_enemy_morale: sp_relic «Свои не бегут, пока дух выше 10; враги рядом −10 духа». exorcism_creature_damage: sp_exorcism «существо теряет 150 HP». storm_strikes and storm_damage: sp_perkunas «3 молнии по 80 урона в самые тяжёлые цели». icon_morale_floor: sp_icon «Дух отрядов рядом с иконой не падает ниже 50», read as percent of full morale, as the ВКЛ 5 card puts it («не падает ниже половины»). Keys in `_temporary` are not in the catalog: capture_radius (cells around the site), alka_recharge_radius («рядом»), cast_range (how far from the caster a spell aimed at a point may land).",
-  "_temporary": ["capture_radius", "alka_recharge_radius", "cast_range"],
+  "_crown_source": "The Crown (2026-10-18), «Заклинания»: hymn_morale sp_bogurodzica «+25 духа, бегущие отряды возвращаются в бой»; blessing_armor and blessing_morale sp_banner_blessing «+2/+2 брони и +10 духа одному отряду»; pact_damage_permille sp_pact «Дух не падает, урон +25%». heal_radius_default is temporary: healers whose «лечит N HP/с» names no radius (ксёндз, инок) heal around them this far.",
+  "_temporary": ["capture_radius", "alka_recharge_radius", "cast_range", "heal_radius_default"],
   "values": {
    "capture_ticks": 300,
    "capture_radius": 4,
@@ -221,7 +233,12 @@
    "exorcism_creature_damage": 150,
    "storm_strikes": 3,
    "storm_damage": 80,
-   "icon_morale_floor": 50
+   "icon_morale_floor": 50,
+   "hymn_morale": 25,
+   "blessing_armor": 2,
+   "blessing_morale": 10,
+   "pact_damage_permille": 1250,
+   "heal_radius_default": 2
   }
  },
  "skirmish_rules": {
@@ -266,10 +283,14 @@
   "sp_exorcism": ["target_point", "dispel"],
   "sp_relic": ["target_self", "relic"],
   "sp_icon": ["target_self", "icon"], "sp_wolf_path": ["target_self", "wolf_path"],
-  "sp_consecration": ["passive", "consecration"]
+  "sp_consecration": ["passive", "consecration"],
+  "_crown_source": "The Crown (2026-10-18): «Богородица» is sung around the priest (radius 12, moving with him); «Благословение хоругви» is laid on one own unit at the point (radius «1 отряд»: tag single_target); «Договор» around its caster (radius 6).",
+  "sp_bogurodzica": ["target_self", "hymn"],
+  "sp_banner_blessing": ["target_point", "blessing"],
+  "sp_pact": ["target_self", "pact"]
  },
  "tech_effects": {
-  "_source": "«Эффект» of «Общие технологии» and the faction tabs, written as numbers: gather_* and farm_food are per-mille increases; zaseka_speed and zaseka_hp too (×2 speed = +1000); wall_sight adds cells of sight to the player's buildings tagged watch; «<class or unit id>.<stat>» changes unit stats for the player's units of that class (heal: HP a second a healer gives); «<spell id>.radius» adds cells to the player's spell.",
+  "_source": "«Эффект» of «Общие технологии» and the faction tabs, written as numbers: gather_* and farm_food are per-mille increases; zaseka_speed and zaseka_hp too (×2 speed = +1000); wall_sight adds cells of sight to the player's buildings tagged watch; «<class or unit id>.<stat>» changes unit stats for the player's units of that class (heal: HP a second a healer gives); «<spell id>.radius» adds cells to the player's spell, «<spell id>.cost_permille» changes its Сила price (−300 = 30% cheaper). tabor_wagons and tabor_armor change the Crown's wagon fort (fewer wagons needed, more armor inside); salt_rate raises what salt works give, per mille.",
   "t_horse_collar": {"gather_farm": 150},
   "t_three_field": {"farm_food": 500},
   "t_saw": {"gather_wood": 200},
@@ -285,6 +306,9 @@
   "t_watch": {"wall_sight": 2},
   "t_gdl_herbs": {"gdl_znakharka.heal": 1},
   "t_to_reliquary": {"to_priest.hp_permille": 500, "sp_exorcism.radius": 2},
+  "t_pl_tabor": {"tabor_wagons": -1, "tabor_armor": 1},
+  "t_pl_salt_statute": {"salt_rate": 300},
+  "t_pl_procession": {"sp_bogurodzica.cost_permille": -300},
   "_deferred": {
    "t_banners": "banner units are not in the prototype",
    "t_wagons": "trade carts (market, after the prototype)",
@@ -292,7 +316,8 @@
    "t_to_arsenal": "researched in the Schnitzhaus, which is not in the prototype",
    "t_gdl_steppe": "«Литовский отход» cooldown and javelin range per player: next combat pass",
    "t_gdl_horodlo": "researched in the Грод, which is not in the prototype; lance morale and price, alkas −20% Сила",
-   "t_to_rossdienst": "free halfbrother every 3 minutes per castle: next combat pass"
+   "t_to_rossdienst": "free halfbrother every 3 minutes per castle: next combat pass",
+   "t_pl_great_banner": "a standard-bearer unit is not in the catalog (who carries the kingdom's banner, and how it is raised again when it falls); like t_banners"
   }
  }
 }

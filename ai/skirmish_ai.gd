@@ -183,6 +183,8 @@ func unit_def(id: int) -> UnitDef:
 
 ## The faction's own id of a building or unit: "barracks" -> "to_barracks".
 func own_id(base: StringName) -> StringName:
+	if base == &"peasant":
+		return SkirmishSetup.peasant_of(sim.economy.db, profile.faction)
 	return StringName("%s_%s" % [profile.faction, base])
 
 

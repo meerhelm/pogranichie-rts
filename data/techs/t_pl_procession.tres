@@ -14,4 +14,4 @@ cost_iron = 0
 cost_silver = 100
 research_ticks = 0
 faith = true
-effects = Dictionary[StringName, int]({})
+effects = Dictionary[StringName, int]({&"sp_bogurodzica.cost_permille": -300})

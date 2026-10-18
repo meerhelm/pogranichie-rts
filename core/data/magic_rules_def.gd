@@ -29,3 +29,13 @@ extends Resource
 ## «Икона перед войском»: own units near the icon do not fall below this percent of their full
 ## morale while above it.
 @export var icon_morale_floor: int
+
+## «Богородица»: own units in the hymn get this much morale, and the fleeing ones come back.
+@export var hymn_morale: int
+## «Благословение хоругви»: the blessed unit's armor (both) and morale bonus.
+@export var blessing_armor: int
+@export var blessing_morale: int
+## «Договор»: units under it lose no morale and strike this much harder (per mille).
+@export var pact_damage_permille: int
+## Healers whose rule names no radius heal their side this many cells around them.
+@export var heal_radius_default: int

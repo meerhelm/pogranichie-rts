@@ -143,6 +143,22 @@ GLYPHS: dict[str, dict[str, str]] = {
             + f'<path d="M38 37 L50 46 L38 55 Z" fill="{G}" {O}/>'
             + f'<path d="M50 24 H58 M48 30 H56" stroke="{P}" stroke-width="2.5" stroke-linecap="round"/>'
         ),
+        # Tabor: four wagons drawn up in a ring, seen from above, chained to each other.
+        "tabor": (
+            f'<circle cx="32" cy="32" r="15" fill="#6b5a3a" opacity="0.6"/>'
+            + "".join(
+                f'<g transform="rotate({a} 32 32)">'
+                f'<rect x="20" y="6" width="5" height="3.5" rx="1" fill="{D}"/>'
+                f'<rect x="39" y="6" width="5" height="3.5" rx="1" fill="{D}"/>'
+                f'<rect x="20" y="17.5" width="5" height="3.5" rx="1" fill="{D}"/>'
+                f'<rect x="39" y="17.5" width="5" height="3.5" rx="1" fill="{D}"/>'
+                f'<rect x="18" y="8.5" width="28" height="10.5" rx="1.5" fill="{W}" {O}/>'
+                f'<rect x="22" y="9.5" width="18" height="8.5" rx="3.5" fill="{P}" {O}/>'
+                f'<path d="M46 14 L52 14" stroke="{SD}" stroke-width="2" stroke-linecap="round"/>'
+                "</g>"
+                for a in (0, 90, 180, 270)
+            )
+        ),
         # Turn around: an arrow turned back.
         "turn": (
             _thick("M16 44 Q12 16 32 14 Q52 14 50 38", G, 5)
@@ -299,6 +315,40 @@ GLYPHS: dict[str, dict[str, str]] = {
             f'<circle cx="32" cy="44" r="3" fill="{R}" {O}/>'
             + _cross(32, 12, 7, G)
         ),
+        # Tabor craft: wagons chained in a ring, seen from above.
+        "t_pl_tabor": (
+            f'<circle cx="32" cy="32" r="20" fill="none" stroke="{S}" stroke-width="2" '
+            f'stroke-dasharray="2 2"/>'
+            + "".join(
+                f'<g transform="rotate({a} 32 32)"><rect x="25" y="5" width="14" height="10" rx="1.5" '
+                f'fill="{W}" {O}/><path d="M25 8 H39" stroke="{WD}" stroke-width="1.5"/>'
+                f'<circle cx="25" cy="15" r="2.4" fill="{WD}" {O}/><circle cx="39" cy="15" r="2.4" '
+                f'fill="{WD}" {O}/></g>'
+                for a in range(0, 360, 60)
+            )
+            + f'<circle cx="32" cy="32" r="5" fill="{R}" {O}/>'
+        ),
+        # Salt statute: a heap of salt and a charter with a red seal.
+        "t_pl_salt_statute": (
+            f'<path d="M4 58 Q18 30 30 32 Q40 30 52 58 Z" fill="#eef2f4" {O}/>'
+            f'<path d="M14 50 L18 46 M26 44 L30 40 M36 50 L40 46" stroke="#b8c4cc" stroke-width="1.5"/>'
+            f'<path d="M30 6 H56 V36 Q50 32 44 36 Q38 40 30 36 Z" fill="{P}" {O}/>'
+            f'<path d="M35 14 H51 M35 20 H51 M35 26 H46" stroke="#7a5a3a" stroke-width="1.5"/>'
+            f'<circle cx="50" cy="38" r="5" fill="{R}" {O}/>'
+        ),
+        # Procession: a church banner on a cross-bar staff between two candles.
+        "t_pl_procession": (
+            f'<rect x="30" y="8" width="4" height="52" fill="{WD}" {O}/>'
+            f'<rect x="16" y="12" width="32" height="3" fill="{G}" {O}/>'
+            f'<path d="M18 15 H46 V40 L32 48 L18 40 Z" fill="#f0e6c8" {O}/>'
+            + _cross(32, 28, 7, R)
+            + "".join(
+                f'<rect x="{x}" y="34" width="5" height="22" fill="#f0e6c8" {O}/>'
+                f'<path d="M{x + 2.5} 33 Q{x - 0.5} 28 {x + 2.5} 23 Q{x + 5.5} 28 {x + 2.5} 33 Z" '
+                f'fill="{FL}" {O}/>'
+                for x in (6, 53)
+            )
+        ),
     },
     "ages": {
         # Appanage: a small stockaded holding.
@@ -383,6 +433,35 @@ GLYPHS: dict[str, dict[str, str]] = {
             + "".join(f'<circle cx="{x}" cy="{y}" r="{r}" fill="#4a4e60" {O}/>' for x, y, r in
                       ((18, 20, 10), (32, 15, 12), (46, 20, 10)))
             + f'<rect x="10" y="20" width="44" height="10" rx="5" fill="#4a4e60"/>'
+        ),
+        # Bogurodzica: an open hymn book with neumes on it, singing light rising from it.
+        "sp_bogurodzica": (
+            f'<circle cx="32" cy="22" r="18" fill="#f0d070" opacity="0.3"/>'
+            + "".join(_thick(f"M{x} 26 Q{x + 4} 14 {x} 6", "#ffe9a0", 1.6) for x in (22, 32, 42))
+            + f'<path d="M4 34 Q18 28 32 36 Q46 28 60 34 L60 56 Q46 50 32 58 Q18 50 4 56 Z" '
+            f'fill="{P}" {O}/>'
+            f'<path d="M32 36 V58" stroke="{D}" stroke-width="2"/>'
+            + "".join(f'<rect x="{x}" y="{y}" width="3" height="3" fill="{R}"/>' for x, y in
+                      ((10, 41), (15, 39), (20, 43), (39, 41), (44, 44), (50, 40)))
+            + f'<path d="M8 48 Q18 44 28 49 M36 49 Q46 44 56 48" fill="none" stroke="#7a5a3a" '
+            f'stroke-width="1.2"/>'
+        ),
+        # Banner blessing: a banner sprinkled with holy water, a small cross shining above.
+        "sp_banner_blessing": (
+            f'<rect x="14" y="8" width="4" height="52" fill="{WD}" {O}/>'
+            f'<path d="M18 14 H50 V40 L42 34 L34 42 L26 34 L18 40 Z" fill="{R}" {O}/>'
+            f'<path d="M18 14 H50" stroke="{G}" stroke-width="3"/>'
+            + _cross(34, 26, 6, "#f0e0b0")
+            + "".join(f'<path d="M{x} {y} q3 4 0 7 q-3 -3 0 -7 Z" fill="#bfe0ff" stroke="{D}" '
+                      f'stroke-width="0.8"/>' for x, y in ((50, 45), (40, 49), (56, 53), (30, 51)))
+        ),
+        # The pact: a charter signed in blood, a dark wisp curling from its seal.
+        "sp_pact": (
+            f'<path d="M12 10 H48 Q54 10 54 16 V58 H18 Q12 58 12 52 Z" fill="{P}" {O}/>'
+            f'<path d="M18 18 H48 M18 25 H48 M18 32 H42" stroke="#7a5a3a" stroke-width="1.5"/>'
+            f'<path d="M20 44 Q26 38 30 44 T40 44" fill="none" stroke="#8a1a14" stroke-width="2"/>'
+            f'<circle cx="44" cy="50" r="6" fill="#6a1410" {O}/>'
+            + _thick("M44 44 Q38 34 46 28 Q54 22 48 12", "#3a2a4a", 2.5)
         ),
     },
 }

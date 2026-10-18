@@ -27,6 +27,10 @@ msgstr ""
 msgid "%d units"
 msgstr ""
 
+#: ui/tips.gd
+msgid "%d wagons standing in a ring make a tabor (U)"
+msgstr ""
+
 #: ui/help_panel.gd
 msgid "%d%% of its price is left in heaps; peasants carry it to the stores."
 msgstr ""
@@ -50,6 +54,10 @@ msgstr ""
 
 #: ui/tips.gd
 msgid "+%d damage against %s"
+msgstr ""
+
+#: ui/tips.gd
+msgid "+%d morale beside an own knight's lance"
 msgstr ""
 
 #: ui/tips.gd
@@ -93,6 +101,10 @@ msgid "A barrier of felled trees laid in the forest. Nobody passes it; fire burn
 msgstr ""
 
 #: ui/tips.gd
+msgid "A battery of wicker gabions. Bombards fire only from here: they stand by it and dig in, two at most."
+msgstr ""
+
+#: ui/tips.gd
 msgid "A brother priest: consecrates the land and casts the Order's spells."
 msgstr ""
 
@@ -129,6 +141,10 @@ msgid "A field. A peasant working it brings in food; when it is worked out, it i
 msgstr ""
 
 #: ui/tips.gd
+msgid "A foot servant who follows the knight's lance and steadies the ranks."
+msgstr ""
+
+#: ui/tips.gd
 msgid "A gate in your wall: your own people pass, enemies have to break it down. One or two archers on it shoot at enemies nearby."
 msgstr ""
 
@@ -138,6 +154,10 @@ msgstr ""
 
 #: ui/tips.gd
 msgid "A heavy Lithuanian lancer."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A heavy bombard that breaks walls, firing only from a battery."
 msgstr ""
 
 #: missions/gdl_06/mission.json
@@ -157,11 +177,27 @@ msgid "A knight brother in a white cloak: the Order's heavy horse."
 msgstr ""
 
 #: ui/tips.gd
+msgid "A knight's lance: the Crown's heavy horse, terrible in the charge."
+msgstr ""
+
+#: ui/tips.gd
 msgid "A light horseman from the Prussian lands."
 msgstr ""
 
 #: ui/tips.gd
 msgid "A new age opens new buildings, troops and improvements."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A pavisier: sets up a big shield to cover the shooters behind him."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A priest must stand by the cross."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A priest: sets up the wayside cross and the chapel, heals those around him and casts the Crown's spells."
 msgstr ""
 
 #: ui/unit_card.gd
@@ -197,6 +233,10 @@ msgid "A sturdy archer of the castle garrisons."
 msgstr ""
 
 #: ui/tips.gd
+msgid "A tabor takes 3 wagons; inside it +1 melee and +1 pierce armor more."
+msgstr ""
+
+#: ui/tips.gd
 msgid "A tower with three or four archers shooting at enemies in range. Palisades and walls join onto it."
 msgstr ""
 
@@ -209,11 +249,19 @@ msgid "A wagon of the baggage train."
 msgstr ""
 
 #: ui/tips.gd
+msgid "A wagon of the baggage train; four of them make a tabor."
+msgstr ""
+
+#: ui/tips.gd
 msgid "A wall of sharpened stakes: drag to lay a line. Holds enemies off until they break through; it burns."
 msgstr ""
 
 #: ui/tips.gd
 msgid "A watchtower of the border watch: it sees all round, by day further still."
+msgstr ""
+
+#: ui/tips.gd
+msgid "A wayside cross on a place of power. It gathers Power for spells; with a priest by it the cross can be made a chapel that gives twice as much."
 msgstr ""
 
 #: ui/tips.gd
@@ -243,6 +291,10 @@ msgstr ""
 
 #: ui/tips.gd
 msgid "Advance to: %s"
+msgstr ""
+
+#: ui/tips.gd
+msgid "After %d s of melee without a new charge: −%d damage"
 msgstr ""
 
 #: missions/gdl_04/mission.json
@@ -527,6 +579,10 @@ msgstr ""
 msgid "Bog ore (brown blocks in the bog) gives iron."
 msgstr ""
 
+#: ui/tips.gd
+msgid "Bogurodzica costs 30% less Power."
+msgstr ""
+
 #: missions/gdl_08/mission.json
 msgid "Both bridges stand. The foot and the guns are going over them."
 msgstr ""
@@ -698,6 +754,10 @@ msgstr ""
 
 #: ui/unit_card.gd
 msgid "Carries %d %s"
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "Chapel"
 msgstr ""
 
 #: ui/tips.gd
@@ -893,6 +953,10 @@ msgstr ""
 msgid "Draw"
 msgstr ""
 
+#: ui/command_panel.gd
+msgid "Draw the wagons up in a ring."
+msgstr ""
+
 #: ui/mission_panel.gd
 msgid "Dubysa garrison: %d%%"
 msgstr ""
@@ -1001,6 +1065,10 @@ msgstr ""
 msgid "Fire at the stone. Write it down."
 msgstr ""
 
+#: ui/tips.gd
+msgid "Fires only from a battery (digs in for %d s), %d iron a shot"
+msgstr ""
+
 #: ui/help_panel.gd
 msgid "First steps"
 msgstr ""
@@ -1048,6 +1116,10 @@ msgstr ""
 
 #: ui/tips.gd
 msgid "Foot soldiers and horsemen: +1 melee damage."
+msgstr ""
+
+#: ui/command_panel.gd
+msgid "Foot soldiers and shooters inside get more armor and fear no flank attacks."
 msgstr ""
 
 #: ui/tips.gd
@@ -1314,6 +1386,10 @@ msgstr ""
 msgid "Heals %d HP a second to her people within %d cells"
 msgstr ""
 
+#: ui/tips.gd
+msgid "Heals %d HP a second to his people nearby"
+msgstr ""
+
 #: missions/gdl_07/mission.json
 msgid "Hear that? Hold a little longer."
 msgstr ""
@@ -1493,6 +1569,10 @@ msgstr ""
 
 #: missions/gdl_07/mission.json
 msgid "In Slutsk they still tell of a passage under the castle hill. I have not seen it. But Andrei saw it, and said it was narrow there and smelled of the river."
+msgstr ""
+
+#: ui/tips.gd
+msgid "In close order the men around him lose half as much morale"
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -1933,6 +2013,10 @@ msgstr ""
 msgid "Night. The far bank. Wet men sit by a fire without their horses. Andrei dries the banner. Beyond the river there are torches: they are gathering the captives."
 msgstr ""
 
+#: ui/ui_text.gd
+msgid "No more of these allowed"
+msgstr ""
+
 #: ui/main_menu.gd
 #: ui/pause_menu.gd
 msgid "No saved games"
@@ -2041,6 +2125,10 @@ msgstr ""
 msgid "On the twenty-eighth of November the Samogitians came to Konstanz. In February their complaint against the Order was read to the council. The Order answered: the baptism is shallow, and Vytautas stirs up the Samogitians."
 msgstr ""
 
+#: ui/tips.gd
+msgid "One of your units: +2 melee and +2 pierce armor and +10 morale."
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Only at a place of power"
 msgstr ""
@@ -2056,6 +2144,14 @@ msgstr ""
 #: ui/tips.gd
 #: ui/ui_text.gd
 msgid "Only on a place of power"
+msgstr ""
+
+#: ui/ui_text.gd
+msgid "Only on a salt spring"
+msgstr ""
+
+#: ui/main_menu.gd
+msgid "Opponent plays: %s"
 msgstr ""
 
 #: ui/main_menu.gd
@@ -2341,6 +2437,14 @@ msgstr ""
 msgid "Right-click the forest with peasants selected: they cut wood and carry it home."
 msgstr ""
 
+#: ui/tips.gd
+msgid "Salt works give 30% more silver."
+msgstr ""
+
+#: ui/tips.gd
+msgid "Salt works over a salt spring: silver for the treasury without any workers. At most two."
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Salvage"
 msgstr ""
@@ -2424,6 +2528,10 @@ msgstr ""
 
 #: missions/gdl_08/mission.json
 msgid "Set out the army and hide the foot and the guns"
+msgstr ""
+
+#: ui/tips.gd
+msgid "Sets up wayside crosses and chapels"
 msgstr ""
 
 #: ui/main_menu.gd
@@ -2561,6 +2669,10 @@ msgstr ""
 msgid "Standard-bearer, lead them to the forest. Only not too fast: let them think they will catch you."
 msgstr ""
 
+#: ui/tips.gd
+msgid "Standing %d s sets up the pavise: shooters behind him +%d pierce armor"
+msgstr ""
+
 #: ui/command_panel.gd
 msgid "Stop"
 msgstr ""
@@ -2583,6 +2695,10 @@ msgstr ""
 
 #: ui/mission_panel.gd
 msgid "Suspicion: %d%%"
+msgstr ""
+
+#: ui/command_panel.gd
+msgid "Tabor"
 msgstr ""
 
 #: missions/gdl_02/mission.json
@@ -2859,6 +2975,10 @@ msgstr ""
 
 #: missions/gdl_03/mission.json
 msgid "The council's envoys have been killed on Samogitian land."
+msgstr ""
+
+#: ui/tips.gd
+msgid "The cross becomes a chapel: Power %s a second instead of %s."
 msgstr ""
 
 #: missions/gdl_03/mission.json
@@ -3518,6 +3638,10 @@ msgstr ""
 msgid "You lose if"
 msgstr ""
 
+#: ui/main_menu.gd
+msgid "You play: %s"
+msgstr ""
+
 #: missions/gdl_03/mission.json
 msgid "You promise what you do not have. Go away, Christian."
 msgstr ""
@@ -3536,6 +3660,14 @@ msgstr ""
 
 #: missions/gdl_07/mission.json
 msgid "Your father did not live to see this day. I want you to live to see many."
+msgstr ""
+
+#: ui/tips.gd
+msgid "Your men around the priest: +25 morale; those fleeing turn back to fight."
+msgstr ""
+
+#: ui/tips.gd
+msgid "Your men around: morale does not fall, damage +25%."
 msgstr ""
 
 #: ui/tips.gd
@@ -3989,6 +4121,30 @@ msgstr ""
 msgid "pl"
 msgstr ""
 
+#: catalog:prototype_buildings
+msgid "pl_barracks"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "pl_battery"
+msgstr ""
+
+#: catalog:prototype_units
+msgid "pl_bombard"
+msgstr ""
+
+#: catalog:prototype_units
+msgid "pl_bowman"
+msgstr ""
+
+#: catalog:prototype_units
+msgid "pl_camp_servant"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "pl_castle"
+msgstr ""
+
 #: catalog:prototype_units
 msgid "pl_crossbow"
 msgstr ""
@@ -3997,12 +4153,36 @@ msgstr ""
 msgid "pl_drab"
 msgstr ""
 
+#: catalog:prototype_buildings
+msgid "pl_farm"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "pl_field_camp"
+msgstr ""
+
 #: catalog:prototype_units
 msgid "pl_field_gun"
 msgstr ""
 
 #: catalog:prototype_units
+msgid "pl_foot_servant"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "pl_gate"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "pl_granary"
+msgstr ""
+
+#: catalog:prototype_units
 msgid "pl_handgunner"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "pl_house"
 msgstr ""
 
 #: catalog:prototype_units
@@ -4010,11 +4190,83 @@ msgid "pl_hussar"
 msgstr ""
 
 #: catalog:prototype_units
+msgid "pl_kmet"
+msgstr ""
+
+#: catalog:prototype_units
 msgid "pl_kopia"
 msgstr ""
 
 #: catalog:prototype_units
+msgid "pl_light_horse"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "pl_lumber_yard"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "pl_market"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "pl_mine"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "pl_palisade"
+msgstr ""
+
+#: catalog:prototype_units
+msgid "pl_pavise"
+msgstr ""
+
+#: catalog:prototype_units
+msgid "pl_priest"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "pl_range"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "pl_salt_works"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "pl_shrine"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "pl_siege_workshop"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "pl_smithy"
+msgstr ""
+
+#: catalog:prototype_units
 msgid "pl_spearman"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "pl_stable"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "pl_temple"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "pl_tower"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "pl_town_center"
+msgstr ""
+
+#: catalog:prototype_units
+msgid "pl_wagon"
 msgstr ""
 
 #: catalog:power_places
@@ -4067,7 +4319,15 @@ msgid "siege engines"
 msgstr ""
 
 #: catalog:prototype_spells
+msgid "sp_banner_blessing"
+msgstr ""
+
+#: catalog:prototype_spells
 msgid "sp_bog_mist"
+msgstr ""
+
+#: catalog:prototype_spells
+msgid "sp_bogurodzica"
 msgstr ""
 
 #: catalog:prototype_spells
@@ -4080,6 +4340,10 @@ msgstr ""
 
 #: catalog:prototype_spells
 msgid "sp_icon"
+msgstr ""
+
+#: catalog:prototype_spells
+msgid "sp_pact"
 msgstr ""
 
 #: catalog:prototype_spells
@@ -4144,6 +4408,22 @@ msgstr ""
 
 #: catalog:prototype_techs
 msgid "t_inf_armor_1"
+msgstr ""
+
+#: catalog:prototype_techs
+msgid "t_pl_great_banner"
+msgstr ""
+
+#: catalog:prototype_techs
+msgid "t_pl_procession"
+msgstr ""
+
+#: catalog:prototype_techs
+msgid "t_pl_salt_statute"
+msgstr ""
+
+#: catalog:prototype_techs
+msgid "t_pl_tabor"
 msgstr ""
 
 #: catalog:prototype_techs

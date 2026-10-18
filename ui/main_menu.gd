@@ -45,6 +45,8 @@ var _campaign_difficulty := OptionButton.new()
 var _single_head := Label.new()
 var _skirmish := Button.new()
 var _difficulty := OptionButton.new()
+var _my_faction := OptionButton.new()
+var _enemy_faction := OptionButton.new()
 var _back: Array[Button] = []
 var _settings := SettingsPanel.new()
 var _help := HelpPanel.new()
@@ -172,10 +174,15 @@ func _build_missions() -> void:
 func _build_single() -> void:
 	_heading(_single_head)
 	_single.add_child(_single_head)
-	for b: Control in [_skirmish, _difficulty]:
+	for b: Control in [_skirmish, _my_faction, _enemy_faction, _difficulty]:
 		b.custom_minimum_size = BUTTON_SIZE
 		_single.add_child(b)
 	_fill_difficulty(_difficulty)
+	for box: OptionButton in [_my_faction, _enemy_faction]:
+		for f in SkirmishSetup.FACTIONS:
+			box.add_item(String(f))
+	_my_faction.item_selected.connect(_on_faction.bind(true))
+	_enemy_faction.item_selected.connect(_on_faction.bind(false))
 	_skirmish.pressed.connect(_on_skirmish)
 	_add_back(_single, Page.MAIN)
 
@@ -273,6 +280,10 @@ func _retranslate() -> void:
 	for box: OptionButton in [_difficulty, _campaign_difficulty]:
 		for i in mini(levels.size(), box.item_count):
 			box.set_item_text(i, levels[i])
+	for i in mini(SkirmishSetup.FACTIONS.size(), _my_faction.item_count):
+		var faction := UiText.name_of(SkirmishSetup.FACTIONS[i])
+		_my_faction.set_item_text(i, tr("You play: %s") % faction)
+		_enemy_faction.set_item_text(i, tr("Opponent plays: %s") % faction)
 	_fill_countries()
 	_fill_missions()
 
@@ -286,6 +297,8 @@ func _show_page(page: Page) -> void:
 	var level := maxi(GameSettings.DIFFICULTIES.find(GameSettings.ai_difficulty), 0)
 	_difficulty.selected = level
 	_campaign_difficulty.selected = level
+	_my_faction.selected = maxi(SkirmishSetup.FACTIONS.find(GameSettings.player_faction), 0)
+	_enemy_faction.selected = maxi(SkirmishSetup.FACTIONS.find(GameSettings.enemy_faction), 0)
 	var focus: Control = _campaign_button
 	match page:
 		Page.COUNTRIES:
@@ -373,6 +386,14 @@ func _on_difficulty(index: int) -> void:
 	GameSettings.save()
 	_difficulty.selected = index
 	_campaign_difficulty.selected = index
+
+
+func _on_faction(index: int, mine: bool) -> void:
+	if mine:
+		GameSettings.player_faction = SkirmishSetup.FACTIONS[index]
+	else:
+		GameSettings.enemy_faction = SkirmishSetup.FACTIONS[index]
+	GameSettings.save()
 
 
 func _on_skirmish() -> void:

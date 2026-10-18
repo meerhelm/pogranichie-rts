@@ -31,6 +31,7 @@ enum Kind {
 	IGNITE,
 	DISMANTLE,
 	CHOOSE,
+	TABOR,
 }
 
 ## Kinds whose x and y are a point on the map.

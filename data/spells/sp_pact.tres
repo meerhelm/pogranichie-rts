@@ -13,5 +13,5 @@ debt_cost = 1
 cooldown_ticks = 3600
 radius = 6
 duration_ticks = 600
-tags = Array[StringName]([&"once_per_mission"])
+tags = Array[StringName]([&"once_per_mission", &"target_self", &"pact"])
 params = Dictionary[StringName, int]({})

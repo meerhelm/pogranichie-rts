@@ -21,7 +21,14 @@ extends RefCounted
 ##     (most max HP) enemy units under it at once; while it lasts, the rain keeps every bow,
 ##     crossbow and gun under it from shooting;
 ##   wolf_path («Волчья тропа»): an effect where the caster stands, for the spell's duration; the
-##     mission opens the trail of the place of power there (MissionStealth).
+##     mission opens the trail of the place of power there (MissionStealth);
+##   hymn («Богородица»): carried by the caster, own units near it get hymn_morale and those
+##     fleeing turn back to fight;
+##   blessing («Благословение хоругви», single_target): the own unit nearest the point gets
+##     blessing_armor to both armors and blessing_morale while it lasts;
+##   pact («Договор»): carried by the caster, own units near it lose no morale and strike for
+##     pact_damage_permille.
+## A tech may make a spell cheaper («sp_bogurodzica.cost_permille»).
 ## A spell tagged hero_at_power_place («герой у места силы») may also be cast by a hero of the
 ## spell's faction standing within capture_radius of a place of power nobody hides.
 ## Cooldowns run per caster and spell; casters near their own building tagged spell_recharge
@@ -133,6 +140,8 @@ func on_spawn(id: int, def: UnitDef) -> void:
 	if def != null:
 		_heal[slot] = def.param(&"heal_hp_per_s")
 		_heal_radius[slot] = def.param(&"heal_radius")
+		if _heal[slot] > 0 and _heal_radius[slot] <= 0 and rules != null:
+			_heal_radius[slot] = rules.heal_radius_default
 
 
 ## Plain orders (move, stop, attack, work) call off casts waiting for the caster to walk up.
@@ -185,7 +194,7 @@ func can_cast(p: int, id: int, spell_id: StringName) -> Cast:
 		return Cast.AGE
 	if cooldown_ticks(id, spell_id) > 0:
 		return Cast.COOLDOWN
-	if state.power < spell.power_cost * POWER_UNIT:
+	if state.power < power_cost(p, spell) * POWER_UNIT:
 		return Cast.POWER
 	return Cast.OK
 
@@ -246,6 +255,15 @@ func cooldown_ticks(id: int, spell_id: StringName) -> int:
 	return (left + COOLDOWN_SCALE - 1) / COOLDOWN_SCALE
 
 
+## The spell's Сила cost for the side, with techs («sp_bogurodzica.cost_permille»).
+func power_cost(p: int, spell: SpellDef) -> int:
+	var state: PlayerState = players.get(p)
+	if state == null:
+		return spell.power_cost
+	var off: int = state.unit_mods.get(StringName("%s.cost_permille" % spell.id), 0)
+	return spell.power_cost * maxi(1000 + off, 0) / 1000
+
+
 ## The spell's radius for its caster's side, with techs («sp_exorcism.radius»).
 func radius_of(p: int, spell: SpellDef) -> int:
 	var state: PlayerState = players.get(p)
@@ -258,7 +276,7 @@ func radius_of(p: int, spell: SpellDef) -> int:
 func _cast(id: int, spell: SpellDef, x: int, y: int) -> void:
 	var slot := id - 1
 	var p := entities.owners[slot]
-	players[p].power -= spell.power_cost * POWER_UNIT
+	players[p].power -= power_cost(p, spell) * POWER_UNIT
 	_cooldown[id * SPELL_SLOTS + spell_index[spell.id]] = spell.cooldown_ticks * COOLDOWN_SCALE
 	_pending.erase(id)
 	var r := radius_of(p, spell)
@@ -266,13 +284,68 @@ func _cast(id: int, spell: SpellDef, x: int, y: int) -> void:
 		_dispel(p, x, y, r)
 	elif spell.tags.has(&"mist"):
 		_add_effect(spell, p, 0, x, y, r)
-	elif spell.tags.has(&"relic") or spell.tags.has(&"icon"):
+	elif spell.tags.has(&"blessing"):
+		var blessed := _own_unit_at(p, x, y)
+		if blessed != EntityStore.NO_ID:
+			_add_effect(spell, p, blessed, x, y, 0)
+	elif spell.tags.has(&"relic") or spell.tags.has(&"icon") or spell.tags.has(&"hymn"):
+		_add_effect(spell, p, id, entities.pos_x[slot], entities.pos_y[slot], r)
+	elif spell.tags.has(&"pact"):
 		_add_effect(spell, p, id, entities.pos_x[slot], entities.pos_y[slot], r)
 	elif spell.tags.has(&"storm"):
 		_add_effect(spell, p, 0, x, y, r)
 		_lightning(p, x, y, r)
 	elif spell.tags.has(&"wolf_path"):
 		_add_effect(spell, p, 0, entities.pos_x[slot], entities.pos_y[slot], r)
+
+
+## The player's own living unit nearest the point within a cell (lowest id on a tie), or none.
+func _own_unit_at(p: int, x: int, y: int) -> int:
+	var best := EntityStore.NO_ID
+	var best_d := Fixed.ONE + 1
+	var near := combat.buckets.near(x, y, Fixed.ONE)
+	near.sort()
+	for id in near:
+		var slot := id - 1
+		if entities.owners[slot] != p or entities.hp[slot] <= 0 or combat.defs[slot] == null:
+			continue
+		var d := Fixed.distance(x, y, entities.pos_x[slot], entities.pos_y[slot])
+		if d < best_d:
+			best = id
+			best_d = d
+	return best
+
+
+## Fills CombatSystem.crown's spell boosts for this tick (called at the start of the combat
+## step), and turns back own units fleeing inside a hymn.
+func boost() -> void:
+	var crown := combat.crown
+	crown.spell_morale.clear()
+	crown.spell_armor.clear()
+	crown.spell_damage.clear()
+	crown.pact.clear()
+	for i in fx_ids.size():
+		var tags := spells[fx_spell[i]].tags
+		if tags.has(&"blessing"):
+			var b := fx_caster[i]
+			if entities.is_alive(b):
+				crown.spell_armor[b] = crown.spell_armor.get(b, 0) + rules.blessing_armor
+				crown.spell_morale[b] = crown.spell_morale.get(b, 0) + rules.blessing_morale
+			continue
+		if not (tags.has(&"hymn") or tags.has(&"pact")):
+			continue
+		var near := combat.buckets.near(fx_x[i], fx_y[i], Fixed.from_cells(fx_radius[i]))
+		near.sort()
+		for id in near:
+			var slot := id - 1
+			if entities.owners[slot] != fx_owner[i] or entities.hp[slot] <= 0:
+				continue
+			if tags.has(&"hymn"):
+				crown.spell_morale[id] = crown.spell_morale.get(id, 0) + rules.hymn_morale
+				Maneuvers.rally(combat, id)
+			else:
+				crown.pact[id] = true
+				crown.spell_damage[id] = rules.pact_damage_permille
 
 
 ## «Гнев Перкуна»: bolts on the enemy units with the most max HP under the storm (ties: lower id).

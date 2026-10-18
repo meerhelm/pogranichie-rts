@@ -82,6 +82,12 @@ func can_place(
 		if fail == EconomySystem.Fail.OK and def.tags.has(&"near_forest_only"):
 			if not _forest_near(cx, cy, size):
 				fail = EconomySystem.Fail.NO_FOREST_NEAR
+		if fail == EconomySystem.Fail.OK and def.tags.has(&"on_salt_spring"):
+			if not SaltWorks.covers_spring(nav, cx, cy, size):
+				fail = EconomySystem.Fail.NO_SPRING
+	if fail == EconomySystem.Fail.OK and not setup and def.param(&"limit") > 0:
+		if SaltWorks.count_of(buildings, p, def.id) >= def.param(&"limit"):
+			fail = EconomySystem.Fail.TOO_MANY
 	return fail
 
 
@@ -112,6 +118,9 @@ func _cells_fail(p: int, def: BuildingDef, cx: int, cy: int, size: Vector2i) -> 
 			var on := buildings.occupant[cell]
 			if on != 0 and replaceable(p, def, on) and nav.blocked[cell] == 1:
 				continue
+			if on == 0 and def.tags.has(&"on_salt_spring"):
+				if nav.object_at(cell) == SaltWorks.SPRING:
+					continue
 			if on != 0 or nav.blocked[cell] != 0:
 				return EconomySystem.Fail.OCCUPIED
 			if in_forest:

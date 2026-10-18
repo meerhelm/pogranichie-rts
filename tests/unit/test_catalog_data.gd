@@ -103,7 +103,12 @@ func test_spell_and_age() -> void:
 
 func test_prototype_loads_only_prototype() -> void:
 	var proto := CatalogDB.load_prototype()
-	assert_eq(proto.factions.keys(), [&"gdl", &"to", &"mo"], "Muscovy only for missions (ВКЛ 5)")
+	assert_eq(
+		proto.factions.keys(), [&"gdl", &"to", &"pl", &"mo"], "Muscovy only for missions (ВКЛ 5)"
+	)
+	assert_not_null(proto.unit(&"pl_kmet"), "the Crown plays skirmishes")
+	assert_false(proto.unit(&"pl_kopia").campaign_only)
+	assert_true(proto.unit(&"pl_hussar").campaign_only, "the hussar only for ВКЛ 8")
 	assert_not_null(proto.unit(&"gdl_lit_lance"))
 	assert_null(proto.unit(&"gdl_merc_infantry"), "Держава units stay out of the prototype")
 	var hook := proto.unit(&"gdl_hakownica")

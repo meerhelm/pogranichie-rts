@@ -23,6 +23,9 @@ msgstr "%d с"
 msgid "%d units"
 msgstr "%d атрадаў"
 
+msgid "%d wagons standing in a ring make a tabor (U)"
+msgstr "%d вазы, пастаўленыя ў кола, робяць табар (U)"
+
 msgid "%d%% of its price is left in heaps; peasants carry it to the stores."
 msgstr "%d%% кошту застаецца ў кучах; сяляне адносяць яго ў сховішчы."
 
@@ -40,6 +43,9 @@ msgstr "(неабавязкова) %s"
 
 msgid "+%d damage against %s"
 msgstr "+%d урону супраць: %s"
+
+msgid "+%d morale beside an own knight's lance"
+msgstr "+%d да духу побач са сваім рыцарскім кап’ём"
 
 msgid "+%d population"
 msgstr "+%d насельніцтва"
@@ -71,6 +77,9 @@ msgstr "У жамойта рука не дрыжыць, пане Якуб. Др�
 msgid "A barrier of felled trees laid in the forest. Nobody passes it; fire burns it away."
 msgstr "Завал са зваленых дрэў у лесе. Праз яго ніхто не пройдзе; агонь яго спальвае."
 
+msgid "A battery of wicker gabions. Bombards fire only from here: they stand by it and dig in, two at most."
+msgstr "Батарэя з плеценых тураў. Бамбарды страляюць толькі адсюль: становяцца побач і акопваюцца, не больш за дзве."
+
 msgid "A brother priest: consecrates the land and casts the Order's spells."
 msgstr "Брат-святар: асвячае зямлю і чаруе заклёны Ордэна."
 
@@ -98,6 +107,9 @@ msgstr "Хуткі лёгкі коннік з суліцамі."
 msgid "A field. A peasant working it brings in food; when it is worked out, it is sown again for its price."
 msgstr "Поле. Селянін на ім здабывае ежу; калі поле вычарпана, яго зноў засяваюць за яго цану."
 
+msgid "A foot servant who follows the knight's lance and steadies the ranks."
+msgstr "Пешы слуга, што ідзе за рыцарскім кап’ём і трымае шыхт."
+
 msgid "A gate in your wall: your own people pass, enemies have to break it down. One or two archers on it shoot at enemies nearby."
 msgstr "Вароты ў вашай сцяне: свае праходзяць, ворагам трэба іх выламаць. Адзін-два лучнікі на іх страляюць па ворагах побач."
 
@@ -106,6 +118,9 @@ msgstr "Паўбрат у шэрым плашчы: сярэдняя конніц
 
 msgid "A heavy Lithuanian lancer."
 msgstr "Цяжкі літоўскі дзіднік."
+
+msgid "A heavy bombard that breaks walls, firing only from a battery."
+msgstr "Цяжкая бамбарда, што б’е сцены; страляе толькі з батарэі."
 
 msgid "A hidden place of power gives one charge of Power. Stand the prince on it and cast «Wolf Trail»: a trail opens from it through the old forest or the bog for a minute, and on it the dogs find no scent."
 msgstr "Схаванае месца сілы дае адзін зарад Сілы. Пастаў князя на яго і выкліч «Воўчую сцежку»: ад яго на хвіліну адкрыецца сцежка праз старую пушчу ці балота, і на ёй сабакі не возьмуць следу."
@@ -119,11 +134,23 @@ msgstr "Хата корміць больш ратоў. Навучайце сял
 msgid "A knight brother in a white cloak: the Order's heavy horse."
 msgstr "Брат-рыцар у белым плашчы: цяжкая конніца Ордэна."
 
+msgid "A knight's lance: the Crown's heavy horse, terrible in the charge."
+msgstr "Рыцарскае кап’ё: цяжкая конніца Кароны, страшная ў наскоку."
+
 msgid "A light horseman from the Prussian lands."
 msgstr "Лёгкі коннік з прускіх зямель."
 
 msgid "A new age opens new buildings, troops and improvements."
 msgstr "Новая эпоха адкрывае новыя пабудовы, войскі і ўдасканаленні."
+
+msgid "A pavisier: sets up a big shield to cover the shooters behind him."
+msgstr "Павэзнік: ставіць вялікую павэзу і хавае за ёй стралкоў."
+
+msgid "A priest must stand by the cross."
+msgstr "Каля крыжа мусіць стаяць ксёндз."
+
+msgid "A priest: sets up the wayside cross and the chapel, heals those around him and casts the Crown's spells."
+msgstr "Ксёндз: ставіць прыдарожны крыж і каплічку, лечыць тых, хто побач, і творыць замовы Кароны."
 
 msgid "A shrine stands on it"
 msgstr "На ім стаіць свяцілішча"
@@ -149,6 +176,9 @@ msgstr "Склад для ежы каля палёў: селяне носяць 
 msgid "A sturdy archer of the castle garrisons."
 msgstr "Трывалы лучнік замкавых гарнізонаў."
 
+msgid "A tabor takes 3 wagons; inside it +1 melee and +1 pierce armor more."
+msgstr "Табару трэба 3 вазы; унутры яшчэ +1 да брані ад блізкага бою і +1 ад колкага."
+
 msgid "A tower with three or four archers shooting at enemies in range. Palisades and walls join onto it."
 msgstr "Вежа з трыма-чатырма лучнікамі, якія страляюць па ворагах у радыусе. Да яе далучаюцца частакол і сцены."
 
@@ -158,11 +188,17 @@ msgstr "Гандлёвы дом. Гандлю ў гэтай версіі пак�
 msgid "A wagon of the baggage train."
 msgstr "Воз абозу."
 
+msgid "A wagon of the baggage train; four of them make a tabor."
+msgstr "Абозны воз; чатыры такія робяць табар."
+
 msgid "A wall of sharpened stakes: drag to lay a line. Holds enemies off until they break through; it burns."
 msgstr "Сцяна з завостраных калоў: пацягніце, каб пакласці лінію. Стрымлівае ворагаў, пакуль не праб’юцца; гарыць."
 
 msgid "A watchtower of the border watch: it sees all round, by day further still."
 msgstr "Вартавая вежа памежнай сторажы: бачыць на ўсе бакі, удзень яшчэ далей."
+
+msgid "A wayside cross on a place of power. It gathers Power for spells; with a priest by it the cross can be made a chapel that gives twice as much."
+msgstr "Прыдарожны крыж на месцы сілы. Збірае Сілу для замоў; калі побач ксёндз, крыж можна зрабіць каплічкай, што дае ўдвая больш."
 
 msgid "A wise woman: heals those around her and casts the Duchy's spells."
 msgstr "Знахарка: лечыць тых, хто побач, і чаруе заклёны Княства."
@@ -184,6 +220,9 @@ msgstr "Пераход у наступную эпоху"
 
 msgid "Advance to: %s"
 msgstr "Перайсці ў эпоху: %s"
+
+msgid "After %d s of melee without a new charge: −%d damage"
+msgstr "Пасля %d с рукапашнай без новага наскоку: −%d урону"
 
 msgid "After the death of Vytautas the Grand Duchy split in two. Sigismund Kęstutaitis holds Vilnius, Trakai and Samogitia; Polotsk, Vitebsk and Smolensk went over to Švitrigaila, and the Livonian knights ride with him. Now Švitrigaila marches on Vilnius, and Sigismund has sent his son Michael against him, with the Poles of Jakub of Kobylany. Mikołaj Gintovt leads his banner in Michael's army. His brother Jurij rides with Švitrigaila."
 msgstr "Пасля смерці Вітаўта Вялікае княства раскалолася надвая. Жыгімонт Кейстутавіч трымае Вільню, Трокі і Жамойць; Полацак, Віцебск і Смаленск адышлі да Свідрыгайлы, і з ім ідуць лівонскія рыцары. Цяпер Свідрыгайла ідзе на Вільню, і Жыгімонт паслаў супраць яго сына Міхаіла з палякамі Якуба з Кабылян. Мікалай Гінтаўт вядзе сваю харугву ў войску Міхаіла. Яго брат Юрый едзе са Свідрыгайлам."
@@ -395,6 +434,9 @@ msgstr "Балотная руда"
 msgid "Bog ore (brown blocks in the bog) gives iron."
 msgstr "Балотная руда (карычневыя блокі ў балоце) дае жалеза."
 
+msgid "Bogurodzica costs 30% less Power."
+msgstr "Багародзіца каштуе на 30% менш Сілы."
+
 msgid "Both bridges stand. The foot and the guns are going over them."
 msgstr "Абодва масты стаяць. Пяхота і гарматы ідуць па іх."
 
@@ -523,6 +565,9 @@ msgstr "Туша"
 
 msgid "Carries %d %s"
 msgstr "Нясе: %d %s"
+
+msgid "Chapel"
+msgstr "Каплічка"
 
 msgid "Charge: ×%s damage after a run-up of %d cells"
 msgstr "Таран: урон ×%s пасля разгону на %d клеткі"
@@ -662,6 +707,9 @@ msgstr "Падвойны пстрык вылучае ўсе атрады гэт�
 msgid "Draw"
 msgstr "Нічыя"
 
+msgid "Draw the wagons up in a ring."
+msgstr "Паставіць вазы кальцом."
+
 msgid "Dubysa garrison: %d%%"
 msgstr "Гарнізон Дубісы: %d%%"
 
@@ -743,6 +791,9 @@ msgstr "Агністыя стрэлы падпальваюць дахі: тры�
 msgid "Fire at the stone. Write it down."
 msgstr "Агонь каля каменя. Запішыце."
 
+msgid "Fires only from a battery (digs in for %d s), %d iron a shot"
+msgstr "Страляе толькі з батарэі (акопваецца %d с), %d жалеза за стрэл"
+
 msgid "First steps"
 msgstr "Першыя крокі"
 
@@ -778,6 +829,9 @@ msgstr "Ежа: сяляне працуюць на полі ля лесу ці �
 
 msgid "Foot soldiers and horsemen: +1 melee damage."
 msgstr "Пяхота і конніца: +1 урону ў блізкім баі."
+
+msgid "Foot soldiers and shooters inside get more armor and fear no flank attacks."
+msgstr "Пяхота і стралкі ўнутры атрымліваюць больш броні і не баяцца ўдараў у фланг."
 
 msgid "Foot soldiers: +1 melee and +1 pierce armor."
 msgstr "Пяхота: +1 да брані ад блізкага бою і +1 ад колкага."
@@ -974,6 +1028,9 @@ msgstr "Ён закрывае кнігу. За акном вецер гойда�
 msgid "Heals %d HP a second to her people within %d cells"
 msgstr "Лечыць сваіх на %d здароўя за секунду ў радыусе %d клетак"
 
+msgid "Heals %d HP a second to his people nearby"
+msgstr "Лечыць сваіх побач на %d здароўя за секунду"
+
 msgid "Hear that? Hold a little longer."
 msgstr "Чулі? Трымаемся яшчэ трохі."
 
@@ -1108,6 +1165,9 @@ msgstr "У кастрычніку тысяча чатырыста семнацц
 
 msgid "In Slutsk they still tell of a passage under the castle hill. I have not seen it. But Andrei saw it, and said it was narrow there and smelled of the river."
 msgstr "У Слуцку дагэтуль расказваюць пра ход пад замкавай гарой. Я яго не бачыў. А Андрэй бачыў і казаў, што там цесна і пахне ракой."
+
+msgid "In close order the men around him lose half as much morale"
+msgstr "У зборным шыхце людзі вакол яго губляюць удвая менш духу"
 
 msgid "In spring they stood on the bog, they drink river water and eat old grain. Think what you like."
 msgstr "Яны вясной стаялі на балоце, п'юць рачную ваду і ядуць старое зерне. А ты думай як хочаш."
@@ -1433,6 +1493,9 @@ msgstr "Ноч. Край балота. Ля пачатку старой гаці
 msgid "Night. The far bank. Wet men sit by a fire without their horses. Andrei dries the banner. Beyond the river there are torches: they are gathering the captives."
 msgstr "Ноч. Далёкі бераг. Мокрыя людзі без коней сядзяць ля вогнішча. Андрэй сушыць харугву. За ракой паходні: збіраюць палонных."
 
+msgid "No more of these allowed"
+msgstr "Больш такіх нельга"
+
 msgid "No saved games"
 msgstr "Няма захаваных гульняў"
 
@@ -1511,6 +1574,9 @@ msgstr "На тым месцы князь загадаў паставіць ка
 msgid "On the twenty-eighth of November the Samogitians came to Konstanz. In February their complaint against the Order was read to the council. The Order answered: the baptism is shallow, and Vytautas stirs up the Samogitians."
 msgstr "Дваццаць восьмага лістапада жамойты прыехалі ў Канстанц. У лютым іх скаргу на Ордэн прачыталі сабору. Ордэн адказаў: хрост павярхоўны, а Вітаўт падбухторвае жамойтаў."
 
+msgid "One of your units: +2 melee and +2 pierce armor and +10 morale."
+msgstr "Адзін ваш атрад: +2 да брані ад блізкага бою, +2 ад колкага і +10 да духу."
+
 msgid "Only at a place of power"
 msgstr "Толькі на месцы сілы"
 
@@ -1522,6 +1588,12 @@ msgstr "Толькі побач з лесам"
 
 msgid "Only on a place of power"
 msgstr "Толькі на месцы сілы"
+
+msgid "Only on a salt spring"
+msgstr "Толькі на саляной крыніцы"
+
+msgid "Opponent plays: %s"
+msgstr "Праціўнік: %s"
 
 msgid "Opponent: easy"
 msgstr "Супернік: лёгкі"
@@ -1733,6 +1805,12 @@ msgstr "Правая кнопка: пункт збору"
 msgid "Right-click the forest with peasants selected: they cut wood and carry it home."
 msgstr "Вылучыце сялян і правы пстрык па лесе: яны сякуць дрэва і нясуць дадому."
 
+msgid "Salt works give 30% more silver."
+msgstr "Саляныя жупы даюць на 30% больш срэбра."
+
+msgid "Salt works over a salt spring: silver for the treasury without any workers. At most two."
+msgstr "Саляная жупа на саляной крыніцы: срэбра ў скарб без работнікаў. Не больш за дзве."
+
 msgid "Salvage"
 msgstr "Разабранае"
 
@@ -1795,6 +1873,9 @@ msgstr "Слуга ля абозу"
 
 msgid "Set out the army and hide the foot and the guns"
 msgstr "Расстаўце войска і схавайце пяхоту і гарматы"
+
+msgid "Sets up wayside crosses and chapels"
+msgstr "Ставіць прыдарожныя крыжы і каплічкі"
 
 msgid "Settings"
 msgstr "Налады"
@@ -1895,6 +1976,9 @@ msgstr "Харунжы Гінтаўт. Знайшоў-такі брод."
 msgid "Standard-bearer, lead them to the forest. Only not too fast: let them think they will catch you."
 msgstr "Харунжы, вядзі іх да лесу. Толькі не надта хутка: хай думаюць, што дагоняць."
 
+msgid "Standing %d s sets up the pavise: shooters behind him +%d pierce armor"
+msgstr "Пастаяўшы %d с, ставіць павэзу: стралкам за ёй +%d да брані ад колкага"
+
 msgid "Stop"
 msgstr "Стоп"
 
@@ -1912,6 +1996,9 @@ msgstr "Да заходу %s"
 
 msgid "Suspicion: %d%%"
 msgstr "Падазрэнне: %d%%"
+
+msgid "Tabor"
+msgstr "Табар"
 
 msgid "Take all 3 places of power"
 msgstr "Займіце ўсе 3 месцы сілы"
@@ -2119,6 +2206,9 @@ msgstr "Галава калоны ідзе да броду на Свенце і 
 
 msgid "The council's envoys have been killed on Samogitian land."
 msgstr "Пасланцы сабора забітыя на жамойцкай зямлі."
+
+msgid "The cross becomes a chapel: Power %s a second instead of %s."
+msgstr "Крыж становіцца каплічкай: Сіла %s за секунду замест %s."
 
 msgid "The delegation's cart has been destroyed. Nobody will speak for Samogitia at Konstanz."
 msgstr "Воз пасольства знішчаны. У Канстанцы ніхто не загаворыць за Жамойць."
@@ -2612,6 +2702,9 @@ msgstr "Ты дазволіў ліць іх ваду сабе на галаву,
 msgid "You lose if"
 msgstr "Паражэнне, калі"
 
+msgid "You play: %s"
+msgstr "Вы граеце: %s"
+
 msgid "You promise what you do not have. Go away, Christian."
 msgstr "Ты абяцаеш тое, чаго ў цябе няма. Ідзі прэч, хрысціянін."
 
@@ -2626,6 +2719,12 @@ msgstr "Ты ахрысціўся, Гінтаўт."
 
 msgid "Your father did not live to see this day. I want you to live to see many."
 msgstr "Твой бацька не дажыў да гэтага дня. Я хачу, каб ты дажыў да многіх."
+
+msgid "Your men around the priest: +25 morale; those fleeing turn back to fight."
+msgstr "Вашы людзі вакол ксяндза: +25 да духу; тыя, хто ўцякае, вяртаюцца ў бой."
+
+msgid "Your men around: morale does not fall, damage +25%."
+msgstr "Вашы людзі вакол: дух не падае, урон +25%."
 
 msgid "Your men near the relic do not flee while their morale is above 10; enemies nearby lose 10 morale."
 msgstr "Свае побач з рэліквіяй не ўцякаюць, пакуль дух вышэй за 10; ворагі побач губляюць 10 духу."
@@ -2945,26 +3044,116 @@ msgstr "колкі"
 msgid "pl"
 msgstr "Карона Польская"
 
+msgid "pl_barracks"
+msgstr "Збройны двор"
+
+msgid "pl_battery"
+msgstr "Батарэя"
+
+msgid "pl_bombard"
+msgstr "Бамбарда"
+
+msgid "pl_bowman"
+msgstr "Лучнік"
+
+msgid "pl_camp_servant"
+msgstr "Паходны слуга"
+
+msgid "pl_castle"
+msgstr "Замак"
+
 msgid "pl_crossbow"
 msgstr "Арбалетчык"
 
 msgid "pl_drab"
 msgstr "Драб (каралеўская наёмная пяхота)"
 
+msgid "pl_farm"
+msgstr "Ралля"
+
+msgid "pl_field_camp"
+msgstr "Паходны лагер"
+
 msgid "pl_field_gun"
 msgstr "Палявая гармата"
+
+msgid "pl_foot_servant"
+msgstr "Пешы слуга"
+
+msgid "pl_gate"
+msgstr "Брама"
+
+msgid "pl_granary"
+msgstr "Свіран"
 
 msgid "pl_handgunner"
 msgstr "Ручнічнік"
 
+msgid "pl_house"
+msgstr "Хата"
+
 msgid "pl_hussar"
 msgstr "Гусар"
+
+msgid "pl_kmet"
+msgstr "Кмет"
 
 msgid "pl_kopia"
 msgstr "Рыцарскае кап’ё"
 
+msgid "pl_light_horse"
+msgstr "Лёгкі вершнік"
+
+msgid "pl_lumber_yard"
+msgstr "Лясны двор"
+
+msgid "pl_market"
+msgstr "Рынак"
+
+msgid "pl_mine"
+msgstr "Рудня"
+
+msgid "pl_palisade"
+msgstr "Частакол"
+
+msgid "pl_pavise"
+msgstr "Павэзнік"
+
+msgid "pl_priest"
+msgstr "Ксёндз"
+
+msgid "pl_range"
+msgstr "Стрэльбішча"
+
+msgid "pl_salt_works"
+msgstr "Саляная жупа"
+
+msgid "pl_shrine"
+msgstr "Прыдарожны крыж"
+
+msgid "pl_siege_workshop"
+msgstr "Майстэрня"
+
+msgid "pl_smithy"
+msgstr "Кузня"
+
 msgid "pl_spearman"
 msgstr "Гарадскі кап’яносец"
+
+msgid "pl_stable"
+msgstr "Стайня"
+
+msgid "pl_temple"
+msgstr "Касцёл"
+
+msgid "pl_tower"
+msgstr "Вежа"
+
+msgid "pl_town_center"
+msgstr "Двор"
+
+msgid "pl_wagon"
+msgstr "Абозны воз"
 
 msgid "pp_bog_island"
 msgstr "Балотны востраў"
@@ -3002,8 +3191,14 @@ msgstr "аблогавы"
 msgid "siege engines"
 msgstr "аблогавыя машыны"
 
+msgid "sp_banner_blessing"
+msgstr "Благаслаўленне харугвы"
+
 msgid "sp_bog_mist"
 msgstr "Балотны туман"
+
+msgid "sp_bogurodzica"
+msgstr "Багародзіца"
 
 msgid "sp_consecration"
 msgstr "Асвячэнне"
@@ -3013,6 +3208,9 @@ msgstr "Экзарцызм"
 
 msgid "sp_icon"
 msgstr "Абраз перад войскам"
+
+msgid "sp_pact"
+msgstr "Дамова"
 
 msgid "sp_perkunas"
 msgstr "Гнеў Пяркуна"
@@ -3061,6 +3259,18 @@ msgstr "Хамут"
 
 msgid "t_inf_armor_1"
 msgstr "Кальчуга"
+
+msgid "t_pl_great_banner"
+msgstr "Вялікі сцяг каралеўства"
+
+msgid "t_pl_procession"
+msgstr "Хрэсны ход"
+
+msgid "t_pl_salt_statute"
+msgstr "Саляны статут"
+
+msgid "t_pl_tabor"
+msgstr "Таборная навука"
 
 msgid "t_saw"
 msgstr "Двухручная піла"

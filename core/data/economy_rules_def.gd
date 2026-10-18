@@ -68,3 +68,7 @@ extends Resource
 @export var dismantle_time_permille: int
 ## Temporary: picking up salvage, thousandths of a unit a second.
 @export var gather_salvage_milli: int
+
+@export_group("Salt")
+## A salt spring's own silver, mined like a deposit until the Crown's salt works covers it.
+@export var salt_spring_silver: int

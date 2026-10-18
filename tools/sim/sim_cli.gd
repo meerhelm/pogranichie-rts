@@ -7,6 +7,7 @@ extends SceneTree
 ##   godot --headless -s tools/sim/sim_cli.gd -- arena --seeds 50 --out arena.csv [--pairs a,b]
 ##     [--parity 1]
 ##   godot --headless -s tools/sim/sim_cli.gd -- aivsai --games 20 --difficulty normal --out g.csv
+##     [--factions gdl,to] (player 1's faction, then player 2's)
 ##   godot --headless -s tools/sim/sim_cli.gd -- mission --out m9.json
 ##     [--mission gdl_01|...|gdl_08] [--difficulty normal] [--ticks 90000]
 ##     [--every 200]
@@ -328,6 +329,11 @@ func _ai_vs_ai(opts: Dictionary) -> int:
 	var first := int(opts.get("seed", "1"))
 	var difficulty := StringName(opts.get("difficulty", "normal"))
 	var match_runner := AiMatch.new(CatalogDB.load_prototype())
+	var sides: PackedStringArray = String(opts.get("factions", "gdl,to")).split(",")
+	if sides.size() != 2:
+		printerr("--factions takes two factions, such as pl,to")
+		return 1
+	match_runner.factions = [StringName(sides[0]), StringName(sides[1])]
 	var lines := PackedStringArray([AiMatch.CSV_HEADER])
 	print(AiMatch.CSV_HEADER)
 	var code := 0

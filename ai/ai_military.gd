@@ -813,7 +813,7 @@ func gather_army() -> bool:
 
 
 ## Casters use what they can when enemies are near: the mist around themselves, exorcism on
-## the enemy, the relic in their own ranks.
+## the enemy, the relic or a hymn in their own ranks, a blessing on an own unit nearby.
 func cast_spells() -> bool:
 	if not ai.profile.casts_spells:
 		return true
@@ -830,6 +830,12 @@ func cast_spells() -> bool:
 			if spell.tags.has(&"dispel"):
 				at = ai.center_of(close)
 			var p := SkirmishAi.point(at)
+			if spell.tags.has(&"blessing"):
+				# The blessing goes on the nearest own fighting unit.
+				var own := ai.near(ai.army, at, magic.rules.cast_range)
+				if own.is_empty():
+					continue
+				p = Vector2i(ai.sim.entities.pos_x[own[0] - 1], ai.sim.entities.pos_y[own[0] - 1])
 			var one := PackedInt32Array([id])
 			ai.order(SimCommand.cast(ai.sim.tick, ai.player, one, spell.id, p.x, p.y))
 			break

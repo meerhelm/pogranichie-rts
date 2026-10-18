@@ -23,6 +23,9 @@ msgstr "%d s"
 msgid "%d units"
 msgstr "Jednostki: %d"
 
+msgid "%d wagons standing in a ring make a tabor (U)"
+msgstr "%d wozy ustawione w krąg tworzą tabor (U)"
+
 msgid "%d%% of its price is left in heaps; peasants carry it to the stores."
 msgstr "%d%% ceny zostaje w stertach; chłopi zanoszą to do magazynów."
 
@@ -40,6 +43,9 @@ msgstr "(dodatkowe) %s"
 
 msgid "+%d damage against %s"
 msgstr "+%d obrażeń przeciw: %s"
+
+msgid "+%d morale beside an own knight's lance"
+msgstr "+%d morale obok własnej kopii rycerskiej"
 
 msgid "+%d population"
 msgstr "+%d ludności"
@@ -71,6 +77,9 @@ msgstr "U Żmudzina ręka nie drży, panie Jakubie. Drży serce, a ono w boju ni
 msgid "A barrier of felled trees laid in the forest. Nobody passes it; fire burns it away."
 msgstr "Zawał ze ściętych drzew w lesie. Nikt przez niego nie przejdzie; ogień go spala."
 
+msgid "A battery of wicker gabions. Bombards fire only from here: they stand by it and dig in, two at most."
+msgstr "Bateria z plecionych koszy. Bombardy strzelają tylko stąd: stają przy niej i okopują się, najwyżej dwie."
+
 msgid "A brother priest: consecrates the land and casts the Order's spells."
 msgstr "Brat kapłan: uświęca ziemię i rzuca zaklęcia Zakonu."
 
@@ -98,6 +107,9 @@ msgstr "Szybki lekki jeździec z sulicami."
 msgid "A field. A peasant working it brings in food; when it is worked out, it is sown again for its price."
 msgstr "Pole. Chłop przy nim zbiera żywność; gdy pole się wyczerpie, zostaje ponownie obsiane za swoją cenę."
 
+msgid "A foot servant who follows the knight's lance and steadies the ranks."
+msgstr "Pachołek pieszy, który idzie za kopią rycerską i trzyma szyk."
+
 msgid "A gate in your wall: your own people pass, enemies have to break it down. One or two archers on it shoot at enemies nearby."
 msgstr "Brama w twoim murze: swoi przechodzą, wrogowie muszą ją wyłamać. Jeden lub dwóch łuczników na niej strzela do wrogów w pobliżu."
 
@@ -106,6 +118,9 @@ msgstr "Półbrat w szarym płaszczu: średnia jazda Zakonu."
 
 msgid "A heavy Lithuanian lancer."
 msgstr "Ciężki litewski kopijnik."
+
+msgid "A heavy bombard that breaks walls, firing only from a battery."
+msgstr "Ciężka bombarda, która kruszy mury; strzela tylko z baterii."
 
 msgid "A hidden place of power gives one charge of Power. Stand the prince on it and cast «Wolf Trail»: a trail opens from it through the old forest or the bog for a minute, and on it the dogs find no scent."
 msgstr "Ukryte miejsce mocy daje jeden ładunek Mocy. Postaw na nim księcia i rzuć «Wilczy szlak»: na minutę otworzy się od niego ścieżka przez starą puszczę albo bagno, a na niej psy nie podejmą tropu."
@@ -119,11 +134,23 @@ msgstr "Chata wyżywi więcej gąb. Szkol chłopów na dworze i postaw spichlerz
 msgid "A knight brother in a white cloak: the Order's heavy horse."
 msgstr "Brat rycerz w białym płaszczu: ciężka jazda Zakonu."
 
+msgid "A knight's lance: the Crown's heavy horse, terrible in the charge."
+msgstr "Kopia rycerska: ciężka jazda Korony, straszna w szarży."
+
 msgid "A light horseman from the Prussian lands."
 msgstr "Lekki jeździec z ziem pruskich."
 
 msgid "A new age opens new buildings, troops and improvements."
 msgstr "Nowa epoka otwiera nowe budynki, wojska i ulepszenia."
+
+msgid "A pavisier: sets up a big shield to cover the shooters behind him."
+msgstr "Pawężnik: stawia wielką pawęż i osłania strzelców za nią."
+
+msgid "A priest must stand by the cross."
+msgstr "Przy krzyżu musi stać ksiądz."
+
+msgid "A priest: sets up the wayside cross and the chapel, heals those around him and casts the Crown's spells."
+msgstr "Ksiądz: stawia krzyż przydrożny i kaplicę, leczy tych wokół i rzuca zaklęcia Korony."
 
 msgid "A shrine stands on it"
 msgstr "Stoi na nim sanktuarium"
@@ -149,6 +176,9 @@ msgstr "Skład żywności przy polach: chłopi noszą plony krótszą drogą. Ba
 msgid "A sturdy archer of the castle garrisons."
 msgstr "Wytrzymały łucznik zamkowych załóg."
 
+msgid "A tabor takes 3 wagons; inside it +1 melee and +1 pierce armor more."
+msgstr "Tabor wymaga 3 wozów; w środku jeszcze +1 pancerza wręcz i +1 przeciw przebiciu."
+
 msgid "A tower with three or four archers shooting at enemies in range. Palisades and walls join onto it."
 msgstr "Wieża z trzema lub czterema łucznikami, którzy strzelają do wrogów w zasięgu. Dołączają do niej palisady i mury."
 
@@ -158,11 +188,17 @@ msgstr "Dom handlowy. Handlu w tej wersji jeszcze nie ma."
 msgid "A wagon of the baggage train."
 msgstr "Wóz taborowy."
 
+msgid "A wagon of the baggage train; four of them make a tabor."
+msgstr "Wóz taborowy; cztery takie tworzą tabor."
+
 msgid "A wall of sharpened stakes: drag to lay a line. Holds enemies off until they break through; it burns."
 msgstr "Mur z zaostrzonych pali: przeciągnij, by ułożyć linię. Powstrzymuje wrogów, aż się przebiją; płonie."
 
 msgid "A watchtower of the border watch: it sees all round, by day further still."
 msgstr "Wieża strażnicza straży granicznej: widzi na wszystkie strony, za dnia jeszcze dalej."
+
+msgid "A wayside cross on a place of power. It gathers Power for spells; with a priest by it the cross can be made a chapel that gives twice as much."
+msgstr "Krzyż przydrożny na miejscu mocy. Zbiera Moc na zaklęcia; gdy obok jest ksiądz, krzyż można zamienić w kaplicę, która daje dwa razy więcej."
 
 msgid "A wise woman: heals those around her and casts the Duchy's spells."
 msgstr "Znachorka: leczy tych wokół siebie i rzuca zaklęcia Księstwa."
@@ -184,6 +220,9 @@ msgstr "Przejście do następnej epoki"
 
 msgid "Advance to: %s"
 msgstr "Przejdź do epoki: %s"
+
+msgid "After %d s of melee without a new charge: −%d damage"
+msgstr "Po %d s walki wręcz bez nowej szarży: −%d obrażeń"
 
 msgid "After the death of Vytautas the Grand Duchy split in two. Sigismund Kęstutaitis holds Vilnius, Trakai and Samogitia; Polotsk, Vitebsk and Smolensk went over to Švitrigaila, and the Livonian knights ride with him. Now Švitrigaila marches on Vilnius, and Sigismund has sent his son Michael against him, with the Poles of Jakub of Kobylany. Mikołaj Gintovt leads his banner in Michael's army. His brother Jurij rides with Švitrigaila."
 msgstr "Po śmierci Witolda Wielkie Księstwo pękło na dwoje. Zygmunt Kiejstutowicz trzyma Wilno, Troki i Żmudź; Połock, Witebsk i Smoleńsk przeszły do Świdrygiełły, a z nim jadą rycerze inflanccy. Teraz Świdrygiełło idzie na Wilno, a Zygmunt posłał przeciw niemu syna Michała z Polakami Jakuba z Kobylan. Mikołaj Gintowt prowadzi swoją chorągiew w wojsku Michała. Jego brat Jerzy jedzie ze Świdrygiełłą."
@@ -395,6 +434,9 @@ msgstr "Ruda darniowa"
 msgid "Bog ore (brown blocks in the bog) gives iron."
 msgstr "Ruda darniowa (brązowe bloki na bagnie) daje żelazo."
 
+msgid "Bogurodzica costs 30% less Power."
+msgstr "Bogurodzica kosztuje o 30% mniej Mocy."
+
 msgid "Both bridges stand. The foot and the guns are going over them."
 msgstr "Oba mosty stoją. Piechota i działa przechodzą po nich."
 
@@ -523,6 +565,9 @@ msgstr "Tusza"
 
 msgid "Carries %d %s"
 msgstr "Niesie: %d %s"
+
+msgid "Chapel"
+msgstr "Kaplica"
 
 msgid "Charge: ×%s damage after a run-up of %d cells"
 msgstr "Szarża: obrażenia ×%s po rozpędzie na %d pola"
@@ -662,6 +707,9 @@ msgstr "Podwójny klik zaznacza wszystkie jednostki tego typu na ekranie."
 msgid "Draw"
 msgstr "Remis"
 
+msgid "Draw the wagons up in a ring."
+msgstr "Ustawić wozy w krąg."
+
 msgid "Dubysa garrison: %d%%"
 msgstr "Załoga Dubisy: %d%%"
 
@@ -743,6 +791,9 @@ msgstr "Ogniste strzały podpalają dachy: trzymaj mieszczan przy studniach i be
 msgid "Fire at the stone. Write it down."
 msgstr "Ogień przy kamieniu. Zapisz to."
 
+msgid "Fires only from a battery (digs in for %d s), %d iron a shot"
+msgstr "Strzela tylko z baterii (okopuje się %d s), %d żelaza za strzał"
+
 msgid "First steps"
 msgstr "Pierwsze kroki"
 
@@ -778,6 +829,9 @@ msgstr "Żywność: chłopi pracują na polu przy lesie lub przy barci w lesie."
 
 msgid "Foot soldiers and horsemen: +1 melee damage."
 msgstr "Piechota i jazda: +1 obrażeń wręcz."
+
+msgid "Foot soldiers and shooters inside get more armor and fear no flank attacks."
+msgstr "Piechota i strzelcy w środku mają więcej pancerza i nie boją się ciosów w flankę."
 
 msgid "Foot soldiers: +1 melee and +1 pierce armor."
 msgstr "Piechota: +1 pancerza wręcz i +1 przeciw przebiciu."
@@ -974,6 +1028,9 @@ msgstr "Zamyka księgę. Za oknem wiatr kołysze starym dębem."
 msgid "Heals %d HP a second to her people within %d cells"
 msgstr "Leczy swoich o %d PŻ na sekundę w promieniu %d pól"
 
+msgid "Heals %d HP a second to his people nearby"
+msgstr "Leczy swoich w pobliżu o %d PŻ na sekundę"
+
 msgid "Hear that? Hold a little longer."
 msgstr "Słyszeliście? Wytrzymajmy jeszcze trochę."
 
@@ -1108,6 +1165,9 @@ msgstr "W październiku tysiąc czterysta siedemnastego roku Żmudź dostała w�
 
 msgid "In Slutsk they still tell of a passage under the castle hill. I have not seen it. But Andrei saw it, and said it was narrow there and smelled of the river."
 msgstr "W Słucku do dziś opowiadają o przejściu pod zamkową górą. Ja go nie widziałem. Ale Andrzej widział i mówił, że jest tam ciasno i pachnie rzeką."
+
+msgid "In close order the men around him lose half as much morale"
+msgstr "W zwartym szyku ludzie wokół niego tracą o połowę mniej morale"
 
 msgid "In spring they stood on the bog, they drink river water and eat old grain. Think what you like."
 msgstr "Wiosną stali na bagnie, piją wodę z rzeki i jedzą stare ziarno. A ty myśl, co chcesz."
@@ -1433,6 +1493,9 @@ msgstr "Noc. Skraj bagna. U początku starej grobli stoi stara zielarka z latarn
 msgid "Night. The far bank. Wet men sit by a fire without their horses. Andrei dries the banner. Beyond the river there are torches: they are gathering the captives."
 msgstr "Noc. Daleki brzeg. Mokrzy ludzie bez koni siedzą przy ognisku. Andrzej suszy chorągiew. Za rzeką pochodnie: zbierają jeńców."
 
+msgid "No more of these allowed"
+msgstr "Więcej takich nie wolno"
+
 msgid "No saved games"
 msgstr "Brak zapisanych gier"
 
@@ -1511,6 +1574,9 @@ msgstr "Na tym miejscu książę kazał postawić kościół Świętej Trójcy. 
 msgid "On the twenty-eighth of November the Samogitians came to Konstanz. In February their complaint against the Order was read to the council. The Order answered: the baptism is shallow, and Vytautas stirs up the Samogitians."
 msgstr "Dwudziestego ósmego listopada Żmudzini przybyli do Konstancji. W lutym ich skargę na Zakon odczytano na soborze. Zakon odpowiedział: chrzest jest płytki, a Witold podburza Żmudzinów."
 
+msgid "One of your units: +2 melee and +2 pierce armor and +10 morale."
+msgstr "Jeden twój oddział: +2 pancerza wręcz, +2 przeciw przebiciu i +10 morale."
+
 msgid "Only at a place of power"
 msgstr "Tylko w miejscu mocy"
 
@@ -1522,6 +1588,12 @@ msgstr "Tylko obok lasu"
 
 msgid "Only on a place of power"
 msgstr "Tylko na miejscu mocy"
+
+msgid "Only on a salt spring"
+msgstr "Tylko na źródle solankowym"
+
+msgid "Opponent plays: %s"
+msgstr "Przeciwnik: %s"
 
 msgid "Opponent: easy"
 msgstr "Przeciwnik: łatwy"
@@ -1733,6 +1805,12 @@ msgstr "PPM: punkt zbiórki"
 msgid "Right-click the forest with peasants selected: they cut wood and carry it home."
 msgstr "Zaznacz chłopów i kliknij las prawym przyciskiem: zetną drewno i zaniosą do domu."
 
+msgid "Salt works give 30% more silver."
+msgstr "Żupy solne dają o 30% więcej srebra."
+
+msgid "Salt works over a salt spring: silver for the treasury without any workers. At most two."
+msgstr "Żupa solna nad źródłem solankowym: srebro do skarbca bez robotników. Najwyżej dwie."
+
 msgid "Salvage"
 msgstr "Rozbiórka"
 
@@ -1795,6 +1873,9 @@ msgstr "Pachołek przy taborze"
 
 msgid "Set out the army and hide the foot and the guns"
 msgstr "Rozstaw wojsko i ukryj piechotę i działa"
+
+msgid "Sets up wayside crosses and chapels"
+msgstr "Stawia krzyże przydrożne i kaplice"
 
 msgid "Settings"
 msgstr "Ustawienia"
@@ -1895,6 +1976,9 @@ msgstr "Chorąży Gintowt. A jednak znalazłeś bród."
 msgid "Standard-bearer, lead them to the forest. Only not too fast: let them think they will catch you."
 msgstr "Chorąży, prowadź ich ku lasowi. Tylko nie za szybko: niech myślą, że dogonią."
 
+msgid "Standing %d s sets up the pavise: shooters behind him +%d pierce armor"
+msgstr "Po %d s postoju stawia pawęż: strzelcy za nią +%d pancerza przeciw przebiciu"
+
 msgid "Stop"
 msgstr "Stój"
 
@@ -1912,6 +1996,9 @@ msgstr "Do zachodu słońca %s"
 
 msgid "Suspicion: %d%%"
 msgstr "Podejrzenie: %d%%"
+
+msgid "Tabor"
+msgstr "Tabor"
 
 msgid "Take all 3 places of power"
 msgstr "Zajmij wszystkie 3 miejsca mocy"
@@ -2119,6 +2206,9 @@ msgstr "Czoło kolumny zmierza do brodu na Świętej i do Wiłkomierza! Jeśli w
 
 msgid "The council's envoys have been killed on Samogitian land."
 msgstr "Posłowie soboru zginęli na żmudzkiej ziemi."
+
+msgid "The cross becomes a chapel: Power %s a second instead of %s."
+msgstr "Krzyż staje się kaplicą: Moc %s na sekundę zamiast %s."
 
 msgid "The delegation's cart has been destroyed. Nobody will speak for Samogitia at Konstanz."
 msgstr "Wóz poselstwa zniszczony. W Konstancji nikt nie przemówi za Żmudzią."
@@ -2612,6 +2702,9 @@ msgstr "Pozwoliłeś lać ich wodę na swoją głowę, Gintowcie. Zobaczymy tera
 msgid "You lose if"
 msgstr "Porażka, jeśli"
 
+msgid "You play: %s"
+msgstr "Grasz: %s"
+
 msgid "You promise what you do not have. Go away, Christian."
 msgstr "Obiecujesz to, czego nie masz. Odejdź, chrześcijaninie."
 
@@ -2626,6 +2719,12 @@ msgstr "Ochrzciłeś się, Gintowcie."
 
 msgid "Your father did not live to see this day. I want you to live to see many."
 msgstr "Twój ojciec nie dożył tego dnia. Chcę, żebyś ty dożył wielu."
+
+msgid "Your men around the priest: +25 morale; those fleeing turn back to fight."
+msgstr "Twoi ludzie wokół księdza: +25 morale; uciekający wracają do walki."
+
+msgid "Your men around: morale does not fall, damage +25%."
+msgstr "Twoi ludzie wokół: morale nie spada, obrażenia +25%."
 
 msgid "Your men near the relic do not flee while their morale is above 10; enemies nearby lose 10 morale."
 msgstr "Twoi ludzie przy relikwii nie uciekają, póki morale jest powyżej 10; wrogowie w pobliżu tracą 10 morale."
@@ -2945,26 +3044,116 @@ msgstr "przebijające"
 msgid "pl"
 msgstr "Korona Polska"
 
+msgid "pl_barracks"
+msgstr "Dwór zbrojny"
+
+msgid "pl_battery"
+msgstr "Bateria"
+
+msgid "pl_bombard"
+msgstr "Bombarda"
+
+msgid "pl_bowman"
+msgstr "Łucznik"
+
+msgid "pl_camp_servant"
+msgstr "Pachołek obozowy"
+
+msgid "pl_castle"
+msgstr "Zamek"
+
 msgid "pl_crossbow"
 msgstr "Kusznik"
 
 msgid "pl_drab"
 msgstr "Drab (królewska piechota zaciężna)"
 
+msgid "pl_farm"
+msgstr "Rola"
+
+msgid "pl_field_camp"
+msgstr "Obóz polowy"
+
 msgid "pl_field_gun"
 msgstr "Działo polowe"
+
+msgid "pl_foot_servant"
+msgstr "Pachołek pieszy"
+
+msgid "pl_gate"
+msgstr "Brama"
+
+msgid "pl_granary"
+msgstr "Spichlerz"
 
 msgid "pl_handgunner"
 msgstr "Rusznicznik"
 
+msgid "pl_house"
+msgstr "Chata"
+
 msgid "pl_hussar"
 msgstr "Husarz"
+
+msgid "pl_kmet"
+msgstr "Kmieć"
 
 msgid "pl_kopia"
 msgstr "Kopia rycerska"
 
+msgid "pl_light_horse"
+msgstr "Lekki jeździec"
+
+msgid "pl_lumber_yard"
+msgstr "Dwór leśny"
+
+msgid "pl_market"
+msgstr "Rynek"
+
+msgid "pl_mine"
+msgstr "Rudnia"
+
+msgid "pl_palisade"
+msgstr "Częstokół"
+
+msgid "pl_pavise"
+msgstr "Pawężnik"
+
+msgid "pl_priest"
+msgstr "Ksiądz"
+
+msgid "pl_range"
+msgstr "Strzelnica"
+
+msgid "pl_salt_works"
+msgstr "Żupa solna"
+
+msgid "pl_shrine"
+msgstr "Krzyż przydrożny"
+
+msgid "pl_siege_workshop"
+msgstr "Warsztat"
+
+msgid "pl_smithy"
+msgstr "Kuźnia"
+
 msgid "pl_spearman"
 msgstr "Włócznik miejski"
+
+msgid "pl_stable"
+msgstr "Stajnia"
+
+msgid "pl_temple"
+msgstr "Kościół"
+
+msgid "pl_tower"
+msgstr "Wieża"
+
+msgid "pl_town_center"
+msgstr "Dwór"
+
+msgid "pl_wagon"
+msgstr "Wóz taborowy"
 
 msgid "pp_bog_island"
 msgstr "Wyspa na bagnie"
@@ -3002,8 +3191,14 @@ msgstr "oblężnicze"
 msgid "siege engines"
 msgstr "machiny oblężnicze"
 
+msgid "sp_banner_blessing"
+msgstr "Błogosławieństwo chorągwi"
+
 msgid "sp_bog_mist"
 msgstr "Bagienna mgła"
+
+msgid "sp_bogurodzica"
+msgstr "Bogurodzica"
 
 msgid "sp_consecration"
 msgstr "Poświęcenie"
@@ -3013,6 +3208,9 @@ msgstr "Egzorcyzm"
 
 msgid "sp_icon"
 msgstr "Ikona przed wojskiem"
+
+msgid "sp_pact"
+msgstr "Umowa"
 
 msgid "sp_perkunas"
 msgstr "Gniew Perkuna"
@@ -3061,6 +3259,18 @@ msgstr "Chomąto"
 
 msgid "t_inf_armor_1"
 msgstr "Kolczugi"
+
+msgid "t_pl_great_banner"
+msgstr "Wielka chorągiew królestwa"
+
+msgid "t_pl_procession"
+msgstr "Procesja"
+
+msgid "t_pl_salt_statute"
+msgstr "Ordynacja solna"
+
+msgid "t_pl_tabor"
+msgstr "Sztuka taborowa"
 
 msgid "t_saw"
 msgstr "Piła dwuręczna"

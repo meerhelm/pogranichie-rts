@@ -216,7 +216,7 @@ func _key(key: InputEventKey) -> void:
 			_select_building(Vector2(-1, -1))
 	elif selection.ids.is_empty():
 		_building_key(key)
-	elif key.physical_keycode == KEY_B and _peasants().size() > 0:
+	elif key.physical_keycode == KEY_B and builders().size() > 0:
 		_next_building(-1 if key.shift_pressed else 1)
 	elif key.physical_keycode in [KEY_Y, KEY_DELETE] and _peasants().size() > 0:
 		start_taking_apart()
@@ -239,6 +239,8 @@ func _key(key: InputEventKey) -> void:
 		_order(SimCommand.order(sim.tick, player, SimCommand.Kind.TURN, selection.ids))
 	elif key.is_action(&"dismount"):
 		_order(SimCommand.order(sim.tick, player, SimCommand.Kind.DISMOUNT, selection.ids))
+	elif key.physical_keycode == KEY_U:
+		_order(SimCommand.order(sim.tick, player, SimCommand.Kind.TABOR, selection.ids))
 
 
 func _draw() -> void:
@@ -386,7 +388,7 @@ func _economy_order(screen_point: Vector2, at: Vector2i) -> bool:
 	var cmd: SimCommand = null
 	var b := sim.economy.buildings.occupant[cell]
 	if b != BuildingStore.NO_ID:
-		cmd = _building_command(b, workers)
+		cmd = _building_command(b, builders())
 	elif not workers.is_empty():
 		cmd = _gather_command(screen_point, cell, at, workers)
 	if cmd != null:
@@ -441,15 +443,18 @@ func _animal_at(screen_point: Vector2) -> int:
 	return best
 
 
-## Buildings the player may lay now, in catalog order (by id).
+## Buildings the player may lay now, in catalog order (by id); priests alone lay only shrines.
 func buildable() -> Array[BuildingDef]:
 	var out: Array[BuildingDef] = []
 	var state := sim.economy.player(player)
 	if state == null:
 		return out
+	var shrines_only := _peasants().is_empty()
 	var ids := PackedStringArray()
 	for id: StringName in sim.economy.db.buildings:
 		var def: BuildingDef = sim.economy.db.buildings[id]
+		if shrines_only and not def.tags.has(&"power_place_only"):
+			continue
 		if def.faction == state.faction and not def.campaign_only and def.age <= state.age:
 			ids.append(String(id))
 	ids.sort()
@@ -529,7 +534,7 @@ func _placing_click(mb: InputEventMouseButton) -> void:
 	if mb.button_index != MOUSE_BUTTON_LEFT:
 		return
 	_update_ghost(mb.position)
-	var workers := _peasants()
+	var workers := builders()
 	if BuildingPlacement.is_wall(placing):
 		if mb.pressed:
 			_wall_from = _cursor_cell
@@ -591,6 +596,9 @@ func queue_items() -> Array[StringName]:
 	techs.sort()
 	for id in techs:
 		out.append(StringName(id))
+	var s := selected_building - 1
+	if def.param(&"upgrade_power_rate_milli") > 0 and eco.buildings.upgraded[s] == 0:
+		out.append(EconomyProduction.CHAPEL)
 	if def.base_id == EconomySystem.TOWN_CENTER:
 		var next := eco.db.age_by_index(state.age + 1)
 		if next != null:
@@ -648,7 +656,7 @@ func order_kind(kind: SimCommand.Kind) -> void:
 
 ## Starts placing a building with the selected peasants (as B does).
 func start_placing(def: BuildingDef) -> void:
-	if _peasants().is_empty():
+	if builders().is_empty():
 		return
 	taking_apart = false
 	placing = def
@@ -793,6 +801,16 @@ func _casting_click(mb: InputEventMouseButton) -> void:
 ## Selected units that can gather and build.
 func peasants() -> PackedInt32Array:
 	return _peasants()
+
+
+## Selected units that build: peasants, and the Crown's priests (shrines only).
+func builders() -> PackedInt32Array:
+	var out := PackedInt32Array()
+	for id in selection.ids:
+		var def := sim.economy.unit_defs[id - 1]
+		if def != null and (def.has_class(&"peasant") or def.tags.has(&"builds_shrine")):
+			out.append(id)
+	return out
 
 
 func _order(cmd: SimCommand) -> void:

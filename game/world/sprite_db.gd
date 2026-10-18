@@ -13,8 +13,10 @@ const STAGES: Array[StringName] = [
 	&"found", &"build_33", &"build_66", &"done", &"damaged_1", &"damaged_2", &"rubble"
 ]
 ## Buildings and units drawn with another's art: Muscovite village and border buildings (ВКЛ 6)
-## are of the same timber as the Duchy's; the Crown's field gun is the Duchy's model, and the
-## Muscovite service Tatar the same steppe horse archer as the Duchy's (ВКЛ 8).
+## are of the same timber as the Duchy's; the Crown's field gun, camp servant and field camp
+## are the Duchy's models and its bombard the Order's; the shrine's chapel (an upgrade item,
+## not a catalog id) is the upgraded shrine's art; the Muscovite service Tatar is the same
+## steppe horse archer as the Duchy's (ВКЛ 8).
 const ALIASES: Dictionary[StringName, StringName] = {
 	&"mo_house": &"gdl_house",
 	&"mo_stable": &"gdl_stable",
@@ -22,6 +24,10 @@ const ALIASES: Dictionary[StringName, StringName] = {
 	&"mo_zaseka": &"gdl_zaseka",
 	&"mo_zaseka_v": &"gdl_zaseka_v",
 	&"pl_field_gun": &"gdl_field_gun",
+	&"pl_camp_servant": &"gdl_camp_servant",
+	&"pl_bombard": &"to_bombard",
+	&"pl_field_camp": &"gdl_field_camp",
+	&"chapel": &"pl_shrine_chapel",
 	&"mo_tatar": &"nt_steppe_archer",
 }
 

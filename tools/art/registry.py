@@ -2,8 +2,8 @@
 
 from typing import Callable, NamedTuple
 
-from tools.art import (beasts, buildings_gdl, buildings_to, folk, folk_1410, folk_1435, folk_1500, folk_1507,
-                       folk_1508, folk_1514, models)
+from tools.art import (beasts, buildings_gdl, buildings_pl, buildings_to, folk, folk_1410, folk_1435, folk_1500,
+                       folk_1507, folk_1508, folk_1514, folk_crown, models)
 
 
 class Unit(NamedTuple):
@@ -25,7 +25,7 @@ BEAST = {"frame": (224, 176), "pivot": (108, 124)}
 WAGON = {"frame": (320, 240), "pivot": (156, 150)}
 ## A man on foot who raises a pole over his head (mo_inok lifts the icon).
 TALL = {"frame": (160, 216), "pivot": (64, 176)}
-TALL_UNITS = {"mo_inok"}
+TALL_UNITS = {"mo_inok", "pl_priest"}
 ## Long weapons levelled forward reach past the usual frame (pl_drab's pike, the handgunner's smoke).
 PIKE = {"frame": (288, 216), "pivot": (144, 176)}
 WIDE = {"frame": (224, 144), "pivot": (112, 104)}
@@ -33,16 +33,17 @@ FRAMES = {"pl_drab": PIKE, "pl_handgunner": WIDE}
 
 UNITS: dict[str, Unit] = {uid: Unit(fn, **TALL) if uid in TALL_UNITS else Unit(fn) for uid, fn in {
     **models.UNITS, **folk.UNITS, **folk_1410.UNITS, **folk_1500.UNITS, **folk_1507.UNITS,
-    **folk_1508.UNITS, **folk_1514.UNITS}.items()}
+    **folk_1508.UNITS, **folk_1514.UNITS, **folk_crown.UNITS}.items()}
 for _uid, _frame in FRAMES.items():
     UNITS[_uid] = Unit(UNITS[_uid].build, **_frame)
 for _uid, _fn in beasts.UNITS.items():
     UNITS[_uid] = Unit(_fn, **BEAST) if _uid in beasts.BIG_BEASTS else Unit(_fn)
 for _uid, _fn in {**beasts.MOUNTED_UNITS, **folk_1410.MOUNTED_UNITS, **folk_1435.MOUNTED_UNITS,
                   **folk_1500.MOUNTED_UNITS, **folk_1507.MOUNTED_UNITS,
-                  **folk_1508.MOUNTED_UNITS, **folk_1514.MOUNTED_UNITS}.items():
+                  **folk_1508.MOUNTED_UNITS, **folk_1514.MOUNTED_UNITS, **folk_crown.MOUNTED_UNITS}.items():
     UNITS[_uid] = Unit(_fn, **MOUNTED)
-for _uid, _fn in {**beasts.WAGONS, **folk_1410.WAGONS, **folk_1500.WAGONS, **folk_1508.WAGONS}.items():
+for _uid, _fn in {**beasts.WAGONS, **folk_1410.WAGONS, **folk_1500.WAGONS, **folk_1508.WAGONS,
+                  **folk_crown.WAGONS}.items():
     UNITS[_uid] = Unit(_fn, **WAGON)
 
 BUILDINGS: dict[str, Building] = {
@@ -50,10 +51,9 @@ BUILDINGS: dict[str, Building] = {
     "gdl_town_center": Building(models.gdl_town_center, (4, 4), 9),
 }
 for _uid, (_fn, _cells, _tall) in {**buildings_gdl.BUILDINGS, **buildings_to.BUILDINGS,
-                                   **folk_1507.BUILDINGS, **folk_1508.BUILDINGS}.items():
+                                   **buildings_pl.BUILDINGS, **folk_1507.BUILDINGS, **folk_1508.BUILDINGS}.items():
     # Palisade arms are drawn beside the post piece, which alone carries the site props.
-    _props = not (_uid.startswith("gdl_palisade_") or _uid.startswith("to_palisade_")
-                   or _uid.startswith("gdl_wall_"))
+    _props = not _uid.startswith(("gdl_palisade_", "to_palisade_", "pl_palisade_", "gdl_wall_"))
     BUILDINGS[_uid] = Building(_fn, _cells, _tall, _props)
 
 TREES = models.TREES
@@ -72,7 +72,7 @@ DEPOSIT_VARIANTS = models.DEPOSIT_VARIANTS
 BASE_ANIMS = [("idle", 8, 6), ("walk", 12, 15)]  # name, frames, fps
 WORK_ANIM = ("work", 8, 9)
 ATTACK_ANIM = ("attack", 8, 12)
-WORKERS = {"gdl_peasant", "to_peasant", "gdl_camp_servant", "gdl_burgher"}
+WORKERS = {"gdl_peasant", "to_peasant", "gdl_camp_servant", "gdl_burgher", "pl_kmet", "pl_pavise"}
 ATTACK_STYLE = {
     "gdl_peasant": "swing", "gdl_spearman": "thrust", "gdl_forest_archer": "bow",
     "gdl_znakharka": "cast", "gdl_castle_archer": "bow", "gdl_camp_servant": "swing",
@@ -93,6 +93,8 @@ ATTACK_STYLE = {
     "gdl_burgher": "swing", "gdl_hakownica": "crossbow", "hero_yuri_olelkovich": "swing", "mo_cannon": "fire",
     "pl_drab": "thrust", "pl_handgunner": "crossbow", "pl_hussar": "thrust", "hero_swierczowski": "swing",
     "hero_sampolinski": "thrust", "hero_chelyadnin": "swing", "hero_bulgakov": "thrust",
+    "pl_kmet": "swing", "pl_bowman": "bow", "pl_light_horse": "thrust", "pl_foot_servant": "thrust",
+    "pl_pavise": "swing", "pl_priest": "cast",
     **{uid: "lunge" for uid in beasts.UNITS},
 }
 
