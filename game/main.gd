@@ -163,4 +163,6 @@ func _on_ticked(_tick: int) -> void:
 	_map.refresh()
 	if sim.victory.is_over() and not _ended:
 		_ended = true
+		if sim.mission != null and sim.victory.winner == PLAYER:
+			CampaignProgress.mark_won(sim.mission.def.id)
 		end_screen.open(sim, PLAYER)

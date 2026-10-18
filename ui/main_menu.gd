@@ -1,33 +1,58 @@
 extends Control
-## Main menu: start a skirmish (against the Order AI, easy or normal), the campaign missions
-## (at the same difficulty), load a saved mission, how to play, about the game (version and
-## what each build added), settings, quit. The game's version stands under the title. The first
-## scene the game opens.
+## Main menu. The first page: campaign, single player, network play (not made yet), load a saved
+## game, how to play, about the game (version and what each build added), settings, quit. The
+## game's version stands under the title. Campaign leads to the choice of a country (GDL or the
+## Crown) and then to its missions, which open one after another as they are won
+## (CampaignProgress); single player is the skirmish against the Order AI. Esc steps back a page.
+## Coming back from a campaign mission, the menu opens on that campaign's missions. The first scene
+## the game opens.
+
+enum Page { MAIN, COUNTRIES, MISSIONS, SINGLE }
 
 const GAME_SCENE := "res://game/main.tscn"
-## Campaign missions, one button each, in campaign order.
-const MISSIONS: Array[String] = [
-	"gdl_01", "gdl_02", "gdl_03", "gdl_04", "gdl_05", "gdl_06", "gdl_07", "gdl_08"
-]
 const BACKGROUND := preload("res://ui/art/menu_background.jpg")
+const BUTTON_SIZE := Vector2(340, 50)
+const MISSION_SIZE := Vector2(460, 46)
 
 var _title := Label.new()
 var _subtitle := Label.new()
-var _skirmish := Button.new()
-var _campaign: Array[Button] = []
+var _campaign_button := Button.new()
+var _single_button := Button.new()
+var _network := Button.new()
 var _load := Button.new()
 var _saves := VBoxContainer.new()
-var _difficulty := OptionButton.new()
 var _settings_button := Button.new()
 var _help_button := Button.new()
 var _about_button := Button.new()
 var _quit := Button.new()
 var _version := Label.new()
+## The pages; one shows at a time.
 var _menu := VBoxContainer.new()
+var _countries := VBoxContainer.new()
+var _missions := VBoxContainer.new()
+var _single := VBoxContainer.new()
+var _countries_head := Label.new()
+## Per campaign (CampaignProgress.ORDER): its button and the line under it.
+var _country: Array[Button] = []
+var _country_note: Array[Label] = []
+var _missions_head := Label.new()
+var _missions_note := Label.new()
+var _mission_list := VBoxContainer.new()
+## The shown campaign's mission buttons and their state lines, in mission order.
+var _campaign: Array[Button] = []
+var _mission_state: Array[Label] = []
+var _campaign_difficulty := OptionButton.new()
+var _single_head := Label.new()
+var _skirmish := Button.new()
+var _difficulty := OptionButton.new()
+var _back: Array[Button] = []
 var _settings := SettingsPanel.new()
 var _help := HelpPanel.new()
 var _about := AboutPanel.new()
 var _panel: PanelContainer
+var _page := Page.MAIN
+## The campaign the missions page shows.
+var _shown := "gdl"
 ## Set once _ready() has made every control; the locale can change before that.
 var _built := false
 
@@ -66,40 +91,112 @@ func _ready() -> void:
 	column.add_child(stack)
 	var panel := PanelContainer.new()
 	stack.add_child(panel)
-	_menu.add_theme_constant_override("separation", 12)
-	panel.add_child(_menu)
+	var pages := VBoxContainer.new()
+	panel.add_child(pages)
 	_panel = panel
-	for id in MISSIONS:
-		var mission := Button.new()
-		mission.pressed.connect(_on_campaign.bind(id))
-		_campaign.append(mission)
-	var buttons: Array[Control] = []
-	buttons.append_array(_campaign)
-	buttons.append_array(
-		[_skirmish, _difficulty, _load, _help_button, _about_button, _settings_button, _quit]
-	)
-	for b: Control in buttons:
-		b.custom_minimum_size = Vector2(340, 50)
-		_menu.add_child(b)
-	_menu.add_child(_saves)
-	_load.pressed.connect(_list_saves)
-	for level in GameSettings.DIFFICULTIES:
-		_difficulty.add_item(String(level))
-	_difficulty.selected = maxi(GameSettings.DIFFICULTIES.find(GameSettings.ai_difficulty), 0)
-	_difficulty.item_selected.connect(_on_difficulty)
-	_skirmish.pressed.connect(_on_skirmish)
-	_settings_button.pressed.connect(_show_settings.bind(true))
-	_help_button.pressed.connect(_help.open)
-	_about_button.pressed.connect(_about.open)
-	_quit.pressed.connect(func() -> void: get_tree().quit())
+	for page: VBoxContainer in [_menu, _countries, _missions, _single]:
+		page.add_theme_constant_override("separation", 12)
+		pages.add_child(page)
+	_build_main()
+	_build_countries()
+	_build_missions()
+	_build_single()
 	_settings.visible = false
 	_settings.closed.connect(_show_settings.bind(false))
 	stack.add_child(_settings)
 	add_child(_help)
 	add_child(_about)
 	_built = true
+	var back_to := CampaignProgress.campaign_of(GameSettings.mission_id)
+	if back_to.is_empty():
+		_show_page(Page.MAIN)
+	else:
+		_open_campaign(back_to)
 	_retranslate()
-	_skirmish.grab_focus.call_deferred()
+
+
+func _build_main() -> void:
+	for b: Button in [
+		_campaign_button,
+		_single_button,
+		_network,
+		_load,
+		_help_button,
+		_about_button,
+		_settings_button,
+		_quit
+	]:
+		b.custom_minimum_size = BUTTON_SIZE
+		_menu.add_child(b)
+	_menu.add_child(_saves)
+	_menu.move_child(_saves, _load.get_index() + 1)
+	_network.disabled = true
+	_campaign_button.pressed.connect(_show_page.bind(Page.COUNTRIES))
+	_single_button.pressed.connect(_show_page.bind(Page.SINGLE))
+	_load.pressed.connect(_list_saves)
+	_settings_button.pressed.connect(_show_settings.bind(true))
+	_help_button.pressed.connect(_help.open)
+	_about_button.pressed.connect(_about.open)
+	_quit.pressed.connect(func() -> void: get_tree().quit())
+
+
+func _build_countries() -> void:
+	_heading(_countries_head)
+	_countries.add_child(_countries_head)
+	for c: String in CampaignProgress.ORDER:
+		var b := Button.new()
+		b.custom_minimum_size = BUTTON_SIZE
+		b.pressed.connect(_open_campaign.bind(c))
+		_countries.add_child(b)
+		_country.append(b)
+		var note := Label.new()
+		note.add_theme_color_override("font_color", Color(0.85, 0.72, 0.45))
+		_countries.add_child(note)
+		_country_note.append(note)
+	_add_back(_countries, Page.MAIN)
+
+
+func _build_missions() -> void:
+	_heading(_missions_head)
+	_missions.add_child(_missions_head)
+	_missions_note.add_theme_color_override("font_color", Color(0.85, 0.72, 0.45))
+	_missions.add_child(_missions_note)
+	_mission_list.add_theme_constant_override("separation", 8)
+	_missions.add_child(_mission_list)
+	_fill_difficulty(_campaign_difficulty)
+	_campaign_difficulty.custom_minimum_size = BUTTON_SIZE
+	_missions.add_child(_campaign_difficulty)
+	_add_back(_missions, Page.COUNTRIES)
+
+
+func _build_single() -> void:
+	_heading(_single_head)
+	_single.add_child(_single_head)
+	for b: Control in [_skirmish, _difficulty]:
+		b.custom_minimum_size = BUTTON_SIZE
+		_single.add_child(b)
+	_fill_difficulty(_difficulty)
+	_skirmish.pressed.connect(_on_skirmish)
+	_add_back(_single, Page.MAIN)
+
+
+func _heading(label: Label) -> void:
+	label.add_theme_font_size_override("font_size", 28)
+	label.add_theme_color_override("font_color", Color(0.93, 0.84, 0.66))
+
+
+func _add_back(page: VBoxContainer, to: Page) -> void:
+	var b := Button.new()
+	b.custom_minimum_size = BUTTON_SIZE
+	b.pressed.connect(_show_page.bind(to))
+	page.add_child(b)
+	_back.append(b)
+
+
+func _fill_difficulty(box: OptionButton) -> void:
+	for level in GameSettings.DIFFICULTIES:
+		box.add_item(String(level))
+	box.item_selected.connect(_on_difficulty)
 
 
 ## The evening court (tools/art/menu_scene.py) behind a shade that darkens the menu side.
@@ -137,24 +234,133 @@ func _notification(what: int) -> void:
 		_retranslate()
 
 
+func _unhandled_input(event: InputEvent) -> void:
+	if not event.is_action_pressed("ui_cancel") or _settings.visible:
+		return
+	if _help.visible or _about.visible:
+		return
+	match _page:
+		Page.COUNTRIES, Page.SINGLE:
+			_show_page(Page.MAIN)
+		Page.MISSIONS:
+			_show_page(Page.COUNTRIES)
+		_:
+			return
+	get_viewport().set_input_as_handled()
+
+
 func _retranslate() -> void:
 	if not _built:
 		return
 	_title.text = tr("Pogranichie")
 	_subtitle.text = tr("Grand Duchy of Lithuania against the Teutonic Order")
-	_skirmish.text = tr("Skirmish")
-	for i in MISSIONS.size():
-		_campaign[i].text = tr("Campaign: %s") % tr(MissionDef.load_id(MISSIONS[i]).title)
+	_campaign_button.text = tr("Campaign")
+	_single_button.text = tr("Single player")
+	_network.text = tr("Network play (coming later)")
 	_load.text = tr("Load game")
-	# The locale can change before _ready() has filled the list (GameSettings.ensure_loaded).
-	var levels := [tr("Opponent: easy"), tr("Opponent: normal")]
-	for i in mini(levels.size(), _difficulty.item_count):
-		_difficulty.set_item_text(i, levels[i])
 	_settings_button.text = tr("Settings")
 	_help_button.text = tr("How to play")
 	_about_button.text = tr("About the game")
 	_version.text = tr("Version %s") % AboutPanel.version()
 	_quit.text = tr("Quit")
+	_countries_head.text = tr("Choose a country")
+	_single_head.text = tr("Single player")
+	_skirmish.text = tr("Skirmish")
+	for b in _back:
+		b.text = tr("Back")
+	# The locale can change before _ready() has filled the lists (GameSettings.ensure_loaded).
+	var levels := [tr("Opponent: easy"), tr("Opponent: normal")]
+	for box: OptionButton in [_difficulty, _campaign_difficulty]:
+		for i in mini(levels.size(), box.item_count):
+			box.set_item_text(i, levels[i])
+	_fill_countries()
+	_fill_missions()
+
+
+func _show_page(page: Page) -> void:
+	_page = page
+	_menu.visible = page == Page.MAIN
+	_countries.visible = page == Page.COUNTRIES
+	_missions.visible = page == Page.MISSIONS
+	_single.visible = page == Page.SINGLE
+	var level := maxi(GameSettings.DIFFICULTIES.find(GameSettings.ai_difficulty), 0)
+	_difficulty.selected = level
+	_campaign_difficulty.selected = level
+	var focus: Control = _campaign_button
+	match page:
+		Page.COUNTRIES:
+			_fill_countries()
+			focus = _country[CampaignProgress.ORDER.find(_shown)]
+		Page.MISSIONS:
+			_fill_missions()
+			focus = _back[1]
+			for b in _campaign:
+				if not b.disabled:
+					focus = b
+		Page.SINGLE:
+			focus = _skirmish
+	focus.grab_focus.call_deferred()
+
+
+func _open_campaign(campaign: String) -> void:
+	_shown = campaign
+	_show_page(Page.MISSIONS)
+
+
+## Each country's name and, under it, its campaign and how many of its missions are won.
+func _fill_countries() -> void:
+	for i in CampaignProgress.ORDER.size():
+		var c := CampaignProgress.ORDER[i]
+		_country[i].text = UiText.name_of(CampaignProgress.FACTION[c])
+		var total: int = (CampaignProgress.MISSIONS[c] as Array).size()
+		_country_note[i].text = (
+			"«%s» · %s"
+			% [
+				CampaignProgress.campaign_name(c),
+				tr("missions won: %d of %d") % [CampaignProgress.won_count(c), total]
+			]
+		)
+
+
+## The shown campaign's missions, one row each: the mission and its state (won, open, locked,
+## not made yet). Remade on every visit, since winning a mission opens the next.
+func _fill_missions() -> void:
+	for child in _mission_list.get_children():
+		_mission_list.remove_child(child)
+		child.queue_free()
+	_campaign.clear()
+	_mission_state.clear()
+	_missions_head.text = UiText.name_of(CampaignProgress.FACTION[_shown])
+	_missions_note.text = "«%s»" % CampaignProgress.campaign_name(_shown)
+	for id: String in CampaignProgress.MISSIONS[_shown]:
+		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation", 16)
+		var b := Button.new()
+		b.custom_minimum_size = MISSION_SIZE
+		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		b.text = tr(CampaignProgress.title_key(id))
+		var state := Label.new()
+		state.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		if not CampaignProgress.is_made(id):
+			b.disabled = true
+			state.text = tr("not made yet")
+			state.add_theme_color_override("font_color", Color(0.6, 0.55, 0.48))
+		elif CampaignProgress.is_won(id):
+			state.text = tr("won")
+			state.add_theme_color_override("font_color", Color(0.6, 0.85, 0.45))
+		elif CampaignProgress.is_open(id):
+			state.text = tr("open")
+			state.add_theme_color_override("font_color", Color(0.95, 0.8, 0.45))
+		else:
+			b.disabled = true
+			state.text = tr("win the previous mission to open")
+			state.add_theme_color_override("font_color", Color(0.6, 0.55, 0.48))
+		b.pressed.connect(_on_campaign.bind(id))
+		row.add_child(b)
+		row.add_child(state)
+		_mission_list.add_child(row)
+		_campaign.append(b)
+		_mission_state.append(state)
 
 
 func _show_settings(on: bool) -> void:
@@ -165,6 +371,8 @@ func _show_settings(on: bool) -> void:
 func _on_difficulty(index: int) -> void:
 	GameSettings.ai_difficulty = GameSettings.DIFFICULTIES[index]
 	GameSettings.save()
+	_difficulty.selected = index
+	_campaign_difficulty.selected = index
 
 
 func _on_skirmish() -> void:

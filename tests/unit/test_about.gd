@@ -63,5 +63,5 @@ func test_language_change_before_ready_does_not_break_the_menu() -> void:
 	var menu: Control = MENU.instantiate()
 	menu._retranslate()
 	add_child_autofree(menu)
-	assert_eq(menu._campaign.size(), menu.MISSIONS.size())
+	assert_eq(menu._campaign.size(), (CampaignProgress.MISSIONS[menu._shown] as Array).size())
 	assert_false(menu._campaign[0].text.is_empty())

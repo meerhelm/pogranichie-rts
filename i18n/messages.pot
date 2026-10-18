@@ -454,6 +454,7 @@ msgstr ""
 msgid "B next, F turn, Shift keep placing, Esc or right click cancel"
 msgstr ""
 
+#: ui/main_menu.gd
 #: ui/settings_panel.gd
 msgid "Back"
 msgstr ""
@@ -672,7 +673,7 @@ msgid "By the broken bridge the ring of Muscovite horse closed in. The bodyguard
 msgstr ""
 
 #: ui/main_menu.gd
-msgid "Campaign: %s"
+msgid "Campaign"
 msgstr ""
 
 #: ui/tips.gd
@@ -717,6 +718,10 @@ msgstr ""
 
 #: missions/gdl_08/mission.json
 msgid "Chelyadnin sent his reserves into the field one after another, and one after another they broke. Then the boyars' sons began to look back towards the Kropivna."
+msgstr ""
+
+#: ui/main_menu.gd
+msgid "Choose a country"
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -772,6 +777,30 @@ msgstr ""
 
 #: missions/gdl_04/mission.json
 msgid "Cross the stream and cut Švitrigaila's column in two"
+msgstr ""
+
+#: ui/campaign_progress.gd
+msgid "Crown 1. Grunwald, 1410"
+msgstr ""
+
+#: ui/campaign_progress.gd
+msgid "Crown 2. Malbork, 1410"
+msgstr ""
+
+#: ui/campaign_progress.gd
+msgid "Crown 3. Baltic Water, 1433"
+msgstr ""
+
+#: ui/campaign_progress.gd
+msgid "Crown 4. Chojnice, 1454"
+msgstr ""
+
+#: ui/campaign_progress.gd
+msgid "Crown 5. Silver for Malbork, 1457"
+msgstr ""
+
+#: ui/campaign_progress.gd
+msgid "Crown 6. Świecino, 1462"
 msgstr ""
 
 #: ui/help_panel.gd
@@ -1856,6 +1885,10 @@ msgstr ""
 msgid "Needs forest nearby"
 msgstr ""
 
+#: ui/main_menu.gd
+msgid "Network play (coming later)"
+msgstr ""
+
 #: ui/tips.gd
 msgid "Never flees"
 msgstr ""
@@ -2439,6 +2472,10 @@ msgstr ""
 msgid "Silver: right-click a silver mine (grey blocks on a hill) with peasants."
 msgstr ""
 
+#: ui/main_menu.gd
+msgid "Single player"
+msgstr ""
+
 #: ui/tips.gd
 msgid "Size %d×%d cells"
 msgstr ""
@@ -2644,6 +2681,10 @@ msgstr ""
 msgid "That year Samogitia was German. Vytautas gave it to the Order by treaty, and nobody asked us. Last winter there was hunger. King Jogaila sent us grain down the river, but the Germans stopped the boats and said they would feed Samogitia themselves."
 msgstr ""
 
+#: ui/campaign_progress.gd
+msgid "The Banner and the Silver"
+msgstr ""
+
 #: missions/gdl_08/mission.json
 msgid "The Dnieper above Orsha and the field between the Dnieper and the Kropivna. The night of 7 to 8 September 1514."
 msgstr ""
@@ -2698,6 +2739,10 @@ msgstr ""
 
 #: missions/gdl_08/mission.json
 msgid "The Muscovite horse flies into the ravine at full gallop. Out of the bushes the foot rises. A volley. The smoke covers half the field."
+msgstr ""
+
+#: ui/campaign_progress.gd
+msgid "The Oak and the Chase"
 msgstr ""
 
 #: missions/gdl_03/mission.json
@@ -3840,6 +3885,10 @@ msgstr ""
 msgid "melee"
 msgstr ""
 
+#: ui/main_menu.gd
+msgid "missions won: %d of %d"
+msgstr ""
+
 #: catalog:factions
 msgid "mo"
 msgstr ""
@@ -3888,6 +3937,10 @@ msgstr ""
 msgid "mo_zaseka"
 msgstr ""
 
+#: ui/main_menu.gd
+msgid "not made yet"
+msgstr ""
+
 #: catalog:prototype_units
 msgid "nt_bear"
 msgstr ""
@@ -3922,6 +3975,10 @@ msgstr ""
 
 #: catalog:prototype_units
 msgid "nt_wolf"
+msgstr ""
+
+#: ui/main_menu.gd
+msgid "open"
 msgstr ""
 
 #: ui/ui_text.gd
@@ -4255,6 +4312,14 @@ msgstr ""
 
 #: catalog:prototype_units
 msgid "to_wagon"
+msgstr ""
+
+#: ui/main_menu.gd
+msgid "win the previous mission to open"
+msgstr ""
+
+#: ui/main_menu.gd
+msgid "won"
 msgstr ""
 
 #: ui/help_panel.gd

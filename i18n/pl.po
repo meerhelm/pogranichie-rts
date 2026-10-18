@@ -503,8 +503,8 @@ msgstr "Nocą przeprowadź jazdę przez bród i postaw dwa mosty dla piechoty i 
 msgid "By the broken bridge the ring of Muscovite horse closed in. The bodyguards fell one after another. An arrow struck the hetman's horse, and it went down on its side. Ostrogski, wounded, rose to one knee with his sabre. The boyars' sons stood round him, and none struck: such a captive is taken alive."
 msgstr "Przy zburzonym moście pierścień moskiewskiej jazdy się zaciska. Przyboczni padają jeden po drugim. Strzała trafia konia hetmana, koń wali się na bok. Ostrogski, ranny, podnosi się na kolano z szablą. Otaczają go dzieci bojarskie i nikt nie uderza: takiego jeńca wiezie się żywego."
 
-msgid "Campaign: %s"
-msgstr "Kampania: %s"
+msgid "Campaign"
+msgstr "Kampania"
 
 msgid "Can be put into your own palisade or wall"
 msgstr "Można wstawić we własną palisadę lub mur"
@@ -538,6 +538,9 @@ msgstr "Czeladnin wyrwał się na północ."
 
 msgid "Chelyadnin sent his reserves into the field one after another, and one after another they broke. Then the boyars' sons began to look back towards the Kropivna."
 msgstr "Czeladnin rzucał w pole swoje odwody jeden po drugim i jeden po drugim się łamały. Wtedy dzieci bojarskie zaczęły oglądać się na Kropiwnę."
+
+msgid "Choose a country"
+msgstr "Wybierz kraj"
 
 msgid "Chronicler"
 msgstr "Kronikarz"
@@ -574,6 +577,24 @@ msgstr "Nie udało się zapisać gry"
 
 msgid "Cross the stream and cut Švitrigaila's column in two"
 msgstr "Przejdź strumień i przetnij kolumnę Świdrygiełły na dwoje"
+
+msgid "Crown 1. Grunwald, 1410"
+msgstr "Korona 1. Grunwald, 1410"
+
+msgid "Crown 2. Malbork, 1410"
+msgstr "Korona 2. Malbork, 1410"
+
+msgid "Crown 3. Baltic Water, 1433"
+msgstr "Korona 3. Bałtycka woda, 1433"
+
+msgid "Crown 4. Chojnice, 1454"
+msgstr "Korona 4. Chojnice, 1454"
+
+msgid "Crown 5. Silver for Malbork, 1457"
+msgstr "Korona 5. Srebro dla Malborka, 1457"
+
+msgid "Crown 6. Świecino, 1462"
+msgstr "Korona 6. Świecino, 1462"
 
 msgid "Ctrl+1…9 makes a group, 1…9 selects it."
 msgstr "Ctrl+1…9 tworzy grupę, 1…9 ją zaznacza."
@@ -1376,6 +1397,9 @@ msgstr "Wymaga późniejszej epoki"
 msgid "Needs forest nearby"
 msgstr "Wymaga lasu w pobliżu"
 
+msgid "Network play (coming later)"
+msgstr "Gra sieciowa (później)"
+
 msgid "Never flees"
 msgstr "Nigdy nie ucieka"
 
@@ -1805,6 +1829,9 @@ msgstr "Kopalnia srebra"
 msgid "Silver: right-click a silver mine (grey blocks on a hill) with peasants."
 msgstr "Srebro: kliknij chłopami prawym przyciskiem kopalnię srebra (szare bloki na wzgórzu)."
 
+msgid "Single player"
+msgstr "Gra pojedyncza"
+
 msgid "Size %d×%d cells"
 msgstr "Rozmiar %d×%d pól"
 
@@ -1958,6 +1985,9 @@ msgstr "W tym roku książę Michał Gliński, człowiek uczony i dumny, zabił 
 msgid "That year Samogitia was German. Vytautas gave it to the Order by treaty, and nobody asked us. Last winter there was hunger. King Jogaila sent us grain down the river, but the Germans stopped the boats and said they would feed Samogitia themselves."
 msgstr "Tego roku Żmudź była niemiecka. Witold oddał ją Zakonowi traktatem i nikt nas nie pytał. Zeszłej zimy był głód. Król Jagiełło posłał nam zboże rzeką, ale Niemcy zatrzymali łodzie i rzekli, że sami wykarmią Żmudź."
 
+msgid "The Banner and the Silver"
+msgstr "Chorągiew i srebro"
+
 msgid "The Dnieper above Orsha and the field between the Dnieper and the Kropivna. The night of 7 to 8 September 1514."
 msgstr "Dniepr powyżej Orszy i pole między Dnieprem a Kropiwną. Noc z 7 na 8 września 1514 roku."
 
@@ -1999,6 +2029,9 @@ msgstr "Nie ma mistrza! Zabity w ścisku!"
 
 msgid "The Muscovite horse flies into the ravine at full gallop. Out of the bushes the foot rises. A volley. The smoke covers half the field."
 msgstr "Moskiewska jazda w pełnym galopie wpada do jaru. Z krzaków podnosi się piechota. Salwa. Dym zakrywa pół pola."
+
+msgid "The Oak and the Chase"
+msgstr "Dąb i Pogoń"
 
 msgid "The Order has gathered enough evidence. The council believed that the Samogitians were baptized in name only."
 msgstr "Zakon zebrał dość dowodów. Sobór uwierzył, że Żmudzini są ochrzczeni tylko z nazwy."
@@ -2834,6 +2867,9 @@ msgstr "lekka jazda"
 msgid "melee"
 msgstr "wręcz"
 
+msgid "missions won: %d of %d"
+msgstr "wygrane misje: %d z %d"
+
 msgid "mo"
 msgstr "Państwo Moskiewskie"
 
@@ -2870,6 +2906,9 @@ msgstr "Wieża strażnicza"
 msgid "mo_zaseka"
 msgstr "Zasieka"
 
+msgid "not made yet"
+msgstr "jeszcze nie gotowa"
+
 msgid "nt_bear"
 msgstr "Niedźwiedź"
 
@@ -2896,6 +2935,9 @@ msgstr "Wieśniak"
 
 msgid "nt_wolf"
 msgstr "Wilk"
+
+msgid "open"
+msgstr "otwarta"
 
 msgid "pierce"
 msgstr "przebijające"
@@ -3145,6 +3187,12 @@ msgstr "Dwór zakonny"
 
 msgid "to_wagon"
 msgstr "Wóz taborowy"
+
+msgid "win the previous mission to open"
+msgstr "otworzy się po poprzedniej"
+
+msgid "won"
+msgstr "wygrana"
 
 msgid "«%s» (a hive) stands in the forest; two peasants gather food there."
 msgstr "«%s» stoi w lesie; dwóch chłopów zbiera tam miód (żywność)."
