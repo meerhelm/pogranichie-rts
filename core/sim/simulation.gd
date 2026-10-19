@@ -382,6 +382,8 @@ func spawn_unit(type_id: StringName, player: int, px: int, py: int) -> int:
 		hit_points = def.hp
 		speed_milli = def.speed_milli
 		move_class = NavGrid.move_class_for(def)
+	if move_class == NavGrid.MoveClass.BOAT:
+		nav.boats = true
 	var x := clamp_x(px)
 	var y := clamp_y(py)
 	var cell := nav.cell_of(x, y)

@@ -284,6 +284,10 @@ RULES: list[Rule] = [
     (r"как pl_crossbow, городской скин", lambda sp, _m, _u: setattr(sp, "same_as", "pl_crossbow")),
     # Корона 4: the Order's hired horse. Plundered wagons pay in К5 (a mission rule), not here.
     (r"за разграбленный воз \+(\d+) С", _params(plunder_wagon_silver=1)),
+    # Корона 5: the river boat carries silver like a wagon; the piles of the old bridge on the
+    # Nogat are a mission rule (MissionSilver), shallows are not in the game.
+    (r"везёт (\d+) серебра", _params(carry=1)),
+    (r"боится свай и мелей", _tags("fears_piles")),
     # Campaign-only notes (К5 calls the servant a worker; plague and rumours are mission rules).
     (r"в кампании сбивает мор и слухи", _tags()),
     (r"в К5 называется работником", _tags()),

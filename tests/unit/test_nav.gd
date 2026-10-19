@@ -311,6 +311,8 @@ func test_skirmish_map_connects_both_starts_for_every_kind_of_unit() -> void:
 	var gdl := grid.cell_at(14, 14)
 	var order := grid.cell_at(104, 104)
 	for cls in NavGrid.MOVE_CLASS_COUNT:
+		if cls == NavGrid.MoveClass.BOAT:
+			continue  # boats keep to the water
 		assert_true(grid.passable(cls, gdl) and grid.passable(cls, order))
 		var path := pf.find_path(cls, gdl, order)
 		assert_eq(

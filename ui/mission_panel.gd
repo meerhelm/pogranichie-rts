@@ -271,6 +271,7 @@ func _show_march() -> void:
 	_besiege_lines(m, lines)
 	_baltic_lines(m, lines)
 	_chojnice_lines(m, lines)
+	_silver_lines(m, lines)
 	_march.visible = not lines.is_empty()
 	_march.text = "\n".join(lines)
 
@@ -412,6 +413,43 @@ func _chojnice_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
 		lines.append(tr("Over the bog: %d") % c.escaped)
 	if c.drowned > 0:
 		lines.append(tr("Drowned in the bog: %d") % c.drowned)
+
+
+## Корона 5: the ransom brought out of 190 000 florins, the treasury, the silver on the road,
+## the season, and from the sinking of Hynek's boat the mercenaries' patience, their wages and
+## the discontent in Gdańsk. The game counts silver; the panel shows florins (1 silver = 100).
+func _silver_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
+	var s := m.silver
+	if not s.on:
+		return
+	var stock := sim.economy.player(s.player).stock[EconomySystem.SILVER]
+	lines.append(
+		(
+			tr("Ransom brought: %s of %s florins")
+			% [
+				UiText.thousands(s.florins(m, s.delivered)),
+				UiText.thousands(s.florins(m, s.need(m)))
+			]
+		)
+	)
+	lines.append(tr("Treasury: %s florins") % UiText.thousands(s.florins(m, stock)))
+	var road := s.on_the_road(m)
+	if road > 0:
+		lines.append(tr("On the road: %s florins") % UiText.thousands(s.florins(m, road)))
+	match s.season:
+		MissionSilver.Season.AUTUMN:
+			lines.append(tr("Autumn 1456"))
+		MissionSilver.Season.WINTER:
+			lines.append(tr("Winter 1456–1457"))
+		_:
+			lines.append(tr("Spring 1457"))
+	if not m.fired.has("4"):
+		return
+	lines.append(tr("Mercenaries' patience: %d%%") % (s.patience / 10))
+	lines.append(
+		tr("Wages each month: %s florins") % UiText.thousands(s.florins(m, s.wages_due(m)))
+	)
+	lines.append(tr("Discontent in Gdańsk: %d%%") % (s.discontent / 10))
 
 
 ## The countdown and captives lines as shown, for tests ("" while hidden).

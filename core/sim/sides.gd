@@ -7,6 +7,9 @@ extends RefCounted
 
 ## Player -> the lead player of its side.
 var team: Dictionary[int, int] = {}
+## Players who fight nobody and whom nobody fights unless ordered (Корона 5: Červenka's
+## mercenaries in Malbork, waiting for their money). They see only for themselves.
+var neutral: Dictionary[int, bool] = {}
 
 
 func team_of(p: int) -> int:
@@ -15,6 +18,8 @@ func team_of(p: int) -> int:
 
 ## True if units of `a` and `b` fight each other.
 func hostile(a: int, b: int) -> bool:
+	if neutral.has(a) or neutral.has(b):
+		return false
 	return a != 0 and b != 0 and team_of(a) != team_of(b)
 
 
@@ -33,3 +38,11 @@ func write_to(buf: StreamPeerBuffer) -> void:
 	for p: int in players:
 		buf.put_32(p)
 		buf.put_32(team[p])
+	# Neutrals only when there are any, for the same reason.
+	if neutral.is_empty():
+		return
+	var ns := neutral.keys()
+	ns.sort()
+	buf.put_32(ns.size())
+	for p: int in ns:
+		buf.put_32(p)

@@ -152,6 +152,10 @@ def mission_texts(mission: dict) -> list[str]:
             for speaker, line in action.get("lines", []):
                 out += [speaker, line]
             out += action.get("options", [])
+    asks = mission.get("asks", {})
+    for kind in sorted(asks):
+        out.append(asks[kind].get("text", ""))
+        out += asks[kind].get("options", [])
     return [t for t in out if t]
 
 

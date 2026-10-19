@@ -17,6 +17,8 @@ extends RefCounted
 ## - briefing: what the briefing window shows before the mission and from the game menu (F2):
 ##   place (where and when), story (a paragraph), goal (the whole mission in a sentence),
 ##   lose (the ways to lose, one line each). The objectives come from the triggers;
+## - asks: questions mission modules put again and again, {kind: {text, options}} (Корона 5:
+##   loans in Gdańsk, the crowd before the town hall);
 ## - carry: mission flags the campaign keeps once the mission is won (CampaignProgress marks;
 ##   Корона 1: a guest knight taken for ransom, «The Pact» used and so the debt grown).
 ## MissionRuntime's comments list the conditions and actions.
@@ -36,6 +38,8 @@ var rules: Dictionary = {}
 var triggers: Array = []
 ## {place, story, goal, lose: [lines]}, every text a translation key; {} if the mission has none.
 var briefing: Dictionary = {}
+## Questions modules ask by kind: {kind: {text, options: [text, ...]}}.
+var asks: Dictionary = {}
 ## Flags kept by the campaign after a victory (see above).
 var carry := PackedStringArray()
 
@@ -71,6 +75,7 @@ static func from_dict(d: Dictionary) -> MissionDef:
 	m.triggers = d.get("triggers", [])
 	m.briefing = d.get("briefing", {})
 	m.carry = PackedStringArray(d.get("carry", []))
+	m.asks = d.get("asks", {})
 	return m
 
 
@@ -123,4 +128,11 @@ func texts() -> PackedStringArray:
 				out.append(line[1])
 			for option: String in action.get("options", []):
 				out.append(option)
+	var kinds := asks.keys()
+	kinds.sort()
+	for kind: String in kinds:
+		var q: Dictionary = asks[kind]
+		out.append(q["text"])
+		for option: String in q.get("options", []):
+			out.append(option)
 	return out

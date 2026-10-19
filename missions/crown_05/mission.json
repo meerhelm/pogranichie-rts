@@ -1,0 +1,2022 @@
+{
+ "_comment": "Mission «Корона 5. Серебро для Мальборка, 1457» (mission card in the missions doc, docs/03-missions/16-crown_05_silver_for_malbork_1457.md). An economic mission without a battle on map_crown_05 (tools/maps/gen_crown_05.py): pani Barbara borrows silver in Gdańsk, taxes the villages of the Żuławy and carries the ransom to Malbork by wagon or boat while the mercenaries' patience and Gdańsk's discontent move (rules.silver, MissionSilver). Built by a scratch builder; edit the json directly now.",
+ "id": "crown_05",
+ "title": "Crown 5. Silver for Malbork, 1457",
+ "map": "map_crown_05",
+ "player": 1,
+ "players": [
+  [
+   1,
+   "pl"
+  ],
+  [
+   2,
+   "to"
+  ],
+  [
+   3,
+   "pl"
+  ],
+  [
+   4,
+   "to"
+  ]
+ ],
+ "camera": [
+  66,
+  50
+ ],
+ "difficulties": [
+  "easy",
+  "normal"
+ ],
+ "carry": [],
+ "briefing": {
+  "place": "The Żuławy between Gdańsk and Malbork, the Vistula and the Nogat. From August 1456 to June 1457.",
+  "story": "Two years after Chojnice the Order has no money to pay its mercenaries. The Bohemian captain Červenka holds Malbork, the Order's capital, and is ready to sell it to the Crown, if only the Crown pays. The money has to be borrowed in Gdańsk and carried across the Żuławy. Stach has gone to the mercenaries with the king's letter; the silver is the business of his elder sister Barbara, Jaśko's granddaughter and a Gdańsk merchant's wife.",
+  "goal": "Set up the royal station, borrow and collect 190 000 florins and bring them to Malbork before the mercenaries lose patience, keep Gdańsk from rising, and in the spring lead the royal garrison into the castle while the brothers leave in peace.",
+  "lose": [
+   "The mercenaries' patience runs out",
+   "Gdańsk rises against the taxes",
+   "Barbara dies",
+   "Someone strikes the brothers leaving the castle"
+  ]
+ },
+ "asks": {
+  "loan": {
+   "text": "The Gdańsk council will lend the Crown money. How much will you take? Every loan angers the town, and every next one more.",
+   "options": [
+    "Take 30 000 florins",
+    "Take 60 000 florins",
+    "Not now"
+   ]
+  },
+  "crowd": {
+   "text": "A crowd of craftsmen stands before the town hall and shouts against the new taxes. What will you do?",
+   "options": [
+    "Promise a concession: no new loans for a while",
+    "Give 15 000 florins to the poor of the town",
+    "Send the town guard"
+   ]
+  }
+ },
+ "setup": {
+  "sides": {
+   "1": 1,
+   "3": 1,
+   "2": 2,
+   "4": 4
+  },
+  "neutral": [
+   4
+  ],
+  "age": {
+   "1": 3,
+   "2": 3,
+   "3": 3,
+   "4": 3
+  },
+  "power": {
+   "1": 0
+  },
+  "pop": {
+   "1": 30
+  },
+  "stock": {
+   "1": [
+    200,
+    450,
+    150,
+    0
+   ],
+   "2": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "3": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "4": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "locked": {
+   "1": [
+    "pl_granary",
+    "pl_farm",
+    "pl_mine",
+    "pl_barracks",
+    "pl_range",
+    "pl_palisade",
+    "pl_gate",
+    "pl_market",
+    "pl_smithy",
+    "pl_temple",
+    "pl_castle",
+    "pl_salt_works",
+    "pl_battery",
+    "pl_field_camp",
+    "pl_lazaret",
+    "pl_shrine",
+    "pl_stable",
+    "sp_pact"
+   ]
+  },
+  "allowed": {
+   "1": [
+    "pl_dock"
+   ]
+  },
+  "props": [
+   {
+    "kind": "prop_boats",
+    "at": [
+     33,
+     8
+    ]
+   },
+   {
+    "kind": "prop_boats",
+    "at": [
+     33,
+     26
+    ]
+   },
+   {
+    "kind": "prop_barrels",
+    "at": [
+     22,
+     18
+    ]
+   },
+   {
+    "kind": "prop_piles",
+    "at": [
+     104,
+     80
+    ]
+   },
+   {
+    "kind": "prop_piles",
+    "at": [
+     106,
+     81
+    ]
+   },
+   {
+    "kind": "prop_piles",
+    "at": [
+     105,
+     82
+    ]
+   },
+   {
+    "kind": "prop_boats",
+    "at": [
+     108,
+     90
+    ]
+   },
+   {
+    "kind": "prop_barrels",
+    "at": [
+     109,
+     95
+    ]
+   },
+   {
+    "kind": "prop_logs",
+    "at": [
+     64,
+     50
+    ]
+   }
+  ],
+  "buildings": [
+   {
+    "name": "ratusz",
+    "player": 3,
+    "type": "pl_town_center",
+    "at": [
+     12,
+     12
+    ]
+   },
+   {
+    "name": "artus",
+    "player": 3,
+    "type": "pl_market",
+    "at": [
+     19,
+     9
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_temple",
+    "at": [
+     6,
+     20
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_house",
+    "at": [
+     6,
+     6
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_house",
+    "at": [
+     9,
+     6
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_house",
+    "at": [
+     24,
+     14
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_house",
+    "at": [
+     24,
+     18
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_house",
+    "at": [
+     20,
+     25
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_house",
+    "at": [
+     11,
+     25
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_granary",
+    "at": [
+     28,
+     4
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_tower",
+    "at": [
+     4,
+     4
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_tower",
+    "at": [
+     29,
+     29
+    ]
+   },
+   {
+    "name": "pier",
+    "player": 1,
+    "type": "pl_dock",
+    "at": [
+     110,
+     38
+    ]
+   },
+   {
+    "player": 4,
+    "type": "to_castle",
+    "at": [
+     12,
+     98
+    ]
+   },
+   {
+    "player": 4,
+    "type": "to_house",
+    "at": [
+     18,
+     96
+    ]
+   },
+   {
+    "player": 4,
+    "type": "to_house",
+    "at": [
+     18,
+     106
+    ]
+   },
+   {
+    "player": 4,
+    "type": "to_house",
+    "at": [
+     10,
+     106
+    ]
+   },
+   {
+    "player": 4,
+    "type": "to_tower",
+    "at": [
+     22,
+     98
+    ]
+   },
+   {
+    "player": 4,
+    "type": "to_tower",
+    "at": [
+     22,
+     106
+    ]
+   },
+   {
+    "name": "malbork",
+    "player": 4,
+    "type": "to_castle",
+    "at": [
+     114,
+     86
+    ]
+   },
+   {
+    "player": 4,
+    "type": "to_temple",
+    "at": [
+     120,
+     86
+    ]
+   },
+   {
+    "player": 4,
+    "type": "to_barracks",
+    "at": [
+     118,
+     92
+    ]
+   },
+   {
+    "player": 4,
+    "type": "to_stable",
+    "at": [
+     120,
+     98
+    ]
+   },
+   {
+    "player": 4,
+    "type": "to_smithy",
+    "at": [
+     115,
+     100
+    ]
+   },
+   {
+    "player": 4,
+    "type": "to_tower",
+    "at": [
+     110,
+     85
+    ]
+   },
+   {
+    "player": 4,
+    "type": "to_tower",
+    "at": [
+     124,
+     84
+    ]
+   },
+   {
+    "player": 4,
+    "type": "to_tower",
+    "at": [
+     110,
+     102
+    ]
+   },
+   {
+    "player": 4,
+    "type": "to_tower",
+    "at": [
+     125,
+     103
+    ]
+   },
+   {
+    "name": "village_0",
+    "player": 3,
+    "type": "pl_house",
+    "at": [
+     50,
+     33
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_house",
+    "at": [
+     53,
+     33
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_farm",
+    "at": [
+     51,
+     38
+    ]
+   },
+   {
+    "name": "village_1",
+    "player": 3,
+    "type": "pl_house",
+    "at": [
+     82,
+     31
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_house",
+    "at": [
+     85,
+     31
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_farm",
+    "at": [
+     86,
+     36
+    ]
+   },
+   {
+    "name": "village_2",
+    "player": 3,
+    "type": "pl_house",
+    "at": [
+     86,
+     69
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_house",
+    "at": [
+     89,
+     69
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_farm",
+    "at": [
+     84,
+     76
+    ]
+   },
+   {
+    "name": "village_3",
+    "player": 3,
+    "type": "pl_house",
+    "at": [
+     52,
+     75
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_house",
+    "at": [
+     55,
+     75
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_farm",
+    "at": [
+     53,
+     80
+    ]
+   },
+   {
+    "name": "village_4",
+    "player": 3,
+    "type": "pl_house",
+    "at": [
+     70,
+     93
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_house",
+    "at": [
+     73,
+     93
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_farm",
+    "at": [
+     71,
+     98
+    ]
+   },
+   {
+    "name": "village_5",
+    "player": 3,
+    "type": "pl_house",
+    "at": [
+     42,
+     97
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_house",
+    "at": [
+     45,
+     97
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_farm",
+    "at": [
+     43,
+     102
+    ]
+   }
+  ],
+  "groups": [
+   {
+    "name": "barbara",
+    "player": 1,
+    "units": [
+     [
+      "hero_barbara",
+      1
+     ]
+    ],
+    "at": [
+     64,
+     46
+    ]
+   },
+   {
+    "name": "horse",
+    "player": 1,
+    "stance": "defensive",
+    "units": [
+     [
+      "pl_merc_horse",
+      4
+     ]
+    ],
+    "at": [
+     60,
+     42
+    ]
+   },
+   {
+    "name": "foot",
+    "player": 1,
+    "stance": "defensive",
+    "units": [
+     [
+      "pl_drab",
+      4
+     ]
+    ],
+    "at": [
+     66,
+     42
+    ]
+   },
+   {
+    "name": "wagons",
+    "player": 1,
+    "units": [
+     [
+      "pl_wagon",
+      4
+     ]
+    ],
+    "at": [
+     70,
+     46
+    ]
+   },
+   {
+    "name": "workers",
+    "player": 1,
+    "units": [
+     [
+      "pl_camp_servant",
+      3
+     ]
+    ],
+    "at": [
+     62,
+     49
+    ]
+   },
+   {
+    "name": "priest",
+    "player": 1,
+    "units": [
+     [
+      "pl_priest",
+      1
+     ]
+    ],
+    "at": [
+     66,
+     49
+    ]
+   },
+   {
+    "name": "boats",
+    "player": 1,
+    "units": [
+     [
+      "pl_river_boat",
+      2
+     ]
+    ],
+    "at": [
+     115,
+     37
+    ]
+   },
+   {
+    "name": "gdansk_guard",
+    "player": 3,
+    "stance": "stand",
+    "units": [
+     [
+      "nt_gdansk_militia",
+      4
+     ],
+     [
+      "nt_gdansk_crossbow",
+      2
+     ]
+    ],
+    "at": [
+     18,
+     15
+    ]
+   },
+   {
+    "name": "ratman",
+    "player": 3,
+    "units": [
+     [
+      "hero_k5_civil",
+      1
+     ]
+    ],
+    "at": [
+     14,
+     18
+    ]
+   },
+   {
+    "name": "tczew_garrison",
+    "player": 4,
+    "stance": "stand",
+    "units": [
+     [
+      "to_soldner",
+      4
+     ]
+    ],
+    "at": [
+     18,
+     101
+    ]
+   },
+   {
+    "name": "malbork_garrison",
+    "player": 4,
+    "stance": "stand",
+    "units": [
+     [
+      "to_soldner",
+      6
+     ],
+     [
+      "to_merc_horse",
+      2
+     ]
+    ],
+    "at": [
+     111,
+     95
+    ]
+   },
+   {
+    "name": "czerwenka",
+    "player": 4,
+    "stance": "stand",
+    "units": [
+     [
+      "hero_czerwenka",
+      1
+     ]
+    ],
+    "at": [
+     110,
+     92
+    ]
+   }
+  ]
+ },
+ "rules": {
+  "silver": {
+   "player": 1,
+   "need": 1900,
+   "florins": 100,
+   "carry": {
+    "units": {
+     "pl_wagon": 200,
+     "pl_river_boat": 300
+    },
+    "load": [
+     "town_center",
+     "dock"
+    ],
+    "load_radius": 3
+   },
+   "deliver": {
+    "points": [
+     [
+      107,
+      93
+     ],
+     [
+      25,
+      102
+     ]
+    ],
+    "radius": 4
+   },
+   "patience": {
+    "start": 600,
+    "max": 1000,
+    "every_ticks": 20,
+    "from": "4",
+    "per_silver_permille": 1000
+   },
+   "discontent": {
+    "start": 100,
+    "max": 1000,
+    "every_ticks": 40,
+    "crowd_at": 500,
+    "calm_below": 400,
+    "closed_at": 750
+   },
+   "crowd": {
+    "player": 3,
+    "at": [
+     16,
+     21
+    ],
+    "units": [
+     [
+      "nt_villager",
+      6
+     ]
+    ],
+    "concession": 200,
+    "concession_ticks": 2400,
+    "money": 150,
+    "money_calm": 250,
+    "guard_calm": 150
+   },
+   "loans": {
+    "hero": "barbara",
+    "hall": [
+     14,
+     18
+    ],
+    "radius": 5,
+    "from": "4",
+    "sums": [
+     [
+      300,
+      120
+     ],
+     [
+      600,
+      260
+     ]
+    ],
+    "interest": 30,
+    "hero_permille": 800,
+    "wait_ticks": 600
+   },
+   "villages": {
+    "at": [
+     [
+      52,
+      36
+     ],
+     [
+      84,
+      34
+     ],
+     [
+      88,
+      72
+     ],
+     [
+      54,
+      78
+     ],
+     [
+      72,
+      96
+     ],
+     [
+      44,
+      100
+     ]
+    ],
+    "radius": 4,
+    "silver": 60,
+    "food": 30,
+    "stay_ticks": 100,
+    "by": [
+     "pl_wagon",
+     "hero_barbara"
+    ],
+    "again_ticks": 1200,
+    "tax": 40,
+    "tax_twice": 90,
+    "rumour_permille": 500
+   },
+   "rumours": {
+    "from": "4",
+    "every_ticks": 2000,
+    "priest": "pl_priest",
+    "radius": 4,
+    "clear_ticks": 100,
+    "shrine_radius": 16
+   },
+   "raids": {
+    "player": 2,
+    "from": "4",
+    "until": "10",
+    "spawn": [
+     [
+      146,
+      12
+     ],
+     [
+      146,
+      66
+     ],
+     [
+      146,
+      40
+     ]
+    ],
+    "units": [
+     [
+      "to_prussian_rider",
+      3
+     ]
+    ],
+    "normal_units": [
+     [
+      "to_merc_horse",
+      1
+     ]
+    ],
+    "every": [
+     2400,
+     1600,
+     2400
+    ],
+    "chase_cells": 18,
+    "plunder_radius": 3,
+    "per_raid": 2,
+    "trophy": 10,
+    "exit": [
+     147,
+     40
+    ]
+   },
+   "seasons": {
+    "freeze": [
+     [
+      0,
+      0,
+      149,
+      119
+     ]
+    ],
+    "flood": [
+     [
+      56,
+      64,
+      66,
+      74
+     ],
+     [
+      76,
+      44,
+      88,
+      52
+     ],
+     [
+      38,
+      84,
+      50,
+      92
+     ]
+    ],
+    "mud_permille": 700,
+    "mud_units": [
+     "pl_wagon"
+    ]
+   },
+   "wages": {
+    "every_ticks": 1200,
+    "from": "4",
+    "units": {
+     "pl_merc_horse": 2,
+     "pl_drab": 1
+    }
+   },
+   "piles": {
+    "rect": [
+     103,
+     79,
+     108,
+     83
+    ],
+    "tower_radius": 8,
+    "damage": 25
+   },
+   "brothers": {
+    "group": "brothers",
+    "exit": [
+     147,
+     96
+    ]
+   }
+  }
+ },
+ "triggers": [
+  {
+   "id": "defeat_patience",
+   "when": {
+    "type": "all",
+    "of": [
+     {
+      "type": "fired",
+      "trigger": "4"
+     },
+     {
+      "type": "patience",
+      "at_most": 0
+     }
+    ]
+   },
+   "do": [
+    {
+     "do": "defeat",
+     "text": "The mercenaries' patience is at an end. Červenka has sold Malbork back to the Order."
+    }
+   ]
+  },
+  {
+   "id": "defeat_riot",
+   "when": {
+    "type": "discontent",
+    "at_least": 1000
+   },
+   "do": [
+    {
+     "do": "defeat",
+     "text": "Gdańsk has risen against the taxes and will lend the Crown nothing more."
+    }
+   ]
+  },
+  {
+   "id": "defeat_barbara",
+   "when": {
+    "type": "group_dead",
+    "group": "barbara"
+   },
+   "do": [
+    {
+     "do": "defeat",
+     "text": "Pani Barbara is dead. Nobody is left who knows the accounts."
+    }
+   ]
+  },
+  {
+   "id": "defeat_brothers",
+   "when": {
+    "type": "flag",
+    "flag": "brothers_hurt"
+   },
+   "do": [
+    {
+     "do": "defeat",
+     "text": "Someone has shot at the brothers leaving the castle. The mercenaries shut the gate: the bargain is off."
+    }
+   ]
+  },
+  {
+   "id": "1",
+   "when": {
+    "type": "start"
+   },
+   "do": [
+    {
+     "do": "rally",
+     "player": 1,
+     "at": [
+      66,
+      48
+     ]
+    },
+    {
+     "do": "cutscene",
+     "id": "masters_bed",
+     "at": [
+      116,
+      88
+     ],
+     "lines": [
+      [
+       "Chronicler",
+       "August 1456. Malbork, the Grand Master's rooms. Two mercenaries in dirty boots turn the feather beds inside out and slit the pillows; down flies about the floor. A grey man in a white cloak with a black cross stands at the window and silently watches the river. In the doorway stands a young Polish nobleman with a letter in his hand: Stach."
+      ],
+      [
+       "Chronicler",
+       "Two years after Chojnice pan Jan, not yet born then, might have been left without a father: Stach was sent to Malbork with a letter to the mercenaries, and not everyone came back from Malbork in those days. The Order did not pay its mercenaries, and they looked for money wherever they could, even in the bed of the Grand Master himself."
+      ],
+      [
+       "Mercenary",
+       "Empty. Not a penny. And he calls himself Grand Master!"
+      ],
+      [
+       "hero_czerwenka",
+       "Leave the old man be. He has no money, anyone can see that. Well, pan envoy, what have you brought?"
+      ],
+      [
+       "hero_stach",
+       "The king's word. The Crown is ready to pay for the castle."
+      ],
+      [
+       "hero_czerwenka",
+       "I cannot eat the king's word. My men have not seen their pay for a year. I will tell you what I have told others: if an angel came down to me from heaven without money, I would not talk even to the angel. Bring the silver, pan, and the castle is yours."
+      ],
+      [
+       "Chronicler",
+       "The Grand Master at the window turns and looks at Stach. He says nothing."
+      ],
+      [
+       "Chronicler",
+       "The money for Malbork was to be found by Stach's elder sister Barbara, the wife of a Gdańsk merchant, who knew the Żuławy like her own kitchen."
+      ]
+     ]
+    },
+    {
+     "do": "objective",
+     "id": "station",
+     "text": "Set up the royal station by the ferry (a manor house)"
+    },
+    {
+     "do": "hint",
+     "text": "Your workers can build a manor house by the ferry in the middle of the Żuławy, north of the canal. It will be the royal station: the treasury, where wagons take on silver."
+    }
+   ]
+  },
+  {
+   "id": "2",
+   "when": {
+    "type": "built_near",
+    "player": 1,
+    "base": "town_center",
+    "at": [
+     68,
+     54
+    ],
+    "radius": 10
+   },
+   "do": [
+    {
+     "do": "objective",
+     "id": "station",
+     "state": "done"
+    },
+    {
+     "do": "spawn",
+     "group": "first_convoy",
+     "player": 1,
+     "units": [
+      [
+       "pl_wagon",
+       2
+      ]
+     ],
+     "at": [
+      72,
+      50
+     ]
+    },
+    {
+     "do": "cargo",
+     "group": "first_convoy",
+     "silver": 125
+    },
+    {
+     "do": "move",
+     "group": "ratman",
+     "to": [
+      66,
+      50
+     ]
+    },
+    {
+     "do": "dialogue",
+     "id": "first_loan",
+     "lines": [
+      [
+       "Gdańsk councillor",
+       "Here is the first money. Gdańsk lends it to the Crown, and at interest, pani Barbara, do not forget. And tell the king that the townsmen pay for this castle twice: once in silver, the second time in patience."
+      ],
+      [
+       "hero_barbara",
+       "I will tell him. My husband pays the same."
+      ]
+     ]
+    },
+    {
+     "do": "objective",
+     "id": "convoy",
+     "text": "Bring the first payment, 25 000 florins, to the pier on the Nogat"
+    },
+    {
+     "do": "ping",
+     "at": [
+      112,
+      40
+     ],
+     "radius": 4
+    }
+   ]
+  },
+  {
+   "id": "3",
+   "when": {
+    "type": "group_near_count",
+    "group": "first_convoy",
+    "at": [
+     112,
+     40
+    ],
+    "radius": 5,
+    "count": 1
+   },
+   "do": [
+    {
+     "do": "objective",
+     "id": "convoy",
+     "state": "done"
+    },
+    {
+     "do": "unload",
+     "group": "first_convoy"
+    },
+    {
+     "do": "move",
+     "group": "ratman",
+     "to": [
+      14,
+      18
+     ]
+    },
+    {
+     "do": "spawn",
+     "group": "hynek_boat",
+     "player": 4,
+     "units": [
+      [
+       "pl_river_boat",
+       1
+      ]
+     ],
+     "at": [
+      116,
+      40
+     ]
+    },
+    {
+     "do": "cutscene",
+     "id": "hynek",
+     "at": [
+      112,
+      40
+     ],
+     "lines": [
+      [
+       "Chronicler",
+       "The pier on the Nogat. Chests are carried into a long boat. A young Czech in a costly doublet counts them and laughs."
+      ],
+      [
+       "Hynek of Ledce",
+       "Twenty-five thousand! The captain will be pleased. I will take it to the castle, pani, and you go for the rest."
+      ],
+      [
+       "hero_barbara",
+       "The river is wicked here, pan Hynek. The old bridge stands under the water, I am from here, I know."
+      ],
+      [
+       "Hynek of Ledce",
+       "I am from Bohemia, our rivers are more wicked."
+      ]
+     ]
+    },
+    {
+     "do": "move",
+     "group": "hynek_boat",
+     "to": [
+      105,
+      90
+     ]
+    }
+   ]
+  },
+  {
+   "id": "4",
+   "when": {
+    "type": "any",
+    "of": [
+     {
+      "type": "group_near",
+      "group": "hynek_boat",
+      "at": [
+       105,
+       81
+      ],
+      "radius": 3
+     },
+     {
+      "type": "after",
+      "trigger": "3",
+      "ticks": 1800
+     }
+    ]
+   },
+   "do": [
+    {
+     "do": "kill",
+     "group": "hynek_boat"
+    },
+    {
+     "do": "patience",
+     "add": -200
+    },
+    {
+     "do": "cutscene",
+     "id": "nogat",
+     "at": [
+      105,
+      81
+     ],
+     "lines": [
+      [
+       "Chronicler",
+       "Dawn. The boat goes towards the castle. Blackened piles stick out of the water. A blow, a crack, a cry. The boat turns on its side and goes under with the chests. Only a hat is left on the water."
+      ],
+      [
+       "Chronicler",
+       "So they write: Hynek of Ledce, a kinsman of the captain, and six of his men drowned together with the money, they say the first twenty-five thousand. Červenka asked Gdańsk for a diver. And two years later the peasants of the Żuławy pulled both the dead and the coins out of the Nogat. They say the coins went to Červenka after all."
+      ],
+      [
+       "hero_czerwenka",
+       "It is your river that has eaten my money, pani. So it is still yours. Bring new money."
+      ]
+     ]
+    },
+    {
+     "do": "objective",
+     "id": "sum",
+     "text": "Bring the whole ransom to Malbork or Tczew: 190 000 florins"
+    },
+    {
+     "do": "objective",
+     "id": "patience",
+     "text": "Do not let the mercenaries' patience run out"
+    },
+    {
+     "do": "objective",
+     "id": "riot",
+     "text": "Do not let Gdańsk rise against the taxes"
+    },
+    {
+     "do": "objective",
+     "id": "no_twice",
+     "text": "Do not tax any village twice in one season",
+     "optional": true
+    },
+    {
+     "do": "objective",
+     "id": "no_loss",
+     "text": "Lose no wagon or boat with silver",
+     "optional": true
+    },
+    {
+     "do": "objective",
+     "id": "chapels",
+     "text": "Set up chapels on both places of power",
+     "optional": true
+    },
+    {
+     "do": "objective",
+     "id": "no_swedes",
+     "text": "Do without the Swedish king's loan",
+     "optional": true
+    },
+    {
+     "do": "unlock",
+     "player": 1,
+     "items": [
+      "pl_shrine"
+     ]
+    },
+    {
+     "do": "hint",
+     "text": "Silver comes from loans in Gdańsk (bring Barbara to the town hall), from taxes (a wagon or Barbara stands in a village a while) and from the Order's riders you kill. A wagon or a boat standing by the manor house or the pier takes silver from the treasury; at the gate of Malbork or of Tczew it hands it over."
+    },
+    {
+     "do": "hint",
+     "text": "The piles of the old bridge lie in the Nogat above the castle. A boat that passes them without a tower on the bank to show the way strikes them."
+    }
+   ]
+  },
+  {
+   "id": "5",
+   "when": {
+    "type": "taxed",
+    "at_least": 1
+   },
+   "do": [
+    {
+     "do": "dialogue",
+     "id": "taxes",
+     "lines": [
+      [
+       "Gdańsk councillor",
+       "Pani Barbara, the peasants of the Żuławy have already come to the town hall. They say they have paid for three wars at once this year."
+      ],
+      [
+       "hero_barbara",
+       "Tell them that the Crown will pay for this war once, not every year. And that my husband pays the same tax as they do."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "raid",
+   "when": {
+    "type": "flag",
+    "flag": "raid"
+   },
+   "do": [
+    {
+     "do": "hint",
+     "text": "The Order's riders have come over the Nogat. They plunder villages and go for loaded wagons. A plundered village pays nothing until the next season; every rider killed brings 1 000 florins of booty."
+    }
+   ]
+  },
+  {
+   "id": "deserted",
+   "when": {
+    "type": "deserted"
+   },
+   "do": [
+    {
+     "do": "hint",
+     "text": "There was nothing to pay the hired men with, and some of them have left. A horseman asks 200 florins a month, a foot soldier 100."
+    }
+   ]
+  },
+  {
+   "id": "piles",
+   "when": {
+    "type": "flag",
+    "flag": "piles"
+   },
+   "do": [
+    {
+     "do": "hint",
+     "text": "A boat has struck the piles of the old bridge. Build a tower on the bank by them, and the boats will pass."
+    }
+   ]
+  },
+  {
+   "id": "delivered",
+   "when": {
+    "type": "flag",
+    "flag": "delivered"
+   },
+   "do": [
+    {
+     "do": "hint",
+     "text": "The silver is handed over. Every load raises the mercenaries' patience."
+    }
+   ]
+  },
+  {
+   "id": "no_twice_failed",
+   "when": {
+    "type": "flag",
+    "flag": "taxed_twice"
+   },
+   "do": [
+    {
+     "do": "objective",
+     "id": "no_twice",
+     "state": "failed"
+    }
+   ]
+  },
+  {
+   "id": "no_loss_failed",
+   "when": {
+    "type": "flag",
+    "flag": "silver_lost"
+   },
+   "do": [
+    {
+     "do": "objective",
+     "id": "no_loss",
+     "state": "failed"
+    }
+   ]
+  },
+  {
+   "id": "chapels_done",
+   "when": {
+    "type": "all",
+    "of": [
+     {
+      "type": "fired",
+      "trigger": "4"
+     },
+     {
+      "type": "places_held",
+      "player": 1,
+      "count": 2
+     }
+    ]
+   },
+   "do": [
+    {
+     "do": "objective",
+     "id": "chapels",
+     "state": "done"
+    }
+   ]
+  },
+  {
+   "id": "6",
+   "when": {
+    "type": "after",
+    "trigger": "4",
+    "ticks": 6000
+   },
+   "do": [
+    {
+     "do": "season",
+     "to": 1
+    },
+    {
+     "do": "cutscene",
+     "id": "winter",
+     "at": [
+      70,
+      60
+     ],
+     "lines": [
+      [
+       "Chronicler",
+       "Winter. The canals and the rivers of the Żuławy freeze. Sledges go straight across the fields, and the Order's riders cross the ice wherever they like."
+      ]
+     ]
+    },
+    {
+     "do": "hint",
+     "text": "Everything is frozen: wagons go across the ice the straight way, the boats stay where they are until the spring, and the riders come more often."
+    }
+   ]
+  },
+  {
+   "id": "7",
+   "when": {
+    "type": "rumours",
+    "at_least": 1
+   },
+   "do": [
+    {
+     "do": "dialogue",
+     "id": "devils_silver",
+     "lines": [
+      [
+       "Priest",
+       "In the village they say the devil gave the silver for the castle. That there is a treasure in the bog near Łęczyca, and that someone of yours, pani, made a bargain with it."
+      ],
+      [
+       "hero_barbara",
+       "My grandfather made a bargain with somebody, that is true. But treasures have nothing to do with it. This is the silver of the Gdańsk merchants, and they want it back with interest. I am a merchant's wife, father, I know: the devil takes no interest."
+      ],
+      [
+       "Chronicler",
+       "Pan Jan loved this place. He said that everyone whispered of the devil's silver, but the real silver was from Gdańsk, borrowed, and the town paid that debt off for many years afterwards. There were no devils in it, there were merchants."
+      ]
+     ]
+    },
+    {
+     "do": "hint",
+     "text": "A village with a rumour pays half the tax. The priest standing in the village ends the rumour; a chapel on a place of power keeps rumours away from the villages near it."
+    }
+   ]
+  },
+  {
+   "id": "8",
+   "when": {
+    "type": "flag",
+    "flag": "crowd"
+   },
+   "do": [
+    {
+     "do": "cutscene",
+     "id": "town_hall",
+     "at": [
+      16,
+      21
+     ],
+     "lines": [
+      [
+       "Chronicler",
+       "Gdańsk, the square before the town hall. A crowd of craftsmen, shouting. The councillor on the steps."
+      ],
+      [
+       "Craftsman",
+       "A tax again! What for? For somebody else's castle?"
+      ],
+      [
+       "hero_barbara",
+       "So that the Order no longer holds your river. While Malbork is theirs, your grain goes down the Vistula by their leave."
+      ],
+      [
+       "Gdańsk councillor",
+       "Well said. But it would be better if you brought them something besides words."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "9",
+   "when": {
+    "type": "all",
+    "of": [
+     {
+      "type": "fired",
+      "trigger": "6"
+     },
+     {
+      "type": "patience",
+      "at_most": 333
+     },
+     {
+      "type": "not",
+      "of": {
+       "type": "delivered",
+       "at_least": 1900
+      }
+     }
+    ]
+   },
+   "do": [
+    {
+     "do": "cutscene",
+     "id": "money_changer",
+     "at": [
+      20,
+      10
+     ],
+     "lines": [
+      [
+       "Chronicler",
+       "Gdańsk, evening, the Artus Court. Merchants count and argue at the long tables. Barbara sits over an account book: the sum will not come out. A man in a red coat sits down opposite, merry, bareheaded."
+      ],
+      [
+       "hero_stranger",
+       "It does not add up, pani? I know a money changer. He will give it today, without the town hall and without your husband."
+      ],
+      [
+       "hero_barbara",
+       "At what interest?"
+      ],
+      [
+       "hero_stranger",
+       "The same your grandfather paid."
+      ],
+      [
+       "Chronicler",
+       "Barbara looks at him for a long time, then shuts the book."
+      ],
+      [
+       "hero_barbara",
+       "Grandfather did not pay in silver, pan. I am married to a merchant, and I know that the quickest money comes out the dearest afterwards. We will manage."
+      ],
+      [
+       "Chronicler",
+       "She rises. When she turns round at the door, the seat opposite is empty; only the mug stands untouched."
+      ],
+      [
+       "Chronicler",
+       "Pan Jan's aunt maintained to her old age that it was an ordinary usurer, the Artus Court had a dozen of them of an evening. Maybe. And a day later a man came to her from King Charles of Sweden, who sat in Gdańsk himself then, driven out of his kingdom."
+      ],
+      [
+       "Envoy of King Charles",
+       "King Charles sends the Crown two thousand. Not much, but from the heart. And in the hope of friendship."
+      ]
+     ]
+    },
+    {
+     "do": "ask",
+     "id": "swedes",
+     "text": "Take the Swedish king's loan of 2 000 florins?",
+     "options": [
+      "Take it",
+      "Thank him and refuse"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "9a",
+   "when": {
+    "type": "chose",
+    "question": "swedes",
+    "option": 0
+   },
+   "do": [
+    {
+     "do": "give_stock",
+     "player": 1,
+     "res": "silver",
+     "amount": 20
+    },
+    {
+     "do": "objective",
+     "id": "no_swedes",
+     "state": "failed"
+    }
+   ]
+  },
+  {
+   "id": "spring",
+   "when": {
+    "type": "after",
+    "trigger": "6",
+    "ticks": 7200
+   },
+   "do": [
+    {
+     "do": "season",
+     "to": 2
+    },
+    {
+     "do": "cutscene",
+     "id": "spring",
+     "at": [
+      62,
+      70
+     ],
+     "lines": [
+      [
+       "Chronicler",
+       "Spring 1457. The ice goes, and the high water floods the low meadows. Only the dikes stand above it."
+      ]
+     ]
+    },
+    {
+     "do": "hint",
+     "text": "The flood has covered the low meadows: wagons go along the dikes. The boats are free again."
+    }
+   ]
+  },
+  {
+   "id": "10",
+   "when": {
+    "type": "all",
+    "of": [
+     {
+      "type": "season",
+      "at_least": 2
+     },
+     {
+      "type": "delivered",
+      "at_least": 1900
+     }
+    ]
+   },
+   "do": [
+    {
+     "do": "objective",
+     "id": "sum",
+     "state": "done"
+    },
+    {
+     "do": "objective",
+     "id": "patience",
+     "state": "done"
+    },
+    {
+     "do": "cutscene",
+     "id": "last_wagon",
+     "at": [
+      107,
+      93
+     ],
+     "lines": [
+      [
+       "Chronicler",
+       "Spring. High water. A line of wagons drags along the dike across the flooded meadows. The last one, heavily laden, drives in at the castle gate."
+      ],
+      [
+       "hero_czerwenka",
+       "A hundred and ninety thousand. I did not believe you would find it, pani. Your king can count better than our Master, it seems."
+      ],
+      [
+       "hero_barbara",
+       "Our king can borrow. My husband and his town hall will do the counting afterwards."
+      ]
+     ]
+    },
+    {
+     "do": "spawn",
+     "group": "brothers",
+     "player": 2,
+     "stance": "passive",
+     "units": [
+      [
+       "to_knight_brother",
+       6
+      ],
+      [
+       "to_priest",
+       1
+      ],
+      [
+       "to_wagon",
+       2
+      ]
+     ],
+     "at": [
+      116,
+      95
+     ]
+    },
+    {
+     "do": "objective",
+     "id": "garrison",
+     "text": "Bring the royal garrison, six fighting men, to the castle gate"
+    }
+   ]
+  },
+  {
+   "id": "11",
+   "when": {
+    "type": "all",
+    "of": [
+     {
+      "type": "fired",
+      "trigger": "10"
+     },
+     {
+      "type": "units_near",
+      "at": [
+       107,
+       93
+      ],
+      "radius": 6,
+      "count": 6
+     }
+    ]
+   },
+   "do": [
+    {
+     "do": "cutscene",
+     "id": "brothers_leave",
+     "at": [
+      114,
+      95
+     ],
+     "lines": [
+      [
+       "Chronicler",
+       "The castle gate. Some dozens of brothers in white cloaks come out on foot, and behind them wagons with the chests of the archive and with relics under covers. Polish soldiers stand on both sides of the road. Somebody reaches for a crossbow."
+      ],
+      [
+       "hero_barbara",
+       "Do not shoot! Let them go. We bought walls, not their heads."
+      ],
+      [
+       "Chronicler",
+       "The Grand Master had been taken out of the castle earlier, to Chojnice, and from there he got away to Königsberg. The brothers left with their archive and their relics, and nobody touched them. For almost a century and a half Malbork had been the capital of the Order, and the Order left it on foot."
+      ]
+     ]
+    },
+    {
+     "do": "objective",
+     "id": "brothers",
+     "text": "Let the brothers leave in peace: nobody may strike them"
+    },
+    {
+     "do": "hint",
+     "text": "Put your men near the road into the passive stance (or take them out of the way), or they will fall on the brothers by themselves."
+    },
+    {
+     "do": "exit",
+     "group": "brothers",
+     "at": [
+      147,
+      96
+     ],
+     "radius": 3
+    },
+    {
+     "do": "move",
+     "group": "brothers",
+     "to": [
+      147,
+      96
+     ]
+    }
+   ]
+  },
+  {
+   "id": "12",
+   "when": {
+    "type": "all",
+    "of": [
+     {
+      "type": "fired",
+      "trigger": "11"
+     },
+     {
+      "type": "group_exited",
+      "group": "brothers",
+      "count": 9
+     },
+     {
+      "type": "units_near",
+      "at": [
+       113,
+       96
+      ],
+      "radius": 6,
+      "count": 6
+     }
+    ]
+   },
+   "do": [
+    {
+     "do": "objective",
+     "id": "brothers",
+     "state": "done"
+    },
+    {
+     "do": "objective",
+     "id": "garrison",
+     "state": "done"
+    },
+    {
+     "do": "objective",
+     "id": "riot",
+     "state": "done"
+    },
+    {
+     "do": "objective",
+     "id": "no_swedes",
+     "state": "done"
+    },
+    {
+     "do": "spawn",
+     "group": "king",
+     "player": 3,
+     "stance": "passive",
+     "units": [
+      [
+       "hero_casimir",
+       1
+      ],
+      [
+       "hero_stach",
+       1
+      ]
+     ],
+     "at": [
+      104,
+      92
+     ]
+    },
+    {
+     "do": "cutscene",
+     "id": "king_in_malbork",
+     "at": [
+      108,
+      93
+     ],
+     "lines": [
+      [
+       "Chronicler",
+       "8 June 1457. King Casimir rides into the castle through the gate. The townspeople kneel and swear allegiance. Stach stands by the gate with his Łęczyca banner, his sister beside him."
+      ],
+      [
+       "hero_casimir",
+       "Are you the one who carried the banner at Chojnice?"
+      ],
+      [
+       "hero_stach",
+       "I carried it, sire. And my grandfather stayed on the causeway."
+      ],
+      [
+       "hero_casimir",
+       "I remember the causeway. Then your grandfather paid for me; now Gdańsk has paid for this castle. It would be good some day to pay for oneself."
+      ],
+      [
+       "hero_barbara",
+       "Gdańsk and the wives of Gdańsk, sire. The husbands lent, and we did the counting."
+      ],
+      [
+       "Chronicler",
+       "Červenka became the first royal starost of Malbork. And the town by the castle was handed back to the Order by burgomaster Blume on 28 September of the same year, and it had to be besieged for three more years. But that, as pan Jan said, was no longer silver but iron."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "victory",
+   "when": {
+    "type": "after",
+    "trigger": "12",
+    "ticks": 60
+   },
+   "do": [
+    {
+     "do": "victory",
+     "text": "Malbork is the Crown's, bought without a storm. Gdańsk will be paying for it for many years."
+    }
+   ]
+  }
+ ]
+}

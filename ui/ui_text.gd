@@ -144,6 +144,16 @@ static func cast_fail(reason: int) -> String:
 	return t("Not available")
 
 
+## 190000 as «190 000»: thousands apart by a space (an ordinary one, the same in every language).
+static func thousands(n: int) -> String:
+	var digits := str(absi(n))
+	var out := ""
+	while digits.length() > 3:
+		out = " " + digits.right(3) + out
+		digits = digits.left(digits.length() - 3)
+	return ("-" if n < 0 else "") + digits + out
+
+
 ## "1:05" for game time in ticks.
 static func clock(ticks: int) -> String:
 	var seconds := ticks / Fixed.TICKS_PER_SECOND

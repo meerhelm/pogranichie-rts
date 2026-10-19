@@ -41,10 +41,10 @@ extends RefCounted
 ##   destroy {building}; name_built {player, base, name} (names the player's newest finished
 ##   building of that kind); assault {group, building, else?} (storm a named building, or
 ##   attack-move to `else` when it is gone).
-##   ВКЛ 4–8, Корона 1–4: MissionMarch, MissionRetreat, MissionStealth, MissionSiege,
-##   MissionBattle, MissionField, MissionBesiege, MissionBaltic, MissionChojnice. Setup
-## may also give sides {player: lead player}, age, pop {player: places}, power, props, buildings
-## turned:true. Rules: hunger, boats, blockade, banner and those of the mission modules.
+##   ВКЛ 4–8, Корона 1–5: MissionMarch, Retreat, Stealth, Siege, Battle, Field, Besiege,
+##   Baltic, Chojnice, Silver. Setup may also give sides {player: lead player}, neutral
+## [players], age, pop {player: places}, power, props, buildings turned:true. Rules: hunger,
+## boats, blockade, banner and those of the mission modules.
 
 enum Outcome { NONE, VICTORY, DEFEAT }
 enum Objective { ACTIVE, DONE, FAILED }
@@ -131,9 +131,7 @@ var raids := 0
 ## The panel's countdown (`countdown`): its text and the tick it ends (-1: none).
 var countdown_text := ""
 var countdown_end := -1
-## ВКЛ 5: the bridge, the ford, the rescue and the waves (MissionRetreat); ВКЛ 6: the watch;
-## ВКЛ 7: the siege; ВКЛ 8: the crossing and the battle; Корона 1–4: the field, the siege of
-## Malbork, the march to the sea and the lost battle at Chojnice.
+## The mission modules of ВКЛ 5–8 and Корона 1–5 (see the header).
 var retreat := MissionRetreat.new()
 var stealth := MissionStealth.new()
 var siege := MissionSiege.new()
@@ -142,6 +140,7 @@ var field := MissionField.new()
 var besiege := MissionBesiege.new()
 var baltic := MissionBaltic.new()
 var chojnice := MissionChojnice.new()
+var silver := MissionSilver.new()
 var outcome := Outcome.NONE
 var outcome_text := ""
 ## What the interface shows, in order: {kind, tick, ...} (kind: objective, hint, dialogue,
@@ -175,7 +174,7 @@ func is_over() -> bool:
 
 ## The mission modules with state, in the order they set up, step and hash.
 func _modules() -> Array[RefCounted]:
-	return [retreat, stealth, siege, battle, field, besiege, baltic, chojnice]
+	return [retreat, stealth, siege, battle, field, besiege, baltic, chojnice, silver]
 
 
 # --- setup ----------------------------------------------------------------------------------
@@ -187,6 +186,8 @@ func set_up(tick: int) -> void:
 	var sides: Dictionary = s.get("sides", {})
 	for key: String in sides:
 		_sides.team[key.to_int()] = int(sides[key])
+	for p: int in s.get("neutral", []):
+		_sides.neutral[p] = true
 	for entry: Array in def.players:
 		_apply.call(SimCommand.join(tick, entry[0], StringName(entry[1])))
 	var stock: Dictionary = s.get("stock", {})

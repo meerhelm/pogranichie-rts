@@ -280,7 +280,8 @@
    "hero_plauen": "to", "hero_town_envoys": "to",
    "hero_mikolaj_michalow": "pl", "hero_capek": "pl",
    "hero_stach": "pl", "hero_casimir": "pl", "hero_k4_lords": "pl", "hero_reuss_plauen": "to",
-   "hero_k4_order": "to"}
+   "hero_k4_order": "to",
+   "hero_barbara": "pl", "hero_czerwenka": "to", "hero_k5_civil": "pl"}
  },
  "spell_effects": {
   "_source": "How each spell is aimed (target_point: a point within magic_rules.cast_range of the caster; target_self: around the caster, moving with it; passive) and the effect the simulation runs (mist, dispel, relic, icon, consecration), read from «Эффект» in «Заклинания». Spells without an entry are not in the game yet and cannot be cast.",

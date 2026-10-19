@@ -120,6 +120,7 @@ func test_prototype_loads_only_prototype() -> void:
 	assert_not_null(proto.unit(&"pl_kopia"), "the Crown allies of ВКЛ 2 are in")
 	var hussar := proto.unit(&"pl_hussar")
 	assert_true(hussar != null and hussar.campaign_only, "the Serbian horse of ВКЛ 8 only")
-	assert_null(proto.unit(&"pl_merc_horse"), "the rest of the Crown stays out")
+	var merc := proto.unit(&"pl_merc_horse")
+	assert_true(merc != null and merc.campaign_only, "the Crown's hired horse only for Корона 5")
 	for id: StringName in proto.techs:
 		assert_true(proto.techs[id].age <= 2, "%s is within Удел and Хоругвь" % id)

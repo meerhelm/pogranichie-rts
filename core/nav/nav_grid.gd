@@ -6,10 +6,11 @@ extends RefCounted
 ## Speeds are per-mille multipliers from TerrainDef, looked up per movement class.
 ## Integers only; cells are indexed row by row: cell = y * width + x.
 
-## How a unit is affected by terrain. Taken from its catalog classes and tags.
-enum MoveClass { FOOT, CAVALRY, SIEGE, FOREST_FOOT }
+## How a unit is affected by terrain. Taken from its catalog classes and tags. BOAT (Корона 5:
+## the river boat) moves only on water (terrains with boats_only), at full speed.
+enum MoveClass { FOOT, CAVALRY, SIEGE, FOREST_FOOT, BOAT }
 
-const MOVE_CLASS_COUNT := 4
+const MOVE_CLASS_COUNT := 5
 const NO_CELL := -1
 ## Step lengths in path-cost units, 100 per cell side (141 for a diagonal), before dividing by
 ## the speed: a step costs length * 1000 / speed per-mille.
@@ -45,6 +46,9 @@ var version := 0
 ## Grows only when a cell gets closed or slower, so a path planned before is still walkable
 ## after a cell only opened up (a felled tree): paths re-plan on this one.
 var closing_version := 0
+## Whether any boat was ever put on this map: a cell of water closing for boats (a bridge laid
+## over the river) re-plans paths only then, so maps without boats play as before.
+var boats := false
 
 ## enter[move_class][terrain index]: speed per-mille when entering that terrain, 0 = never.
 var _enter: Array[PackedInt32Array] = []
@@ -115,6 +119,8 @@ static func sorted_terrain_ids(db: CatalogDB) -> Array[StringName]:
 static func move_class_for(def: UnitDef) -> MoveClass:
 	if def == null:
 		return MoveClass.FOOT
+	if def.has_class(&"boat"):
+		return MoveClass.BOAT
 	if def.has_class(&"cavalry"):
 		return MoveClass.CAVALRY
 	if def.has_class(&"siege"):
@@ -169,6 +175,8 @@ func set_terrain(cell: int, index: int) -> void:
 			if (_enter[cls][index] > 0) != (_enter[cls][old] > 0):
 				opened_or_closed = true
 		for cls in MOVE_CLASS_COUNT:
+			if cls == MoveClass.BOAT and not boats:
+				continue
 			if _enter[cls][index] < _enter[cls][old] or _uphill[index] < _uphill[old]:
 				closing_version += 1
 				break
@@ -584,16 +592,19 @@ func _build_tables(terrains: Dictionary[StringName, TerrainDef]) -> void:
 		var cav := 1000
 		var climb := 1000
 		var no_siege := false
+		var boat := 0
 		if not terrains.is_empty():
 			assert(def != null, "unknown terrain %s" % id)
 			foot = def.infantry_permille if def.passable else 0
 			cav = def.cavalry_permille if def.passable else 0
 			climb = def.uphill_permille if def.passable else 1000
 			no_siege = def.siege_blocked
+			boat = 1000 if def.boats_only else 0
 		_enter[MoveClass.FOOT].append(foot)
 		_enter[MoveClass.CAVALRY].append(cav)
 		_enter[MoveClass.SIEGE].append(0 if no_siege else foot)
 		# «Лес и болото без штрафа» (gdl_samogitian).
 		var free := foot > 0 and (id == FOREST or id == BOG)
 		_enter[MoveClass.FOREST_FOOT].append(1000 if free else foot)
+		_enter[MoveClass.BOAT].append(boat)
 		_uphill.append(climb)
