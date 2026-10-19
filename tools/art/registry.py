@@ -4,7 +4,7 @@ from typing import Callable, NamedTuple
 
 from tools.art import (beasts, buildings_gdl, buildings_pl, buildings_to, folk, folk_1410, folk_1435, folk_1500,
                        folk_1507, folk_1508, folk_1514, folk_crown, folk_crown_1410, folk_crown_baltic,
-                       folk_crown_chojnice, folk_crown_malbork, folk_crown_silver, models)
+                       folk_crown_chojnice, folk_crown_malbork, folk_crown_silver, folk_crown_swiecino, models)
 
 
 class Unit(NamedTuple):
@@ -40,7 +40,7 @@ UNITS: dict[str, Unit] = {uid: Unit(fn, **TALL) if uid in TALL_UNITS else Unit(f
     **models.UNITS, **folk.UNITS, **folk_1410.UNITS, **folk_1500.UNITS, **folk_1507.UNITS,
     **folk_1508.UNITS, **folk_1514.UNITS, **folk_crown.UNITS, **folk_crown_1410.UNITS,
     **folk_crown_malbork.UNITS, **folk_crown_baltic.UNITS, **folk_crown_chojnice.UNITS,
-    **folk_crown_silver.UNITS}.items()}
+    **folk_crown_silver.UNITS, **folk_crown_swiecino.UNITS}.items()}
 for _uid, _frame in FRAMES.items():
     UNITS[_uid] = Unit(UNITS[_uid].build, **_frame)
 for _uid, _fn in beasts.UNITS.items():
@@ -50,7 +50,7 @@ for _uid, _fn in {**beasts.MOUNTED_UNITS, **folk_1410.MOUNTED_UNITS, **folk_1435
                   **folk_1508.MOUNTED_UNITS, **folk_1514.MOUNTED_UNITS, **folk_crown.MOUNTED_UNITS,
                   **folk_crown_1410.MOUNTED_UNITS, **folk_crown_malbork.MOUNTED_UNITS,
                   **folk_crown_baltic.MOUNTED_UNITS, **folk_crown_chojnice.MOUNTED_UNITS,
-                  **folk_crown_silver.MOUNTED_UNITS}.items():
+                  **folk_crown_silver.MOUNTED_UNITS, **folk_crown_swiecino.MOUNTED_UNITS}.items():
     UNITS[_uid] = Unit(_fn, **MOUNTED)
 for _uid, _fn in {**beasts.WAGONS, **folk_1410.WAGONS, **folk_1500.WAGONS, **folk_1508.WAGONS,
                   **folk_crown.WAGONS, **folk_crown_baltic.WAGONS}.items():
@@ -125,6 +125,8 @@ ATTACK_STYLE = {
     "hero_stach": "thrust", "hero_casimir": "swing", "hero_k4_lords": "swing", "hero_reuss_plauen": "swing",
     "hero_k4_order": "swing",
     "hero_czerwenka": "swing", "pl_river_boat": "crossbow",
+    "hero_dunin": "swing", "hero_jasienski": "thrust", "hero_raweneck": "swing", "hero_nostitz": "swing",
+    "nt_pomeranian": "thrust",
     **{uid: "lunge" for uid in beasts.UNITS},
 }
 

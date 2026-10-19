@@ -148,6 +148,17 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
   punt, goods, the Crown's flag) and the prop `prop_piles` (the broken piles of the old Nogat
   bridge on transparent ground for the water tiles; a bigger frame). `pl_merc_horse` has no
   model: `SpriteDB.ALIASES` draws it as `to_merc_horse`.
+- `folk_crown_swiecino.py` — Świecino (Корона 6): Piotr Dunin (`mounted`: plain steel half
+  armour, a red tabard and a small shield with his arms Łabędź, a white swan on red; an open
+  sallet with the bevor, a greying beard, a steel mace, a bay without a caparison), Paweł
+  Jasieński leading the heavy horse (full bright plate, a closed sallet with a white plume, a
+  dark green tabard, a lance with a two-tailed team pennon, a grey with a chanfron under a
+  green caparison), the Order's mercenary captains Fritz Raweneck (dark russeted half armour,
+  a black tabard edged in ochre, a grizzled beard, a sword, a dun) and Kaspar Nostitz (the
+  same type: steel half armour, a tabard quartered dark red and white, a full clean-shaven
+  face, a war hammer, a black horse), and the Pomeranian peasant `nt_pomeranian` (homespun
+  coat, hood with a cape, leg wraps, a sickle at the rope belt, a three-tined pitchfork held
+  like a spear, attack `thrust`). Only Dunin's arms are drawn.
 - `kit.py` — building materials (log, thatch, shingle, brick, roof tile, plaster and timber
   framing) and parts (roofs, stepped gables, windows, sheds, fences, barrels);
   `buildings_gdl.py` and `buildings_to.py` — the Duchy's and the Order's buildings.
