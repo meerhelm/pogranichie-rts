@@ -4,7 +4,7 @@ from typing import Callable, NamedTuple
 
 from tools.art import (beasts, buildings_gdl, buildings_pl, buildings_to, folk, folk_1410, folk_1435, folk_1500,
                        folk_1507, folk_1508, folk_1514, folk_crown, folk_crown_1410, folk_crown_baltic,
-                       folk_crown_malbork, models)
+                       folk_crown_chojnice, folk_crown_malbork, models)
 
 
 class Unit(NamedTuple):
@@ -28,15 +28,16 @@ WAGON = {"frame": (320, 240), "pivot": (156, 150)}
 ## his flail).
 TALL = {"frame": (160, 216), "pivot": (64, 176)}
 TALL_UNITS = {"mo_inok", "pl_priest", "nt_hussite_flail"}
-## Long weapons levelled forward reach past the usual frame (pl_drab's pike, the handgunner's smoke).
+## Long weapons levelled forward reach past the usual frame (pl_drab's and the Söldner's pike,
+## the handgunners' smoke).
 PIKE = {"frame": (288, 216), "pivot": (144, 176)}
 WIDE = {"frame": (224, 144), "pivot": (112, 104)}
-FRAMES = {"pl_drab": PIKE, "pl_handgunner": WIDE}
+FRAMES = {"pl_drab": PIKE, "pl_handgunner": WIDE, "to_soldner": PIKE, "to_handgunner": WIDE}
 
 UNITS: dict[str, Unit] = {uid: Unit(fn, **TALL) if uid in TALL_UNITS else Unit(fn) for uid, fn in {
     **models.UNITS, **folk.UNITS, **folk_1410.UNITS, **folk_1500.UNITS, **folk_1507.UNITS,
     **folk_1508.UNITS, **folk_1514.UNITS, **folk_crown.UNITS, **folk_crown_1410.UNITS,
-    **folk_crown_malbork.UNITS, **folk_crown_baltic.UNITS}.items()}
+    **folk_crown_malbork.UNITS, **folk_crown_baltic.UNITS, **folk_crown_chojnice.UNITS}.items()}
 for _uid, _frame in FRAMES.items():
     UNITS[_uid] = Unit(UNITS[_uid].build, **_frame)
 for _uid, _fn in beasts.UNITS.items():
@@ -45,7 +46,7 @@ for _uid, _fn in {**beasts.MOUNTED_UNITS, **folk_1410.MOUNTED_UNITS, **folk_1435
                   **folk_1500.MOUNTED_UNITS, **folk_1507.MOUNTED_UNITS,
                   **folk_1508.MOUNTED_UNITS, **folk_1514.MOUNTED_UNITS, **folk_crown.MOUNTED_UNITS,
                   **folk_crown_1410.MOUNTED_UNITS, **folk_crown_malbork.MOUNTED_UNITS,
-                  **folk_crown_baltic.MOUNTED_UNITS}.items():
+                  **folk_crown_baltic.MOUNTED_UNITS, **folk_crown_chojnice.MOUNTED_UNITS}.items():
     UNITS[_uid] = Unit(_fn, **MOUNTED)
 for _uid, _fn in {**beasts.WAGONS, **folk_1410.WAGONS, **folk_1500.WAGONS, **folk_1508.WAGONS,
                   **folk_crown.WAGONS, **folk_crown_baltic.WAGONS}.items():
@@ -111,6 +112,9 @@ ATTACK_STYLE = {
     "hero_mikolaj_michalow": "swing", "hero_capek": "thrust", "nt_hussite_flail": "swing",
     "nt_gdansk_militia": "thrust", "nt_gdansk_crossbow": "crossbow", "nt_hussite_wagon": "fire",
     "nt_hussite_gun": "fire",
+    "pl_pospolite": "thrust", "to_soldner": "thrust", "to_handgunner": "crossbow", "to_merc_horse": "thrust",
+    "hero_stach": "thrust", "hero_casimir": "swing", "hero_k4_lords": "swing", "hero_reuss_plauen": "swing",
+    "hero_k4_order": "swing",
     **{uid: "lunge" for uid in beasts.UNITS},
 }
 

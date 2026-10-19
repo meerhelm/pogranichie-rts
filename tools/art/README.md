@@ -119,6 +119,19 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
   wagon `nt_hussite_wagon` (high plank sides with loopholes, the chalice, chains; a handgunner
   inside fires over the boards) and the houfnice on a cart `nt_hussite_gun` (turned round to
   fire, the horses stay hitched; flash, smoke, recoil).
+- `folk_crown_chojnice.py` — Chojnice (Корона 4): the levy nobleman `pl_pospolite` (an old red
+  brigandine, an old open bascinet, a plain painted shield, a lance; a plainer horse), the
+  Order's hired foot `to_soldner` (open sallet, blue-grey brigandine, particoloured hose, a long
+  spear held like a pike, the pike frame) and `to_handgunner` (grey quilted coat, kettle hat,
+  `Gunner`'s shot, no chalice; the handgunner's frame), the mercenary horseman `to_merc_horse`
+  (half armour, sallet with bevor, ochre tunic, two-tailed pennon), and the heroes Stach (a
+  bright new breastplate and pauldrons, open sallet, beardless, his grandfather's plain small
+  shield), Casimir IV (`Sovereign`: young, a crown on an open bascinet, crimson mantle with
+  ermine; his bearer carries the crowned White Eagle on red), the Great Polish lords
+  `hero_k4_lords` (bright full plate, crimson tabard, gold chain, a mace), Heinrich Reuss von
+  Plauen (a knight brother in a sallet, a full clean-shaven face, a sword) and the mercenary
+  captains `hero_k4_order` (gilt-edged plate, blue tabard, a team plume, a war hammer); no family
+  arms are drawn.
 - `kit.py` — building materials (log, thatch, shingle, brick, roof tile, plaster and timber
   framing) and parts (roofs, stepped gables, windows, sheds, fences, barrels);
   `buildings_gdl.py` and `buildings_to.py` — the Duchy's and the Order's buildings.
@@ -138,7 +151,7 @@ at a job, else idle, turned to the target or the work. `--add` renders only the 
 sheet lacks and copies the old rows back, so a new animation does not re-render the rest.
 Building frames are rendered large and cropped to what all stages cover. Unit frames: 160×144
 on foot (160×216 the monk with his raised icon, the Crown's priest with his cross and the Hussite
-with his flail, 288×216 the drab with his pike, 224×144 the handgunner), 224×256 mounted (an upright lance), 224×176
+with his flail, 288×216 the drab and the Söldner with their pikes, 224×144 the handgunners), 224×256 mounted (an upright lance), 224×176
 big beasts, 320×240 the wagons, the bombard and the guns; `bar_y` in `sheet.json` is where the HP bar goes.
 
 Line pieces: a palisade cell is its post cluster (`<id>`) plus arms toward the neighbours
