@@ -3,7 +3,8 @@
 from typing import Callable, NamedTuple
 
 from tools.art import (beasts, buildings_gdl, buildings_pl, buildings_to, folk, folk_1410, folk_1435, folk_1500,
-                       folk_1507, folk_1508, folk_1514, folk_crown, folk_crown_1410, models)
+                       folk_1507, folk_1508, folk_1514, folk_crown, folk_crown_1410, folk_crown_malbork,
+                       models)
 
 
 class Unit(NamedTuple):
@@ -33,7 +34,8 @@ FRAMES = {"pl_drab": PIKE, "pl_handgunner": WIDE}
 
 UNITS: dict[str, Unit] = {uid: Unit(fn, **TALL) if uid in TALL_UNITS else Unit(fn) for uid, fn in {
     **models.UNITS, **folk.UNITS, **folk_1410.UNITS, **folk_1500.UNITS, **folk_1507.UNITS,
-    **folk_1508.UNITS, **folk_1514.UNITS, **folk_crown.UNITS, **folk_crown_1410.UNITS}.items()}
+    **folk_1508.UNITS, **folk_1514.UNITS, **folk_crown.UNITS, **folk_crown_1410.UNITS,
+    **folk_crown_malbork.UNITS}.items()}
 for _uid, _frame in FRAMES.items():
     UNITS[_uid] = Unit(UNITS[_uid].build, **_frame)
 for _uid, _fn in beasts.UNITS.items():
@@ -41,7 +43,7 @@ for _uid, _fn in beasts.UNITS.items():
 for _uid, _fn in {**beasts.MOUNTED_UNITS, **folk_1410.MOUNTED_UNITS, **folk_1435.MOUNTED_UNITS,
                   **folk_1500.MOUNTED_UNITS, **folk_1507.MOUNTED_UNITS,
                   **folk_1508.MOUNTED_UNITS, **folk_1514.MOUNTED_UNITS, **folk_crown.MOUNTED_UNITS,
-                  **folk_crown_1410.MOUNTED_UNITS}.items():
+                  **folk_crown_1410.MOUNTED_UNITS, **folk_crown_malbork.MOUNTED_UNITS}.items():
     UNITS[_uid] = Unit(_fn, **MOUNTED)
 for _uid, _fn in {**beasts.WAGONS, **folk_1410.WAGONS, **folk_1500.WAGONS, **folk_1508.WAGONS,
                   **folk_crown.WAGONS}.items():
@@ -52,16 +54,17 @@ BUILDINGS: dict[str, Building] = {
     "gdl_town_center": Building(models.gdl_town_center, (4, 4), 9),
 }
 for _uid, (_fn, _cells, _tall) in {**buildings_gdl.BUILDINGS, **buildings_to.BUILDINGS,
-                                   **buildings_pl.BUILDINGS, **folk_1507.BUILDINGS, **folk_1508.BUILDINGS}.items():
+                                   **buildings_pl.BUILDINGS, **folk_1507.BUILDINGS, **folk_1508.BUILDINGS,
+                                   **folk_crown_malbork.BUILDINGS}.items():
     # Palisade arms are drawn beside the post piece, which alone carries the site props.
-    _props = not _uid.startswith(("gdl_palisade_", "to_palisade_", "pl_palisade_", "gdl_wall_"))
+    _props = not _uid.startswith(("gdl_palisade_", "to_palisade_", "pl_palisade_", "gdl_wall_", "to_wall_"))
     BUILDINGS[_uid] = Building(_fn, _cells, _tall, _props)
 
 TREES = models.TREES
 ## Static map props drawn like trees (one view, color and shadow, no team pass): props/<id>_*.
-PROPS = {**folk_1507.PROPS, **folk_1508.PROPS, **folk_1514.PROPS}
-## Props too big for the usual frame (the old oak): id -> (width, height, pivot) to render at.
-PROP_FRAMES = folk_1514.PROP_FRAMES
+PROPS = {**folk_1507.PROPS, **folk_1508.PROPS, **folk_1514.PROPS, **folk_crown_malbork.PROPS}
+## Props too big for the usual frame (the old oak, Malbork's church): id -> (width, height, pivot) to render at.
+PROP_FRAMES = {**folk_1514.PROP_FRAMES, **folk_crown_malbork.PROP_FRAMES}
 DEPOSITS = models.DEPOSITS
 DEPOSIT_VARIANTS = models.DEPOSIT_VARIANTS
 
@@ -69,11 +72,13 @@ DEPOSIT_VARIANTS = models.DEPOSIT_VARIANTS
 ## building), `attack` in a style of people.ATTACK_STYLES (beasts lunge, riders use the style
 ## too while the horse stands). Wagons neither work nor fight; the bombard and the field gun
 ## fire (flash, smoke, recoil: folk_1410.Bombard, folk_1500.FieldGun). Civilians (to_spy,
-## hero_council_envoys, hero_maciej, hero_stranger) only idle and walk.
+## hero_council_envoys, hero_maciej, hero_stranger,
+## hero_town_envoys) only idle and walk.
 BASE_ANIMS = [("idle", 8, 6), ("walk", 12, 15)]  # name, frames, fps
 WORK_ANIM = ("work", 8, 9)
 ATTACK_ANIM = ("attack", 8, 12)
-WORKERS = {"gdl_peasant", "to_peasant", "gdl_camp_servant", "gdl_burgher", "pl_kmet", "pl_pavise"}
+WORKERS = {"gdl_peasant", "to_peasant", "gdl_camp_servant", "gdl_burgher", "pl_kmet", "pl_pavise",
+           "nt_gdansk_shipwright"}
 ATTACK_STYLE = {
     "gdl_peasant": "swing", "gdl_spearman": "thrust", "gdl_forest_archer": "bow",
     "gdl_znakharka": "cast", "gdl_castle_archer": "bow", "gdl_camp_servant": "swing",
@@ -98,6 +103,7 @@ ATTACK_STYLE = {
     "pl_pavise": "swing", "pl_priest": "cast",
     "hero_jasko": "thrust", "hero_zyndram": "swing", "hero_marcin": "thrust", "hero_olesnicki": "swing",
     "hero_jagiello": "swing", "hero_order_k1": "thrust",
+    "hero_plauen": "thrust", "nt_gdansk_shipwright": "swing",
     **{uid: "lunge" for uid in beasts.UNITS},
 }
 

@@ -96,6 +96,18 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
   an open bascinet, a red mantle; beside him a guard with a spear, not a bearer: his banner is
   hidden in the story), the stranger in red (civilian: a red kaftan and cap, no weapons) and
   the Grand Commander Lichtenstein (a knight brother like hero_wallenrode).
+- `folk_crown_malbork.py` — the siege of Malbork (Корона 2): Heinrich von Plauen (`Sovereign`:
+  a lean, tired face, the white mantle with the black cross and no rank insignia, a plain
+  shield, a lance; beside him a grey half-brother with the Order's banner), the envoys of the
+  Prussian towns (`Envoys` of three burghers in dark gowns, one holding a sealed letter; no
+  town arms drawn), the Gdańsk shipman `nt_gdansk_shipwright` (dark wool, leather apron,
+  knitted cap, axe and hammer; works and strikes with a swing); the Order's brick town wall
+  `to_wall` (crenellated both sides, a frieze in the team colour; joined like gdl_wall from
+  the pier and the arms `_e/_w/_n/_s`), the Crown's field infirmary `pl_lazaret` (2×2 as in the
+  catalog: tents with red trim, stretchers, cauldron, drying linen) and the map props
+  `prop_church` (St John's of the burned town: brick Gothic, the west half of the roof burned
+  to black rafters, soot over the windows; a big frame in `registry.PROP_FRAMES`) and
+  `prop_ruins` (blackened brick walls of burned houses, charred beams, rubble).
 - `kit.py` — building materials (log, thatch, shingle, brick, roof tile, plaster and timber
   framing) and parts (roofs, stepped gables, windows, sheds, fences, barrels);
   `buildings_gdl.py` and `buildings_to.py` — the Duchy's and the Order's buildings.
