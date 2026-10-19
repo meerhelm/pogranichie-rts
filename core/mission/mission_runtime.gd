@@ -41,8 +41,8 @@ extends RefCounted
 ##   destroy {building}; name_built {player, base, name} (names the player's newest finished
 ##   building of that kind); assault {group, building, else?} (storm a named building, or
 ##   attack-move to `else` when it is gone).
-##   ВКЛ 4–8, Корона 1–3: MissionMarch, MissionRetreat, MissionStealth, MissionSiege,
-##   MissionBattle, MissionField, MissionBesiege, MissionBaltic. Setup
+##   ВКЛ 4–8, Корона 1–4: MissionMarch, MissionRetreat, MissionStealth, MissionSiege,
+##   MissionBattle, MissionField, MissionBesiege, MissionBaltic, MissionChojnice. Setup
 ## may also give sides {player: lead player}, age, pop {player: places}, power, props, buildings
 ## turned:true. Rules: hunger, boats, blockade, banner and those of the mission modules.
 
@@ -132,8 +132,8 @@ var raids := 0
 var countdown_text := ""
 var countdown_end := -1
 ## ВКЛ 5: the bridge, the ford, the rescue and the waves (MissionRetreat); ВКЛ 6: the watch;
-## ВКЛ 7: the siege; ВКЛ 8: the crossing and the battle; Корона 1–3: the field, the siege of
-## Malbork and the march to the sea.
+## ВКЛ 7: the siege; ВКЛ 8: the crossing and the battle; Корона 1–4: the field, the siege of
+## Malbork, the march to the sea and the lost battle at Chojnice.
 var retreat := MissionRetreat.new()
 var stealth := MissionStealth.new()
 var siege := MissionSiege.new()
@@ -141,6 +141,7 @@ var battle := MissionBattle.new()
 var field := MissionField.new()
 var besiege := MissionBesiege.new()
 var baltic := MissionBaltic.new()
+var chojnice := MissionChojnice.new()
 var outcome := Outcome.NONE
 var outcome_text := ""
 ## What the interface shows, in order: {kind, tick, ...} (kind: objective, hint, dialogue,
@@ -174,7 +175,7 @@ func is_over() -> bool:
 
 ## The mission modules with state, in the order they set up, step and hash.
 func _modules() -> Array[RefCounted]:
-	return [retreat, stealth, siege, battle, field, besiege, baltic]
+	return [retreat, stealth, siege, battle, field, besiege, baltic, chojnice]
 
 
 # --- setup ----------------------------------------------------------------------------------
@@ -231,6 +232,8 @@ func set_up(tick: int) -> void:
 		if state != null:
 			state.pop_provided += int(pop[key])
 	setup_buildings = economy.buildings.next_id - 1
+	for mark: Array in s.get("marks", []):
+		choices["mark:%s:%s" % [mark[0], mark[1]]] = 1
 	baptism_every = int(def.rules.get("baptism", {}).get("every_ticks", 0))
 	MissionMarch.set_up(self)
 	for mod in _modules():

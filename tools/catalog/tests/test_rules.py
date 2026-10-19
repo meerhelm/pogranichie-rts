@@ -122,6 +122,11 @@ class ClauseTest(unittest.TestCase):
         self.assertEqual(sp.unparsed, [])
         self.assertEqual(sp.same_as, "pl_crossbow")
 
+    def test_chojnice_hirelings(self):
+        sp = parse_special("Конница тяжёлая. Жалованье 2 С в минуту; за разграбленный воз +50 С")
+        self.assertEqual(sp.unparsed, [])
+        self.assertEqual(sp.params, {"upkeep_silver_per_min": 2, "plunder_wagon_silver": 50})
+
     def test_unknown_clause_is_reported_not_dropped(self):
         sp = parse_special("Пехота. Поёт песни; +6 к коннице")
         self.assertEqual(sp.unparsed, ["Поёт песни"])

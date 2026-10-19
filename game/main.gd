@@ -94,6 +94,11 @@ func _ready() -> void:
 		battle.local_player = PLAYER
 		_magic.add_sibling(battle)
 		battle.attach(sim, _clock)
+	if ChojniceLayer.wanted(sim):
+		var chojnice := ChojniceLayer.new()
+		chojnice.local_player = PLAYER
+		_shots.add_sibling(chojnice)
+		chojnice.attach(sim, _clock)
 	_fog.attach(sim, _clock, PLAYER)
 	_camera.bounds = Iso.map_rect(grid.width, grid.height)
 	var home: Vector2i = SkirmishSetup.BASES[0][2] + Vector2i(2, 4)

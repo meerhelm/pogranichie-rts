@@ -1,0 +1,983 @@
+{
+ "_comment": "Mission «Корона 4. Хойнице, 1454» (mission card in the missions doc, docs/03-missions/15-crown_04_chojnice_1454.md). A battle the Crown loses, on map_crown_04 (tools/maps/gen_crown_04.py): Chojnice on the west edge, the field before it, the Order's wagenburg on the rise in the north, the king's camp in the rear of the Polish line, the bog in the east and the one causeway through it to Toruń. Player 1 is Jaśko of Łęczyca and his grandson Stach with the Łęczyca levy; allies (setup.sides) 3 the levy of Greater Poland and Kuyavia (Górka, Szarlejski, and Bniński with the Łęczyca banner), 4 the Union's hirelings and the Gdańsk men in the camp, 5 King Casimir IV and his court, 6 the rearguard on the causeway (Jaśko and the old knights, out of the player's hands); enemy 2 the Order (Zinnenberg's and Rudolf of Żagań's hired horse, the foot in its wagenburg, Reuss von Plauen's garrison). Rules in core/mission/mission_chojnice.gd (rules.chojnice): the clock of the long day, the lords arguing over places, the levy chasing by itself and losing heart early, the panic from the rear, the bog, leading the king away, the Łęczyca banner, the debt Jaśko pays on the causeway, the units brought out over the bog. Campaign marks (setup.marks): «The Pact» used in Корона 1–3 is the debt; the knights dubbed in Корона 3 come as veterans and fall with Jaśko. Read by core/mission/mission_def.gd; cells are map cells, ticks 1/20 s, texts are English keys translated through i18n/*.po.",
+ "id": "crown_04",
+ "title": "Crown 4. Chojnice, 1454",
+ "map": "map_crown_04",
+ "player": 1,
+ "players": [[1, "pl"], [2, "to"], [3, "pl"], [4, "pl"], [5, "pl"], [6, "pl"]],
+ "camera": [54, 56],
+ "difficulties": ["easy", "normal"],
+ "carry": [],
+ "briefing": {
+  "place": "The field before Chojnice, Gdańsk Pomerania. 18 September 1454, from morning to night.",
+  "story": "In the spring the Prussian Union rose against the Order, and King Casimir IV took Prussia under his hand. Now the king has brought the levy of the nobility to Chojnice, which the Union besieges, and the Order's hired army is coming to its relief. Old Jaśko of Łęczyca, sixty-six, has come with the levy so as not to let his grandson Stach go to Prussia alone.",
+  "goal": "Set out the Łęczyca banner by evening, strike the Order's horse, stop the panic when the blow comes from the rear, lead the king away over the bog by the one causeway and carry the Łęczyca banner over it.",
+  "lose": ["The king is killed or taken", "The Łęczyca banner is taken by the enemy", "Stach falls"]
+ },
+ "setup": {
+  "sides": {"1": 1, "3": 1, "4": 1, "5": 1, "6": 1, "2": 2},
+  "age": {"1": 3, "3": 3, "4": 3, "5": 3, "6": 3},
+  "power": {"1": 0},
+  "stock": {
+   "1": [0, 150, 0, 0],
+   "2": [0, 0, 0, 0],
+   "3": [0, 0, 0, 0],
+   "4": [0, 0, 0, 0],
+   "5": [0, 0, 0, 0],
+   "6": [0, 0, 0, 0]
+  },
+  "locked": {
+   "1": [
+    "pl_town_center",
+    "pl_house",
+    "pl_granary",
+    "pl_farm",
+    "pl_lumber_yard",
+    "pl_mine",
+    "pl_barracks",
+    "pl_range",
+    "pl_stable",
+    "pl_palisade",
+    "pl_gate",
+    "pl_tower",
+    "pl_market",
+    "pl_smithy",
+    "pl_shrine",
+    "pl_temple",
+    "pl_siege_workshop",
+    "pl_castle",
+    "pl_salt_works",
+    "pl_battery",
+    "pl_field_camp",
+    "pl_lazaret",
+    "sp_pact"
+   ]
+  },
+  "marks": [["crown_01", "pact"], ["crown_02", "pact"], ["crown_03", "pact"], ["crown_03", "knights"]],
+  "props": [
+   {"kind": "prop_campfire", "at": [40, 66]},
+   {"kind": "prop_campfire", "at": [52, 67]},
+   {"kind": "prop_campfire", "at": [47, 74]},
+   {"kind": "prop_barrels", "at": [45, 64]},
+   {"kind": "prop_logs", "at": [54, 72]},
+   {"kind": "prop_logs", "at": [92, 63]},
+   {"kind": "prop_logs", "at": [92, 68]}
+  ],
+  "buildings": [
+   {"player": 2, "type": "to_tower", "at": [6, 34]},
+   {"player": 2, "type": "to_tower", "at": [26, 34]},
+   {"player": 2, "type": "to_tower", "at": [6, 58]},
+   {"player": 2, "type": "to_tower", "at": [26, 58]},
+   {"player": 2, "type": "to_tower", "at": [26, 40]},
+   {"player": 2, "type": "to_tower", "at": [26, 52]},
+   {"name": "gdansk_gate", "player": 2, "type": "to_gate", "at": [26, 46], "turned": true},
+   {"name": "town_hall", "player": 2, "type": "to_town_center", "at": [12, 42]},
+   {"player": 2, "type": "to_house", "at": [18, 38]},
+   {"player": 2, "type": "to_house", "at": [10, 50]},
+   {"player": 2, "type": "to_house", "at": [18, 53]},
+   {"player": 2, "type": "to_granary", "at": [14, 54]},
+   {"player": 2, "type": "to_temple", "at": [19, 43]},
+   {"name": "king_tent", "player": 5, "type": "pl_field_camp", "at": [42, 68]}
+  ],
+  "walls": [
+   {"player": 2, "type": "to_wall", "from": [7, 34], "to": [25, 34]},
+   {"player": 2, "type": "to_wall", "from": [7, 58], "to": [25, 58]},
+   {"player": 2, "type": "to_wall", "from": [6, 35], "to": [6, 57]},
+   {"player": 2, "type": "to_wall", "from": [26, 35], "to": [26, 39]},
+   {"player": 2, "type": "to_wall", "from": [26, 41], "to": [26, 45]},
+   {"player": 2, "type": "to_wall", "from": [26, 47], "to": [26, 51]},
+   {"player": 2, "type": "to_wall", "from": [26, 53], "to": [26, 57]}
+  ],
+  "groups": [
+   {"name": "jasko", "player": 1, "units": [["hero_jasko", 1]], "at": [52, 59]},
+   {"name": "stach", "player": 1, "units": [["hero_stach", 1]], "at": [54, 59]},
+   {"name": "leczyca", "player": 1, "units": [["pl_pospolite", 12]], "at": [55, 53]},
+   {"name": "foot", "player": 1, "units": [["pl_foot_servant", 2]], "at": [50, 57]},
+   {"name": "priest", "player": 1, "units": [["pl_priest", 1]], "at": [49, 60]},
+   {
+    "name": "bninski",
+    "player": 3,
+    "stance": "defensive",
+    "units": [["hero_k4_lords", 1]],
+    "at": [58, 58]
+   },
+   {
+    "name": "gorka",
+    "player": 3,
+    "stance": "defensive",
+    "units": [["hero_k4_lords", 1]],
+    "at": [36, 58]
+   },
+   {
+    "name": "szarlejski",
+    "player": 3,
+    "stance": "defensive",
+    "units": [["hero_k4_lords", 1]],
+    "at": [68, 62]
+   },
+   {
+    "name": "wielkopolska",
+    "player": 3,
+    "stance": "aggressive",
+    "units": [["pl_pospolite", 12]],
+    "at": [34, 52]
+   },
+   {
+    "name": "kujawy",
+    "player": 3,
+    "stance": "aggressive",
+    "units": [["pl_pospolite", 12]],
+    "at": [64, 56]
+   },
+   {
+    "name": "casimir",
+    "player": 5,
+    "stance": "defensive",
+    "units": [["hero_casimir", 1]],
+    "at": [44, 72]
+   },
+   {"name": "court", "player": 5, "stance": "defensive", "units": [["pl_kopia", 6]], "at": [38, 72]},
+   {
+    "name": "union_foot",
+    "player": 4,
+    "stance": "defensive",
+    "units": [["nt_gdansk_militia", 4], ["nt_gdansk_crossbow", 4]],
+    "at": [52, 64]
+   },
+   {
+    "name": "guns",
+    "player": 4,
+    "stance": "passive",
+    "untouchable": true,
+    "units": [["pl_bombard", 3]],
+    "at": [38, 63]
+   },
+   {
+    "name": "camp_wagons",
+    "player": 4,
+    "stance": "passive",
+    "untouchable": true,
+    "units": [["pl_wagon", 12]],
+    "at": [49, 70]
+   },
+   {
+    "name": "garrison",
+    "player": 2,
+    "stance": "stand",
+    "units": [["to_knecht", 4], ["to_crossbow", 4]],
+    "at": [18, 45]
+   }
+  ]
+ },
+ "rules": {
+  "chojnice": {
+   "player": 1,
+   "crown": [1, 3, 4, 5, 6],
+   "day": {"start_minutes": 480, "ticks_per_hour": 900},
+   "pospolite": {"players": [1, 3], "chase_cells": 8, "banner_radius": 8, "banner_recovery": 2},
+   "walls": [0, 28, 32, 62],
+   "walls_from": "6",
+   "dispute": {
+    "from": "1",
+    "hero_radius": 4,
+    "groups": [
+     ["leczyca", 2, 0],
+     ["wielkopolska", 1, 700],
+     ["kujawy", 1, 700],
+     ["gorka", 1, 700],
+     ["szarlejski", 1, 900]
+    ]
+   },
+   "deploy": {
+    "wielkopolska": [38, 36],
+    "kujawy": [77, 36],
+    "gorka": [38, 40],
+    "szarlejski": [77, 40],
+    "bninski": [58, 41]
+   },
+   "panic": {"players": [1, 3, 4, 5], "speed": 1, "max": 60, "shield_radius": 4, "foot": "pl_foot_servant"},
+   "drown": {"rects": [[84, 18, 144, 99]]},
+   "king": {
+    "group": "casimir",
+    "from": "9",
+    "escorts": 3,
+    "radius": 4,
+    "follow_cells": 8,
+    "floor_permille": 250,
+    "route": [[60, 66], [93, 65], [120, 65], [147, 65]]
+   },
+   "banner": {"groups": ["bninski", "jasko", "stach"], "raise_radius": 3, "raise_ticks": 400},
+   "debt": {
+    "marks": ["mark:crown_01:pact", "mark:crown_02:pact", "mark:crown_03:pact"],
+    "group": "jasko",
+    "base_ticks": 1200,
+    "per_debt_ticks": 600,
+    "with": ["veterans", "old_knights"]
+   },
+   "floors": {"jasko": 300, "bninski": 300},
+   "escape": {"rect": [145, 18, 149, 99], "keep": ["stach"]}
+  }
+ },
+ "triggers": [
+  {
+   "id": "defeat_king",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "group_dead", "group": "casimir"},
+     {"type": "not", "of": {"type": "flag", "flag": "king_out"}}
+    ]
+   },
+   "do": [{"do": "defeat", "text": "King Casimir has fallen at Chojnice. The kingdom has lost its head."}]
+  },
+  {
+   "id": "defeat_king_taken",
+   "when": {"type": "flag", "flag": "king_taken"},
+   "do": [
+    {
+     "do": "defeat",
+     "text": "The king has been taken by the Order's hirelings. Nobody will ransom the Crown."
+    }
+   ]
+  },
+  {
+   "id": "defeat_banner",
+   "when": {"type": "flag", "flag": "banner_taken"},
+   "do": [{"do": "defeat", "text": "The Łęczyca banner is in the enemy's hands."}]
+  },
+  {
+   "id": "defeat_stach",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "group_dead", "group": "stach"},
+     {"type": "not", "of": {"type": "fired", "trigger": "12"}}
+    ]
+   },
+   "do": [
+    {
+     "do": "defeat",
+     "text": "Stach has fallen. Nobody of Jaśko's blood is left to carry the banner home."
+    }
+   ]
+  },
+  {
+   "id": "1",
+   "when": {"type": "start"},
+   "do": [
+    {"do": "rally", "player": 1, "at": [62, 66]},
+    {"do": "rally", "player": 2, "at": [30, 30]},
+    {"do": "rally", "player": 3, "at": [98, 44]},
+    {"do": "rally", "player": 4, "at": [97, 80]},
+    {"do": "deploy", "on": true},
+    {
+     "do": "cutscene",
+     "id": "grandfather_and_grandson",
+     "at": [46, 62],
+     "lines": [
+      [
+       "Chronicler",
+       "Morning. The king's camp before Chojnice. Hundreds of tents, the smoke of fires, horses neighing. An old man in old-fashioned armour sits on a block of wood and whets his sword. Beside him a youth in a new breastplate tries how the pauldron moves on its straps."
+      ],
+      [
+       "Chronicler",
+       "Pan Jan said that his father Stach was nineteen then, and his father's grandfather Jaśko sixty-six. Jaśko did not have to go: he had done his fighting. But when the levy was called, he said he would not let his grandson go to Prussia alone."
+      ],
+      ["hero_stach", "Grandfather, your armour is from Grunwald. They laugh at you."],
+      [
+       "hero_jasko",
+       "Let them laugh. It has carried me out from under the Germans once. Your new one has not yet."
+      ],
+      ["hero_stach", "They say there are three times fewer Germans. It will all be over by dinner."],
+      ["hero_jasko", "At Grunwald they also said by dinner. We dined at night."],
+      [
+       "Chronicler",
+       "He rises and looks at the field, where nobody stands yet, and at the dark strip of bog in the east."
+      ],
+      [
+       "hero_jasko",
+       "Remember, Stach. If anything goes wrong, back only by that causeway. Whoever runs past it goes to the bottom with his horse."
+      ]
+     ]
+    },
+    {
+     "do": "objective",
+     "id": "deploy",
+     "text": "Set out the Łęczyca banner in the line before the king's signal"
+    },
+    {"do": "objective", "id": "strike", "text": "Strike the Order's horse"},
+    {
+     "do": "objective",
+     "id": "chapels",
+     "text": "Set up chapels on all 3 places of power before evening",
+     "optional": true
+    },
+    {
+     "do": "objective",
+     "id": "no_chase",
+     "text": "Let none of your banners chase the enemy to the walls",
+     "optional": true
+    },
+    {
+     "do": "objective",
+     "id": "six",
+     "text": "Bring at least 6 of your units over the bog",
+     "optional": true
+    },
+    {
+     "do": "hint",
+     "text": "The levy of the nobility: brave, but wilful. Seeing an enemy run, they ride after him by themselves unless they are told to stand (C). Their spirit falls quickly, and comes back quicker by their banner."
+    },
+    {
+     "do": "hint",
+     "text": "The Łęczyca place in the line is in the middle of the field, north of the camp. The clock on the right shows the hour: the king gives the signal in the evening."
+    },
+    {"do": "ping", "at": [58, 37], "radius": 5},
+    {"do": "ping", "at": [95, 65], "radius": 3}
+   ]
+  },
+  {
+   "id": "veterans",
+   "when": {"type": "chose", "question": "mark:crown_03:knights", "option": 0},
+   "do": [
+    {
+     "do": "spawn",
+     "group": "veterans",
+     "player": 1,
+     "stance": "defensive",
+     "at": [48, 56],
+     "units": [["pl_kopia", 4]]
+    },
+    {
+     "do": "hint",
+     "text": "The knights dubbed on the shore at Oliwa in 1433 have come with Jaśko. Grey now, like him."
+    }
+   ]
+  },
+  {
+   "id": "2",
+   "when": {"type": "after", "trigger": "1", "ticks": 300},
+   "do": [
+    {
+     "do": "dialogue",
+     "id": "precedence",
+     "lines": [
+      [
+       "Łukasz Górka",
+       "The nobility of Greater Poland stands in the first rank, it has always been so! Let the Kuyavians stand behind us."
+      ],
+      ["Kuyavian lord", "It has always been so while you stood alone!"],
+      [
+       "hero_jasko",
+       "While they argue, the sun goes down. Stach, set our men out, do not wait for an order."
+      ]
+     ]
+    },
+    {
+     "do": "hint",
+     "text": "Units with the speech mark argue over their place and do not move. Ride up to your arguing men with Jaśko or Stach and they will go. The rest of the army will take its time."
+    }
+   ]
+  },
+  {
+   "id": "3",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "1"}, {"type": "hour", "at_least": 720}]},
+   "do": [
+    {
+     "do": "spawn",
+     "group": "order_horse",
+     "player": 2,
+     "stance": "stand",
+     "at": [62, 2],
+     "units": [["to_merc_horse", 16]]
+    },
+    {
+     "do": "spawn",
+     "group": "rudolf",
+     "player": 2,
+     "stance": "stand",
+     "at": [56, 3],
+     "units": [["hero_k4_order", 1]]
+    },
+    {
+     "do": "spawn",
+     "group": "zinnenberg",
+     "player": 2,
+     "stance": "stand",
+     "at": [73, 3],
+     "units": [["hero_k4_order", 1]]
+    },
+    {
+     "do": "spawn",
+     "group": "order_foot",
+     "player": 2,
+     "stance": "stand",
+     "at": [62, 11],
+     "units": [["to_soldner", 8], ["to_handgunner", 6]]
+    },
+    {
+     "do": "spawn",
+     "group": "wagenburg_0",
+     "player": 2,
+     "stance": "passive",
+     "untouchable": true,
+     "at": [68, 13],
+     "units": [["to_wagon", 1]]
+    },
+    {
+     "do": "spawn",
+     "group": "wagenburg_1",
+     "player": 2,
+     "stance": "passive",
+     "untouchable": true,
+     "at": [67, 16],
+     "units": [["to_wagon", 1]]
+    },
+    {
+     "do": "spawn",
+     "group": "wagenburg_2",
+     "player": 2,
+     "stance": "passive",
+     "untouchable": true,
+     "at": [64, 17],
+     "units": [["to_wagon", 1]]
+    },
+    {
+     "do": "spawn",
+     "group": "wagenburg_3",
+     "player": 2,
+     "stance": "passive",
+     "untouchable": true,
+     "at": [61, 16],
+     "units": [["to_wagon", 1]]
+    },
+    {
+     "do": "spawn",
+     "group": "wagenburg_4",
+     "player": 2,
+     "stance": "passive",
+     "untouchable": true,
+     "at": [60, 13],
+     "units": [["to_wagon", 1]]
+    },
+    {
+     "do": "spawn",
+     "group": "wagenburg_5",
+     "player": 2,
+     "stance": "passive",
+     "untouchable": true,
+     "at": [61, 10],
+     "units": [["to_wagon", 1]]
+    },
+    {
+     "do": "spawn",
+     "group": "wagenburg_6",
+     "player": 2,
+     "stance": "passive",
+     "untouchable": true,
+     "at": [64, 9],
+     "units": [["to_wagon", 1]]
+    },
+    {
+     "do": "spawn",
+     "group": "wagenburg_7",
+     "player": 2,
+     "stance": "passive",
+     "untouchable": true,
+     "at": [67, 10],
+     "units": [["to_wagon", 1]]
+    },
+    {"do": "move", "group": "order_horse", "to": [66, 23]},
+    {"do": "move", "group": "rudolf", "to": [58, 24]},
+    {"do": "move", "group": "zinnenberg", "to": [74, 24]},
+    {
+     "do": "dialogue",
+     "id": "relief",
+     "lines": [
+      [
+       "Chronicler",
+       "Noon. Out of the forest in the north comes the Order's relief: hired horse from Silesia, Bohemia and Germany, and behind it the foot with its wagons."
+      ],
+      ["hero_stach", "There they are! How many of them…"],
+      [
+       "hero_jasko",
+       "Do not look at the horsemen, look at the wagons. The horse we shall overturn. The wagons will still stand when the horses are tired."
+      ]
+     ]
+    },
+    {"do": "ping", "at": [64, 13], "radius": 6}
+   ]
+  },
+  {
+   "id": "4",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "1"},
+     {"type": "group_near_count", "group": "leczyca", "at": [58, 37], "radius": 6, "count": 8}
+    ]
+   },
+   "do": [
+    {"do": "objective", "id": "deploy", "state": "done"},
+    {
+     "do": "dialogue",
+     "id": "bninski",
+     "lines": [
+      [
+       "Wojciech Bniński",
+       "Pan Jaśko, you stood by this banner when I was not yet in the world. Stand by it now."
+      ],
+      ["hero_jasko", "I will, pan castellan. As long as I can."]
+     ]
+    },
+    {"do": "unlock", "player": 1, "items": ["pl_shrine"]},
+    {
+     "do": "hint",
+     "text": "The priest can set up a chapel on a place of power now, while the day lasts: the cross on the road to Tuchola, the little chapel by the lake, the old oak at the edge of the bog."
+    }
+   ]
+  },
+  {
+   "id": "chapels_done",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "not", "of": {"type": "fired", "trigger": "5"}},
+     {"type": "places_held", "player": 1, "count": 3}
+    ]
+   },
+   "do": [{"do": "objective", "id": "chapels", "state": "done"}]
+  },
+  {
+   "id": "5",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "4"}, {"type": "hour", "at_least": 1020}]},
+   "do": [
+    {
+     "do": "cutscene",
+     "id": "evening",
+     "at": [60, 30],
+     "lines": [
+      [
+       "Chronicler",
+       "Evening. A low sun. Trumpets all along the line. Thousands of horsemen move off at once, the earth hums."
+      ],
+      ["hero_jasko", "With God! Lances down, hold the line, do not scatter!"]
+     ]
+    },
+    {"do": "objective", "id": "chapels", "state": "failed"},
+    {"do": "deploy", "on": false},
+    {"do": "attack_move", "group": "wielkopolska", "to": [62, 24]},
+    {"do": "attack_move", "group": "kujawy", "to": [70, 24]},
+    {"do": "attack_move", "group": "gorka", "to": [62, 26]},
+    {"do": "attack_move", "group": "szarlejski", "to": [70, 26]},
+    {"do": "stance", "group": "order_horse", "stance": "aggressive"},
+    {"do": "stance", "group": "rudolf", "stance": "aggressive"},
+    {"do": "stance", "group": "zinnenberg", "stance": "aggressive"},
+    {"do": "attack_move", "group": "order_horse", "to": [62, 36]},
+    {"do": "attack_move", "group": "rudolf", "to": [44, 36]},
+    {"do": "attack_move", "group": "zinnenberg", "to": [74, 36]},
+    {"do": "hint", "text": "The king's signal. Strike the Order's horse with the whole banner."},
+    {"do": "ping", "at": [66, 26], "radius": 8}
+   ]
+  },
+  {
+   "id": "6",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "5"},
+     {
+      "type": "any",
+      "of": [
+       {"type": "group_alive_at_most", "group": "order_horse", "count": 9},
+       {"type": "after", "trigger": "5", "ticks": 2400}
+      ]
+     }
+    ]
+   },
+   "do": [
+    {"do": "objective", "id": "strike", "state": "done"},
+    {"do": "kill", "group": "rudolf", "by": 3},
+    {"do": "transfer", "group": "zinnenberg", "player": 3},
+    {"do": "stance", "group": "zinnenberg", "stance": "passive"},
+    {"do": "protect", "group": "zinnenberg"},
+    {"do": "move", "group": "zinnenberg", "to": [40, 62]},
+    {"do": "morale", "group": "order_horse", "permille": 1000},
+    {"do": "attack_move", "group": "wielkopolska", "to": [31, 31]},
+    {
+     "do": "dialogue",
+     "id": "they_run",
+     "lines": [
+      ["Voices", "Prince of Żagań is killed! Szumborski is taken! They are running!"],
+      [
+       "Chronicler",
+       "It was true. Prince Rudolf fell, and Zinnenberg, whom ours called Szumborski, was taken captive. For a minute the Poles thought they had won."
+      ]
+     ]
+    },
+    {
+     "do": "hint",
+     "text": "The Order's horse runs to the town walls, and the levy rides after it by itself. Keep your banners here: tell them to stand (C)."
+    }
+   ]
+  },
+  {
+   "id": "no_chase_failed",
+   "when": {"type": "chased", "at_least": 1},
+   "do": [{"do": "objective", "id": "no_chase", "state": "failed"}]
+  },
+  {
+   "id": "7",
+   "when": {"type": "after", "trigger": "6", "ticks": 1200},
+   "do": [
+    {
+     "do": "dialogue",
+     "id": "stach_wants_to_chase",
+     "lines": [
+      [
+       "Chronicler",
+       "The Łęczyca horsemen strain after those running to the walls. Stach turns his horse. Jaśko seizes its bridle."
+      ],
+      ["hero_stach", "Grandfather, they are getting away! All ours are there already!"],
+      [
+       "hero_jasko",
+       "That is why we stand here. When everybody runs one way, somebody has to look the other."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "8",
+   "when": {"type": "after", "trigger": "7", "ticks": 600},
+   "do": [
+    {
+     "do": "spawn",
+     "group": "sortie",
+     "player": 2,
+     "stance": "aggressive",
+     "at": [28, 46],
+     "units": [["hero_reuss_plauen", 1], ["to_knight_brother", 2], ["to_halfbrother", 2]]
+    },
+    {"do": "attack_move", "group": "sortie", "to": [43, 69]},
+    {
+     "do": "cutscene",
+     "id": "sortie",
+     "at": [30, 50],
+     "lines": [
+      [
+       "Chronicler",
+       "The Gdańsk gate of Chojnice swings open. A small troop comes out, two hundred men, and does not go to the field but turns to the king's tent. Trumpets, shouting."
+      ],
+      ["Voices", "Germans in the camp! Germans in the rear! The king!"],
+      ["hero_jasko", "There is the other way. After me, to the tent!"]
+     ]
+    },
+    {"do": "objective", "id": "no_chase", "state": "done"},
+    {"do": "objective", "id": "panic", "text": "Stop the panic at the king's tent"},
+    {
+     "do": "hint",
+     "text": "A blow in the rear sends a wave of panic through the army: whoever it reaches runs without orders. A banner, a hero beside them or foot servants holding their ground (C) keep men in place. Whoever runs into the bog off the causeway drowns."
+    },
+    {"do": "ping", "at": [28, 46], "radius": 4}
+   ]
+  },
+  {
+   "id": "8b",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "8"},
+     {
+      "type": "any",
+      "of": [
+       {"type": "group_near", "group": "sortie", "at": [43, 69], "radius": 6},
+       {"type": "after", "trigger": "8", "ticks": 600}
+      ]
+     }
+    ]
+   },
+   "do": [{"do": "panic", "at": [43, 69]}, {"do": "ping", "at": [43, 69], "radius": 6}]
+  },
+  {
+   "id": "panic_stopped",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "8b"},
+     {"type": "not", "of": {"type": "fired", "trigger": "11"}},
+     {"type": "group_alive_at_most", "group": "sortie", "count": 1}
+    ]
+   },
+   "do": [{"do": "objective", "id": "panic", "state": "done"}]
+  },
+  {
+   "id": "9",
+   "when": {
+    "type": "all",
+    "of": [{"type": "fired", "trigger": "8b"}, {"type": "panic_reached", "cells": 14}]
+   },
+   "do": [
+    {"do": "transfer", "group": "zinnenberg", "player": 2},
+    {"do": "stance", "group": "zinnenberg", "stance": "aggressive"},
+    {"do": "transfer", "group": "camp_wagons", "player": 2},
+    {"do": "transfer", "group": "guns", "player": 2},
+    {"do": "stance", "group": "camp_wagons", "stance": "passive"},
+    {"do": "stance", "group": "guns", "stance": "passive"},
+    {"do": "protect", "group": "camp_wagons"},
+    {"do": "protect", "group": "guns"},
+    {
+     "do": "spawn",
+     "group": "chase",
+     "player": 2,
+     "stance": "aggressive",
+     "at": [34, 28],
+     "units": [["to_merc_horse", 10]]
+    },
+    {"do": "stance", "group": "order_horse", "stance": "aggressive"},
+    {"do": "attack_move", "group": "order_horse", "to": [50, 62]},
+    {"do": "pursue", "group": "chase", "on": true},
+    {"do": "pursue", "group": "zinnenberg", "on": true},
+    {"do": "pursue", "group": "sortie", "on": true},
+    {"do": "morale", "group": "kujawy", "permille": 1000},
+    {"do": "morale", "group": "union_foot", "permille": 1000},
+    {
+     "do": "dialogue",
+     "id": "camp_lost",
+     "lines": [
+      [
+       "Chronicler",
+       "The panic reached the camp. Zinnenberg's captor fell, and Zinnenberg himself was free again and led the pursuit. The Order's horse came back to the fight. The camp, the guns and the wagons were lost."
+      ],
+      ["hero_casimir", "I will not run from hirelings!"]
+     ]
+    },
+    {"do": "objective", "id": "king", "text": "Lead the king away to the causeway"},
+    {
+     "do": "hint",
+     "text": "The king fights and will not leave by himself. Surround him with 3 of your units: he gives himself up to his own men and rides with them to the causeway while they stay beside him."
+    },
+    {"do": "ping", "at": [44, 72], "radius": 4}
+   ]
+  },
+  {
+   "id": "10",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "9"},
+     {"type": "king_led"},
+     {"type": "not", "of": {"type": "group_near", "group": "casimir", "at": [43, 69], "radius": 10}}
+    ]
+   },
+   "do": [
+    {"do": "release", "group": "bninski"},
+    {"do": "transfer", "group": "bninski", "player": 2},
+    {"do": "stance", "group": "bninski", "stance": "passive"},
+    {"do": "protect", "group": "bninski"},
+    {"do": "move", "group": "bninski", "to": [24, 46]},
+    {"do": "exit", "group": "bninski", "at": [24, 46], "radius": 3},
+    {"do": "transfer", "group": "gorka", "player": 2},
+    {"do": "stance", "group": "gorka", "stance": "passive"},
+    {"do": "protect", "group": "gorka"},
+    {"do": "move", "group": "gorka", "to": [24, 47]},
+    {"do": "exit", "group": "gorka", "at": [24, 47], "radius": 3},
+    {"do": "banner_to", "group": "jasko"},
+    {
+     "do": "cutscene",
+     "id": "castellan",
+     "at": [44, 66],
+     "lines": [
+      [
+       "Chronicler",
+       "Twilight. Bniński without his helmet, his face bloody, fights by his banner. They surround him. A horseman in the Order's white cloak shouts something to him. Bniński throws his sword at his feet."
+      ],
+      [
+       "Chronicler",
+       "The castellan of Łęczyca, Wojciech Bniński, wounded in the head, gave himself up to Plauen himself. That is written. And the banner of his land, pan Jan said, old Jaśko caught up."
+      ],
+      ["hero_jasko", "Stach! The banner to the king! We go to the causeway!"],
+      ["hero_casimir", "I will not run from hirelings!"],
+      ["hero_jasko", "Sire, forgive an old man. Take him under the arms, lads, and onto his horse."]
+     ]
+    },
+    {"do": "objective", "id": "king", "state": "done"},
+    {
+     "do": "objective",
+     "id": "causeway",
+     "text": "Hold the causeway until the king is over the bog"
+    },
+    {
+     "do": "hint",
+     "text": "Jaśko carries the Łęczyca banner now. Lead the king east along the road to the causeway."
+    },
+    {"do": "ping", "at": [95, 65], "radius": 4}
+   ]
+  },
+  {
+   "id": "11",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "10"},
+     {"type": "group_near", "group": "casimir", "at": [95, 65], "radius": 4}
+    ]
+   },
+   "do": [
+    {
+     "do": "spawn",
+     "group": "stranger",
+     "player": 5,
+     "stance": "passive",
+     "untouchable": true,
+     "at": [94, 64],
+     "units": [["hero_stranger", 1]]
+    },
+    {
+     "do": "spawn",
+     "group": "old_knights",
+     "player": 6,
+     "stance": "stand",
+     "at": [92, 64],
+     "units": [["pl_kopia", 3]]
+    },
+    {"do": "banner_to", "group": "stach"},
+    {"do": "transfer", "group": "jasko", "player": 6},
+    {"do": "transfer", "group": "veterans", "player": 6},
+    {"do": "stance", "group": "jasko", "stance": "stand"},
+    {"do": "stance", "group": "veterans", "stance": "stand"},
+    {"do": "move", "group": "jasko", "to": [93, 65]},
+    {"do": "move", "group": "veterans", "to": [92, 66]},
+    {"do": "last_stand"},
+    {"do": "rally", "player": 1, "at": [146, 65]},
+    {
+     "do": "cutscene",
+     "id": "time_pan_jasko",
+     "at": [94, 65],
+     "lines": [
+      [
+       "Chronicler",
+       "Night. A narrow causeway through the bog; along it ride horsemen in a file, men on foot, the king in a ring of knights. Behind, on the causeway, stand Jaśko and a few old knights. The Order's horse comes out of the dark. Beside Jaśko, on the causeway's rail, sits a man in a red caftan who has not aged at all."
+      ],
+      ["hero_stranger", "Forty-four years, pan Jaśko. You wanted to ask how much you owe."],
+      ["hero_jasko", "No need now. I can see it myself."],
+      ["hero_stranger", "You can still go. The causeway is long, and your horse is good."],
+      [
+       "hero_jasko",
+       "The horse is good. The grandson is better. His to go, mine to stand. Do not touch the grandson."
+      ],
+      ["hero_stranger", "The grandson owes me nothing."],
+      [
+       "Chronicler",
+       "Jaśko lowers his visor and turns to the enemy. The knights beside him stand as if an unseen hand held them."
+      ],
+      ["hero_stach", "Grandfather!"],
+      ["hero_jasko", "Carry the banner! Do not look back!"]
+     ]
+    },
+    {"do": "objective", "id": "panic", "state": "failed"},
+    {"do": "objective", "id": "banner", "text": "Carry the Łęczyca banner over the bog"},
+    {
+     "do": "hint",
+     "text": "«The Pact» works round Jaśko by itself: the men beside him do not lose heart. The more the debt, the longer they hold. Lead Stach with the banner and whoever you can over the causeway to the east bank."
+    },
+    {"do": "ping", "at": [147, 65], "radius": 4}
+   ]
+  },
+  {
+   "id": "king_over",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "11"}, {"type": "flag", "flag": "king_out"}]},
+   "do": [
+    {"do": "objective", "id": "causeway", "state": "done"},
+    {"do": "hint", "text": "The king is over the bog."}
+   ]
+  },
+  {
+   "id": "11b",
+   "when": {"type": "after", "trigger": "11", "ticks": 200},
+   "do": [{"do": "exit", "group": "stranger", "at": [94, 64], "radius": 4}]
+  },
+  {
+   "id": "11c",
+   "when": {
+    "type": "all",
+    "of": [{"type": "fired", "trigger": "11"}, {"type": "flag", "flag": "debt_paid"}]
+   },
+   "do": [
+    {
+     "do": "dialogue",
+     "id": "nobody_there",
+     "lines": [
+      [
+       "Chronicler",
+       "The fight on the causeway. When the eye comes back to it, there is nobody on the causeway: neither Jaśko, nor the man in red."
+      ]
+     ]
+    },
+    {"do": "ping", "at": [93, 65], "radius": 3}
+   ]
+  },
+  {
+   "id": "six_done",
+   "when": {"type": "escaped", "at_least": 6},
+   "do": [{"do": "objective", "id": "six", "state": "done"}]
+  },
+  {
+   "id": "12",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "11c"},
+     {"type": "near", "player": 1, "unit": "hero_stach", "at": [147, 65], "radius": 3}
+    ]
+   },
+   "do": [
+    {"do": "objective", "id": "banner", "state": "done"},
+    {
+     "do": "cutscene",
+     "id": "road_to_torun",
+     "at": [140, 65],
+     "lines": [
+      [
+       "Chronicler",
+       "Dawn. The road east. The remains of the army trudge along, some on horseback, some on foot. The king rides in silence. Stach carries the Łęczyca banner, torn, spotted with bog mud."
+      ],
+      ["hero_stach", "Have they found grandfather?"],
+      [
+       "Knight",
+       "By morning the causeway had gone under the water, pan. Nobody is to be found there."
+      ],
+      [
+       "Chronicler",
+       "At Chojnice the Poles lost thousands killed and hundreds taken. The Germans wrote afterwards that they took the royal banner, all the guns and some four hundred wagons. The Łęczyca banner, pan Jan said, they did not take, because his father carried it. And Jaśko's body was never found. In the family they said he had paid his debt in full and that their family had nothing more to pay. Pan Jan laughed when he told it, but not merrily."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "victory_many",
+   "when": {
+    "type": "all",
+    "of": [{"type": "after", "trigger": "12", "ticks": 100}, {"type": "escaped", "at_least": 6}]
+   },
+   "do": [
+    {
+     "do": "victory",
+     "text": "Chojnice is lost, but the king is saved and the Łęczyca banner is over the bog with most of its men."
+    }
+   ]
+  },
+  {
+   "id": "victory",
+   "when": {"type": "after", "trigger": "12", "ticks": 100},
+   "do": [
+    {"do": "objective", "id": "six", "state": "failed"},
+    {
+     "do": "victory",
+     "text": "Chojnice is lost. The king is saved and the Łęczyca banner is over the bog, but few have come out with it."
+    }
+   ]
+  }
+ ]
+}

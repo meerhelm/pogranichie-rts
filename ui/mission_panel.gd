@@ -270,6 +270,7 @@ func _show_march() -> void:
 	_field_lines(m, lines)
 	_besiege_lines(m, lines)
 	_baltic_lines(m, lines)
+	_chojnice_lines(m, lines)
 	_march.visible = not lines.is_empty()
 	_march.text = "\n".join(lines)
 
@@ -391,6 +392,26 @@ func _baltic_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
 		lines.append(tr("Prisoners ransomed: %d, killed: %d") % [b.ransomed, b.killed])
 	if not b.villages.is_empty():
 		lines.append(tr("Villages: %d ours, %d plundered") % [b.foraged(1), b.foraged(2)])
+
+
+## Корона 4: «18 September 1454, 14:20» (the clock of the long day until the evening),
+## «Arguing over their places: 5» while any argue, «Jaśko holds the causeway: 01:20» while he
+## does, «Over the bog: 4» and «Drowned in the bog: 3» once there are any.
+func _chojnice_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
+	var c := m.chojnice
+	if not c.on:
+		return
+	lines.append(tr("18 September 1454, %s") % c.clock_text(m, sim.tick))
+	var arguing := c.arguing_now(m)
+	if arguing > 0:
+		lines.append(tr("Arguing over their places: %d") % arguing)
+	if c.stand_until >= 0 and not c.paid:
+		var left := maxi(c.stand_until - sim.tick, 0)
+		lines.append(tr("Jaśko holds the causeway: %s") % UiText.clock(left))
+	if c.escaped > 0:
+		lines.append(tr("Over the bog: %d") % c.escaped)
+	if c.drowned > 0:
+		lines.append(tr("Drowned in the bog: %d") % c.drowned)
 
 
 ## The countdown and captives lines as shown, for tests ("" while hidden).

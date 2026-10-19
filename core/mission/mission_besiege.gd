@@ -162,8 +162,6 @@ func set_up(m: MissionRuntime) -> void:
 		for item: String in allowed[key]:
 			if state != null:
 				state.allowed[StringName(item)] = true
-	for mark: Array in m.def.setup.get("marks", []):
-		m.choices["mark:%s:%s" % [mark[0], mark[1]]] = 1
 	var g: Dictionary = r.get("guns", {})
 	next_shot = int(g.get("every_ticks", 0))
 
