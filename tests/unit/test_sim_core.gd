@@ -183,3 +183,27 @@ func test_clock_caps_catch_up_after_a_stall() -> void:
 	assert_eq(clock.advance_accumulated(), SimClock.MAX_TICKS_PER_FRAME)
 	assert_eq(clock.advance_accumulated(), 1, "backlog dropped, at most one tick left")
 	clock.free()
+
+
+func test_clock_tells_the_views_once_a_frame() -> void:
+	var clock := SimClock.new()
+	clock.sim = Simulation.new(1, _db)
+	var seen: Array[Vector2i] = []
+	clock.advanced.connect(func(t: int, steps: int) -> void: seen.append(Vector2i(t, steps)))
+	clock.add_time_usec(Fixed.TICK_USEC * 4)
+	clock.advance_accumulated()
+	clock.add_time_usec(Fixed.TICK_USEC / 2)
+	clock.advance_accumulated()
+	assert_eq(seen, [Vector2i(4, 4)] as Array[Vector2i], "one call after 4 ticks, none without")
+	clock.free()
+
+
+func test_clock_keeps_the_frame_budget() -> void:
+	var clock := SimClock.new()
+	clock.sim = Simulation.new(1, _db)
+	clock.budget_usec = 0
+	clock.add_time_usec(Fixed.TICK_USEC * 5)
+	assert_eq(clock.advance_accumulated(), 1, "over budget after the first tick")
+	assert_eq(clock.advance_accumulated(), 1, "the rest of the backlog is dropped")
+	assert_eq(clock.advance_accumulated(), 0)
+	clock.free()

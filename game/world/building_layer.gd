@@ -79,7 +79,7 @@ func _ready() -> void:
 
 func attach(p_sim: Simulation, clock: SimClock) -> void:
 	sim = p_sim
-	clock.ticked.connect(func(_t: int) -> void: _refresh())
+	clock.advanced.connect(func(_t: int, _s: int) -> void: _refresh())
 	_refresh()
 
 

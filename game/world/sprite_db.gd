@@ -69,12 +69,28 @@ class Sprite:
 
 static var _cache: Dictionary[String, Sprite] = {}
 static var _missing: Dictionary[String, bool] = {}
+## Unit sheet folders whose textures prefetch_unit() asked for.
+static var _prefetched: Dictionary[String, bool] = {}
 
 
 ## Sprite sheet of a unit type, or null when it has no art yet.
 static func unit(type_id: StringName) -> Sprite:
 	var id: StringName = ALIASES.get(type_id, type_id)
 	return _load("units/%s/" % id, "units/%s/sheet.json" % id)
+
+
+## Starts loading a unit's sheets on a worker thread, so the first such unit on the map does
+## not stall the game while its big textures are read (a unit put in a training queue).
+## Does nothing for an id without art (a technology) or one already loaded.
+static func prefetch_unit(type_id: StringName) -> void:
+	var id: StringName = ALIASES.get(type_id, type_id)
+	var base := ROOT.path_join("units/%s/" % id)
+	if _cache.has("units/%s/" % id) or _prefetched.has(base):
+		return
+	_prefetched[base] = true
+	for part: String in ["color.png", "shadow.png", "team.png"]:
+		if ResourceLoader.exists(base + part):
+			ResourceLoader.load_threaded_request(base + part)
 
 
 ## A building's view in one of its stages (STAGES), or null.
@@ -133,6 +149,19 @@ static func prop(prop_id: StringName) -> Sprite:
 	return _load("props/%s_" % prop_id, "props/%s.json" % prop_id)
 
 
+## A texture of a sheet folder: taken from the worker thread if prefetch_unit() asked for it
+## (waits if it is still loading), else loaded now.
+static func _texture(base: String, file: String) -> Texture2D:
+	var path := base + file
+	if _prefetched.has(base):
+		var status := ResourceLoader.load_threaded_get_status(path)
+		if status != ResourceLoader.THREAD_LOAD_INVALID_RESOURCE:
+			var got := ResourceLoader.load_threaded_get(path) as Texture2D
+			if got != null:
+				return got
+	return load(path)
+
+
 static func _load(prefix: String, meta_name: String) -> Sprite:
 	if _cache.has(prefix):
 		return _cache[prefix]
@@ -145,10 +174,10 @@ static func _load(prefix: String, meta_name: String) -> Sprite:
 		return null
 	var meta: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(meta_path))
 	var s := Sprite.new()
-	s.color = load(base + "color.png")
-	s.shadow = load(base + "shadow.png")
+	s.color = _texture(base, "color.png")
+	s.shadow = _texture(base, "shadow.png")
 	if ResourceLoader.exists(base + "team.png"):
-		s.team = load(base + "team.png")
+		s.team = _texture(base, "team.png")
 	var pivot: Array = meta.get("pivot", [0, 0])
 	s.pivot = Vector2(pivot[0], pivot[1])
 	var size: Array = meta.get("frame", meta.get("size", [0, 0]))

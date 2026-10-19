@@ -119,7 +119,7 @@ func _ready() -> void:
 	_input.attach(sim, _units, _camera, _buildings)
 	_hud.attach(sim, _clock, _input, _camera, PLAYER)
 	_hud.menu.resumed.connect(func() -> void: _camera.edge_scroll = GameSettings.edge_scroll)
-	_clock.ticked.connect(_on_ticked)
+	_clock.advanced.connect(func(t: int, _s: int) -> void: _on_ticked(t))
 	$UI.add_child(end_screen)
 	if sim.mission != null:
 		mission_panel = MissionPanel.new()

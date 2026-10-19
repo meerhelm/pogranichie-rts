@@ -76,7 +76,7 @@ func test_right_click_on_the_forest_sends_peasants_to_fell() -> void:
 
 func test_buildings_sort_by_depth_with_units() -> void:
 	var clock: SimClock = _main.get_node("SimClock")
-	clock.ticked.emit(_sim.tick)
+	clock.advanced.emit(_sim.tick, 1)
 	var b := _sim.economy.buildings
 	var id := BuildingStore.NO_ID
 	for i in b.alive_ids:

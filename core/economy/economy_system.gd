@@ -104,6 +104,7 @@ var _walk: Callable
 var _stop: Callable
 var _forest := -1
 var _grass := -1
+var _drop_sites := DropSites.new()
 
 
 ## `walk(id, x, y)` and `stop(id)` move units; `spawn(type_id, player, x, y) -> id` creates one.
@@ -503,6 +504,7 @@ func complete(b: int) -> void:
 	var s := b - 1
 	var def := buildings.defs[s]
 	buildings.done[s] = 1
+	buildings.version += 1
 	buildings.progress[s] = buildings.work[s]
 	buildings.hp[s] = maxi(buildings.hp[s], 1)
 	if buildings.progress[s] >= buildings.work[s] and buildings.hp[s] < buildings.max_hp[s]:
@@ -887,15 +889,9 @@ func _carry_home(id: int) -> void:
 func drop_site(p: int, res: int, px: int, py: int) -> int:
 	if res < 0:
 		return BuildingStore.NO_ID
-	var want := RESOURCE_NAMES[res]
 	var best := BuildingStore.NO_ID
 	var best_d := 0
-	for b in buildings.alive_ids:
-		var s := b - 1
-		if buildings.owners[s] != p or buildings.done[s] == 0:
-			continue
-		if not buildings.defs[s].accepts.has(want):
-			continue
+	for b in _drop_sites.of(buildings, p, res):
 		var d := buildings.distance_sq(b, px, py)
 		if best == BuildingStore.NO_ID or d < best_d:
 			best = b

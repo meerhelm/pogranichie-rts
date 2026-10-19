@@ -69,6 +69,7 @@ $GODOT --headless -s tools/sim/sim_cli.gd -- determinism --runs 3 --ticks 3000 -
 $GODOT --headless -s tools/sim/sim_cli.gd -- bench --units 200 --ticks 600 --map map_proto_samogitia [--profile 1]
 $GODOT --headless -s tools/sim/sim_cli.gd -- bench --units 200 --ticks 1200 --map map_proto_samogitia --battle 1
 $GODOT -s tools/sim/frame_bench.gd -- --units 200 --seconds 30   # кадры настоящей сцены (в окне — реальный fps)
+$GODOT --headless -s tools/sim/late_bench.gd -- --minutes 30 --speed 8   # поздняя игра ИИ против ИИ на 8x: fps, удержанная скорость, тики и отрисовка
 $GODOT --headless -s tools/sim/sim_cli.gd -- mission --out tests/replays/m9_gdl01_playthrough.json   # бот проходит ВКЛ 1
 $GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission gdl_02 --out tests/replays/gdl02_playthrough.json   # бот проходит ВКЛ 2
 $GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission gdl_03 --out tests/replays/gdl03_playthrough.json   # бот проходит ВКЛ 3

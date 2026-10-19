@@ -32,7 +32,7 @@ static func wanted(p_sim: Simulation) -> bool:
 
 func attach(p_sim: Simulation, clock: SimClock) -> void:
 	sim = p_sim
-	clock.ticked.connect(_on_ticked)
+	clock.advanced.connect(func(t: int, _s: int) -> void: _on_ticked(t))
 	queue_redraw()
 
 

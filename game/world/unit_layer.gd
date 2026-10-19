@@ -6,6 +6,8 @@ extends Node2D
 
 ## No place to turn to (_work_point).
 const NO_POINT := Vector2i(-1, -1)
+## Ticks between looks into the training queues for art to load ahead (_prefetch_queued).
+const PREFETCH_TICKS := 20
 
 var sim: Simulation
 var clock: SimClock
@@ -30,11 +32,15 @@ func _ready() -> void:
 func attach(p_sim: Simulation, p_clock: SimClock) -> void:
 	sim = p_sim
 	clock = p_clock
-	clock.ticked.connect(_on_ticked)
-	_on_ticked(sim.tick)
+	clock.advanced.connect(_on_advanced)
+	_on_advanced(sim.tick, 1)
 
 
-func _on_ticked(_tick: int) -> void:
+## Once a frame after its ticks. After one tick a unit glides from where it stood a tick ago;
+## after several (high game speed) it is shown where it is, a frame is short enough for that.
+func _on_advanced(tick: int, steps: int) -> void:
+	if tick / PREFETCH_TICKS != (tick - steps) / PREFETCH_TICKS:
+		_prefetch_queued()
 	var e := sim.entities
 	for id in e.alive_ids:
 		var p := Vector2i(e.pos_x[id - 1], e.pos_y[id - 1])
@@ -43,7 +49,7 @@ func _on_ticked(_tick: int) -> void:
 			view = _make_view(id)
 			_prev[id] = p
 		else:
-			_prev[id] = _cur[id]
+			_prev[id] = _cur[id] if steps == 1 else p
 			view.face(p.x - _cur[id].x, p.y - _cur[id].y)
 			view.set_moving(p != _cur[id])
 			_show_action(id, view, p != _cur[id])
@@ -56,6 +62,17 @@ func _on_ticked(_tick: int) -> void:
 			_prev.erase(id)
 			_cur.erase(id)
 			_struck.erase(id)
+
+
+## Unit sheets are big: the art of what any building is training is loaded on a worker thread
+## before the first such unit comes out, instead of stalling the frame it appears in.
+func _prefetch_queued() -> void:
+	if not sim.economy.enabled():
+		return
+	var b := sim.economy.buildings
+	for id in b.alive_ids:
+		for item: StringName in b.queues[id - 1]:
+			SpriteDB.prefetch_unit(item)
 
 
 func _process(_delta: float) -> void:

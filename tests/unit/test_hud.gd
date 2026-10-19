@@ -60,7 +60,7 @@ func _buttons(box: Container) -> Array[Button]:
 
 func test_enemy_is_hidden_by_the_fog_and_own_is_drawn() -> void:
 	var units: UnitLayer = _main.get_node("World/Units")
-	units._on_ticked(_sim.tick)
+	units._on_advanced(_sim.tick, 1)
 	var seen_enemy := 0
 	var own := 0
 	for id: int in units.views:

@@ -65,11 +65,11 @@ func attach(p_sim: Simulation, clock: SimClock, p_camera: RtsCamera, p_player: i
 	_fog = ImageTexture.create_from_image(_fog_image)
 	_paint_terrain()
 	(_ground_sprite.material as ShaderMaterial).set_shader_parameter(&"fog", _fog)
-	clock.ticked.connect(_on_ticked)
+	clock.advanced.connect(_on_advanced)
 	_fit()
 
 
-func _on_ticked(tick: int) -> void:
+func _on_advanced(tick: int, steps: int) -> void:
 	if sim.nav.version != _terrain_version:
 		_paint_terrain()
 	var g: VisionGrid = sim.vision.grids.get(player)
@@ -77,7 +77,7 @@ func _on_ticked(tick: int) -> void:
 		_fog_version = g.version
 		_fog_image.set_data(g.width, g.height, false, Image.FORMAT_L8, g.shade)
 		_fog.update(_fog_image)
-	if tick % REDRAW_TICKS == 0:
+	if tick / REDRAW_TICKS != (tick - steps) / REDRAW_TICKS:
 		_marks.queue_redraw()
 
 

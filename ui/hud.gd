@@ -152,7 +152,7 @@ func attach(
 	input.economy_changed.connect(refresh)
 	input.formation_changed.connect(func(_k: Formation.Kind) -> void: refresh())
 	input.menu_requested.connect(menu.open)
-	clock.ticked.connect(_on_ticked)
+	clock.advanced.connect(_on_advanced)
 	refresh()
 
 
@@ -161,8 +161,9 @@ func _notification(what: int) -> void:
 		refresh()
 
 
-func _on_ticked(tick: int) -> void:
-	if tick % 2 == 0:
+## Once a frame after its ticks; refreshes at most every second tick, as before 8x.
+func _on_advanced(tick: int, steps: int) -> void:
+	if tick / 2 != (tick - steps) / 2:
 		refresh()
 
 

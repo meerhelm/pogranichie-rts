@@ -38,7 +38,7 @@ func attach(p_sim: Simulation, clock: SimClock, p_player: int) -> void:
 	_image = Image.create_empty(w, h, false, Image.FORMAT_L8)
 	_texture = ImageTexture.create_from_image(_image)
 	_sprite.texture = _texture
-	clock.ticked.connect(func(_t: int) -> void: refresh())
+	clock.advanced.connect(func(_t: int, _s: int) -> void: refresh())
 	refresh()
 
 

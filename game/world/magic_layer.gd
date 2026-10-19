@@ -17,7 +17,7 @@ var local_player := 1
 
 func attach(p_sim: Simulation, clock: SimClock) -> void:
 	sim = p_sim
-	clock.ticked.connect(func(_t: int) -> void: queue_redraw())
+	clock.advanced.connect(func(_t: int, _s: int) -> void: queue_redraw())
 
 
 func _draw() -> void:

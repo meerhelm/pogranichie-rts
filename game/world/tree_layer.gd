@@ -37,7 +37,7 @@ func attach(p_sim: Simulation, clock: SimClock, p_depth_layer: Node2D) -> void:
 		_pivots.append(art.pivot)
 		_scales.append(art.scale)
 	_plant()
-	clock.ticked.connect(_on_ticked)
+	clock.advanced.connect(_on_advanced)
 
 
 func _exit_tree() -> void:
@@ -51,10 +51,10 @@ func count() -> int:
 	return _trees.size()
 
 
-func _on_ticked(tick: int) -> void:
+func _on_advanced(tick: int, steps: int) -> void:
 	if sim.nav.version != _version:
 		_fell()
-	if tick % FOG_EVERY == 0:
+	if tick / FOG_EVERY != (tick - steps) / FOG_EVERY:
 		_fog()
 
 

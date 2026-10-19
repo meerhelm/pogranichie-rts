@@ -61,7 +61,7 @@ func attach(p_sim: Simulation, clock: SimClock, depth_layer: Node2D) -> void:
 		_prop_index.append(k)
 	_tint.color = NIGHT if sim.mission.stealth.night else DAY
 	add_child(_tint)
-	clock.ticked.connect(_on_ticked)
+	clock.advanced.connect(func(t: int, _s: int) -> void: _on_ticked(t))
 
 
 func _exit_tree() -> void:

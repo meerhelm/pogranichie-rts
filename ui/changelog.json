@@ -2,6 +2,33 @@
 	"_comment": "What each build has. Newest version first; the first entry must match application/config/version in project.godot. Every new build: bump the version there and in export_presets.cfg, add an entry on top. Texts per game language; a missing language falls back to en.",
 	"versions": [
 		{
+			"version": "0.1.1",
+			"date": "2026-10-19",
+			"items": [
+				{
+					"en": "Speed 4x and 8x no longer bog down late in a match: the map is redrawn once a frame instead of after every game tick, and when the computer cannot keep up the game runs a little slower instead of dropping to a few frames a second.",
+					"be": "Хуткасць 4x і 8x больш не вязне пад канец партыі: карта перамалёўваецца раз за кадр, а не пасля кожнага ігравога такту, а калі камп'ютар не паспявае, гульня ідзе крыху павольней замест таго, каб падаць да некалькіх кадраў у секунду.",
+					"pl": "Prędkość 4x i 8x nie grzęźnie już pod koniec partii: mapa jest rysowana raz na klatkę, a nie po każdym takcie gry, a gdy komputer nie nadąża, gra idzie nieco wolniej zamiast spadać do kilku klatek na sekundę.",
+					"uk": "Швидкість 4x і 8x більше не грузне наприкінці партії: мапа перемальовується раз на кадр, а не після кожного ігрового такту, а коли комп'ютер не встигає, гра йде трохи повільніше замість того, щоб падати до кількох кадрів на секунду.",
+					"lt": "Greitis 4x ir 8x nebestringa partijos pabaigoje: žemėlapis perpiešiamas kartą per kadrą, o ne po kiekvieno žaidimo takto, o kai kompiuteris nespėja, žaidimas eina šiek tiek lėčiau, užuot kritęs iki kelių kadrų per sekundę."
+				},
+				{
+					"en": "No more freezes of up to a second when a new kind of unit first comes out: its pictures are loaded in the background while it is being trained.",
+					"be": "Больш няма замірання да секунды, калі ўпершыню выходзіць новы від войска: яго выявы загружаюцца ў фоне, пакуль яго навучаюць.",
+					"pl": "Koniec z zacięciami do sekundy, gdy po raz pierwszy wychodzi nowy rodzaj oddziału: jego grafiki wczytują się w tle, gdy jest szkolony.",
+					"uk": "Більше немає завмирань до секунди, коли вперше виходить новий вид війська: його зображення завантажуються у фоні, поки його навчають.",
+					"lt": "Nebėra užstrigimų iki sekundės, kai pirmą kartą išeina nauja kariuomenės rūšis: jos piešiniai įkeliami fone, kol ji mokoma."
+				},
+				{
+					"en": "Peasants carrying goods home look for a storehouse faster, so a big economy costs less time each tick.",
+					"be": "Сяляне, якія нясуць здабычу дадому, хутчэй шукаюць склад, таму вялікая гаспадарка менш грузіць кожны такт.",
+					"pl": "Chłopi niosący urobek do domu szybciej szukają składu, więc duże gospodarstwo mniej obciąża każdy takt.",
+					"uk": "Селяни, що несуть здобич додому, швидше шукають склад, тож велике господарство менше навантажує кожен такт.",
+					"lt": "Valstiečiai, nešantys grobį namo, greičiau randa sandėlį, todėl didelis ūkis mažiau apkrauna kiekvieną taktą."
+				}
+			]
+		},
+		{
 			"version": "0.1.0",
 			"date": "2026-10-19",
 			"items": [

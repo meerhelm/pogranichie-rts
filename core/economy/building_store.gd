@@ -9,6 +9,8 @@ extends RefCounted
 const NO_ID := 0
 
 var next_id := 1
+## Goes up whenever a building is added, finished or removed (EconomySystem.drop_site's cache).
+var version := 0
 ## Alive ids, ascending.
 var alive_ids := PackedInt32Array()
 ## Per map cell: the building on it (NO_ID if none), and the owner of the finished gate on it
@@ -115,6 +117,7 @@ func add(
 	cooldown.append(0)
 	upgraded.append(0)
 	alive_ids.append(id)
+	version += 1
 	return id
 
 
@@ -131,6 +134,7 @@ func remove(id: int) -> void:
 		return
 	alive[id - 1] = 0
 	alive_ids.remove_at(alive_ids.bsearch(id))
+	version += 1
 
 
 ## Every cell of the footprint, row by row.
