@@ -3,8 +3,8 @@
 from typing import Callable, NamedTuple
 
 from tools.art import (beasts, buildings_gdl, buildings_pl, buildings_to, folk, folk_1410, folk_1435, folk_1500,
-                       folk_1507, folk_1508, folk_1514, folk_crown, folk_crown_1410, folk_crown_malbork,
-                       models)
+                       folk_1507, folk_1508, folk_1514, folk_crown, folk_crown_1410, folk_crown_baltic,
+                       folk_crown_malbork, models)
 
 
 class Unit(NamedTuple):
@@ -24,9 +24,10 @@ class Building(NamedTuple):
 MOUNTED = {"frame": (224, 256), "pivot": (108, 184)}
 BEAST = {"frame": (224, 176), "pivot": (108, 124)}
 WAGON = {"frame": (320, 240), "pivot": (156, 150)}
-## A man on foot who raises a pole over his head (mo_inok lifts the icon).
+## A man on foot who raises a pole over his head (mo_inok lifts the icon, the Hussite whirls
+## his flail).
 TALL = {"frame": (160, 216), "pivot": (64, 176)}
-TALL_UNITS = {"mo_inok", "pl_priest"}
+TALL_UNITS = {"mo_inok", "pl_priest", "nt_hussite_flail"}
 ## Long weapons levelled forward reach past the usual frame (pl_drab's pike, the handgunner's smoke).
 PIKE = {"frame": (288, 216), "pivot": (144, 176)}
 WIDE = {"frame": (224, 144), "pivot": (112, 104)}
@@ -35,7 +36,7 @@ FRAMES = {"pl_drab": PIKE, "pl_handgunner": WIDE}
 UNITS: dict[str, Unit] = {uid: Unit(fn, **TALL) if uid in TALL_UNITS else Unit(fn) for uid, fn in {
     **models.UNITS, **folk.UNITS, **folk_1410.UNITS, **folk_1500.UNITS, **folk_1507.UNITS,
     **folk_1508.UNITS, **folk_1514.UNITS, **folk_crown.UNITS, **folk_crown_1410.UNITS,
-    **folk_crown_malbork.UNITS}.items()}
+    **folk_crown_malbork.UNITS, **folk_crown_baltic.UNITS}.items()}
 for _uid, _frame in FRAMES.items():
     UNITS[_uid] = Unit(UNITS[_uid].build, **_frame)
 for _uid, _fn in beasts.UNITS.items():
@@ -43,10 +44,11 @@ for _uid, _fn in beasts.UNITS.items():
 for _uid, _fn in {**beasts.MOUNTED_UNITS, **folk_1410.MOUNTED_UNITS, **folk_1435.MOUNTED_UNITS,
                   **folk_1500.MOUNTED_UNITS, **folk_1507.MOUNTED_UNITS,
                   **folk_1508.MOUNTED_UNITS, **folk_1514.MOUNTED_UNITS, **folk_crown.MOUNTED_UNITS,
-                  **folk_crown_1410.MOUNTED_UNITS, **folk_crown_malbork.MOUNTED_UNITS}.items():
+                  **folk_crown_1410.MOUNTED_UNITS, **folk_crown_malbork.MOUNTED_UNITS,
+                  **folk_crown_baltic.MOUNTED_UNITS}.items():
     UNITS[_uid] = Unit(_fn, **MOUNTED)
 for _uid, _fn in {**beasts.WAGONS, **folk_1410.WAGONS, **folk_1500.WAGONS, **folk_1508.WAGONS,
-                  **folk_crown.WAGONS}.items():
+                  **folk_crown.WAGONS, **folk_crown_baltic.WAGONS}.items():
     UNITS[_uid] = Unit(_fn, **WAGON)
 
 BUILDINGS: dict[str, Building] = {
@@ -70,8 +72,10 @@ DEPOSIT_VARIANTS = models.DEPOSIT_VARIANTS
 
 ## Animations every unit has, and the extra ones: `work` for peasants (felling, digging,
 ## building), `attack` in a style of people.ATTACK_STYLES (beasts lunge, riders use the style
-## too while the horse stands). Wagons neither work nor fight; the bombard and the field gun
-## fire (flash, smoke, recoil: folk_1410.Bombard, folk_1500.FieldGun). Civilians (to_spy,
+## too while the horse stands). Wagons neither work nor fight; the bombard, the field gun and
+## the Hussite gun on a wagon fire (flash, smoke, recoil: folk_1410.Bombard, folk_1500.FieldGun,
+## folk_crown_baltic.HussiteGun), and so does the Hussite war wagon (its handgunner shoots
+## over the boards). Civilians (to_spy,
 ## hero_council_envoys, hero_maciej, hero_stranger,
 ## hero_town_envoys) only idle and walk.
 BASE_ANIMS = [("idle", 8, 6), ("walk", 12, 15)]  # name, frames, fps
@@ -104,6 +108,9 @@ ATTACK_STYLE = {
     "hero_jasko": "thrust", "hero_zyndram": "swing", "hero_marcin": "thrust", "hero_olesnicki": "swing",
     "hero_jagiello": "swing", "hero_order_k1": "thrust",
     "hero_plauen": "thrust", "nt_gdansk_shipwright": "swing",
+    "hero_mikolaj_michalow": "swing", "hero_capek": "thrust", "nt_hussite_flail": "swing",
+    "nt_gdansk_militia": "thrust", "nt_gdansk_crossbow": "crossbow", "nt_hussite_wagon": "fire",
+    "nt_hussite_gun": "fire",
     **{uid: "lunge" for uid in beasts.UNITS},
 }
 

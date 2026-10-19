@@ -108,6 +108,17 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
   `prop_church` (St John's of the burned town: brick Gothic, the west half of the roof burned
   to black rafters, soot over the windows; a big frame in `registry.PROP_FRAMES`) and
   `prop_ruins` (blackened brick walls of burned houses, charred beams, rubble).
+- `folk_crown_baltic.py` — the march to the Baltic (Корона 3): Mikołaj of Michałów (white
+  plate under a plain red surcoat, an open bascinet, a raised sword, a red caparison; arms not
+  drawn), Jan Čapek (dark brigandine, open sallet, the lance with the orphans' banner: a red
+  chalice on black, a white shield with the chalice), the Hussite footman `nt_hussite_flail`
+  (padded jack, kettle hat, a red chalice on the chest, sulice on the back; `FlailMan`: the
+  swingle hangs at rest and flies out in the blow; the tall frame), the Gdańsk militiaman (red
+  jack, white sleeves, spear, the town's two white crosses on red without the crown) and
+  crossbowman (pl_crossbow in a white tunic with red sleeves and the town's badge), the war
+  wagon `nt_hussite_wagon` (high plank sides with loopholes, the chalice, chains; a handgunner
+  inside fires over the boards) and the houfnice on a cart `nt_hussite_gun` (turned round to
+  fire, the horses stay hitched; flash, smoke, recoil).
 - `kit.py` — building materials (log, thatch, shingle, brick, roof tile, plaster and timber
   framing) and parts (roofs, stepped gables, windows, sheds, fences, barrels);
   `buildings_gdl.py` and `buildings_to.py` — the Duchy's and the Order's buildings.
@@ -126,9 +137,9 @@ The game reads them through `game/world/SpriteDB`; ids without art keep their pl
 at a job, else idle, turned to the target or the work. `--add` renders only the animations a
 sheet lacks and copies the old rows back, so a new animation does not re-render the rest.
 Building frames are rendered large and cropped to what all stages cover. Unit frames: 160×144
-on foot (160×216 the monk with his raised icon and the Crown's priest with his cross,
-288×216 the drab with his pike, 224×144 the handgunner), 224×256 mounted (an upright lance), 224×176
-big beasts, 320×240 the wagon, the bombard and the field gun; `bar_y` in `sheet.json` is where the HP bar goes.
+on foot (160×216 the monk with his raised icon, the Crown's priest with his cross and the Hussite
+with his flail, 288×216 the drab with his pike, 224×144 the handgunner), 224×256 mounted (an upright lance), 224×176
+big beasts, 320×240 the wagons, the bombard and the guns; `bar_y` in `sheet.json` is where the HP bar goes.
 
 Line pieces: a palisade cell is its post cluster (`<id>`) plus arms toward the neighbours
 (`<id>_e`, `_w`, `_n`, `_s`, model axes +X, -X, +Y, -Y), which BuildingLayer picks per cell.
