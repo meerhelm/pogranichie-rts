@@ -2,8 +2,8 @@
 	"_comment": "What each build has. Newest version first; the first entry must match application/config/version in project.godot. Every new build: bump the version there and in export_presets.cfg, add an entry on top. Texts per game language; a missing language falls back to en.",
 	"versions": [
 		{
-			"version": "0.0.3",
-			"date": "2026-10-17",
+			"version": "0.1.0",
+			"date": "2026-10-19",
 			"items": [
 				{
 					"en": "New campaign mission «GDL 5. Vedrosha, 1500»: a lost battle where the goal is to bring your men back over the Trosna before the bridge falls.",
@@ -76,11 +76,11 @@
 					"lt": "Mūšis: valčių ir rąstų tiltai, kuriuos stovyklos tarnai tiesia ruožą po ruožo, naktinis žvalgų būrys, sukeliantis aliarmą, pasala dauboje ar po rūku, laukianti ženklo, «Lietuviškas atsitraukimas», vedantis persekiotojus į susirinkimo vietą, ir vadas, kurį galima paimti gyvą."
 				},
 				{
-					"en": "New main menu: Campaign, Single player and Network play (coming later). In Campaign you choose a country, the Grand Duchy or the Crown, and then a mission; missions open one after another as you win them, and the Crown's are listed until they are made.",
-					"be": "Новае галоўнае меню: Кампанія, Адзіночная гульня і Гульня па сетцы (пазней). У Кампаніі выбіраеш краіну, Вялікае Княства або Карону, а потым місію; місіі адкрываюцца адна за адной, калі іх выйграеш, а місіі Кароны ўжо ў спісе, пакуль іх робяць.",
-					"pl": "Nowe menu główne: Kampania, Gra pojedyncza i Gra sieciowa (później). W Kampanii wybierasz kraj, Wielkie Księstwo albo Koronę, a potem misję; misje otwierają się jedna po drugiej, gdy je wygrywasz, a misje Korony są już na liście, zanim zostaną zrobione.",
-					"uk": "Нове головне меню: Кампанія, Одиночна гра і Гра по мережі (згодом). У Кампанії обираєш країну, Велике князівство або Корону, а потім місію; місії відкриваються одна за одною, коли їх виграєш, а місії Корони вже в списку, поки їх роблять.",
-					"lt": "Naujas pagrindinis meniu: Kampanija, Vieno žaidėjo žaidimas ir Žaidimas tinkle (vėliau). Kampanijoje renkiesi šalį, Didžiąją Kunigaikštystę ar Karūną, o tada misiją; misijos atsiveria viena po kitos, kai jas laimi, o Karūnos misijos jau sąraše, kol jos kuriamos."
+					"en": "New main menu: Campaign, Single player and Network play (coming later). In Campaign you choose a country, the Grand Duchy or the Crown, and then a mission; missions open one after another as you win them.",
+					"be": "Новае галоўнае меню: Кампанія, Адзіночная гульня і Гульня па сетцы (пазней). У Кампаніі выбіраеш краіну, Вялікае Княства або Карону, а потым місію; місіі адкрываюцца адна за адной, калі іх выйграеш.",
+					"pl": "Nowe menu główne: Kampania, Gra pojedyncza i Gra sieciowa (później). W Kampanii wybierasz kraj, Wielkie Księstwo albo Koronę, a potem misję; misje otwierają się jedna po drugiej, gdy je wygrywasz.",
+					"uk": "Нове головне меню: Кампанія, Одиночна гра і Гра по мережі (згодом). У Кампанії обираєш країну, Велике князівство або Корону, а потім місію; місії відкриваються одна за одною, коли їх виграєш.",
+					"lt": "Naujas pagrindinis meniu: Kampanija, Vieno žaidėjo žaidimas ir Žaidimas tinkle (vėliau). Kampanijoje renkiesi šalį, Didžiąją Kunigaikštystę ar Karūną, o tada misiją; misijos atsiveria viena po kitos, kai jas laimi."
 				},
 				{
 					"en": "Skirmish AI: its waves now shoot down towers that fire at them, and break through palisades: a gap of three pieces or one gate when there is no way round they have seen; a way round they have seen they use.",
@@ -151,6 +151,34 @@
 					"pl": "Nowa misja kampanii «Korona 4. Chojnice, 1454»: bitwa, którą Korona przegrywa. Ustaw krnąbrne pospolite ruszenie, gdy panowie spierają się o miejsca, uderz na jazdę Zakonu, powstrzymaj panikę po ciosie w tył, wyprowadź króla przez bagno jedyną groblą i wynieś chorągiew łęczycką.",
 					"uk": "Нова місія кампанії «Корона 4. Хойніце, 1454»: битва, яку Корона програє. Розставте свавільне посполите рушення, поки пани сперечаються за місця, вдарте по кінноті Ордену, зупиніть паніку від удару в тил, виведіть короля через болото єдиною греблею і винесіть ленчицьку корогву.",
 					"lt": "Nauja kampanijos misija «Karūna 4. Chojnicė, 1454»: mūšis, kurį Karūna pralaimi. Išrikiuokite savavališką bajorų pašauktinę kariuomenę, kol ponai ginčijasi dėl vietų, smokite Ordino raitelius, sustabdykite paniką po smūgio iš užnugario, išveskite karalių per pelkę vieninteliu pylimu ir išneškite Lenčicos vėliavą."
+				},
+				{
+					"en": "New campaign mission «Crown 5. Silver for Malbork, 1457»: pani Barbara gathers the silver to buy Malbork from the Order's unpaid mercenaries, by wagon and river boat, with loans and taxes, through raids, mud, frost and spring floods, before the mercenaries' patience runs out.",
+					"be": "Новая місія кампаніі «Карона 5. Срэбра для Мальбарка, 1457»: пані Барбара збірае срэбра, каб выкупіць Мальбарк у неаплачаных найміткаў Ордэна, вазамі і рачнымі лодкамі, пазыкамі і падаткамі, праз набегі, бездараж, мароз і веснавую паводку, пакуль у найміткаў не скончылася цярпенне.",
+					"pl": "Nowa misja kampanii «Korona 5. Srebro dla Malborka, 1457»: pani Barbara zbiera srebro, by wykupić Malbork od nieopłaconych zaciężnych Zakonu, wozami i łodziami rzecznymi, z pożyczek i podatków, przez najazdy, roztopy, mróz i wiosenne wylewy, zanim zaciężnym skończy się cierpliwość.",
+					"uk": "Нова місія кампанії «Корона 5. Срібло для Мальборка, 1457»: пані Барбара збирає срібло, щоб викупити Мальборк у неоплачених найманців Ордену, возами й річковими човнами, позиками й податками, крізь набіги, бездоріжжя, мороз і весняну повінь, поки в найманців не урвався терпець.",
+					"lt": "Nauja kampanijos misija «Karūna 5. Sidabras Malborkui, 1457»: ponia Barbora renka sidabrą, kad išpirktų Malborką iš Ordino nesumokėtų samdinių, vežimais ir upių valtimis, paskolomis ir mokesčiais, per antpuolius, purvynus, šaltį ir pavasario potvynius, kol samdiniams neišseko kantrybė."
+				},
+				{
+					"en": "New campaign mission «Crown 6. Świecino, 1462», the finale of the Crown's campaign: Piotr Dunin hires his companies, rings the camp with wagons and a ditch, holds the Order's horse until it tires and turns the day with the crossbowmen.",
+					"be": "Новая місія кампаніі «Карона 6. Свеціна, 1462», фінал кампаніі Кароны: Пётр Дунін наймае роты, акружае лагер вазамі і ровам, трымае конніцу Ордэна, пакуль яна не стоміцца, і пераламляе бой арбалетчыкамі.",
+					"pl": "Nowa misja kampanii «Korona 6. Świecino, 1462», finał kampanii Korony: Piotr Dunin najmuje roty, otacza obóz wozami i rowem, trzyma jazdę Zakonu, aż się zmęczy, i przełamuje bitwę kusznikami.",
+					"uk": "Нова місія кампанії «Корона 6. Свецино, 1462», фінал кампанії Корони: Петро Дунін наймає роти, оточує табір возами й ровом, тримає кінноту Ордену, доки вона не втомиться, і переламує бій арбалетниками.",
+					"lt": "Nauja kampanijos misija «Karūna 6. Švecinas, 1462», Karūnos kampanijos finalas: Petras Duninas samdo kuopas, apjuosia stovyklą vežimais ir griovių, laiko Ordino raitelius, kol jie pavargsta, ir lūžį mūšyje atneša arbaletininkai."
+				},
+				{
+					"en": "All 14 campaign missions are in the game: 8 of the Grand Duchy and 6 of the Crown.",
+					"be": "У гульні ўсе 14 місій кампаніі: 8 Вялікага Княства і 6 Кароны.",
+					"pl": "W grze jest wszystkie 14 misji kampanii: 8 Wielkiego Księstwa i 6 Korony.",
+					"uk": "У грі всі 14 місій кампанії: 8 Великого князівства і 6 Корони.",
+					"lt": "Žaidime yra visos 14 kampanijos misijų: 8 Didžiosios Kunigaikštystės ir 6 Karūnos."
+				},
+				{
+					"en": "11 new skirmish maps after real battlefields of 1410–1514, from Grunwald to Orsha, with a map picker and a short history note in Single player. Every map is the same for both sides and has at least three ways from one base to the other.",
+					"be": "11 новых карт для схваткі паводле сапраўдных палёў бітваў 1410–1514, ад Грунвальда да Оршы, з выбарам карты і кароткай гістарычнай заўвагай у Адзіночнай гульні. Кожная карта аднолькавая для абодвух бакоў і мае не менш за тры шляхі ад адной базы да другой.",
+					"pl": "11 nowych map do potyczki według prawdziwych pól bitew z lat 1410–1514, od Grunwaldu po Orszę, z wyborem mapy i krótką notką historyczną w Grze pojedynczej. Każda mapa jest jednakowa dla obu stron i ma co najmniej trzy drogi od jednej bazy do drugiej.",
+					"uk": "11 нових мап для сутички за справжніми полями битв 1410–1514 років, від Грюнвальда до Орші, з вибором мапи та короткою історичною приміткою в Одиночній грі. Кожна мапа однакова для обох сторін і має щонайменше три шляхи від однієї бази до іншої.",
+					"lt": "11 naujų susirėmimo žemėlapių pagal tikrus 1410–1514 m. mūšių laukus, nuo Žalgirio iki Oršos, su žemėlapio pasirinkimu ir trumpa istorine pastaba Vieno žaidėjo žaidime. Kiekvienas žemėlapis vienodas abiem pusėms ir turi bent tris kelius nuo vienos bazės iki kitos."
 				}
 			]
 		},
