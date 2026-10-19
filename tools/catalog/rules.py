@@ -255,6 +255,33 @@ RULES: list[Rule] = [
         r"заклёпывает бомбарду за (\d+) с",
         lambda sp, m, _u: (sp.tag("spiker"), sp.params.update(spike_ticks=cells.ticks(m.group(1)))),
     ),
+    # Корона 3: the Hussite «orphans» of Jan Čapek and the Gdańsk crossbowmen. The javelin
+    # has no cooldown in the catalog: it is thrown as often as the GDL light horse's (12 s); the
+    # war wagons make a ring of four, like the Crown's.
+    (
+        r"сулица (\d+) С на (\d+) клетки",
+        lambda sp, m, _u: (
+            sp.tag("javelin"),
+            sp.params.update(
+                javelin_damage=int(m.group(1)),
+                javelin_range=int(m.group(2)),
+                javelin_cooldown_ticks=cells.ticks("12"),
+            ),
+        ),
+    ),
+    (r"у возов \+(\d+) к коннице", _params(wagon_cavalry_bonus=1)),
+    (r"стрелки на возу", _tags()),
+    (r"стреляет с воза без развёртывания", _tags()),
+    (
+        r"табор собирается за (\d+) с, внутри \+(\d+)/\+(\d+)",
+        lambda sp, m, _u: sp.params.update(
+            tabor_wagons=4,
+            tabor_ticks=cells.ticks(m.group(1)),
+            tabor_armor_melee=int(m.group(2)),
+            tabor_armor_pierce=int(m.group(3)),
+        ),
+    ),
+    (r"как pl_crossbow, городской скин", lambda sp, _m, _u: setattr(sp, "same_as", "pl_crossbow")),
     # Campaign-only notes (К5 calls the servant a worker; plague and rumours are mission rules).
     (r"в кампании сбивает мор и слухи", _tags()),
     (r"в К5 называется работником", _tags()),

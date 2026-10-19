@@ -105,6 +105,23 @@ class ClauseTest(unittest.TestCase):
         self.assertEqual(sp.tags, ["spiker"])
         self.assertEqual(sp.params, {"night_reveal_cells": 4, "spike_ticks": 160})
 
+    def test_baltic_orphans(self):
+        sp = parse_special("Пехота. Сулица 6 С на 3 клетки; у возов +4 к коннице")
+        self.assertEqual(sp.unparsed, [])
+        self.assertEqual(sp.tags, ["javelin"])
+        self.assertEqual(
+            sp.params,
+            {"javelin_damage": 6, "javelin_range": 3, "javelin_cooldown_ticks": 240, "wagon_cavalry_bonus": 4},
+        )
+        sp = parse_special("Осадное. Стрелки на возу; табор собирается за 3 с, внутри +4/+4")
+        self.assertEqual(sp.unparsed, [])
+        self.assertEqual(
+            sp.params, {"tabor_wagons": 4, "tabor_ticks": 60, "tabor_armor_melee": 4, "tabor_armor_pierce": 4}
+        )
+        sp = parse_special("Стрелок. Как pl_crossbow, городской скин")
+        self.assertEqual(sp.unparsed, [])
+        self.assertEqual(sp.same_as, "pl_crossbow")
+
     def test_unknown_clause_is_reported_not_dropped(self):
         sp = parse_special("Пехота. Поёт песни; +6 к коннице")
         self.assertEqual(sp.unparsed, ["Поёт песни"])

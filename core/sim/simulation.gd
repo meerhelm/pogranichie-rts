@@ -34,7 +34,9 @@ extends RefCounted
 ## 21: Корона 2: a siege that cannot be won by storm (MissionBesiege in the mission hash): a
 ##   building may have an HP floor, a spiked bombard does not fire, a camp may be kept from
 ##   healing, campaign-only buildings a mission allows.
-const SIM_VERSION := 21
+## 22: Корона 3: the TABOR order draws a ring of a cell per four wagons (not three); the Hussite
+##   wagons' own tabor numbers and the flailman's bonus by his wagon; MissionBaltic in the hash.
+const SIM_VERSION := 22
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).

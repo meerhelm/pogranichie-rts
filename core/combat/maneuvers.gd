@@ -107,7 +107,8 @@ static func toggle_dismount(c: CombatSystem, id: int) -> void:
 
 
 ## TABOR: the selected wagons (UnitDef param tabor_wagons) drive out to a ring round where they
-## stand together, a cell of radius per three wagons (at least two), evenly spaced.
+## stand together, a cell of radius per four wagons (at least two), evenly spaced. Four keeps
+## the widest gap of the 16 directions within tabor_link_cells, so the ring links up.
 static func tabor(c: CombatSystem, ids: PackedInt32Array) -> void:
 	var e := c.entities
 	var wagons := PackedInt32Array()
@@ -125,7 +126,7 @@ static func tabor(c: CombatSystem, ids: PackedInt32Array) -> void:
 	var n := wagons.size()
 	var cx := Fixed.floor_div(sum_x, n)
 	var cy := Fixed.floor_div(sum_y, n)
-	var r := Fixed.from_cells(maxi(2, n / 3))
+	var r := Fixed.from_cells(maxi(2, n / 4))
 	for i in n:
 		var d := RING_DIRS[i * RING_DIRS.size() / n % RING_DIRS.size()]
 		var x := c._clamp_x(cx + r * d.x / 1000)

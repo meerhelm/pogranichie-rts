@@ -269,6 +269,7 @@ func _show_march() -> void:
 	_battle_lines(m, lines)
 	_field_lines(m, lines)
 	_besiege_lines(m, lines)
+	_baltic_lines(m, lines)
 	_march.visible = not lines.is_empty()
 	_march.text = "\n".join(lines)
 
@@ -369,6 +370,27 @@ func _besiege_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
 		lines.append(tr("Towns sworn: %d") % bs.count_towns(1))
 	if m.fired.has(str(m.def.rules["besiege"].get("sztum", {}).get("from", ""))):
 		lines.append(tr("Bombards brought to Sztum: %d") % bs.brought)
+
+
+## Корона 3: «Concord: 70%» once Čapek first asks for wages (and «The orphans listen to nobody»
+## while they mutiny), «Wagons: 12», «Camps fortified: 1 of 4», «Wind: from the west» at Tczew,
+## the prisoners ransomed and killed once there are any, the villages taken by each side.
+func _baltic_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
+	var b := m.baltic
+	if not b.on:
+		return
+	if m.flags.has("concord_shown") or b.concord < 700:
+		lines.append(tr("Concord: %d%%") % (b.concord / 10))
+	if b.mutiny_until >= 0:
+		lines.append(tr("The orphans listen to nobody"))
+	lines.append(tr("Wagons: %d") % m.alive_of("wagons").size())
+	lines.append(tr("Camps fortified: %d of %d") % [b.camps_count(), b.camps_total(m)])
+	if m.fired.has("6") and not m.fired.has("8"):
+		lines.append(tr("Wind: from the west"))
+	if b.ransomed + b.killed > 0:
+		lines.append(tr("Prisoners ransomed: %d, killed: %d") % [b.ransomed, b.killed])
+	if not b.villages.is_empty():
+		lines.append(tr("Villages: %d ours, %d plundered") % [b.foraged(1), b.foraged(2)])
 
 
 ## The countdown and captives lines as shown, for tests ("" while hidden).

@@ -27,7 +27,9 @@
   "pl_camp_servant", "pl_wagon", "pl_bombard",
   "hero_jasko", "hero_zyndram", "hero_marcin", "hero_olesnicki", "hero_jagiello", "hero_stranger",
   "hero_order_k1",
-  "nt_gdansk_shipwright", "hero_plauen", "hero_town_envoys"
+  "nt_gdansk_shipwright", "hero_plauen", "hero_town_envoys",
+  "nt_hussite_wagon", "nt_hussite_flail", "nt_hussite_gun", "nt_gdansk_militia",
+  "nt_gdansk_crossbow", "hero_mikolaj_michalow", "hero_capek"
  ],
  "buildings": [
   "gdl_town_center", "gdl_house", "gdl_granary", "gdl_farm", "gdl_lumber_yard", "gdl_mine",
@@ -51,7 +53,8 @@
   "gdl_szlachta_lance", "gdl_field_gun", "mo_syn_boyarsky", "mo_boyar", "mo_inok", "mo_storozha",
   "gdl_hakownica", "mo_cannon", "gdl_wall",
   "pl_drab", "pl_handgunner", "pl_field_gun", "pl_hussar", "mo_tatar",
-  "nt_gdansk_shipwright", "to_wall", "pl_lazaret"],
+  "nt_gdansk_shipwright", "to_wall", "pl_lazaret",
+  "nt_hussite_wagon", "nt_hussite_flail", "nt_hussite_gun", "nt_gdansk_militia", "nt_gdansk_crossbow"],
  "spells": ["sp_bog_mist", "sp_consecration", "sp_exorcism", "sp_relic", "sp_perkunas", "sp_icon", "sp_wolf_path",
   "sp_bogurodzica", "sp_banner_blessing", "sp_pact"]
 }

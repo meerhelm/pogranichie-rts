@@ -487,7 +487,8 @@ func _hit_from(slot: int, t: int, damage: int, damage_type: StringName) -> Damag
 	if damage_type == defs[slot].damage_type:
 		hit.damage += e.up_damage[slot]
 	hit.damage_type = damage_type
-	hit.bonus = Damage.bonus_against(defs[slot].bonuses, _classes(t))
+	var classes := _classes(t)
+	hit.bonus = Damage.bonus_against(defs[slot].bonuses, classes) + crown.wagon_bonus(slot, classes)
 	hit.armor_melee = _armor_melee(t)
 	hit.armor_pierce = _armor_pierce(t)
 	hit.side = _side(t, e.pos_x[slot], e.pos_y[slot])

@@ -6,7 +6,10 @@ extends RefCounted
 ## Tabor: wagons (UnitDef param tabor_wagons) that stand still tabor_link_ticks within
 ## tabor_link_cells of one another form a ring once there are tabor_wagons of them (fewer with
 ## «Таборная наука»). Own infantry and shooters inside the ring get +tabor_armor to both armors
-## (more with the tech) and lose no morale to blows in the flank.
+## (more with the tech) and lose no morale to blows in the flank. Wagons of their own kind of
+## tabor (Корона 3: the Hussite war wagons) link after their tabor_ticks and give
+## tabor_armor_melee / tabor_armor_pierce instead; the orphans' flailmen get
+## wagon_cavalry_bonus against cavalry within WAGON_REACH_MILLI of an own wagon.
 ## Pavise: a pavisier (tag pavise) that stands still pavise_ticks has set up his pavise; own
 ## shooters up to pavise_cover_cells behind him (not ahead of the way he faces) get
 ## +pavise_armor pierce armor.
@@ -23,6 +26,8 @@ extends RefCounted
 
 ## A battery is reached from this far (thousandths of a cell from its walls).
 const BATTERY_REACH_MILLI := 1500
+## A flailman counts as «у возов» this close to an own wagon (thousandths of a cell).
+const WAGON_REACH_MILLI := 2500
 
 var entities: EntityStore
 var rules: CombatRulesDef
@@ -47,6 +52,9 @@ var ring_owner := PackedInt32Array()
 var ring_x := PackedInt64Array()
 var ring_y := PackedInt64Array()
 var ring_r := PackedInt64Array()
+## The armor each ring gives inside, melee and pierce (before the owner's tech bonus).
+var ring_melee := PackedInt32Array()
+var ring_pierce := PackedInt32Array()
 ## Spell boosts this tick (MagicSystem.boost): morale points, armor and damage per mille, by id;
 ## pact: units whose morale does not fall.
 var spell_morale: Dictionary[int, int] = {}
@@ -111,7 +119,7 @@ func after_move() -> void:
 func _need_still(slot: int) -> int:
 	var def := defs[slot]
 	if def.param(&"tabor_wagons") > 0:
-		return rules.tabor_link_ticks
+		return def.param(&"tabor_ticks", rules.tabor_link_ticks)
 	if def.tags.has(&"pavise"):
 		return def.param(&"pavise_ticks")
 	return def.param(&"deploy_ticks")
@@ -129,6 +137,8 @@ func _find_rings() -> void:
 	ring_x.clear()
 	ring_y.clear()
 	ring_r.clear()
+	ring_melee.clear()
+	ring_pierce.clear()
 	var e := entities
 	var wagons := PackedInt32Array()
 	for id: int in _watched:
@@ -193,6 +203,9 @@ func _ring_of(wagons: PackedInt32Array, group: PackedInt32Array, head: int) -> v
 	ring_x.append(cx)
 	ring_y.append(cy)
 	ring_r.append(r)
+	var first := defs[members[0] - 1]
+	ring_melee.append(first.param(&"tabor_armor_melee", rules.tabor_armor))
+	ring_pierce.append(first.param(&"tabor_armor_pierce", rules.tabor_armor))
 
 
 ## The ring the unit stands in (infantry and shooters of the ring's owner only), or -1.
@@ -211,12 +224,33 @@ func ring_at(slot: int) -> int:
 	return -1
 
 
-func _tabor_armor(slot: int) -> int:
+func _tabor_armor(slot: int, pierce: bool) -> int:
 	var i := ring_at(slot)
 	if i < 0:
 		return 0
 	var state: PlayerState = players.get(ring_owner[i])
-	return rules.tabor_armor + (state.tabor_armor_bonus if state != null else 0)
+	var base := ring_pierce[i] if pierce else ring_melee[i]
+	return base + (state.tabor_armor_bonus if state != null else 0)
+
+
+## «У возов +N к коннице»: the flailman's bonus against cavalry beside an own wagon.
+func wagon_bonus(slot: int, target_classes: Array[StringName]) -> int:
+	var def := defs[slot]
+	if def == null or def.param(&"wagon_cavalry_bonus") <= 0:
+		return 0
+	if not target_classes.has(&"cavalry"):
+		return 0
+	var e := entities
+	var r := Fixed.from_milli(WAGON_REACH_MILLI)
+	for other in buckets.near(e.pos_x[slot], e.pos_y[slot], r):
+		var o := other - 1
+		if e.owners[o] != e.owners[slot] or defs[o] == null or e.hp[o] <= 0:
+			continue
+		if defs[o].param(&"tabor_wagons") <= 0:
+			continue
+		if Fixed.distance(e.pos_x[slot], e.pos_y[slot], e.pos_x[o], e.pos_y[o]) <= r:
+			return def.param(&"wagon_cavalry_bonus")
+	return 0
 
 
 ## Inside a tabor a blow in the flank costs no morale.
@@ -228,11 +262,11 @@ func ignores_flank(slot: int) -> bool:
 
 
 func armor_melee(slot: int) -> int:
-	return _tabor_armor(slot) + spell_armor.get(slot + 1, 0)
+	return _tabor_armor(slot, false) + spell_armor.get(slot + 1, 0)
 
 
 func armor_pierce(slot: int) -> int:
-	return _tabor_armor(slot) + spell_armor.get(slot + 1, 0) + _pavise_cover(slot)
+	return _tabor_armor(slot, true) + spell_armor.get(slot + 1, 0) + _pavise_cover(slot)
 
 
 ## +pavise_armor for a shooter behind an own pavise that is set up.

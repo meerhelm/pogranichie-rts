@@ -1,0 +1,1273 @@
+{
+ "_comment": "Mission «Корона 3. Балтийская вода, 1433» (mission card in the missions doc, docs/03-missions/14-crown_03_baltic_water_1433.md). A march without a base along one long map, map_crown_03 (tools/maps/gen_crown_03.py), from the siege camp before Chojnice in the south to the shore at Oliwa in the north: four camps with a wagenburg each, Pelplin, Tczew with its wooden suburb, the Bishop's hill above Gdańsk. Player 1 is Jaśko of Łęczyca and his banners with twelve wagons; allies (setup.sides) 3 Mikołaj of Michałów and the Crown's horse, 4 the Czech orphans of Jan Čapek; enemies 2 the Order (Chojnice, Tczew, the raiders) and 5 Gdańsk. Rules in core/mission/mission_baltic.gd (rules.baltic): the concord, the orphans following their leaders, the camps, the wind at Tczew, the garrison giving itself up, the prisoners, the villages, the chapels, hunger and the knighting; the townsmen's sorties are the waves of MissionRetreat. Read by core/mission/mission_def.gd; cells are map cells, ticks 1/20 s, texts are English keys translated through i18n/*.po.",
+ "id": "crown_03",
+ "title": "Crown 3. Baltic Water, 1433",
+ "map": "map_crown_03",
+ "player": 1,
+ "players": [[1, "pl"], [2, "to"], [3, "pl"], [4, "pl"], [5, "to"]],
+ "camera": [50, 188],
+ "difficulties": ["easy", "normal"],
+ "carry": ["knights", "pact"],
+ "briefing": {
+  "place": "Gdańsk Pomerania, from Chojnice to the sea at Oliwa. Mid-August – 4 September 1433.",
+  "story": "King Władysław Jagiełło has hired the Czech «orphans» of Jan Čapek against the Order. Six weeks before Chojnice have brought nothing but three failed assaults. Mikołaj of Michałów, the Crown's commander, has had enough: the army goes north, where the walls are lower. Jaśko of Łęczyca, about forty-five years old, leads his banners and the wagons of the train beside an ally who cannot be trusted in everything.",
+  "goal": "Bring the train out of Chojnice, draw up a wagenburg at every camp, take Tczew with fire carried by the wind, bring its prisoners to Mikołaj before the orphans reach them, and come to the sea at Oliwa.",
+  "lose": ["Jaśko or Mikołaj of Michałów falls", "More than half of the wagons are lost", "The concord with the orphans breaks down twice"]
+ },
+ "setup": {
+  "sides": {"1": 1, "3": 1, "4": 1, "2": 2, "5": 2},
+  "age": {"1": 2, "3": 2, "4": 2},
+  "pop": {"1": 80},
+  "power": {"1": 0},
+  "stock": {"1": [250, 150, 60, 120], "2": [0, 0, 0, 0], "3": [0, 0, 0, 0], "4": [0, 0, 0, 0], "5": [0, 0, 0, 0]},
+  "locked": {
+   "1": ["pl_town_center", "pl_house", "pl_granary", "pl_farm", "pl_lumber_yard", "pl_mine", "pl_barracks", "pl_range", "pl_stable", "pl_palisade", "pl_gate", "pl_tower", "pl_market", "pl_temple", "pl_siege_workshop", "pl_castle", "pl_salt_works", "pl_field_camp", "pl_battery", "pl_lazaret"]
+  },
+  "props": [
+   {"kind": "prop_campfire", "at": [30, 192]},
+   {"kind": "prop_campfire", "at": [52, 194]},
+   {"kind": "prop_campfire", "at": [66, 192]},
+   {"kind": "prop_logs", "at": [40, 198]},
+   {"kind": "prop_logs", "at": [46, 199]},
+   {"kind": "prop_logs", "at": [54, 199]},
+   {"kind": "prop_logs", "at": [60, 198]},
+   {"kind": "prop_ladders", "at": [58, 201]},
+   {"kind": "prop_barrels", "at": [53, 193]},
+   {"kind": "prop_well", "at": [79, 104]}
+  ],
+  "buildings": [
+   {"player": 2, "type": "to_tower", "at": [36, 204]},
+   {"player": 2, "type": "to_tower", "at": [64, 204]},
+   {"player": 2, "type": "to_tower", "at": [36, 216]},
+   {"player": 2, "type": "to_tower", "at": [64, 216]},
+   {"name": "chojnice_gate", "player": 2, "type": "to_gate", "at": [50, 204]},
+   {"player": 2, "type": "to_tower", "at": [72, 94]},
+   {"player": 2, "type": "to_tower", "at": [86, 94]},
+   {"player": 2, "type": "to_tower", "at": [72, 112]},
+   {"player": 2, "type": "to_tower", "at": [86, 112]},
+   {"name": "tczew_gate", "player": 2, "type": "to_gate", "at": [72, 103], "turned": true},
+   {"player": 5, "type": "to_tower", "at": [64, 16]},
+   {"player": 5, "type": "to_tower", "at": [86, 16]},
+   {"player": 5, "type": "to_tower", "at": [64, 36]},
+   {"player": 5, "type": "to_tower", "at": [86, 36]},
+   {"name": "gdansk_gate_w", "player": 5, "type": "to_gate", "at": [64, 26], "turned": true},
+   {"name": "gdansk_gate_s", "player": 5, "type": "to_gate", "at": [75, 36]},
+   {"name": "chojnice_hall", "player": 2, "type": "to_town_center", "at": [47, 208]},
+   {"player": 2, "type": "to_house", "at": [40, 207]},
+   {"player": 2, "type": "to_house", "at": [57, 210]},
+   {"player": 2, "type": "to_granary", "at": [41, 212]},
+   {"name": "tczew_hall", "player": 2, "type": "to_granary", "at": [78, 99]},
+   {"player": 2, "type": "to_house", "at": [75, 107]},
+   {"player": 2, "type": "to_house", "at": [81, 107]},
+   {"name": "gdansk_hall", "player": 5, "type": "to_town_center", "at": [74, 21]},
+   {"player": 5, "type": "to_house", "at": [68, 30]},
+   {"player": 5, "type": "to_house", "at": [80, 29]},
+   {"player": 5, "type": "to_granary", "at": [69, 19]},
+   {"name": "pelplin", "player": 2, "type": "to_temple", "at": [30, 137]},
+   {"name": "oliwa", "player": 2, "type": "to_temple", "at": [22, 18]},
+   {"name": "suburb_1", "player": 2, "type": "to_house", "at": [57, 96]},
+   {"name": "suburb_2", "player": 2, "type": "to_house", "at": [57, 100]},
+   {"name": "suburb_3", "player": 2, "type": "to_house", "at": [57, 104]},
+   {"name": "suburb_4", "player": 2, "type": "to_house", "at": [57, 108]},
+   {"name": "suburb_5", "player": 2, "type": "to_house", "at": [61, 98]},
+   {"name": "suburb_6", "player": 2, "type": "to_house", "at": [61, 102]},
+   {"name": "suburb_7", "player": 2, "type": "to_house", "at": [61, 106]},
+   {"name": "suburb_8", "player": 2, "type": "to_house", "at": [65, 96]},
+   {"name": "suburb_9", "player": 2, "type": "to_house", "at": [65, 100]},
+   {"name": "suburb_10", "player": 2, "type": "to_house", "at": [65, 104]},
+   {"name": "suburb_11", "player": 2, "type": "to_house", "at": [65, 108]},
+   {"name": "village_1", "player": 2, "type": "to_house", "at": [64, 162]},
+   {"name": "village_2", "player": 2, "type": "to_house", "at": [34, 168]},
+   {"name": "village_3", "player": 2, "type": "to_house", "at": [66, 126]},
+   {"name": "village_4", "player": 2, "type": "to_house", "at": [30, 120]},
+   {"name": "village_5", "player": 2, "type": "to_house", "at": [30, 40]},
+   {"name": "village_6", "player": 2, "type": "to_house", "at": [24, 60]},
+   {"name": "village_7", "player": 2, "type": "to_house", "at": [70, 56]},
+   {"name": "village_8", "player": 2, "type": "to_house", "at": [40, 76]}
+  ],
+  "walls": [
+   {"player": 2, "type": "to_wall", "from": [37, 204], "to": [49, 204]},
+   {"player": 2, "type": "to_wall", "from": [51, 204], "to": [63, 204]},
+   {"player": 2, "type": "to_wall", "from": [37, 216], "to": [63, 216]},
+   {"player": 2, "type": "to_wall", "from": [36, 205], "to": [36, 215]},
+   {"player": 2, "type": "to_wall", "from": [64, 205], "to": [64, 215]},
+   {"player": 2, "type": "to_wall", "from": [73, 94], "to": [85, 94]},
+   {"player": 2, "type": "to_wall", "from": [73, 112], "to": [85, 112]},
+   {"player": 2, "type": "to_wall", "from": [72, 95], "to": [72, 102]},
+   {"player": 2, "type": "to_wall", "from": [72, 104], "to": [72, 111]},
+   {"player": 2, "type": "to_wall", "from": [86, 95], "to": [86, 111]},
+   {"player": 5, "type": "to_wall", "from": [65, 16], "to": [85, 16]},
+   {"player": 5, "type": "to_wall", "from": [65, 36], "to": [74, 36]},
+   {"player": 5, "type": "to_wall", "from": [76, 36], "to": [85, 36]},
+   {"player": 5, "type": "to_wall", "from": [64, 17], "to": [64, 25]},
+   {"player": 5, "type": "to_wall", "from": [64, 27], "to": [64, 35]},
+   {"player": 5, "type": "to_wall", "from": [86, 17], "to": [86, 35]}
+  ],
+  "groups": [
+   {
+    "name": "jasko",
+    "player": 1,
+    "units": [["hero_jasko", 1]],
+    "at": [50, 189]
+   },
+   {
+    "name": "lances",
+    "player": 1,
+    "units": [["pl_kopia", 10]],
+    "at": [54, 186]
+   },
+   {
+    "name": "crossbows",
+    "player": 1,
+    "units": [["pl_crossbow", 8]],
+    "at": [45, 186]
+   },
+   {
+    "name": "foot",
+    "player": 1,
+    "units": [["pl_foot_servant", 8]],
+    "at": [49, 185]
+   },
+   {
+    "name": "priest",
+    "player": 1,
+    "units": [["pl_priest", 1]],
+    "at": [47, 190]
+   },
+   {
+    "name": "servants",
+    "player": 1,
+    "units": [["pl_camp_servant", 3]],
+    "at": [56, 192]
+   },
+   {
+    "name": "wagons",
+    "player": 1,
+    "units": [["pl_wagon", 12]],
+    "at": [44, 191]
+   },
+   {
+    "name": "mikolaj",
+    "player": 3,
+    "stance": "defensive",
+    "units": [["hero_mikolaj_michalow", 1]],
+    "at": [64, 189]
+   },
+   {
+    "name": "crown_horse",
+    "player": 3,
+    "stance": "aggressive",
+    "units": [["pl_kopia", 8], ["pl_light_horse", 6]],
+    "at": [66, 184]
+   },
+   {
+    "name": "capek",
+    "player": 4,
+    "stance": "defensive",
+    "units": [["hero_capek", 1]],
+    "at": [30, 190]
+   },
+   {
+    "name": "orphan_wagons",
+    "player": 4,
+    "stance": "defensive",
+    "units": [["nt_hussite_wagon", 8]],
+    "at": [24, 186]
+   },
+   {
+    "name": "orphans",
+    "player": 4,
+    "stance": "aggressive",
+    "units": [["nt_hussite_flail", 16]],
+    "at": [30, 182]
+   },
+   {
+    "name": "orphan_guns",
+    "player": 4,
+    "stance": "defensive",
+    "units": [["nt_hussite_gun", 3]],
+    "at": [35, 192]
+   },
+   {
+    "name": "orphan_horse",
+    "player": 4,
+    "stance": "aggressive",
+    "units": [["pl_light_horse", 4]],
+    "at": [36, 185]
+   },
+   {
+    "name": "chojnice_garrison",
+    "player": 2,
+    "stance": "stand",
+    "units": [["to_knecht", 6], ["to_crossbow", 6]],
+    "at": [44, 209]
+   },
+   {
+    "name": "tczew_garrison",
+    "player": 2,
+    "stance": "defensive",
+    "units": [["to_knecht", 8], ["to_crossbow", 6]],
+    "at": [76, 101]
+   },
+   {
+    "name": "tczew_czechs",
+    "player": 2,
+    "stance": "defensive",
+    "units": [["to_knecht", 4]],
+    "at": [80, 104]
+   },
+   {
+    "name": "gdansk_guard",
+    "player": 5,
+    "stance": "stand",
+    "units": [["nt_gdansk_militia", 8], ["nt_gdansk_crossbow", 6]],
+    "at": [72, 25]
+   }
+  ]
+ },
+ "rules": {
+  "hunger": {"player": 1, "every_ticks": 600, "units_per_food": 4, "until": "12"},
+  "waves": {
+   "player": 5,
+   "units": [["nt_gdansk_militia", 4], ["nt_gdansk_crossbow", 3]],
+   "at": [61, 26],
+   "to": [52, 46],
+   "every_ticks": 1500
+  },
+  "baltic": {
+   "player": 1,
+   "hussites": 4,
+   "crown": [1, 3],
+   "follow_from": "2",
+   "concord": {"start": 700, "mutiny_ticks": 2400, "reset": 400},
+   "follow": [
+    ["capek", "mikolaj", 10],
+    ["orphans", "capek", 8],
+    ["orphan_wagons", "capek", 8],
+    ["orphan_guns", "capek", 8],
+    ["orphan_horse", "capek", 8],
+    ["crown_horse", "mikolaj", 6]
+   ],
+   "camps": [
+    {"at": [50, 168], "radius": 10},
+    {"at": [50, 140], "radius": 10},
+    {"at": [44, 104], "radius": 10},
+    {"at": [52, 46], "radius": 10}
+   ],
+   "wind": {"rect": [56, 95, 70, 111], "dx": 1, "dy": 0, "reach": 5, "heat_cells": 3, "heat_damage": 3, "gate": "tczew_gate", "burnt": 8},
+   "surrender": {"rect": [73, 95, 85, 111], "groups": ["tczew_garrison", "tczew_czechs"], "from": "7", "every_ticks": 100, "count": 2},
+   "prisoners": {"group": "prisoners", "killers": "barrel", "to": "mikolaj", "radius": 5, "kill_radius": 2, "silver": 15},
+   "forage": {
+    "villages": ["village_1", "village_2", "village_3", "village_4", "village_5", "village_6", "village_7", "village_8"],
+    "radius": 4,
+    "amount": [60, 0, 0, 25]
+   },
+   "chapels": {"radius": 6, "ticks": 300},
+   "hungry": {"every_ticks": 200, "permille": 30},
+   "knighting": {"questions": ["knight_1", "knight_2", "knight_3"], "groups": ["lances", "crossbows", "foot"]}
+  }
+ },
+ "triggers": [
+  {
+   "id": "defeat_jasko",
+   "when": {"type": "group_dead", "group": "jasko"},
+   "do": [
+    {"do": "defeat", "text": "Jaśko has fallen. The march to the sea goes on without him."}
+   ]
+  },
+  {
+   "id": "defeat_mikolaj",
+   "when": {"type": "group_dead", "group": "mikolaj"},
+   "do": [
+    {"do": "defeat", "text": "Mikołaj of Michałów has fallen. Nobody holds the orphans to the common plan any more."}
+   ]
+  },
+  {
+   "id": "defeat_wagons",
+   "when": {"type": "group_alive_at_most", "group": "wagons", "count": 5},
+   "do": [
+    {"do": "defeat", "text": "More than half of the wagons are lost. Without its train the army cannot go on."}
+   ]
+  },
+  {
+   "id": "defeat_concord",
+   "when": {"type": "mutinies", "at_least": 2},
+   "do": [
+    {"do": "defeat", "text": "The concord has broken down twice. The orphans turn their wagons home to Bohemia."}
+   ]
+  },
+  {
+   "id": "1",
+   "when": {"type": "start"},
+   "do": [
+    {"do": "merge", "group": "tczew_all", "of": ["tczew_garrison", "tczew_czechs"]},
+    {"do": "rally", "player": 1, "at": [50, 186]},
+    {
+     "do": "cutscene",
+     "id": "six_weeks",
+     "at": [50, 200],
+     "lines": [
+      ["Chronicler", "Chojnice, the middle of August 1433. The trenches before the wall, the patched breaches. The Czech wagons stand in a ring, by the fire the Czechs are singing. The Crown's camp stands apart."],
+      [
+       "Chronicler",
+       "More than twenty years after Grunwald the king hired the Czechs, the very ones who burned churches at home. Pan Jan said that his great-grandfather Jaśko, grey already, went with them to the sea and to his death could not decide what there was more of in that march: glory or shame."
+      ],
+      ["Chronicler", "Čapek rides out of the Czech wagon fort with two horsemen and goes calmly to the town gate. The gate opens a crack."],
+      ["hero_mikolaj_michalow", "He is off again. Six weeks we have beaten our heads against this wall, and he goes visiting the commander."],
+      ["hero_jasko", "Perhaps he is bargaining for the town."],
+      ["hero_mikolaj_michalow", "Perhaps for himself. Enough. Gather the wagons, pan Jaśko. We go north, where the walls are lower."]
+     ]
+    },
+    {"do": "objective", "id": "leave", "text": "Lift the siege of Chojnice and bring the wagons out without loss"},
+    {"do": "objective", "id": "monks", "text": "Lead the monks of Pelplin out before the fire", "optional": true},
+    {"do": "objective", "id": "chapels", "text": "Set up chapels on all 3 places of power and let the orphans break none", "optional": true},
+    {"do": "objective", "id": "concord_half", "text": "Do not let the concord fall below half", "optional": true},
+    {"do": "objective", "id": "knights", "text": "Have 3 of Jaśko's banners knighted on the shore", "optional": true},
+    {
+     "do": "hint",
+     "text": "Your twelve wagons carry the army's food. Lead them north out of the trenches, to the road by the first camp. Lose more than half of them and the march is over."
+    },
+    {"do": "ping", "at": [50, 178], "radius": 6}
+   ]
+  },
+  {
+   "id": "1b",
+   "when": {"type": "after", "trigger": "1", "ticks": 500},
+   "do": [
+    {
+     "do": "spawn",
+     "group": "fishborn",
+     "player": 2,
+     "stance": "aggressive",
+     "at": [48, 201],
+     "units": [["to_knight_brother", 2], ["to_halfbrother", 4]]
+    },
+    {"do": "attack_move", "group": "fishborn", "to": [45, 192]},
+    {
+     "do": "dialogue",
+     "id": "sortie",
+     "lines": [
+      ["Crown knight", "The gate! The commander sends his horse after the wagons!"],
+      ["hero_jasko", "Of course he does. Lances, between them and the wagons!"]
+     ]
+    },
+    {"do": "ping", "at": [50, 202], "radius": 4}
+   ]
+  },
+  {
+   "id": "leave_lost",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "not", "of": {"type": "fired", "trigger": "2"}},
+     {"type": "group_lost", "group": "wagons"}
+    ]
+   },
+   "do": [
+    {"do": "objective", "id": "leave", "state": "failed"}
+   ]
+  },
+  {
+   "id": "2",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "1"},
+     {"type": "group_near_count", "group": "wagons", "at": [50, 176], "radius": 7, "count": 8}
+    ]
+   },
+   "do": [
+    {"do": "objective", "id": "leave", "state": "done"},
+    {"do": "move", "group": "mikolaj", "to": [52, 165]},
+    {"do": "objective", "id": "camps", "text": "Draw the wagons up into a wagenburg at every camp"},
+    {
+     "do": "dialogue",
+     "id": "wheel_to_wheel",
+     "lines": [
+      ["Czech wagon master", "Not like that, pane! Shaft outward, wheel to wheel, and the chain through the spokes. And in the gap put a handgun, not a knight."],
+      ["hero_jasko", "All my life I have fought with a horse. In my old age I shall fight with a cart."]
+     ]
+    },
+    {
+     "do": "hint",
+     "text": "Stop the wagons at the camp where Mikołaj of Michałów halts, select them and press U: they draw up into a ring. Infantry and shooters inside the ring are better armoured, and a blow in the flank costs them no spirit. In the morning the wagons go back into the column by themselves when you move them."
+    },
+    {"do": "ping", "at": [50, 168], "radius": 8}
+   ]
+  },
+  {
+   "id": "2b",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "2"},
+     {"type": "group_near", "group": "capek", "at": [50, 168], "radius": 10}
+    ]
+   },
+   "do": [
+    {"do": "tabor", "group": "orphan_wagons"}
+   ]
+  },
+  {
+   "id": "3",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "2"},
+     {
+      "type": "any",
+      "of": [
+       {"type": "camp_held", "camp": 0},
+       {"type": "after", "trigger": "2", "ticks": 3600}
+      ]
+     }
+    ]
+   },
+   "do": [
+    {
+     "do": "spawn",
+     "group": "raiders",
+     "player": 2,
+     "stance": "aggressive",
+     "at": [3, 166],
+     "units": [["to_prussian_rider", 6], ["to_halfbrother", 3]]
+    },
+    {"do": "attack_move", "group": "raiders", "to": [48, 168]},
+    {
+     "do": "dialogue",
+     "id": "night_raid",
+     "lines": [
+      ["Chronicler", "Night on the first camp. Beyond the fires horses snort, and the Order's riders come out of the dark onto the wagons."],
+      ["hero_jasko", "To the wagons! Shooters into the gaps!"]
+     ]
+    },
+    {"do": "ping", "at": [6, 166], "radius": 6}
+   ]
+  },
+  {
+   "id": "3b",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "3"},
+     {
+      "type": "any",
+      "of": [
+       {"type": "group_dead", "group": "raiders"},
+       {"type": "after", "trigger": "3", "ticks": 2400}
+      ]
+     }
+    ]
+   },
+   "do": [
+    {"do": "flag", "flag": "dawn_1"},
+    {"do": "move", "group": "raiders", "to": [2, 166]},
+    {"do": "exit", "group": "raiders", "at": [2, 166], "radius": 4},
+    {"do": "move", "group": "mikolaj", "to": [52, 138]},
+    {
+     "do": "dialogue",
+     "id": "dawn",
+     "lines": [["hero_mikolaj_michalow", "Into the column! To Pelplin, and keep the wagons close."]]
+    },
+    {"do": "ping", "at": [50, 140], "radius": 8}
+   ]
+  },
+  {
+   "id": "4",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "3b"},
+     {"type": "near", "player": 1, "unit": "hero_jasko", "at": [40, 140], "radius": 12}
+    ]
+   },
+   "do": [
+    {
+     "do": "spawn",
+     "group": "monks",
+     "player": 1,
+     "stance": "passive",
+     "at": [31, 141],
+     "units": [["nt_villager", 4]]
+    },
+    {
+     "do": "spawn",
+     "group": "burners",
+     "player": 4,
+     "stance": "passive",
+     "at": [42, 152],
+     "units": [["nt_hussite_flail", 6]]
+    },
+    {"do": "move", "group": "burners", "to": [33, 141]},
+    {
+     "do": "cutscene",
+     "id": "pelplin",
+     "at": [32, 139],
+     "lines": [
+      ["Chronicler", "The abbey among its orchards. Czech infantry with torches goes to the gate. A young monk runs out and falls on his knees before the Crown's horsemen."],
+      ["Monk", "Sir knight, you are Christians! Tell them!"],
+      ["hero_jasko", "Talking to them is no use. Take your brothers and as many books as you can carry, and follow me. Quickly."]
+     ]
+    },
+    {"do": "exit", "group": "monks", "at": [50, 140], "radius": 3},
+    {"do": "hint", "text": "Lead the monks (select them) to Mikołaj's camp on the road before the orphans set the abbey alight."},
+    {"do": "ping", "at": [31, 141], "radius": 4}
+   ]
+  },
+  {
+   "id": "4b",
+   "when": {"type": "after", "trigger": "4", "ticks": 1200},
+   "do": [
+    {"do": "ignite", "building": "pelplin"},
+    {
+     "do": "dialogue",
+     "id": "pelplin_burns",
+     "lines": [["Chronicler", "Pelplin burned, that is written down. Whether any of the monks carried books out, is not written. Pan Jan said they did."]]
+    },
+    {"do": "move", "group": "burners", "to": [44, 142]}
+   ]
+  },
+  {
+   "id": "monks_saved",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "not", "of": {"type": "fired", "trigger": "4b"}},
+     {"type": "group_exited", "group": "monks", "count": 3}
+    ]
+   },
+   "do": [
+    {"do": "objective", "id": "monks", "state": "done"}
+   ]
+  },
+  {
+   "id": "monks_lost",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "4b"},
+     {"type": "not", "of": {"type": "fired", "trigger": "monks_saved"}}
+    ]
+   },
+   "do": [
+    {"do": "objective", "id": "monks", "state": "failed"}
+   ]
+  },
+  {
+   "id": "5",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "after", "trigger": "4", "ticks": 400},
+     {"type": "group_near", "group": "mikolaj", "at": [50, 140], "radius": 8}
+    ]
+   },
+   "do": [
+    {"do": "flag", "flag": "concord_shown"},
+    {
+     "do": "dialogue",
+     "id": "boots",
+     "lines": [
+      ["hero_capek", "Pan commander, my men have walked barefoot all the way from Bohemia. The king promised boots and twelve groats. I see four hundred pairs of boots, and I have six thousand men."],
+      ["hero_mikolaj_michalow", "The rest you will take in Tczew."],
+      ["hero_capek", "I will take it. Only do not say afterwards that I took it without asking."]
+     ]
+    },
+    {"do": "ask", "id": "wages_1", "text": "Čapek wants his men's pay. Pay the orphans from Jaśko's chest?", "options": ["Pay 100 silver", "Refuse"]},
+    {
+     "do": "hint",
+     "text": "The «Concord» bar shows how Mikołaj and Čapek stand with each other. Unpaid wages, killed prisoners and quarrels lower it. At zero the orphans stop listening to the common order for a while; twice, and they go home."
+    }
+   ]
+  },
+  {
+   "id": "wages_1_paid",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "chose", "question": "wages_1", "option": 0},
+     {"type": "stock", "player": 1, "res": "silver", "at_least": 100}
+    ]
+   },
+   "do": [
+    {"do": "pay", "player": 1, "cost": [0, 0, 0, 100]},
+    {"do": "concord", "add": 100}
+   ]
+  },
+  {
+   "id": "wages_1_short",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "chose", "question": "wages_1", "option": 0},
+     {"type": "not", "of": {"type": "fired", "trigger": "wages_1_paid"}}
+    ]
+   },
+   "do": [
+    {"do": "concord", "add": -250},
+    {"do": "hint", "text": "There is not silver enough in the chest. Čapek counts it as a refusal."}
+   ]
+  },
+  {
+   "id": "wages_1_refused",
+   "when": {"type": "chose", "question": "wages_1", "option": 1},
+   "do": [
+    {"do": "concord", "add": -300},
+    {
+     "do": "dialogue",
+     "id": "refused",
+     "lines": [["hero_capek", "So. Then my men will pay themselves."]]
+    }
+   ]
+  },
+  {
+   "id": "6go",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "4b"},
+     {"type": "flag", "flag": "camp_1"},
+     {
+      "type": "any",
+      "of": [
+       {"type": "chose", "question": "wages_1", "option": 0},
+       {"type": "chose", "question": "wages_1", "option": 1}
+      ]
+     }
+    ]
+   },
+   "do": [
+    {"do": "move", "group": "mikolaj", "to": [42, 102]},
+    {"do": "move", "group": "burners", "to": [40, 106]},
+    {"do": "hint", "text": "On to Tczew. Mikołaj leads the army to the third camp before the town."},
+    {"do": "ping", "at": [44, 104], "radius": 8}
+   ]
+  },
+  {
+   "id": "6",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "6go"},
+     {"type": "near", "player": 1, "unit": "hero_jasko", "at": [44, 104], "radius": 12}
+    ]
+   },
+   "do": [
+    {
+     "do": "cutscene",
+     "id": "west_wind",
+     "at": [64, 103],
+     "lines": [
+      ["Chronicler", "29 August. Tczew on the high bank of the Vistula. Before the wall a wooden suburb. The wind bends the grass and tugs the banners towards the town."],
+      ["hero_mikolaj_michalow", "See which way it blows? Set the suburb alight from our side, and let the wind carry the fire to their wall itself. We will carry the ladders over the ashes."],
+      ["hero_jasko", "And if the wind changes?"],
+      ["hero_mikolaj_michalow", "Then we will pray quickly."]
+     ]
+    },
+    {"do": "objective", "id": "tczew", "text": "Take Tczew"},
+    {
+     "do": "hint",
+     "text": "The wind blows from the west, towards the wall. Order men to set fire to the westmost houses of the suburb: the fire runs east from house to house, and when the suburb has burned down it takes the town gate. Keep your men out of the smoke east of a fire: it burns whoever stands downwind."
+    },
+    {"do": "ping", "at": [57, 103], "radius": 4},
+    {"do": "ping", "at": [72, 103], "radius": 3}
+   ]
+  },
+  {
+   "id": "6b",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "6"},
+     {"type": "group_near", "group": "capek", "at": [44, 104], "radius": 12}
+    ]
+   },
+   "do": [
+    {"do": "tabor", "group": "orphan_wagons"}
+   ]
+  },
+  {
+   "id": "7",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "6"},
+     {"type": "destroyed", "building": "tczew_gate"}
+    ]
+   },
+   "do": [
+    {
+     "do": "dialogue",
+     "id": "over_the_ashes",
+     "lines": [
+      ["Chronicler", "The gate burns through and falls. The Poles go in over the burning suburb."],
+      ["hero_jasko", "Into the town! Whoever throws down his arms, let him live."]
+     ]
+    },
+    {"do": "hint", "text": "Go into the town. The garrison gives itself up a few at a time while your men stand inside the walls."},
+    {"do": "ping", "at": [79, 103], "radius": 6}
+   ]
+  },
+  {
+   "id": "8",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "6"},
+     {"type": "group_dead", "group": "tczew_all"}
+    ]
+   },
+   "do": [
+    {"do": "objective", "id": "tczew", "state": "done"},
+    {
+     "do": "spawn",
+     "group": "prisoners",
+     "player": 1,
+     "stance": "passive",
+     "at": [78, 102],
+     "units": [["to_knecht", 6]]
+    },
+    {"do": "protect", "group": "prisoners"},
+    {"do": "move", "group": "mikolaj", "to": [62, 104]},
+    {
+     "do": "spawn",
+     "group": "barrel",
+     "player": 4,
+     "stance": "passive",
+     "at": [54, 122],
+     "units": [["nt_hussite_flail", 5]]
+    },
+    {"do": "move", "group": "barrel", "to": [66, 112]},
+    {
+     "do": "cutscene",
+     "id": "prisoners",
+     "at": [78, 103],
+     "lines": [
+      ["Chronicler", "The square of Tczew. The knechts and hirelings of the Order who gave themselves up kneel. Some of them speak Czech. From afar the orphans come with torches and a tar barrel."],
+      ["Czech prisoner", "Pane, we are hirelings, just like them! We were paid, we served!"],
+      ["hero_jasko", "That is exactly what they do not like. Get up and run to the royal banner, before they get here."]
+     ]
+    },
+    {"do": "objective", "id": "prisoners", "text": "Bring the prisoners to Mikołaj of Michałów before the orphans reach them"},
+    {"do": "countdown", "text": "The orphans reach the prisoners: %s", "ticks": 600},
+    {
+     "do": "hint",
+     "text": "Select the prisoners and lead them out of the gate to Mikołaj. Your men can walk beside them, but only the king's commander can stop the orphans."
+    },
+    {"do": "ping", "at": [62, 104], "radius": 3}
+   ]
+  },
+  {
+   "id": "8b",
+   "when": {"type": "after", "trigger": "8", "ticks": 600},
+   "do": [
+    {"do": "prisoners", "on": true},
+    {"do": "countdown", "text": "", "ticks": 0}
+   ]
+  },
+  {
+   "id": "9",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "8"},
+     {"type": "prisoners_left", "at_most": 0}
+    ]
+   },
+   "do": [
+    {"do": "prisoners", "on": false},
+    {"do": "countdown", "text": "", "ticks": 0},
+    {
+     "do": "cutscene",
+     "id": "mikolaj_stops",
+     "at": [62, 104],
+     "lines": [
+      ["Chronicler", "Čapek on his horse before a group of prisoners. Mikołaj of Michałów rides in between them."],
+      ["hero_capek", "These Czechs sold their faith to the Germans. We have our own account with them."],
+      ["hero_mikolaj_michalow", "Your account ended at that barrel. The other prisoners are the king's. If you want them, go and ask the king."],
+      ["Chronicler", "Čapek did burn the Czechs who served the Order, and Mikołaj of Michałów did stop the killing. How many there were, is not written down."]
+     ]
+    },
+    {
+     "do": "spawn",
+     "group": "trophy_wagons",
+     "player": 1,
+     "at": [66, 100],
+     "units": [["pl_wagon", 3]]
+    },
+    {
+     "do": "spawn",
+     "group": "czech_hirelings",
+     "player": 1,
+     "stance": "aggressive",
+     "at": [66, 106],
+     "units": [["nt_hussite_flail", 6]]
+    },
+    {"do": "move", "group": "barrel", "to": [46, 106]},
+    {"do": "hint", "text": "Trophy wagons from Tczew and two banners of Czech hirelings from its garrison have come over to Jaśko."}
+   ]
+  },
+  {
+   "id": "9_ok",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "9"},
+     {"type": "not", "of": {"type": "prisoners_killed", "at_least": 1}}
+    ]
+   },
+   "do": [
+    {"do": "objective", "id": "prisoners", "state": "done"}
+   ]
+  },
+  {
+   "id": "9_bad",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "9"},
+     {"type": "prisoners_killed", "at_least": 1}
+    ]
+   },
+   "do": [
+    {"do": "objective", "id": "prisoners", "state": "failed"},
+    {"do": "concord", "add": -150},
+    {"do": "morale", "group": "lances", "permille": 200},
+    {"do": "morale", "group": "crossbows", "permille": 200},
+    {"do": "morale", "group": "foot", "permille": 200}
+   ]
+  },
+  {
+   "id": "10go",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "9"},
+     {"type": "flag", "flag": "camp_2"}
+    ]
+   },
+   "do": [
+    {"do": "move", "group": "mikolaj", "to": [52, 48]},
+    {"do": "move", "group": "barrel", "to": [50, 52]},
+    {"do": "hint", "text": "North, to Gdańsk. Mikołaj leads the army to the Bishop's hill above the town."},
+    {"do": "ping", "at": [52, 46], "radius": 8}
+   ]
+  },
+  {
+   "id": "10",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "10go"},
+     {"type": "near", "player": 1, "unit": "hero_jasko", "at": [52, 46], "radius": 12}
+    ]
+   },
+   "do": [
+    {
+     "do": "cutscene",
+     "id": "letter",
+     "at": [60, 36],
+     "lines": [
+      ["Chronicler", "1 September. The army stands on the Bishop's hill. Below lies Gdańsk, the biggest town of Prussia, behind its brick walls."],
+      ["hero_mikolaj_michalow", "Write, scribe: to the councillors of Gdańsk. Come to terms with the king, and your villages will stand."],
+      ["hero_capek", "Write what you like. My men are hungry."]
+     ]
+    },
+    {"do": "waves", "on": true},
+    {
+     "do": "spawn",
+     "group": "foragers",
+     "player": 4,
+     "stance": "aggressive",
+     "at": [54, 54],
+     "units": [["nt_hussite_flail", 6]]
+    },
+    {"do": "attack_move", "group": "foragers", "to": [71, 57]},
+    {
+     "do": "hint",
+     "text": "The townsmen come out against the hill. The villages round about still have food and silver: whoever comes first takes it. The orphans do not wait, and what they plunder they burn."
+    },
+    {"do": "ping", "at": [71, 57], "radius": 3},
+    {"do": "ping", "at": [41, 77], "radius": 3},
+    {"do": "ping", "at": [25, 61], "radius": 3},
+    {"do": "ping", "at": [31, 41], "radius": 3}
+   ]
+  },
+  {
+   "id": "10b",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "10"},
+     {"type": "group_near", "group": "capek", "at": [52, 46], "radius": 12}
+    ]
+   },
+   "do": [
+    {"do": "tabor", "group": "orphan_wagons"}
+   ]
+  },
+  {
+   "id": "10c",
+   "when": {"type": "after", "trigger": "10", "ticks": 900},
+   "do": [
+    {"do": "attack_move", "group": "foragers", "to": [41, 77]}
+   ]
+  },
+  {
+   "id": "10d",
+   "when": {"type": "after", "trigger": "10", "ticks": 1800},
+   "do": [
+    {"do": "attack_move", "group": "foragers", "to": [25, 61]}
+   ]
+  },
+  {
+   "id": "10e",
+   "when": {"type": "after", "trigger": "10", "ticks": 2700},
+   "do": [
+    {"do": "attack_move", "group": "foragers", "to": [31, 41]}
+   ]
+  },
+  {
+   "id": "11",
+   "when": {"type": "after", "trigger": "10", "ticks": 3600},
+   "do": [
+    {"do": "ignite", "building": "oliwa"},
+    {"do": "ping", "at": [23, 19], "radius": 4},
+    {
+     "do": "dialogue",
+     "id": "oliwa",
+     "lines": [
+      ["Priest", "Oliwa is burning. There is the abbey, pan Jaśko, there are holy relics."],
+      ["hero_jasko", "I know, father. Pray for those who are there, and I will pray that we are not asked about it."]
+     ]
+    },
+    {
+     "do": "dialogue",
+     "id": "boots_again",
+     "lines": [["hero_capek", "Gdańsk does not pay, the villages are burned. My men want their wages, pan commander, and they want them now."]]
+    },
+    {"do": "ask", "id": "wages_2", "text": "Čapek asks for his men's pay again. Pay the orphans?", "options": ["Pay 100 silver", "Refuse"]}
+   ]
+  },
+  {
+   "id": "wages_2_paid",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "chose", "question": "wages_2", "option": 0},
+     {"type": "stock", "player": 1, "res": "silver", "at_least": 100}
+    ]
+   },
+   "do": [
+    {"do": "pay", "player": 1, "cost": [0, 0, 0, 100]},
+    {"do": "concord", "add": 100}
+   ]
+  },
+  {
+   "id": "wages_2_short",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "chose", "question": "wages_2", "option": 0},
+     {"type": "not", "of": {"type": "fired", "trigger": "wages_2_paid"}}
+    ]
+   },
+   "do": [
+    {"do": "concord", "add": -250},
+    {"do": "hint", "text": "There is not silver enough in the chest. Čapek counts it as a refusal."}
+   ]
+  },
+  {
+   "id": "wages_2_refused",
+   "when": {"type": "chose", "question": "wages_2", "option": 1},
+   "do": [
+    {"do": "concord", "add": -300},
+    {
+     "do": "dialogue",
+     "id": "refused_2",
+     "lines": [["hero_capek", "Then do not ask where my men find their pay."]]
+    }
+   ]
+  },
+  {
+   "id": "11b",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "11"},
+     {"type": "flag", "flag": "camp_3"},
+     {
+      "type": "any",
+      "of": [
+       {"type": "chose", "question": "wages_2", "option": 0},
+       {"type": "chose", "question": "wages_2", "option": 1}
+      ]
+     }
+    ]
+   },
+   "do": [
+    {"do": "waves", "on": false},
+    {"do": "objective", "id": "camps", "state": "done"},
+    {"do": "objective", "id": "sea", "text": "Ride down to the sea at Oliwa"},
+    {"do": "move", "group": "mikolaj", "to": [40, 14]},
+    {"do": "hint", "text": "To the sea. The shore at Oliwa is north-west of the hill."},
+    {"do": "ping", "at": [46, 12], "radius": 8}
+   ]
+  },
+  {
+   "id": "12",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "11b"},
+     {"type": "near", "player": 1, "unit": "hero_jasko", "at": [46, 12], "radius": 8}
+    ]
+   },
+   "do": [
+    {"do": "objective", "id": "sea", "state": "done"},
+    {
+     "do": "cutscene",
+     "id": "sea_water",
+     "at": [46, 8],
+     "lines": [
+      [
+       "Chronicler",
+       "4 September. The shore at Oliwa, the grey sea to the horizon. The army comes out onto the sand. First they are silent. Then somebody rides into the water on his horse, and dozens after him. They laugh, splash, the knights fight a duel in the shallows. Čapek on his horse stands in the water up to its belly."
+      ],
+      [
+       "Chronicler",
+       "The Prussian Bitschin writes that Čapek rode into the sea and made a speech beginning with the words: «Behold, brothers, I bear witness to you…» But Bitschin called Čapek a robber and could put anything in his mouth. That they filled bottles with the water and carried them home, everyone writes."
+      ],
+      ["hero_mikolaj_michalow", "On your knees, gentlemen! Whoever has come to the sea shall rise a knight."]
+     ]
+    },
+    {
+     "do": "ask",
+     "id": "knight_1",
+     "text": "Mikołaj touches the kneeling men's shoulders with his sword. Which of Jaśko's banners kneels first?",
+     "options": ["The lances", "The crossbowmen", "The foot servants", "Nobody more"]
+    }
+   ]
+  },
+  {
+   "id": "knight_2_asked",
+   "when": {
+    "type": "any",
+    "of": [
+     {"type": "chose", "question": "knight_1", "option": 0},
+     {"type": "chose", "question": "knight_1", "option": 1},
+     {"type": "chose", "question": "knight_1", "option": 2}
+    ]
+   },
+   "do": [
+    {
+     "do": "ask",
+     "id": "knight_2",
+     "text": "Which banner kneels next?",
+     "options": ["The lances", "The crossbowmen", "The foot servants", "Nobody more"]
+    }
+   ]
+  },
+  {
+   "id": "knight_3_asked",
+   "when": {
+    "type": "any",
+    "of": [
+     {"type": "chose", "question": "knight_2", "option": 0},
+     {"type": "chose", "question": "knight_2", "option": 1},
+     {"type": "chose", "question": "knight_2", "option": 2}
+    ]
+   },
+   "do": [
+    {
+     "do": "ask",
+     "id": "knight_3",
+     "text": "Which banner kneels next?",
+     "options": ["The lances", "The crossbowmen", "The foot servants", "Nobody more"]
+    }
+   ]
+  },
+  {
+   "id": "knights_done",
+   "when": {
+    "type": "any",
+    "of": [
+     {"type": "chose", "question": "knight_1", "option": 3},
+     {"type": "chose", "question": "knight_2", "option": 3},
+     {"type": "chose", "question": "knight_3", "option": 0},
+     {"type": "chose", "question": "knight_3", "option": 1},
+     {"type": "chose", "question": "knight_3", "option": 2},
+     {"type": "chose", "question": "knight_3", "option": 3}
+    ]
+   },
+   "do": [
+    {"do": "hint", "text": "Evening. Jaśko goes alone to the big boulder on the shore with a clay bottle."},
+    {"do": "ping", "at": [47, 11], "radius": 3}
+   ]
+  },
+  {
+   "id": "knights_3",
+   "when": {"type": "knighted", "at_least": 3},
+   "do": [
+    {"do": "objective", "id": "knights", "state": "done"}
+   ]
+  },
+  {
+   "id": "knights_short",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "knights_done"},
+     {"type": "not", "of": {"type": "knighted", "at_least": 3}}
+    ]
+   },
+   "do": [
+    {"do": "objective", "id": "knights", "state": "failed"}
+   ]
+  },
+  {
+   "id": "13",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "knights_done"},
+     {"type": "near", "player": 1, "unit": "hero_jasko", "at": [47, 11], "radius": 3}
+    ]
+   },
+   "do": [
+    {
+     "do": "spawn",
+     "group": "stranger",
+     "player": 3,
+     "stance": "passive",
+     "untouchable": true,
+     "at": [49, 10],
+     "units": [["hero_stranger", 1]]
+    },
+    {
+     "do": "cutscene",
+     "id": "second_bottle",
+     "at": [47, 11],
+     "lines": [
+      ["Chronicler", "Evening. Jaśko alone by a big boulder on the shore fills a clay bottle with sea water. Beside him, as if he had always sat there, a man in a red kaftan."],
+      ["hero_stranger", "Twenty-three years, pan Jaśko. You have gone grey, and I have not. Pour one for me too."],
+      ["hero_jasko", "Is this the payment?"],
+      ["hero_stranger", "This is the interest. Sea water is dear at home: nobody drinks it and nobody pours it out. A debt stays a debt."],
+      ["Chronicler", "Jaśko silently fills a second bottle and puts it on the boulder. He looks round at the army. When he looks again, the boulder is empty."],
+      ["Chronicler", "In their family, pan Jan said, they kept a bottle of Baltic water. Jaśko brought two, and at home took out one and explained nothing."]
+     ]
+    },
+    {"do": "exit", "group": "stranger", "at": [49, 10], "radius": 4}
+   ]
+  },
+  {
+   "id": "concord_low",
+   "when": {"type": "concord", "at_most": 499},
+   "do": [
+    {"do": "objective", "id": "concord_half", "state": "failed"}
+   ]
+  },
+  {
+   "id": "concord_kept",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "fired", "trigger": "13"},
+     {"type": "not", "of": {"type": "fired", "trigger": "concord_low"}}
+    ]
+   },
+   "do": [
+    {"do": "objective", "id": "concord_half", "state": "done"}
+   ]
+  },
+  {
+   "id": "chapels",
+   "when": {
+    "type": "all",
+    "of": [
+     {"type": "places_held", "player": 1, "count": 3},
+     {"type": "not", "of": {"type": "flag", "flag": "chapel_broken"}}
+    ]
+   },
+   "do": [
+    {"do": "objective", "id": "chapels", "state": "done"}
+   ]
+  },
+  {
+   "id": "chapel_broken",
+   "when": {"type": "flag", "flag": "chapel_broken"},
+   "do": [
+    {"do": "objective", "id": "chapels", "state": "failed"},
+    {
+     "do": "dialogue",
+     "id": "chapel_broken",
+     "lines": [["Priest", "Pan Jaśko! The orphans have thrown down our chapel. Nobody of ours was by it."]]
+    }
+   ]
+  },
+  {
+   "id": "mutiny",
+   "when": {"type": "flag", "flag": "mutiny"},
+   "do": [
+    {
+     "do": "dialogue",
+     "id": "mutiny",
+     "lines": [["hero_capek", "Enough! My men listen to nobody now. Let the commander fight his war himself."]]
+    },
+    {
+     "do": "hint",
+     "text": "The concord has fallen to nothing: for a while the orphans stand where they are and follow nobody. If it happens again, they go home."
+    }
+   ]
+  },
+  {
+   "id": "mutiny_over",
+   "when": {"type": "flag", "flag": "mutiny_over"},
+   "do": [
+    {
+     "do": "dialogue",
+     "id": "mutiny_over",
+     "lines": [["hero_mikolaj_michalow", "Well, Jan? Have your men had their fill of standing about?"], ["hero_capek", "They have. We go on. For now."]]
+    }
+   ]
+  },
+  {
+   "id": "starving",
+   "when": {"type": "flag", "flag": "starving"},
+   "do": [
+    {"do": "hint", "text": "The wagons are empty: without food Jaśko's men lose heart. Take food from the villages before the orphans do."}
+   ]
+  },
+  {
+   "id": "pact",
+   "when": {"type": "cast", "player": 1, "spell": "sp_pact"},
+   "do": [
+    {"do": "flag", "flag": "pact"}
+   ]
+  },
+  {
+   "id": "14",
+   "when": {"type": "after", "trigger": "13", "ticks": 300},
+   "do": [
+    {
+     "do": "cutscene",
+     "id": "truce",
+     "at": [50, 60],
+     "lines": [
+      ["Chronicler", "The army goes south across the reaped fields. The Czech wagons creak; on one of them someone's trophy church vestments, tied on in place of a cover, are burning."],
+      ["hero_jasko", "We did not take Chojnice, we did not take Gdańsk, we burned Tczew. What are we taking home, pan Mikołaj?"],
+      ["hero_mikolaj_michalow", "Water in bottles. And a truce. The Order has understood that we can come to the sea and go back."],
+      ["Chronicler", "On 13 September a truce was made at Jasieniec, and in December at Łęczyca it was extended for twelve years. Twenty-one years later Jaśko went to Prussia again, and that time he did not take the bottle with him."]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "victory",
+   "when": {"type": "after", "trigger": "14", "ticks": 100},
+   "do": [
+    {"do": "victory", "text": "The army has come to the sea. The Order agrees to a truce."}
+   ]
+  }
+ ]
+}

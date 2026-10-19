@@ -41,8 +41,8 @@ extends RefCounted
 ##   destroy {building}; name_built {player, base, name} (names the player's newest finished
 ##   building of that kind); assault {group, building, else?} (storm a named building, or
 ##   attack-move to `else` when it is gone).
-##   ВКЛ 4–8, Корона 1–2: MissionMarch, MissionRetreat, MissionStealth, MissionSiege,
-##   MissionBattle, MissionField, MissionBesiege. Setup
+##   ВКЛ 4–8, Корона 1–3: MissionMarch, MissionRetreat, MissionStealth, MissionSiege,
+##   MissionBattle, MissionField, MissionBesiege, MissionBaltic. Setup
 ## may also give sides {player: lead player}, age, pop {player: places}, power, props, buildings
 ## turned:true. Rules: hunger, boats, blockade, banner and those of the mission modules.
 
@@ -132,13 +132,15 @@ var raids := 0
 var countdown_text := ""
 var countdown_end := -1
 ## ВКЛ 5: the bridge, the ford, the rescue and the waves (MissionRetreat); ВКЛ 6: the watch;
-## ВКЛ 7: the siege; ВКЛ 8: the crossing and the battle.
+## ВКЛ 7: the siege; ВКЛ 8: the crossing and the battle; Корона 1–3: the field, the siege of
+## Malbork and the march to the sea.
 var retreat := MissionRetreat.new()
 var stealth := MissionStealth.new()
 var siege := MissionSiege.new()
 var battle := MissionBattle.new()
 var field := MissionField.new()
 var besiege := MissionBesiege.new()
+var baltic := MissionBaltic.new()
 var outcome := Outcome.NONE
 var outcome_text := ""
 ## What the interface shows, in order: {kind, tick, ...} (kind: objective, hint, dialogue,
@@ -172,7 +174,7 @@ func is_over() -> bool:
 
 ## The mission modules with state, in the order they set up, step and hash.
 func _modules() -> Array[RefCounted]:
-	return [retreat, stealth, siege, battle, field, besiege]
+	return [retreat, stealth, siege, battle, field, besiege, baltic]
 
 
 # --- setup ----------------------------------------------------------------------------------
@@ -406,21 +408,23 @@ func test(c: Dictionary, tid: String, tick: int) -> bool:
 			ok = counters[tid] >= int(c["ticks"])
 		_ when MissionMarch.CONDITIONS.has(c["type"]):
 			ok = MissionMarch.test(self, c)
-		_ when MissionRetreat.CONDITIONS.has(c["type"]):
-			ok = retreat.test(self, c)
-		_ when MissionStealth.CONDITIONS.has(c["type"]):
-			ok = stealth.test(self, c)
-		_ when MissionSiege.CONDITIONS.has(c["type"]):
-			ok = siege.test(self, c)
-		_ when MissionBattle.CONDITIONS.has(c["type"]):
-			ok = battle.test(self, c)
-		_ when MissionField.CONDITIONS.has(c["type"]):
-			ok = field.test(self, c)
-		_ when MissionBesiege.CONDITIONS.has(c["type"]):
-			ok = besiege.test(self, c)
 		_:
-			push_warning("mission %s: unknown condition %s" % [def.id, c["type"]])
+			var mod := _module_for(c["type"], &"CONDITIONS")
+			if mod != null:
+				ok = mod.call(&"test", self, c)
+			else:
+				push_warning("mission %s: unknown condition %s" % [def.id, c["type"]])
 	return ok
+
+
+## The mission module whose CONDITIONS or ACTIONS (`list`) name `what`, or null.
+func _module_for(what: String, list: StringName) -> RefCounted:
+	for mod in _modules():
+		var script: Script = mod.get_script()
+		var names: Array = script.get_script_constant_map()[list]
+		if names.has(what):
+			return mod
+	return null
 
 
 func run(a: Dictionary, tick: int) -> void:
@@ -531,20 +535,12 @@ func run(a: Dictionary, tick: int) -> void:
 				run({"do": "attack_move", "group": a["group"], "to": a["else"]}, tick)
 		_ when MissionMarch.ACTIONS.has(a["do"]):
 			MissionMarch.run(self, a, tick)
-		_ when MissionRetreat.ACTIONS.has(a["do"]):
-			retreat.run(self, a, tick)
-		_ when MissionStealth.ACTIONS.has(a["do"]):
-			stealth.run(self, a, tick)
-		_ when MissionSiege.ACTIONS.has(a["do"]):
-			siege.run(self, a, tick)
-		_ when MissionBattle.ACTIONS.has(a["do"]):
-			battle.run(self, a, tick)
-		_ when MissionField.ACTIONS.has(a["do"]):
-			field.run(self, a, tick)
-		_ when MissionBesiege.ACTIONS.has(a["do"]):
-			besiege.run(self, a, tick)
 		_:
-			push_warning("mission %s: unknown action %s" % [def.id, a["do"]])
+			var mod := _module_for(a["do"], &"ACTIONS")
+			if mod != null:
+				mod.call(&"run", self, a, tick)
+			else:
+				push_warning("mission %s: unknown action %s" % [def.id, a["do"]])
 
 
 func _objective(a: Dictionary, tick: int) -> void:

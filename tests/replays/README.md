@@ -21,6 +21,7 @@ and fail on the first checkpoint whose hash differs, on Linux and Windows alike.
 | `gdl08_playthrough.json` | `OrshaBot` plays «ВКЛ 8. Орша, 1514» (normal) from the start to victory: both bridges laid at night without the alarm, the court banners held, the false retreat onto the hidden guns, Chelyadnin taken and the Muscovite camp stormed, 19 931 ticks (16:36); checkpoints every 200 ticks. Also required to end in victory |
 | `crown01_playthrough.json` | `CrownGrunwaldBot` plays «Корона 1. Грюнвальд, 1410» (normal) from the start to victory: waits out the heat in the grove, meets the Order's right wing, rides Jaśko to the fallen great banner, calls «The Pact» against the Grand Master's reserve by the king's hill and storms the wagenburg, 18 871 ticks (15:43); checkpoints every 200 ticks. Also required to end in victory |
 | `crown02_playthrough.json` | `MalborkBot` plays «Корона 2. Мальборк, 1410» (normal) from the start to victory: four batteries east of the castle out of its towers' reach, the town wall, the guard against the night sorties of the Gdańsk shipmen and the forge for the spiked guns, the lances with the towns' envoys, the lazaret against the plague and the bombards to Sztum, 26 281 ticks (21:54); checkpoints every 200 ticks. Also required to end in victory |
+| `crown03_playthrough.json` | `BalticBot` plays «Корона 3. Балтийская вода, 1433» (normal) from the start to victory: the wagons out of the Chojnice trenches, a wagenburg at each of the four camps, the monks of Pelplin led out, the orphans paid twice, the suburb of Tczew fired from the west so the wind carries the fire to the gate, the prisoners brought to Mikołaj, the villages foraged before the orphans, three banners knighted on the shore and the stranger at the boulder, 18 311 ticks (15:15); checkpoints every 200 ticks. Also required to end in victory |
 
 ## When a replay fails
 
@@ -58,6 +59,8 @@ $GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission crown_01 \
   --out tests/replays/crown01_playthrough.json
 $GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission crown_02 \
   --out tests/replays/crown02_playthrough.json
+$GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission crown_03 \
+  --out tests/replays/crown03_playthrough.json
 ```
 
 The mission replay is recorded by the bot, so a change to the mission, its map or the rules can
