@@ -35,6 +35,9 @@ var salt_acc := 0
 var power := 0
 ## Units, buildings, techs and ages a mission does not allow yet (M9), by id.
 var locked: Dictionary[StringName, bool] = {}
+## Campaign-only buildings the mission lets the player build all the same (Корона 2: the
+## infirmary), by id.
+var allowed: Dictionary[StringName, bool] = {}
 ## Unit stat changes from techs: "<class or unit id>.<stat>" -> sum.
 var unit_mods: Dictionary[StringName, int] = {}
 ## Match statistics (M8, the end screen): units trained, lost (any way) and killed (enemy units

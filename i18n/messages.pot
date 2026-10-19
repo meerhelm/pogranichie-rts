@@ -76,8 +76,24 @@ msgstr ""
 msgid "1. You start with «%s», 5 peasants and room for 5 people only."
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "10 August."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "19 September. The king's tent. The lords are tired, many of them with yellowed faces."
+msgstr ""
+
 #: ui/help_panel.gd
 msgid "2. Send peasants to the forest, then build «%s»: +5 population."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "25 July. After Grunwald everyone thought the Order was finished. Pan Jan said his great-grandfather thought so too, until he saw Malbork. Plauen burned his own town the day before we came, so that we would have nowhere to pitch a tent."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "26 July, evening. Ladders are set against the town wall. A knight with the Grzymała arms is the first to get over the battlements."
 msgstr ""
 
 #: ui/help_panel.gd
@@ -106,6 +122,10 @@ msgstr ""
 
 #: ui/tips.gd
 msgid "A brother priest: consecrates the land and casts the Order's spells."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "A burned wall has fallen. The ones still standing fall the same way: keep the batteries' guard away from them."
 msgstr ""
 
 #: ui/tips.gd
@@ -208,6 +228,14 @@ msgstr ""
 msgid "A priest: sets up the wayside cross and the chapel, heals those around him and casts the Crown's spells."
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "A shipman who stays by a bombard for 8 seconds spikes it, and it fires no more. A smith mends a spiked bombard: build a field forge and bring the gun to it."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "A shot. The ball strikes the wall above the window and sticks there."
+msgstr ""
+
 #: ui/unit_card.gd
 msgid "A shrine stands on it"
 msgstr ""
@@ -246,6 +274,10 @@ msgstr ""
 
 #: ui/tips.gd
 msgid "A tower with three or four archers shooting at enemies in range. Palisades and walls join onto it."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "A town that swears will feed us. A town that does not get here will feed Plauen."
 msgstr ""
 
 #: ui/tips.gd
@@ -441,6 +473,10 @@ msgstr ""
 msgid "Andrei's men are thrown back into the Dnieper."
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Another lord"
+msgstr ""
+
 #: missions/gdl_03/mission.json
 msgid "Archbishop Jan"
 msgstr ""
@@ -595,6 +631,18 @@ msgstr ""
 msgid "Bogurodzica, dziewica..."
 msgstr ""
 
+#: ui/mission_panel.gd
+msgid "Bombards brought to Sztum: %d"
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Bombards cross the canal and the streams only by the roads. The garrison will come out after you: cover the tail of the column."
+msgstr ""
+
+#: ui/mission_panel.gd
+msgid "Bombards spiked: %d"
+msgstr ""
+
 #: missions/gdl_08/mission.json
 msgid "Both bridges stand. The foot and the guns are going over them."
 msgstr ""
@@ -651,6 +699,10 @@ msgstr ""
 msgid "Bring out the banner that lost its standard-bearer"
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Bring the towns' envoys to the king's tent"
+msgstr ""
+
 #: missions/gdl_05/mission.json
 msgid "Bring your men and the banner back over the river"
 msgstr ""
@@ -661,6 +713,10 @@ msgstr ""
 
 #: ui/tips.gd
 msgid "Brother priests: +50% HP; Exorcism reaches 2 cells farther."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Brother, there is the bloody flux in my camp. I will not lead my men to die of the flux under walls that cannot be taken."
 msgstr ""
 
 #: ui/end_screen.gd
@@ -686,6 +742,10 @@ msgstr ""
 
 #: missions/gdl_03/mission.json
 msgid "Build a wooden church"
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Build chapels on both places of power"
 msgstr ""
 
 #: missions/gdl_03/mission.json
@@ -801,6 +861,7 @@ msgid "Choose a country"
 msgstr ""
 
 #: missions/crown_01/mission.json
+#: missions/crown_02/mission.json
 #: missions/gdl_01/mission.json
 #: missions/gdl_02/mission.json
 #: missions/gdl_03/mission.json
@@ -861,6 +922,7 @@ msgstr ""
 msgid "Crown 1. Grunwald, 1410"
 msgstr ""
 
+#: missions/crown_02/mission.json
 #: ui/campaign_progress.gd
 msgid "Crown 2. Malbork, 1410"
 msgstr ""
@@ -895,6 +957,10 @@ msgstr ""
 
 #: missions/gdl_03/mission.json
 msgid "Cut down the oak"
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Cut off and take a party of Gdańsk shipmen captive"
 msgstr ""
 
 #: ui/tips.gd
@@ -991,12 +1057,24 @@ msgstr ""
 msgid "Dubysa need not be stormed. Hold the road up the Dubysa, the river road and the Neman bank with no enemies near them: cut off, the garrison weakens from sickness and hunger."
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Długosz writes that a ball from the castle brought the wall of a burned house down on ours, and twenty knights lay under it. They were guarding the gun and did not look at the wall."
+msgstr ""
+
 #: ui/tips.gd
 msgid "Each field holds more food: +50%."
 msgstr ""
 
 #: missions/gdl_04/mission.json
 msgid "Eight lances from Podlasie have come. Men on the march are weak in armour and spirit until they form up, 20–30 seconds after the first blow. Hold the road in the column's middle for a minute and it falls in two."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Elbląg and Toruń have sent powder and two more bombards."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Envoys are riding from Gdańsk, from Toruń, from Elbląg and from Braniewo! Meet them and bring them to the king with honour!"
 msgstr ""
 
 #: game/arena/arena.gd
@@ -1035,6 +1113,10 @@ msgstr ""
 msgid "Fall back to the forest without losing Gintaut's banner"
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Far from their gate the shipmen can be cut off: beaten down out there, they give themselves up."
+msgstr ""
+
 #: missions/gdl_03/mission.json
 msgid "Father Stanisław"
 msgstr ""
@@ -1051,12 +1133,20 @@ msgstr ""
 msgid "Feed the village through the summer, take back the sacred grove from the Order, then burn the castle of Skirsnemune and hold Dubysa in blockade."
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Fewer than 4 bombards come to Sztum"
+msgstr ""
+
 #: missions/gdl_05/mission.json
 msgid "Fewer than 5 units come back over the river"
 msgstr ""
 
 #: missions/gdl_05/mission.json
 msgid "Fewer than five units came back over the Trosna. Andrei's banner is no more."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Fewer than four bombards have come to Sztum. The rest are left to the Order."
 msgstr ""
 
 #: ui/tips.gd
@@ -1185,6 +1275,10 @@ msgstr ""
 msgid "Forward, at the marshal!"
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Four trophy bombards are coming up from the king's camp. They are slow; set them up on the batteries."
+msgstr ""
+
 #: missions/gdl_03/mission.json
 msgid "Fourteen hundred and fifteen. Winter."
 msgstr ""
@@ -1285,6 +1379,14 @@ msgstr ""
 msgid "Gathers resources and builds."
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Gdańsk shipmen. Do not chase them to the gates. Let them run far out by themselves, then we cut them off."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "German bombards, from Grunwald. We will give them back their own balls."
+msgstr ""
+
 #: ui/command_panel.gd
 msgid "Get down and lead the horses at a walk: quiet, and the horses rest. Again: ride."
 msgstr ""
@@ -1367,6 +1469,10 @@ msgstr ""
 msgid "Go, then. While this lasts, we will not come to your new house."
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Go. I will sit here a while longer."
+msgstr ""
+
 #: ui/help_panel.gd
 #: ui/mission_briefing.gd
 msgid "Goal"
@@ -1396,6 +1502,10 @@ msgstr ""
 msgid "Guest knights taken captive: %d"
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Gunner"
+msgstr ""
+
 #: ui/tips.gd
 msgid "HP %d"
 msgstr ""
@@ -1410,6 +1520,10 @@ msgstr ""
 
 #: missions/gdl_08/mission.json
 msgid "He closes the book. Outside the window the wind rocks an old oak."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "He gets up and goes into the dark. Jaśko looks at the castle."
 msgstr ""
 
 #: ui/tips.gd
@@ -1561,6 +1675,10 @@ msgstr ""
 msgid "I am of the Ruthenian faith too. And how long has Prince Michael been of it?"
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "I did not make that up, Długosz writes so."
+msgstr ""
+
 #: missions/gdl_06/mission.json
 msgid "I kissed the cross in captivity, and I break it myself. Nobody released me and nobody will excuse me. Ask it of me alone."
 msgstr ""
@@ -1595,6 +1713,10 @@ msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "In August Master Ulrich declared war on King Jogaila and marched on Dobrzyń. In autumn they made a truce until Midsummer Day. All winter both sides forged spears. And our great-grandfather rode beyond the Neman for the first time in his life."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "In December Plauen wrote that had we stood another fifteen days, his garrison would have died of hunger. Fifteen days. For forty-seven years afterwards the Crown paid for those fifteen days, in blood and in silver. And Jaśko, pan Jan said, could never eat boiled wheat until old age, though it was eaten in the castle and not by us."
 msgstr ""
 
 #: missions/gdl_07/mission.json
@@ -1714,6 +1836,10 @@ msgstr ""
 msgid "It will be ours. By peace, not by the sword. With the sword we have done all we could."
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Jakub's men are over the wall and will open the gate from inside. Go into the town after them, to St John's church under the castle wall."
+msgstr ""
+
 #: missions/gdl_03/mission.json
 msgid "Jan. So be it. Only my grandfather called me Gintaut, and the grove knows me by that name."
 msgstr ""
@@ -1722,8 +1848,17 @@ msgstr ""
 msgid "Javelin: %d damage at %d cells, every %d s"
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Jaśko by the battery. In one of the windows of the great hall something red flashes. The gunner hastily lays the barrel."
+msgstr ""
+
 #: missions/crown_01/mission.json
+#: missions/crown_02/mission.json
 msgid "Jaśko falls"
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Jaśko falls under the walls of Malbork."
 msgstr ""
 
 #: missions/crown_01/mission.json
@@ -1766,6 +1901,14 @@ msgstr ""
 msgid "Keep peasants working near the church: every ten seconds it baptizes one of them."
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Keep the batteries firing; do not let the garrison spike more than half the bombards"
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Keep the camp up the water. And set up an infirmary, even if it is of wagons."
+msgstr ""
+
 #: ui/end_screen.gd
 msgid "Keep watching"
 msgstr ""
@@ -1776,6 +1919,14 @@ msgstr ""
 
 #: missions/crown_01/mission.json
 msgid "King! The Master sends you a sword, if you are short of your own. And if you are cramped, we will draw back and give you the field."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "King's herald"
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "King's messenger"
 msgstr ""
 
 #: missions/gdl_04/mission.json
@@ -1882,12 +2033,20 @@ msgstr ""
 msgid "Let them roast. My horse is borrowed, I am in no hurry."
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Let them sit. We will come again."
+msgstr ""
+
 #: missions/gdl_08/mission.json
 msgid "Let them. By the time they come back the bridges must stand."
 msgstr ""
 
 #: ui/ui_text.gd
 msgid "Line"
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Lithuania leaves. After it the Masovian dukes strike camp."
 msgstr ""
 
 #: ui/command_panel.gd
@@ -1901,6 +2060,10 @@ msgstr ""
 
 #: ui/help_panel.gd
 msgid "Lithuanian troops can feign a retreat (T) and turn around (G)."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Live through the plague: do not let it reach its limit"
 msgstr ""
 
 #: ui/main_menu.gd
@@ -1918,6 +2081,10 @@ msgstr ""
 
 #: missions/gdl_04/mission.json
 msgid "Lord Gintovt, your banner stands closest to the water. Nobody crosses to that side without my word. And nobody comes over from there either."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Lord of the council"
 msgstr ""
 
 #: missions/gdl_05/mission.json
@@ -1945,6 +2112,10 @@ msgstr ""
 msgid "Main menu"
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Malbork (Marienburg) on the Nogat, Prussia. 25 July – 19 September 1410."
+msgstr ""
+
 #: missions/crown_01/mission.json
 msgid "Many hands raised the banner, and whose, nobody wrote down. Pan Jan insisted that one of them was his great-grandfather's. And of the other, in the red sleeve, his family did not like to speak."
 msgstr ""
@@ -1959,6 +2130,10 @@ msgstr ""
 
 #: missions/gdl_05/mission.json
 msgid "Men are drowning in the ford! Send them across two at a time."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Men in short jackets run out of a side gate, without armour, with axes and boathooks. They roar a song and run straight at the guns."
 msgstr ""
 
 #: ui/hud.gd
@@ -2061,6 +2236,7 @@ msgid "Needs forest nearby"
 msgstr ""
 
 #: missions/crown_01/mission.json
+#: missions/crown_02/mission.json
 msgid "Neighbouring knight"
 msgstr ""
 
@@ -2078,6 +2254,10 @@ msgstr ""
 
 #: missions/gdl_06/mission.json
 msgid "Never raise the alarm"
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Never use «The Pact»"
 msgstr ""
 
 #: ui/tips.gd
@@ -2102,6 +2282,14 @@ msgstr ""
 
 #: missions/gdl_06/mission.json
 msgid "Night again. The bog is near: the road goes round it to the south, past the watch."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Night by the battery. A campfire. Jaśko is cleaning the barrel of a bombard alone. Out of the dark comes a man in a red kaftan and sits on the gun carriage as on a bench."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Night. The defenders throw beams and stones into the breach. A glow rises over the Nogat: the bridge is burning."
 msgstr ""
 
 #: missions/gdl_06/mission.json
@@ -2175,6 +2363,10 @@ msgstr ""
 msgid "Not enough wood for the next section of the bridge. The wagons at the camp bring wood every minute."
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Not everything. The church stands, it is of stone. Put the guns in the church and they will be a hundred paces from the wall."
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Not for this faction"
 msgstr ""
@@ -2197,6 +2389,10 @@ msgstr ""
 
 #: ui/tips.gd
 msgid "Nothing to train here yet in this version"
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Nothing yet. And this I give for free. He who pays in silver does not borrow."
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -2305,8 +2501,16 @@ msgstr ""
 msgid "Pagan elder"
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Pan Jan never knew whether the king was right or not. I do not know either. I know that by morning there was no breach, and no bridge either."
+msgstr ""
+
 #: missions/crown_01/mission.json
 msgid "Pan Jan of Łęczyca told me at Orsha about his great-grandfather Jaśko. That day Jaśko was twenty-two years old, the armour on him was another man's, and his horse was borrowed. Ours stood in the grove, the Germans stood in the sun, and the king was still hearing Mass."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Pan Jaśko, there is no more room in my tent. The men drink water from the canal below the place where the horses are watered."
 msgstr ""
 
 #: ui/ui_text.gd
@@ -2349,8 +2553,24 @@ msgstr ""
 msgid "Pick one and left-click the ground; F turns it, Shift lays several."
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Piotr of Oleśnica"
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Pitch the camp and set up 3 batteries"
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Pitch the camp. This will take long."
+msgstr ""
+
 #: ui/unit_card.gd
 msgid "Place of power"
+msgstr ""
+
+#: ui/mission_panel.gd
+msgid "Plague in the camp: %d%%"
 msgstr ""
 
 #: ui/unit_card.gd
@@ -2390,6 +2610,14 @@ msgstr ""
 msgid "Posts held: %d of %d"
 msgstr ""
 
+#: ui/mission_panel.gd
+msgid "Powder for %d shots"
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Powder for a week. The hirelings want money. At home it is harvest time, and there are no men. The sick lie in rows."
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Power"
 msgstr ""
@@ -2420,6 +2648,10 @@ msgstr ""
 
 #: missions/gdl_08/mission.json
 msgid "Press the Left Hand into the Kropivna"
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Priest"
 msgstr ""
 
 #: missions/gdl_04/mission.json
@@ -2657,6 +2889,10 @@ msgstr ""
 msgid "Set out the army and hide the foot and the guns"
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Set up the batteries and keep them firing, take the town wall, keep the guns from the night sorties and the camp from the plague, bring the towns' envoys to the king, and when the siege is lifted take at least 4 bombards away to Sztum."
+msgstr ""
+
 #: missions/crown_01/mission.json
 msgid "Set up wayside crosses on all 3 places of power"
 msgstr ""
@@ -2689,6 +2925,10 @@ msgstr ""
 
 #: game/arena/arena.gd
 msgid "Side %d: %d units, %d HP, %d fleeing"
+msgstr ""
+
+#: ui/mission_panel.gd
+msgid "Siege: %d%%"
 msgstr ""
 
 #: ui/ui_text.gd
@@ -2739,6 +2979,10 @@ msgstr ""
 msgid "Small"
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Smith"
+msgstr ""
+
 #: missions/gdl_02/mission.json
 msgid "Smolensk stands! Tell Vytautas: we will stand as long as we can."
 msgstr ""
@@ -2753,6 +2997,10 @@ msgstr ""
 
 #: missions/crown_01/mission.json
 msgid "So now we know. Forward, before the Master looks round!"
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "So that is all. We took the field and did not take the house."
 msgstr ""
 
 #: missions/gdl_02/mission.json
@@ -2828,6 +3076,10 @@ msgstr ""
 msgid "Strike the flank of the Grand Master's reserve"
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Strike the iron, not the head!"
+msgstr ""
+
 #: missions/gdl_06/mission.json
 msgid "Sunset in %s"
 msgstr ""
@@ -2852,12 +3104,20 @@ msgstr ""
 msgid "Take all 7 places of power"
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Take all the bombards away to Sztum"
+msgstr ""
+
 #: ui/command_panel.gd
 msgid "Take apart"
 msgstr ""
 
 #: ui/hud.gd
 msgid "Take apart: click your building"
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Take at least 4 bombards away to Sztum"
 msgstr ""
 
 #: missions/gdl_04/mission.json
@@ -2892,6 +3152,10 @@ msgstr ""
 msgid "Take the kurgan on the west shore"
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "Take the town wall and reach the church by the castle"
+msgstr ""
+
 #: missions/gdl_02/mission.json
 msgid "Take the wagenburg"
 msgstr ""
@@ -2922,6 +3186,14 @@ msgstr ""
 
 #: missions/gdl_07/mission.json
 msgid "Tell your prince: we and he have the same sovereign. And let him not tell us about faith."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Ten days after Grunwald the royal army comes to the capital of the Order. Heinrich von Plauen came in before it, took command and burned the town round the castle, so that the besiegers have nowhere to shelter. Jaśko of Łęczyca has the guns of his part of the camp and the trophy bombards from Grunwald. The castle cannot be taken by storm: it can only be starved."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Ten days we marched here. And in ten days he managed to burn everything that could burn."
 msgstr ""
 
 #: ui/settings_panel.gd
@@ -3006,6 +3278,10 @@ msgstr ""
 
 #: ui/mission_panel.gd
 msgid "The Lower castle is lost"
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "The Masovians too. And pan Andrzej of Tęczyn, they say, misses his wife."
 msgstr ""
 
 #: missions/crown_01/mission.json
@@ -3105,6 +3381,14 @@ msgstr ""
 msgid "The battle on the Vedrosha is lost, but Andrei has brought his men back over the Trosna."
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "The beginning of September. On the eastern edge a column under Livonian banners halts. Vytautas rides out to meet it with his banners. From afar one can see the riders come together, talk and part."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "The bloody flux has emptied the camp. There is nobody left to hold the guns."
+msgstr ""
+
 #: missions/gdl_08/mission.json
 msgid "The boyar! We have taken the boyar himself!"
 msgstr ""
@@ -3121,6 +3405,10 @@ msgstr ""
 msgid "The camp is up in arms! Bring the sortie back into the castle before the riders close in."
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "The camp servants build a battery of wicker gabions. A bombard fires only from a battery: bring it to one and let it stand still. Every shot costs 5 powder, and powder comes slower than it goes."
+msgstr ""
+
 #: ui/end_screen.gd
 msgid "The capital and castles of the losing side are destroyed."
 msgstr ""
@@ -3131,6 +3419,10 @@ msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "The castle at Skirsnemune burned, and the knights who sat in it were killed. Both our books and the German ones write of it. But there was still Dubysa, where the vogt himself sat."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "The castle's guns answer the nearest battery. The burned walls round the town fall when a ball strikes them: do not keep men under them."
 msgstr ""
 
 #: missions/gdl_08/mission.json
@@ -3159,6 +3451,10 @@ msgstr ""
 
 #: missions/gdl_04/mission.json
 msgid "The column's head is making for the Šventoji ford and Vilkomir! If most of the Livonians get away, the battle is lost."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "The council has decided. We will not buy the gate."
 msgstr ""
 
 #: missions/gdl_03/mission.json
@@ -3205,6 +3501,10 @@ msgstr ""
 msgid "The first bridge stands. The foot and the guns can go over it slowly, a few at a time."
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "The first on the wall was Jakub of Kobylany, and after him Dobiesław of Oleśnica. Twenty-five years later Jakub will lead the Crown's knights at Wiłkomierz, but that is another story, and I have told it already."
+msgstr ""
+
 #: missions/gdl_08/mission.json
 msgid "The ford is upstream, to the east: the light horse and the lances can cross it, the guns cannot. Send the camp servants to the two marked places on the bank: standing there they lay a bridge section by section (40 wood each, the wagons bring more). A Muscovite patrol rides the far bank at night: if it watches your men for long, the alarm goes up."
 msgstr ""
@@ -3215,6 +3515,14 @@ msgstr ""
 
 #: missions/gdl_06/mission.json
 msgid "The forest borderland of Muscovy and the Grand Duchy of Lithuania. The end of August or September 1507."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "The garrison has broken into the royal camp and ruined the king's tent."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "The garrison sends riders to catch the envoys. An envoy with an enemy at his side and none of ours near is taken. Every sworn town sends food, powder or silver."
 msgstr ""
 
 #: missions/gdl_08/mission.json
@@ -3285,12 +3593,28 @@ msgstr ""
 msgid "The king is killed or taken"
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "The king orders."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "The king orders: do not go into the breach! Fall back to the church!"
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "The king rides past with his suite. He looks at the castle for a long time and says nothing."
+msgstr ""
+
 #: missions/gdl_08/mission.json
 msgid "The king wrote afterwards to the sovereigns and to Rome that the Muscovites were eighty thousand and that thirty thousand of them fell or were taken. I wrote the lists of captives in my own hand, and I know that kings count otherwise than scribes do. The master of the horse Chelyadnin we took captive, and Smolensk we never won back."
 msgstr ""
 
 #: missions/crown_01/mission.json
 msgid "The king's hill. A lone knight of the Order with his lance lowered rides straight at Jagiełło. A young scribe without armour catches up a broken lance and strikes the knight in the side; he falls. The king strikes him with his own lance, the guard finishes him."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "The king's tent is ruined"
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -3323,6 +3647,14 @@ msgstr ""
 
 #: missions/gdl_03/mission.json
 msgid "The mist lies over the grove. The envoys pass by without seeing the oak."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "The north side is open now. The sorties will come out of the north gate too."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "The northern camp. The Lithuanians are striking their tents. The Tatars drive their herds from the meadows. Vytautas rides up to the king's tent, pale."
 msgstr ""
 
 #: missions/gdl_03/mission.json
@@ -3385,6 +3717,14 @@ msgstr ""
 msgid "The place is taken"
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "The plague grows with the crowding, the heat and with men standing on the canal below the town. A priest and an infirmary bring it down, but never to nothing. When it is high your healers do not heal and the men waste away."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "The plague in the camp reaches its limit"
+msgstr ""
+
 #: ui/tips.gd
 msgid "The price is for each cell of the line."
 msgstr ""
@@ -3413,6 +3753,10 @@ msgstr ""
 msgid "The queue is full"
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "The ransom for the guest knight you took at Grunwald has been paid: 100 silver."
+msgstr ""
+
 #: missions/gdl_07/mission.json
 msgid "The rebels break camp in %s"
 msgstr ""
@@ -3433,6 +3777,18 @@ msgstr ""
 msgid "The road through the grove is boggy. Let us go over the hills, my lord."
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "The road to Sztum. A column of wagons with bombards in the dust. Jaśko rides at the tail and looks back at the castle."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "The round tower. A piece of masonry crashes down from above. When the dust settles a knight sits on the ground, alive, but his helmet is crushed flat. They lead him to the field forge. The smith takes aim with his hammer."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "The royal council did refuse to bribe the Czechs, calling it unknightly. Who first put the thought forward was not written down. Pan Jan said his great-grandfather did, and that the one in red had prompted him. Forty-seven years later the Crown will buy Malbork from Czech hirelings after all, and it will cost a hundred and ninety thousand florins."
+msgstr ""
+
 #: missions/crown_01/mission.json
 msgid "The second Mass. If the Germans roast in their pots before noon, there will be nobody left for us to fight."
 msgstr ""
@@ -3449,8 +3805,16 @@ msgstr ""
 msgid "The shaft is pinned down by a dead horse. Jaśko jumps from the saddle and pulls; it will not come. Beside him a hand in a red sleeve takes hold of the shaft. A man without armour, in a red kaftan, with merry eyes. The fight seems to flow around him."
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "The siege is lifted, and the guns have come to Sztum."
+msgstr ""
+
 #: missions/gdl_05/mission.json
 msgid "The sun goes down to the west, the shadows grow long. Moscow brings fresh men into the field again and again."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "The town is ours. A battery by St John's church stands under cover of its stone: the castle's balls do it less harm."
 msgstr ""
 
 #: missions/gdl_03/mission.json
@@ -3485,6 +3849,10 @@ msgstr ""
 msgid "The znakharka can call Bog Mist: your units in it cannot be seen until they attack."
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "The «Siege» bar is not the damage to the walls but the hunger in the castle. The garrison mends the walls every night; only time and the shot starve them."
+msgstr ""
+
 #: ui/command_panel.gd
 msgid "Then click your building."
 msgstr ""
@@ -3511,6 +3879,14 @@ msgstr ""
 
 #: missions/gdl_05/mission.json
 msgid "There is a ford lower down, I watered my horse there! Two at a time, not in a crowd! Whoever goes in all at once will drown."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "There is the sign! All their elders are sitting there now, under one pillar!"
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "These are no knechts! Who are they?"
 msgstr ""
 
 #: missions/gdl_07/mission.json
@@ -3573,6 +3949,10 @@ msgstr ""
 msgid "They say old Gintaut laughed when he was asked whether the Lithuanians ran at Grunwald. Now I understand why. Sound the retreat!"
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "They say that in the Summer Refectory the Germans held council under one pillar, and a traitor hung a red cap in the window, and ours fired at the pillar and missed. The ball in the wall above the fireplace is shown to this day. But everyone tells it his own way, and that only happens with tales. And Jaśko, pan Jan said, stood a long time after that shot looking at what red thing had been in that window."
+msgstr ""
+
 #: missions/gdl_01/mission.json
 msgid "They say the mist rose from the bog in broad daylight, and a German patrol passed ten steps from our men and saw no one. Such mists do happen in Samogitia. But grandfather said that one was special."
 msgstr ""
@@ -3607,6 +3987,10 @@ msgstr ""
 
 #: missions/gdl_06/mission.json
 msgid "This time you found it yourself, prince."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "This too Długosz wrote down. They knocked the helmet off with hammers, and pan Piotr lived."
 msgstr ""
 
 #: missions/gdl_03/mission.json
@@ -3651,6 +4035,10 @@ msgstr ""
 
 #: ui/tips.gd
 msgid "Towers, walls and gates see 2 cells farther."
+msgstr ""
+
+#: ui/mission_panel.gd
+msgid "Towns sworn: %d"
 msgstr ""
 
 #: ui/tips.gd
@@ -3758,8 +4146,20 @@ msgstr ""
 msgid "Wavering"
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "We are at the wall already! Another hundred paces!"
+msgstr ""
+
 #: missions/gdl_02/mission.json
 msgid "We are going on to Malbork now. I need your men in Samogitia. Go home."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "We could buy the gate. The Czechs in the garrison can be bought, knowing men say."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "We could. But at Grunwald we took the field by the sword. Buying a castle from hirelings is no knightly deed."
 msgstr ""
 
 #: missions/gdl_02/mission.json
@@ -3772,6 +4172,10 @@ msgstr ""
 
 #: missions/gdl_02/mission.json
 msgid "We have swords enough. Gintaut! Your Samogitians will be the first to hear the trumpet."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "We lift the siege. We take the guns with us, not one shall we leave them. We go to Sztum and put our own men there."
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -3838,6 +4242,10 @@ msgstr ""
 msgid "With peasants selected, the buttons at the bottom right are buildings."
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "With the Livonians came marshal Vincke, and he had few men. Vytautas met him beyond the Pasłęka, and they agreed on a truce for the northern lands, and the marshal himself was escorted into the castle to talk. Plauen got not an army but a hope."
+msgstr ""
+
 #: missions/gdl_02/mission.json
 msgid "Withstand the cannonade and attack the Order's left wing"
 msgstr ""
@@ -3864,6 +4272,10 @@ msgstr ""
 
 #: ui/help_panel.gd
 msgid "Y with peasants, then a click on your building: they take it apart."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "You again. How much do I owe you for the banner?"
 msgstr ""
 
 #: missions/gdl_08/mission.json
@@ -3918,8 +4330,16 @@ msgstr ""
 msgid "You were baptized, Gintaut."
 msgstr ""
 
+#: missions/crown_02/mission.json
+msgid "You will knock at this door a long time, sir knight. And yet a door has gatekeepers. In the castle sit Czechs, hired men. The Czechs do not care whom they stand for; they care how much they are paid."
+msgstr ""
+
 #: missions/gdl_07/mission.json
 msgid "Your father did not live to see this day. I want you to live to see many."
+msgstr ""
+
+#: missions/crown_02/mission.json
+msgid "Your grace, here one can no longer tell which is which."
 msgstr ""
 
 #: ui/tips.gd
@@ -4162,6 +4582,7 @@ msgstr ""
 
 #: catalog:prototype_units
 #: missions/crown_01/mission.json
+#: missions/crown_02/mission.json
 msgid "hero_jagiello"
 msgstr ""
 
@@ -4172,6 +4593,7 @@ msgstr ""
 
 #: catalog:prototype_units
 #: missions/crown_01/mission.json
+#: missions/crown_02/mission.json
 msgid "hero_jasko"
 msgstr ""
 
@@ -4252,6 +4674,10 @@ msgid "hero_ostrogski_fugitive"
 msgstr ""
 
 #: catalog:prototype_units
+msgid "hero_plauen"
+msgstr ""
+
+#: catalog:prototype_units
 #: missions/gdl_01/mission.json
 msgid "hero_rumbaudas"
 msgstr ""
@@ -4267,6 +4693,7 @@ msgstr ""
 
 #: catalog:prototype_units
 #: missions/crown_01/mission.json
+#: missions/crown_02/mission.json
 msgid "hero_stranger"
 msgstr ""
 
@@ -4275,6 +4702,11 @@ msgid "hero_swierczowski"
 msgstr ""
 
 #: catalog:prototype_units
+msgid "hero_town_envoys"
+msgstr ""
+
+#: catalog:prototype_units
+#: missions/crown_02/mission.json
 #: missions/gdl_02/mission.json
 msgid "hero_vytautas"
 msgstr ""
@@ -4379,6 +4811,10 @@ msgstr ""
 
 #: catalog:prototype_units
 msgid "nt_elk"
+msgstr ""
+
+#: catalog:prototype_units
+msgid "nt_gdansk_shipwright"
 msgstr ""
 
 #: catalog:prototype_units
@@ -4487,6 +4923,10 @@ msgstr ""
 
 #: catalog:prototype_units
 msgid "pl_kopia"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "pl_lazaret"
 msgstr ""
 
 #: catalog:prototype_units
@@ -4884,6 +5324,10 @@ msgstr ""
 
 #: catalog:prototype_units
 msgid "to_wagon"
+msgstr ""
+
+#: catalog:prototype_buildings
+msgid "to_wall"
 msgstr ""
 
 #: ui/main_menu.gd

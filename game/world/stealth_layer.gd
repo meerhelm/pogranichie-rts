@@ -23,6 +23,8 @@ var local_player := 1
 
 var _tint := CanvasModulate.new()
 var _props: Array[Sprite2D] = []
+## The setup.props index of each sprite in _props (props without art have no sprite).
+var _prop_index := PackedInt32Array()
 
 
 ## Whether the mission has anything for this layer.
@@ -33,7 +35,9 @@ static func wanted(p_sim: Simulation) -> bool:
 
 func attach(p_sim: Simulation, clock: SimClock, depth_layer: Node2D) -> void:
 	sim = p_sim
-	for p: Dictionary in sim.mission.def.setup.get("props", []):
+	var all: Array = sim.mission.def.setup.get("props", [])
+	for k in all.size():
+		var p: Dictionary = all[k]
 		var art := SpriteDB.prop(StringName(p["kind"]))
 		if art == null:
 			continue
@@ -54,6 +58,7 @@ func attach(p_sim: Simulation, clock: SimClock, depth_layer: Node2D) -> void:
 		s.add_child(shadow)
 		depth_layer.add_child(s)
 		_props.append(s)
+		_prop_index.append(k)
 	_tint.color = NIGHT if sim.mission.stealth.night else DAY
 	add_child(_tint)
 	clock.ticked.connect(_on_ticked)
@@ -64,6 +69,7 @@ func _exit_tree() -> void:
 		if is_instance_valid(s):
 			s.queue_free()
 	_props.clear()
+	_prop_index.clear()
 
 
 func _on_ticked(_tick: int) -> void:
@@ -74,9 +80,12 @@ func _on_ticked(_tick: int) -> void:
 		tw.tween_property(_tint, "color", want, DAWN_SECONDS)
 		tw.finished.connect(func() -> void: _tint.remove_meta("to"))
 	for i in _props.size():
-		var at: Array = sim.mission.def.setup["props"][i]["at"]
+		var k := _prop_index[i]
+		var at: Array = sim.mission.def.setup["props"][k]["at"]
 		var cell := sim.nav.cell_at(at[0], at[1])
-		_props[i].visible = sim.vision.state(local_player, cell) != VisionSystem.State.UNEXPLORED
+		var seen := sim.vision.state(local_player, cell) != VisionSystem.State.UNEXPLORED
+		# Корона 2: a burned wall a ball brought down is gone.
+		_props[i].visible = seen and not sim.mission.besiege.fallen.has(k)
 	queue_redraw()
 
 

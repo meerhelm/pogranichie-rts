@@ -99,6 +99,12 @@ class ClauseTest(unittest.TestCase):
         self.assertEqual(sp.tags, ["battery_only"])
         self.assertEqual(sp.params, {"deploy_ticks": 400, "shot_iron": 5})
 
+    def test_malbork_shipmen(self):
+        sp = parse_special("Пехота. Ночью виден только с 4 клеток; заклёпывает бомбарду за 8 с")
+        self.assertEqual(sp.unparsed, [])
+        self.assertEqual(sp.tags, ["spiker"])
+        self.assertEqual(sp.params, {"night_reveal_cells": 4, "spike_ticks": 160})
+
     def test_unknown_clause_is_reported_not_dropped(self):
         sp = parse_special("Пехота. Поёт песни; +6 к коннице")
         self.assertEqual(sp.unparsed, ["Поёт песни"])

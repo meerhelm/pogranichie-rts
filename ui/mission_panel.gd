@@ -268,6 +268,7 @@ func _show_march() -> void:
 	_siege_lines(m, lines)
 	_battle_lines(m, lines)
 	_field_lines(m, lines)
+	_besiege_lines(m, lines)
 	_march.visible = not lines.is_empty()
 	_march.text = "\n".join(lines)
 
@@ -347,6 +348,27 @@ func _field_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
 		lines.append(tr("Heat on your lances: %d%%") % (heat / 10))
 	if m.field.captured > 0:
 		lines.append(tr("Guest knights taken captive: %d") % m.field.captured)
+
+
+## Корона 2: «Siege: 40%» (the hunger in the castle, as the card wants), «Powder for 30 shots»
+## (iron is powder), «Plague in the camp: 25%» once it starts, «Bombards spiked: 2» while any
+## is, «Towns sworn: 3» once the envoys walk, «Bombards brought to Sztum: 5» on the road back.
+func _besiege_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
+	var bs := m.besiege
+	if not bs.on:
+		return
+	lines.append(tr("Siege: %d%%") % (bs.hunger / 10))
+	var shot := maxi(int(sim.economy.db.unit(&"pl_bombard").params.get(&"shot_iron", 1)), 1)
+	var iron := sim.economy.player(m.def.player).stock[EconomySystem.IRON]
+	lines.append(tr("Powder for %d shots") % (iron / shot))
+	if bs.plague > 0:
+		lines.append(tr("Plague in the camp: %d%%") % (bs.plague / 10))
+	if not bs.spiked.is_empty():
+		lines.append(tr("Bombards spiked: %d") % bs.spiked.size())
+	if bs.envoys_walk or not bs.towns.is_empty():
+		lines.append(tr("Towns sworn: %d") % bs.count_towns(1))
+	if m.fired.has(str(m.def.rules["besiege"].get("sztum", {}).get("from", ""))):
+		lines.append(tr("Bombards brought to Sztum: %d") % bs.brought)
 
 
 ## The countdown and captives lines as shown, for tests ("" while hidden).

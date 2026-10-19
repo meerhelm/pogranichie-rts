@@ -57,6 +57,8 @@ var dismantle_left := PackedInt64Array()
 var cooldown := PackedInt32Array()
 ## 1 once the building is upgraded (the Crown's wayside cross made a chapel).
 var upgraded := PackedByteArray()
+## HP a building never falls below (Корона 2: the castle of Malbork), by id; set by the mission.
+var hp_floor: Dictionary[int, int] = {}
 
 
 func resize_map(cells: int) -> void:

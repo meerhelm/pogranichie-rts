@@ -40,6 +40,8 @@ var still: Dictionary[int, int] = {}
 var fight_from: Dictionary[int, int] = {}
 ## Deployed bombards: id -> the battery they fire from.
 var deployed: Dictionary[int, int] = {}
+## Spiked bombards (Корона 2: the Gdańsk shipmen), by id: they do not fire until mended.
+var spiked: Dictionary[int, bool] = {}
 ## Tabor rings standing now, refilled every tick: owner, centre (fixed) and radius (fixed).
 var ring_owner := PackedInt32Array()
 var ring_x := PackedInt64Array()
@@ -383,7 +385,7 @@ func may_fire(slot: int) -> bool:
 	var def := defs[slot]
 	if def == null or not def.tags.has(&"battery_only"):
 		return true
-	if not deployed.has(slot + 1):
+	if not deployed.has(slot + 1) or spiked.has(slot + 1):
 		return false
 	var state: PlayerState = players.get(entities.owners[slot])
 	return state == null or state.stock[EconomySystem.IRON] >= def.param(&"shot_iron")

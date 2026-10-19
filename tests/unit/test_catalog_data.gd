@@ -14,7 +14,7 @@ func test_index_counts_match_catalog() -> void:
 	assert_eq(_db.units.size(), _db.index.units.size())
 	# 70 faction units, 11 special neutral units, 5 animals, 49 campaign heroes (M9) and
 	# Ostrogski as the lone fugitive of ВКЛ 6.
-	assert_eq(_db.units.size(), 136)
+	assert_eq(_db.units.size(), 137)
 	assert_eq(_db.spells.size(), 14)
 	assert_eq(_db.ages.size(), 3)
 

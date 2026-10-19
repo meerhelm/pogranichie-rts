@@ -41,8 +41,8 @@ extends RefCounted
 ##   destroy {building}; name_built {player, base, name} (names the player's newest finished
 ##   building of that kind); assault {group, building, else?} (storm a named building, or
 ##   attack-move to `else` when it is gone).
-##   ВКЛ 4–8, Корона 1: MissionMarch, MissionRetreat, MissionStealth, MissionSiege,
-##   MissionBattle, MissionField. Setup
+##   ВКЛ 4–8, Корона 1–2: MissionMarch, MissionRetreat, MissionStealth, MissionSiege,
+##   MissionBattle, MissionField, MissionBesiege. Setup
 ## may also give sides {player: lead player}, age, pop {player: places}, power, props, buildings
 ## turned:true. Rules: hunger, boats, blockade, banner and those of the mission modules.
 
@@ -138,6 +138,7 @@ var stealth := MissionStealth.new()
 var siege := MissionSiege.new()
 var battle := MissionBattle.new()
 var field := MissionField.new()
+var besiege := MissionBesiege.new()
 var outcome := Outcome.NONE
 var outcome_text := ""
 ## What the interface shows, in order: {kind, tick, ...} (kind: objective, hint, dialogue,
@@ -167,6 +168,11 @@ func _init(p_def: MissionDef, sim: Simulation, p_difficulty: String) -> void:
 
 func is_over() -> bool:
 	return outcome != Outcome.NONE
+
+
+## The mission modules with state, in the order they set up, step and hash.
+func _modules() -> Array[RefCounted]:
+	return [retreat, stealth, siege, battle, field, besiege]
 
 
 # --- setup ----------------------------------------------------------------------------------
@@ -225,11 +231,8 @@ func set_up(tick: int) -> void:
 	setup_buildings = economy.buildings.next_id - 1
 	baptism_every = int(def.rules.get("baptism", {}).get("every_ticks", 0))
 	MissionMarch.set_up(self)
-	retreat.set_up(self)
-	stealth.set_up(self)
-	siege.set_up(self)
-	battle.set_up(self)
-	field.set_up(self)
+	for mod in _modules():
+		mod.call(&"set_up", self)
 
 
 func _place(tick: int, p: int, type: String, cx: int, cy: int, turned := false) -> int:
@@ -300,11 +303,8 @@ func step(tick: int) -> void:
 	MissionMarch.march(self, tick)
 	MissionMarch.capture(self, tick, _remove)
 	MissionMarch.spare(self, tick)
-	retreat.step(self, tick)
-	stealth.step(self, tick)
-	siege.step(self, tick)
-	battle.step(self, tick)
-	field.step(self, tick)
+	for mod in _modules():
+		mod.call(&"step", self, tick)
 	for t: Dictionary in def.triggers:
 		var tid: String = t["id"]
 		if fired.has(tid):
@@ -416,6 +416,8 @@ func test(c: Dictionary, tid: String, tick: int) -> bool:
 			ok = battle.test(self, c)
 		_ when MissionField.CONDITIONS.has(c["type"]):
 			ok = field.test(self, c)
+		_ when MissionBesiege.CONDITIONS.has(c["type"]):
+			ok = besiege.test(self, c)
 		_:
 			push_warning("mission %s: unknown condition %s" % [def.id, c["type"]])
 	return ok
@@ -539,6 +541,8 @@ func run(a: Dictionary, tick: int) -> void:
 			battle.run(self, a, tick)
 		_ when MissionField.ACTIONS.has(a["do"]):
 			field.run(self, a, tick)
+		_ when MissionBesiege.ACTIONS.has(a["do"]):
+			besiege.run(self, a, tick)
 		_:
 			push_warning("mission %s: unknown action %s" % [def.id, a["do"]])
 
@@ -991,8 +995,5 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_32(i)
 		buf.put_32(magic.places.quenched[i])
 	MissionMarch.write_to(self, buf)
-	retreat.write_to(buf)
-	stealth.write_to(buf)
-	siege.write_to(buf)
-	battle.write_to(buf)
-	field.write_to(buf)
+	for mod in _modules():
+		mod.call(&"write_to", buf)

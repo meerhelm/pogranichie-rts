@@ -31,7 +31,10 @@ extends RefCounted
 ## 20: the Crown as a skirmish faction: tabor rings, pavises, the tiring lance, the foot
 ##   servant, the bombard's battery, the shrine's chapel, salt works on salt springs, and the
 ##   spells «Богородица», «Благословение хоругви» and «Договор».
-const SIM_VERSION := 20
+## 21: Корона 2: a siege that cannot be won by storm (MissionBesiege in the mission hash): a
+##   building may have an HP floor, a spiked bombard does not fire, a camp may be kept from
+##   healing, campaign-only buildings a mission allows.
+const SIM_VERSION := 21
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).

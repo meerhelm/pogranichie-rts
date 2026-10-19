@@ -962,7 +962,7 @@ func building_damage(slot: int, b: int) -> int:
 
 
 func hit_building(b: int, damage: int) -> void:
-	buildings.hp[b - 1] -= damage
+	buildings.hp[b - 1] = maxi(buildings.hp[b - 1] - damage, buildings.hp_floor.get(b, 0))
 	if buildings.hp[b - 1] <= 0:
 		destroy(b)
 

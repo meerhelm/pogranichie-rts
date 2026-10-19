@@ -45,6 +45,8 @@ func test_every_gdl_mission_is_made_and_the_crown_is_begun() -> void:
 			assert_false(CampaignProgress.is_open(id), "%s cannot be played yet" % id)
 		assert_string_starts_with(CampaignProgress.title_key(id), "Crown ")
 	assert_eq(CampaignProgress.title_key("crown_01"), "Crown 1. Grunwald, 1410")
+	assert_true(CampaignProgress.is_made("crown_02"), "Корона 2 is made")
+	assert_eq(CampaignProgress.title_key("crown_02"), "Crown 2. Malbork, 1410")
 	assert_eq(CampaignProgress.title_key("gdl_08"), "GDL 8. Orsha, 1514")
 
 
@@ -86,7 +88,8 @@ func test_campaign_leads_to_countries_and_missions() -> void:
 	assert_eq(menu._mission_state[0].text, "open")
 	for i in range(1, 6):
 		assert_true(menu._campaign[i].disabled)
-	assert_eq(menu._mission_state[1].text, "not made yet")
+	assert_eq(menu._mission_state[1].text, "win the previous mission to open")
+	assert_eq(menu._mission_state[2].text, "not made yet")
 
 
 func test_won_missions_show_and_open_the_next() -> void:

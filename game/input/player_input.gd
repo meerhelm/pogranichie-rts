@@ -455,7 +455,8 @@ func buildable() -> Array[BuildingDef]:
 		var def: BuildingDef = sim.economy.db.buildings[id]
 		if shrines_only and not def.tags.has(&"power_place_only"):
 			continue
-		if def.faction == state.faction and not def.campaign_only and def.age <= state.age:
+		var campaign := def.campaign_only and not state.allowed.has(def.id)
+		if def.faction == state.faction and not campaign and def.age <= state.age:
 			ids.append(String(id))
 	ids.sort()
 	for id in ids:

@@ -249,6 +249,12 @@ RULES: list[Rule] = [
             sp.params.update(deploy_ticks=cells.ticks(m.group(1)), shot_iron=int(m.group(2))),
         ),
     ),
+    # Корона 2: the Gdańsk shipmen of the night sorties.
+    (r"ночью виден только с (\d+) клеток", _params(night_reveal_cells=1)),
+    (
+        r"заклёпывает бомбарду за (\d+) с",
+        lambda sp, m, _u: (sp.tag("spiker"), sp.params.update(spike_ticks=cells.ticks(m.group(1)))),
+    ),
     # Campaign-only notes (К5 calls the servant a worker; plague and rumours are mission rules).
     (r"в кампании сбивает мор и слухи", _tags()),
     (r"в К5 называется работником", _tags()),

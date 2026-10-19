@@ -26,7 +26,8 @@
   "pl_kmet", "pl_bowman", "pl_light_horse", "pl_foot_servant", "pl_pavise", "pl_priest",
   "pl_camp_servant", "pl_wagon", "pl_bombard",
   "hero_jasko", "hero_zyndram", "hero_marcin", "hero_olesnicki", "hero_jagiello", "hero_stranger",
-  "hero_order_k1"
+  "hero_order_k1",
+  "nt_gdansk_shipwright", "hero_plauen", "hero_town_envoys"
  ],
  "buildings": [
   "gdl_town_center", "gdl_house", "gdl_granary", "gdl_farm", "gdl_lumber_yard", "gdl_mine",
@@ -41,14 +42,16 @@
   "pl_town_center", "pl_house", "pl_granary", "pl_farm", "pl_lumber_yard", "pl_mine",
   "pl_barracks", "pl_range", "pl_stable", "pl_shrine", "pl_palisade", "pl_gate", "pl_tower",
   "pl_market", "pl_smithy", "pl_temple", "pl_siege_workshop", "pl_castle", "pl_salt_works",
-  "pl_battery", "pl_field_camp"
+  "pl_battery", "pl_field_camp",
+  "to_wall", "pl_lazaret"
  ],
  "_mission_only": "Prototype units (and buildings: ВКЛ 7's log wall) only missions use: exported as campaign_only, so skirmish build menus and the AI leave them out (ВКЛ 2 Грюнвальд). They may be of a later age than max_age (ВКЛ 5 Ведроша: Держава), since nobody trains them.",
  "mission_only": ["nt_steppe_archer", "to_guest_knight", "to_bombard", "to_wagon",
   "gdl_samogitian", "to_spy", "nt_pagan", "nt_pagan_priest", "hero_council_envoys",
   "gdl_szlachta_lance", "gdl_field_gun", "mo_syn_boyarsky", "mo_boyar", "mo_inok", "mo_storozha",
   "gdl_hakownica", "mo_cannon", "gdl_wall",
-  "pl_drab", "pl_handgunner", "pl_field_gun", "pl_hussar", "mo_tatar"],
+  "pl_drab", "pl_handgunner", "pl_field_gun", "pl_hussar", "mo_tatar",
+  "nt_gdansk_shipwright", "to_wall", "pl_lazaret"],
  "spells": ["sp_bog_mist", "sp_consecration", "sp_exorcism", "sp_relic", "sp_perkunas", "sp_icon", "sp_wolf_path",
   "sp_bogurodzica", "sp_banner_blessing", "sp_pact"]
 }

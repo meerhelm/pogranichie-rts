@@ -122,11 +122,21 @@ func _ready() -> void:
 			mission_panel.hold = true
 			briefing.closed.connect(mission_panel.release, CONNECT_ONE_SHOT)
 			briefing.open(true)
+			_answer_marks()
 		mission_panel.poll()
 	if ai != null:
 		# Thinks before the step its orders are for, as a player at the keyboard would.
 		_clock.ticked.connect(func(_t: int) -> void: ai.issue())
 		ai.issue()
+
+
+## Корона 2 on: what the campaign remembers of earlier missions (setup.marks) is told to the
+## mission as answers to the questions "mark:<mission>:<flag>", so replays carry it.
+func _answer_marks() -> void:
+	for mark: Array in sim.mission.def.setup.get("marks", []):
+		if CampaignProgress.has_mark(str(mark[0]), str(mark[1])):
+			var q := StringName("mark:%s:%s" % [mark[0], mark[1]])
+			sim.enqueue(SimCommand.choose(sim.tick, PLAYER, q, 0))
 
 
 ## A new skirmish, a new mission or a loaded save, as GameSettings says.

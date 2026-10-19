@@ -137,10 +137,15 @@ func _mission(opts: Dictionary) -> int:
 					bots.append(OrshaBot.new(sim))
 				"crown_01":
 					bots.append(CrownGrunwaldBot.new(sim))
+				"crown_02":
+					bots.append(MalborkBot.new(sim))
 				_:
 					bots.append(MissionBot.new(sim))
 		bots[0].call(&"think")
-	var over := func(sim: Simulation) -> bool: return sim.mission.is_over()
+	var over := func(sim: Simulation) -> bool:
+		if sim.mission.is_over() and OS.has_environment("BOT_LOG"):
+			print("over at %d: %s" % [sim.tick, sim.mission.outcome_text])
+		return sim.mission.is_over()
 	var replay := Replay.record(
 		int(opts.get("seed", "1")),
 		db,

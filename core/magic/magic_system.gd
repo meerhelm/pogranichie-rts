@@ -89,6 +89,8 @@ var fx_y := PackedInt64Array()
 var fx_radius := PackedInt32Array()
 var fx_from := PackedInt32Array()
 var fx_until := PackedInt32Array()
+## Players whose healers do not heal (Корона 2: the camp is sick); set by the mission.
+var no_heal: Dictionary[int, bool] = {}
 var _next_fx := 1
 
 ## Cooldown left (thousandths of a tick) per caster and spell (key id * SPELL_SLOTS + spell).
@@ -605,6 +607,8 @@ func _heal_units() -> void:
 		if slot >= _heal.size() or _heal[slot] <= 0 or (tick + id) % HEAL_EVERY != 0:
 			continue
 		var owner := entities.owners[slot]
+		if no_heal.has(owner):
+			continue
 		var amount := _heal[slot] + _mod(owner, slot, &"heal")
 		var near := combat.buckets.near(
 			entities.pos_x[slot], entities.pos_y[slot], Fixed.from_cells(_heal_radius[slot])

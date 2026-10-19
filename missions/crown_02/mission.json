@@ -1,0 +1,505 @@
+{
+ "_comment": "Mission «Корона 2. Мальборк, 1410» (mission card in the missions doc, docs/03-missions/13-crown_02_malbork_1410.md). A siege from a field camp that cannot be won by storm, on map_crown_02 (tools/maps/gen_crown_02.py): the Nogat along the west edge, the High and Middle castle on its east bank, the burned town south of it, the king's camp on the hill by Wielbark. Player 1 is Jaśko of Łęczyca and his part of the camp with the bombards; player 2 the garrison of Heinrich von Plauen (and later the Livonians of marshal Vincke, who keep the truce); allies (setup.sides) 3 the king's camp with Jakub of Kobylany's assault party, 4 Vytautas with the Lithuanians and the Tatars, 5 the Masovian dukes. Rules in core/mission/mission_besiege.gd (rules.besiege): the castle mended every dawn, the hunger in it, the castle's guns and the burned walls, the night sorties of the Gdańsk shipmen who spike the bombards, the plague in the camp, the towns' envoys and the road to Sztum. Read by core/mission/mission_def.gd; cells are map cells, ticks 1/20 s, texts are English keys translated through i18n/*.po.",
+ "id": "crown_02",
+ "title": "Crown 2. Malbork, 1410",
+ "map": "map_crown_02",
+ "player": 1,
+ "players": [[1, "pl"], [2, "to"], [3, "pl"], [4, "gdl"], [5, "pl"]],
+ "camera": [62, 58],
+ "difficulties": ["easy", "normal"],
+ "carry": ["pact"],
+ "briefing": {
+  "place": "Malbork (Marienburg) on the Nogat, Prussia. 25 July – 19 September 1410.",
+  "story": "Ten days after Grunwald the royal army comes to the capital of the Order. Heinrich von Plauen came in before it, took command and burned the town round the castle, so that the besiegers have nowhere to shelter. Jaśko of Łęczyca has the guns of his part of the camp and the trophy bombards from Grunwald. The castle cannot be taken by storm: it can only be starved.",
+  "goal": "Set up the batteries and keep them firing, take the town wall, keep the guns from the night sorties and the camp from the plague, bring the towns' envoys to the king, and when the siege is lifted take at least 4 bombards away to Sztum.",
+  "lose": [
+   "The king's tent is ruined",
+   "Jaśko falls",
+   "The plague in the camp reaches its limit",
+   "Fewer than 4 bombards come to Sztum"
+  ]
+ },
+ "setup": {
+  "sides": {"1": 1, "3": 1, "4": 1, "5": 1, "2": 2},
+  "age": {"1": 2, "3": 2},
+  "pop": {"1": 70},
+  "power": {"1": 0},
+  "stock": {"1": [200, 450, 150, 40], "2": [0, 0, 0, 0], "3": [0, 0, 400, 0], "4": [0, 0, 0, 0], "5": [0, 0, 0, 0]},
+  "locked": {"1": ["pl_town_center", "pl_house", "pl_granary", "pl_farm", "pl_lumber_yard", "pl_mine", "pl_barracks", "pl_range", "pl_stable", "pl_palisade", "pl_gate", "pl_tower", "pl_market", "pl_temple", "pl_siege_workshop", "pl_castle", "pl_salt_works", "pl_field_camp", "pl_lazaret"]},
+  "allowed": {"1": ["pl_lazaret"]},
+  "marks": [["crown_01", "captive"]],
+  "props": [
+   {"kind": "prop_church", "at": [36, 54]},
+   {"kind": "prop_ruins", "at": [30, 57]},
+   {"kind": "prop_ruins", "at": [42, 58]},
+   {"kind": "prop_ruins", "at": [28, 65]},
+   {"kind": "prop_ruins", "at": [40, 64]},
+   {"kind": "prop_ruins", "at": [33, 71]},
+   {"kind": "prop_ruins", "at": [43, 71]},
+   {"kind": "prop_ruins", "at": [51, 31]},
+   {"kind": "prop_ruins", "at": [53, 43]},
+   {"kind": "prop_ruins", "at": [56, 37]},
+   {"kind": "prop_ruins", "at": [50, 55]},
+   {"kind": "prop_ruins", "at": [11, 36]},
+   {"kind": "prop_well", "at": [62, 55]},
+   {"kind": "prop_campfire", "at": [57, 52]},
+   {"kind": "prop_campfire", "at": [50, 93]},
+   {"kind": "prop_campfire", "at": [100, 30]}
+  ],
+  "buildings": [
+   {"player": 2, "type": "to_tower", "at": [24, 26]},
+   {"player": 2, "type": "to_tower", "at": [46, 26]},
+   {"player": 2, "type": "to_tower", "at": [24, 50]},
+   {"name": "round_tower", "player": 2, "type": "to_tower", "at": [46, 50]},
+   {"name": "gate_n", "player": 2, "type": "to_gate", "at": [35, 26]},
+   {"name": "gate_s", "player": 2, "type": "to_gate", "at": [35, 50]},
+   {"name": "gate_w", "player": 2, "type": "to_gate", "at": [24, 38], "turned": true},
+   {"name": "gate_e", "player": 2, "type": "to_gate", "at": [46, 38], "turned": true},
+   {"name": "high_castle", "player": 2, "type": "to_castle", "at": [28, 29]},
+   {"name": "middle_castle", "player": 2, "type": "to_castle", "at": [37, 40]},
+   {"player": 2, "type": "to_granary", "at": [39, 30]},
+   {"player": 2, "type": "to_house", "at": [28, 44]},
+   {"name": "town_tower_w", "player": 2, "type": "to_tower", "at": [24, 76]},
+   {"name": "town_tower_e", "player": 2, "type": "to_tower", "at": [46, 76]},
+   {"name": "town_gate", "player": 2, "type": "to_gate", "at": [35, 76]},
+   {"name": "town_gate_e", "player": 2, "type": "to_gate", "at": [46, 64], "turned": true},
+   {"name": "camp", "player": 1, "type": "pl_field_camp", "at": [60, 50]},
+   {"name": "tent", "player": 3, "type": "pl_field_camp", "at": [44, 95]},
+   {"name": "king_battery", "player": 3, "type": "pl_battery", "at": [55, 27]},
+   {"name": "vytautas_camp", "player": 4, "type": "gdl_field_camp", "at": [104, 25]},
+   {"name": "mazovia_camp", "player": 5, "type": "pl_field_camp", "at": [80, 47]}
+  ],
+  "walls": [
+   {"player": 2, "type": "to_wall", "from": [25, 26], "to": [45, 26]},
+   {"player": 2, "type": "to_wall", "from": [25, 50], "to": [45, 50]},
+   {"player": 2, "type": "to_wall", "from": [24, 27], "to": [24, 49]},
+   {"player": 2, "type": "to_wall", "from": [46, 27], "to": [46, 49]},
+   {"player": 2, "type": "to_wall", "from": [24, 51], "to": [24, 75]},
+   {"player": 2, "type": "to_wall", "from": [46, 51], "to": [46, 75]},
+   {"player": 2, "type": "to_wall", "from": [25, 76], "to": [45, 76]}
+  ],
+  "groups": [
+   {"name": "jasko", "player": 1, "units": [["hero_jasko", 1]], "at": [66, 62]},
+   {"name": "lances", "player": 1, "units": [["pl_kopia", 8]], "at": [70, 64]},
+   {"name": "crossbows", "player": 1, "units": [["pl_crossbow", 8]], "at": [64, 66]},
+   {"name": "foot", "player": 1, "units": [["pl_foot_servant", 10]], "at": [67, 68]},
+   {"name": "servants", "player": 1, "units": [["pl_camp_servant", 4]], "at": [64, 54]},
+   {"name": "priest", "player": 1, "units": [["pl_priest", 1]], "at": [68, 60]},
+   {"name": "guns", "player": 1, "units": [["pl_bombard", 2]], "at": [62, 58]},
+   {"name": "plauen", "player": 2, "stance": "stand", "untouchable": true, "units": [["hero_plauen", 1]], "at": [34, 36]},
+   {"name": "garrison", "player": 2, "stance": "stand", "units": [["to_crossbow", 8], ["to_knecht", 8], ["to_knight_brother", 4]], "at": [30, 37]},
+   {"name": "town_garrison", "player": 2, "stance": "defensive", "units": [["to_knecht", 6], ["to_crossbow", 4]], "at": [33, 60]},
+   {"name": "jagiello", "player": 3, "stance": "passive", "untouchable": true, "units": [["hero_jagiello", 1]], "at": [48, 93]},
+   {"name": "king_army", "player": 3, "stance": "defensive", "units": [["pl_kopia", 8], ["pl_spearman", 8], ["pl_crossbow", 6]], "at": [50, 98]},
+   {"name": "king_guns", "player": 3, "stance": "stand", "units": [["pl_bombard", 2]], "at": [55, 25]},
+   {"name": "jakub", "player": 3, "stance": "defensive", "untouchable": true, "units": [["hero_jakub_kobylany", 1]], "at": [40, 86]},
+   {"name": "assault", "player": 3, "stance": "defensive", "units": [["pl_foot_servant", 8], ["pl_kopia", 4]], "at": [36, 86]},
+   {"name": "vytautas", "player": 4, "stance": "passive", "untouchable": true, "units": [["hero_vytautas", 1]], "at": [102, 30]},
+   {"name": "litva", "player": 4, "stance": "defensive", "units": [["gdl_lit_lance", 8], ["gdl_light_horse", 8]], "at": [96, 30]},
+   {"name": "tatars", "player": 4, "stance": "defensive", "units": [["nt_steppe_archer", 8]], "at": [34, 8]},
+   {"name": "mazovia", "player": 5, "stance": "defensive", "units": [["pl_kopia", 6], ["pl_spearman", 6]], "at": [76, 52]}
+  ]
+ },
+ "rules": {
+  "supply": {"player": 1, "building": "camp", "every_ticks": 1200, "amount": [40, 60, 25, 0]},
+  "besiege": {
+   "player": 1,
+   "enemy": 2,
+   "castle": {"rect": [24, 26, 46, 50], "floor_permille": 300},
+   "nights": {"from": "4", "until": "14", "day_ticks": 2400, "night_ticks": 1200},
+   "starve": {"from": "4", "every_ticks": 200, "base": 5, "per_town": 1, "hp_per_point": 400, "cap": 940},
+   "guns": {"every_ticks": 400, "range": 14, "radius": 1, "damage": 16, "building_damage": 80, "cover": [[36, 54, 4]], "cover_permille": 400},
+   "ruins": {"kinds": ["prop_ruins"], "radius": 2, "crush_radius": 2, "crush": 150},
+   "sorties": {
+    "unit": "nt_gdansk_shipwright",
+    "gates": [{"at": [49, 38], "from": "4"}, {"at": [35, 52], "from": "4"}, {"at": [35, 23], "from": "12"}],
+    "first": 4, "grow": 1, "max": 8, "delay_ticks": 600, "out_ticks": 900,
+    "cut_cells": 10, "permille": 250, "radius": 3, "spike_radius": 2
+   },
+   "forge": {"radius": 3, "ticks": 1200},
+   "plague": {"every_ticks": 200, "base": 4, "crowd": 15, "water": [47, 70, 90, 84], "water_per": 4, "heat": 3, "heat_until": "11", "priest": 2, "lazaret": 6, "floor": 150, "sick": 750, "sick_hp": 3, "max": 1000},
+   "lazaret": {"heal": 2, "radius": 5},
+   "towns": {
+    "groups": {"envoy_gdansk": [0, 0, 20, 20], "envoy_torun": [40, 0, 10, 0], "envoy_elblag": [0, 0, 15, 10], "envoy_braniewo": [40, 0, 0, 10]},
+    "hunters": {"envoy_gdansk": "hunt_gdansk", "envoy_elblag": "hunt_elblag", "envoy_braniewo": "hunt_braniewo"},
+    "to": [45, 96], "radius": 4, "every_ticks": 1200, "catch_radius": 2, "guard_radius": 5, "catch_ticks": 100
+   },
+   "sztum": {"from": "14", "at": [100, 117], "radius": 5, "unit": "pl_bombard"}
+  }
+ },
+ "triggers": [
+  {
+   "id": "defeat_tent", "when": {"type": "destroyed", "building": "tent"},
+   "do": [{"do": "defeat", "text": "The garrison has broken into the royal camp and ruined the king's tent."}]
+  },
+  {
+   "id": "defeat_jasko", "when": {"type": "group_dead", "group": "jasko"},
+   "do": [{"do": "defeat", "text": "Jaśko falls under the walls of Malbork."}]
+  },
+  {
+   "id": "defeat_plague", "when": {"type": "flag", "flag": "plague_max"},
+   "do": [{"do": "defeat", "text": "The bloody flux has emptied the camp. There is nobody left to hold the guns."}]
+  },
+  {
+   "id": "1", "when": {"type": "start"},
+   "do": [
+    {"do": "rally", "player": 1, "at": [60, 58]},
+    {"do": "assault", "group": "king_guns", "building": "high_castle"},
+    {
+     "do": "cutscene", "id": "town_without_town", "at": [36, 52],
+     "lines": [
+      ["Chronicler", "25 July. After Grunwald everyone thought the Order was finished. Pan Jan said his great-grandfather thought so too, until he saw Malbork. Plauen burned his own town the day before we came, so that we would have nowhere to pitch a tent."],
+      ["Neighbouring knight", "Ten days we marched here. And in ten days he managed to burn everything that could burn."],
+      ["hero_jasko", "Not everything. The church stands, it is of stone. Put the guns in the church and they will be a hundred paces from the wall."],
+      ["Chronicler", "The king rides past with his suite. He looks at the castle for a long time and says nothing."],
+      ["hero_jagiello", "Pitch the camp. This will take long."]
+     ]
+    },
+    {"do": "objective", "id": "batteries", "text": "Pitch the camp and set up 3 batteries"},
+    {"do": "objective", "id": "chapels", "optional": true, "text": "Build chapels on both places of power"},
+    {"do": "objective", "id": "no_pact", "optional": true, "text": "Never use «The Pact»"},
+    {"do": "hint", "text": "The camp servants build a battery of wicker gabions. A bombard fires only from a battery: bring it to one and let it stand still. Every shot costs 5 powder, and powder comes slower than it goes."},
+    {"do": "hint", "text": "The castle's guns answer the nearest battery. The burned walls round the town fall when a ball strikes them: do not keep men under them."},
+    {"do": "ping", "at": [52, 38], "radius": 6}
+   ]
+  },
+  {
+   "id": "ransom", "when": {"type": "chose", "question": "mark:crown_01:captive", "option": 0},
+   "do": [
+    {"do": "give_stock", "player": 1, "res": "silver", "amount": 100},
+    {"do": "hint", "text": "The ransom for the guest knight you took at Grunwald has been paid: 100 silver."}
+   ]
+  },
+  {
+   "id": "2", "when": {"type": "finished", "type_id": "pl_battery", "at_least": 1},
+   "do": [
+    {"do": "spawn", "group": "trophies", "player": 1, "at": [60, 96], "units": [["pl_bombard", 4]]},
+    {"do": "move", "group": "trophies", "to": [58, 62]},
+    {"do": "dialogue", "id": "trophies", "lines": [["Gunner", "German bombards, from Grunwald. We will give them back their own balls."]]},
+    {"do": "hint", "text": "Four trophy bombards are coming up from the king's camp. They are slow; set them up on the batteries."},
+    {"do": "ping", "at": [60, 96], "radius": 4}
+   ]
+  },
+  {
+   "id": "places", "when": {"type": "chapels", "count": 2},
+   "do": [{"do": "objective", "id": "chapels", "state": "done"}]
+  },
+  {
+   "id": "3", "when": {"type": "finished", "type_id": "pl_battery", "at_least": 3},
+   "do": [
+    {"do": "objective", "id": "batteries", "state": "done"},
+    {"do": "move", "group": "jakub", "to": [35, 79]},
+    {"do": "move", "group": "assault", "to": [36, 79]},
+    {
+     "do": "cutscene", "id": "town_wall", "at": [35, 76],
+     "lines": [
+      ["Chronicler", "26 July, evening. Ladders are set against the town wall. A knight with the Grzymała arms is the first to get over the battlements."],
+      ["Chronicler", "The first on the wall was Jakub of Kobylany, and after him Dobiesław of Oleśnica. Twenty-five years later Jakub will lead the Crown's knights at Wiłkomierz, but that is another story, and I have told it already."]
+     ]
+    },
+    {"do": "objective", "id": "town", "text": "Take the town wall and reach the church by the castle"},
+    {"do": "hint", "text": "Jakub's men are over the wall and will open the gate from inside. Go into the town after them, to St John's church under the castle wall."},
+    {"do": "ping", "at": [35, 76], "radius": 4}
+   ]
+  },
+  {
+   "id": "3b", "when": {"type": "after", "trigger": "3", "ticks": 400},
+   "do": [
+    {"do": "destroy", "building": "town_gate"},
+    {"do": "stance", "group": "assault", "stance": "aggressive"},
+    {"do": "attack_move", "group": "assault", "to": [35, 62]},
+    {"do": "attack_move", "group": "jakub", "to": [36, 64]},
+    {"do": "stance", "group": "town_garrison", "stance": "aggressive"}
+   ]
+  },
+  {
+   "id": "4", "when": {"type": "all", "of": [{"type": "fired", "trigger": "3b"}, {"type": "near", "player": 1, "at": [36, 55], "radius": 4}]},
+   "do": [
+    {
+     "do": "dialogue", "id": "kings_order",
+     "lines": [
+      ["King's messenger", "The king orders: do not go into the breach! Fall back to the church!"],
+      ["hero_jasko", "We are at the wall already! Another hundred paces!"],
+      ["King's messenger", "The king orders."]
+     ]
+    },
+    {"do": "fall_back", "rect": [25, 51, 45, 54], "to": [36, 58]},
+    {"do": "move", "group": "town_garrison", "to": [35, 52]},
+    {"do": "exit", "group": "town_garrison", "at": [35, 52], "radius": 2},
+    {"do": "destroy", "building": "town_gate_e"},
+    {"do": "destroy", "building": "town_tower_w"},
+    {"do": "destroy", "building": "town_tower_e"},
+    {"do": "move", "group": "jakub", "to": [40, 86]},
+    {"do": "move", "group": "assault", "to": [36, 86]},
+    {"do": "burn_bridge", "cells": [16, 38, 23, 39]},
+    {
+     "do": "cutscene", "id": "bridge_burns", "at": [20, 38],
+     "lines": [
+      ["Chronicler", "Night. The defenders throw beams and stones into the breach. A glow rises over the Nogat: the bridge is burning."],
+      ["Chronicler", "Pan Jan never knew whether the king was right or not. I do not know either. I know that by morning there was no breach, and no bridge either."]
+     ]
+    },
+    {"do": "objective", "id": "town", "state": "done"},
+    {"do": "objective", "id": "guns", "text": "Keep the batteries firing; do not let the garrison spike more than half the bombards"},
+    {"do": "hint", "text": "The town is ours. A battery by St John's church stands under cover of its stone: the castle's balls do it less harm."},
+    {"do": "hint", "text": "The «Siege» bar is not the damage to the walls but the hunger in the castle. The garrison mends the walls every night; only time and the shot starve them."}
+   ]
+  },
+  {
+   "id": "5", "when": {"type": "flag", "flag": "sortie"},
+   "do": [
+    {
+     "do": "dialogue", "id": "not_knechts",
+     "lines": [
+      ["Chronicler", "Men in short jackets run out of a side gate, without armour, with axes and boathooks. They roar a song and run straight at the guns."],
+      ["Neighbouring knight", "These are no knechts! Who are they?"],
+      ["hero_jasko", "Gdańsk shipmen. Do not chase them to the gates. Let them run far out by themselves, then we cut them off."]
+     ]
+    },
+    {"do": "objective", "id": "shipmen", "optional": true, "text": "Cut off and take a party of Gdańsk shipmen captive"},
+    {"do": "hint", "text": "A shipman who stays by a bombard for 8 seconds spikes it, and it fires no more. A smith mends a spiked bombard: build a field forge and bring the gun to it."},
+    {"do": "hint", "text": "Far from their gate the shipmen can be cut off: beaten down out there, they give themselves up."}
+   ]
+  },
+  {
+   "id": "shipmen", "when": {"type": "shipmen_taken", "at_least": 1},
+   "do": [{"do": "objective", "id": "shipmen", "state": "done"}]
+  },
+  {
+   "id": "guns_failed", "when": {"type": "spiked", "at_least": 5},
+   "do": [{"do": "objective", "id": "guns", "state": "failed"}]
+  },
+  {
+   "id": "6", "when": {"type": "flag", "flag": "ruin_fell"},
+   "do": [
+    {"do": "dialogue", "id": "burned_wall", "lines": [["Chronicler", "Długosz writes that a ball from the castle brought the wall of a burned house down on ours, and twenty knights lay under it. They were guarding the gun and did not look at the wall."]]},
+    {"do": "hint", "text": "A burned wall has fallen. The ones still standing fall the same way: keep the batteries' guard away from them."}
+   ]
+  },
+  {
+   "id": "7", "when": {"type": "all", "of": [{"type": "fired", "trigger": "4"}, {"type": "near", "player": 1, "at": [48, 52], "radius": 3}]},
+   "do": [
+    {
+     "do": "cutscene", "id": "helmet", "at": [46, 50],
+     "lines": [
+      ["Chronicler", "The round tower. A piece of masonry crashes down from above. When the dust settles a knight sits on the ground, alive, but his helmet is crushed flat. They lead him to the field forge. The smith takes aim with his hammer."],
+      ["Piotr of Oleśnica", "Strike the iron, not the head!"],
+      ["Smith", "Your grace, here one can no longer tell which is which."],
+      ["Chronicler", "This too Długosz wrote down. They knocked the helmet off with hammers, and pan Piotr lived."]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "8",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "5"}, {"type": "night"}, {"type": "any", "of": [{"type": "alone", "unit": "hero_jasko", "radius": 6, "others": 2}, {"type": "nights", "at_least": 3}]}]},
+   "do": [
+    {
+     "do": "dialogue", "id": "strangers_advice",
+     "lines": [
+      ["Chronicler", "Night by the battery. A campfire. Jaśko is cleaning the barrel of a bombard alone. Out of the dark comes a man in a red kaftan and sits on the gun carriage as on a bench."],
+      ["hero_stranger", "You will knock at this door a long time, sir knight. And yet a door has gatekeepers. In the castle sit Czechs, hired men. The Czechs do not care whom they stand for; they care how much they are paid."],
+      ["hero_jasko", "You again. How much do I owe you for the banner?"],
+      ["hero_stranger", "Nothing yet. And this I give for free. He who pays in silver does not borrow."],
+      ["Chronicler", "He gets up and goes into the dark. Jaśko looks at the castle."]
+     ]
+    },
+    {
+     "do": "dialogue", "id": "kings_council",
+     "lines": [
+      ["Lord of the council", "We could buy the gate. The Czechs in the garrison can be bought, knowing men say."],
+      ["Another lord", "We could. But at Grunwald we took the field by the sword. Buying a castle from hirelings is no knightly deed."],
+      ["hero_jagiello", "The council has decided. We will not buy the gate."],
+      ["Chronicler", "The royal council did refuse to bribe the Czechs, calling it unknightly. Who first put the thought forward was not written down. Pan Jan said his great-grandfather did, and that the one in red had prompted him. Forty-seven years later the Crown will buy Malbork from Czech hirelings after all, and it will cost a hundred and ninety thousand florins."]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "9", "when": {"type": "after", "trigger": "4", "ticks": 7200},
+   "do": [
+    {"do": "spawn", "group": "envoy_gdansk", "player": 3, "stance": "passive", "at": [60, 1], "units": [["hero_town_envoys", 1]]},
+    {"do": "spawn", "group": "envoy_elblag", "player": 3, "stance": "passive", "at": [137, 11], "units": [["hero_town_envoys", 1]]},
+    {"do": "spawn", "group": "envoy_braniewo", "player": 3, "stance": "passive", "at": [137, 50], "units": [["hero_town_envoys", 1]]},
+    {"do": "spawn", "group": "envoy_torun", "player": 3, "stance": "passive", "at": [30, 117], "units": [["hero_town_envoys", 1]]},
+    {"do": "envoys_go"},
+    {"do": "spawn", "group": "hunt_gdansk", "player": 2, "stance": "aggressive", "at": [35, 23], "units": [["to_halfbrother", 2]]},
+    {"do": "spawn", "group": "hunt_elblag", "player": 2, "stance": "aggressive", "at": [37, 23], "units": [["to_halfbrother", 2]]},
+    {"do": "spawn", "group": "hunt_braniewo", "player": 2, "stance": "aggressive", "at": [33, 23], "units": [["to_halfbrother", 2]]},
+    {"do": "spawn", "group": "elblag_guns", "player": 1, "at": [60, 96], "units": [["pl_bombard", 2]]},
+    {"do": "move", "group": "elblag_guns", "to": [58, 62]},
+    {"do": "give_stock", "player": 1, "res": "iron", "amount": 120},
+    {
+     "do": "cutscene", "id": "envoys", "at": [45, 96],
+     "lines": [
+      ["Chronicler", "10 August."],
+      ["King's herald", "Envoys are riding from Gdańsk, from Toruń, from Elbląg and from Braniewo! Meet them and bring them to the king with honour!"],
+      ["hero_jasko", "A town that swears will feed us. A town that does not get here will feed Plauen."]
+     ]
+    },
+    {"do": "objective", "id": "envoys", "text": "Bring the towns' envoys to the king's tent"},
+    {"do": "hint", "text": "The garrison sends riders to catch the envoys. An envoy with an enemy at his side and none of ours near is taken. Every sworn town sends food, powder or silver."},
+    {"do": "hint", "text": "Elbląg and Toruń have sent powder and two more bombards."},
+    {"do": "ping", "at": [60, 2], "radius": 4},
+    {"do": "ping", "at": [136, 11], "radius": 4},
+    {"do": "ping", "at": [136, 50], "radius": 4},
+    {"do": "ping", "at": [30, 116], "radius": 4}
+   ]
+  },
+  {
+   "id": "envoys_done", "when": {"type": "sworn", "at_least": 3},
+   "do": [{"do": "objective", "id": "envoys", "state": "done"}]
+  },
+  {
+   "id": "envoys_failed", "when": {"type": "envoys_lost", "at_least": 2},
+   "do": [{"do": "objective", "id": "envoys", "state": "failed"}]
+  },
+  {
+   "id": "10", "when": {"type": "plague", "at_least": 500},
+   "do": [
+    {
+     "do": "dialogue", "id": "plague",
+     "lines": [
+      ["Priest", "Pan Jaśko, there is no more room in my tent. The men drink water from the canal below the place where the horses are watered."],
+      ["hero_jasko", "Keep the camp up the water. And set up an infirmary, even if it is of wagons."]
+     ]
+    },
+    {"do": "unlock", "player": 1, "items": ["pl_lazaret"]},
+    {"do": "objective", "id": "plague", "text": "Live through the plague: do not let it reach its limit"},
+    {"do": "hint", "text": "The plague grows with the crowding, the heat and with men standing on the canal below the town. A priest and an infirmary bring it down, but never to nothing. When it is high your healers do not heal and the men waste away."}
+   ]
+  },
+  {
+   "id": "11", "when": {"type": "after", "trigger": "9", "ticks": 6000},
+   "do": [
+    {"do": "spawn", "group": "livonians", "player": 2, "stance": "passive", "untouchable": true, "at": [137, 34], "units": [["to_knight_brother", 3], ["to_knecht", 4], ["to_crossbow", 3]]},
+    {"do": "spawn", "group": "vincke", "player": 2, "stance": "passive", "untouchable": true, "at": [136, 38], "units": [["to_knight_brother", 1]]},
+    {"do": "move", "group": "livonians", "to": [116, 36]},
+    {"do": "move", "group": "vincke", "to": [113, 38]},
+    {"do": "move", "group": "vytautas", "to": [108, 36]},
+    {"do": "move", "group": "litva", "to": [106, 38]},
+    {
+     "do": "cutscene", "id": "truce", "at": [112, 36],
+     "lines": [
+      ["Chronicler", "The beginning of September. On the eastern edge a column under Livonian banners halts. Vytautas rides out to meet it with his banners. From afar one can see the riders come together, talk and part."],
+      ["Chronicler", "With the Livonians came marshal Vincke, and he had few men. Vytautas met him beyond the Pasłęka, and they agreed on a truce for the northern lands, and the marshal himself was escorted into the castle to talk. Plauen got not an army but a hope."]
+     ]
+    },
+    {"do": "ping", "at": [116, 36], "radius": 6}
+   ]
+  },
+  {
+   "id": "11b", "when": {"type": "after", "trigger": "11", "ticks": 600},
+   "do": [
+    {"do": "move", "group": "vincke", "to": [49, 38]},
+    {"do": "exit", "group": "vincke", "at": [49, 38], "radius": 2},
+    {"do": "move", "group": "livonians", "to": [138, 34]},
+    {"do": "exit", "group": "livonians", "at": [138, 34], "radius": 3},
+    {"do": "move", "group": "vytautas", "to": [102, 30]},
+    {"do": "move", "group": "litva", "to": [96, 30]}
+   ]
+  },
+  {
+   "id": "12", "when": {"type": "after", "trigger": "11", "ticks": 1800},
+   "do": [
+    {
+     "do": "cutscene", "id": "vytautas_leaves", "at": [104, 28],
+     "lines": [
+      ["Chronicler", "The northern camp. The Lithuanians are striking their tents. The Tatars drive their herds from the meadows. Vytautas rides up to the king's tent, pale."],
+      ["hero_vytautas", "Brother, there is the bloody flux in my camp. I will not lead my men to die of the flux under walls that cannot be taken."],
+      ["hero_jagiello", "Go. I will sit here a while longer."],
+      ["Chronicler", "Lithuania leaves. After it the Masovian dukes strike camp."],
+      ["Neighbouring knight", "The Masovians too. And pan Andrzej of Tęczyn, they say, misses his wife."],
+      ["Chronicler", "I did not make that up, Długosz writes so."]
+     ]
+    },
+    {"do": "move", "group": "vytautas", "to": [138, 12]},
+    {"do": "exit", "group": "vytautas", "at": [138, 12], "radius": 4},
+    {"do": "stance", "group": "litva", "stance": "passive"},
+    {"do": "move", "group": "litva", "to": [138, 12]},
+    {"do": "exit", "group": "litva", "at": [138, 12], "radius": 4},
+    {"do": "stance", "group": "tatars", "stance": "passive"},
+    {"do": "move", "group": "tatars", "to": [138, 8]},
+    {"do": "exit", "group": "tatars", "at": [138, 8], "radius": 4},
+    {"do": "stance", "group": "mazovia", "stance": "passive"},
+    {"do": "move", "group": "mazovia", "to": [138, 60]},
+    {"do": "exit", "group": "mazovia", "at": [138, 60], "radius": 4},
+    {"do": "hint", "text": "The north side is open now. The sorties will come out of the north gate too."},
+    {"do": "ping", "at": [35, 24], "radius": 4}
+   ]
+  },
+  {
+   "id": "13", "when": {"type": "shot_after", "trigger": "12"},
+   "do": [
+    {
+     "do": "dialogue", "id": "red_cap",
+     "lines": [
+      ["Chronicler", "Jaśko by the battery. In one of the windows of the great hall something red flashes. The gunner hastily lays the barrel."],
+      ["Gunner", "There is the sign! All their elders are sitting there now, under one pillar!"],
+      ["Chronicler", "A shot. The ball strikes the wall above the window and sticks there."],
+      ["Chronicler", "They say that in the Summer Refectory the Germans held council under one pillar, and a traitor hung a red cap in the window, and ours fired at the pillar and missed. The ball in the wall above the fireplace is shown to this day. But everyone tells it his own way, and that only happens with tales. And Jaśko, pan Jan said, stood a long time after that shot looking at what red thing had been in that window."]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "14", "when": {"type": "after", "trigger": "12", "ticks": 3000},
+   "do": [
+    {
+     "do": "cutscene", "id": "siege_lifted", "at": [45, 96],
+     "lines": [
+      ["Chronicler", "19 September. The king's tent. The lords are tired, many of them with yellowed faces."],
+      ["Lord of the council", "Powder for a week. The hirelings want money. At home it is harvest time, and there are no men. The sick lie in rows."],
+      ["hero_jagiello", "We lift the siege. We take the guns with us, not one shall we leave them. We go to Sztum and put our own men there."]
+     ]
+    },
+    {"do": "objective", "id": "guns", "state": "done"},
+    {"do": "objective", "id": "plague", "state": "done"},
+    {"do": "objective", "id": "sztum", "text": "Take at least 4 bombards away to Sztum"},
+    {"do": "objective", "id": "all_guns", "optional": true, "text": "Take all the bombards away to Sztum"},
+    {"do": "hint", "text": "Bombards cross the canal and the streams only by the roads. The garrison will come out after you: cover the tail of the column."},
+    {"do": "ping", "at": [100, 116], "radius": 5}
+   ]
+  },
+  {
+   "id": "14b", "when": {"type": "after", "trigger": "14", "ticks": 900},
+   "do": [
+    {"do": "spawn", "group": "pursuit", "player": 2, "stance": "aggressive", "at": [35, 52], "units": [["to_knight_brother", 4], ["to_halfbrother", 4], ["to_knecht", 6]]},
+    {"do": "attack_move", "group": "pursuit", "to": [72, 100]},
+    {"do": "ping", "at": [35, 52], "radius": 4}
+   ]
+  },
+  {
+   "id": "all_guns", "when": {"type": "brought", "at_least": 8},
+   "do": [{"do": "objective", "id": "all_guns", "state": "done"}]
+  },
+  {
+   "id": "pact", "when": {"type": "cast", "player": 1, "spell": "sp_pact"},
+   "do": [{"do": "flag", "flag": "pact"}, {"do": "objective", "id": "no_pact", "state": "failed"}]
+  },
+  {
+   "id": "15",
+   "when": {"type": "all", "of": [{"type": "fired", "trigger": "14"}, {"type": "any", "of": [{"type": "bombards_left", "at_most": 0}, {"type": "after", "trigger": "14", "ticks": 7200}]}]},
+   "do": [
+    {"do": "objective", "id": "no_pact", "state": "done"},
+    {
+     "do": "cutscene", "id": "fifteen_days", "at": [100, 116],
+     "lines": [
+      ["Chronicler", "The road to Sztum. A column of wagons with bombards in the dust. Jaśko rides at the tail and looks back at the castle."],
+      ["Neighbouring knight", "So that is all. We took the field and did not take the house."],
+      ["hero_jasko", "Let them sit. We will come again."],
+      ["Chronicler", "In December Plauen wrote that had we stood another fifteen days, his garrison would have died of hunger. Fifteen days. For forty-seven years afterwards the Crown paid for those fifteen days, in blood and in silver. And Jaśko, pan Jan said, could never eat boiled wheat until old age, though it was eaten in the castle and not by us."]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "victory", "when": {"type": "all", "of": [{"type": "after", "trigger": "15", "ticks": 100}, {"type": "brought", "at_least": 4}]},
+   "do": [{"do": "objective", "id": "sztum", "state": "done"}, {"do": "victory", "text": "The siege is lifted, and the guns have come to Sztum."}]
+  },
+  {
+   "id": "defeat_guns", "when": {"type": "all", "of": [{"type": "after", "trigger": "15", "ticks": 100}, {"type": "not", "of": {"type": "brought", "at_least": 4}}]},
+   "do": [{"do": "objective", "id": "sztum", "state": "failed"}, {"do": "defeat", "text": "Fewer than four bombards have come to Sztum. The rest are left to the Order."}]
+  }
+ ]
+}
