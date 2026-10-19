@@ -91,6 +91,13 @@ func _fill() -> void:
 	var m := _sim.mission
 	if m != null and m.def.rules.has("rescue"):
 		_reason.text += "\n" + tr("Brought back over the river: %d") % m.retreat.saved(m)
+	if m != null and m.swiecino.on:
+		var s := m.swiecino
+		var silver := _sim.economy.player(s.player).stock[EconomySystem.SILVER]
+		_reason.text += (
+			"\n"
+			+ tr("Fallen: %d, prisoners: %d, silver left: %d") % [s.fallen(m), s.prisoners, silver]
+		)
 	_watch.text = tr("Keep watching")
 	_to_menu.text = tr("Main menu")
 	_quit.text = tr("Quit")

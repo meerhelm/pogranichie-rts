@@ -64,6 +64,10 @@ var pact: Dictionary[int, bool] = {}
 ## Morale every unit of a player gets (catalog points), by player: the great banner of the
 ## kingdom while it stands (Корона 1, MissionField; the mission's state carries it).
 var army_morale: Dictionary[int, int] = {}
+## Set by a mission's rules (Корона 6, MissionSwiecino), by id: morale points (Dunin's command
+## in Stach's hands) and damage per mille (tired horses).
+var mission_morale: Dictionary[int, int] = {}
+var mission_damage: Dictionary[int, int] = {}
 
 ## Units that need watching, by id (wagons, pavisiers, bombards, escorts and steadiers).
 var _watched: Dictionary[int, bool] = {}
@@ -300,7 +304,7 @@ func pavise_set(id: int) -> bool:
 
 ## Morale from the Crown's rules: the servant beside his knight's lance, and spells.
 func morale_bonus(slot: int) -> int:
-	var bonus: int = spell_morale.get(slot + 1, 0)
+	var bonus: int = spell_morale.get(slot + 1, 0) + mission_morale.get(slot + 1, 0)
 	if not army_morale.is_empty():
 		bonus += army_morale.get(entities.owners[slot], 0)
 	var def := defs[slot]
@@ -349,7 +353,7 @@ func _in_close_order(slot: int) -> bool:
 
 ## Per-mille damage multiplier of the unit's strikes (1000: none).
 func damage_permille(slot: int) -> int:
-	return spell_damage.get(slot + 1, 1000)
+	return spell_damage.get(slot + 1, 1000) * mission_damage.get(slot + 1, 1000) / 1000
 
 
 ## The lance's strike: a charge starts its melee over; long melee costs it damage.

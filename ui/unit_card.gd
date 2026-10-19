@@ -169,7 +169,8 @@ func _state(slot: int) -> String:
 	if e.intents[slot] == EntityStore.Intent.FLEE:
 		return tr("Fleeing!")
 	if e.intents[slot] == EntityStore.Intent.RETREAT:
-		return tr("Lithuanian retreat")
+		var feigned := sim.mission != null and sim.mission.swiecino.on
+		return tr("Falling back") if feigned else tr("Lithuanian retreat")
 	if sim.combat.enabled() and sim.combat.wavering(slot):
 		return tr("Wavering")
 	if sim.combat.enabled() and sim.combat.is_hidden(slot + 1):

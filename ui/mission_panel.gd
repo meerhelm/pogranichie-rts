@@ -272,6 +272,7 @@ func _show_march() -> void:
 	_baltic_lines(m, lines)
 	_chojnice_lines(m, lines)
 	_silver_lines(m, lines)
+	_swiecino_lines(m, lines)
 	_march.visible = not lines.is_empty()
 	_march.text = "\n".join(lines)
 
@@ -450,6 +451,31 @@ func _silver_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
 		tr("Wages each month: %s florins") % UiText.thousands(s.florins(m, s.wages_due(m)))
 	)
 	lines.append(tr("Discontent in Gdańsk: %d%%") % (s.discontent / 10))
+
+
+## Корона 6: «17 September 1462, 09:40», the ditch while it is dug, the treasury and the next
+## wages, those hired, the strength of the horses once the fight is on, the prisoners, and who
+## commands while Dunin is out wounded.
+func _swiecino_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
+	var s := m.swiecino
+	if not s.on:
+		return
+	lines.append(tr("17 September 1462, %s") % s.clock_text(m, sim.tick))
+	var ditch := s.ditch_permille(m)
+	if ditch < 1000:
+		lines.append(tr("Ditch: %d%%") % (ditch / 10))
+	var stock := sim.economy.player(s.player).stock[EconomySystem.SILVER]
+	lines.append(tr("Silver: %d, next wages: %d") % [stock, s.wages_due(m)])
+	if s.hired_horse + s.hired_foot > 0:
+		lines.append(tr("Hired: %d horse, %d foot") % [s.hired_horse, s.hired_foot])
+	if m.fired.has("4"):
+		lines.append(tr("Horses' strength: %d%%") % (s.player_stamina(m) / 10))
+	if s.stand_in_commands(m):
+		lines.append(tr("Dunin is wounded: Stach commands"))
+	if s.prisoners > 0:
+		lines.append(tr("Prisoners: %d") % s.prisoners)
+	if s.deserted > 0:
+		lines.append(tr("Left unpaid: %d") % s.deserted)
 
 
 ## The countdown and captives lines as shown, for tests ("" while hidden).

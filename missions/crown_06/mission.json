@@ -1,0 +1,2315 @@
+{
+ "_comment": "Mission «Корона 6. Свецино, 1462» (mission card in the missions doc, docs/03-missions/17-crown_06_swiecino_1462.md), the last of the Crown campaign. A field battle of two hired armies, each in its wagon fort, on map_crown_06 (tools/maps/gen_crown_06.py): the Polish camp in the south-west with the little lake and its reeds west of it, the field, the Order's rise in the north, the west forest road, Lake Żarnowiec along the east edge. Player 1 is Stach with the royal mercenaries, Dunin, Jasieński's lances and the Gdańsk men; player 3 holds Dunin while he is bandaged in the tabor (an ally, out of the player's hands); enemy 2 the Order (Raweneck's horse, Nostitz's foot in the wagon fort, later the Pomeranian peasants). Rules in core/mission/mission_swiecino.gd (rules.swiecino): the clock, hiring companies for silver (asks.hire) and their wages, the ditch round the tabor, the horses tiring, the crossbows in the reeds, Dunin's command in Stach's hands, Raweneck's death, prisoners for ransom. «The Pact» is locked: Stach turned the stranger away. Read by core/mission/mission_def.gd; cells are map cells, ticks 1/20 s, texts are English keys translated through i18n/*.po.",
+ "id": "crown_06",
+ "title": "Crown 6. Świecino, 1462",
+ "map": "map_crown_06",
+ "player": 1,
+ "players": [
+  [
+   1,
+   "pl"
+  ],
+  [
+   2,
+   "to"
+  ],
+  [
+   3,
+   "pl"
+  ]
+ ],
+ "camera": [
+  46,
+  66
+ ],
+ "difficulties": [
+  "easy",
+  "normal"
+ ],
+ "carry": [],
+ "briefing": {
+  "place": "Świecino by Lake Żarnowiec, Gdańsk Pomerania. 17 September 1462, the night before the battle and the whole day.",
+  "story": "The Thirteen Years' War is in its ninth year. Both sides fight with hired men and neither has the money to pay them; the king pays with the silver of the Prussian towns, Gdańsk first of all. Piotr Dunin has brought the royal mercenaries and the Gdańsk men to Świecino, and the Order's hired army under Fritz Raweneck is coming against them. Stach of Łęczyca, twenty-seven, a captain of a royal company now, counts the silver for his men.",
+  "goal": "Hire companies on the Gdańsk silver and set up the wagon fort with its ditch, hold the long horse fight till noon, draw the Order's horse under the Gdańsk crossbows, and take the Order's wagon fort when Raweneck falls.",
+  "lose": [
+   "Stach falls",
+   "The Polish wagon fort is taken",
+   "More than half the army runs from the field"
+  ]
+ },
+ "asks": {
+  "hire": {
+   "text": "The captains of free companies have come to the camp. Whom will you hire on the Gdańsk silver? Every hired man wants his pay on each payday too: in the morning and at noon.",
+   "options": [
+    "Hired horse: 80 silver, 25 each payday",
+    "Light horse, tires slowly: 45 silver, 12 each payday",
+    "A lance, strikes hard but tires fast: 120 silver, 40 each payday",
+    "Drabants on foot, can dig: 35 silver, 10 each payday",
+    "Enough, the rest goes for the pay"
+   ]
+  }
+ },
+ "setup": {
+  "sides": {
+   "1": 1,
+   "3": 1,
+   "2": 2
+  },
+  "age": {
+   "1": 3,
+   "2": 3,
+   "3": 3
+  },
+  "power": {
+   "1": 0
+  },
+  "stock": {
+   "1": [
+    0,
+    120,
+    0,
+    600
+   ],
+   "2": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "3": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "locked": {
+   "1": [
+    "pl_town_center",
+    "pl_house",
+    "pl_granary",
+    "pl_farm",
+    "pl_lumber_yard",
+    "pl_mine",
+    "pl_barracks",
+    "pl_range",
+    "pl_stable",
+    "pl_palisade",
+    "pl_gate",
+    "pl_tower",
+    "pl_market",
+    "pl_smithy",
+    "pl_shrine",
+    "pl_temple",
+    "pl_siege_workshop",
+    "pl_castle",
+    "pl_salt_works",
+    "pl_battery",
+    "pl_field_camp",
+    "pl_lazaret",
+    "sp_pact"
+   ]
+  },
+  "props": [
+   {
+    "kind": "prop_campfire",
+    "at": [
+     43,
+     72
+    ]
+   },
+   {
+    "kind": "prop_campfire",
+    "at": [
+     49,
+     76
+    ]
+   },
+   {
+    "kind": "prop_campfire",
+    "at": [
+     45,
+     78
+    ]
+   },
+   {
+    "kind": "prop_barrels",
+    "at": [
+     48,
+     71
+    ]
+   },
+   {
+    "kind": "prop_barrels",
+    "at": [
+     44,
+     76
+    ]
+   },
+   {
+    "kind": "prop_logs",
+    "at": [
+     52,
+     82
+    ]
+   },
+   {
+    "kind": "prop_logs",
+    "at": [
+     90,
+     64
+    ]
+   }
+  ],
+  "buildings": [
+   {
+    "player": 3,
+    "type": "pl_house",
+    "at": [
+     92,
+     62
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_house",
+    "at": [
+     95,
+     66
+    ]
+   },
+   {
+    "player": 3,
+    "type": "pl_house",
+    "at": [
+     91,
+     68
+    ]
+   }
+  ],
+  "groups": [
+   {
+    "name": "stach",
+    "player": 1,
+    "units": [
+     [
+      "hero_stach",
+      1
+     ]
+    ],
+    "at": [
+     46,
+     70
+    ]
+   },
+   {
+    "name": "company",
+    "player": 1,
+    "units": [
+     [
+      "pl_merc_horse",
+      3
+     ]
+    ],
+    "at": [
+     48,
+     68
+    ]
+   },
+   {
+    "name": "dunin",
+    "player": 1,
+    "units": [
+     [
+      "hero_dunin",
+      1
+     ]
+    ],
+    "at": [
+     44,
+     72
+    ]
+   },
+   {
+    "name": "jasienski",
+    "player": 1,
+    "units": [
+     [
+      "hero_jasienski",
+      1
+     ]
+    ],
+    "at": [
+     40,
+     71
+    ]
+   },
+   {
+    "name": "lances",
+    "player": 1,
+    "units": [
+     [
+      "pl_kopia",
+      4
+     ]
+    ],
+    "at": [
+     38,
+     68
+    ]
+   },
+   {
+    "name": "royal_horse",
+    "player": 1,
+    "units": [
+     [
+      "pl_merc_horse",
+      4
+     ]
+    ],
+    "at": [
+     51,
+     70
+    ]
+   },
+   {
+    "name": "royal_foot",
+    "player": 1,
+    "units": [
+     [
+      "pl_drab",
+      2
+     ]
+    ],
+    "at": [
+     43,
+     78
+    ]
+   },
+   {
+    "name": "gdansk_foot",
+    "player": 1,
+    "units": [
+     [
+      "nt_gdansk_militia",
+      2
+     ]
+    ],
+    "at": [
+     47,
+     78
+    ]
+   },
+   {
+    "name": "crossbows",
+    "player": 1,
+    "units": [
+     [
+      "nt_gdansk_crossbow",
+      4
+     ]
+    ],
+    "at": [
+     40,
+     75
+    ]
+   },
+   {
+    "name": "priest",
+    "player": 1,
+    "units": [
+     [
+      "pl_priest",
+      1
+     ]
+    ],
+    "at": [
+     46,
+     80
+    ]
+   },
+   {
+    "name": "wagons",
+    "player": 1,
+    "units": [
+     [
+      "pl_wagon",
+      8
+     ]
+    ],
+    "at": [
+     50,
+     76
+    ]
+   }
+  ]
+ },
+ "rules": {
+  "swiecino": {
+   "player": 1,
+   "enemy": 2,
+   "day": {
+    "start_minutes": 330,
+    "ticks_per_hour": 2400
+   },
+   "hire": {
+    "at": [
+     44,
+     75
+    ],
+    "max": {
+     "horse": 5,
+     "foot": 2
+    },
+    "offers": [
+     [
+      "pl_merc_horse",
+      80,
+      25,
+      "horse"
+     ],
+     [
+      "pl_light_horse",
+      45,
+      12,
+      "horse"
+     ],
+     [
+      "pl_kopia",
+      120,
+      40,
+      "horse"
+     ],
+     [
+      "pl_drab",
+      35,
+      10,
+      "foot"
+     ]
+    ]
+   },
+   "wages": {
+    "company": "company",
+    "company_every": 2
+   },
+   "ditch": {
+    "outer": [
+     40,
+     68,
+     52,
+     80
+    ],
+    "inner": [
+     41,
+     69,
+     51,
+     79
+    ],
+    "gaps": [
+     [
+      45,
+      68,
+      47,
+      68
+     ],
+     [
+      45,
+      80,
+      47,
+      80
+     ]
+    ],
+    "dig": [
+     38,
+     66,
+     54,
+     82
+    ],
+    "need": 12000,
+    "terrain": "t_bog"
+   },
+   "camp": {
+    "at": [
+     46,
+     74
+    ],
+    "radius": 8,
+    "wagons": "wagons",
+    "lost_units": 3
+   },
+   "fatigue": {
+    "players": [
+     1,
+     2
+    ],
+    "camps": {
+     "1": [
+      46,
+      74
+     ],
+     "2": [
+      74,
+      20
+     ]
+    },
+    "camp_radius": 9,
+    "fight": 6,
+    "ride": 2,
+    "rest": 3,
+    "camp_rest": 12,
+    "floor": 300,
+    "tired": 400,
+    "tired_damage": 750,
+    "skirmish": {
+     "damage": 300,
+     "until": "6"
+    },
+    "rested": 800,
+    "wounded": 450,
+    "drain": {
+     "pl_light_horse": 600,
+     "pl_kopia": 1300
+    },
+    "post": [
+     66,
+     40
+    ]
+   },
+   "crossbows": {
+    "zone": [
+     30,
+     48,
+     46,
+     63
+    ],
+    "reeds": [
+     28,
+     55,
+     36,
+     73
+    ],
+    "shooter": "nt_gdansk_crossbow",
+    "every_ticks": 40,
+    "damage": 4,
+    "morale": 4,
+    "cap": 4
+   },
+   "command": {
+    "group": "dunin",
+    "stand_in": "stach",
+    "morale": 8,
+    "radius": 12,
+    "keep_ticks": 1200,
+    "floor_permille": 200
+   },
+   "leader": {
+    "group": "raweneck",
+    "followers": [
+     "order_horse",
+     "order_horse_more",
+     "order_foot"
+    ],
+    "morale": 40,
+    "floor_permille": 300,
+    "mortal_from": "9"
+   },
+   "surrender": {
+    "from": "leader_dead",
+    "radius": 2,
+    "silver": 20,
+    "tabor": {
+     "rect": [
+      67,
+      13,
+      81,
+      27
+     ],
+     "groups": [
+      "order_foot"
+     ],
+     "every_ticks": 100
+    }
+   },
+   "charge": {
+    "leash": 60
+   }
+  }
+ },
+ "triggers": [
+  {
+   "id": "defeat_stach",
+   "when": {
+    "type": "group_dead",
+    "group": "stach"
+   },
+   "do": [
+    {
+     "do": "defeat",
+     "text": "Stach has fallen at Świecino. Nobody of Jaśko's blood is left to bring the story home."
+    }
+   ]
+  },
+  {
+   "id": "defeat_camp",
+   "when": {
+    "type": "camp_lost",
+    "ticks": 400
+   },
+   "do": [
+    {
+     "do": "defeat",
+     "text": "The Order's men are in the Polish wagon fort. The battle is lost."
+    }
+   ]
+  },
+  {
+   "id": "defeat_rout",
+   "when": {
+    "type": "all",
+    "of": [
+     {
+      "type": "fired",
+      "trigger": "4"
+     },
+     {
+      "type": "for_ticks",
+      "ticks": 200,
+      "of": {
+       "type": "fleeing",
+       "permille": 500
+      }
+     }
+    ]
+   },
+   "do": [
+    {
+     "do": "defeat",
+     "text": "More than half the army has run from the field. The hired men will not come back for any pay."
+    }
+   ]
+  },
+  {
+   "id": "1",
+   "when": {
+    "type": "start"
+   },
+   "do": [
+    {
+     "do": "rally",
+     "player": 1,
+     "at": [
+      46,
+      72
+     ]
+    },
+    {
+     "do": "spawn",
+     "group": "stranger",
+     "player": 3,
+     "stance": "passive",
+     "untouchable": true,
+     "at": [
+      48,
+      70
+     ],
+     "units": [
+      [
+       "hero_stranger",
+       1
+      ]
+     ]
+    },
+    {
+     "do": "cutscene",
+     "id": "last_reckoning",
+     "at": [
+      46,
+      70
+     ],
+     "lines": [
+      [
+       "Chronicler",
+       "The night before 17 September 1462. The Polish camp at Świecino. Fires, wagons, the clink of chains: the wagoners are chaining the wheels together. Stach sits on a wagon shaft and by the light of a candle counts the purses of silver for his company. On the next shaft sits a man in a red coat. The wagoners do not see him."
+      ],
+      [
+       "Chronicler",
+       "Eight years had passed since Chojnice. Stach served the king for pay, led his own company and, pan Jan used to say, counted money better than he prayed."
+      ],
+      [
+       "hero_stranger",
+       "Good wagons. Your grandfather learned from the Czechs to set them like this."
+      ],
+      [
+       "hero_stach",
+       "I remember you. You sat on the causeway."
+      ],
+      [
+       "hero_stranger",
+       "I did. You have a hard day tomorrow, pan captain. You have fewer men, little money, and the Order's mercenaries are angry: they are not paid either. I could help. As I helped your grandfather."
+      ],
+      [
+       "hero_stach",
+       "And the price is the same?"
+      ],
+      [
+       "hero_stranger",
+       "Your family has always paid its debts."
+      ],
+      [
+       "hero_stach",
+       "Grandfather paid."
+      ],
+      [
+       "Chronicler",
+       "A pause. The stranger looks at him for a long time, then smiles."
+      ],
+      [
+       "hero_stranger",
+       "He paid. I said myself that you owe me nothing. But I never said you need nothing."
+      ],
+      [
+       "hero_stach",
+       "What I need is for the crossbowmen not to oversleep in the morning. That I will see to myself. Go your way, pan. You are in the candle's light."
+      ],
+      [
+       "Chronicler",
+       "Stach bends over the silver again. When he raises his head, there is nobody on the next shaft."
+      ],
+      [
+       "Chronicler",
+       "Pan Jan said his father told of that night only in his old age. And added that it might have been just a sutler who wanted to sell him wine on credit. There were plenty of them in the camp."
+      ]
+     ]
+    },
+    {
+     "do": "hint",
+     "text": "«The Pact» is closed in this mission: Stach has turned the stranger away. Power comes only from chapels."
+    }
+   ]
+  },
+  {
+   "id": "1b",
+   "when": {
+    "type": "after",
+    "trigger": "1",
+    "ticks": 40
+   },
+   "do": [
+    {
+     "do": "exit",
+     "group": "stranger",
+     "at": [
+      48,
+      70
+     ],
+     "radius": 4
+    }
+   ]
+  },
+  {
+   "id": "2",
+   "when": {
+    "type": "after",
+    "trigger": "1",
+    "ticks": 200
+   },
+   "do": [
+    {
+     "do": "dialogue",
+     "id": "wagons_in_a_ring",
+     "lines": [
+      [
+       "hero_dunin",
+       "Wagons in a ring, wheels on the chain, a ditch two spades deep. Left side to the little lake. The Czechs once beat us like this; now we shall beat them like this."
+      ],
+      [
+       "hero_stach",
+       "Pan Dunin, the Gdańsk men have sent silver. Enough for five companies, not for six."
+      ],
+      [
+       "hero_dunin",
+       "Hire those who last longer. It will be a long day today."
+      ]
+     ]
+    },
+    {
+     "do": "objective",
+     "id": "tabor",
+     "text": "Set up the wagon fort with a ditch before the enemy comes"
+    },
+    {
+     "do": "objective",
+     "id": "hire",
+     "text": "Hire companies on the Gdańsk silver"
+    },
+    {
+     "do": "objective",
+     "id": "chapels",
+     "text": "Set up chapels on all three places of power",
+     "optional": true
+    },
+    {
+     "do": "objective",
+     "id": "lances",
+     "text": "Keep at least half of Jasieński's lances to the end of the battle",
+     "optional": true
+    },
+    {
+     "do": "objective",
+     "id": "prisoners",
+     "text": "Take at least 5 of the Order's men prisoner",
+     "optional": true
+    },
+    {
+     "do": "objective",
+     "id": "no_deserters",
+     "text": "Let no company leave the field over its pay",
+     "optional": true
+    },
+    {
+     "do": "hire",
+     "on": true
+    },
+    {
+     "do": "unlock",
+     "player": 1,
+     "items": [
+      "pl_shrine"
+     ]
+    },
+    {
+     "do": "hint",
+     "text": "Draw the wagons up in a ring in the middle of the camp (the wagon fort order). Foot soldiers standing idle inside the camp dig the ditch round it: your own drabants and the Gdańsk men, or hired ones."
+    },
+    {
+     "do": "hint",
+     "text": "The priest can set up chapels: the wayside cross at Świecino, the little chapel on the lake shore, the boulder at the ford."
+    },
+    {
+     "do": "ping",
+     "at": [
+      46,
+      74
+     ],
+     "radius": 7
+    }
+   ]
+  },
+  {
+   "id": "full_horse",
+   "when": {
+    "type": "flag",
+    "flag": "full_horse"
+   },
+   "do": [
+    {
+     "do": "hint",
+     "text": "No more horse can be hired on this silver."
+    }
+   ]
+  },
+  {
+   "id": "full_foot",
+   "when": {
+    "type": "flag",
+    "flag": "full_foot"
+   },
+   "do": [
+    {
+     "do": "hint",
+     "text": "No more foot can be hired on this silver."
+    }
+   ]
+  },
+  {
+   "id": "no_silver",
+   "when": {
+    "type": "flag",
+    "flag": "no_silver"
+   },
+   "do": [
+    {
+     "do": "hint",
+     "text": "There is not enough silver in the company's chest."
+    }
+   ]
+  },
+  {
+   "id": "hire_done",
+   "when": {
+    "type": "hired",
+    "at_least": 1
+   },
+   "do": [
+    {
+     "do": "objective",
+     "id": "hire",
+     "state": "done"
+    }
+   ]
+  },
+  {
+   "id": "tabor_done",
+   "when": {
+    "type": "all",
+    "of": [
+     {
+      "type": "not",
+      "of": {
+       "type": "fired",
+       "trigger": "4"
+      }
+     },
+     {
+      "type": "tabor_ready"
+     }
+    ]
+   },
+   "do": [
+    {
+     "do": "objective",
+     "id": "tabor",
+     "state": "done"
+    },
+    {
+     "do": "hint",
+     "text": "The wagons are chained and the ditch is dug. The enemy cannot break the chained wagons, and his horse loses its run-up in the ditch."
+    }
+   ]
+  },
+  {
+   "id": "chapels_done",
+   "when": {
+    "type": "places_held",
+    "player": 1,
+    "count": 3
+   },
+   "do": [
+    {
+     "do": "objective",
+     "id": "chapels",
+     "state": "done"
+    }
+   ]
+  },
+  {
+   "id": "3",
+   "when": {
+    "type": "all",
+    "of": [
+     {
+      "type": "fired",
+      "trigger": "2"
+     },
+     {
+      "type": "any",
+      "of": [
+       {
+        "type": "clock",
+        "at_least": 480
+       },
+       {
+        "type": "tabor_ready"
+       }
+      ]
+     }
+    ]
+   },
+   "do": [
+    {
+     "do": "spawn",
+     "group": "raweneck",
+     "player": 2,
+     "stance": "defensive",
+     "at": [
+      66,
+      8
+     ],
+     "units": [
+      [
+       "hero_raweneck",
+       1
+      ]
+     ]
+    },
+    {
+     "do": "spawn",
+     "group": "nostitz",
+     "player": 2,
+     "stance": "defensive",
+     "at": [
+      80,
+      9
+     ],
+     "units": [
+      [
+       "hero_nostitz",
+       1
+      ]
+     ]
+    },
+    {
+     "do": "spawn",
+     "group": "order_horse",
+     "player": 2,
+     "stance": "defensive",
+     "at": [
+      56,
+      8
+     ],
+     "units": [
+      [
+       "to_merc_horse",
+       10
+      ]
+     ]
+    },
+    {
+     "do": "spawn",
+     "group": "order_foot",
+     "player": 2,
+     "stance": "stand",
+     "at": [
+      82,
+      10
+     ],
+     "units": [
+      [
+       "to_soldner",
+       2
+      ],
+      [
+       "to_handgunner",
+       2
+      ]
+     ]
+    },
+    {
+     "do": "spawn",
+     "group": "order_wagon_0",
+     "player": 2,
+     "stance": "passive",
+     "untouchable": true,
+     "at": [
+      71,
+      17
+     ],
+     "units": [
+      [
+       "to_wagon",
+       1
+      ]
+     ]
+    },
+    {
+     "do": "spawn",
+     "group": "order_wagon_1",
+     "player": 2,
+     "stance": "passive",
+     "untouchable": true,
+     "at": [
+      74,
+      16
+     ],
+     "units": [
+      [
+       "to_wagon",
+       1
+      ]
+     ]
+    },
+    {
+     "do": "spawn",
+     "group": "order_wagon_2",
+     "player": 2,
+     "stance": "passive",
+     "untouchable": true,
+     "at": [
+      77,
+      17
+     ],
+     "units": [
+      [
+       "to_wagon",
+       1
+      ]
+     ]
+    },
+    {
+     "do": "spawn",
+     "group": "order_wagon_3",
+     "player": 2,
+     "stance": "passive",
+     "untouchable": true,
+     "at": [
+      78,
+      20
+     ],
+     "units": [
+      [
+       "to_wagon",
+       1
+      ]
+     ]
+    },
+    {
+     "do": "spawn",
+     "group": "order_wagon_4",
+     "player": 2,
+     "stance": "passive",
+     "untouchable": true,
+     "at": [
+      77,
+      23
+     ],
+     "units": [
+      [
+       "to_wagon",
+       1
+      ]
+     ]
+    },
+    {
+     "do": "spawn",
+     "group": "order_wagon_5",
+     "player": 2,
+     "stance": "passive",
+     "untouchable": true,
+     "at": [
+      74,
+      24
+     ],
+     "units": [
+      [
+       "to_wagon",
+       1
+      ]
+     ]
+    },
+    {
+     "do": "spawn",
+     "group": "order_wagon_6",
+     "player": 2,
+     "stance": "passive",
+     "untouchable": true,
+     "at": [
+      71,
+      23
+     ],
+     "units": [
+      [
+       "to_wagon",
+       1
+      ]
+     ]
+    },
+    {
+     "do": "spawn",
+     "group": "order_wagon_7",
+     "player": 2,
+     "stance": "passive",
+     "untouchable": true,
+     "at": [
+      70,
+      20
+     ],
+     "units": [
+      [
+       "to_wagon",
+       1
+      ]
+     ]
+    },
+    {
+     "do": "merge",
+     "group": "order_wagons",
+     "of": [
+      "order_wagon_0",
+      "order_wagon_1",
+      "order_wagon_2",
+      "order_wagon_3",
+      "order_wagon_4",
+      "order_wagon_5",
+      "order_wagon_6",
+      "order_wagon_7"
+     ]
+    },
+    {
+     "do": "rally",
+     "player": 2,
+     "at": [
+      74,
+      12
+     ]
+    },
+    {
+     "do": "move",
+     "group": "raweneck",
+     "to": [
+      70,
+      31
+     ]
+    },
+    {
+     "do": "move",
+     "group": "order_horse",
+     "to": [
+      70,
+      33
+     ]
+    },
+    {
+     "do": "move",
+     "group": "nostitz",
+     "to": [
+      74,
+      19
+     ]
+    },
+    {
+     "do": "move",
+     "group": "order_foot",
+     "to": [
+      74,
+      21
+     ]
+    },
+    {
+     "do": "dialogue",
+     "id": "order_on_the_field",
+     "lines": [
+      [
+       "Chronicler",
+       "The Order's army comes out from behind the hill and sets its own wagons on the rise across the field: horse in front of the wagons, foot behind them."
+      ],
+      [
+       "hero_raweneck",
+       "There are fewer of them, Kaspar. Let us strike at once."
+      ],
+      [
+       "hero_nostitz",
+       "The wagons first, Fritz. The Poles have learned from the Czechs, and it is no sin for us to."
+      ]
+     ]
+    },
+    {
+     "do": "ping",
+     "at": [
+      72,
+      24
+     ],
+     "radius": 8
+    }
+   ]
+  },
+  {
+   "id": "3_normal",
+   "when": {
+    "type": "all",
+    "of": [
+     {
+      "type": "fired",
+      "trigger": "3"
+     },
+     {
+      "type": "difficulty",
+      "at_least": "normal"
+     }
+    ]
+   },
+   "do": [
+    {
+     "do": "spawn",
+     "group": "order_horse_more",
+     "player": 2,
+     "stance": "defensive",
+     "at": [
+      62,
+      9
+     ],
+     "units": [
+      [
+       "to_merc_horse",
+       2
+      ]
+     ]
+    },
+    {
+     "do": "move",
+     "group": "order_horse_more",
+     "to": [
+      74,
+      33
+     ]
+    }
+   ]
+  },
+  {
+   "id": "4",
+   "when": {
+    "type": "after",
+    "trigger": "3",
+    "ticks": 1200
+   },
+   "do": [
+    {
+     "do": "hire",
+     "on": false
+    },
+    {
+     "do": "objective",
+     "id": "tabor",
+     "state": "failed"
+    },
+    {
+     "do": "objective",
+     "id": "hire",
+     "state": "failed"
+    },
+    {
+     "do": "cutscene",
+     "id": "lances_stood_too_long",
+     "at": [
+      44,
+      64
+     ],
+     "lines": [
+      [
+       "hero_jasienski",
+       "Pan Dunin, let me begin. My lances have stood too long."
+      ],
+      [
+       "hero_dunin",
+       "Begin, pan Paweł. Only do not go far from the wagons. We cannot cut them all down; we have to outlast them."
+      ],
+      [
+       "Chronicler",
+       "Paweł Jasieński led the heavy horse out first. Długosz wrote that he struck so that the enemy's lances all missed; that is how chroniclers write."
+      ]
+     ]
+    },
+    {
+     "do": "payday"
+    },
+    {
+     "do": "hint",
+     "text": "Payday: the hired companies have had their morning pay. The next payday is at noon. Stach's own company waits for its pay till noon."
+    },
+    {
+     "do": "attack_move",
+     "group": "jasienski",
+     "to": [
+      60,
+      48
+     ]
+    },
+    {
+     "do": "attack_move",
+     "group": "lances",
+     "to": [
+      60,
+      48
+     ]
+    },
+    {
+     "do": "stance",
+     "group": "order_horse",
+     "stance": "aggressive"
+    },
+    {
+     "do": "stance",
+     "group": "order_horse_more",
+     "stance": "aggressive"
+    },
+    {
+     "do": "stance",
+     "group": "raweneck",
+     "stance": "aggressive"
+    },
+    {
+     "do": "attack_move",
+     "group": "order_horse",
+     "to": [
+      62,
+      46
+     ]
+    },
+    {
+     "do": "attack_move",
+     "group": "order_horse_more",
+     "to": [
+      66,
+      46
+     ]
+    },
+    {
+     "do": "charge",
+     "group": "order_horse",
+     "on": true
+    },
+    {
+     "do": "charge",
+     "group": "order_horse_more",
+     "on": true
+    },
+    {
+     "do": "rotate",
+     "on": true
+    },
+    {
+     "do": "crossbows",
+     "on": true
+    },
+    {
+     "do": "objective",
+     "id": "morning",
+     "text": "Hold the horse fight till noon"
+    },
+    {
+     "do": "hint",
+     "text": "Horses tire in a fight and on the move and rest standing, best of all by their own wagons. A tired company strikes weaker and runs sooner. Change your companies, send the tired ones back to the wagons."
+    }
+   ]
+  },
+  {
+   "id": "no_deserters_failed",
+   "when": {
+    "type": "unpaid",
+    "at_least": 1
+   },
+   "do": [
+    {
+     "do": "objective",
+     "id": "no_deserters",
+     "state": "failed"
+    },
+    {
+     "do": "hint",
+     "text": "There was not silver enough for the pay: the companies nobody could pay have left the field."
+    }
+   ]
+  },
+  {
+   "id": "lances_failed",
+   "when": {
+    "type": "group_alive_at_most",
+    "group": "lances",
+    "count": 1
+   },
+   "do": [
+    {
+     "do": "objective",
+     "id": "lances",
+     "state": "failed"
+    }
+   ]
+  },
+  {
+   "id": "5",
+   "when": {
+    "type": "all",
+    "of": [
+     {
+      "type": "fired",
+      "trigger": "4"
+     },
+     {
+      "type": "clock",
+      "at_least": 600
+     }
+    ]
+   },
+   "do": [
+    {
+     "do": "flag",
+     "flag": "wounded"
+    },
+    {
+     "do": "transfer",
+     "group": "dunin",
+     "player": 3
+    },
+    {
+     "do": "stance",
+     "group": "dunin",
+     "stance": "passive"
+    },
+    {
+     "do": "protect",
+     "group": "dunin"
+    },
+    {
+     "do": "move",
+     "group": "dunin",
+     "to": [
+      46,
+      74
+     ]
+    },
+    {
+     "do": "dialogue",
+     "id": "first_wound",
+     "lines": [
+      [
+       "hero_dunin",
+       "A trifle. Bind it up and give me another horse. Pan Stach, hold the line while I am gone."
+      ],
+      [
+       "hero_stach",
+       "The horses are in a lather. Change the companies, take the tired ones back to the wagons!"
+      ]
+     ]
+    },
+    {
+     "do": "hint",
+     "text": "Dunin is wounded and is being bandaged in the wagon fort. For a minute his word still holds the whole army; after that his command is in Stach's hands: only the men near Stach feel it."
+    }
+   ]
+  },
+  {
+   "id": "5b",
+   "when": {
+    "type": "after",
+    "trigger": "5",
+    "ticks": 1800
+   },
+   "do": [
+    {
+     "do": "transfer",
+     "group": "dunin",
+     "player": 1
+    },
+    {
+     "do": "unprotect",
+     "group": "dunin"
+    },
+    {
+     "do": "stance",
+     "group": "dunin",
+     "stance": "aggressive"
+    },
+    {
+     "do": "hint",
+     "text": "Dunin is back in the saddle."
+    }
+   ]
+  },
+  {
+   "id": "6",
+   "when": {
+    "type": "all",
+    "of": [
+     {
+      "type": "fired",
+      "trigger": "4"
+     },
+     {
+      "type": "clock",
+      "at_least": 720
+     }
+    ]
+   },
+   "do": [
+    {
+     "do": "objective",
+     "id": "morning",
+     "state": "done"
+    },
+    {
+     "do": "rotate",
+     "on": false
+    },
+    {
+     "do": "charge",
+     "group": "order_horse",
+     "on": false
+    },
+    {
+     "do": "charge",
+     "group": "order_horse_more",
+     "on": false
+    },
+    {
+     "do": "move",
+     "group": "order_horse",
+     "to": [
+      72,
+      30
+     ]
+    },
+    {
+     "do": "move",
+     "group": "order_horse_more",
+     "to": [
+      76,
+      30
+     ]
+    },
+    {
+     "do": "move",
+     "group": "raweneck",
+     "to": [
+      74,
+      28
+     ]
+    },
+    {
+     "do": "protect",
+     "group": "order_horse"
+    },
+    {
+     "do": "protect",
+     "group": "order_horse_more"
+    },
+    {
+     "do": "protect",
+     "group": "raweneck"
+    },
+    {
+     "do": "rest",
+     "player": 1,
+     "to": [
+      44,
+      66
+     ]
+    },
+    {
+     "do": "payday"
+    },
+    {
+     "do": "fall_back_order"
+    },
+    {
+     "do": "feint",
+     "on": true
+    },
+    {
+     "do": "rally",
+     "player": 1,
+     "at": [
+      40,
+      66
+     ]
+    },
+    {
+     "do": "countdown",
+     "text": "The noon rest",
+     "ticks": 1200
+    },
+    {
+     "do": "cutscene",
+     "id": "fall_back_not_run",
+     "at": [
+      44,
+      66
+     ],
+     "lines": [
+      [
+       "Chronicler",
+       "Noon. Dust hangs over the field. Both bodies of horse draw back to their wagons. Dunin sits on a barrel in a bloody bandage."
+      ],
+      [
+       "hero_dunin",
+       "They will come again, and all together. Let our horse give way before them. Not run, but give way: straight under the Gdańsk crossbows. Pan Stach, this is yours. Can you retreat so that they follow you?"
+      ],
+      [
+       "hero_stach",
+       "I was taught to retreat at Chojnice. Taught well."
+      ],
+      [
+       "Gdańsk crossbowman",
+       "Only do not lead them straight onto us, pan. In the dust we will not tell our own men from theirs."
+      ]
+     ]
+    },
+    {
+     "do": "objective",
+     "id": "lure",
+     "text": "Draw the Order's horse under the crossbows"
+    },
+    {
+     "do": "hint",
+     "text": "Put the Gdańsk crossbowmen in the reeds by the little lake. The horse can now fall back without running (the retreat order): it draws back to the rally point before the reeds, and whoever follows it into the field before the reeds comes under volleys from the front and the flank."
+    },
+    {
+     "do": "ping",
+     "at": [
+      38,
+      56
+     ],
+     "radius": 6
+    }
+   ]
+  },
+  {
+   "id": "7",
+   "when": {
+    "type": "after",
+    "trigger": "6",
+    "ticks": 1200
+   },
+   "do": [
+    {
+     "do": "countdown",
+     "text": "",
+     "ticks": 0
+    },
+    {
+     "do": "unprotect",
+     "group": "order_horse"
+    },
+    {
+     "do": "unprotect",
+     "group": "order_horse_more"
+    },
+    {
+     "do": "unprotect",
+     "group": "raweneck"
+    },
+    {
+     "do": "stance",
+     "group": "order_horse",
+     "stance": "aggressive"
+    },
+    {
+     "do": "stance",
+     "group": "order_horse_more",
+     "stance": "aggressive"
+    },
+    {
+     "do": "charge",
+     "group": "order_horse",
+     "on": true
+    },
+    {
+     "do": "charge",
+     "group": "order_horse_more",
+     "on": true
+    },
+    {
+     "do": "dialogue",
+     "id": "they_come",
+     "lines": [
+      [
+       "Chronicler",
+       "The Order's horse moves off all together. The earth hums."
+      ],
+      [
+       "hero_stach",
+       "Fall back! Do not run, fall back! To the reeds!"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "8",
+   "when": {
+    "type": "all",
+    "of": [
+     {
+      "type": "fired",
+      "trigger": "7"
+     },
+     {
+      "type": "any",
+      "of": [
+       {
+        "type": "in_zone",
+        "at_least": 4
+       },
+       {
+        "type": "all",
+        "of": [
+         {
+          "type": "group_alive_at_most",
+          "group": "order_horse",
+          "count": 1
+         },
+         {
+          "type": "group_alive_at_most",
+          "group": "order_horse_more",
+          "count": 1
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "do": [
+    {
+     "do": "objective",
+     "id": "lure",
+     "state": "done"
+    },
+    {
+     "do": "charge",
+     "group": "order_horse",
+     "on": false
+    },
+    {
+     "do": "charge",
+     "group": "order_horse_more",
+     "on": false
+    },
+    {
+     "do": "move",
+     "group": "order_horse",
+     "to": [
+      70,
+      32
+     ]
+    },
+    {
+     "do": "move",
+     "group": "order_horse_more",
+     "to": [
+      74,
+      32
+     ]
+    },
+    {
+     "do": "hurt",
+     "group": "raweneck",
+     "permille": 450
+    },
+    {
+     "do": "move",
+     "group": "raweneck",
+     "to": [
+      72,
+      30
+     ]
+    },
+    {
+     "do": "dialogue",
+     "id": "hagen",
+     "lines": [
+      [
+       "Chronicler",
+       "The Order's horse rode in under the crossbows and lay down there. But many of ours fell in that hour too; among them the Gdańsk councillor Maciej Hagen, whose name is written down. And Dunin took a second wound and went back into the saddle again."
+      ],
+      [
+       "Chronicler",
+       "Raweneck too was wounded. His horse drew back to its wagons."
+      ]
+     ]
+    },
+    {
+     "do": "flag",
+     "flag": "wounded"
+    },
+    {
+     "do": "transfer",
+     "group": "dunin",
+     "player": 3
+    },
+    {
+     "do": "stance",
+     "group": "dunin",
+     "stance": "passive"
+    },
+    {
+     "do": "protect",
+     "group": "dunin"
+    },
+    {
+     "do": "move",
+     "group": "dunin",
+     "to": [
+      46,
+      74
+     ]
+    }
+   ]
+  },
+  {
+   "id": "8b",
+   "when": {
+    "type": "after",
+    "trigger": "8",
+    "ticks": 1200
+   },
+   "do": [
+    {
+     "do": "transfer",
+     "group": "dunin",
+     "player": 1
+    },
+    {
+     "do": "unprotect",
+     "group": "dunin"
+    },
+    {
+     "do": "stance",
+     "group": "dunin",
+     "stance": "aggressive"
+    }
+   ]
+  },
+  {
+   "id": "9",
+   "when": {
+    "type": "after",
+    "trigger": "8",
+    "ticks": 900
+   },
+   "do": [
+    {
+     "do": "stance",
+     "group": "raweneck",
+     "stance": "aggressive"
+    },
+    {
+     "do": "charge",
+     "group": "raweneck",
+     "on": true
+    },
+    {
+     "do": "charge",
+     "group": "order_horse",
+     "on": true
+    },
+    {
+     "do": "charge",
+     "group": "order_horse_more",
+     "on": true
+    },
+    {
+     "do": "dialogue",
+     "id": "once_more",
+     "lines": [
+      [
+       "hero_raweneck",
+       "After me! Once more, before they come to their senses!"
+      ],
+      [
+       "Chronicler",
+       "Raweneck was wounded already, but he led his men again. Who killed him is not written down."
+      ]
+     ]
+    },
+    {
+     "do": "objective",
+     "id": "raweneck",
+     "text": "Beat off Raweneck's second charge"
+    }
+   ]
+  },
+  {
+   "id": "10",
+   "when": {
+    "type": "all",
+    "of": [
+     {
+      "type": "fired",
+      "trigger": "9"
+     },
+     {
+      "type": "flag",
+      "flag": "leader_dead"
+     }
+    ]
+   },
+   "do": [
+    {
+     "do": "objective",
+     "id": "raweneck",
+     "state": "done"
+    },
+    {
+     "do": "charge",
+     "group": "order_horse",
+     "on": false
+    },
+    {
+     "do": "charge",
+     "group": "order_horse_more",
+     "on": false
+    },
+    {
+     "do": "rally",
+     "player": 2,
+     "at": [
+      62,
+      1
+     ]
+    },
+    {
+     "do": "exit",
+     "group": "order_horse",
+     "at": [
+      62,
+      1
+     ],
+     "radius": 5
+    },
+    {
+     "do": "exit",
+     "group": "order_horse_more",
+     "at": [
+      62,
+      1
+     ],
+     "radius": 5
+    },
+    {
+     "do": "exit",
+     "group": "nostitz",
+     "at": [
+      62,
+      1
+     ],
+     "radius": 5
+    },
+    {
+     "do": "move",
+     "group": "nostitz",
+     "to": [
+      62,
+      1
+     ]
+    },
+    {
+     "do": "stance",
+     "group": "nostitz",
+     "stance": "passive"
+    },
+    {
+     "do": "protect",
+     "group": "nostitz"
+    },
+    {
+     "do": "cutscene",
+     "id": "to_the_wagons",
+     "at": [
+      70,
+      30
+     ],
+     "lines": [
+      [
+       "Voices",
+       "Raweneck is killed! Raweneck is killed!"
+      ],
+      [
+       "hero_dunin",
+       "At the wagons! Before they come to their senses!"
+      ],
+      [
+       "hero_stach",
+       "Foot forward! Do not cut down those who yield, they will be ransomed!"
+      ]
+     ]
+    },
+    {
+     "do": "objective",
+     "id": "order_tabor",
+     "text": "Take the Order's wagon fort"
+    },
+    {
+     "do": "hint",
+     "text": "The Order's men who run or have lost heart lay down their arms when your men come up to them: they are prisoners, and every one is ransomed for silver. The foot in the wagon fort yields one by one while your men stand inside it."
+    },
+    {
+     "do": "ping",
+     "at": [
+      74,
+      20
+     ],
+     "radius": 7
+    }
+   ]
+  },
+  {
+   "id": "prisoners_done",
+   "when": {
+    "type": "prisoners",
+    "at_least": 5
+   },
+   "do": [
+    {
+     "do": "objective",
+     "id": "prisoners",
+     "state": "done"
+    }
+   ]
+  },
+  {
+   "id": "11",
+   "when": {
+    "type": "all",
+    "of": [
+     {
+      "type": "fired",
+      "trigger": "10"
+     },
+     {
+      "type": "group_alive_at_most",
+      "group": "order_foot",
+      "count": 0
+     },
+     {
+      "type": "near",
+      "player": 1,
+      "at": [
+       74,
+       20
+      ],
+      "radius": 7
+     }
+    ]
+   },
+   "do": [
+    {
+     "do": "objective",
+     "id": "order_tabor",
+     "state": "done"
+    },
+    {
+     "do": "transfer",
+     "group": "order_wagons",
+     "player": 1
+    },
+    {
+     "do": "spawn",
+     "group": "pomeranians",
+     "player": 2,
+     "stance": "passive",
+     "at": [
+      2,
+      21
+     ],
+     "units": [
+      [
+       "nt_pomeranian",
+       13
+      ]
+     ]
+    },
+    {
+     "do": "move",
+     "group": "pomeranians",
+     "to": [
+      52,
+      22
+     ]
+    },
+    {
+     "do": "dialogue",
+     "id": "wagons_taken",
+     "lines": [
+      [
+       "Chronicler",
+       "The Order's wagons are taken, with their guns and all their goods. And on the west road, from the forest, people are coming: the Pomeranian peasants who had been called to the Order's army and came late."
+      ]
+     ]
+    },
+    {
+     "do": "objective",
+     "id": "peasants",
+     "text": "Drive the Pomeranian peasants off the field"
+    },
+    {
+     "do": "ping",
+     "at": [
+      10,
+      23
+     ],
+     "radius": 6
+    }
+   ]
+  },
+  {
+   "id": "11b",
+   "when": {
+    "type": "all",
+    "of": [
+     {
+      "type": "fired",
+      "trigger": "11"
+     },
+     {
+      "type": "any",
+      "of": [
+       {
+        "type": "group_near",
+        "group": "pomeranians",
+        "at": [
+         46,
+         23
+        ],
+        "radius": 6
+       },
+       {
+        "type": "group_lost",
+        "group": "pomeranians"
+       },
+       {
+        "type": "after",
+        "trigger": "11",
+        "ticks": 1200
+       }
+      ]
+     }
+    ]
+   },
+   "do": [
+    {
+     "do": "rally",
+     "player": 2,
+     "at": [
+      1,
+      24
+     ]
+    },
+    {
+     "do": "exit",
+     "group": "pomeranians",
+     "at": [
+      1,
+      24
+     ],
+     "radius": 4
+    },
+    {
+     "do": "morale",
+     "group": "pomeranians",
+     "permille": 1000
+    },
+    {
+     "do": "dialogue",
+     "id": "where_are_the_germans",
+     "lines": [
+      [
+       "Chronicler",
+       "The crowd of peasants with scythes and flails stops. The first ones look at the wagons on the rise."
+      ],
+      [
+       "Pomeranian peasant",
+       "Neighbour, where are the Germans, then?"
+      ],
+      [
+       "Another peasant",
+       "There they go, running. Time we went too."
+      ],
+      [
+       "Chronicler",
+       "The peasants throw down their scythes and run back into the forest. Long afterwards, it is told, drowned men were found in the lake there; nobody counted them."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "12",
+   "when": {
+    "type": "all",
+    "of": [
+     {
+      "type": "fired",
+      "trigger": "11b"
+     },
+     {
+      "type": "any",
+      "of": [
+       {
+        "type": "units_at_most",
+        "player": 2,
+        "count": 0
+       },
+       {
+        "type": "after",
+        "trigger": "11b",
+        "ticks": 1800
+       }
+      ]
+     }
+    ]
+   },
+   "do": [
+    {
+     "do": "objective",
+     "id": "peasants",
+     "state": "done"
+    },
+    {
+     "do": "objective",
+     "id": "lances",
+     "state": "done"
+    },
+    {
+     "do": "objective",
+     "id": "no_deserters",
+     "state": "done"
+    },
+    {
+     "do": "objective",
+     "id": "chapels",
+     "state": "failed"
+    },
+    {
+     "do": "objective",
+     "id": "prisoners",
+     "state": "failed"
+    },
+    {
+     "do": "cutscene",
+     "id": "artus_court",
+     "at": [
+      46,
+      74
+     ],
+     "lines": [
+      [
+       "Chronicler",
+       "The Order lost about a thousand dead that day and some fifty prisoners, the Poles about a hundred dead and as many again who died of their wounds. Raweneck was buried at Żarnowiec. It was the first battle in the open field the royal army won in that war, and the war turned."
+      ],
+      [
+       "Chronicler",
+       "19 October 1466. Toruń, the Artus Court. The hall is full: Polish lords, Prussian townsmen, brothers of the Order in white cloaks. At the table the papal legate, King Casimir and the Grand Master Ludwig von Erlichshausen. Stach stands by the wall in the king's suite."
+      ],
+      [
+       "Chronicler",
+       "The peace was signed in Toruń, in the Artus Court, on 19 October 1466. It had been bargained over since 23 September at Nieszawa, with the papal legate Rudolf of Rüdesheim as go-between. Gdańsk Pomerania, the Chełmno land, Malbork, Elbląg and Warmia went to the Crown. The rest of Prussia stayed with the Order, but as a fief of the Polish king: every new Grand Master was to swear homage to the king within half a year of his election, to be his prince and councillor and to help him in war. The Order bound itself to take the king's subjects into its brotherhood as well."
+      ],
+      [
+       "hero_casimir",
+       "You have served me all through this war, captain. What will you ask?"
+      ],
+      [
+       "hero_stach",
+       "Let me go home, sire. To Łęczyca. I have hardly been there since Chojnice."
+      ],
+      [
+       "Chronicler",
+       "Łęczyca, spring. An old house. On a shelf stands a cloudy bottle of Baltic water. Stach hangs his sabre beside it, steps back and looks for a long time."
+      ],
+      [
+       "Chronicler",
+       "Stach went back to Łęczyca, married, and a few years later his son Jan was born. The man in red was not seen in their family again. Although, pan Jan said, in the Łęczyca market every second man wears red, so who can tell."
+      ],
+      [
+       "Chronicler",
+       "He showed me the bottle of Baltic water by the fire at Orsha, the night before the crossing. «My great-grandfather paid in blood, my father paid in other men's silver,» he said. «And I serve for pay and pay only the innkeepers.» In the morning we crossed the Dnieper. But that is another story, and I have told it already."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "victory",
+   "when": {
+    "type": "after",
+    "trigger": "12",
+    "ticks": 100
+   },
+   "do": [
+    {
+     "do": "victory",
+     "text": "Świecino is won. Raweneck is dead, his wagon fort taken, and the war has turned. The Crown campaign is over."
+    }
+   ]
+  }
+ ]
+}

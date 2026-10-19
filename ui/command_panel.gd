@@ -198,11 +198,16 @@ func _unit_orders() -> void:
 		if sim.combat.enabled():
 			any_flags |= sim.combat.flags[id - 1]
 	if any_flags & CombatSystem.F_RETREAT:
+		var feigned := sim.mission != null and sim.mission.swiecino.on
 		_order(
 			"retreat",
-			tr("Lithuanian retreat"),
+			tr("Fall back") if feigned else tr("Lithuanian retreat"),
 			"T",
-			tr("Flee from the enemy at full speed, then turn on the chasers."),
+			(
+				tr("Give way before the enemy and lead him on, then turn on the chasers.")
+				if feigned
+				else tr("Flee from the enemy at full speed, then turn on the chasers.")
+			),
 			input.order_kind.bind(SimCommand.Kind.RETREAT)
 		)
 		_order(

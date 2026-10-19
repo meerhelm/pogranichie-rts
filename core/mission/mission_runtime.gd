@@ -41,8 +41,8 @@ extends RefCounted
 ##   destroy {building}; name_built {player, base, name} (names the player's newest finished
 ##   building of that kind); assault {group, building, else?} (storm a named building, or
 ##   attack-move to `else` when it is gone).
-##   ВКЛ 4–8, Корона 1–5: MissionMarch, Retreat, Stealth, Siege, Battle, Field, Besiege,
-##   Baltic, Chojnice, Silver. Setup may also give sides {player: lead player}, neutral
+##   ВКЛ 4–8, Корона 1–6: MissionMarch, Retreat, Stealth, Siege, Battle, Field, Besiege,
+##   Baltic, Chojnice, Silver, Swiecino. Setup may also give sides {player: lead player}, neutral
 ## [players], age, pop {player: places}, power, props, buildings turned:true. Rules: hunger,
 ## boats, blockade, banner and those of the mission modules.
 
@@ -131,7 +131,7 @@ var raids := 0
 ## The panel's countdown (`countdown`): its text and the tick it ends (-1: none).
 var countdown_text := ""
 var countdown_end := -1
-## The mission modules of ВКЛ 5–8 and Корона 1–5 (see the header).
+## The mission modules of ВКЛ 5–8 and Корона 1–6 (see the header).
 var retreat := MissionRetreat.new()
 var stealth := MissionStealth.new()
 var siege := MissionSiege.new()
@@ -141,6 +141,7 @@ var besiege := MissionBesiege.new()
 var baltic := MissionBaltic.new()
 var chojnice := MissionChojnice.new()
 var silver := MissionSilver.new()
+var swiecino := MissionSwiecino.new()
 var outcome := Outcome.NONE
 var outcome_text := ""
 ## What the interface shows, in order: {kind, tick, ...} (kind: objective, hint, dialogue,
@@ -174,7 +175,7 @@ func is_over() -> bool:
 
 ## The mission modules with state, in the order they set up, step and hash.
 func _modules() -> Array[RefCounted]:
-	return [retreat, stealth, siege, battle, field, besiege, baltic, chojnice, silver]
+	return [retreat, stealth, siege, battle, field, besiege, baltic, chojnice, silver, swiecino]
 
 
 # --- setup ----------------------------------------------------------------------------------

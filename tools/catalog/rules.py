@@ -291,6 +291,8 @@ RULES: list[Rule] = [
     # Campaign-only notes (К5 calls the servant a worker; plague and rumours are mission rules).
     (r"в кампании сбивает мор и слухи", _tags()),
     (r"в К5 называется работником", _tags()),
+    # Корона 6: the Pomeranian peasants come late by the mission's script, not by a rule.
+    (r"приходит с опозданием", _tags()),
     # Animals and villagers.
     (r"даёт сдачи, идёт на охотника", _tags("charges_hunter")),
     (r"бьёт в ответ", _tags("retaliates")),

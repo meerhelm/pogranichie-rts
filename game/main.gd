@@ -99,6 +99,11 @@ func _ready() -> void:
 		chojnice.local_player = PLAYER
 		_shots.add_sibling(chojnice)
 		chojnice.attach(sim, _clock)
+	if SwiecinoLayer.wanted(sim):
+		var swiecino := SwiecinoLayer.new()
+		swiecino.local_player = PLAYER
+		_shots.add_sibling(swiecino)
+		swiecino.attach(sim, _clock)
 	if SilverLayer.wanted(sim):
 		var silver := SilverLayer.new()
 		silver.local_player = PLAYER
