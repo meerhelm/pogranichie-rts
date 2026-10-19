@@ -132,6 +132,22 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
   Plauen (a knight brother in a sallet, a full clean-shaven face, a sword) and the mercenary
   captains `hero_k4_order` (gilt-edged plate, blue tabard, a team plume, a war hammer); no family
   arms are drawn.
+- `folk_crown_silver.py` — Silver for Malbork (Корона 5): pani Barbara (`lady`, idle and walk:
+  a dark blue wool gown to the ground with fur at the hem and collar, a townswoman's
+  white linen headdress with a roll, veil and wimple, the counting book, keys and a purse at a
+  team girdle), Červenka (`mounted`, bareheaded as the card says: a breastplate and pauldrons
+  over a wine-red velvet doublet, a gold chain, a war hammer, a dark bay without a caparison; no arms), the
+  Gdańsk councillor `hero_k5_civil` (civilian: a long dark gown edged with fur, a chain of
+  office, a tall tapering hat in a fur brim, a sealed letter), the river boat `pl_river_boat`
+  (`RiverBoat`: a long plank punt of which only the part above the waterline is built, two
+  rowers with a pair of oars each, a steersman with a sweep, a crossbowman behind pavises in
+  the bow, chests of silver, a team pennon; idle rocks, walk is the oar stroke with a bow wave
+  and wake, attack is the crossbow shot; its own frame, `registry.BOAT`), the landing
+  `pl_dock` (3×3: a plank pier on piles over a small basin cut into the river side (+X) and
+  running out past the footprint, a store shed, a jib crane with a chest on the rope, a moored
+  punt, goods, the Crown's flag) and the prop `prop_piles` (the broken piles of the old Nogat
+  bridge on transparent ground for the water tiles; a bigger frame). `pl_merc_horse` has no
+  model: `SpriteDB.ALIASES` draws it as `to_merc_horse`.
 - `kit.py` — building materials (log, thatch, shingle, brick, roof tile, plaster and timber
   framing) and parts (roofs, stepped gables, windows, sheds, fences, barrels);
   `buildings_gdl.py` and `buildings_to.py` — the Duchy's and the Order's buildings.
@@ -152,7 +168,7 @@ sheet lacks and copies the old rows back, so a new animation does not re-render 
 Building frames are rendered large and cropped to what all stages cover. Unit frames: 160×144
 on foot (160×216 the monk with his raised icon, the Crown's priest with his cross and the Hussite
 with his flail, 288×216 the drab and the Söldner with their pikes, 224×144 the handgunners), 224×256 mounted (an upright lance), 224×176
-big beasts, 320×240 the wagons, the bombard and the guns; `bar_y` in `sheet.json` is where the HP bar goes.
+big beasts, 320×240 the wagons, the bombard and the guns, 384×288 the river boat; `bar_y` in `sheet.json` is where the HP bar goes.
 
 Line pieces: a palisade cell is its post cluster (`<id>`) plus arms toward the neighbours
 (`<id>_e`, `_w`, `_n`, `_s`, model axes +X, -X, +Y, -Y), which BuildingLayer picks per cell.

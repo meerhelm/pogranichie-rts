@@ -4,7 +4,7 @@ from typing import Callable, NamedTuple
 
 from tools.art import (beasts, buildings_gdl, buildings_pl, buildings_to, folk, folk_1410, folk_1435, folk_1500,
                        folk_1507, folk_1508, folk_1514, folk_crown, folk_crown_1410, folk_crown_baltic,
-                       folk_crown_chojnice, folk_crown_malbork, models)
+                       folk_crown_chojnice, folk_crown_malbork, folk_crown_silver, models)
 
 
 class Unit(NamedTuple):
@@ -24,6 +24,8 @@ class Building(NamedTuple):
 MOUNTED = {"frame": (224, 256), "pivot": (108, 184)}
 BEAST = {"frame": (224, 176), "pivot": (108, 124)}
 WAGON = {"frame": (320, 240), "pivot": (156, 150)}
+## The river boat (Корона 5) is longer than a wagon and is centred on its pivot.
+BOAT = {"frame": (384, 288), "pivot": (192, 176)}
 ## A man on foot who raises a pole over his head (mo_inok lifts the icon, the Hussite whirls
 ## his flail).
 TALL = {"frame": (160, 216), "pivot": (64, 176)}
@@ -37,7 +39,8 @@ FRAMES = {"pl_drab": PIKE, "pl_handgunner": WIDE, "to_soldner": PIKE, "to_handgu
 UNITS: dict[str, Unit] = {uid: Unit(fn, **TALL) if uid in TALL_UNITS else Unit(fn) for uid, fn in {
     **models.UNITS, **folk.UNITS, **folk_1410.UNITS, **folk_1500.UNITS, **folk_1507.UNITS,
     **folk_1508.UNITS, **folk_1514.UNITS, **folk_crown.UNITS, **folk_crown_1410.UNITS,
-    **folk_crown_malbork.UNITS, **folk_crown_baltic.UNITS, **folk_crown_chojnice.UNITS}.items()}
+    **folk_crown_malbork.UNITS, **folk_crown_baltic.UNITS, **folk_crown_chojnice.UNITS,
+    **folk_crown_silver.UNITS}.items()}
 for _uid, _frame in FRAMES.items():
     UNITS[_uid] = Unit(UNITS[_uid].build, **_frame)
 for _uid, _fn in beasts.UNITS.items():
@@ -46,11 +49,14 @@ for _uid, _fn in {**beasts.MOUNTED_UNITS, **folk_1410.MOUNTED_UNITS, **folk_1435
                   **folk_1500.MOUNTED_UNITS, **folk_1507.MOUNTED_UNITS,
                   **folk_1508.MOUNTED_UNITS, **folk_1514.MOUNTED_UNITS, **folk_crown.MOUNTED_UNITS,
                   **folk_crown_1410.MOUNTED_UNITS, **folk_crown_malbork.MOUNTED_UNITS,
-                  **folk_crown_baltic.MOUNTED_UNITS, **folk_crown_chojnice.MOUNTED_UNITS}.items():
+                  **folk_crown_baltic.MOUNTED_UNITS, **folk_crown_chojnice.MOUNTED_UNITS,
+                  **folk_crown_silver.MOUNTED_UNITS}.items():
     UNITS[_uid] = Unit(_fn, **MOUNTED)
 for _uid, _fn in {**beasts.WAGONS, **folk_1410.WAGONS, **folk_1500.WAGONS, **folk_1508.WAGONS,
                   **folk_crown.WAGONS, **folk_crown_baltic.WAGONS}.items():
     UNITS[_uid] = Unit(_fn, **WAGON)
+for _uid, _fn in folk_crown_silver.BOATS.items():
+    UNITS[_uid] = Unit(_fn, **BOAT)
 
 BUILDINGS: dict[str, Building] = {
     "gdl_house": Building(models.gdl_house, (2, 2), 6),
@@ -58,16 +64,18 @@ BUILDINGS: dict[str, Building] = {
 }
 for _uid, (_fn, _cells, _tall) in {**buildings_gdl.BUILDINGS, **buildings_to.BUILDINGS,
                                    **buildings_pl.BUILDINGS, **folk_1507.BUILDINGS, **folk_1508.BUILDINGS,
-                                   **folk_crown_malbork.BUILDINGS}.items():
+                                   **folk_crown_malbork.BUILDINGS, **folk_crown_silver.BUILDINGS}.items():
     # Palisade arms are drawn beside the post piece, which alone carries the site props.
     _props = not _uid.startswith(("gdl_palisade_", "to_palisade_", "pl_palisade_", "gdl_wall_", "to_wall_"))
     BUILDINGS[_uid] = Building(_fn, _cells, _tall, _props)
 
 TREES = models.TREES
 ## Static map props drawn like trees (one view, color and shadow, no team pass): props/<id>_*.
-PROPS = {**folk_1507.PROPS, **folk_1508.PROPS, **folk_1514.PROPS, **folk_crown_malbork.PROPS}
-## Props too big for the usual frame (the old oak, Malbork's church): id -> (width, height, pivot) to render at.
-PROP_FRAMES = {**folk_1514.PROP_FRAMES, **folk_crown_malbork.PROP_FRAMES}
+PROPS = {**folk_1507.PROPS, **folk_1508.PROPS, **folk_1514.PROPS, **folk_crown_malbork.PROPS,
+         **folk_crown_silver.PROPS}
+## Props too big for the usual frame (the old oak, Malbork's church, the Nogat's piles): id -> (width, height,
+## pivot) to render at.
+PROP_FRAMES = {**folk_1514.PROP_FRAMES, **folk_crown_malbork.PROP_FRAMES, **folk_crown_silver.PROP_FRAMES}
 DEPOSITS = models.DEPOSITS
 DEPOSIT_VARIANTS = models.DEPOSIT_VARIANTS
 
@@ -76,9 +84,10 @@ DEPOSIT_VARIANTS = models.DEPOSIT_VARIANTS
 ## too while the horse stands). Wagons neither work nor fight; the bombard, the field gun and
 ## the Hussite gun on a wagon fire (flash, smoke, recoil: folk_1410.Bombard, folk_1500.FieldGun,
 ## folk_crown_baltic.HussiteGun), and so does the Hussite war wagon (its handgunner shoots
-## over the boards). Civilians (to_spy,
-## hero_council_envoys, hero_maciej, hero_stranger,
-## hero_town_envoys) only idle and walk.
+## over the boards) and the river boat (its crossbowman shoots over the bow:
+## folk_crown_silver.RiverBoat; its walk is the oar stroke). Civilians (to_spy,
+## hero_council_envoys, hero_maciej, hero_stranger, hero_town_envoys, hero_barbara,
+## hero_k5_civil) only idle and walk.
 BASE_ANIMS = [("idle", 8, 6), ("walk", 12, 15)]  # name, frames, fps
 WORK_ANIM = ("work", 8, 9)
 ATTACK_ANIM = ("attack", 8, 12)
@@ -115,6 +124,7 @@ ATTACK_STYLE = {
     "pl_pospolite": "thrust", "to_soldner": "thrust", "to_handgunner": "crossbow", "to_merc_horse": "thrust",
     "hero_stach": "thrust", "hero_casimir": "swing", "hero_k4_lords": "swing", "hero_reuss_plauen": "swing",
     "hero_k4_order": "swing",
+    "hero_czerwenka": "swing", "pl_river_boat": "crossbow",
     **{uid: "lunge" for uid in beasts.UNITS},
 }
 

@@ -16,7 +16,8 @@ const STAGES: Array[StringName] = [
 ## are of the same timber as the Duchy's; the Crown's field gun, camp servant and field camp
 ## are the Duchy's models and its bombard the Order's; the shrine's chapel (an upgrade item,
 ## not a catalog id) is the upgraded shrine's art; the Muscovite service Tatar is the same
-## steppe horse archer as the Duchy's (ВКЛ 8).
+## steppe horse archer as the Duchy's (ВКЛ 8); the Crown's hired horse (Корона 5) is the
+## Order's mercenary horseman of Chojnice, the same men selling their swords to either side.
 const ALIASES: Dictionary[StringName, StringName] = {
 	&"mo_house": &"gdl_house",
 	&"mo_stable": &"gdl_stable",
@@ -29,6 +30,7 @@ const ALIASES: Dictionary[StringName, StringName] = {
 	&"pl_field_camp": &"gdl_field_camp",
 	&"chapel": &"pl_shrine_chapel",
 	&"mo_tatar": &"nt_steppe_archer",
+	&"pl_merc_horse": &"to_merc_horse",
 }
 
 
