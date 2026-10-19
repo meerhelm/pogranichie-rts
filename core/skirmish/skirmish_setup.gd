@@ -1,15 +1,15 @@
 class_name SkirmishSetup
 extends RefCounted
-## The start of a skirmish on the prototype map (M8): each side joins with its faction and
+## The start of a skirmish (M8): each side joins with its faction and
 ## starting stock, gets a finished town centre and START_PEASANTS peasants beside it. All of it
 ## goes in as tick-0 commands, so a recorded game replays from the same start.
 ## Any of FACTIONS may play either side (the Crown joined on 2026-10-18); without a choice GDL
-## plays the north-west and the Order the south-east.
+## plays the first side of the map and the Order the second. The map is one of SkirmishMaps
+## (2026-10-19), the prototype's «Жемайтское порубежье» unless another is picked.
 
 const MAP_ID := "map_proto_samogitia"
-## Player, default faction and the top-left cell of its town centre: north-west and south-east
-## (as the map is drawn).
-const BASES := [[1, &"gdl", Vector2i(5, 5)], [2, &"to", Vector2i(108, 96)]]
+## Player and default faction of each side, in the order of the map's bases (SkirmishMaps).
+const BASES := [[1, &"gdl"], [2, &"to"]]
 ## Factions a skirmish offers, in menu order.
 const FACTIONS: Array[StringName] = [&"gdl", &"pl", &"to"]
 const DEFAULT_FACTIONS: Array[StringName] = [&"gdl", &"to"]
@@ -18,19 +18,25 @@ const START_PEASANTS := 5
 
 ## The skirmish map's world with both sides set up (their commands queued for tick 0).
 ## `factions`: the faction of player 1 and of player 2.
+## `map_id`: one of SkirmishMaps.
 static func new_simulation(
-	sim_seed: int, db: CatalogDB, factions: Array[StringName] = DEFAULT_FACTIONS
+	sim_seed: int,
+	db: CatalogDB,
+	factions: Array[StringName] = DEFAULT_FACTIONS,
+	map_id: String = MAP_ID
 ) -> Simulation:
-	var sim := Simulation.new(sim_seed, db, 0, 0, MapText.load_map(MAP_ID, db))
-	set_up(sim, factions)
+	var sim := Simulation.new(sim_seed, db, 0, 0, MapText.load_map(map_id, db))
+	set_up(sim, factions, map_id)
 	return sim
 
 
-static func set_up(sim: Simulation, factions: Array[StringName] = DEFAULT_FACTIONS) -> void:
+static func set_up(
+	sim: Simulation, factions: Array[StringName] = DEFAULT_FACTIONS, map_id: String = MAP_ID
+) -> void:
 	for i in BASES.size():
 		var player: int = BASES[i][0]
 		var faction: StringName = factions[i]
-		var at: Vector2i = BASES[i][2]
+		var at := SkirmishMaps.base(map_id, i)
 		sim.enqueue(SimCommand.join(0, player, faction))
 		var center := StringName("%s_town_center" % faction)
 		var x := Fixed.from_cells(at.x) + Fixed.HALF

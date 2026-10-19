@@ -9,7 +9,7 @@ buildings, techs, ages, factions) are their catalog ids, so the catalog and the 
 cannot drift apart; their English names live in i18n/en.po like any other translation.
 Campaign missions (missions/<id>/mission.json, M9) give their title, briefing, objectives, hints,
 end texts and dialogue and cutscene lines as English keys; a speaker is a catalog id (a hero) or
-an English key.
+an English key. Skirmish maps (maps/skirmish.json) give their title and history note the same way.
 
 The check fails when
 - a string literal in game/ or ui/ looks like text for the player but is not passed to tr()
@@ -168,6 +168,18 @@ def mission_keys(rep: Report, root: Path = ROOT) -> None:
             rep.key(text, rel)
 
 
+def skirmish_map_keys(rep: Report, root: Path = ROOT) -> None:
+    """Titles and history notes of the skirmish maps (maps/skirmish.json, SkirmishMaps)."""
+    path = root / "maps" / "skirmish.json"
+    if not path.exists():
+        return
+    rel = path.relative_to(root).as_posix()
+    for m in json.loads(path.read_text(encoding="utf-8"))["maps"]:
+        for text in (m.get("title", ""), m.get("note", "")):
+            if text:
+                rep.key(text, rel)
+
+
 def collect(root: Path = ROOT) -> Report:
     rep = Report()
     for d in SCAN_DIRS:
@@ -177,6 +189,7 @@ def collect(root: Path = ROOT) -> Report:
             scan_tscn(path, rep)
     catalog_keys(rep)
     mission_keys(rep, root)
+    skirmish_map_keys(rep, root)
     return rep
 
 

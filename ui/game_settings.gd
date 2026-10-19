@@ -33,6 +33,8 @@ static var ai_difficulty: StringName = &"normal"
 ## Skirmish factions (SkirmishSetup.FACTIONS): the player's and the AI opponent's.
 static var player_faction: StringName = &"gdl"
 static var enemy_faction: StringName = &"to"
+## The skirmish map (SkirmishMaps).
+static var skirmish_map := SkirmishSetup.MAP_ID
 ## What the game scene opens (M9), set by the menus before switching to it: a campaign
 ## mission by id (empty: a skirmish), and a save to load instead (empty: a new game).
 static var mission_id := ""
@@ -61,6 +63,8 @@ static func ensure_loaded() -> void:
 		player_faction = mine if SkirmishSetup.FACTIONS.has(mine) else &"gdl"
 		var theirs := StringName(cfg.get_value("skirmish", "enemy", String(enemy_faction)))
 		enemy_faction = theirs if SkirmishSetup.FACTIONS.has(theirs) else &"to"
+		var map: String = cfg.get_value("skirmish", "map", skirmish_map)
+		skirmish_map = map if SkirmishMaps.has(map) else SkirmishSetup.MAP_ID
 	apply()
 
 
@@ -88,6 +92,7 @@ static func save() -> void:
 	cfg.set_value("skirmish", "ai_difficulty", String(ai_difficulty))
 	cfg.set_value("skirmish", "faction", String(player_faction))
 	cfg.set_value("skirmish", "enemy", String(enemy_faction))
+	cfg.set_value("skirmish", "map", skirmish_map)
 	var err := cfg.save(PATH)
 	if err != OK:
 		push_warning("cannot save settings: %s" % error_string(err))

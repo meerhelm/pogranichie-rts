@@ -1,13 +1,13 @@
 class_name AiMatch
 extends RefCounted
-## «ИИ против ИИ» (plan M8 and section 5): two skirmish AIs play the prototype map headless,
+## «ИИ против ИИ» (plan M8 and section 5): two skirmish AIs play a skirmish map headless,
 ## as fast as the machine allows, until one wins or the time runs out. One CSV row a game.
 ## Used by `sim_cli.gd -- aivsai`.
 
 ## A game still going after this long (60 game minutes) is a timeout.
 const MAX_TICKS := 72000
 const CSV_HEADER := (
-	"game,seed,difficulty,winner,winner_faction,reason,minutes,"
+	"game,map,seed,difficulty,winner,winner_faction,reason,minutes,"
 	+ "p1_trained,p1_lost,p1_killed,p1_built,p1_buildings_lost,"
 	+ "p2_trained,p2_lost,p2_killed,p2_built,p2_buildings_lost,step_avg_ms"
 )
@@ -15,6 +15,8 @@ const CSV_HEADER := (
 var db: CatalogDB
 ## Factions of player 1 and player 2 (SkirmishSetup.FACTIONS).
 var factions: Array[StringName] = SkirmishSetup.DEFAULT_FACTIONS
+## The skirmish map (SkirmishMaps).
+var map_id := SkirmishSetup.MAP_ID
 
 
 ## Outcome of one game.
@@ -34,7 +36,7 @@ func _init(p_db: CatalogDB) -> void:
 ## Plays one game; `on_tick` (if valid) is called with the simulation after every step.
 func play(game_seed: int, difficulty: StringName, max_ticks: int = MAX_TICKS) -> Game:
 	var g := Game.new()
-	var sim := SkirmishSetup.new_simulation(SkirmishAi.mix_seed(game_seed, 0), db, factions)
+	var sim := SkirmishSetup.new_simulation(SkirmishAi.mix_seed(game_seed, 0), db, factions, map_id)
 	g.sim = sim
 	var ais: Array[SkirmishAi] = []
 	for base: Array in SkirmishSetup.BASES:
@@ -59,6 +61,7 @@ func play(game_seed: int, difficulty: StringName, max_ticks: int = MAX_TICKS) ->
 func row(index: int, game_seed: int, difficulty: StringName, g: Game) -> String:
 	var cells := [
 		index,
+		map_id,
 		game_seed,
 		difficulty,
 		g.winner,

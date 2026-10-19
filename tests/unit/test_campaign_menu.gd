@@ -145,3 +145,21 @@ func test_pages_follow_the_language() -> void:
 	assert_eq(menu._campaign_button.text, "Кампанія")
 	assert_eq(menu._campaign[5].text, "Карона 6. Свеціна, 1462")
 	assert_eq(menu._missions_head.text, "Карона Польская")
+
+
+func test_single_player_picks_a_map_with_its_history_note() -> void:
+	var was := GameSettings.skirmish_map
+	var menu: Control = MENU.instantiate()
+	add_child_autofree(menu)
+	menu._single_button.pressed.emit()
+	assert_eq(menu._map.item_count, SkirmishMaps.ids().size())
+	var i := SkirmishMaps.ids().find("map_sk_orsha")
+	menu._map.select(i)
+	menu._map.item_selected.emit(i)
+	assert_eq(GameSettings.skirmish_map, "map_sk_orsha")
+	assert_eq(menu._map.get_item_text(i), "Map: Orsha, 1514")
+	assert_string_starts_with(menu._map_note.text, "8 September 1514.")
+	TranslationServer.set_locale("be")
+	assert_eq(menu._map.get_item_text(i), "Карта: Орша, 1514")
+	GameSettings.skirmish_map = was
+	GameSettings.save()

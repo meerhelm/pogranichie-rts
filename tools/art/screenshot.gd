@@ -16,6 +16,7 @@ extends SceneTree
 ##   towers:X:Y (no fog: from cell X, Y a palisade ring of the player's with a tower in each
 ##   corner and a gate, a house inside; knechts outside storm the house, spearmen inside),
 ##   about (on res://ui/main_menu.tscn: the «About the game» page),
+##   single (on res://ui/main_menu.tscn: the single player page with the map list),
 ##   speed:N (the game speed button stepped N times up, e.g. 2 for 4x),
 ##   units:X:Y:ID,ID,... (no fog: the listed units, heroes too, in a row from cell X, Y, two
 ##   cells apart, the camera on them)
@@ -23,7 +24,8 @@ extends SceneTree
 ##   play (in a mission: the briefing closed, the mission starts),
 ##   briefing (in a mission: the briefing closed, the mission run a little, then F2's briefing).
 ## SHOT_MISSION=gdl_01 (or another mission id) opens that mission instead of the skirmish; a new
-## mission starts with its briefing open.
+## mission starts with its briefing open. SHOT_MAP=map_sk_orsha (or another SkirmishMaps id) plays
+## the skirmish on that map.
 ## SHOT_LOCALE=be (or pl, uk, lt) in the environment shoots in that language; SHOT_AFTER=N
 ## waits N seconds after the action instead of 1 (2.5 for actions with arguments).
 
@@ -51,6 +53,9 @@ func _initialize() -> void:
 		TranslationServer.set_locale(OS.get_environment("SHOT_LOCALE"))
 	if not OS.get_environment("SHOT_MISSION").is_empty():
 		GameSettings.mission_id = OS.get_environment("SHOT_MISSION")
+	if not OS.get_environment("SHOT_MAP").is_empty():
+		GameSettings.ensure_loaded()
+		GameSettings.skirmish_map = OS.get_environment("SHOT_MAP")
 	change_scene_to_file(_scene)
 	_shoot.call_deferred()
 
@@ -86,6 +91,8 @@ func _act() -> void:
 				ids.append(id)
 		input.selection.ids = ids
 		input.selection.changed.emit()
+	elif _action == "single" and main.get("_single") != null:
+		main._single_button.pressed.emit()
 	elif _action == "about" and main.get("_about") != null:
 		(main.get("_about") as AboutPanel).open()
 	elif _action == "rally":

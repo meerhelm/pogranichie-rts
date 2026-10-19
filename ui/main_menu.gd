@@ -47,6 +47,9 @@ var _skirmish := Button.new()
 var _difficulty := OptionButton.new()
 var _my_faction := OptionButton.new()
 var _enemy_faction := OptionButton.new()
+## The skirmish map (SkirmishMaps) and its history note.
+var _map := OptionButton.new()
+var _map_note := Label.new()
 var _back: Array[Button] = []
 var _settings := SettingsPanel.new()
 var _help := HelpPanel.new()
@@ -174,9 +177,17 @@ func _build_missions() -> void:
 func _build_single() -> void:
 	_heading(_single_head)
 	_single.add_child(_single_head)
-	for b: Control in [_skirmish, _my_faction, _enemy_faction, _difficulty]:
+	for b: Control in [_skirmish, _map, _my_faction, _enemy_faction, _difficulty]:
 		b.custom_minimum_size = BUTTON_SIZE
 		_single.add_child(b)
+	_map_note.add_theme_color_override("font_color", Color(0.85, 0.72, 0.45))
+	_map_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_map_note.custom_minimum_size = Vector2(MISSION_SIZE.x, 0)
+	_single.add_child(_map_note)
+	_single.move_child(_map_note, _map.get_index() + 1)
+	for m: Dictionary in SkirmishMaps.all():
+		_map.add_item(str(m["id"]))
+	_map.item_selected.connect(_on_map)
 	_fill_difficulty(_difficulty)
 	for box: OptionButton in [_my_faction, _enemy_faction]:
 		for f in SkirmishSetup.FACTIONS:
@@ -284,8 +295,24 @@ func _retranslate() -> void:
 		var faction := UiText.name_of(SkirmishSetup.FACTIONS[i])
 		_my_faction.set_item_text(i, tr("You play: %s") % faction)
 		_enemy_faction.set_item_text(i, tr("Opponent plays: %s") % faction)
+	var maps := SkirmishMaps.all()
+	for i in mini(maps.size(), _map.item_count):
+		var m: Dictionary = maps[i]
+		_map.set_item_text(i, tr("Map: %s") % _map_title(m))
+	_show_map_note()
 	_fill_countries()
 	_fill_missions()
+
+
+## «Grunwald, 1410»: the map's title and the year of its battle (none for the prototype map).
+func _map_title(m: Dictionary) -> String:
+	var title := tr(str(m["title"]))
+	var year := int(m.get("year", 0))
+	return "%s, %d" % [title, year] if year > 0 else title
+
+
+func _show_map_note() -> void:
+	_map_note.text = tr(str(SkirmishMaps.find(GameSettings.skirmish_map)["note"]))
 
 
 func _show_page(page: Page) -> void:
@@ -299,6 +326,7 @@ func _show_page(page: Page) -> void:
 	_campaign_difficulty.selected = level
 	_my_faction.selected = maxi(SkirmishSetup.FACTIONS.find(GameSettings.player_faction), 0)
 	_enemy_faction.selected = maxi(SkirmishSetup.FACTIONS.find(GameSettings.enemy_faction), 0)
+	_map.selected = maxi(SkirmishMaps.ids().find(GameSettings.skirmish_map), 0)
 	var focus: Control = _campaign_button
 	match page:
 		Page.COUNTRIES:
@@ -394,6 +422,12 @@ func _on_faction(index: int, mine: bool) -> void:
 	else:
 		GameSettings.enemy_faction = SkirmishSetup.FACTIONS[index]
 	GameSettings.save()
+
+
+func _on_map(index: int) -> void:
+	GameSettings.skirmish_map = SkirmishMaps.ids()[index]
+	GameSettings.save()
+	_show_map_note()
 
 
 func _on_skirmish() -> void:

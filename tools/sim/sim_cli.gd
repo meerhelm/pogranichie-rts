@@ -7,7 +7,7 @@ extends SceneTree
 ##   godot --headless -s tools/sim/sim_cli.gd -- arena --seeds 50 --out arena.csv [--pairs a,b]
 ##     [--parity 1]
 ##   godot --headless -s tools/sim/sim_cli.gd -- aivsai --games 20 --difficulty normal --out g.csv
-##     [--factions gdl,to] (player 1's faction, then player 2's)
+##     [--factions gdl,to] (player 1's faction, then player 2's) [--map <skirmish map id>]
 ##   godot --headless -s tools/sim/sim_cli.gd -- mission --out m9.json
 ##     [--mission gdl_01|...|gdl_08] [--difficulty normal] [--ticks 90000]
 ##     [--every 200]
@@ -349,6 +349,10 @@ func _ai_vs_ai(opts: Dictionary) -> int:
 		printerr("--factions takes two factions, such as pl,to")
 		return 1
 	match_runner.factions = [StringName(sides[0]), StringName(sides[1])]
+	match_runner.map_id = opts.get("map", SkirmishSetup.MAP_ID)
+	if not SkirmishMaps.has(match_runner.map_id):
+		printerr("--map takes a skirmish map: ", ", ".join(SkirmishMaps.ids()))
+		return 1
 	var lines := PackedStringArray([AiMatch.CSV_HEADER])
 	print(AiMatch.CSV_HEADER)
 	var code := 0

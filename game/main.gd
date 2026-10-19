@@ -7,7 +7,7 @@ extends Node2D
 ## (SkirmishSetup), the second side is played by the AI (SkirmishAi, at
 ## GameSettings.ai_difficulty), and when one side wins the end screen shows the statistics.
 ## The menu picks both factions (GameSettings.player_faction, enemy_faction): GDL, the Crown or
-## the Order.
+## the Order, and the map (GameSettings.skirmish_map, one of SkirmishMaps).
 ## Left click or drag selects, right click moves or attacks, Ctrl+right click attack-moves;
 ## Q / E / R pick line, column or wedge; Z / X / C set the stance; with peasants, right click
 ## gathers or builds and B places a building; a selected building queues with Z X C V B N M
@@ -111,7 +111,7 @@ func _ready() -> void:
 		silver.attach(sim, _clock)
 	_fog.attach(sim, _clock, PLAYER)
 	_camera.bounds = Iso.map_rect(grid.width, grid.height)
-	var home: Vector2i = SkirmishSetup.BASES[0][2] + Vector2i(2, 4)
+	var home := SkirmishMaps.base(GameSettings.skirmish_map, 0) + Vector2i(2, 4)
 	if sim.mission != null:
 		home = sim.mission.def.camera
 	_camera.look_at_point(Iso.cell_to_screen(Vector2(home)))
@@ -169,7 +169,7 @@ func _new_world(db: CatalogDB) -> Simulation:
 		)
 		if started != null:
 			return started
-	return SkirmishSetup.new_simulation(SEED, db, _factions())
+	return SkirmishSetup.new_simulation(SEED, db, _factions(), GameSettings.skirmish_map)
 
 
 ## The skirmish sides as the menu set them: the player's faction, then the AI's.
