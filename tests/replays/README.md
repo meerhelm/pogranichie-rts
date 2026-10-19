@@ -22,6 +22,7 @@ and fail on the first checkpoint whose hash differs, on Linux and Windows alike.
 | `crown01_playthrough.json` | `CrownGrunwaldBot` plays «Корона 1. Грюнвальд, 1410» (normal) from the start to victory: waits out the heat in the grove, meets the Order's right wing, rides Jaśko to the fallen great banner, calls «The Pact» against the Grand Master's reserve by the king's hill and storms the wagenburg, 18 871 ticks (15:43); checkpoints every 200 ticks. Also required to end in victory |
 | `crown02_playthrough.json` | `MalborkBot` plays «Корона 2. Мальборк, 1410» (normal) from the start to victory: four batteries east of the castle out of its towers' reach, the town wall, the guard against the night sorties of the Gdańsk shipmen and the forge for the spiked guns, the lances with the towns' envoys, the lazaret against the plague and the bombards to Sztum, 26 281 ticks (21:54); checkpoints every 200 ticks. Also required to end in victory |
 | `crown03_playthrough.json` | `BalticBot` plays «Корона 3. Балтийская вода, 1433» (normal) from the start to victory: the wagons out of the Chojnice trenches, a wagenburg at each of the four camps, the monks of Pelplin led out, the orphans paid twice, the suburb of Tczew fired from the west so the wind carries the fire to the gate, the prisoners brought to Mikołaj, the villages foraged before the orphans, three banners knighted on the shore and the stranger at the boulder, 18 311 ticks (15:15); checkpoints every 200 ticks. Also required to end in victory |
+| `crown04_playthrough.json` | `ChojniceBot` plays «Корона 4. Хойнице, 1454» (normal, with the marks «The Pact» at Grunwald and the knights of 1433) from the start to victory: Jaśko talks his arguing men into the line, the priest takes the three places of power, the banner strikes the Order's horse in the evening and keeps out of the chase, everyone rides to the tent at the sortie, the king is led to the causeway, Jaśko pays his debt and Stach carries the banner over the bog with seven men, 13 671 ticks (11:23); checkpoints every 200 ticks. Also required to end in victory |
 
 ## When a replay fails
 
@@ -61,6 +62,8 @@ $GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission crown_02 \
   --out tests/replays/crown02_playthrough.json
 $GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission crown_03 \
   --out tests/replays/crown03_playthrough.json
+$GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission crown_04 \
+  --out tests/replays/crown04_playthrough.json
 ```
 
 The mission replay is recorded by the bot, so a change to the mission, its map or the rules can
@@ -141,3 +144,9 @@ Re-recorded for «Корона 2» (`sim_version` 21: MissionBesiege, the buildi
 bombard, a camp kept from healing, campaign-only buildings a mission allows; `data_version`
 changed with the shipman's rules, the Order's brick wall, the lazaret, Plauen and the towns'
 envoys in the prototype catalog). `crown02_playthrough.json` added.
+
+Re-recorded for «Корона 4» (no `sim_version` change: MissionChojnice hashes nothing outside its
+own mission, and campaign marks are now registered by MissionRuntime for every mission;
+`data_version` changed with the levy of the nobility, the Order's hired foot, handgunners and
+horse and the mission's heroes in the prototype catalog). Every mission bot wins at the same tick
+as before. `crown04_playthrough.json` added.
