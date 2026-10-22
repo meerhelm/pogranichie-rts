@@ -147,3 +147,32 @@ func test_vision_state_is_in_the_hash_and_deterministic() -> void:
 	var before := a.state_hash()
 	a.vision.grids[1].explored[0] = 1 - a.vision.grids[1].explored[0]
 	assert_ne(a.state_hash(), before)
+
+
+## Field battles (setup.known_map): the ground is known from the start, grey over the whole map,
+## and enemy units are still seen only in sight. Missions about scouting keep the black fog.
+func test_known_map_missions_start_explored() -> void:
+	var db := CatalogDB.load_prototype()
+	for mission: String in ["gdl_02", "gdl_05", "crown_01", "crown_06"]:
+		var sim := MissionSetup.new_simulation(mission, 1, db, "normal")
+		sim.run(1)
+		var p := sim.mission.def.player
+		var far := sim.nav.cell_at(sim.nav.width - 1, 0)
+		var states: Array[int] = [sim.vision.state(p, 0), sim.vision.state(p, far)]
+		for st: int in states:
+			assert_ne(st, VisionSystem.State.UNEXPLORED, "%s: the whole map is explored" % mission)
+		var hostile := 0
+		var unseen := 0
+		for id in sim.entities.alive_ids:
+			var owner := sim.entities.owners[id - 1]
+			if owner > 0 and sim.sides.hostile(owner, p):
+				hostile += 1
+				if not sim.vision.sees_unit(p, id):
+					unseen += 1
+		# Корона 6 brings the Order onto the field later.
+		if hostile > 0:
+			assert_gt(unseen, 0, "%s: enemies out of sight stay hidden" % mission)
+	var dark := MissionSetup.new_simulation("gdl_03", 1, db, "normal")
+	dark.run(1)
+	var corner := dark.nav.cell_at(dark.nav.width - 1, 0)
+	assert_eq(dark.vision.state(1, corner), VisionSystem.State.UNEXPLORED, "gdl_03 keeps black fog")

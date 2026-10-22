@@ -3,6 +3,8 @@ extends RefCounted
 ## The start of a campaign mission (M9): its map, the simulation with the mission's script in it
 ## and the mission's own setup applied at tick 0. The skirmish victory rules are off: the
 ## mission decides who wins.
+## setup.known_map (field battles: ВКЛ 2, 5, Корона 1, 6): the ground is known from the start,
+## the whole map grey instead of black; enemy units are still seen only in sight.
 
 
 static func new_simulation(
@@ -18,4 +20,6 @@ static func new_simulation(
 	sim.victory.rules = null
 	sim.mission = MissionRuntime.new(def, sim, difficulty)
 	sim.mission.set_up(sim.tick)
+	if def.setup.get("known_map", false) and sim.vision.enabled():
+		sim.vision.explore_all(def.player)
 	return sim
