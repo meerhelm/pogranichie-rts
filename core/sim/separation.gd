@@ -1,12 +1,21 @@
 class_name Separation
 extends RefCounted
-## Keeps units from standing on each other (M3): every tick units closer than SEPARATION push
-## each other apart. Two walkers that meet head-on also step aside to their right, so a side's
-## peasants going to the forest and coming back slip past each other. Split out of Simulation;
-## holds only scratch arrays, nothing of the world's state.
+## Keeps units from standing on each other (M3): every tick units closer than their bodies allow
+## push each other apart. Two walkers that meet head-on also step aside to their right, so a
+## side's peasants going to the forest and coming back slip past each other. Split out of
+## Simulation; holds only scratch arrays, nothing of the world's state.
 
-## Units closer than this push each other apart (fixed units), a quarter of the overlap a tick.
+## Body width of a man on foot (fixed units). Two units closer than the mean of their bodies
+## push each other apart, a quarter of the overlap a tick.
 const SEPARATION := Fixed.HALF
+## Body width of a rider (a horse is longer than a man is wide).
+const BODY_CAVALRY := Fixed.ONE * 7 / 8
+## Body width of a cart, a gun or a boat.
+const BODY_LARGE := Fixed.ONE
+## However they were ordered, two bodies never overlap by more than 3/4: units closer than this
+## share of their mean body are set apart at once, whatever they are doing.
+const MAX_OVERLAP_NUM := 3
+const MAX_OVERLAP_DEN := 4
 ## Two walking units that meet head-on each step this far a tick to their own right (fixed
 ## units), so they slip past each other instead of pushing back and forth in place.
 const SIDESTEP := Fixed.ONE / 32
@@ -24,14 +33,19 @@ var _push_x := PackedInt64Array()
 var _push_y := PackedInt64Array()
 var _side_x := PackedInt64Array()
 var _side_y := PackedInt64Array()
+var _body := PackedInt64Array()
 
 
-## Units closer than SEPARATION push each other apart, a quarter of the overlap each per tick:
-## walking units among themselves and standing units among themselves. A walking unit passes
-## standing ones without shoving them, so a formation that has arrived keeps its slots while
-## the rest of the group files in. Two walking units meeting head-on also sidestep to their
-## right (SIDESTEP), or they would push each other back in place until they give up.
-## Pushes are summed first and applied after, in id order, never into a closed cell.
+## Units closer than their mean body (body_of) push each other apart, a quarter of the overlap
+## each per tick: walking units among themselves and standing units among themselves. A
+## walking unit passes standing ones without shoving them, so a formation that has arrived keeps
+## its slots while the rest of the group files in; but in a fight (either has a target) bodies
+## push whatever the orders, so a melee does not heap up. Bodies overlapping by more than
+## MAX_OVERLAP are set apart in full at once, but for a walker passing a standing unit out of a
+## fight: it goes through, so one man standing on a bridge does not shut it. Two walking units
+## meeting head-on also sidestep to their right (SIDESTEP), or they would push each other back
+## in place until they give up. Pushes are summed first and applied after, in id order, never
+## into a closed cell.
 func run(e: EntityStore, nav: NavGrid) -> void:
 	entities = e
 	_max_x = nav.width * Fixed.ONE - 1
@@ -50,10 +64,12 @@ func run(e: EntityStore, nav: NavGrid) -> void:
 	_side_x.fill(0)
 	_side_y.resize(n)
 	_side_y.fill(0)
+	_body.resize(n)
 	# Bucket units by cell: _sep_head[cell] is the last id put there, _sep_next chains the rest.
 	for id in e.alive_ids:
 		var cell := nav.cell_of(e.pos_x[id - 1], e.pos_y[id - 1])
 		_sep_cell[id - 1] = cell
+		_body[id - 1] = body_of(e.move_class[id - 1])
 		_sep_next[id - 1] = _sep_head[cell]
 		_sep_head[cell] = id
 	var w := nav.width
@@ -87,37 +103,68 @@ func run(e: EntityStore, nav: NavGrid) -> void:
 				break
 
 
+## Body width of a unit of move class `move_class` (fixed units).
+static func body_of(move_class: int) -> int:
+	match move_class:
+		NavGrid.MoveClass.CAVALRY:
+			return BODY_CAVALRY
+		NavGrid.MoveClass.SIEGE, NavGrid.MoveClass.BOAT:
+			return BODY_LARGE
+	return SEPARATION
+
+
+## The nearest two units of these move classes may stand (fixed units): a quarter of their mean
+## body, so they overlap by at most MAX_OVERLAP.
+static func min_distance(class_a: int, class_b: int) -> int:
+	var mean := (body_of(class_a) + body_of(class_b)) / 2
+	return mean * (MAX_OVERLAP_DEN - MAX_OVERLAP_NUM) / MAX_OVERLAP_DEN
+
+
 func _push_pair(a: int, b: int) -> void:
 	var e := entities
 	var dx := e.pos_x[b] - e.pos_x[a]
 	var dy := e.pos_y[b] - e.pos_y[a]
-	if absi(dx) >= SEPARATION or absi(dy) >= SEPARATION:
+	var sep := (_body[a] + _body[b]) / 2
+	if absi(dx) >= sep or absi(dy) >= sep:
 		return
 	var d2 := dx * dx + dy * dy
-	if d2 >= SEPARATION * SEPARATION:
+	if d2 >= sep * sep:
 		return
 	var d := Fixed.isqrt(d2)
-	var amount := (SEPARATION - d) / 4
+	var amount := (sep - d) / 4
+	var least := sep * (MAX_OVERLAP_DEN - MAX_OVERLAP_NUM) / MAX_OVERLAP_DEN
+	# Overlapping by more than MAX_OVERLAP: each takes half the way back out (and a little more,
+	# so a crowd pushing from all sides does not leave it just short), on top.
+	var hard := (least + least / 8 - d) / 2 if d < least else 0
 	if d == 0:
 		# Same spot: split along a direction picked from the ids, the same on every machine.
 		var dir := (a + b) % 4
 		dx = Pathfinder.DX[dir] * Fixed.ONE
 		dy = Pathfinder.DY[dir] * Fixed.ONE
 		d = Fixed.ONE
-	var px := dx * amount / d
-	var py := dy * amount / d
 	var a_moves := e.orders[a] == EntityStore.Order.MOVE
 	var b_moves := e.orders[b] == EntityStore.Order.MOVE
-	if a_moves != b_moves:
+	var soft := true
+	if e.target[a] == EntityStore.NO_ID and e.target[b] == EntityStore.NO_ID:
+		if a_moves != b_moves:
+			# Out of a fight a walker goes through standing units (a formation keeps its slots,
+			# a bridge or a lane between trees is not shut by one man standing on it).
+			return
+		if a_moves and (_settling(a) or _settling(b)):
+			# Stepping into its slot: slots are a cell apart, so let it through.
+			soft = false
+	if not soft:
+		amount = 0
+	amount += hard
+	if amount == 0:
 		return
-	if a_moves and (_settling(a) or _settling(b)):
-		# Stepping into its slot: slots are a cell apart, so let it through.
-		return
+	var px := dx * amount / d
+	var py := dy * amount / d
 	_push_x[a] -= px
 	_push_y[a] -= py
 	_push_x[b] += px
 	_push_y[b] += py
-	if a_moves and _head_on(a, b, dx, dy):
+	if soft and a_moves and b_moves and _head_on(a, b, dx, dy):
 		_side_x[a] = -e.facing_y[a] * SIDESTEP / Fixed.ONE
 		_side_y[a] = e.facing_x[a] * SIDESTEP / Fixed.ONE
 		_side_x[b] = -e.facing_y[b] * SIDESTEP / Fixed.ONE

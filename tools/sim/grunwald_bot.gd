@@ -21,6 +21,8 @@ const SMOLENSK := Vector2i(91, 114)
 ## Where Gintaut and the banner wait until the reserve comes out.
 const LEADERS_AT := Vector2i(124, 122)
 const WAGONS := Vector2i(65, 30)
+## Where the army gathers before it storms the wagenburg all together.
+const BEFORE_WAGONS := Vector2i(65, 46)
 ## Where the army waits for the reserve, on its way to the Poles.
 const AMBUSH := Vector2i(60, 84)
 ## How far behind the army Gintaut and the banner keep.
@@ -31,6 +33,7 @@ var sim: Simulation
 var stage := "wait"
 var _last_order := -100000
 var _sent_retreat := false
+var _formed := false
 
 
 func _init(p_sim: Simulation) -> void:
@@ -61,7 +64,8 @@ func think() -> void:
 		"reserve":
 			_reserve()
 		"wagons":
-			_charge(WAGONS, 2)
+			if _formed_up():
+				_charge(WAGONS, 2)
 	_leaders()
 	if sim.tick % 1200 == 0 and OS.has_environment("BOT_LOG"):
 		_log()
@@ -125,6 +129,34 @@ func _charge(at: Vector2i, every_s: int) -> void:
 		_cmd(SimCommand.attack_move(sim.tick, P, idle, tx, ty))
 	else:
 		_cmd(SimCommand.attack_move(sim.tick, P, idle, _fx(at.x), _fx(at.y)))
+
+
+## Before the wagenburg: the army gathers short of it, so it does not run onto the wagons one
+## by one, then storms. True once it has gathered (or after a minute and a half).
+func _formed_up() -> bool:
+	if _formed:
+		return true
+	var army := _soldiers()
+	var near := 0
+	for id in army:
+		if _dist_cells(id, BEFORE_WAGONS) <= 6:
+			near += 1
+	var waited: int = sim.tick - sim.mission.fired["11"]
+	if near * 5 >= army.size() * 4 or waited > 90 * 20:
+		_formed = true
+		_last_order = -100000
+		return true
+	if sim.tick % 200 == 0:
+		var away := PackedInt32Array()
+		for id in army:
+			if (
+				_dist_cells(id, BEFORE_WAGONS) > 6
+				and sim.entities.target[id - 1] == EntityStore.NO_ID
+			):
+				away.append(id)
+		if not away.is_empty():
+			_cmd(SimCommand.move(sim.tick, P, away, _fx(BEFORE_WAGONS.x), _fx(BEFORE_WAGONS.y)))
+	return false
 
 
 ## The khan has gone: the light horse take «Lithuanian retreat», the rest ride for the forest.

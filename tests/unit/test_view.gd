@@ -110,3 +110,26 @@ func test_unit_layer_sorts_by_depth() -> void:
 	var layer := UnitLayer.new()
 	add_child_autofree(layer)
 	assert_true(layer.y_sort_enabled, "units lower on screen are drawn in front")
+
+
+func test_click_on_a_figure_picks_it_over_the_nearest_feet() -> void:
+	var s := Selection.new()
+	# The click is nearest to unit 3's feet, but it lands on unit 8's drawn figure.
+	s.click(Vector2(10, 10), PackedInt32Array(IDS), _points(), false, 8)
+	assert_eq(s.ids, PackedInt32Array([8]))
+	# A hit that is not a candidate (another side's unit) is ignored.
+	s.click(Vector2(10, 10), PackedInt32Array(IDS), _points(), false, 42)
+	assert_eq(s.ids, PackedInt32Array([3]))
+
+
+func test_the_whole_drawn_figure_picks_a_unit() -> void:
+	var view := UnitView.new()
+	view.type_id = &"gdl_spearman"
+	add_child_autofree(view)
+	var top := float(view.sprite.meta["bar_y"])
+	assert_true(view.covers(Vector2(0, -2)), "feet")
+	assert_true(view.covers(Vector2(0, -top / 2)), "body")
+	assert_true(view.covers(Vector2(0, -top * 0.6)), "head")
+	assert_false(view.covers(Vector2(40, -top / 2)), "beside the figure")
+	assert_false(view.covers(Vector2(0, -top - 20)), "above the figure")
+	assert_false(view.covers(Vector2(0, 20)), "below the feet")

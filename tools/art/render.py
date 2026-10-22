@@ -5,7 +5,7 @@
 Units: 8 directions x (idle 8 + walk 12 frames, work 8 for peasants, attack 8 for fighters
 and beasts; registry.anims) in three passes, packed into
 `<out>/units/<id>/{color,team,shadow}.png` (one row per direction and animation) with
-`sheet.json`. Buildings, trees and map props: one view in the same three passes (no team
+`sheet.json` and the frames' outlines for clicks in `pick.json` (tools/art/pick.py). Buildings, trees and map props: one view in the same three passes (no team
 pass for trees and props).
 Passes (visual assets doc): color with alpha; team = the TEAM material alone, lit, white,
 for the game to tint with the player colour; shadow = ground shadow alone, so it never
@@ -22,7 +22,7 @@ import tempfile
 import bpy
 from PIL import Image
 
-from tools.art import registry, rig, shrink, stages
+from tools.art import pick, registry, rig, shrink, stages
 from tools.art import shapes as S
 
 ## Extra render room (right, below) for the shadow, cropped away where unused.
@@ -173,6 +173,7 @@ def render_unit(uid: str, out: str, preview: bool, add: bool = False) -> None:
     meta["facing"] = "row offset = UnitView.facing (0 east, clockwise, 2 south)"
     with open(os.path.join(dest, "sheet.json"), "w") as fh:
         json.dump(meta, fh, indent=1)
+    pick.write_pick(dest)
 
 
 def _render(path: str) -> None:

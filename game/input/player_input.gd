@@ -140,13 +140,15 @@ func _plain_click(mb: InputEventMouseButton) -> void:
 			if mb.double_click:
 				_dragging = false
 				var c := _candidates(true)
-				selection.same_type(mb.position, c[0], c[1], c[2], mb.shift_pressed)
+				var hit := _own_unit_under(mb.position)
+				selection.same_type(mb.position, c[0], c[1], c[2], mb.shift_pressed, hit)
 		elif _dragging:
 			_dragging = false
 			queue_redraw()
 			var c := _candidates(false)
 			if _drag_from.distance_to(mb.position) < DRAG_THRESHOLD:
-				selection.click(mb.position, c[0], c[1], mb.shift_pressed)
+				var hit := _own_unit_under(mb.position)
+				selection.click(mb.position, c[0], c[1], mb.shift_pressed, hit)
 				_select_building(mb.position if selection.ids.is_empty() else Vector2(-1, -1))
 				var free := selection.ids.is_empty() and selected_building == BuildingStore.NO_ID
 				_look_at(mb.position if free else Vector2(-1, -1))
@@ -348,8 +350,37 @@ func _building_known(b: int) -> bool:
 	return sim.vision.sees_building(player, b)
 
 
-## Another side's or a wild unit drawn near the screen point, or NO_ID.
+## Of the views `accept` lets through, the one whose drawn figure is under the screen point;
+## where figures overlap, the one drawn in front (lowest on screen). NO_ID if none.
+func _unit_under(screen_point: Vector2, accept: Callable) -> int:
+	var world := _to_world(screen_point)
+	var best := EntityStore.NO_ID
+	var best_y := -INF
+	for id: int in units.views:
+		var v := units.views[id]
+		if not accept.call(v):
+			continue
+		var y := v.global_position.y
+		if y < best_y or (y == best_y and id < best):
+			continue
+		if v.covers(world - v.global_position):
+			best = id
+			best_y = y
+	return best
+
+
+## The player's own unit whose figure is under the screen point, or NO_ID.
+func _own_unit_under(screen_point: Vector2) -> int:
+	return _unit_under(screen_point, func(v: UnitView) -> bool: return v.player == player)
+
+
+## Another side's or a wild unit drawn under or near the screen point, or NO_ID.
 func _other_unit_at(screen_point: Vector2) -> int:
+	var under := _unit_under(
+		screen_point, func(v: UnitView) -> bool: return v.player != player and v.visible
+	)
+	if under != EntityStore.NO_ID:
+		return under
 	var to_screen := get_viewport().get_canvas_transform()
 	var best := EntityStore.NO_ID
 	var best_d := PICK_RADIUS
@@ -427,8 +458,11 @@ func _gather_command(
 	return null
 
 
-## A neutral animal near the screen point, or NO_ID.
+## A neutral animal under or near the screen point, or NO_ID.
 func _animal_at(screen_point: Vector2) -> int:
+	var under := _unit_under(screen_point, func(v: UnitView) -> bool: return v.player == 0)
+	if under != EntityStore.NO_ID:
+		return under
 	var to_screen := get_viewport().get_canvas_transform()
 	var best := EntityStore.NO_ID
 	var best_d := PICK_RADIUS
@@ -838,8 +872,14 @@ func _candidates(visible_only: bool) -> Array:
 	return [cand_ids, points, types]
 
 
-## The visible enemy unit nearest to the screen point within PICK_RADIUS, or NO_ID.
+## The visible enemy unit under the screen point, else the nearest within PICK_RADIUS, or NO_ID.
 func _enemy_at(screen_point: Vector2) -> int:
+	var under := _unit_under(
+		screen_point,
+		func(v: UnitView) -> bool: return v.player != player and v.player != 0 and v.visible
+	)
+	if under != EntityStore.NO_ID:
+		return under
 	var to_screen := get_viewport().get_canvas_transform()
 	var best := EntityStore.NO_ID
 	var best_d := PICK_RADIUS

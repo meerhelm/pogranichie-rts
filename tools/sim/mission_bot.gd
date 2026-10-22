@@ -385,7 +385,19 @@ func _skirsnemune(army: PackedInt32Array) -> void:
 				ranged.append(id)
 			else:
 				melee.append(id)
-		_order_once("breach", SimCommand.Kind.ASSAULT, melee, wall)
+		# Three pieces side by side: more men get at the wall than at one piece.
+		var pieces := PackedInt32Array()
+		for dx: int in [-1, 0, 1]:
+			var c := SKIR_BREACH + Vector2i(dx, 0)
+			var piece := store.occupant[sim.nav.cell_at(c.x, c.y)]
+			if piece != 0 and store.is_alive(piece) and store.owners[piece - 1] != P:
+				pieces.append(piece)
+		for k in pieces.size():
+			var squad := PackedInt32Array()
+			for i in melee.size():
+				if i % pieces.size() == k:
+					squad.append(melee[i])
+			_order_once("breach", SimCommand.Kind.ASSAULT, squad, pieces[k])
 		_attack_move(ranged, SKIR_BREACH + Vector2i(0, -4))
 		return
 	if _enemies_near(Vector2i(100, 125), 9) > 4 or sim.fire.is_burning(castle):

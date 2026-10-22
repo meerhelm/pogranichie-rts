@@ -168,7 +168,9 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
   - `team` — only the TEAM surfaces, lit and white; the game multiplies it by the player colour;
   - `shadow` — the ground shadow alone, drawn first at 70 % so it never covers neighbours.
   Units: `units/<id>/{color,team,shadow}.png` + `sheet.json` (frame, pivot, rows per animation;
-  row offset = facing). Buildings: `buildings/<id>_<stage>_<pass>.png`, trees: `trees/<id>_<pass>.png`,
+  row offset = facing) + `pick.json` (the rectangle around the figure in each frame, so a click anywhere
+  on it picks the unit; `render.py` writes it, `python3 -m tools.art.pick art/sprites [id ...]`
+  rewrites it from the sheets). Buildings: `buildings/<id>_<stage>_<pass>.png`, trees: `trees/<id>_<pass>.png`,
   map props: `props/<id>_<pass>.png`; each with `<id>.json` (`size`, `pivot` = centre of the
   footprint, `scale`, `cells`). Trees and props have no team pass.
 

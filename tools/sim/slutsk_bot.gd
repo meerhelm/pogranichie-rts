@@ -150,6 +150,10 @@ func _sortie_step(m: MissionRuntime) -> void:
 			_burn(m)
 			if m.fired.has("6") and _workshops_left(m) == 0 or sim.tick > m.fired["4"] + 4 * 1200:
 				_phase = 3
+			elif _hurt(_group("andrei")):
+				# Andrei must live: a badly hurt prince rides for the passage, the rest follow.
+				_cmd(SimCommand.move(sim.tick, P, _group("andrei"), _fx(EXIT.x), _fx(EXIT.y)))
+				_phase = 3
 		3:
 			_through(EXIT, true)
 			if _none_out():
@@ -192,6 +196,14 @@ func _burn(m: MissionRuntime) -> void:
 		if sim.economy.buildings.is_alive(b) and not sim.fire.is_burning(b):
 			_cmd(SimCommand.ignite(sim.tick, P, idle, b))
 			return
+
+
+## Whether the hero (a one-member group) has lost half his HP or more.
+func _hurt(hero: PackedInt32Array) -> bool:
+	if hero.is_empty():
+		return false
+	var slot := hero[0] - 1
+	return sim.entities.hp[slot] * 2 <= sim.entities.max_hp[slot]
 
 
 func _workshops_left(m: MissionRuntime) -> int:

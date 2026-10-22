@@ -36,7 +36,10 @@ extends RefCounted
 ##   healing, campaign-only buildings a mission allows.
 ## 22: Корона 3: the TABOR order draws a ring of a cell per four wagons (not three); the Hussite
 ##   wagons' own tabor numbers and the flailman's bonus by his wagon; MissionBaltic in the hash.
-const SIM_VERSION := 22
+## 23: units have bodies: riders and carts are wider than men on foot, fighters push each other
+##   whatever their orders, and no two units overlap by more than 3/4 (Separation), but for a
+##   walker going through standing units out of a fight.
+const SIM_VERSION := 23
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).

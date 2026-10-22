@@ -20,8 +20,13 @@ func has(id: int) -> bool:
 	return ids.has(id)
 
 
-## Nearest unit to the point within PICK_RADIUS, or 0.
-static func pick(at: Vector2, cand_ids: PackedInt32Array, points: PackedVector2Array) -> int:
+## The unit whose figure is under the point (`hit`, if it is a candidate), else the nearest
+## to the point within PICK_RADIUS, or 0.
+static func pick(
+	at: Vector2, cand_ids: PackedInt32Array, points: PackedVector2Array, hit := 0
+) -> int:
+	if hit != 0 and cand_ids.has(hit):
+		return hit
 	var best := 0
 	var best_d := PICK_RADIUS * PICK_RADIUS
 	for i in cand_ids.size():
@@ -32,11 +37,12 @@ static func pick(at: Vector2, cand_ids: PackedInt32Array, points: PackedVector2A
 	return best
 
 
-## Click: select the unit under the cursor; with Shift, add it or take it out.
+## Click: select the unit under the cursor (`hit`: the one whose figure is there, see pick);
+## with Shift, add it or take it out.
 func click(
-	at: Vector2, cand_ids: PackedInt32Array, points: PackedVector2Array, shift: bool
+	at: Vector2, cand_ids: PackedInt32Array, points: PackedVector2Array, shift: bool, hit := 0
 ) -> void:
-	var id := pick(at, cand_ids, points)
+	var id := pick(at, cand_ids, points, hit)
 	if not shift:
 		_replace(PackedInt32Array([id]) if id != 0 else PackedInt32Array())
 	elif id != 0:
@@ -66,9 +72,10 @@ func same_type(
 	cand_ids: PackedInt32Array,
 	points: PackedVector2Array,
 	types: Array[StringName],
-	shift: bool
+	shift: bool,
+	hit := 0
 ) -> void:
-	var id := pick(at, cand_ids, points)
+	var id := pick(at, cand_ids, points, hit)
 	if id == 0:
 		return
 	var type := types[cand_ids.find(id)]

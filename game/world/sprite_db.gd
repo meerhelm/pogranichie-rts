@@ -49,6 +49,11 @@ class Sprite:
 	var anims: Dictionary = {}
 	## The whole JSON description.
 	var meta: Dictionary = {}
+	## Units: pick.json beside the sheet (tools/art/pick.py, a box per frame), read on the
+	## first covers().
+	var pick_path := ""
+	var _pick_boxes: Array = []
+	var _pick_cols := 0
 
 	## Screen rectangle of a frame relative to the anchor.
 	func dest() -> Rect2:
@@ -57,6 +62,33 @@ class Sprite:
 	## Source rectangle of frame `index` in row `row` of the sheet.
 	func source(row: int, index: int) -> Rect2:
 		return Rect2(Vector2(index * frame.x, row * frame.y), frame)
+
+	## Whether `local` (screen pixels from the anchor) lies in the rectangle around the figure
+	## drawn in frame `index` of row `row`, grown by `slack` pixels. Without pick.json, the frame.
+	func covers(row: int, index: int, local: Vector2, slack: float) -> bool:
+		if not _read_pick():
+			return dest().grow(slack).has_point(local)
+		var k := row * _pick_cols + index
+		if k < 0 or k >= _pick_boxes.size():
+			return false
+		var b: Array = _pick_boxes[k]
+		if b.is_empty():
+			return false
+		var rect := Rect2(
+			(Vector2(b[0], b[1]) - pivot) * scale, Vector2(b[2] - b[0], b[3] - b[1]) * scale
+		)
+		return rect.grow(slack).has_point(local)
+
+	func _read_pick() -> bool:
+		if _pick_cols > 0:
+			return true
+		if pick_path.is_empty() or not FileAccess.file_exists(pick_path):
+			pick_path = ""
+			return false
+		var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(pick_path))
+		_pick_boxes = data["boxes"]
+		_pick_cols = int(data["cols"])
+		return true
 
 	## Draws shadow, colour and the team mask tinted by `tint` on `item` at the anchor.
 	func draw(item: CanvasItem, src: Rect2, tint: Color, alpha := 1.0) -> void:
@@ -76,7 +108,10 @@ static var _prefetched: Dictionary[String, bool] = {}
 ## Sprite sheet of a unit type, or null when it has no art yet.
 static func unit(type_id: StringName) -> Sprite:
 	var id: StringName = ALIASES.get(type_id, type_id)
-	return _load("units/%s/" % id, "units/%s/sheet.json" % id)
+	var s := _load("units/%s/" % id, "units/%s/sheet.json" % id)
+	if s != null and s.pick_path.is_empty() and s._pick_cols == 0:
+		s.pick_path = ROOT.path_join("units/%s/pick.json" % id)
+	return s
 
 
 ## Starts loading a unit's sheets on a worker thread, so the first such unit on the map does

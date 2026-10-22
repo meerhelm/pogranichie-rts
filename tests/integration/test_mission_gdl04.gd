@@ -312,9 +312,16 @@ func test_2_3_holding_the_road_a_minute_cuts_the_column() -> void:
 		sim.run(1220)
 	assert_true(m.fired.has("2.3"))
 	assert_eq(_state(sim, "cut"), MissionRuntime.Objective.DONE)
-	var knight := m.alive_of("knights")[0]
+	var knights := m.alive_of("knights")
+	var knight := knights[0]
 	assert_false(m.marching.has(knight), "the head turns round, out of the column")
-	assert_eq(sim.entities.stance[knight - 1], EntityStore.Stance.AGGRESSIVE)
+	# Knights running from the fight when the column broke were deaf to the order; the rest
+	# turn on the attackers.
+	var aggressive := 0
+	for k in knights:
+		if sim.entities.stance[k - 1] == EntityStore.Stance.AGGRESSIVE:
+			aggressive += 1
+	assert_gt(aggressive * 2, knights.size(), "most of the head attacks")
 
 
 func test_2_1c_the_head_leaves_and_most_of_it_gone_is_defeat() -> void:

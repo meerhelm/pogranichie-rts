@@ -27,6 +27,8 @@ const BAR_WIDTH := 18.0
 const SPRITE_BAR_Y := 46.0
 ## Ticks without moving before a walker switches to standing.
 const STILL_TICKS := 3
+## A click this close to the figure's rectangle (screen pixels at zoom 1) still picks it.
+const PICK_SLACK := 3.0
 
 var unit_id: int
 var player: int
@@ -109,6 +111,15 @@ func _frame() -> int:
 	if _anim_name() == "attack":
 		return mini(int(_strike_time * float(a["fps"])), int(a["frames"]) - 1)
 	return int(_anim_time * float(a["fps"])) % int(a["frames"])
+
+
+## Whether `local` (pixels from the anchor) is in the rectangle around the figure as drawn
+## now, give or take PICK_SLACK: the whole sprite picks the unit, not just its feet.
+func covers(local: Vector2) -> bool:
+	if sprite == null:
+		return local.distance_to(Vector2(0, -RADIUS)) <= RADIUS + PICK_SLACK
+	var a := _anim()
+	return sprite.covers(int(a["row"]) + facing, maxi(_anim_frame, 0), local, PICK_SLACK)
 
 
 func _draw() -> void:

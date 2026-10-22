@@ -19,6 +19,8 @@ const LINE := Vector2i(58, 37)
 const STRIKE := Vector2i(66, 25)
 const TENT := Vector2i(43, 69)
 const EAST := Vector2i(147, 65)
+## Where they wait for the end of Jaśko's stand: on the causeway, short of the escape edge.
+const WAIT_EAST := Vector2i(140, 65)
 ## The places of power (top-left of the site) in the order the priest visits them.
 const PLACES: Array[Vector2i] = [Vector2i(88, 48), Vector2i(80, 80), Vector2i(82, 30)]
 ## The marks of the campaign it plays: «The Pact» at Grunwald, the knights of 1433.
@@ -204,17 +206,20 @@ func _lead_king() -> void:
 		_cmd(SimCommand.move(sim.tick, P, away, _fx(to.x), _fx(to.y)))
 
 
-## Stach with the banner and whoever is left go over the causeway to the east bank.
+## Stach with the banner and whoever is left go over the causeway to the east bank. Until
+## Jaśko's stand is over (11c) they wait together short of the bog's far edge, so the men do not
+## leave the map and Stach is not left alone there with whoever chases him.
 func _over_the_bog() -> void:
+	var to := EAST if sim.mission.fired.has("11c") else WAIT_EAST
 	var ids := _mine()
 	var away := PackedInt32Array()
 	for id in ids:
-		if sim.combat.is_fleeing(id) or _dist_cells(id, EAST) <= 1:
+		if sim.combat.is_fleeing(id) or _dist_cells(id, to) <= 1:
 			continue
 		if sim.entities.orders[id - 1] == EntityStore.Order.IDLE or sim.tick % 200 == 0:
 			away.append(id)
 	if not away.is_empty():
-		_cmd(SimCommand.move(sim.tick, P, away, _fx(EAST.x), _fx(EAST.y)))
+		_cmd(SimCommand.move(sim.tick, P, away, _fx(to.x), _fx(to.y)))
 
 
 # --- the priest and the foot ----------------------------------------------------------------
