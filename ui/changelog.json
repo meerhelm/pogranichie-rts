@@ -3,7 +3,7 @@
 	"versions": [
 		{
 			"version": "0.1.1",
-			"date": "2026-10-19",
+			"date": "2026-10-23",
 			"items": [
 				{
 					"en": "Speed 4x and 8x no longer bog down late in a match: the map is redrawn once a frame instead of after every game tick, and when the computer cannot keep up the game runs a little slower instead of dropping to a few frames a second.",
@@ -39,6 +39,27 @@
 					"pl": "Postać zaznacza się kliknięciem w dowolnym miejscu jej obrazka, a nie tylko u stóp.",
 					"uk": "Вояка можна виділити клацанням будь-де на його зображенні, а не лише по ногах.",
 					"lt": "Karį galima pažymėti spustelėjus bet kurioje jo paveikslėlio vietoje, ne tik ties kojomis."
+				},
+				{
+					"en": "Field battles start with the ground already known: the whole map is shown under grey fog, and enemies are seen only within sight of your men.",
+					"be": "Палявыя бітвы пачынаюцца з вядомай мясцовасцю: уся карта відаць пад шэрым туманам, а ворагаў відаць толькі ў полі зроку вашых людзей.",
+					"pl": "Bitwy w polu zaczynają się ze znanym terenem: cała mapa jest widoczna pod szarą mgłą, a wrogów widać tylko w zasięgu wzroku twoich ludzi.",
+					"uk": "Польові битви починаються з відомою місцевістю: уся мапа видна під сірим туманом, а ворогів видно лише в полі зору ваших людей.",
+					"lt": "Lauko mūšiai prasideda su jau žinoma vietove: visas žemėlapis matomas po pilku rūku, o priešai matomi tik jūsų žmonių regėjimo lauke."
+				},
+				{
+					"en": "Cheat code: type VITAUT in the main menu to open every campaign mission (type it again to close them).",
+					"be": "Чыт-код: набярыце VITAUT у галоўным меню, каб адкрыць усе місіі кампаніі (набярыце яшчэ раз, каб зноў закрыць).",
+					"pl": "Kod: wpisz VITAUT w menu głównym, aby otworzyć wszystkie misje kampanii (wpisz ponownie, aby je zamknąć).",
+					"uk": "Чит-код: наберіть VITAUT у головному меню, щоб відкрити всі місії кампанії (наберіть ще раз, щоб знову закрити).",
+					"lt": "Slaptas kodas: pagrindiniame meniu surinkite VITAUT, kad atvertumėte visas kampanijos misijas (surinkite dar kartą, kad vėl uždarytumėte)."
+				},
+				{
+					"en": "Scrolling the map at the screen edges works better: a wider zone, speed growing toward the edge, it keeps going when the mouse slips just past the window, and over the interface panels only the very edge scrolls. New setting: edge scrolling speed.",
+					"be": "Пракрутка карты ля краёў экрана працуе лепш: шырэйшая зона, хуткасць расце да краю, яна не спыняецца, калі мыш крыху выходзіць за акно, а над панэлямі інтэрфейсу круціць толькі самы край. Новая налада: хуткасць пракруткі ля краёў.",
+					"pl": "Przewijanie mapy przy krawędziach ekranu działa lepiej: szersza strefa, prędkość rośnie ku krawędzi, przewijanie trwa, gdy mysz wyjdzie nieco poza okno, a nad panelami interfejsu przewija tylko sam brzeg. Nowe ustawienie: prędkość przewijania przy krawędziach.",
+					"uk": "Прокручування мапи біля країв екрана працює краще: ширша зона, швидкість зростає до краю, воно не зупиняється, коли миша трохи виходить за вікно, а над панелями інтерфейсу прокручує лише самий край. Нове налаштування: швидкість прокручування біля країв.",
+					"lt": "Žemėlapio slinkimas prie ekrano kraštų veikia geriau: platesnė zona, greitis didėja link krašto, slinkimas nesustoja, kai pelė šiek tiek išeina už lango, o virš sąsajos skydelių slenka tik pats kraštas. Naujas nustatymas: slinkimo prie kraštų greitis."
 				}
 			]
 		},
