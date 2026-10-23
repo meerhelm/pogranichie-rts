@@ -27,7 +27,7 @@
 ## Версии и сборки
 
 - Версия игры в `project.godot` (`application/config/version`), видна в главном меню под заголовком и в окне «Об игре».
-- Каждая новая сборка для игроков поднимает версию (0.0.2 → 0.0.3 …): в `project.godot`, в `export_presets.cfg` (`application/file_version` и `product_version` у Windows, вида `0.0.3.0`) и новой записью сверху в [ui/changelog.json](ui/changelog.json) с датой и пунктами «что сделано» на всех пяти языках (en, be, pl, uk, lt). Тест `tests/unit/test_about.gd` проверяет, что верхняя запись совпадает с версией.
+- Каждая новая сборка для игроков поднимает версию (0.0.2 → 0.0.3 …): в `project.godot`, в `export_presets.cfg` (`application/file_version` и `product_version` у Windows, вида `0.0.3.0`; `application/short_version` и `version` у macOS, вида `0.0.3`) и новой записью сверху в [ui/changelog.json](ui/changelog.json) с датой и пунктами «что сделано» на всех пяти языках (en, be, pl, uk, lt). Тест `tests/unit/test_about.gd` проверяет, что верхняя запись совпадает с версией.
 - Архив сборки называется по версии: `Pogranichie-win64-<версия>.zip`.
 
 ## Git
