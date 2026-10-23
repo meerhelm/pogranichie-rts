@@ -4,7 +4,7 @@ extends Camera2D
 ## zoom with the wheel; never leaves the map.
 
 const SCROLL_SPEED := 900.0
-## Edge zone width as a share of the window's shorter side (about 43 px at 1080 lines),
+## Edge zone width as a share of the view's shorter side (about 43 px at 1080 lines),
 ## never thinner than EDGE_MIN pixels.
 const EDGE_SHARE := 0.04
 const EDGE_MIN := 16.0
@@ -22,6 +22,9 @@ var bounds := Rect2()
 var edge_scroll := true
 ## Edge scrolling speed multiplier (GameSettings.EDGE_SPEEDS).
 var edge_speed := 1.0
+## The viewport keeps the last mouse position after the mouse leaves the window, so edge
+## scrolling stops while it is outside.
+var _mouse_inside := true
 
 
 func _ready() -> void:
@@ -30,14 +33,20 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	var dir := Input.get_vector(&"cam_left", &"cam_right", &"cam_up", &"cam_down")
-	if edge_scroll and dir == Vector2.ZERO and DisplayServer.window_is_focused():
+	if edge_scroll and dir == Vector2.ZERO and _mouse_inside and DisplayServer.window_is_focused():
 		var over_ui := get_viewport().gui_get_hovered_control() != null
-		var window := Vector2(DisplayServer.window_get_size())
-		dir = edge_direction(_mouse_in_window(), window, over_ui)
+		dir = edge_direction(get_viewport().get_mouse_position(), get_viewport_rect().size, over_ui)
 		dir *= edge_speed
 	if dir != Vector2.ZERO:
 		position += dir * SCROLL_SPEED * delta / zoom.x
 	position = clamp_to_bounds(position, bounds)
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_MOUSE_EXIT:
+		_mouse_inside = false
+	elif what == NOTIFICATION_WM_MOUSE_ENTER:
+		_mouse_inside = true
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -59,21 +68,14 @@ func look_at_point(p: Vector2) -> void:
 	position = clamp_to_bounds(p, bounds)
 
 
-## The mouse in window pixels, also when it has left the window (the viewport keeps
-## the last position inside it then).
-func _mouse_in_window() -> Vector2:
-	return Vector2(DisplayServer.mouse_get_position() - DisplayServer.window_get_position())
-
-
 ## Width of the edge zone in pixels for a window (or screen) of this size.
 static func edge_zone(screen: Vector2) -> float:
 	return maxf(EDGE_MIN, minf(screen.x, screen.y) * EDGE_SHARE)
 
 
 ## Scroll from the mouse near the screen edge: each axis from -1 to 1, slow at the inner
-## side of the edge zone and full at the edge; (0, 0) away from the edges. A mouse just past
-## the window's edge (by less than the zone) scrolls at full speed, so a windowed game does
-## not stop when the hand overshoots; further out it is taken as gone to another window.
+## side of the edge zone and full at the edge; (0, 0) away from the edges. A point just past
+## the edge (by less than the zone) counts as the edge; further out, as gone.
 ## Over the interface the zone is only EDGE_OVER_UI pixels wide, at full speed.
 static func edge_direction(mouse: Vector2, screen: Vector2, over_ui := false) -> Vector2:
 	var zone := edge_zone(screen)
