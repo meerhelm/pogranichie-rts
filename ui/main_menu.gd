@@ -6,6 +6,7 @@ extends Control
 ## (CampaignProgress); single player is the skirmish against the Order AI. Esc steps back a page.
 ## Coming back from a campaign mission, the menu opens on that campaign's missions. The first scene
 ## the game opens.
+## Typing CampaignProgress.CHEAT_CODE on any page opens (or closes back) every campaign mission.
 
 enum Page { MAIN, COUNTRIES, MISSIONS, SINGLE }
 
@@ -26,6 +27,10 @@ var _help_button := Button.new()
 var _about_button := Button.new()
 var _quit := Button.new()
 var _version := Label.new()
+## A short line that says the cheat was turned on or off.
+var _cheat_note := Label.new()
+## The last letters typed, for the cheat code.
+var _typed := ""
 ## The pages; one shows at a time.
 var _menu := VBoxContainer.new()
 var _countries := VBoxContainer.new()
@@ -109,6 +114,10 @@ func _ready() -> void:
 	_settings.visible = false
 	_settings.closed.connect(_show_settings.bind(false))
 	stack.add_child(_settings)
+	_cheat_note.add_theme_font_size_override("font_size", 22)
+	_cheat_note.add_theme_color_override("font_color", Color(0.95, 0.8, 0.45))
+	_cheat_note.visible = false
+	column.add_child(_cheat_note)
 	add_child(_help)
 	add_child(_about)
 	_built = true
@@ -253,6 +262,7 @@ func _notification(what: int) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	_check_cheat(event)
 	if not event.is_action_pressed("ui_cancel") or _settings.visible:
 		return
 	if _help.visible or _about.visible:
@@ -265,6 +275,39 @@ func _unhandled_input(event: InputEvent) -> void:
 		_:
 			return
 	get_viewport().set_input_as_handled()
+
+
+## Collects typed letters by key position (any keyboard layout); the cheat code toggles every
+## campaign mission open and the shown page is refilled.
+func _check_cheat(event: InputEvent) -> void:
+	var key := event as InputEventKey
+	if key == null or not key.pressed or key.echo:
+		return
+	var code := key.physical_keycode
+	if code < KEY_A or code > KEY_Z:
+		_typed = ""
+		return
+	_typed += char(code)
+	var word := CampaignProgress.CHEAT_CODE
+	_typed = _typed.right(word.length())
+	if _typed != word:
+		return
+	_typed = ""
+	var on := not CampaignProgress.all_open()
+	CampaignProgress.set_all_open(on)
+	_cheat_note.text = (
+		tr("All campaign missions are open") if on else tr("Missions open as they are won again")
+	)
+	_cheat_note.visible = true
+	get_tree().create_timer(4.0).timeout.connect(_hide_cheat_note.bind(_cheat_note.text))
+	_fill_countries()
+	_fill_missions()
+	get_viewport().set_input_as_handled()
+
+
+func _hide_cheat_note(text: String) -> void:
+	if _cheat_note.text == text:
+		_cheat_note.visible = false
 
 
 func _retranslate() -> void:

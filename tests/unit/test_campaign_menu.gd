@@ -116,6 +116,38 @@ func test_won_missions_show_and_open_the_next() -> void:
 	assert_true(menu._campaign[3].disabled)
 
 
+func test_cheat_code_opens_every_mission_and_closes_them_back() -> void:
+	CampaignProgress.mark_won("gdl_01")
+	var menu: Control = MENU.instantiate()
+	add_child_autofree(menu)
+	menu._open_campaign("gdl")
+	assert_true(menu._campaign[3].disabled)
+	_type(menu, "XVITAUT")
+	assert_true(CampaignProgress.all_open())
+	assert_eq(menu._mission_state[0].text, "won", "a won mission stays won")
+	assert_eq(menu._mission_state[7].text, "open")
+	assert_false(menu._campaign[7].disabled)
+	assert_eq(menu._cheat_note.text, "All campaign missions are open")
+	for id: String in CampaignProgress.MISSIONS["crown"]:
+		assert_true(CampaignProgress.is_open(id), id)
+	assert_false(CampaignProgress.is_won("gdl_02"), "opened, not counted as won")
+	CampaignProgress.reset()
+	assert_true(CampaignProgress.is_open("crown_06"), "read back from the file")
+	_type(menu, "VITAUT")
+	assert_false(CampaignProgress.all_open())
+	assert_true(CampaignProgress.is_open("gdl_02"))
+	assert_false(CampaignProgress.is_open("gdl_03"))
+	assert_true(menu._campaign[3].disabled)
+
+
+func _type(menu: Control, word: String) -> void:
+	for ch in word:
+		var key := InputEventKey.new()
+		key.pressed = true
+		key.physical_keycode = ch.unicode_at(0) as Key
+		menu._unhandled_input(key)
+
+
 func test_a_won_mission_keeps_its_carried_flags() -> void:
 	CampaignProgress.mark_won("crown_01", PackedStringArray(["captive"]))
 	assert_true(CampaignProgress.is_won("crown_01"))

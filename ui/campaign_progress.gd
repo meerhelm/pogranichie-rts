@@ -4,6 +4,8 @@ extends RefCounted
 ## after another: the first is open from the start, each next one once the one before it is won.
 ## Won missions are kept in user://campaign.cfg. A mission that is planned but not made yet (no
 ## missions/<id>/mission.json) is listed under its planned title and cannot be played.
+## A cheat (CHEAT_CODE typed in the main menu) opens every made mission of both campaigns without
+## counting them as won; typing it again closes them back.
 
 const PATH := "user://campaign.cfg"
 ## Campaign ids in the order the menu shows them.
@@ -15,12 +17,16 @@ const MISSIONS := {
 }
 ## The faction whose name the country button shows (a catalog id, translated as a name).
 const FACTION := {"gdl": &"gdl", "crown": &"pl"}
+## Typed in the main menu (letters by key position, so any keyboard layout), it opens all missions.
+const CHEAT_CODE := "VITAUT"  # notr
 
 ## Where the progress is kept; tests point it elsewhere.
 static var path := PATH
 static var _won := {}
 ## What won missions left for the next ones: "<mission id>:<flag>" (MissionDef.carry).
 static var _marks := {}
+## Every made mission is open (the cheat), kept in the same file.
+static var _all_open := false
 static var _loaded := false
 
 
@@ -30,9 +36,11 @@ static func ensure_loaded() -> void:
 	_loaded = true
 	_won = {}
 	_marks = {}
+	_all_open = false
 	var cfg := ConfigFile.new()
 	if cfg.load(path) != OK:
 		return
+	_all_open = cfg.get_value("campaign", "all_open", false)
 	for id: String in cfg.get_value("campaign", "won", PackedStringArray()):
 		_won[id] = true
 	for mark: String in cfg.get_value("campaign", "marks", PackedStringArray()):
@@ -44,6 +52,7 @@ static func reset() -> void:
 	_loaded = false
 	_won = {}
 	_marks = {}
+	_all_open = false
 
 
 static func is_won(mission_id: String) -> bool:
@@ -63,6 +72,23 @@ static func mark_won(mission_id: String, flags: PackedStringArray = PackedString
 			_marks.erase(mark)
 	for flag in flags:
 		_marks["%s:%s" % [mission_id, flag]] = true
+	_save()
+
+
+## Whether the cheat has opened every mission.
+static func all_open() -> bool:
+	ensure_loaded()
+	return _all_open
+
+
+## Turns the cheat on or off and saves; won missions stay won either way.
+static func set_all_open(on: bool) -> void:
+	ensure_loaded()
+	_all_open = on
+	_save()
+
+
+static func _save() -> void:
 	var cfg := ConfigFile.new()
 	var ids := PackedStringArray(_won.keys())
 	ids.sort()
@@ -70,6 +96,8 @@ static func mark_won(mission_id: String, flags: PackedStringArray = PackedString
 	var marks := PackedStringArray(_marks.keys())
 	marks.sort()
 	cfg.set_value("campaign", "marks", marks)
+	if _all_open:
+		cfg.set_value("campaign", "all_open", true)
 	var err := cfg.save(path)
 	if err != OK:
 		push_warning("cannot save campaign progress: %s" % error_string(err))
@@ -87,10 +115,12 @@ static func is_made(mission_id: String) -> bool:
 
 
 ## Whether the player may start the mission: it is made, and it is its campaign's first or the
-## one before it is won.
+## one before it is won, or the cheat is on.
 static func is_open(mission_id: String) -> bool:
 	if not is_made(mission_id):
 		return false
+	if all_open():
+		return true
 	var list: Array = MISSIONS[campaign_of(mission_id)]
 	var i := list.find(mission_id)
 	return i == 0 or is_won(list[i - 1])
