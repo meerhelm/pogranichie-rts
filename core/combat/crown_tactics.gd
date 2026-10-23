@@ -307,7 +307,9 @@ func morale_bonus(slot: int) -> int:
 	var bonus: int = spell_morale.get(slot + 1, 0) + mission_morale.get(slot + 1, 0)
 	if not army_morale.is_empty():
 		bonus += army_morale.get(entities.owners[slot], 0)
-	var def := defs[slot]
+	# The map asks before the first combat step (the briefing pauses there), when defs is not
+	# shared with CombatSystem yet.
+	var def := defs[slot] if slot < defs.size() else null
 	if def == null or not def.tags.has(&"lance_escort"):
 		return bonus
 	var e := entities
