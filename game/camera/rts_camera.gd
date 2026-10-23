@@ -10,6 +10,9 @@ const EDGE_SHARE := 0.04
 const EDGE_MIN := 16.0
 ## Speed share at the inner side of the edge zone; it grows to full at the very edge.
 const EDGE_SLOW := 0.3
+## Over the interface (top bar, bottom panel, minimap, windows) only this thin strip at the
+## very edge scrolls, so hovering a button near the edge does not move the map.
+const EDGE_OVER_UI := 6.0
 const ZOOM_MIN := 0.5
 const ZOOM_MAX := 2.0
 const ZOOM_STEP := 0.1
@@ -28,7 +31,9 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	var dir := Input.get_vector(&"cam_left", &"cam_right", &"cam_up", &"cam_down")
 	if edge_scroll and dir == Vector2.ZERO and DisplayServer.window_is_focused():
-		dir = edge_direction(_mouse_in_window(), Vector2(DisplayServer.window_get_size()))
+		var over_ui := get_viewport().gui_get_hovered_control() != null
+		var window := Vector2(DisplayServer.window_get_size())
+		dir = edge_direction(_mouse_in_window(), window, over_ui)
 		dir *= edge_speed
 	if dir != Vector2.ZERO:
 		position += dir * SCROLL_SPEED * delta / zoom.x
@@ -69,25 +74,32 @@ static func edge_zone(screen: Vector2) -> float:
 ## side of the edge zone and full at the edge; (0, 0) away from the edges. A mouse just past
 ## the window's edge (by less than the zone) scrolls at full speed, so a windowed game does
 ## not stop when the hand overshoots; further out it is taken as gone to another window.
-static func edge_direction(mouse: Vector2, screen: Vector2) -> Vector2:
+## Over the interface the zone is only EDGE_OVER_UI pixels wide, at full speed.
+static func edge_direction(mouse: Vector2, screen: Vector2, over_ui := false) -> Vector2:
 	var zone := edge_zone(screen)
 	if not Rect2(Vector2.ZERO, screen).grow(zone).has_point(mouse):
 		return Vector2.ZERO
-	return Vector2(_edge_axis(mouse.x, screen.x, zone), _edge_axis(mouse.y, screen.y, zone))
+	var slow := EDGE_SLOW
+	if over_ui:
+		zone = EDGE_OVER_UI
+		slow = 1.0
+	return Vector2(
+		_edge_axis(mouse.x, screen.x, zone, slow), _edge_axis(mouse.y, screen.y, zone, slow)
+	)
 
 
-static func _edge_axis(at: float, length: float, zone: float) -> float:
+static func _edge_axis(at: float, length: float, zone: float, slow: float) -> float:
 	if at < zone:
-		return -_edge_strength(at, zone)
+		return -_edge_strength(at, zone, slow)
 	if at > length - 1.0 - zone:
-		return _edge_strength(length - 1.0 - at, zone)
+		return _edge_strength(length - 1.0 - at, zone, slow)
 	return 0.0
 
 
-static func _edge_strength(dist: float, zone: float) -> float:
+static func _edge_strength(dist: float, zone: float, slow: float) -> float:
 	if dist <= 0.0:
 		return 1.0
-	return lerpf(1.0, EDGE_SLOW, dist / zone)
+	return lerpf(1.0, slow, dist / zone)
 
 
 static func clamp_to_bounds(p: Vector2, rect: Rect2) -> Vector2:

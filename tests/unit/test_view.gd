@@ -50,6 +50,13 @@ func test_camera_stays_on_the_map_and_scrolls_at_edges() -> void:
 	assert_lt(RtsCamera.edge_direction(Vector2(10, 500), screen).x, inner.x, "faster nearer")
 	assert_eq(RtsCamera.edge_direction(Vector2(-5, 500), screen), Vector2(-1, 0), "just past")
 	assert_eq(RtsCamera.edge_direction(Vector2(-300, 500), screen), Vector2.ZERO, "mouse gone")
+	assert_eq(
+		RtsCamera.edge_direction(Vector2(500, 30), screen, true), Vector2.ZERO, "over a button"
+	)
+	assert_eq(RtsCamera.edge_direction(Vector2(500, 1077), screen, true), Vector2(0, 1), "far edge")
+	assert_eq(
+		RtsCamera.edge_direction(Vector2(500, -10), screen, true), Vector2(0, -1), "overshoot"
+	)
 
 
 func test_camera_zoom_is_limited() -> void:
