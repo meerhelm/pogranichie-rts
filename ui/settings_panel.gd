@@ -12,6 +12,8 @@ var _title := Label.new()
 var _language_label := Label.new()
 var _language := OptionButton.new()
 var _edge := CheckBox.new()
+var _edge_speed_label := Label.new()
+var _edge_speed := OptionButton.new()
 var _fullscreen := CheckBox.new()
 var _text_label := Label.new()
 var _text_size := OptionButton.new()
@@ -43,6 +45,15 @@ func _ready() -> void:
 	_edge.button_pressed = GameSettings.edge_scroll
 	_edge.toggled.connect(_on_edge)
 	box.add_child(_edge)
+	var speed_row := HBoxContainer.new()
+	_edge_speed_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	speed_row.add_child(_edge_speed_label)
+	for i in GameSettings.EDGE_SPEEDS.size():
+		_edge_speed.add_item("")
+	_edge_speed.select(GameSettings.edge_speed)
+	_edge_speed.item_selected.connect(_on_edge_speed)
+	speed_row.add_child(_edge_speed)
+	box.add_child(speed_row)
 	_fullscreen.button_pressed = GameSettings.fullscreen
 	_fullscreen.toggled.connect(_on_fullscreen)
 	box.add_child(_fullscreen)
@@ -72,6 +83,10 @@ func _retranslate() -> void:
 	_title.text = tr("Settings")
 	_language_label.text = tr("Language")
 	_edge.text = tr("Scroll at the screen edge")
+	_edge_speed_label.text = tr("Edge scrolling speed")
+	var speeds := [tr("Slow"), tr("Medium"), tr("Fast"), tr("Very fast")]
+	for i in mini(speeds.size(), _edge_speed.item_count):
+		_edge_speed.set_item_text(i, speeds[i])
 	_fullscreen.text = tr("Fullscreen")
 	_text_label.text = tr("Text size")
 	var sizes := [tr("Small"), tr("Normal"), tr("Large"), tr("Very large")]
@@ -89,6 +104,11 @@ func _on_language(index: int) -> void:
 
 func _on_edge(on: bool) -> void:
 	GameSettings.edge_scroll = on
+	GameSettings.save()
+
+
+func _on_edge_speed(index: int) -> void:
+	GameSettings.edge_speed = index
 	GameSettings.save()
 
 

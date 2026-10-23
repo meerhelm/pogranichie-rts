@@ -41,10 +41,15 @@ func test_camera_stays_on_the_map_and_scrolls_at_edges() -> void:
 	assert_eq(RtsCamera.clamp_to_bounds(Vector2(500, -20), r), Vector2(100, 0))
 	assert_eq(RtsCamera.clamp_to_bounds(Vector2(10, 50), r), Vector2(10, 50))
 	var screen := Vector2(1920, 1080)
-	assert_eq(RtsCamera.edge_direction(Vector2(2, 500), screen), Vector2(-1, 0))
+	assert_almost_eq(RtsCamera.edge_zone(screen), 43.2, 0.01)
+	assert_eq(RtsCamera.edge_direction(Vector2(0, 500), screen), Vector2(-1, 0))
 	assert_eq(RtsCamera.edge_direction(Vector2(1919, 1079), screen), Vector2(1, 1))
 	assert_eq(RtsCamera.edge_direction(Vector2(900, 500), screen), Vector2.ZERO)
-	assert_eq(RtsCamera.edge_direction(Vector2(-5, 500), screen), Vector2.ZERO, "mouse outside")
+	var inner := RtsCamera.edge_direction(Vector2(40, 500), screen)
+	assert_between(inner.x, -0.5, -RtsCamera.EDGE_SLOW, "slow at the inner side of the zone")
+	assert_lt(RtsCamera.edge_direction(Vector2(10, 500), screen).x, inner.x, "faster nearer")
+	assert_eq(RtsCamera.edge_direction(Vector2(-5, 500), screen), Vector2(-1, 0), "just past")
+	assert_eq(RtsCamera.edge_direction(Vector2(-300, 500), screen), Vector2.ZERO, "mouse gone")
 
 
 func test_camera_zoom_is_limited() -> void:

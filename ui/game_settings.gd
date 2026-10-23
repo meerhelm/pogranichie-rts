@@ -20,9 +20,13 @@ const LANGUAGE_NAMES: Array[String] = [
 
 ## Interface font sizes the player picks from (the theme's default font size), smallest first.
 const TEXT_SIZES: Array[int] = [16, 20, 24, 28]
+## Edge scrolling speed multipliers the player picks from, slowest first.
+const EDGE_SPEEDS: Array[float] = [0.6, 1.0, 1.5, 2.2]
 
 static var language := "en"
 static var edge_scroll := true
+## Index in EDGE_SPEEDS.
+static var edge_speed := 1
 static var fullscreen := false
 ## Index in TEXT_SIZES.
 static var text_size := 1
@@ -53,6 +57,8 @@ static func ensure_loaded() -> void:
 		var lang: String = cfg.get_value("general", "language", language)
 		language = lang if LANGUAGES.has(lang) else "en"
 		edge_scroll = cfg.get_value("general", "edge_scroll", edge_scroll)
+		var speed: int = cfg.get_value("general", "edge_speed", edge_speed)
+		edge_speed = clampi(speed, 0, EDGE_SPEEDS.size() - 1)
 		fullscreen = cfg.get_value("video", "fullscreen", fullscreen)
 		var size: int = cfg.get_value("video", "text_size", text_size)
 		text_size = clampi(size, 0, TEXT_SIZES.size() - 1)
@@ -66,6 +72,11 @@ static func ensure_loaded() -> void:
 		var map: String = cfg.get_value("skirmish", "map", skirmish_map)
 		skirmish_map = map if SkirmishMaps.has(map) else SkirmishSetup.MAP_ID
 	apply()
+
+
+## Edge scrolling speed multiplier picked in the settings.
+static func edge_speed_factor() -> float:
+	return EDGE_SPEEDS[edge_speed]
 
 
 static func apply() -> void:
@@ -86,6 +97,7 @@ static func save() -> void:
 	var cfg := ConfigFile.new()
 	cfg.set_value("general", "language", language)
 	cfg.set_value("general", "edge_scroll", edge_scroll)
+	cfg.set_value("general", "edge_speed", edge_speed)
 	cfg.set_value("video", "fullscreen", fullscreen)
 	cfg.set_value("video", "text_size", text_size)
 	cfg.set_value("general", "hints", hints)

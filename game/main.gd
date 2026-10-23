@@ -115,10 +115,10 @@ func _ready() -> void:
 	if sim.mission != null:
 		home = sim.mission.def.camera
 	_camera.look_at_point(Iso.cell_to_screen(Vector2(home)))
-	_camera.edge_scroll = GameSettings.edge_scroll
+	_apply_camera_settings()
 	_input.attach(sim, _units, _camera, _buildings)
 	_hud.attach(sim, _clock, _input, _camera, PLAYER)
-	_hud.menu.resumed.connect(func() -> void: _camera.edge_scroll = GameSettings.edge_scroll)
+	_hud.menu.resumed.connect(_apply_camera_settings)
 	_clock.advanced.connect(func(t: int, _s: int) -> void: _on_ticked(t))
 	$UI.add_child(end_screen)
 	if sim.mission != null:
@@ -202,3 +202,8 @@ func _on_ticked(_tick: int) -> void:
 					kept.append(flag)
 			CampaignProgress.mark_won(sim.mission.def.id, kept)
 		end_screen.open(sim, PLAYER)
+
+
+func _apply_camera_settings() -> void:
+	_camera.edge_scroll = GameSettings.edge_scroll
+	_camera.edge_speed = GameSettings.edge_speed_factor()
