@@ -10,9 +10,10 @@ const EDGE_SHARE := 0.04
 const EDGE_MIN := 16.0
 ## Speed share at the inner side of the edge zone; it grows to full at the very edge.
 const EDGE_SLOW := 0.3
-## Over the interface (top bar, bottom panel, minimap, windows) only this thin strip at the
-## very edge scrolls, so hovering a button near the edge does not move the map.
-const EDGE_OVER_UI := 6.0
+## Over a button, list or the minimap only this thin strip at the very edge scrolls, so
+## pointing at a control near the edge does not move the map. Panel backgrounds (the top
+## bar, the bottom panel) do not count: there the whole edge zone works.
+const EDGE_OVER_UI := 10.0
 const ZOOM_MIN := 0.5
 const ZOOM_MAX := 2.0
 const ZOOM_STEP := 0.1
@@ -22,8 +23,9 @@ var bounds := Rect2()
 var edge_scroll := true
 ## Edge scrolling speed multiplier (GameSettings.EDGE_SPEEDS).
 var edge_speed := 1.0
-## The viewport keeps the last mouse position after the mouse leaves the window, so edge
-## scrolling stops while it is outside.
+## Scroll while the mouse is outside the window: it left across an edge zone (a windowed
+## game, the hand overshot), so the map goes on moving that way until it comes back.
+var _outside_dir := Vector2.ZERO
 var _mouse_inside := true
 
 
@@ -33,9 +35,13 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	var dir := Input.get_vector(&"cam_left", &"cam_right", &"cam_up", &"cam_down")
-	if edge_scroll and dir == Vector2.ZERO and _mouse_inside and DisplayServer.window_is_focused():
-		var over_ui := get_viewport().gui_get_hovered_control() != null
-		dir = edge_direction(get_viewport().get_mouse_position(), get_viewport_rect().size, over_ui)
+	if edge_scroll and dir == Vector2.ZERO and DisplayServer.window_is_focused():
+		if _mouse_inside:
+			var over_ui := over_control(get_viewport().gui_get_hovered_control())
+			var mouse := get_viewport().get_mouse_position()
+			dir = edge_direction(mouse, get_viewport_rect().size, over_ui)
+		else:
+			dir = _outside_dir
 		dir *= edge_speed
 	if dir != Vector2.ZERO:
 		position += dir * SCROLL_SPEED * delta / zoom.x
@@ -45,6 +51,8 @@ func _process(delta: float) -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_MOUSE_EXIT:
 		_mouse_inside = false
+		var d := edge_direction(get_viewport().get_mouse_position(), get_viewport_rect().size)
+		_outside_dir = d.sign()
 	elif what == NOTIFICATION_WM_MOUSE_ENTER:
 		_mouse_inside = true
 
@@ -66,6 +74,19 @@ func zoom_by(step: float) -> void:
 
 func look_at_point(p: Vector2) -> void:
 	position = clamp_to_bounds(p, bounds)
+
+
+## Whether the mouse points at a control the player uses (a button, a list, a slider, the
+## minimap) rather than at a panel's background or a label.
+static func over_control(hovered: Control) -> bool:
+	var c: Node = hovered
+	for i in 4:
+		if c == null:
+			return false
+		if c is BaseButton or c is Range or c is ItemList or c is LineEdit or c is Minimap:
+			return true
+		c = c.get_parent()
+	return false
 
 
 ## Width of the edge zone in pixels for a window (or screen) of this size.

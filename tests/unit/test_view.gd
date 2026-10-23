@@ -59,6 +59,19 @@ func test_camera_stays_on_the_map_and_scrolls_at_edges() -> void:
 	)
 
 
+func test_edge_zone_narrows_only_over_controls() -> void:
+	var panel := PanelContainer.new()
+	var button := Button.new()
+	var label := Label.new()
+	panel.add_child(button)
+	button.add_child(label)
+	assert_false(RtsCamera.over_control(null), "the map")
+	assert_false(RtsCamera.over_control(panel), "a panel's background")
+	assert_true(RtsCamera.over_control(button))
+	assert_true(RtsCamera.over_control(label), "a label inside a button")
+	panel.free()
+
+
 func test_camera_zoom_is_limited() -> void:
 	var cam := RtsCamera.new()
 	for i in 30:
