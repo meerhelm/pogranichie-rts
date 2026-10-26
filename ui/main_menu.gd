@@ -11,7 +11,7 @@ extends Control
 enum Page { MAIN, COUNTRIES, MISSIONS, SINGLE }
 
 const GAME_SCENE := "res://game/main.tscn"
-const BACKGROUND := preload("res://ui/art/menu_background.jpg")
+const BACKGROUND := preload("res://ui/art/menu_background_grok.jpg")
 const BUTTON_SIZE := Vector2(340, 50)
 const MISSION_SIZE := Vector2(460, 46)
 

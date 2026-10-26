@@ -123,10 +123,18 @@ func _build_bottom() -> void:
 	_bottom_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	add_child(_bottom_panel)
 	_bottom.add_theme_constant_override("separation", 8)
-	_bottom_panel.add_child(_bottom)
+	var column := VBoxContainer.new()
+	column.add_theme_constant_override("separation", 6)
+	_bottom_panel.add_child(column)
+	# The folk sash band along the top of the panel.
+	var band := PanelContainer.new()
+	band.theme_type_variation = &"Ornament"
+	band.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	column.add_child(band)
+	column.add_child(_bottom)
 	minimap.custom_minimum_size = Vector2(320, 180)
 	var well := PanelContainer.new()
-	well.theme_type_variation = &"Well"
+	well.theme_type_variation = &"MinimapFrame"
 	well.add_child(minimap)
 	_bottom.add_child(well)
 	card.size_flags_vertical = Control.SIZE_FILL

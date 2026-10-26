@@ -1,109 +1,117 @@
-[gd_resource type="Theme" load_steps=26 format=3]
+[gd_resource type="Theme" load_steps=45 format=3]
 
 [ext_resource type="FontFile" path="res://ui/fonts/PT_Sans-Web-Regular.ttf" id="1_sans"]
 [ext_resource type="FontFile" path="res://ui/fonts/PT_Serif-Web-Bold.ttf" id="2_serif"]
-[ext_resource type="Texture2D" path="res://ui/skin/panel.png" id="3_panel"]
-[ext_resource type="Texture2D" path="res://ui/skin/button.png" id="4_btn"]
-[ext_resource type="Texture2D" path="res://ui/skin/button_hover.png" id="5_btn_hover"]
-[ext_resource type="Texture2D" path="res://ui/skin/button_pressed.png" id="6_btn_pressed"]
-[ext_resource type="Texture2D" path="res://ui/skin/button_disabled.png" id="7_btn_disabled"]
-[ext_resource type="Texture2D" path="res://ui/skin/focus.png" id="8_focus"]
-[ext_resource type="Texture2D" path="res://ui/skin/parchment.png" id="9_parchment"]
-[ext_resource type="Texture2D" path="res://ui/skin/well.png" id="10_well"]
-[ext_resource type="Texture2D" path="res://ui/skin/bar.png" id="11_bar"]
+[ext_resource type="Texture2D" path="res://ui/skin/grok/panel.png" id="3_panel"]
+[ext_resource type="Texture2D" path="res://ui/skin/grok/button.png" id="4_btn"]
+[ext_resource type="Texture2D" path="res://ui/skin/grok/button_hover.png" id="5_btn_hover"]
+[ext_resource type="Texture2D" path="res://ui/skin/grok/button_pressed.png" id="6_btn_pressed"]
+[ext_resource type="Texture2D" path="res://ui/skin/grok/button_disabled.png" id="7_btn_disabled"]
+[ext_resource type="Texture2D" path="res://ui/skin/grok/focus.png" id="8_focus"]
+[ext_resource type="Texture2D" path="res://ui/skin/grok/parchment.png" id="9_parchment"]
+[ext_resource type="Texture2D" path="res://ui/skin/grok/well.png" id="10_well"]
+[ext_resource type="Texture2D" path="res://ui/skin/grok/top_bar.png" id="11_bar"]
+[ext_resource type="Texture2D" path="res://ui/skin/grok/cmd.png" id="12_cmd"]
+[ext_resource type="Texture2D" path="res://ui/skin/grok/cmd_hover.png" id="13_cmd_hover"]
+[ext_resource type="Texture2D" path="res://ui/skin/grok/cmd_pressed.png" id="14_cmd_pressed"]
+[ext_resource type="Texture2D" path="res://ui/skin/grok/cmd_disabled.png" id="15_cmd_disabled"]
+[ext_resource type="Texture2D" path="res://ui/skin/grok/minimap_frame.png" id="16_minimap"]
+[ext_resource type="Texture2D" path="res://ui/skin/grok/portrait_frame.png" id="17_portrait"]
+[ext_resource type="Texture2D" path="res://ui/skin/grok/bar_bg.png" id="18_bar_bg"]
+[ext_resource type="Texture2D" path="res://ui/skin/grok/bar_fill.png" id="19_bar_fill"]
+[ext_resource type="Texture2D" path="res://ui/skin/grok/ornament.png" id="20_ornament"]
 
 [sub_resource type="StyleBoxTexture" id="panel"]
 texture = ExtResource("3_panel")
-texture_margin_left = 12.0
-texture_margin_top = 12.0
-texture_margin_right = 12.0
-texture_margin_bottom = 12.0
-content_margin_left = 18.0
-content_margin_top = 16.0
-content_margin_right = 18.0
-content_margin_bottom = 16.0
+texture_margin_left = 26.0
+texture_margin_top = 24.0
+texture_margin_right = 26.0
+texture_margin_bottom = 24.0
+content_margin_left = 24.0
+content_margin_top = 20.0
+content_margin_right = 24.0
+content_margin_bottom = 20.0
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
 [sub_resource type="StyleBoxTexture" id="bar"]
 texture = ExtResource("11_bar")
-texture_margin_left = 8.0
-texture_margin_top = 8.0
-texture_margin_right = 8.0
-texture_margin_bottom = 8.0
-content_margin_left = 14.0
-content_margin_top = 6.0
-content_margin_right = 14.0
-content_margin_bottom = 6.0
+texture_margin_left = 14.0
+texture_margin_top = 12.0
+texture_margin_right = 14.0
+texture_margin_bottom = 12.0
+content_margin_left = 18.0
+content_margin_top = 8.0
+content_margin_right = 18.0
+content_margin_bottom = 8.0
 axis_stretch_horizontal = 1
-axis_stretch_vertical = 1
 
 [sub_resource type="StyleBoxTexture" id="btn"]
 texture = ExtResource("4_btn")
-texture_margin_left = 8.0
-texture_margin_top = 8.0
-texture_margin_right = 8.0
-texture_margin_bottom = 8.0
-content_margin_left = 14.0
-content_margin_top = 6.0
-content_margin_right = 14.0
-content_margin_bottom = 6.0
+texture_margin_left = 16.0
+texture_margin_top = 11.0
+texture_margin_right = 16.0
+texture_margin_bottom = 11.0
+content_margin_left = 18.0
+content_margin_top = 7.0
+content_margin_right = 18.0
+content_margin_bottom = 7.0
 axis_stretch_horizontal = 1
 
 [sub_resource type="StyleBoxTexture" id="btn_hover"]
 texture = ExtResource("5_btn_hover")
-texture_margin_left = 8.0
-texture_margin_top = 8.0
-texture_margin_right = 8.0
-texture_margin_bottom = 8.0
-content_margin_left = 14.0
-content_margin_top = 6.0
-content_margin_right = 14.0
-content_margin_bottom = 6.0
+texture_margin_left = 16.0
+texture_margin_top = 11.0
+texture_margin_right = 16.0
+texture_margin_bottom = 11.0
+content_margin_left = 18.0
+content_margin_top = 7.0
+content_margin_right = 18.0
+content_margin_bottom = 7.0
 axis_stretch_horizontal = 1
 
 [sub_resource type="StyleBoxTexture" id="btn_pressed"]
 texture = ExtResource("6_btn_pressed")
-texture_margin_left = 8.0
-texture_margin_top = 8.0
-texture_margin_right = 8.0
-texture_margin_bottom = 8.0
-content_margin_left = 14.0
-content_margin_top = 7.0
-content_margin_right = 14.0
-content_margin_bottom = 5.0
+texture_margin_left = 16.0
+texture_margin_top = 11.0
+texture_margin_right = 16.0
+texture_margin_bottom = 11.0
+content_margin_left = 18.0
+content_margin_top = 8.0
+content_margin_right = 18.0
+content_margin_bottom = 6.0
 axis_stretch_horizontal = 1
 
 [sub_resource type="StyleBoxTexture" id="btn_disabled"]
 texture = ExtResource("7_btn_disabled")
-texture_margin_left = 8.0
-texture_margin_top = 8.0
-texture_margin_right = 8.0
-texture_margin_bottom = 8.0
-content_margin_left = 14.0
-content_margin_top = 6.0
-content_margin_right = 14.0
-content_margin_bottom = 6.0
+texture_margin_left = 16.0
+texture_margin_top = 11.0
+texture_margin_right = 16.0
+texture_margin_bottom = 11.0
+content_margin_left = 18.0
+content_margin_top = 7.0
+content_margin_right = 18.0
+content_margin_bottom = 7.0
 axis_stretch_horizontal = 1
 
 [sub_resource type="StyleBoxTexture" id="focus"]
 texture = ExtResource("8_focus")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
+texture_margin_left = 16.0
+texture_margin_top = 11.0
+texture_margin_right = 16.0
+texture_margin_bottom = 11.0
 draw_center = false
 
 [sub_resource type="StyleBoxTexture" id="parchment"]
 texture = ExtResource("9_parchment")
-texture_margin_left = 10.0
-texture_margin_top = 10.0
-texture_margin_right = 10.0
-texture_margin_bottom = 10.0
-content_margin_left = 12.0
-content_margin_top = 8.0
-content_margin_right = 12.0
-content_margin_bottom = 8.0
+texture_margin_left = 18.0
+texture_margin_top = 16.0
+texture_margin_right = 18.0
+texture_margin_bottom = 16.0
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
@@ -173,14 +181,83 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
-[sub_resource type="StyleBoxFlat" id="progress_fill"]
-bg_color = Color(0.72, 0.56, 0.3, 1)
-border_width_top = 1
-border_color = Color(0.95, 0.82, 0.55, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
+[sub_resource type="StyleBoxTexture" id="cmd"]
+texture = ExtResource("12_cmd")
+texture_margin_left = 12.0
+texture_margin_top = 12.0
+texture_margin_right = 12.0
+texture_margin_bottom = 12.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[sub_resource type="StyleBoxTexture" id="cmd_hover"]
+texture = ExtResource("13_cmd_hover")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[sub_resource type="StyleBoxTexture" id="cmd_pressed"]
+texture = ExtResource("14_cmd_pressed")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[sub_resource type="StyleBoxTexture" id="cmd_disabled"]
+texture = ExtResource("15_cmd_disabled")
+texture_margin_left = 12.0
+texture_margin_top = 12.0
+texture_margin_right = 12.0
+texture_margin_bottom = 12.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[sub_resource type="StyleBoxTexture" id="minimap_frame"]
+texture = ExtResource("16_minimap")
+texture_margin_left = 26.0
+texture_margin_top = 24.0
+texture_margin_right = 26.0
+texture_margin_bottom = 24.0
+content_margin_left = 14.0
+content_margin_top = 14.0
+content_margin_right = 14.0
+content_margin_bottom = 14.0
+
+[sub_resource type="StyleBoxTexture" id="portrait_frame"]
+texture = ExtResource("17_portrait")
+texture_margin_left = 18.0
+texture_margin_top = 17.0
+texture_margin_right = 18.0
+texture_margin_bottom = 17.0
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxTexture" id="bar_bg"]
+texture = ExtResource("18_bar_bg")
+texture_margin_left = 6.0
+texture_margin_top = 5.0
+texture_margin_right = 6.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="bar_fill"]
+texture = ExtResource("19_bar_fill")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id="ornament"]
+texture = ExtResource("20_ornament")
+content_margin_top = 11.0
+content_margin_bottom = 11.0
+axis_stretch_horizontal = 1
 
 [resource]
 default_font = ExtResource("1_sans")
@@ -209,6 +286,19 @@ CheckBox/styles/hover = SubResource("empty")
 CheckBox/styles/hover_pressed = SubResource("empty")
 CheckBox/styles/normal = SubResource("empty")
 CheckBox/styles/pressed = SubResource("empty")
+CommandButton/base_type = &"Button"
+CommandButton/styles/disabled = SubResource("cmd_disabled")
+CommandButton/styles/focus = SubResource("empty")
+CommandButton/styles/hover = SubResource("cmd_hover")
+CommandButton/styles/hover_pressed = SubResource("cmd_pressed")
+CommandButton/styles/normal = SubResource("cmd")
+CommandButton/styles/pressed = SubResource("cmd_pressed")
+MinimapFrame/base_type = &"PanelContainer"
+MinimapFrame/styles/panel = SubResource("minimap_frame")
+Ornament/base_type = &"PanelContainer"
+Ornament/styles/panel = SubResource("ornament")
+PortraitFrame/base_type = &"PanelContainer"
+PortraitFrame/styles/panel = SubResource("portrait_frame")
 HScrollBar/styles/grabber = SubResource("grabber")
 HScrollBar/styles/grabber_highlight = SubResource("grabber_hl")
 HScrollBar/styles/grabber_pressed = SubResource("grabber_hl")
@@ -237,8 +327,8 @@ PopupMenu/colors/font_hover_color = Color(1, 0.95, 0.82, 1)
 PopupMenu/styles/hover = SubResource("btn_hover")
 PopupMenu/styles/panel = SubResource("panel")
 ProgressBar/colors/font_color = Color(0.95, 0.9, 0.79, 1)
-ProgressBar/styles/background = SubResource("well")
-ProgressBar/styles/fill = SubResource("progress_fill")
+ProgressBar/styles/background = SubResource("bar_bg")
+ProgressBar/styles/fill = SubResource("bar_fill")
 RichTextLabel/colors/default_color = Color(0.92, 0.87, 0.77, 1)
 RichTextLabel/fonts/bold_font = ExtResource("2_serif")
 Title/base_type = &"Label"

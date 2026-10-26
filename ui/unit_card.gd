@@ -33,7 +33,7 @@ func _ready() -> void:
 	var outer := HBoxContainer.new()
 	outer.add_theme_constant_override("separation", 10)
 	add_child(outer)
-	_frame.theme_type_variation = &"Well"
+	_frame.theme_type_variation = &"PortraitFrame"
 	_frame.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	_portrait.custom_minimum_size = Vector2(PORTRAIT, PORTRAIT)
 	_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE

@@ -29,7 +29,9 @@ addons/limboai/bin/*.framework/** binary
 # can be pushed from any machine (cloud sessions cannot upload to LFS).
 art/sprites/**/*.png !filter !diff !merge binary
 # Interface skin and illustrations made by tools/art: plain git as well.
-ui/skin/*.png !filter !diff !merge binary
+ui/skin/**/*.png !filter !diff !merge binary
 ui/icons/**/*.png !filter !diff !merge binary
 ui/art/* !filter !diff !merge binary
 art/tiles/*.png !filter !diff !merge binary
+# Grok's UI pieces the skin is cut from (tools/art/ui_grok.py): plain git too.
+art_src/ui_grok/* !filter !diff !merge binary
