@@ -1,0 +1,79 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ui/settings_panel.gd" id="1_settings"]
+
+[node name="SettingsPanel" type="PanelContainer"]
+custom_minimum_size = Vector2(420, 0)
+script = ExtResource("1_settings")
+
+[node name="Box" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Title"
+theme_override_font_sizes/font_size = 28
+text = "Settings"
+horizontal_alignment = 1
+
+[node name="LanguageRow" type="HBoxContainer" parent="Box"]
+layout_mode = 2
+
+[node name="LanguageLabel" type="Label" parent="Box/LanguageRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Language"
+
+[node name="Language" type="OptionButton" parent="Box/LanguageRow"]
+unique_name_in_owner = true
+auto_translate_mode = 2
+layout_mode = 2
+
+[node name="Edge" type="CheckBox" parent="Box"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Scroll at the screen edge"
+
+[node name="EdgeSpeedRow" type="HBoxContainer" parent="Box"]
+layout_mode = 2
+
+[node name="EdgeSpeedLabel" type="Label" parent="Box/EdgeSpeedRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Edge scrolling speed"
+
+[node name="EdgeSpeed" type="OptionButton" parent="Box/EdgeSpeedRow"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Fullscreen" type="CheckBox" parent="Box"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="TextRow" type="HBoxContainer" parent="Box"]
+layout_mode = 2
+
+[node name="TextLabel" type="Label" parent="Box/TextRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Text size"
+
+[node name="TextSize" type="OptionButton" parent="Box/TextRow"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Hints" type="CheckBox" parent="Box"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Hints in skirmish"
+
+[node name="Back" type="Button" parent="Box"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Back"

@@ -26,7 +26,7 @@ const AI_PLAYER := 2
 var sim: Simulation
 ## The computer player (null if there is no profile for its faction and difficulty).
 var ai: SkirmishAi
-var end_screen := EndScreen.new()
+var end_screen := EndScreen.create()
 ## The mission's interface (null in a skirmish).
 var mission_panel: MissionPanel
 ## The mission's briefing (null in a skirmish).
@@ -138,7 +138,7 @@ func _ready() -> void:
 		_hud.menu.can_save = true
 		_hud.menu.save_requested.connect(_save_game)
 		_hud.menu.load_requested.connect(_load_game)
-		briefing = MissionBriefing.new()
+		briefing = MissionBriefing.create()
 		$UI.add_child(briefing)
 		briefing.attach(sim)
 		_hud.menu.briefing_requested.connect(briefing.open)

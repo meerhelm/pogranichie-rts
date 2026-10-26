@@ -4,6 +4,8 @@ extends Node2D
 ## so units glide at any frame rate while the simulation ticks 20 times a second.
 ## Children are y-sorted: a unit lower on screen is drawn in front.
 
+## One unit on the map: placeholder body or the type's animated sheet (UnitView).
+const VIEW_SCENE := preload("res://game/world/unit_view.tscn")
 ## No place to turn to (_work_point).
 const NO_POINT := Vector2i(-1, -1)
 ## Ticks between looks into the training queues for art to load ahead (_prefetch_queued).
@@ -154,7 +156,7 @@ func view(id: int) -> UnitView:
 
 func _make_view(id: int) -> UnitView:
 	var e := sim.entities
-	var v := UnitView.new()
+	var v: UnitView = VIEW_SCENE.instantiate()
 	v.unit_id = id
 	v.player = e.owners[id - 1]
 	v.move_class = e.move_class[id - 1]

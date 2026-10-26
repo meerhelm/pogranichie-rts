@@ -205,7 +205,7 @@ func test_buildings_show_damage_stages_and_ruins() -> void:
 			court = id
 	assert_gt(court, 0, "the player has a court")
 	layer._refresh()
-	var box: BoxView = layer._boxes[StringName("b%d" % court)]
+	var box: BuildingView = layer._boxes[StringName("b%d" % court)]
 	assert_eq(box.sprite, SpriteDB.building(&"gdl_town_center", &"done"))
 	b.hp[court - 1] = b.max_hp[court - 1] / 5
 	layer._refresh()
@@ -235,11 +235,11 @@ func test_palisade_cells_join_their_neighbours() -> void:
 		b.done[id - 1] = 1
 		b.hp[id - 1] = b.max_hp[id - 1]
 	layer._refresh()
-	var box: BoxView = layer._boxes[StringName("b%d" % left)]
+	var box: BuildingView = layer._boxes[StringName("b%d" % left)]
 	assert_eq(box.sprite, SpriteDB.building(&"gdl_palisade"))
 	assert_eq(box.front, [SpriteDB.building(&"gdl_palisade_e")] as Array[SpriteDB.Sprite])
 	assert_true(box.back.is_empty(), "nothing west or north of the first post")
-	var corner: BoxView = layer._boxes[StringName("b%d" % right)]
+	var corner: BuildingView = layer._boxes[StringName("b%d" % right)]
 	assert_eq(corner.back, [SpriteDB.building(&"gdl_palisade_w")] as Array[SpriteDB.Sprite])
 	assert_eq(corner.front, [SpriteDB.building(&"gdl_palisade_s")] as Array[SpriteDB.Sprite])
 	assert_eq(layer._art_id(middle - 1), &"gdl_gate", "a gate in a line along x keeps its view")

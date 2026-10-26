@@ -8,52 +8,28 @@ extends Control
 signal closed
 
 const MENU_SCENE := "res://ui/main_menu.tscn"
+const SCENE := "res://ui/end_screen.tscn"
 
-var _title := Label.new()
-var _reason := Label.new()
-var _grid := GridContainer.new()
-var _to_menu := Button.new()
-var _watch := Button.new()
-var _quit := Button.new()
 var _sim: Simulation
 var _player := 1
 
+@onready var _title: Label = %Title
+@onready var _reason: Label = %Reason
+@onready var _grid: GridContainer = %Grid
+@onready var _to_menu: Button = %ToMenu
+@onready var _watch: Button = %Watch
+@onready var _quit: Button = %Quit
+
+
+## A new end screen (the scene, end_screen.tscn).
+static func create() -> EndScreen:
+	return (load(SCENE) as PackedScene).instantiate()
+
 
 func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_WHEN_PAUSED
-	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	mouse_filter = Control.MOUSE_FILTER_STOP
-	var shade := ColorRect.new()
-	shade.color = Color(0, 0, 0, 0.6)
-	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(shade)
-	var center := CenterContainer.new()
-	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(center)
-	var panel := PanelContainer.new()
-	center.add_child(panel)
-	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 12)
-	panel.add_child(box)
-	_title.theme_type_variation = &"Title"
-	_title.add_theme_font_size_override("font_size", 40)
-	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	box.add_child(_title)
-	_reason.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	box.add_child(_reason)
-	_grid.columns = 3
-	_grid.add_theme_constant_override("h_separation", 32)
-	box.add_child(_grid)
-	var buttons := HBoxContainer.new()
-	buttons.alignment = BoxContainer.ALIGNMENT_CENTER
-	for b: Button in [_watch, _to_menu, _quit]:
-		b.custom_minimum_size = Vector2(200, 44)
-		buttons.add_child(b)
-	box.add_child(buttons)
 	_watch.pressed.connect(_on_watch)
 	_to_menu.pressed.connect(_on_main_menu)
 	_quit.pressed.connect(func() -> void: get_tree().quit())
-	visible = false
 
 
 func _notification(what: int) -> void:
@@ -67,6 +43,7 @@ func open(sim: Simulation, player: int) -> void:
 	_player = player
 	_fill()
 	visible = true
+	UiAnim.pop_in(self, %Panel)
 	get_tree().paused = true
 	_to_menu.grab_focus.call_deferred()
 

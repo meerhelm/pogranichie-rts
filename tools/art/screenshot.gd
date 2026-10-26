@@ -22,6 +22,8 @@ extends SceneTree
 ##   cells apart, the camera on them)
 ##   rally (the player's town centre selected, its rally point set a few cells away),
 ##   play (in a mission: the briefing closed, the mission starts),
+##   effects (no fog: the player's town centre and a house on fire, «Болотный туман» beside them
+##   and a spearman carrying «Реликвия в строю», to see the particle effects),
 ##   briefing (in a mission: the briefing closed, the mission run a little, then F2's briefing).
 ## SHOT_MISSION=gdl_01 (or another mission id) opens that mission instead of the skirmish; a new
 ## mission starts with its briefing open. SHOT_MAP=map_sk_orsha (or another SkirmishMaps id) plays
@@ -122,6 +124,8 @@ func _act() -> void:
 		_dismantle(main, _action == "work")
 	elif _action == "fight":
 		_fight(main)
+	elif _action == "effects":
+		_effects(main)
 	elif _action.begins_with("towers:"):
 		var parts := _action.split(":")
 		_towers(main, int(parts[1]), int(parts[2]))
@@ -346,6 +350,37 @@ func _fight(main: Node) -> void:
 		sim.step()
 	var cam: RtsCamera = main.get_node("Camera")
 	cam.look_at_point(Iso.cell_to_screen(Vector2(x + 2, y + 2)))
+
+
+func _effects(main: Node) -> void:
+	var sim: Simulation = main.get("sim")
+	sim.vision.rules = null
+	(main.get_node("World/Fog") as Node2D).visible = false
+	var store := sim.economy.buildings
+	var tc := store.alive_ids[0]
+	for b in store.alive_ids:
+		if store.owners[b - 1] == 1 and store.defs[b - 1].base_id == &"town_center":
+			tc = b
+	var x := store.cell_x[tc - 1]
+	var y := store.cell_y[tc - 1]
+	var house: BuildingDef = load("res://data/buildings/%s.tres" % "gdl_house")
+	var hut := sim.economy._found(1, house, x + 5, y, false)
+	_finish(sim, hut)
+	sim.fire.ignite(tc)
+	sim.fire.ignite(hut)
+	store.hp[tc - 1] = store.max_hp[tc - 1] / 3
+	var magic := sim.magic
+	var mist: SpellDef = load("res://data/spells/sp_bog_mist.tres")
+	magic._add_effect(mist, 1, 0, Fixed.from_cells(x + 2), Fixed.from_cells(y + 7), 3)
+	var bearer := sim.spawn_unit(
+		&"gdl_spearman", 1, Fixed.from_cells(x + 7), Fixed.from_cells(y + 5)
+	)
+	var relic: SpellDef = load("res://data/spells/sp_relic.tres")
+	magic._add_effect(relic, 1, bearer, Fixed.from_cells(x + 7), Fixed.from_cells(y + 5), 2)
+	for i in 10:
+		sim.step()
+	var cam: RtsCamera = main.get_node("Camera")
+	cam.look_at_point(Iso.cell_to_screen(Vector2(x + 4, y + 4)))
 
 
 func _rally(main: Node) -> void:

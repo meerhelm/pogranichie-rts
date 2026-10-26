@@ -15,7 +15,7 @@ func before_all() -> void:
 
 
 func _briefing(sim: Simulation) -> MissionBriefing:
-	var b := MissionBriefing.new()
+	var b := MissionBriefing.create()
 	add_child_autofree(b)
 	b.attach(sim)
 	return b

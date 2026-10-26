@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene format=3]
 
 [ext_resource type="Script" path="res://game/main.gd" id="1_main"]
 [ext_resource type="Script" path="res://core/sim/sim_clock.gd" id="2_clock"]
@@ -9,7 +9,7 @@
 [ext_resource type="Script" path="res://game/world/shot_layer.gd" id="7_shots"]
 [ext_resource type="Script" path="res://game/world/building_layer.gd" id="8_buildings"]
 [ext_resource type="Script" path="res://game/world/fog_layer.gd" id="9_fog"]
-[ext_resource type="Script" path="res://ui/hud.gd" id="10_hud"]
+[ext_resource type="PackedScene" path="res://ui/hud.tscn" id="10_hud"]
 [ext_resource type="Script" path="res://game/world/magic_layer.gd" id="11_magic"]
 
 [node name="Main" type="Node2D"]
@@ -54,14 +54,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("6_input")
 
-[node name="Hud" type="Control" parent="UI"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-script = ExtResource("10_hud")
+[node name="Hud" parent="UI" instance=ExtResource("10_hud")]
 
 [node name="VersionLabel" type="Label" parent="UI"]
 anchors_preset = 1

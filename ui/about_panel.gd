@@ -5,43 +5,22 @@ extends Control
 
 signal closed
 
+const SCENE := "res://ui/about_panel.tscn"
+
 const CHANGELOG := "res://ui/changelog.json"
 
-var _title := Label.new()
-var _text := RichTextLabel.new()
-var _close := Button.new()
+@onready var _title: Label = %Title
+@onready var _text: RichTextLabel = %Text
+@onready var _close: Button = %Close
+
+
+## A new window (the scene, laid out in about_panel.tscn).
+static func create() -> AboutPanel:
+	return (load(SCENE) as PackedScene).instantiate()
 
 
 func _ready() -> void:
-	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	mouse_filter = Control.MOUSE_FILTER_STOP
-	var shade := ColorRect.new()
-	shade.color = Color(0, 0, 0, 0.6)
-	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(shade)
-	var center := CenterContainer.new()
-	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(center)
-	var panel := PanelContainer.new()
-	center.add_child(panel)
-	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 12)
-	panel.add_child(box)
-	_title.theme_type_variation = &"Title"
-	_title.add_theme_font_size_override("font_size", 32)
-	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	box.add_child(_title)
-	_text.bbcode_enabled = true
-	_text.fit_content = false
-	_text.scroll_active = true
-	_text.custom_minimum_size = Vector2(1000, 640)
-	_text.focus_mode = Control.FOCUS_NONE
-	box.add_child(_text)
-	_close.custom_minimum_size = Vector2(300, 44)
-	_close.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	_close.pressed.connect(close)
-	box.add_child(_close)
-	visible = false
 	_retranslate()
 
 
@@ -63,6 +42,7 @@ func open() -> void:
 	_retranslate()
 	_text.scroll_to_line(0)
 	visible = true
+	UiAnim.pop_in(self, %Panel)
 	_close.grab_focus.call_deferred()
 
 

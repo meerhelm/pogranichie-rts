@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://di81a3typtcx6" path="res://game/world/building_view.gd" id="1_view"]
+[ext_resource type="PackedScene" path="res://game/world/sprite_stack.tscn" id="2_stack"]
+[ext_resource type="PackedScene" path="res://game/world/fire_fx.tscn" id="3_fire"]
+
+[node name="BuildingView" type="Node2D"]
+script = ExtResource("1_view")
+
+[node name="Back" type="Node2D" parent="."]
+
+[node name="Main" parent="." instance=ExtResource("2_stack")]
+
+[node name="Front" type="Node2D" parent="."]
+
+[node name="Fire" parent="." instance=ExtResource("3_fire")]
+
+[node name="Overlay" type="Node2D" parent="."]

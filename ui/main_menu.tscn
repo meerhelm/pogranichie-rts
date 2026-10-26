@@ -1,6 +1,20 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3]
 
 [ext_resource type="Script" path="res://ui/main_menu.gd" id="1_menu"]
+[ext_resource type="Texture2D" path="res://ui/art/menu_background.jpg" id="2_bg"]
+[ext_resource type="PackedScene" path="res://ui/settings_panel.tscn" id="3_settings"]
+[ext_resource type="PackedScene" path="res://ui/help_panel.tscn" id="4_help"]
+[ext_resource type="PackedScene" path="res://ui/about_panel.tscn" id="5_about"]
+
+[sub_resource type="Gradient" id="Gradient_shade"]
+offsets = PackedFloat32Array(0, 0.35, 1)
+colors = PackedColorArray(0.05, 0.035, 0.02, 0.88, 0.05, 0.035, 0.02, 0.6, 0.05, 0.035, 0.02, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_shade"]
+gradient = SubResource("Gradient_shade")
+width = 256
+height = 4
+fill_to = Vector2(1, 0)
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -10,3 +24,252 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_menu")
+
+[node name="Backdrop" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.09, 0.08, 0.06, 1)
+
+[node name="Art" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Shade" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.62
+anchor_bottom = 1.0
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_shade")
+expand_mode = 1
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+grow_vertical = 2
+theme_override_constants/margin_left = 96
+
+[node name="Column" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Title" type="Label" parent="Margin/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Title"
+theme_override_font_sizes/font_size = 84
+
+[node name="Subtitle" type="Label" parent="Margin/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.93, 0.84, 0.66, 1)
+theme_override_font_sizes/font_size = 22
+
+[node name="Version" type="Label" parent="Margin/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.72, 0.45, 1)
+theme_override_font_sizes/font_size = 22
+
+[node name="Rule" type="ColorRect" parent="Margin/Column"]
+custom_minimum_size = Vector2(380, 2)
+layout_mode = 2
+size_flags_horizontal = 0
+color = Color(0.75, 0.6, 0.35, 0.8)
+
+[node name="Gap" type="Control" parent="Margin/Column"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+
+[node name="Stack" type="VBoxContainer" parent="Margin/Column"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Panel" type="PanelContainer" parent="Margin/Column/Stack"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Pages" type="VBoxContainer" parent="Margin/Column/Stack/Panel"]
+layout_mode = 2
+
+[node name="Menu" type="VBoxContainer" parent="Margin/Column/Stack/Panel/Pages"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="CampaignButton" type="Button" parent="Margin/Column/Stack/Panel/Pages/Menu"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 50)
+layout_mode = 2
+
+[node name="SingleButton" type="Button" parent="Margin/Column/Stack/Panel/Pages/Menu"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 50)
+layout_mode = 2
+
+[node name="Network" type="Button" parent="Margin/Column/Stack/Panel/Pages/Menu"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 50)
+layout_mode = 2
+disabled = true
+
+[node name="Load" type="Button" parent="Margin/Column/Stack/Panel/Pages/Menu"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 50)
+layout_mode = 2
+
+[node name="Saves" type="VBoxContainer" parent="Margin/Column/Stack/Panel/Pages/Menu"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HelpButton" type="Button" parent="Margin/Column/Stack/Panel/Pages/Menu"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 50)
+layout_mode = 2
+
+[node name="AboutButton" type="Button" parent="Margin/Column/Stack/Panel/Pages/Menu"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 50)
+layout_mode = 2
+
+[node name="SettingsButton" type="Button" parent="Margin/Column/Stack/Panel/Pages/Menu"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 50)
+layout_mode = 2
+
+[node name="Quit" type="Button" parent="Margin/Column/Stack/Panel/Pages/Menu"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 50)
+layout_mode = 2
+
+[node name="Countries" type="VBoxContainer" parent="Margin/Column/Stack/Panel/Pages"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="CountriesHead" type="Label" parent="Margin/Column/Stack/Panel/Pages/Countries"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.93, 0.84, 0.66, 1)
+theme_override_font_sizes/font_size = 28
+
+[node name="CountriesBack" type="Button" parent="Margin/Column/Stack/Panel/Pages/Countries"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 50)
+layout_mode = 2
+
+[node name="Missions" type="VBoxContainer" parent="Margin/Column/Stack/Panel/Pages"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="MissionsHead" type="Label" parent="Margin/Column/Stack/Panel/Pages/Missions"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.93, 0.84, 0.66, 1)
+theme_override_font_sizes/font_size = 28
+
+[node name="MissionsNote" type="Label" parent="Margin/Column/Stack/Panel/Pages/Missions"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.72, 0.45, 1)
+
+[node name="MissionList" type="VBoxContainer" parent="Margin/Column/Stack/Panel/Pages/Missions"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CampaignDifficulty" type="OptionButton" parent="Margin/Column/Stack/Panel/Pages/Missions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 50)
+layout_mode = 2
+
+[node name="MissionsBack" type="Button" parent="Margin/Column/Stack/Panel/Pages/Missions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 50)
+layout_mode = 2
+
+[node name="Single" type="VBoxContainer" parent="Margin/Column/Stack/Panel/Pages"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SingleHead" type="Label" parent="Margin/Column/Stack/Panel/Pages/Single"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.93, 0.84, 0.66, 1)
+theme_override_font_sizes/font_size = 28
+
+[node name="Skirmish" type="Button" parent="Margin/Column/Stack/Panel/Pages/Single"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 50)
+layout_mode = 2
+
+[node name="Map" type="OptionButton" parent="Margin/Column/Stack/Panel/Pages/Single"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 50)
+layout_mode = 2
+
+[node name="MapNote" type="Label" parent="Margin/Column/Stack/Panel/Pages/Single"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(460, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.72, 0.45, 1)
+autowrap_mode = 3
+
+[node name="MyFaction" type="OptionButton" parent="Margin/Column/Stack/Panel/Pages/Single"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 50)
+layout_mode = 2
+
+[node name="EnemyFaction" type="OptionButton" parent="Margin/Column/Stack/Panel/Pages/Single"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 50)
+layout_mode = 2
+
+[node name="Difficulty" type="OptionButton" parent="Margin/Column/Stack/Panel/Pages/Single"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 50)
+layout_mode = 2
+
+[node name="SingleBack" type="Button" parent="Margin/Column/Stack/Panel/Pages/Single"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 50)
+layout_mode = 2
+
+[node name="Settings" parent="Margin/Column/Stack" instance=ExtResource("3_settings")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="CheatNote" type="Label" parent="Margin/Column"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.8, 0.45, 1)
+theme_override_font_sizes/font_size = 22
+
+[node name="Help" parent="." instance=ExtResource("4_help")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[node name="About" parent="." instance=ExtResource("5_about")]
+unique_name_in_owner = true
+layout_mode = 1

@@ -1,9 +1,9 @@
 class_name PauseMenu
 extends Control
-## In-game menu (Esc with nothing to cancel, or F10): pauses the game; resume, settings, back to
-## the main menu, quit. Runs while the scene tree is paused. In a mission (M9, can_save) also
-## save the game and load a saved one (the list of saves, newest first), and open the mission's
-## briefing again (its goal and objectives).
+## In-game menu (pause_menu.tscn; Esc with nothing to cancel, or F10): pauses the game;
+## resume, settings, back to the main menu, quit. Runs while the scene tree is paused. In a
+## mission (M9, can_save) also save the game and load a saved one (the list of saves, newest
+## first), and open the mission's briefing again (its goal and objectives).
 
 signal resumed
 signal save_requested
@@ -16,50 +16,28 @@ signal briefing_requested
 signal hints_changed
 
 const MENU_SCENE := "res://ui/main_menu.tscn"
+const SCENE := "res://ui/pause_menu.tscn"
 
 ## Whether this game can be saved (a mission).
 var can_save := false
 
-var _title := Label.new()
-var _resume := Button.new()
-var _briefing := Button.new()
-var _settings_button := Button.new()
-var _help := Button.new()
-var _save := Button.new()
-var _load := Button.new()
-var _saves := VBoxContainer.new()
-var _to_menu := Button.new()
-var _quit := Button.new()
-var _menu := VBoxContainer.new()
-var _settings := SettingsPanel.new()
 var _note := ""
+
+@onready var _title: Label = %Title
+@onready var _resume: Button = %Resume
+@onready var _briefing: Button = %Briefing
+@onready var _settings_button: Button = %SettingsButton
+@onready var _help: Button = %Help
+@onready var _save: Button = %Save
+@onready var _load: Button = %Load
+@onready var _saves: VBoxContainer = %Saves
+@onready var _to_menu: Button = %ToMenu
+@onready var _quit: Button = %Quit
+@onready var _menu: VBoxContainer = %Menu
+@onready var _settings: SettingsPanel = %Settings
 
 
 func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_WHEN_PAUSED
-	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	mouse_filter = Control.MOUSE_FILTER_STOP
-	var shade := ColorRect.new()
-	shade.color = Color(0, 0, 0, 0.55)
-	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(shade)
-	var center := CenterContainer.new()
-	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(center)
-	var stack := VBoxContainer.new()
-	center.add_child(stack)
-	var panel := PanelContainer.new()
-	panel.add_child(_menu)
-	stack.add_child(panel)
-	_menu.add_theme_constant_override("separation", 10)
-	_title.theme_type_variation = &"Title"
-	_title.add_theme_font_size_override("font_size", 32)
-	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_menu.add_child(_title)
-	for b: Button in [_resume, _briefing, _save, _load, _help, _settings_button, _to_menu, _quit]:
-		b.custom_minimum_size = Vector2(300, 44)
-		_menu.add_child(b)
-	_menu.add_child(_saves)
 	_save.pressed.connect(func() -> void: save_requested.emit())
 	_load.pressed.connect(_list_saves)
 	_resume.pressed.connect(close)
@@ -69,11 +47,13 @@ func _ready() -> void:
 	_settings_button.pressed.connect(_show_settings.bind(true))
 	_to_menu.pressed.connect(_on_main_menu)
 	_quit.pressed.connect(func() -> void: get_tree().quit())
-	_settings.visible = false
 	_settings.closed.connect(_show_settings.bind(false))
-	stack.add_child(_settings)
-	visible = false
 	_retranslate()
+
+
+## A new game menu (the scene).
+static func create() -> PauseMenu:
+	return (load(SCENE) as PackedScene).instantiate()
 
 
 func _notification(what: int) -> void:
@@ -113,6 +93,7 @@ func open() -> void:
 	_clear_saves()
 	_retranslate()
 	visible = true
+	UiAnim.pop_in(self, %Panel)
 	get_tree().paused = true
 	_resume.grab_focus.call_deferred()
 

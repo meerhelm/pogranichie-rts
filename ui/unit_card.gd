@@ -1,66 +1,30 @@
 class_name UnitCard
 extends PanelContainer
-## What is selected (M6): one unit with its HP, morale, damage, armor, range, speed, stance and
-## state; several units as a count per type; or the selected building with its HP,
-## construction and what it is training or researching. Refreshed by the HUD after ticks.
-## Anything else the player clicks (PlayerInput.look) shows here too, without orders: another
-## side's or a wild unit, another side's building, a deposit or carcass with what is left of
-## what it held, a forest cell, a place of power.
-## A unit or building with an icon (IconDB) shows its portrait at the left; a group shows a
-## tile per unit type with how many are selected.
+## What is selected (M6, laid out in unit_card.tscn): one unit with its HP, morale, damage, armor,
+## range, speed, stance and state; several units as a count per type; or the selected building with
+## its HP, construction and what it is training or researching. Refreshed by the HUD after ticks.
+## Anything else the player clicks (PlayerInput.look) shows here too, without orders: another side's
+## or a wild unit, another side's building, a deposit or carcass with what is left of what it held,
+## a forest cell, a place of power. A unit or building with an icon (IconDB) shows its portrait at
+## the left; a group shows a tile per unit type with how many are selected.
 
-const PORTRAIT := 96.0
 const TILE := 60.0
 
 var sim: Simulation
 var input: PlayerInput
 
-var _title := Label.new()
-var _lines := Label.new()
-var _hp := ProgressBar.new()
-var _morale := ProgressBar.new()
-var _hp_label := Label.new()
-var _morale_label := Label.new()
-var _frame := PanelContainer.new()
-var _portrait := TextureRect.new()
-var _tiles := HFlowContainer.new()
 ## Unit types the tiles show, to rebuild them only when the group changes.
 var _tile_key := ""
 
-
-func _ready() -> void:
-	custom_minimum_size = Vector2(380, 0)
-	var outer := HBoxContainer.new()
-	outer.add_theme_constant_override("separation", 10)
-	add_child(outer)
-	_frame.theme_type_variation = &"Well"
-	_frame.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-	_portrait.custom_minimum_size = Vector2(PORTRAIT, PORTRAIT)
-	_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	_frame.add_child(_portrait)
-	outer.add_child(_frame)
-	var box := VBoxContainer.new()
-	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	outer.add_child(box)
-	_title.add_theme_font_size_override("font_size", 20)
-	box.add_child(_title)
-	for pair: Array in [[_hp_label, _hp], [_morale_label, _morale]]:
-		var row := HBoxContainer.new()
-		var label: Label = pair[0]
-		var bar: ProgressBar = pair[1]
-		label.custom_minimum_size = Vector2(130, 0)
-		row.add_child(label)
-		bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		bar.show_percentage = false
-		bar.custom_minimum_size = Vector2(0, 14)
-		row.add_child(bar)
-		box.add_child(row)
-	_morale.modulate = Color(1.0, 0.85, 0.35)
-	box.add_child(_lines)
-	_tiles.add_theme_constant_override("h_separation", 4)
-	_tiles.add_theme_constant_override("v_separation", 4)
-	box.add_child(_tiles)
+@onready var _title: Label = %Title
+@onready var _lines: Label = %Lines
+@onready var _hp: ProgressBar = %Hp
+@onready var _morale: ProgressBar = %Morale
+@onready var _hp_label: Label = %HpLabel
+@onready var _morale_label: Label = %MoraleLabel
+@onready var _frame: PanelContainer = %Frame
+@onready var _portrait: TextureRect = %Portrait
+@onready var _tiles: HFlowContainer = %Tiles
 
 
 func attach(p_sim: Simulation, p_input: PlayerInput) -> void:

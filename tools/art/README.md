@@ -209,6 +209,11 @@ build_66, done, damaged_1, damaged_2, rubble. Normal maps are not rendered yet.
 - `tiles.py` — a seamless top-down texture per terrain (periodic FFT noise), cut into a 4×4
   atlas of isometric tiles in `art/tiles/<terrain>.png`; cell (x, y) uses tile (x % 4, y % 4).
   Tiles are 96×48: the 64×32 diamond plus a ragged fading rim that blends terrains.
+- `make_tileset.gd` — after new terrain art, writes the ground TileSet `art/tiles/ground.tres`
+  (one atlas source per terrain, terrain set 0) used by the game and the map editor
+  (`tools/maps/map_editor.tscn`): `godot --headless -s tools/art/make_tileset.gd`.
+- `make_frames.gd` — after rendering units, writes `art/sprites/units/<id>/frames.tres`, the
+  SpriteFrames the unit scene plays: `godot --headless -s tools/art/make_frames.gd [-- <id> ...]`.
 - `render.py o_bog_ore o_silver_mine o_salt_spring carcass` — map resources in variants (the salt
   spring, a brine pool in a salt crust with a log curb, is where the Crown builds its salt works)
   (`art/sprites/deposits/<id>_<v>_{color,shadow}.png`), picked per cell by `SpriteDB.deposit_at`.

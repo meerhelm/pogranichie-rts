@@ -83,7 +83,7 @@ func test_buildings_sort_by_depth_with_units() -> void:
 		if b.owners[i - 1] == 1 and b.blocks[i - 1] == 1:
 			id = i
 	var s := id - 1
-	var box: BoxView = _main.get_node("World/Units").get_node_or_null("Box_b%d" % id)
+	var box: BuildingView = _main.get_node("World/Units").get_node_or_null("Building_b%d" % id)
 	assert_not_null(box, "a standing building lives among the y-sorted units")
 	var a := Vector2(b.cell_x[s], b.cell_y[s])
 	var e := a + Vector2(b.w[s], b.h[s])

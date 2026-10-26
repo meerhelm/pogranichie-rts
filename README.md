@@ -69,6 +69,8 @@ $GODOT --headless -s tools/sim/sim_cli.gd -- determinism --runs 3 --ticks 3000 -
 $GODOT --headless -s tools/sim/sim_cli.gd -- bench --units 200 --ticks 600 --map map_proto_samogitia [--profile 1]
 $GODOT --headless -s tools/sim/sim_cli.gd -- bench --units 200 --ticks 1200 --map map_proto_samogitia --battle 1
 $GODOT -s tools/sim/frame_bench.gd -- --units 200 --seconds 30   # кадры настоящей сцены (в окне — реальный fps)
+$GODOT --headless -s tools/art/make_frames.gd     # SpriteFrames юнитов (art/sprites/units/<id>/frames.tres) после рендера
+$GODOT --headless -s tools/art/make_tileset.gd    # TileSet земли art/tiles/ground.tres после нового арта земли
 $GODOT --headless -s tools/sim/late_bench.gd -- --minutes 30 --speed 8   # поздняя игра ИИ против ИИ на 8x: fps, удержанная скорость, тики и отрисовка
 $GODOT --headless -s tools/sim/sim_cli.gd -- mission --out tests/replays/m9_gdl01_playthrough.json   # бот проходит ВКЛ 1
 $GODOT --headless -s tools/sim/sim_cli.gd -- mission --mission gdl_02 --out tests/replays/gdl02_playthrough.json   # бот проходит ВКЛ 2
@@ -320,6 +322,16 @@ godot --headless -s tools/sim/sim_cli.gd -- arena --seeds 50 --out arena.csv [--
 - `SwiecinoBot` (`tools/sim/swiecino_bot.gd`) проходит миссию за 18:52, повтор `tests/replays/crown06_playthrough.json`, тесты триггеров и правил в `tests/integration/test_mission_crown06.gd`. Отличия от карточки: `/mnt/project-files/crown06/otlichiya-ot-kartochki.md`.
 
 Тексты миссии по-английски прямо в `mission.json`; `tools/i18n/extract.py` собирает их в `.po`, переводы там же (с M10).
+
+## Отрисовка средствами Godot (2026-10-26, ветка art/godot-native)
+
+Симуляция, пути и детерминизм не менялись; поменялось только то, чем рисуется картинка.
+
+- Юниты: сцена `game/world/unit_view.tscn`, три `AnimatedSprite2D` (тень, тело, цвет команды) играют анимации `<действие>_<направление>` из `art/sprites/units/<id>/frames.tres` (пишет `tools/art/make_frames.gd`, без файла кадры режутся из листа на лету, `SpriteDB.build_frames`). Тень и маска команды берут тот же кадр из своего листа шейдером `game/world/sheet_pass.gdshader`. Полоски HP и кольцо выделения рисует узел `Overlay`.
+- Постройки: сцена `game/world/building_view.tscn` (заглушка-коробка, спрайт `sprite_stack.tscn` с тенью и цветом команды, огонь, полоска HP); плоские постройки и залежи лежат в слое `Ground` под юнитами. Узлы называются `Building_<ключ>`.
+- Огонь, туман и реликвии на `CPUParticles2D`: `fire_fx.tscn` (пламя растёт с уроном), `mist_fx.tscn`, `relic_fx.tscn` (`game/world/magic_layer.gd`).
+- Земля: `TileMapLayer` с TileSet `art/tiles/ground.tres` (источник на каждую местность из каталога, terrain set 0). Редактор карт `tools/maps/map_editor.tscn`: открыть сцену, вписать id карты, «Загрузить карту», рисовать кистью местности (панель TileMap, вкладка Terrains) или тайлами, объекты (руда, серебро, соль) на слое Objects, места силы — маркеры в Places; «Сохранить в terrain.txt», потом «Очистить» и сохранить сцену пустой. Карты схватки сверяются с генератором (`gen_skirmish --check`), их лучше править в `tools/maps/skirmish_canvas.py`.
+- Интерфейс сценами `.tscn`: `ui/hud.tscn`, `unit_card.tscn`, `main_menu.tscn`, `settings_panel.tscn`, `help_panel.tscn`, `about_panel.tscn`, `pause_menu.tscn`, `end_screen.tscn`, `mission_briefing.tscn`. Скрипты берут узлы по уникальным именам (`%Имя`) и только заполняют их; окно создаётся `ИмяОкна.create()`. Динамические кнопки (страны, миссии, сохранения, приказы) и миникарта по-прежнему строятся кодом. Окна появляются через `UiAnim.pop_in` (Tween).
 
 ## Локализация, производительность, полировка (M10)
 

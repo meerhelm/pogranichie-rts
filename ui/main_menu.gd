@@ -1,125 +1,81 @@
 extends Control
-## Main menu. The first page: campaign, single player, network play (not made yet), load a saved
-## game, how to play, about the game (version and what each build added), settings, quit. The
-## game's version stands under the title. Campaign leads to the choice of a country (GDL or the
-## Crown) and then to its missions, which open one after another as they are won
-## (CampaignProgress); single player is the skirmish against the Order AI. Esc steps back a page.
-## Coming back from a campaign mission, the menu opens on that campaign's missions. The first scene
-## the game opens.
+## Main menu (main_menu.tscn: the evening court from tools/art/menu_scene.py behind a shade, the
+## title and the pages). The first page: campaign, single player, network play (not made yet), load
+## a saved game, how to play, about the game (version and what each build added), settings, quit.
+## The game's version stands under the title. Campaign leads to the choice of a country (GDL or the
+## Crown) and then to its missions, which open one after another as they are won (CampaignProgress);
+## single player is the skirmish against the Order AI. Esc steps back a page. Coming back from a
+## campaign mission, the menu opens on that campaign's missions. The first scene the game opens.
 ## Typing CampaignProgress.CHEAT_CODE on any page opens (or closes back) every campaign mission.
 
 enum Page { MAIN, COUNTRIES, MISSIONS, SINGLE }
 
 const GAME_SCENE := "res://game/main.tscn"
-const BACKGROUND := preload("res://ui/art/menu_background.jpg")
+## Colour of the notes under countries, missions and maps.
+const NOTE_COLOR := Color(0.85, 0.72, 0.45)
 const BUTTON_SIZE := Vector2(340, 50)
 const MISSION_SIZE := Vector2(460, 46)
 
-var _title := Label.new()
-var _subtitle := Label.new()
-var _campaign_button := Button.new()
-var _single_button := Button.new()
-var _network := Button.new()
-var _load := Button.new()
-var _saves := VBoxContainer.new()
-var _settings_button := Button.new()
-var _help_button := Button.new()
-var _about_button := Button.new()
-var _quit := Button.new()
-var _version := Label.new()
-## A short line that says the cheat was turned on or off.
-var _cheat_note := Label.new()
 ## The last letters typed, for the cheat code.
 var _typed := ""
-## The pages; one shows at a time.
-var _menu := VBoxContainer.new()
-var _countries := VBoxContainer.new()
-var _missions := VBoxContainer.new()
-var _single := VBoxContainer.new()
-var _countries_head := Label.new()
 ## Per campaign (CampaignProgress.ORDER): its button and the line under it.
 var _country: Array[Button] = []
 var _country_note: Array[Label] = []
-var _missions_head := Label.new()
-var _missions_note := Label.new()
-var _mission_list := VBoxContainer.new()
 ## The shown campaign's mission buttons and their state lines, in mission order.
 var _campaign: Array[Button] = []
 var _mission_state: Array[Label] = []
-var _campaign_difficulty := OptionButton.new()
-var _single_head := Label.new()
-var _skirmish := Button.new()
-var _difficulty := OptionButton.new()
-var _my_faction := OptionButton.new()
-var _enemy_faction := OptionButton.new()
-## The skirmish map (SkirmishMaps) and its history note.
-var _map := OptionButton.new()
-var _map_note := Label.new()
 var _back: Array[Button] = []
-var _settings := SettingsPanel.new()
-var _help := HelpPanel.new()
-var _about := AboutPanel.new()
-var _panel: PanelContainer
 var _page := Page.MAIN
 ## The campaign the missions page shows.
 var _shown := "gdl"
 ## Set once _ready() has made every control; the locale can change before that.
 var _built := false
 
+@onready var _title: Label = %Title
+@onready var _subtitle: Label = %Subtitle
+@onready var _campaign_button: Button = %CampaignButton
+@onready var _single_button: Button = %SingleButton
+@onready var _network: Button = %Network
+@onready var _load: Button = %Load
+@onready var _saves: VBoxContainer = %Saves
+@onready var _settings_button: Button = %SettingsButton
+@onready var _help_button: Button = %HelpButton
+@onready var _about_button: Button = %AboutButton
+@onready var _quit: Button = %Quit
+@onready var _version: Label = %Version
+## A short line that says the cheat was turned on or off.
+@onready var _cheat_note: Label = %CheatNote
+## The pages; one shows at a time.
+@onready var _menu: VBoxContainer = %Menu
+@onready var _countries: VBoxContainer = %Countries
+@onready var _missions: VBoxContainer = %Missions
+@onready var _single: VBoxContainer = %Single
+@onready var _countries_head: Label = %CountriesHead
+@onready var _missions_head: Label = %MissionsHead
+@onready var _missions_note: Label = %MissionsNote
+@onready var _mission_list: VBoxContainer = %MissionList
+@onready var _campaign_difficulty: OptionButton = %CampaignDifficulty
+@onready var _single_head: Label = %SingleHead
+@onready var _skirmish: Button = %Skirmish
+@onready var _difficulty: OptionButton = %Difficulty
+@onready var _my_faction: OptionButton = %MyFaction
+@onready var _enemy_faction: OptionButton = %EnemyFaction
+## The skirmish map (SkirmishMaps) and its history note.
+@onready var _map: OptionButton = %Map
+@onready var _map_note: Label = %MapNote
+@onready var _settings: SettingsPanel = %Settings
+@onready var _help: HelpPanel = %Help
+@onready var _about: AboutPanel = %About
+@onready var _panel: PanelContainer = %Panel
+
 
 func _ready() -> void:
 	GameSettings.ensure_loaded()
-	set_anchors_preset(Control.PRESET_FULL_RECT)
-	_build_backdrop()
-	var margin := MarginContainer.new()
-	margin.set_anchors_and_offsets_preset(Control.PRESET_LEFT_WIDE)
-	margin.add_theme_constant_override("margin_left", 96)
-	add_child(margin)
-	var column := VBoxContainer.new()
-	column.alignment = BoxContainer.ALIGNMENT_CENTER
-	column.add_theme_constant_override("separation", 10)
-	margin.add_child(column)
-	_title.theme_type_variation = &"Title"
-	_title.add_theme_font_size_override("font_size", 84)
-	column.add_child(_title)
-	_subtitle.add_theme_font_size_override("font_size", 22)
-	_subtitle.add_theme_color_override("font_color", Color(0.93, 0.84, 0.66))
-	column.add_child(_subtitle)
-	_version.add_theme_font_size_override("font_size", 22)
-	_version.add_theme_color_override("font_color", Color(0.85, 0.72, 0.45))
-	column.add_child(_version)
-	var rule := ColorRect.new()
-	rule.color = Color(0.75, 0.6, 0.35, 0.8)
-	rule.custom_minimum_size = Vector2(380, 2)
-	rule.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	column.add_child(rule)
-	var gap := Control.new()
-	gap.custom_minimum_size = Vector2(0, 18)
-	column.add_child(gap)
-	var stack := VBoxContainer.new()
-	stack.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	column.add_child(stack)
-	var panel := PanelContainer.new()
-	stack.add_child(panel)
-	var pages := VBoxContainer.new()
-	panel.add_child(pages)
-	_panel = panel
-	for page: VBoxContainer in [_menu, _countries, _missions, _single]:
-		page.add_theme_constant_override("separation", 12)
-		pages.add_child(page)
 	_build_main()
 	_build_countries()
 	_build_missions()
 	_build_single()
-	_settings.visible = false
 	_settings.closed.connect(_show_settings.bind(false))
-	stack.add_child(_settings)
-	_cheat_note.add_theme_font_size_override("font_size", 22)
-	_cheat_note.add_theme_color_override("font_color", Color(0.95, 0.8, 0.45))
-	_cheat_note.visible = false
-	column.add_child(_cheat_note)
-	add_child(_help)
-	add_child(_about)
 	_built = true
 	var back_to := CampaignProgress.campaign_of(GameSettings.mission_id)
 	if back_to.is_empty():
@@ -130,21 +86,6 @@ func _ready() -> void:
 
 
 func _build_main() -> void:
-	for b: Button in [
-		_campaign_button,
-		_single_button,
-		_network,
-		_load,
-		_help_button,
-		_about_button,
-		_settings_button,
-		_quit
-	]:
-		b.custom_minimum_size = BUTTON_SIZE
-		_menu.add_child(b)
-	_menu.add_child(_saves)
-	_menu.move_child(_saves, _load.get_index() + 1)
-	_network.disabled = true
 	_campaign_button.pressed.connect(_show_page.bind(Page.COUNTRIES))
 	_single_button.pressed.connect(_show_page.bind(Page.SINGLE))
 	_load.pressed.connect(_list_saves)
@@ -155,8 +96,7 @@ func _build_main() -> void:
 
 
 func _build_countries() -> void:
-	_heading(_countries_head)
-	_countries.add_child(_countries_head)
+	var back: Button = %CountriesBack
 	for c: String in CampaignProgress.ORDER:
 		var b := Button.new()
 		b.custom_minimum_size = BUTTON_SIZE
@@ -164,36 +104,19 @@ func _build_countries() -> void:
 		_countries.add_child(b)
 		_country.append(b)
 		var note := Label.new()
-		note.add_theme_color_override("font_color", Color(0.85, 0.72, 0.45))
+		note.add_theme_color_override("font_color", NOTE_COLOR)
 		_countries.add_child(note)
 		_country_note.append(note)
-	_add_back(_countries, Page.MAIN)
+	_countries.move_child(back, -1)
+	_add_back(back, Page.MAIN)
 
 
 func _build_missions() -> void:
-	_heading(_missions_head)
-	_missions.add_child(_missions_head)
-	_missions_note.add_theme_color_override("font_color", Color(0.85, 0.72, 0.45))
-	_missions.add_child(_missions_note)
-	_mission_list.add_theme_constant_override("separation", 8)
-	_missions.add_child(_mission_list)
 	_fill_difficulty(_campaign_difficulty)
-	_campaign_difficulty.custom_minimum_size = BUTTON_SIZE
-	_missions.add_child(_campaign_difficulty)
-	_add_back(_missions, Page.COUNTRIES)
+	_add_back(%MissionsBack, Page.COUNTRIES)
 
 
 func _build_single() -> void:
-	_heading(_single_head)
-	_single.add_child(_single_head)
-	for b: Control in [_skirmish, _map, _my_faction, _enemy_faction, _difficulty]:
-		b.custom_minimum_size = BUTTON_SIZE
-		_single.add_child(b)
-	_map_note.add_theme_color_override("font_color", Color(0.85, 0.72, 0.45))
-	_map_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_map_note.custom_minimum_size = Vector2(MISSION_SIZE.x, 0)
-	_single.add_child(_map_note)
-	_single.move_child(_map_note, _map.get_index() + 1)
 	for m: Dictionary in SkirmishMaps.all():
 		_map.add_item(str(m["id"]))
 	_map.item_selected.connect(_on_map)
@@ -204,19 +127,11 @@ func _build_single() -> void:
 	_my_faction.item_selected.connect(_on_faction.bind(true))
 	_enemy_faction.item_selected.connect(_on_faction.bind(false))
 	_skirmish.pressed.connect(_on_skirmish)
-	_add_back(_single, Page.MAIN)
+	_add_back(%SingleBack, Page.MAIN)
 
 
-func _heading(label: Label) -> void:
-	label.add_theme_font_size_override("font_size", 28)
-	label.add_theme_color_override("font_color", Color(0.93, 0.84, 0.66))
-
-
-func _add_back(page: VBoxContainer, to: Page) -> void:
-	var b := Button.new()
-	b.custom_minimum_size = BUTTON_SIZE
+func _add_back(b: Button, to: Page) -> void:
 	b.pressed.connect(_show_page.bind(to))
-	page.add_child(b)
 	_back.append(b)
 
 
@@ -224,36 +139,6 @@ func _fill_difficulty(box: OptionButton) -> void:
 	for level in GameSettings.DIFFICULTIES:
 		box.add_item(String(level))
 	box.item_selected.connect(_on_difficulty)
-
-
-## The evening court (tools/art/menu_scene.py) behind a shade that darkens the menu side.
-func _build_backdrop() -> void:
-	var bg := ColorRect.new()
-	bg.color = Color(0.09, 0.08, 0.06)
-	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(bg)
-	var art := TextureRect.new()
-	art.texture = BACKGROUND
-	art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	art.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(art)
-	var gradient := Gradient.new()
-	gradient.set_color(0, Color(0.05, 0.035, 0.02, 0.88))
-	gradient.set_color(1, Color(0.05, 0.035, 0.02, 0.0))
-	gradient.add_point(0.35, Color(0.05, 0.035, 0.02, 0.6))
-	var shade_tex := GradientTexture2D.new()
-	shade_tex.gradient = gradient
-	shade_tex.width = 256
-	shade_tex.height = 4
-	shade_tex.fill_to = Vector2(1, 0)
-	var shade := TextureRect.new()
-	shade.texture = shade_tex
-	shade.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	shade.stretch_mode = TextureRect.STRETCH_SCALE
-	shade.set_anchors_and_offsets_preset(Control.PRESET_LEFT_WIDE)
-	shade.anchor_right = 0.62
-	add_child(shade)
 
 
 func _notification(what: int) -> void:

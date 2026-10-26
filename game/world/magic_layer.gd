@@ -1,23 +1,72 @@
 class_name MagicLayer
 extends Node2D
 ## Placeholder drawing of magic (M7): places of power as outlined sites in the holder's colour
-## (grey while free) with a bar while someone takes one, «Болотный туман» as a pale disc and
-## «Реликвия в строю» as a gold ring round its bearer. Only what the local player has explored
-## or sees; everything is read from the simulation and redrawn every tick.
+## (grey while free) with a bar while someone takes one, «Болотный туман» as drifting clouds over
+## a pale disc (mist_fx.tscn) and «Реликвия в строю» as a gold ring with rising sparks round its
+## bearer (relic_fx.tscn). Only what the local player has explored or sees; everything is read
+## from the simulation after every tick.
 
 const FREE_COLOR := Color(0.85, 0.85, 0.8)
-const MIST_COLOR := Color(0.78, 0.84, 0.82, 0.3)
+const MIST_COLOR := Color(0.78, 0.84, 0.82, 0.14)
 const RELIC_COLOR := Color(1.0, 0.85, 0.3, 0.8)
 ## Points on a drawn circle.
 const ROUND := 40
+const MIST_SCENE := preload("res://game/world/mist_fx.tscn")
+const RELIC_SCENE := preload("res://game/world/relic_fx.tscn")
+## Screen pixels per cell of radius along the ellipse's long axis (a cell's diagonal halved).
+const CELL_RADIUS := Iso.HALF_W * 1.41421356
+## Mist clouds per square cell of the spell's area (at least MIST_MIN).
+const MIST_DENSITY := 2.5
+const MIST_MIN := 12
 
 var sim: Simulation
 var local_player := 1
+## Particles of each running spell effect, by effect id.
+var _fx: Dictionary[int, CPUParticles2D] = {}
 
 
 func attach(p_sim: Simulation, clock: SimClock) -> void:
 	sim = p_sim
-	clock.advanced.connect(func(_t: int, _s: int) -> void: queue_redraw())
+	clock.advanced.connect(func(_t: int, _s: int) -> void: _on_ticked())
+
+
+func _on_ticked() -> void:
+	queue_redraw()
+	var live: Dictionary[int, bool] = {}
+	if sim.magic.enabled():
+		for i in sim.magic.fx_ids.size():
+			_effect_particles(i, live)
+	for id: int in _fx.keys():
+		if not live.has(id):
+			_fx[id].queue_free()
+			_fx.erase(id)
+
+
+## Keeps the particles of effect `i` where it is and shown only when the player may see it.
+func _effect_particles(i: int, live: Dictionary[int, bool]) -> void:
+	var magic := sim.magic
+	var spell := magic.spells[magic.fx_spell[i]]
+	var mist := spell.tags.has(&"mist")
+	if not mist and not spell.tags.has(&"relic"):
+		return
+	var id := magic.fx_ids[i]
+	live[id] = true
+	var r := float(magic.fx_radius[i])
+	var p: CPUParticles2D = _fx.get(id)
+	if p == null:
+		p = (MIST_SCENE if mist else RELIC_SCENE).instantiate()
+		p.emission_sphere_radius = r * CELL_RADIUS
+		if mist:
+			p.amount = maxi(MIST_MIN, roundi(PI * r * r * MIST_DENSITY))
+		_fx[id] = p
+		add_child(p)
+	p.position = Iso.fixed_to_screen(magic.fx_x[i], magic.fx_y[i])
+	if mist:
+		var cell := sim.nav.cell_of(magic.fx_x[i], magic.fx_y[i])
+		p.visible = sim.vision.state(local_player, cell) != VisionSystem.State.UNEXPLORED
+	else:
+		var bearer := magic.fx_caster[i]
+		p.visible = bearer != 0 and sim.vision.sees_unit(local_player, bearer)
 
 
 func _draw() -> void:

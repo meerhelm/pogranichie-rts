@@ -61,7 +61,7 @@ func _process(_delta: float) -> bool:
 
 
 func _spawn(sim: Simulation) -> void:
-	var home: Vector2i = SkirmishSetup.BASES[0][2] + Vector2i(2, 4)
+	var home := SkirmishMaps.base(SkirmishSetup.MAP_ID, 0) + Vector2i(2, 4)
 	for side in 2:
 		var kinds: Array = ARMIES[side]
 		var x0 := home.x - 14 if side == 0 else home.x + 6

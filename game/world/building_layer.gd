@@ -1,21 +1,23 @@
 class_name BuildingLayer
 extends Node2D
-## Placeholder drawing of the economy (M5): buildings as raised diamonds over their cells in
-## the owner's colour (foundations see-through, filled as they rise), HP bars, map deposits,
-## carcasses of hunted animals, and the ghost of a building being placed (green where it may
-## stand, red where not). Redrawn every tick; everything is read from the simulation.
+## The economy on the map (M5): buildings (placeholders as raised diamonds over their cells in
+## the owner's colour, foundations see-through, filled as they rise), HP bars, map deposits,
+## carcasses of hunted animals, salvage heaps, and the ghost of a building being placed (green
+## where it may stand, red where not). Everything is read from the simulation after each tick;
+## each building and deposit is a BuildingView node (building_view.tscn) that redraws only when
+## it changes.
 ## Fog of war (M6): others' buildings appear once the local player has seen them and stay as
 ## last seen; deposits and carcasses only on explored ground.
-## Tall things (buildings and deposits that block their cells) are BoxViews in `depth_layer`,
-## the y-sorted unit layer, so units and buildings hide each other by depth. Flat ones (farms,
-## open deposits, ghosts) stay on this ground layer under the units. Without a depth layer
-## everything is drawn here.
+## Tall things (buildings and deposits that block their cells) are BuildingViews in
+## `depth_layer`, the y-sorted unit layer, so units and buildings hide each other by depth. Flat
+## ones (farms, open deposits) are BuildingViews on this ground layer under the units; salvage
+## heaps and ghosts are drawn here. Without a depth layer tall things are drawn here too.
 ## Fire (M9): a burning building has flickering flames on top, more as its HP falls.
 ## Buildings with rendered art (SpriteDB) show their sprite instead of the box, in stages:
 ## foundation, rising walls, finished, damaged twice as HP falls; a finished building that is
 ## gone leaves ruins for RUBBLE_TICKS. Palisade cells grow arms toward their neighbours in
 ## the line (towers and gates included), gates turn along it, a zaseka placed along y uses its
-## turned view (`<id>_v`). Flat buildings (farms, hives) draw their art on the ground layer.
+## turned view (`<id>_v`). Flat buildings (farms, hives) show their art on the ground layer.
 
 const DEPOSIT_COLORS := {
 	ResourceNodes.Source.IRON: Color(0.35, 0.22, 0.16),
@@ -36,6 +38,7 @@ const FLAME_COLORS: Array[Color] = [Color(1.0, 0.55, 0.1, 0.85), Color(1.0, 0.85
 ## Buildings that make up lines and join their neighbours: palisades and walls reach out to
 ## gates and towers next to them, whoever's they are.
 const LINE_BASES: Array[StringName] = [&"palisade", &"gate", &"wall", &"tower"]
+const VIEW_SCENE := preload("res://game/world/building_view.tscn")
 
 var sim: Simulation
 ## The building the local player has selected (BuildingStore id), outlined.
@@ -50,7 +53,7 @@ var looked := BuildingStore.NO_ID:
 		looked = value
 		_refresh()
 var look_cells := Rect2i()
-## Where tall objects go as BoxViews (the UnitLayer); null draws them on this layer.
+## Where tall objects go as BuildingViews (the UnitLayer); null draws them on this layer.
 var depth_layer: Node2D
 ## Ghost cells (top-left, size) and whether it may stand there; size 0 means no ghost.
 var ghost := Rect2i()
@@ -62,16 +65,22 @@ var ghost_line_ok: Array[bool] = []
 var local_player := 1
 ## Others' buildings the local player has seen (they stay drawn in the fog).
 var _known: Dictionary[int, bool] = {}
-## Tall objects in the depth layer: "b<id>" for buildings, "n<id>" for deposits.
-var _boxes: Dictionary[StringName, BoxView] = {}
+## Views of buildings ("b<id>") and deposits ("n<id>"), tall ones in the depth layer, flat
+## ones in _ground.
+var _boxes: Dictionary[StringName, BuildingView] = {}
 ## Tall objects to draw here when there is no depth layer, gathered by _refresh().
 var _inline: Array[Dictionary] = []
+var _ground := Node2D.new()
 var _ghosts := Node2D.new()
 ## Ruins of destroyed buildings and the tick they disappear at.
-var _rubble: Dictionary[BoxView, int] = {}
+var _rubble: Dictionary[BuildingView, int] = {}
+## The salvage heaps last drawn (node id -> cell), to redraw the layer only when they change.
+var _salvage: Dictionary[int, int] = {}
 
 
 func _ready() -> void:
+	_ground.name = "Ground"  # notr
+	add_child(_ground)
 	_ghosts.z_index = 1
 	_ghosts.draw.connect(_draw_ghosts)
 	add_child(_ghosts)
@@ -84,48 +93,61 @@ func attach(p_sim: Simulation, clock: SimClock) -> void:
 
 
 func _exit_tree() -> void:
-	for box: BoxView in _boxes.values():
+	for box: BuildingView in _boxes.values():
 		if is_instance_valid(box):
 			box.queue_free()
 	_boxes.clear()
-	for box: BoxView in _rubble.keys():
+	for box: BuildingView in _rubble.keys():
 		if is_instance_valid(box):
 			box.queue_free()
 	_rubble.clear()
 
 
-## Brings the tall objects up to date with the simulation and redraws the ground.
+## Brings the views up to date with the simulation.
 func _refresh() -> void:
-	queue_redraw()
 	_ghosts.queue_redraw()
 	if sim == null:
 		return
+	if not _inline.is_empty():
+		queue_redraw()
 	_inline.clear()
 	var live: Dictionary[StringName, bool] = {}
 	var eco := sim.economy
+	var salvage: Dictionary[int, int] = {}
 	for n in eco.nodes.alive_ids:
 		var cell := eco.nodes.cells[n - 1]
-		if eco.nodes.blocks[n - 1] != 1:
-			continue
 		if sim.vision.state(local_player, cell) == VisionSystem.State.UNEXPLORED:
 			continue
-		var c: Color = DEPOSIT_COLORS.get(eco.nodes.sources[n - 1], Color.GRAY)
+		var source := eco.nodes.sources[n - 1]
+		if ResourceNodes.is_salvage(source):
+			salvage[n] = cell
+			continue
+		var c: Color = DEPOSIT_COLORS.get(source, Color.GRAY)
 		var at := Vector2(cell % sim.nav.width, cell / sim.nav.width)
-		var rect := Rect2(at + Vector2(0.15, 0.15), Vector2(0.7, 0.7))
 		var nkey := StringName("n%d" % n)
-		_tall(nkey, live, rect, c, 6.0, false, -1.0, -1.0)
-		if _boxes.has(nkey):
-			_boxes[nkey].set_sprite(_deposit_art(eco.nodes.sources[n - 1], cell), Color.WHITE)
+		if eco.nodes.blocks[n - 1] == 1:
+			var rect := Rect2(at + Vector2(0.15, 0.15), Vector2(0.7, 0.7))
+			_view(nkey, live, rect, c, 6.0, false, -1.0, -1.0, false)
+			if _boxes.has(nkey):
+				_boxes[nkey].set_sprite(_deposit_art(source, cell), Color.WHITE)
+		else:
+			var spot := Rect2(at + Vector2(0.4, 0.4), Vector2(0.2, 0.2))
+			_view(nkey, live, spot, c, 0.0, false, -1.0, -1.0, true)
+			_boxes[nkey].set_sprite(SpriteDB.deposit_at(source, cell), Color.WHITE)
+	if salvage != _salvage:
+		_salvage = salvage
+		queue_redraw()
 	var b := eco.buildings
 	for id in b.alive_ids:
 		var s := id - 1
-		if b.blocks[s] == 0:
-			continue
 		if not _shown(id):
 			continue
+		var flat := b.blocks[s] == 0
 		var rect := Rect2(b.cell_x[s], b.cell_y[s], b.w[s], b.h[s])
 		var c := _building_color(s)
 		var height := HEIGHT_PER_CELL * mini(b.w[s], b.h[s])
+		if flat:
+			height = 2.0
 		if not _standing(s):
 			height *= _progress(s)
 		var hp := float(b.hp[s]) / maxf(b.max_hp[s], 1.0)
@@ -133,7 +155,7 @@ func _refresh() -> void:
 			hp = -1.0
 		var fire := _fire(id)
 		var key := StringName("b%d" % id)
-		_tall(key, live, rect, c, height, id == selected, hp, fire)
+		_view(key, live, rect, c, height, id == selected, hp, fire, flat)
 		if _boxes.has(key):
 			var stage := SpriteDB.building_stage(
 				_standing(s), _progress(s), float(b.hp[s]) / maxf(b.max_hp[s], 1.0)
@@ -157,18 +179,18 @@ func _refresh() -> void:
 				continue
 			# A finished building that is gone leaves its ruins for a while.
 			box.set_sprite(rubble, box.tint)
-			box.outlined = false
-			box.hp = -1.0
+			box.clear_marks()
 			box.set_fire(-1.0, sim.tick)
-			box.queue_redraw()
 			_rubble[box] = sim.tick + RUBBLE_TICKS
-	for box: BoxView in _rubble.keys():
+	for box: BuildingView in _rubble.keys():
 		if sim.tick >= _rubble[box]:
 			_rubble.erase(box)
 			box.queue_free()
 
 
-func _tall(
+## Updates (or makes) the view under `key`: tall ones in the depth layer, flat ones on the
+## ground; tall ones are drawn on this layer instead when there is no depth layer.
+func _view(
 	key: StringName,
 	live: Dictionary[StringName, bool],
 	rect: Rect2,
@@ -176,20 +198,23 @@ func _tall(
 	height: float,
 	outlined: bool,
 	hp: float,
-	fire: float
+	fire: float,
+	flat: bool
 ) -> void:
-	if depth_layer == null:
+	if depth_layer == null and not flat:
 		_inline.append(
 			{rect = rect, color = c, height = height, outlined = outlined, hp = hp, fire = fire}
 		)
+		queue_redraw()
 		return
 	live[key] = true
-	var box: BoxView = _boxes.get(key)
+	var box: BuildingView = _boxes.get(key)
 	if box == null:
-		box = BoxView.new()
-		box.name = "Box_%s" % key
+		box = VIEW_SCENE.instantiate()
+		box.name = "Building_%s" % key
+		box.flat = flat
 		_boxes[key] = box
-		depth_layer.add_child(box)
+		(_ground if flat else depth_layer).add_child(box)
 	box.set_box(rect, c, height, outlined, hp)
 	box.set_fire(fire, sim.tick)
 
@@ -305,58 +330,15 @@ func _building_color(s: int) -> Color:
 	return c
 
 
+## Salvage heaps, and the tall objects when there is no depth layer.
 func _draw() -> void:
 	if sim == null:
 		return
-	var eco := sim.economy
-	for n in eco.nodes.alive_ids:
-		var cell := eco.nodes.cells[n - 1]
-		if eco.nodes.blocks[n - 1] == 1:
-			continue
-		if sim.vision.state(local_player, cell) == VisionSystem.State.UNEXPLORED:
-			continue
-		var c: Color = DEPOSIT_COLORS.get(eco.nodes.sources[n - 1], Color.GRAY)
+	for n: int in _salvage:
+		var cell := _salvage[n]
 		var at := Vector2(cell % sim.nav.width, cell / sim.nav.width)
 		var spot := Iso.cell_to_screen(at + Vector2(0.5, 0.5))
-		var art := SpriteDB.deposit_at(eco.nodes.sources[n - 1], cell)
-		if ResourceNodes.is_salvage(eco.nodes.sources[n - 1]):
-			draw_salvage(self, spot, eco.nodes.sources[n - 1], cell)
-		elif art != null:
-			draw_set_transform(spot)
-			art.draw(self, Rect2(Vector2.ZERO, art.frame), Color.WHITE)
-			draw_set_transform(Vector2.ZERO)
-		else:
-			draw_circle(spot, 4.0, c)
-	var b := eco.buildings
-	for id in b.alive_ids:
-		var s := id - 1
-		if b.blocks[s] != 0 or not _shown(id):
-			continue
-		var rect := Rect2(b.cell_x[s], b.cell_y[s], b.w[s], b.h[s])
-		var height := 2.0 * (_progress(s) if not _standing(s) else 1.0)
-		var art := SpriteDB.building(
-			_art_id(s),
-			SpriteDB.building_stage(
-				_standing(s), _progress(s), float(b.hp[s]) / maxf(b.max_hp[s], 1.0)
-			)
-		)
-		if art != null:
-			var tint := UnitView.PLAYER_COLORS[b.owners[s] % UnitView.PLAYER_COLORS.size()]
-			draw_set_transform(Iso.cell_to_screen(rect.get_center()))
-			art.draw(self, Rect2(Vector2.ZERO, art.frame), tint)
-			draw_set_transform(Vector2.ZERO)
-			height = 16.0
-		else:
-			draw_box(self, rect, _building_color(s), height)
-		if id == selected:
-			draw_outline(self, rect, Color(0.4, 1.0, 0.4))
-		var hp := float(b.hp[s]) / maxf(b.max_hp[s], 1.0)
-		var fire := _fire(id)
-		if fire >= 0.0:
-			draw_flames(self, rect, height, fire, sim.tick)
-		if hp >= 1.0 and id != selected:
-			hp = -1.0
-		_draw_hp(rect, height, hp)
+		draw_salvage(self, spot, sim.economy.nodes.sources[n - 1], cell)
 	for t in _inline:
 		var rect: Rect2 = t.rect
 		var height: float = t.height

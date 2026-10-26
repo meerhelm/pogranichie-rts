@@ -7,44 +7,23 @@ extends Control
 
 signal closed
 
-var _title := Label.new()
-var _text := RichTextLabel.new()
-var _close := Button.new()
+const SCENE := "res://ui/help_panel.tscn"
+
 ## Whether opening paused the tree (so closing resumes it).
 var _paused_it := false
 
+@onready var _title: Label = %Title
+@onready var _text: RichTextLabel = %Text
+@onready var _close: Button = %Close
+
+
+## A new window (the scene, laid out in help_panel.tscn).
+static func create() -> HelpPanel:
+	return (load(SCENE) as PackedScene).instantiate()
+
 
 func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_ALWAYS
-	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	mouse_filter = Control.MOUSE_FILTER_STOP
-	var shade := ColorRect.new()
-	shade.color = Color(0, 0, 0, 0.6)
-	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(shade)
-	var center := CenterContainer.new()
-	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(center)
-	var panel := PanelContainer.new()
-	center.add_child(panel)
-	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 12)
-	panel.add_child(box)
-	_title.theme_type_variation = &"Title"
-	_title.add_theme_font_size_override("font_size", 32)
-	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	box.add_child(_title)
-	_text.bbcode_enabled = true
-	_text.fit_content = false
-	_text.scroll_active = true
-	_text.custom_minimum_size = Vector2(1100, 760)
-	_text.focus_mode = Control.FOCUS_NONE
-	box.add_child(_text)
-	_close.custom_minimum_size = Vector2(300, 44)
-	_close.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	_close.pressed.connect(close)
-	box.add_child(_close)
-	visible = false
 	_retranslate()
 
 
@@ -67,6 +46,7 @@ func open(pause_game: bool = false) -> void:
 	_retranslate()
 	_text.scroll_to_line(0)
 	visible = true
+	UiAnim.pop_in(self, %Panel)
 	_paused_it = pause_game and not get_tree().paused
 	if _paused_it:
 		get_tree().paused = true

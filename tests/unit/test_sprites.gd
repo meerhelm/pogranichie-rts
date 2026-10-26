@@ -17,7 +17,7 @@ func test_unit_sheet_loads() -> void:
 
 func test_missing_art_keeps_placeholder() -> void:
 	assert_null(SpriteDB.unit(&"to_knight_brother_no_such_art"))
-	var v := UnitView.new()
+	var v: UnitView = UnitLayer.VIEW_SCENE.instantiate()
 	v.type_id = &"no_such_unit"
 	add_child_autofree(v)
 	assert_null(v.sprite)
@@ -25,7 +25,7 @@ func test_missing_art_keeps_placeholder() -> void:
 
 
 func test_walker_stands_after_still_ticks() -> void:
-	var v := UnitView.new()
+	var v: UnitView = UnitLayer.VIEW_SCENE.instantiate()
 	v.type_id = &"gdl_spearman"
 	add_child_autofree(v)
 	assert_not_null(v.sprite)
@@ -72,5 +72,71 @@ func test_terrain_tiles_repeat_every_period() -> void:
 	var grid := NavGrid.new(n, n)
 	layer.build(grid)
 	assert_eq(layer.get_cell_atlas_coords(Vector2i(n - 1, 2)), Vector2i(1, 2))
-	assert_eq(layer.get_cell_source_id(Vector2i(n - 1, 2)), grid.terrain[grid.cell_at(n - 1, 2)])
+	var source := layer.tile_set.get_source(layer.get_cell_source_id(Vector2i(n - 1, 2)))
+	assert_eq(source.resource_name, String(grid.terrain_at(grid.cell_at(n - 1, 2))))
 	layer.free()
+
+
+func test_saved_frames_match_the_sheets() -> void:
+	# tools/art/make_frames.gd writes frames.tres; a re-rendered sheet needs them written again.
+	var root := "res://art/sprites/units"
+	for id in DirAccess.get_directories_at(root):
+		var path := root.path_join(id).path_join("frames.tres")
+		assert_true(ResourceLoader.exists(path), "%s has frames.tres" % id)
+		if not ResourceLoader.exists(path):
+			continue
+		var s := SpriteDB.unit(StringName(id))
+		var f: SpriteFrames = load(path)
+		for anim: String in s.anims:
+			var a: Dictionary = s.anims[anim]
+			for dir in SpriteDB.FACINGS:
+				var name := SpriteDB.anim_name(anim, dir)
+				assert_true(f.has_animation(name), "%s %s" % [id, name])
+				if not f.has_animation(name):
+					continue
+				assert_eq(f.get_frame_count(name), int(a["frames"]), "%s %s" % [id, name])
+				assert_eq(f.get_animation_speed(name), float(a["fps"]))
+				var last: AtlasTexture = f.get_frame_texture(name, int(a["frames"]) - 1)
+				assert_eq(
+					last.region, s.source(int(a["row"]) + dir, int(a["frames"]) - 1), "%s" % name
+				)
+
+
+func test_unit_view_plays_the_action_toward_its_facing() -> void:
+	var v: UnitView = UnitLayer.VIEW_SCENE.instantiate()
+	v.type_id = &"gdl_peasant"
+	v.player = 3
+	add_child_autofree(v)
+	var body: AnimatedSprite2D = v.get_node("Body")
+	var team: AnimatedSprite2D = v.get_node("Team")
+	assert_eq(body.animation, &"idle_2", "stands facing south")
+	assert_true(body.is_playing())
+	assert_eq(team.self_modulate, UnitView.PLAYER_COLORS[3], "mask in the owner's colour")
+	v.set_moving(true)
+	v.facing = 0
+	assert_eq(body.animation, &"walk_0")
+	assert_eq(team.animation, &"walk_0", "passes follow the body")
+	v.set_working(true)
+	for i in UnitView.STILL_TICKS:
+		v.set_moving(false)
+	assert_eq(body.animation, &"work_0")
+	v.strike()
+	assert_eq(body.animation, &"attack_0")
+	assert_false(body.sprite_frames.get_animation_loop(&"attack_0"), "a blow plays once")
+
+
+func test_a_burning_building_shows_fire_particles() -> void:
+	var v: BuildingView = BuildingLayer.VIEW_SCENE.instantiate()
+	add_child_autofree(v)
+	v.set_box(Rect2(2, 2, 2, 2), Color.WHITE, 20.0, false, -1.0)
+	var fire: FireFx = v.get_node("Fire")
+	assert_false(fire.burning(), "no fire at first")
+	v.set_fire(0.8, 1)
+	assert_true(fire.burning())
+	var flames: CPUParticles2D = fire.get_node("Flames")
+	assert_eq(flames.emission_points.size(), 9, "two points per cell and one more")
+	var small := flames.scale_amount_max
+	v.set_fire(0.1, 2)
+	assert_gt(flames.scale_amount_max, small, "flames grow as it burns down")
+	v.set_fire(-1.0, 3)
+	assert_false(fire.burning(), "put out")

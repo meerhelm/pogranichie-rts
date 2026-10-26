@@ -148,7 +148,7 @@ func test_click_on_a_figure_picks_it_over_the_nearest_feet() -> void:
 
 
 func test_the_whole_drawn_figure_picks_a_unit() -> void:
-	var view := UnitView.new()
+	var view: UnitView = UnitLayer.VIEW_SCENE.instantiate()
 	view.type_id = &"gdl_spearman"
 	add_child_autofree(view)
 	var top := float(view.sprite.meta["bar_y"])

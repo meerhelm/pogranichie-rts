@@ -5,9 +5,10 @@ extends Node2D
 ## and a ring when selected. Above it, from M4: an HP bar once hurt or selected, a yellow mark
 ## while wavering and a white flag while fleeing. Position is set by UnitLayer, interpolated
 ## between ticks; UnitLayer also feeds the combat state with show_state().
-## Types with rendered art (SpriteDB) draw their sprite sheet instead of the body: idle, walk,
-## work (peasants at their job) or attack (once per blow or shot) in the facing direction, the
-## team mask tinted with the owner's colour.
+## Types with rendered art (SpriteDB) show their sheet instead of the body, as AnimatedSprite2D
+## nodes of unit_view.tscn playing the type's SpriteFrames: idle, walk, work (peasants at their
+## job) or attack (once per blow or shot) in the facing direction, with the ground shadow under
+## and the team mask, tinted with the owner's colour, over it.
 
 enum Mood { STEADY, WAVERING, FLEEING }
 
@@ -38,13 +39,13 @@ var selected := false:
 	set(value):
 		if selected != value:
 			selected = value
-			queue_redraw()
+			_redraw()
 ## Looked at by the player (another side's or a wild unit shown in the card): an amber ring.
 var looked := false:
 	set(value):
 		if looked != value:
 			looked = value
-			queue_redraw()
+			_redraw()
 var hp_permille := 1000
 var mood := Mood.STEADY
 ## A hidden forest archer, drawn see-through for its owner.
@@ -60,39 +61,53 @@ var facing := 2:
 	set(value):
 		if facing != value:
 			facing = value
+			_play()
 			queue_redraw()
 
-var _anim_time := 0.0
 var _still_ticks := 0
-var _anim_frame := -1
-## Seconds into the attack animation, which plays once per blow; -1 when none plays.
-var _strike_time := -1.0
+## The attack animation plays once per blow; true while it does.
+var _striking := false
+
+## The sheet's three passes as AnimatedSprite2D (unit_view.tscn): shadow under the colour
+## frames, team mask over them. Body plays; the other two show its frame.
+@onready var _shadow: AnimatedSprite2D = $Shadow
+@onready var _body: AnimatedSprite2D = $Body
+@onready var _team: AnimatedSprite2D = $Team
+## HP bar and mood marks, over the sprite.
+@onready var _overlay: Node2D = $Overlay
 
 
 func _ready() -> void:
 	sprite = SpriteDB.unit(type_id)
-	set_process(sprite != null)
-
-
-func _process(delta: float) -> void:
-	_anim_time += delta
-	if _strike_time >= 0.0:
-		_strike_time += delta
-		var a: Dictionary = sprite.anims["attack"]
-		if _strike_time * float(a["fps"]) >= float(a["frames"]):
-			_strike_time = -1.0
-			_anim_time = 0.0
-	var frame := _frame()
-	if frame != _anim_frame:
-		_anim_frame = frame
-		queue_redraw()
+	set_process(false)
+	_overlay.draw.connect(_draw_state)
+	if sprite == null:
+		for pass_sprite: AnimatedSprite2D in [_shadow, _body, _team]:
+			pass_sprite.visible = false
+		return
+	# Pixel art (drawn 1:1) stays crisp when the camera zooms; rendered art is smoothed.
+	if sprite.scale >= 1.0:
+		texture_filter = TEXTURE_FILTER_NEAREST
+	var frames := SpriteDB.unit_frames(type_id)
+	for pass_sprite: AnimatedSprite2D in [_shadow, _body, _team]:
+		pass_sprite.sprite_frames = frames
+		pass_sprite.offset = -sprite.pivot
+		pass_sprite.scale = Vector2(sprite.scale, sprite.scale)
+	_shadow.material = SpriteDB.pass_material(sprite, &"shadow")
+	_shadow.self_modulate = Color(1, 1, 1, SpriteDB.SHADOW_ALPHA)
+	_team.material = SpriteDB.pass_material(sprite, &"team")
+	_team.visible = _team.material != null
+	_team.self_modulate = PLAYER_COLORS[player % PLAYER_COLORS.size()]
+	_body.frame_changed.connect(_sync_passes)
+	_body.animation_finished.connect(_on_animation_finished)
+	_play(true)
 
 
 ## Walking wins (a rider throwing on the move keeps riding), then a blow, then work.
 func _anim_name() -> String:
 	if moving:
 		return "walk"  # notr
-	if _strike_time >= 0.0:
+	if _striking:
 		return "attack"  # notr
 	if working and sprite.anims.has("work"):
 		return "work"  # notr
@@ -106,11 +121,37 @@ func _anim() -> Dictionary:
 	return a
 
 
-func _frame() -> int:
-	var a := _anim()
-	if _anim_name() == "attack":
-		return mini(int(_strike_time * float(a["fps"])), int(a["frames"]) - 1)
-	return int(_anim_time * float(a["fps"])) % int(a["frames"])
+## Starts the animation for the current action and facing. A turn keeps the frame it was at,
+## so a walker does not stumble; a new action (or `restart`) starts from the first frame.
+func _play(restart := false) -> void:
+	if sprite == null or not is_node_ready():
+		return
+	var anim := _anim_name()
+	if not sprite.anims.has(anim):
+		anim = sprite.anims.keys()[0]
+	var name := SpriteDB.anim_name(anim, facing)
+	if name == _body.animation and not restart:
+		return
+	var same_action := String(_body.animation).begins_with(anim + "_")
+	var frame := _body.frame
+	var progress := _body.frame_progress
+	_body.play(name)
+	if same_action and not restart:
+		_body.set_frame_and_progress(frame, progress)
+	for pass_sprite: AnimatedSprite2D in [_shadow, _team]:
+		pass_sprite.animation = name
+	_sync_passes()
+
+
+func _sync_passes() -> void:
+	_shadow.frame = _body.frame
+	_team.frame = _body.frame
+
+
+func _on_animation_finished() -> void:
+	if _striking:
+		_striking = false
+		_play(true)
 
 
 ## Whether `local` (pixels from the anchor) is in the rectangle around the figure as drawn
@@ -119,7 +160,14 @@ func covers(local: Vector2) -> bool:
 	if sprite == null:
 		return local.distance_to(Vector2(0, -RADIUS)) <= RADIUS + PICK_SLACK
 	var a := _anim()
-	return sprite.covers(int(a["row"]) + facing, maxi(_anim_frame, 0), local, PICK_SLACK)
+	return sprite.covers(int(a["row"]) + facing, _body.frame, local, PICK_SLACK)
+
+
+## Redraws the ring under the sprite and the bar and marks over it.
+func _redraw() -> void:
+	queue_redraw()
+	if is_node_ready():
+		_overlay.queue_redraw()
 
 
 func _draw() -> void:
@@ -135,9 +183,6 @@ func _draw() -> void:
 		draw_arc(Vector2.ZERO, ring, 0.0, TAU, 32, c, 2.0)
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 	if sprite != null:
-		var a := _anim()
-		sprite.draw(self, sprite.source(int(a["row"]) + facing, maxi(_anim_frame, 0)), body)
-		_draw_state()
 		return
 	var center := Vector2(0, -RADIUS)
 	match move_class:
@@ -157,24 +202,25 @@ func _draw() -> void:
 			draw_arc(center, RADIUS, 0.0, TAU, 24, Color.BLACK, 1.0)
 	var dir := Vector2.from_angle(facing * PI / 4.0)
 	draw_line(center, center + dir * (RADIUS + 4.0), Color.BLACK, 2.0)
-	_draw_state()
 
 
+## On the overlay node, so it is drawn over the sprite.
 func _draw_state() -> void:
+	var o := _overlay
 	var top := Vector2(-BAR_WIDTH / 2.0, -RADIUS * 2.0 - 8.0)
 	if sprite != null:
 		top.y = -float(sprite.meta.get("bar_y", SPRITE_BAR_Y))
 	if selected or looked or hp_permille < 1000:
-		draw_rect(Rect2(top, Vector2(BAR_WIDTH, 3.0)), Color(0.15, 0.05, 0.05))
+		o.draw_rect(Rect2(top, Vector2(BAR_WIDTH, 3.0)), Color(0.15, 0.05, 0.05))
 		var w := BAR_WIDTH * hp_permille / 1000.0
 		var c := Color(0.3, 0.85, 0.3) if hp_permille > 400 else Color(0.9, 0.3, 0.2)
-		draw_rect(Rect2(top, Vector2(w, 3.0)), c)
+		o.draw_rect(Rect2(top, Vector2(w, 3.0)), c)
 	var mark := top + Vector2(BAR_WIDTH / 2.0, -4.0)
 	if mood == Mood.WAVERING:
-		draw_circle(mark, 2.5, Color(1.0, 0.85, 0.2))
+		o.draw_circle(mark, 2.5, Color(1.0, 0.85, 0.2))
 	elif mood == Mood.FLEEING:
-		draw_line(mark, mark + Vector2(0, -9), Color.BLACK, 1.0)
-		draw_rect(Rect2(mark + Vector2(0, -9), Vector2(6, 4)), Color.WHITE)
+		o.draw_line(mark, mark + Vector2(0, -9), Color.BLACK, 1.0)
+		o.draw_rect(Rect2(mark + Vector2(0, -9), Vector2(6, 4)), Color.WHITE)
 
 
 ## Combat state for drawing; redraws only when something visible changed.
@@ -191,7 +237,7 @@ func show_state(p_hp_permille: int, p_mood: Mood, p_hidden: bool, p_move_class: 
 	stealthed = p_hidden
 	move_class = p_move_class
 	modulate.a = 0.45 if stealthed else 1.0
-	queue_redraw()
+	_redraw()
 
 
 ## Called every tick with whether the unit moved; it stands only after a few still ticks, so
@@ -202,8 +248,9 @@ func set_moving(value: bool) -> void:
 	if walking == moving:
 		return
 	moving = walking
-	_anim_time = 0.0
-	queue_redraw()
+	if moving:
+		_striking = false
+	_play(true)
 
 
 ## Faces the direction of a move in grid units.
@@ -220,13 +267,13 @@ func face(dx: int, dy: int) -> void:
 func strike() -> void:
 	if sprite == null or not sprite.anims.has("attack"):
 		return
-	_strike_time = 0.0
-	queue_redraw()
+	_striking = true
+	# A rider throwing on the move keeps his stride.
+	_play(not moving)
 
 
 func set_working(value: bool) -> void:
 	if working == value:
 		return
 	working = value
-	_anim_time = 0.0
-	queue_redraw()
+	_play(true)

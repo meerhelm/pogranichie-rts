@@ -1,17 +1,14 @@
 class_name Hud
 extends Control
-## The in-game interface (M6): a top bar with resources, Power, population, age and game time;
-## at the bottom the minimap, the card of what is selected and the order buttons; a line with
-## what is being placed and why it cannot stand; and the game menu. P pauses without the menu,
-## Esc (with nothing to cancel) or F10 opens it. Lets clicks through to the map wherever it
-## draws nothing. The top bar shows each value as an icon and a number (names in the tooltips).
-## In a skirmish the Advisor gives a new player step-by-step hints; F1 opens the
-## «How to play» page (HelpPanel), which the game menu opens too.
-## A button by the menu sets the game speed: 1x, 2x, 4x, 8x (click or + goes up, right click
-## or - goes down).
+## The in-game interface (M6, laid out in hud.tscn): a top bar with resources, Power, population,
+## age and game time; at the bottom the minimap, the card of what is selected and the order buttons;
+## a line with what is being placed and why it cannot stand; and the game menu. P pauses without the
+## menu, Esc (with nothing to cancel) or F10 opens it. Lets clicks through to the map wherever it
+## draws nothing. The top bar shows each value as an icon and a number (names in the tooltips). In a
+## skirmish the Advisor gives a new player step-by-step hints; F1 opens the «How to play» page
+## (HelpPanel), which the game menu opens too. A button by the menu sets the game speed: 1x, 2x, 4x,
+## 8x (click or + goes up, right click or - goes down).
 
-const ICONS: Array[String] = ["food", "wood", "iron", "silver"]
-const ICON_SIZE := 30
 ## Game speeds the speed button steps through, as multipliers.
 const SPEEDS: Array[int] = [1, 2, 4, 8]
 ## How many times faster than the sim's own 20 ticks a second «1x» runs (Valentin 2026-10-17:
@@ -23,117 +20,41 @@ var input: PlayerInput
 var clock: SimClock
 var player := 1
 
-var minimap := Minimap.new()
-var card := UnitCard.new()
-var commands := CommandPanel.new()
-var menu := PauseMenu.new()
-var advisor := Advisor.new()
-var help := HelpPanel.new()
+@onready var minimap: Minimap = %Minimap
+@onready var card: UnitCard = %Card
+@onready var commands: CommandPanel = %Commands
+@onready var menu: PauseMenu = %Menu
+@onready var advisor: Advisor = %Advisor
+@onready var help: HelpPanel = %Help
 
-var _top := PanelContainer.new()
-var _resources: Array[Label] = []
-var _power := Label.new()
-var _population := Label.new()
-var _age := Label.new()
-var _time := Label.new()
-var _menu_button := Button.new()
-var _speed_button := Button.new()
-var _placing := Label.new()
-var _paused := Label.new()
-var _bottom_panel := PanelContainer.new()
-var _bottom := HBoxContainer.new()
+@onready var _top: PanelContainer = %Top
+@onready var _resources: Array[Label] = [
+	$Top/Row/Food/Value, $Top/Row/Wood/Value, $Top/Row/Iron/Value, $Top/Row/Silver/Value
+]
+@onready var _power: Label = $Top/Row/Power/Value
+@onready var _population: Label = $Top/Row/Population/Value
+@onready var _age: Label = $Top/Row/Age/Value
+@onready var _time: Label = $Top/Row/Time/Value
+@onready var _menu_button: Button = %MenuButton
+@onready var _speed_button: Button = %SpeedButton
+@onready var _placing: Label = %Placing
+@onready var _paused: Label = %Paused
+@onready var _bottom_panel: PanelContainer = %BottomPanel
+@onready var _bottom: HBoxContainer = %Bottom
 
 
 func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_ALWAYS
-	set_anchors_preset(Control.PRESET_FULL_RECT)
-	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_build_top()
-	_build_bottom()
-	_placing.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
-	_placing.position.y = 52
-	_placing.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_placing.add_theme_color_override("font_outline_color", Color.BLACK)
-	_placing.add_theme_constant_override("outline_size", 4)
-	add_child(_placing)
-	_paused.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	_paused.add_theme_font_size_override("font_size", 40)
-	_paused.visible = false
-	add_child(_paused)
-	add_child(advisor)
-	add_child(menu)
-	add_child(help)
+	# Power's icon hides with its number (Power is hidden early in a mission).
+	_power.visibility_changed.connect(_sync_power_icon)
+	_speed_button.gui_input.connect(_on_speed_input)
+	_menu_button.pressed.connect(menu.open)
 	menu.resumed.connect(refresh)
 	menu.help_requested.connect(help.open)
 	menu.hints_changed.connect(_on_hints_changed)
 
 
-func _build_top() -> void:
-	_top.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
-	_top.mouse_filter = Control.MOUSE_FILTER_STOP
-	_top.theme_type_variation = &"HudBar"
-	add_child(_top)
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 28)
-	_top.add_child(row)
-	for r in 4:
-		var label := Label.new()
-		_resources.append(label)
-		row.add_child(_with_icon(ICONS[r], label))
-	var icons: Array[String] = ["power", "population", "age", "time"]
-	var labels: Array[Label] = [_power, _population, _age, _time]
-	for i in labels.size():
-		row.add_child(_with_icon(icons[i], labels[i]))
-	var spacer := Control.new()
-	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	row.add_child(spacer)
-	_speed_button.focus_mode = Control.FOCUS_NONE
-	_speed_button.custom_minimum_size.x = 64
-	_speed_button.button_mask = MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT
-	_speed_button.gui_input.connect(_on_speed_input)
-	row.add_child(_speed_button)
-	_menu_button.focus_mode = Control.FOCUS_NONE
-	_menu_button.pressed.connect(menu.open)
-	row.add_child(_menu_button)
-
-
-## An icon from ui/icons before `label`; the pair shows the label's tooltip.
-static func _with_icon(icon: String, label: Label) -> HBoxContainer:
-	var pair := HBoxContainer.new()
-	pair.add_theme_constant_override("separation", 6)
-	pair.mouse_filter = Control.MOUSE_FILTER_PASS
-	var tex := TextureRect.new()
-	tex.texture = load("res://ui/icons/%s.svg" % icon)
-	tex.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	tex.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	tex.custom_minimum_size = Vector2(ICON_SIZE, ICON_SIZE)
-	tex.mouse_filter = Control.MOUSE_FILTER_PASS
-	pair.add_child(tex)
-	label.mouse_filter = Control.MOUSE_FILTER_PASS
-	label.add_theme_font_size_override("font_size", 22)
-	pair.add_child(label)
-	# The pair follows the label's visibility (Power is hidden early in a mission).
-	label.visibility_changed.connect(func() -> void: pair.visible = label.visible)
-	return pair
-
-
-func _build_bottom() -> void:
-	_bottom_panel.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	_bottom_panel.grow_vertical = Control.GROW_DIRECTION_BEGIN
-	_bottom_panel.mouse_filter = Control.MOUSE_FILTER_STOP
-	add_child(_bottom_panel)
-	_bottom.add_theme_constant_override("separation", 8)
-	_bottom_panel.add_child(_bottom)
-	minimap.custom_minimum_size = Vector2(320, 180)
-	var well := PanelContainer.new()
-	well.theme_type_variation = &"Well"
-	well.add_child(minimap)
-	_bottom.add_child(well)
-	card.size_flags_vertical = Control.SIZE_FILL
-	_bottom.add_child(card)
-	commands.size_flags_vertical = Control.SIZE_FILL
-	commands.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_bottom.add_child(commands)
+func _sync_power_icon() -> void:
+	(_power.get_parent() as Control).visible = _power.visible
 
 
 func attach(
