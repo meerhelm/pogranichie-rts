@@ -35,6 +35,7 @@ var briefing: MissionBriefing
 var trees := TreeLayer.new()
 ## Small ground details (flowers, stones…), right above the ground tiles.
 var decals := DecalLayer.new()
+var wear := WearLayer.new()
 
 var _ended := false
 
@@ -69,7 +70,7 @@ func _ready() -> void:
 			ai.setup(sim, AI_PLAYER, profile, SEED)
 			add_child(ai)
 	_map.build(grid)
-	decals.name = "Decals"
+	decals.name = "Decals"  # notr
 	_map.add_sibling(decals)
 	decals.build(grid)
 	_clock.sim = sim
@@ -79,6 +80,10 @@ func _ready() -> void:
 	_buildings.local_player = PLAYER
 	_buildings.depth_layer = _units
 	_buildings.attach(sim, _clock)
+	wear.name = "Wear"  # notr
+	_map.add_sibling(wear)
+	wear.build(grid, _buildings)
+	decals.wear = wear
 	trees.local_player = PLAYER
 	add_child(trees)
 	trees.attach(sim, _clock, _units)
@@ -198,6 +203,7 @@ func _load_game(path: String) -> void:
 func _on_ticked(_tick: int) -> void:
 	_input.sim_ticked_cleanup()
 	_map.refresh()
+	wear.refresh(sim.tick)
 	decals.refresh()
 	if sim.victory.is_over() and not _ended:
 		_ended = true

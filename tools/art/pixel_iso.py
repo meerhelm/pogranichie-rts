@@ -332,6 +332,8 @@ DECALS = {
     "d_sedge": (3, "bog"), "d_mushrooms": (4, "forest"), "d_stump": (3, "forest"),
     "d_bush": (3, "grass"), "d_reeds": (3, "bog"), "d_puddle": (3, "bog"), "d_fern": (3, "forest"),
     "d_deadwood": (3, "forest"),
+    # Larger things, now and then on open ground and in forests ("big").
+    "d_boulder": (2, "big"), "d_log": (2, "big"), "d_juniper": (2, "big"), "d_hazel": (2, "big"),
 }
 
 

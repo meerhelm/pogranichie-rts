@@ -180,5 +180,57 @@
    9
   ],
   "ground": "forest"
+ },
+ "d_boulder": {
+  "rect": [
+   177,
+   0,
+   22,
+   16
+  ],
+  "pivot": [
+   11,
+   15
+  ],
+  "ground": "big"
+ },
+ "d_log": {
+  "rect": [
+   201,
+   0,
+   28,
+   8
+  ],
+  "pivot": [
+   14,
+   7
+  ],
+  "ground": "big"
+ },
+ "d_juniper": {
+  "rect": [
+   231,
+   0,
+   21,
+   22
+  ],
+  "pivot": [
+   10,
+   21
+  ],
+  "ground": "big"
+ },
+ "d_hazel": {
+  "rect": [
+   254,
+   0,
+   22,
+   22
+  ],
+  "pivot": [
+   11,
+   21
+  ],
+  "ground": "big"
  }
 }
