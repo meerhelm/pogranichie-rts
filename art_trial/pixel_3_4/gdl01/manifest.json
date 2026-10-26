@@ -1,0 +1,395 @@
+{
+  "entries": [
+    {
+      "name": "fill_old_forest",
+      "prompt": "old primeval forest floor, dark soil, thick green moss, fallen rotting branches and dead logs, very dark, seen strictly from above, seamless ground texture, crisp pixel art, no text",
+      "extra_prompt": null,
+      "style": "rd_tile__single_tile",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 2,
+      "seed": 9001,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.12,
+      "status": "failed",
+      "error": {
+        "status_code": 502,
+        "code": "inference_failed",
+        "message": "Unable to run inference.",
+        "request_id": "4dba2eca-a008-4968-a038-dbad8c1125b2"
+      },
+      "task_id": "4dba2eca-a008-4968-a038-dbad8c1125b2"
+    },
+    {
+      "name": "fill_quagmire",
+      "prompt": "treacherous quagmire, pools of black still water between floating olive moss mats, a few dead grey sticks, seen strictly from above, seamless ground texture, crisp pixel art, no text",
+      "extra_prompt": null,
+      "style": "rd_tile__single_tile",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 2,
+      "seed": 9002,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.12,
+      "status": "succeeded",
+      "files": [
+        "fill_quagmire_1.png",
+        "fill_quagmire_2.png"
+      ],
+      "cost": 0.12,
+      "task_id": "041fd6e7-a910-439d-bbf6-3eb66b8d695f",
+      "remaining_balance": 5.8
+    },
+    {
+      "name": "fill_old_forest",
+      "prompt": "old primeval forest floor, dark soil, thick green moss, fallen rotting branches and dead logs, very dark, seen strictly from above, seamless ground texture, crisp pixel art, no text",
+      "extra_prompt": null,
+      "style": "rd_tile__single_tile",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 2,
+      "seed": 9001,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.12,
+      "status": "succeeded",
+      "files": [
+        "fill_old_forest_1.png",
+        "fill_old_forest_2.png"
+      ],
+      "cost": 0.12,
+      "task_id": "a023af38-0e9d-4c3c-a800-7d91cbb8d55c",
+      "remaining_balance": 5.68
+    },
+    {
+      "name": "test_house_plus",
+      "prompt": "small Lithuanian peasant log hut (izba) of round logs with a steep straw thatched roof, no chimney, small door, 15th century, single building game asset, 3/4 top-down view as in classic RTS games (not isometric), front wall facing the viewer, light from top-left, crisp pixel art, no text, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        96,
+        96
+      ],
+      "num_images": 1,
+      "seed": 9101,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "test_house_plus.png"
+      ],
+      "cost": 0.06,
+      "task_id": "0bcbab10-b831-49fb-91a1-44210017e743",
+      "remaining_balance": 5.62
+    },
+    {
+      "name": "test_house_pro",
+      "prompt": "small Lithuanian peasant log hut (izba) of round logs with a steep straw thatched roof, no chimney, small door, 15th century, single building game asset, 3/4 top-down view as in classic RTS games (not isometric), front wall facing the viewer, light from top-left, crisp pixel art, no text, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_pro__topdown",
+      "size": [
+        96,
+        96
+      ],
+      "num_images": 1,
+      "seed": 9101,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "test_house_pro.png"
+      ],
+      "cost": 0.18,
+      "task_id": "1523f6d2-6ad0-42d9-bd05-46566260cc90",
+      "remaining_balance": 5.44
+    },
+    {
+      "name": "ts_forest_road",
+      "prompt": "trampled dirt road, packed brown earth with faint ruts, seen strictly from above, crisp pixel art, no text",
+      "extra_prompt": "pine forest floor, brown needles and dark green moss, seen strictly from above, crisp pixel art, no text",
+      "style": "rd_tile__tileset_advanced",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 9200,
+      "inputs": {
+        "input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_road_1.png",
+        "extra_input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_forest_floor_1.png",
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.1,
+      "status": "succeeded",
+      "files": [
+        "ts_forest_road.png"
+      ],
+      "cost": 0.1,
+      "task_id": "942a6d88-457d-4e4f-92d9-bbcdb14f4d8d",
+      "remaining_balance": 5.34
+    },
+    {
+      "name": "ts_forest_old_forest",
+      "prompt": "dark primeval forest floor with thick moss clumps and rotting wood, seen strictly from above, crisp pixel art, no text",
+      "extra_prompt": "pine forest floor, brown needles and dark green moss, seen strictly from above, crisp pixel art, no text",
+      "style": "rd_tile__tileset_advanced",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 9201,
+      "inputs": {
+        "input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_old_forest_2.png",
+        "extra_input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_forest_floor_1.png",
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.1,
+      "status": "succeeded",
+      "files": [
+        "ts_forest_old_forest.png"
+      ],
+      "cost": 0.1,
+      "task_id": "bd850369-505f-4b5d-af3b-fc62bda85eb6",
+      "remaining_balance": 5.24
+    },
+    {
+      "name": "ts_grass_old_forest",
+      "prompt": "dark primeval forest floor with thick moss clumps and rotting wood, seen strictly from above, crisp pixel art, no text",
+      "extra_prompt": "short green meadow grass with very few tiny pale yellow wildflowers, seen strictly from above, crisp pixel art, no text",
+      "style": "rd_tile__tileset_advanced",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 9202,
+      "inputs": {
+        "input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_old_forest_2.png",
+        "extra_input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_grass_3.png",
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.1,
+      "status": "succeeded",
+      "files": [
+        "ts_grass_old_forest.png"
+      ],
+      "cost": 0.1,
+      "task_id": "d46082c5-8d61-4c7d-8b6c-55689e0fd5a8",
+      "remaining_balance": 5.14
+    },
+    {
+      "name": "ts_forest_sand",
+      "prompt": "light sand with small pebbles, seen strictly from above, crisp pixel art, no text",
+      "extra_prompt": "pine forest floor, brown needles and dark green moss, seen strictly from above, crisp pixel art, no text",
+      "style": "rd_tile__tileset_advanced",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 9203,
+      "inputs": {
+        "input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_sand_1.png",
+        "extra_input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_forest_floor_1.png",
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.1,
+      "status": "succeeded",
+      "files": [
+        "ts_forest_sand.png"
+      ],
+      "cost": 0.1,
+      "task_id": "2c50ab27-2ffd-4f56-8807-2a4574ee0bfc",
+      "remaining_balance": 4.86
+    },
+    {
+      "name": "ts_bog_quagmire",
+      "prompt": "quagmire, pools of black water between floating moss mats, seen strictly from above, crisp pixel art, no text",
+      "extra_prompt": "bog, olive sedge tussocks, dark wet mud, small rusty puddles, seen strictly from above, crisp pixel art, no text",
+      "style": "rd_tile__tileset_advanced",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 9204,
+      "inputs": {
+        "input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_quagmire_1.png",
+        "extra_input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_bog_1.png",
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.1,
+      "status": "succeeded",
+      "files": [
+        "ts_bog_quagmire.png"
+      ],
+      "cost": 0.1,
+      "task_id": "4cde1a44-60fd-40fe-b56b-97a7c05c30ef",
+      "remaining_balance": 4.76
+    },
+    {
+      "name": "ts_forest_bog",
+      "prompt": "bog, olive sedge tussocks, dark wet mud, small rusty puddles, seen strictly from above, crisp pixel art, no text",
+      "extra_prompt": "pine forest floor, brown needles and dark green moss, seen strictly from above, crisp pixel art, no text",
+      "style": "rd_tile__tileset_advanced",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 9205,
+      "inputs": {
+        "input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_bog_1.png",
+        "extra_input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_forest_floor_1.png",
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.1,
+      "status": "succeeded",
+      "files": [
+        "ts_forest_bog.png"
+      ],
+      "cost": 0.1,
+      "task_id": "5be93541-3197-4c81-8c43-fd5bfea1a951",
+      "remaining_balance": 4.66
+    },
+    {
+      "name": "ts_forest_field",
+      "prompt": "ploughed field with parallel brown furrows, seen strictly from above, crisp pixel art, no text",
+      "extra_prompt": "pine forest floor, brown needles and dark green moss, seen strictly from above, crisp pixel art, no text",
+      "style": "rd_tile__tileset_advanced",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 9206,
+      "inputs": {
+        "input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_field_2.png",
+        "extra_input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_forest_floor_1.png",
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.1,
+      "status": "succeeded",
+      "files": [
+        "ts_forest_field.png"
+      ],
+      "cost": 0.1,
+      "task_id": "8fb4ee84-eae7-4f01-ae78-ca8f5feb1411",
+      "remaining_balance": 4.56
+    },
+    {
+      "name": "ts_hill_old_forest",
+      "prompt": "dark primeval forest floor with thick moss clumps and rotting wood, seen strictly from above, crisp pixel art, no text",
+      "extra_prompt": "rocky hilltop, grey stones among short dry grass, seen strictly from above, crisp pixel art, no text",
+      "style": "rd_tile__tileset_advanced",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 9207,
+      "inputs": {
+        "input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_old_forest_2.png",
+        "extra_input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_hill_1.png",
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.1,
+      "status": "succeeded",
+      "files": [
+        "ts_hill_old_forest.png"
+      ],
+      "cost": 0.1,
+      "task_id": "ca2638aa-9a45-408f-9216-53fa667d2bed",
+      "remaining_balance": 4.46
+    },
+    {
+      "name": "tree_oak",
+      "prompt": "old broad oak tree, thick dark gnarled trunk, wide round dense dark green crown, single game asset, 3/4 top-down view as in classic RTS games (not isometric), light from top-left, crisp pixel art, no text, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_pro__topdown",
+      "size": [
+        48,
+        64
+      ],
+      "num_images": 2,
+      "seed": 9401,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.36,
+      "status": "succeeded",
+      "files": [
+        "tree_oak_1.png",
+        "tree_oak_2.png"
+      ],
+      "cost": 0.36,
+      "task_id": "36bb2a93-0798-4e4e-80bd-f8cdc77030bf",
+      "remaining_balance": 3.92
+    },
+    {
+      "name": "tree_spruce",
+      "prompt": "tall Norway spruce tree, narrow conical dark blue-green crown with drooping layered branches down to the ground, short dark trunk, single game asset, 3/4 top-down view as in classic RTS games (not isometric), light from top-left, crisp pixel art, no text, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_pro__topdown",
+      "size": [
+        48,
+        64
+      ],
+      "num_images": 2,
+      "seed": 9402,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.36,
+      "status": "succeeded",
+      "files": [
+        "tree_spruce_1.png",
+        "tree_spruce_2.png"
+      ],
+      "cost": 0.36,
+      "task_id": "78bcbd4f-124b-4a75-bfc3-723e97254c67",
+      "remaining_balance": 3.56
+    }
+  ],
+  "spent": 2.0,
+  "remaining_balance": 3.56
+}

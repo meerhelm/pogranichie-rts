@@ -1,0 +1,265 @@
+{
+  "entries": [
+    {
+      "name": "a_meadow",
+      "prompt": "lush meadow grass with small wildflowers and a few bare patches, seamless top-down ground texture, medieval Eastern Europe 15th century, muted earthy natural palette, light from top-left, crisp pixel art, no text",
+      "extra_prompt": null,
+      "style": "rd_tile__single_tile",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 1409,
+      "inputs": {},
+      "other_params": {
+        "tile_x": true,
+        "tile_y": true
+      },
+      "estimated_cost": 0.06,
+      "status": "failed",
+      "error": {
+        "status_code": 502,
+        "code": "inference_failed",
+        "message": "Unable to run inference.",
+        "request_id": "f001604e-ac73-41ee-b37a-8a631dca1434"
+      },
+      "task_id": "f001604e-ac73-41ee-b37a-8a631dca1434",
+      "note": "502 inference_failed; refunded automatically (balance unchanged). Request had tile_x/tile_y=true."
+    },
+    {
+      "name": "b_marsh",
+      "prompt": "boggy marsh ground, sedge tussocks, rusty brown puddles of stagnant water, seamless top-down ground texture, medieval Eastern Europe 15th century, muted earthy natural palette, light from top-left, crisp pixel art, no text",
+      "extra_prompt": null,
+      "style": "rd_tile__single_tile",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 1410,
+      "inputs": {},
+      "other_params": {
+        "tile_x": true,
+        "tile_y": true
+      },
+      "estimated_cost": 0.06,
+      "status": "failed",
+      "error": {
+        "status_code": 502,
+        "code": "inference_failed",
+        "message": "Unable to run inference.",
+        "request_id": "e42081ba-03ec-4eb7-9478-3ea25a738f46"
+      },
+      "task_id": "e42081ba-03ec-4eb7-9478-3ea25a738f46",
+      "note": "502 inference_failed; refunded automatically (balance unchanged). Request had tile_x/tile_y=true."
+    },
+    {
+      "name": "a_meadow",
+      "prompt": "lush meadow grass with small wildflowers and a few bare patches, seamless top-down ground texture, medieval Eastern Europe 15th century, muted earthy natural palette, light from top-left, crisp pixel art, no text",
+      "extra_prompt": null,
+      "style": "rd_tile__single_tile",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 1409,
+      "inputs": {},
+      "other_params": {},
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "a_meadow.png"
+      ],
+      "cost": 0.06,
+      "task_id": "5e3f882b-6d55-4df1-ac96-8e71630979d9",
+      "remaining_balance": 9.98
+    },
+    {
+      "name": "b_marsh",
+      "prompt": "boggy marsh ground, sedge tussocks, rusty brown puddles of stagnant water, seamless top-down ground texture, medieval Eastern Europe 15th century, muted earthy natural palette, light from top-left, crisp pixel art, no text",
+      "extra_prompt": null,
+      "style": "rd_tile__single_tile",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 1410,
+      "inputs": {},
+      "other_params": {},
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "b_marsh.png"
+      ],
+      "cost": 0.06,
+      "task_id": "c4f1c258-782c-46f2-b4f5-16840d594ca2",
+      "remaining_balance": 9.92
+    },
+    {
+      "name": "a_meadow_v2",
+      "prompt": "green grass meadow seen from above, lush green grass blades with tiny white and yellow wildflowers and a few small bare earth patches, medieval Eastern Europe 15th century, natural muted colors, light from top-left, crisp pixel art, no text",
+      "extra_prompt": null,
+      "style": "rd_tile__single_tile",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 2,
+      "seed": 2001,
+      "inputs": {},
+      "other_params": {},
+      "estimated_cost": 0.12,
+      "status": "succeeded",
+      "files": [
+        "a_meadow_v2_1.png",
+        "a_meadow_v2_2.png"
+      ],
+      "cost": 0.12,
+      "task_id": "265d4f2a-61d1-49b4-b843-81442daa78c0",
+      "remaining_balance": 9.8
+    },
+    {
+      "name": "b_marsh_v2",
+      "prompt": "marsh bog seen from above, olive green sedge tussocks, dark wet mud and small rusty brown puddles of stagnant water, medieval Eastern Europe 15th century, natural muted colors, light from top-left, crisp pixel art, no text",
+      "extra_prompt": null,
+      "style": "rd_tile__single_tile",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 2,
+      "seed": 2002,
+      "inputs": {},
+      "other_params": {},
+      "estimated_cost": 0.12,
+      "status": "succeeded",
+      "files": [
+        "b_marsh_v2_1.png",
+        "b_marsh_v2_2.png"
+      ],
+      "cost": 0.12,
+      "task_id": "058671cb-3bd1-4a1d-9746-478404a45d1d",
+      "remaining_balance": 9.68
+    },
+    {
+      "name": "c_tileset_meadow_marsh",
+      "prompt": "marsh bog, olive green sedge tussocks, dark wet mud, rusty brown puddles of stagnant water, medieval Eastern Europe 15th century, natural muted colors, light from top-left, crisp pixel art, no text",
+      "extra_prompt": "lush green meadow grass with tiny wildflowers, medieval Eastern Europe 15th century, natural muted colors, light from top-left, crisp pixel art, no text",
+      "style": "rd_tile__tileset_advanced",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 3001,
+      "inputs": {
+        "input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/b_marsh_v2_1_rgb.png",
+        "extra_input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/a_meadow_v2_2_rgb.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.1,
+      "status": "succeeded",
+      "files": [
+        "c_tileset_meadow_marsh.png"
+      ],
+      "cost": 0.1,
+      "task_id": "36f58159-d712-4665-a786-50ad24a3f6ae",
+      "remaining_balance": 9.58
+    },
+    {
+      "name": "d_tileset_meadow_river",
+      "prompt": "calm dark blue-green river water with subtle ripples, natural muddy bank at the edge, medieval Eastern Europe 15th century, natural muted colors, light from top-left, crisp pixel art, no text",
+      "extra_prompt": "lush green meadow grass with tiny wildflowers, medieval Eastern Europe 15th century, natural muted colors, light from top-left, crisp pixel art, no text",
+      "style": "rd_tile__tileset_advanced",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 3002,
+      "inputs": {
+        "extra_input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/a_meadow_v2_2_rgb.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.1,
+      "status": "succeeded",
+      "files": [
+        "d_tileset_meadow_river.png"
+      ],
+      "cost": 0.1,
+      "task_id": "dd610711-c930-4af5-9f99-dd1b3b5a7274",
+      "remaining_balance": 9.48
+    },
+    {
+      "name": "e_pine",
+      "prompt": "tall Scots pine tree, reddish bark, dark green crown, soft shadow to the lower right, single game asset, 3/4 top-down view (not isometric), medieval Eastern Europe 15th century, muted earthy natural palette, light from top-left, crisp pixel art, no text, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_pro__topdown",
+      "size": [
+        48,
+        64
+      ],
+      "num_images": 2,
+      "seed": 4001,
+      "inputs": {},
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.36,
+      "status": "succeeded",
+      "files": [
+        "e_pine_1.png",
+        "e_pine_2.png"
+      ],
+      "cost": 0.36,
+      "task_id": "d22bb6c1-7b1c-4ee4-91fb-20c0495ebb4f",
+      "remaining_balance": 9.12
+    },
+    {
+      "name": "f_birch",
+      "prompt": "birch tree with white bark and black marks, light green crown, soft shadow to the lower right, single game asset, 3/4 top-down view (not isometric), medieval Eastern Europe 15th century, muted earthy natural palette, light from top-left, crisp pixel art, no text, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_pro__topdown",
+      "size": [
+        48,
+        64
+      ],
+      "num_images": 1,
+      "seed": 4002,
+      "inputs": {},
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "f_birch.png"
+      ],
+      "cost": 0.18,
+      "task_id": "00c0f74f-65c5-453e-89e8-360439b18bd4",
+      "remaining_balance": 8.94
+    }
+  ],
+  "spent": 1.1,
+  "remaining_balance": 8.94,
+  "selected": {
+    "meadow": "a_meadow_v2_2.png",
+    "marsh": "b_marsh_v2_1.png",
+    "tileset_meadow_marsh": "c_tileset_meadow_marsh.png",
+    "tileset_meadow_river": "d_tileset_meadow_river.png",
+    "pines": [
+      "e_pine_1.png",
+      "e_pine_2.png"
+    ],
+    "birch": "f_birch.png"
+  },
+  "tileset_layout": "128x160 = 4 cols x 5 rows of 32px tiles, corner-based wang set: all 16 corner combinations (TL,TR,BL,BR; 1=inside texture) present; full-outside at (col0,rows0-2), full-inside at (col2,row1),(col0,rows3-4). Same layout in both tilesets.",
+  "preview": {
+    "file": "preview.png",
+    "size": "10x8 tiles of 32px, scaled x3 nearest",
+    "built_from": "tiles picked from the two tilesets by corner terrain; trees composited on top"
+  }
+}

@@ -1,0 +1,214 @@
+{
+  "entries": [
+    {
+      "name": "stop",
+      "prompt": "a raised open human palm, hand showing stop, game command button icon, single centred symbol, bold dark outline, warm colours, light from top-left, medieval 15th century, crisp pixel art, no text, no letters, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__ui_element",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 9500,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "stop.png"
+      ],
+      "cost": 0.06,
+      "task_id": "279ba5be-9f30-4945-857f-ea6e9d9c3178",
+      "remaining_balance": 55.74
+    },
+    {
+      "name": "aggressive",
+      "prompt": "two crossed steel swords with brown leather grips, game command button icon, single centred symbol, bold dark outline, warm colours, light from top-left, medieval 15th century, crisp pixel art, no text, no letters, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__ui_element",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 9501,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "aggressive.png"
+      ],
+      "cost": 0.06,
+      "task_id": "2758a243-e9d9-4e19-aafb-8e7c9d712a4e",
+      "remaining_balance": 55.56
+    },
+    {
+      "name": "defensive",
+      "prompt": "a round wooden shield with an iron boss in the centre and iron rim, game command button icon, single centred symbol, bold dark outline, warm colours, light from top-left, medieval 15th century, crisp pixel art, no text, no letters, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__ui_element",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 9502,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "defensive.png"
+      ],
+      "cost": 0.06,
+      "task_id": "8fb0e1a5-dcdd-4c2b-90d0-cadb866ce4b3",
+      "remaining_balance": 55.38
+    },
+    {
+      "name": "stand_ground",
+      "prompt": "a wooden pole with a small red flag stuck into a small mound of earth, game command button icon, single centred symbol, bold dark outline, warm colours, light from top-left, medieval 15th century, crisp pixel art, no text, no letters, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__ui_element",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 9503,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "stand_ground.png"
+      ],
+      "cost": 0.06,
+      "task_id": "ef9165ce-4635-4413-a6c7-f323dd345f31",
+      "remaining_balance": 55.2
+    },
+    {
+      "name": "line",
+      "prompt": "two horizontal rows of five round bronze dots, and a small arrow pointing up above them, game command button icon, single centred symbol, bold dark outline, warm colours, light from top-left, medieval 15th century, crisp pixel art, no text, no letters, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__ui_element",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 9504,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "line.png"
+      ],
+      "cost": 0.06,
+      "task_id": "92845e5e-cd23-4959-ae2c-c701d1f5ebfc",
+      "remaining_balance": 55.14
+    },
+    {
+      "name": "column",
+      "prompt": "a vertical column of round bronze dots, two wide and five deep, with a small arrow pointing up above it, game command button icon, single centred symbol, bold dark outline, warm colours, light from top-left, medieval 15th century, crisp pixel art, no text, no letters, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__ui_element",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 9505,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "column.png"
+      ],
+      "cost": 0.06,
+      "task_id": "030c115c-132d-4ef2-ae89-a0b4aab69e9d",
+      "remaining_balance": 55.08
+    },
+    {
+      "name": "wedge",
+      "prompt": "ten round bronze dots arranged in a triangular wedge with the point upward, game command button icon, single centred symbol, bold dark outline, warm colours, light from top-left, medieval 15th century, crisp pixel art, no text, no letters, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__ui_element",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 9506,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "wedge.png"
+      ],
+      "cost": 0.06,
+      "task_id": "50f1a17c-73d6-4b3b-b36e-b9a01530d5ae",
+      "remaining_balance": 55.02
+    },
+    {
+      "name": "stop",
+      "prompt": "a raised open human palm facing the viewer, pale beige skin colour, a brown leather cuff at the wrist, hand showing stop, game command button icon, single centred symbol, bold dark outline, warm colours, light from top-left, medieval 15th century, crisp pixel art, no text, no letters, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__ui_element",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 9500,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "stop.png"
+      ],
+      "cost": 0.06,
+      "task_id": "8efc107d-3209-4952-b8ab-ea05c32f822e",
+      "remaining_balance": 54.96
+    }
+  ],
+  "spent": 0.48,
+  "remaining_balance": 54.96
+}

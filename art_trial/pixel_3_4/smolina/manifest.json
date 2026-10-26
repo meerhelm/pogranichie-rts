@@ -1,0 +1,528 @@
+{
+  "entries": [
+    {
+      "name": "fill_grass",
+      "prompt": "short green meadow grass with subtle variation and very few tiny pale yellow wildflowers, seen strictly from above, seamless ground texture, medieval Eastern Europe 15th century, light from top-left, crisp pixel art, no text",
+      "extra_prompt": null,
+      "style": "rd_tile__single_tile",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 3,
+      "seed": 6000,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "fill_grass_1.png",
+        "fill_grass_2.png",
+        "fill_grass_3.png"
+      ],
+      "cost": 0.18,
+      "task_id": "b78c3a0b-d9ad-476b-8174-c9c1f84fa0b4",
+      "remaining_balance": 8.58
+    },
+    {
+      "name": "fill_forest_floor",
+      "prompt": "pine forest floor, fallen brown needles, patches of dark green moss, small twigs, seen strictly from above, seamless ground texture, medieval Eastern Europe 15th century, light from top-left, crisp pixel art, no text",
+      "extra_prompt": null,
+      "style": "rd_tile__single_tile",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 2,
+      "seed": 6001,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.12,
+      "status": "succeeded",
+      "files": [
+        "fill_forest_floor_1.png",
+        "fill_forest_floor_2.png"
+      ],
+      "cost": 0.12,
+      "task_id": "476ddcb7-a05f-4adb-a52f-ac8b0d68bb81",
+      "remaining_balance": 8.46
+    },
+    {
+      "name": "fill_water",
+      "prompt": "calm lake water, deep blue-green, gentle subtle ripples and small light glints, seen strictly from above, seamless ground texture, medieval Eastern Europe 15th century, light from top-left, crisp pixel art, no text",
+      "extra_prompt": null,
+      "style": "rd_tile__single_tile",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 2,
+      "seed": 6002,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.12,
+      "status": "succeeded",
+      "files": [
+        "fill_water_1.png",
+        "fill_water_2.png"
+      ],
+      "cost": 0.12,
+      "task_id": "452e8c6d-9aa6-42cb-b0f7-a976521ab8f6",
+      "remaining_balance": 8.34
+    },
+    {
+      "name": "fill_field",
+      "prompt": "ploughed field, straight parallel brown furrows of tilled earth with thin green sprouts, seen strictly from above, seamless ground texture, medieval Eastern Europe 15th century, light from top-left, crisp pixel art, no text",
+      "extra_prompt": null,
+      "style": "rd_tile__single_tile",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 2,
+      "seed": 6003,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.12,
+      "status": "succeeded",
+      "files": [
+        "fill_field_1.png",
+        "fill_field_2.png"
+      ],
+      "cost": 0.12,
+      "task_id": "090055b3-546a-4ebd-a43d-4737f2b5fbe9",
+      "remaining_balance": 8.22
+    },
+    {
+      "name": "fill_bog",
+      "prompt": "bog ground, olive sedge tussocks, dark wet mud and small rusty orange puddles of stagnant water, seen strictly from above, seamless ground texture, medieval Eastern Europe 15th century, light from top-left, crisp pixel art, no text",
+      "extra_prompt": null,
+      "style": "rd_tile__single_tile",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 2,
+      "seed": 6004,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.12,
+      "status": "succeeded",
+      "files": [
+        "fill_bog_1.png",
+        "fill_bog_2.png"
+      ],
+      "cost": 0.12,
+      "task_id": "b02e5bf6-39a2-45b1-b144-1b167bc432e0",
+      "remaining_balance": 8.1
+    },
+    {
+      "name": "fill_sand",
+      "prompt": "light sandy shore ground, fine sand with a few small pebbles, seen strictly from above, seamless ground texture, medieval Eastern Europe 15th century, light from top-left, crisp pixel art, no text",
+      "extra_prompt": null,
+      "style": "rd_tile__single_tile",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 2,
+      "seed": 6005,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.12,
+      "status": "succeeded",
+      "files": [
+        "fill_sand_1.png",
+        "fill_sand_2.png"
+      ],
+      "cost": 0.12,
+      "task_id": "eea3578b-ce89-48a6-a137-d2249e4697e6",
+      "remaining_balance": 7.98
+    },
+    {
+      "name": "fill_hill",
+      "prompt": "rocky hilltop, grey stones and boulders among short dry grass, seen strictly from above, seamless ground texture, medieval Eastern Europe 15th century, light from top-left, crisp pixel art, no text",
+      "extra_prompt": null,
+      "style": "rd_tile__single_tile",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 2,
+      "seed": 6006,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.12,
+      "status": "succeeded",
+      "files": [
+        "fill_hill_1.png",
+        "fill_hill_2.png"
+      ],
+      "cost": 0.12,
+      "task_id": "2c580fe4-69e8-4410-a7d0-85f302558907",
+      "remaining_balance": 7.86
+    },
+    {
+      "name": "fill_road",
+      "prompt": "trampled dirt road surface, packed brown earth with faint cart wheel ruts, seen strictly from above, seamless ground texture, medieval Eastern Europe 15th century, light from top-left, crisp pixel art, no text",
+      "extra_prompt": null,
+      "style": "rd_tile__single_tile",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 2,
+      "seed": 6007,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.12,
+      "status": "succeeded",
+      "files": [
+        "fill_road_1.png",
+        "fill_road_2.png"
+      ],
+      "cost": 0.12,
+      "task_id": "bf85e069-b9e3-4f97-8e34-3b7e4c26c24f",
+      "remaining_balance": 7.74
+    },
+    {
+      "name": "fill_water_v2",
+      "prompt": "deep blue-green lake water surface seen strictly from above, nearly uniform dark teal, a few thin soft ripple lines, no reflections, no border, seamless texture, crisp pixel art, no text",
+      "extra_prompt": null,
+      "style": "rd_tile__single_tile",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 2,
+      "seed": 6100,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.12,
+      "status": "succeeded",
+      "files": [
+        "fill_water_v2_1.png",
+        "fill_water_v2_2.png"
+      ],
+      "cost": 0.12,
+      "task_id": "bf260094-575d-48ec-b543-263b8d61a0b9",
+      "remaining_balance": 7.62
+    },
+    {
+      "name": "ts_grass_forest",
+      "prompt": "pine forest floor, brown needles and dark green moss, seen strictly from above, crisp pixel art, no text",
+      "extra_prompt": "short green meadow grass with very few tiny pale yellow wildflowers, seen strictly from above, crisp pixel art, no text",
+      "style": "rd_tile__tileset_advanced",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 7000,
+      "inputs": {
+        "input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_forest_floor_1.png",
+        "extra_input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_grass_3.png",
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.1,
+      "status": "succeeded",
+      "files": [
+        "ts_grass_forest.png"
+      ],
+      "cost": 0.1,
+      "task_id": "25f79d41-b99f-4764-b53b-3b48ebe62cf6",
+      "remaining_balance": 7.52
+    },
+    {
+      "name": "ts_grass_road",
+      "prompt": "trampled dirt road, packed brown earth with faint ruts, seen strictly from above, crisp pixel art, no text",
+      "extra_prompt": "short green meadow grass with very few tiny pale yellow wildflowers, seen strictly from above, crisp pixel art, no text",
+      "style": "rd_tile__tileset_advanced",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 7001,
+      "inputs": {
+        "input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_road_1.png",
+        "extra_input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_grass_3.png",
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.1,
+      "status": "succeeded",
+      "files": [
+        "ts_grass_road.png"
+      ],
+      "cost": 0.1,
+      "task_id": "36e1c7c1-9abc-4f98-82d6-502299ddb3a9",
+      "remaining_balance": 7.42
+    },
+    {
+      "name": "ts_grass_bog",
+      "prompt": "bog, olive sedge tussocks, dark wet mud, small rusty puddles, seen strictly from above, crisp pixel art, no text",
+      "extra_prompt": "short green meadow grass with very few tiny pale yellow wildflowers, seen strictly from above, crisp pixel art, no text",
+      "style": "rd_tile__tileset_advanced",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 7002,
+      "inputs": {
+        "input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_bog_1.png",
+        "extra_input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_grass_3.png",
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.1,
+      "status": "succeeded",
+      "files": [
+        "ts_grass_bog.png"
+      ],
+      "cost": 0.1,
+      "task_id": "4f5c38ef-643e-4d72-a5c7-7cfb8ab4b677",
+      "remaining_balance": 7.32
+    },
+    {
+      "name": "ts_grass_sand",
+      "prompt": "light sand with small pebbles, seen strictly from above, crisp pixel art, no text",
+      "extra_prompt": "short green meadow grass with very few tiny pale yellow wildflowers, seen strictly from above, crisp pixel art, no text",
+      "style": "rd_tile__tileset_advanced",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 7003,
+      "inputs": {
+        "input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_sand_1.png",
+        "extra_input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_grass_3.png",
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.1,
+      "status": "succeeded",
+      "files": [
+        "ts_grass_sand.png"
+      ],
+      "cost": 0.1,
+      "task_id": "73b2ef0c-c2ba-4a00-96cb-7b98704563a5",
+      "remaining_balance": 7.22
+    },
+    {
+      "name": "ts_sand_water",
+      "prompt": "calm deep blue-green lake water, seen strictly from above, crisp pixel art, no text",
+      "extra_prompt": "light sandy shore with small pebbles, seen strictly from above, crisp pixel art, no text",
+      "style": "rd_tile__tileset_advanced",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 7004,
+      "inputs": {
+        "input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_water_proc32.png",
+        "extra_input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_sand_1.png",
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.1,
+      "status": "succeeded",
+      "files": [
+        "ts_sand_water.png"
+      ],
+      "cost": 0.1,
+      "task_id": "973ba708-1a13-4ab8-8cd6-b22b3dcd8d88",
+      "remaining_balance": 7.12
+    },
+    {
+      "name": "ts_grass_hill",
+      "prompt": "rocky hilltop, grey stones among short dry grass, seen strictly from above, crisp pixel art, no text",
+      "extra_prompt": "short green meadow grass with very few tiny pale yellow wildflowers, seen strictly from above, crisp pixel art, no text",
+      "style": "rd_tile__tileset_advanced",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 7005,
+      "inputs": {
+        "input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_hill_1.png",
+        "extra_input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_grass_3.png",
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.1,
+      "status": "succeeded",
+      "files": [
+        "ts_grass_hill.png"
+      ],
+      "cost": 0.1,
+      "task_id": "dad3e54f-6a92-46b2-8d97-cd3c76480813",
+      "remaining_balance": 7.02
+    },
+    {
+      "name": "ts_grass_water",
+      "prompt": "calm deep blue-green lake water with a natural muddy bank, seen strictly from above, crisp pixel art, no text",
+      "extra_prompt": "short green meadow grass with very few tiny pale yellow wildflowers, seen strictly from above, crisp pixel art, no text",
+      "style": "rd_tile__tileset_advanced",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 7006,
+      "inputs": {
+        "input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_water_proc32.png",
+        "extra_input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_grass_3.png",
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.1,
+      "status": "succeeded",
+      "files": [
+        "ts_grass_water.png"
+      ],
+      "cost": 0.1,
+      "task_id": "ab6111c9-f0e3-4d48-9d4e-27898ab21e5f",
+      "remaining_balance": 6.92
+    },
+    {
+      "name": "ts_grass_field",
+      "prompt": "ploughed field with parallel brown furrows, seen strictly from above, crisp pixel art, no text",
+      "extra_prompt": "short green meadow grass with very few tiny pale yellow wildflowers, seen strictly from above, crisp pixel art, no text",
+      "style": "rd_tile__tileset_advanced",
+      "size": [
+        32,
+        32
+      ],
+      "num_images": 1,
+      "seed": 7007,
+      "inputs": {
+        "input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_field_2.png",
+        "extra_input_image": "/private/tmp/claude-501/-Users-valentinsobolev-Development-meerhelm-pogranichie-rts/6db6c234-f6b0-4fe1-969d-a74bbb1b582a/scratchpad/rgb/fill_grass_3.png",
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png"
+      },
+      "other_params": {},
+      "estimated_cost": 0.1,
+      "status": "succeeded",
+      "files": [
+        "ts_grass_field.png"
+      ],
+      "cost": 0.1,
+      "task_id": "5c7323b5-a7c3-43b3-ae81-87a51489f218",
+      "remaining_balance": 6.82
+    },
+    {
+      "name": "tree_pine",
+      "prompt": "tall slender Scots pine tree, long bare reddish-orange trunk, narrow tall dark conifer-green crown made of needle clumps at the top, no round leafy crown, single game asset, 3/4 top-down view as in classic RTS games (not isometric), soft shadow cast to the lower right on the ground, light from top-left, crisp pixel art, no text, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_pro__topdown",
+      "size": [
+        48,
+        64
+      ],
+      "num_images": 3,
+      "seed": 8001,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.54,
+      "status": "succeeded",
+      "files": [
+        "tree_pine_1.png",
+        "tree_pine_2.png",
+        "tree_pine_3.png"
+      ],
+      "cost": 0.54,
+      "task_id": "54454a63-9d96-4d7a-a61b-c6009a7206ef",
+      "remaining_balance": 6.28
+    },
+    {
+      "name": "tree_birch",
+      "prompt": "slender birch tree, white bark trunk with black marks, airy light green leafy crown, single game asset, 3/4 top-down view as in classic RTS games (not isometric), soft shadow cast to the lower right on the ground, light from top-left, crisp pixel art, no text, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_pro__topdown",
+      "size": [
+        48,
+        64
+      ],
+      "num_images": 2,
+      "seed": 8002,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.36,
+      "status": "succeeded",
+      "files": [
+        "tree_birch_1.png",
+        "tree_birch_2.png"
+      ],
+      "cost": 0.36,
+      "task_id": "3f718721-b2f9-4091-bf72-78a68214d421",
+      "remaining_balance": 5.92
+    }
+  ],
+  "spent": 2.84,
+  "remaining_balance": 5.92,
+  "prior_spent_this_step": {
+    "usd": 0.18,
+    "what": "3 grass tiles in .rd-trial/map_grunwald before the task switched to Smolino"
+  },
+  "step_total_usd": 3.02,
+  "used": {
+    "grass": "fill_grass_3.png",
+    "fills_inside": "interior tiles of each ts_grass_* set (corners 1111)",
+    "water": "fill_water_proc256.png (drawn by script from the palette, not generated)",
+    "tilesets": [
+      "ts_grass_bog.png",
+      "ts_grass_field.png",
+      "ts_grass_forest.png",
+      "ts_grass_hill.png",
+      "ts_grass_road.png",
+      "ts_grass_sand.png",
+      "ts_grass_water.png",
+      "ts_sand_water.png"
+    ],
+    "trees": "tree_*_shadow_*.png (shadow ellipse added by script, ground blob removed)"
+  },
+  "rejected": {
+    "fill_grass_1/2": "too different from each other, mixing gives patches",
+    "fill_water_1": "frame border",
+    "fill_water_2, fill_water_v2_*": "top-to-bottom gradient, grid visible when tiled",
+    "fill_*_fills": "standalone fills do not match tileset interiors"
+  },
+  "assembly": {
+    "script": "dual grid; corners = 4 neighbouring cells; tiles with 3+ grounds or no direct pair drawn in layers (grass, then field, road, sand(+water), bog, hill, water, forest) using per-tileset masks",
+    "map": "maps/map_sk_smolina/terrain.txt",
+    "trees": "one per forest cell, 65% pine / 35% birch, hash-picked, random offset, y-sorted",
+    "not_drawn": "objects (o, $, %), towns, units"
+  }
+}

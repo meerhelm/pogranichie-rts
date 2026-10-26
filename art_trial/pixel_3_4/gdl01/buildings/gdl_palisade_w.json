@@ -1,0 +1,22 @@
+{
+ "cells": [
+  1,
+  1
+ ],
+ "cell_px": 32,
+ "footprint_px": [
+  0,
+  32,
+  31,
+  63
+ ],
+ "pivot": [
+  16,
+  48
+ ],
+ "pivot_is": "centre of the footprint",
+ "stages": [
+  "done"
+ ],
+ "compose": "draw gdl_palisade_post plus one arm per neighbouring wall cell (e, w, n, s)"
+}

@@ -1,0 +1,1042 @@
+{
+  "entries": [
+    {
+      "name": "gdl_town_center",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian, round logs, chieftain's yard: a big log house with a high steep straw roof inside a square palisade of sharpened stakes, an open wooden gate at the front, a tall wooden watchtower in the corner with a small red pennant, single building game asset, 3/4 top-down view as in classic RTS games like Age of Empires 2 but not isometric, front facing the viewer, square footprint, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_pro__topdown",
+      "size": [
+        128,
+        160
+      ],
+      "num_images": 1,
+      "seed": 9300,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "gdl_town_center.png"
+      ],
+      "cost": 0.18,
+      "task_id": "76ee4ce7-ac21-4f90-a89e-2cb2115a5bf3",
+      "remaining_balance": 4.96
+    },
+    {
+      "name": "to_castle",
+      "prompt": "Teutonic Order 1409, small wooden-and-earth castle: square rampart with a timber palisade, a red brick gate tower with a red tile roof and a white flag with a black cross, single building game asset, 3/4 top-down view as in classic RTS games like Age of Empires 2 but not isometric, front facing the viewer, square footprint, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_pro__topdown",
+      "size": [
+        128,
+        160
+      ],
+      "num_images": 1,
+      "seed": 9301,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "to_castle.png"
+      ],
+      "cost": 0.18,
+      "task_id": "411bc91f-7551-4e9c-8c14-47f48a612329",
+      "remaining_balance": 4.28
+    },
+    {
+      "name": "gdl_house",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian, round logs, small peasant log hut with a steep straw thatched roof, no chimney, small door, single building game asset, 3/4 top-down view as in classic RTS games like Age of Empires 2 but not isometric, front facing the viewer, square footprint, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        64,
+        80
+      ],
+      "num_images": 1,
+      "seed": 9302,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_house.png"
+      ],
+      "cost": 0.06,
+      "task_id": "e856c60a-28f5-442c-aa87-cbcffb67b269",
+      "remaining_balance": 3.5
+    },
+    {
+      "name": "gdl_granary",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian, round logs, small log granary raised on wooden stilts with a ladder, straw roof, grain sacks by the door, single building game asset, 3/4 top-down view as in classic RTS games like Age of Empires 2 but not isometric, front facing the viewer, square footprint, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        64,
+        80
+      ],
+      "num_images": 1,
+      "seed": 9303,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_granary.png"
+      ],
+      "cost": 0.06,
+      "task_id": "24eb33c4-b90a-4194-8c01-b25816ae1134",
+      "remaining_balance": 3.44
+    },
+    {
+      "name": "gdl_lumber_yard",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian, round logs, open shed on posts with a straw roof, stacks of logs and a chopping block, single building game asset, 3/4 top-down view as in classic RTS games like Age of Empires 2 but not isometric, front facing the viewer, square footprint, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        64,
+        80
+      ],
+      "num_images": 1,
+      "seed": 9304,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_lumber_yard.png"
+      ],
+      "cost": 0.06,
+      "task_id": "a9b5b946-3992-4999-8436-59a4f7649e3c",
+      "remaining_balance": 3.38
+    },
+    {
+      "name": "gdl_mine",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian, round logs, bog iron works: small clay bloomery furnace under a straw lean-to, baskets and heaps of rusty bog ore, charcoal pile, single building game asset, 3/4 top-down view as in classic RTS games like Age of Empires 2 but not isometric, front facing the viewer, square footprint, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        64,
+        80
+      ],
+      "num_images": 1,
+      "seed": 9305,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_mine.png"
+      ],
+      "cost": 0.06,
+      "task_id": "9ef3b763-c50f-4e63-8915-bc629a125fdd",
+      "remaining_balance": 3.32
+    },
+    {
+      "name": "gdl_shrine",
+      "prompt": "pagan Samogitian sacred place (alka): a large old oak tree standing in a ring of grey field stones with a small fire burning in the middle of the ring, no idols, single building game asset, 3/4 top-down view as in classic RTS games like Age of Empires 2 but not isometric, front facing the viewer, square footprint, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        64,
+        96
+      ],
+      "num_images": 1,
+      "seed": 9306,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_shrine.png"
+      ],
+      "cost": 0.06,
+      "task_id": "2e55e0ab-922d-44d1-8833-6b9e74c48715",
+      "remaining_balance": 3.26
+    },
+    {
+      "name": "gdl_farm",
+      "prompt": "slash-and-burn field clearing seen from above: square patch of green young rye among tree stumps and black burnt earth, flat, no buildings, single building game asset, 3/4 top-down view as in classic RTS games like Age of Empires 2 but not isometric, front facing the viewer, square footprint, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        96,
+        96
+      ],
+      "num_images": 1,
+      "seed": 9307,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_farm.png"
+      ],
+      "cost": 0.06,
+      "task_id": "c116b393-f538-4d1d-94c6-34b9b32fc1e0",
+      "remaining_balance": 3.2
+    },
+    {
+      "name": "gdl_barracks",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian, round logs, long log hall with a straw roof, racks of spears and round shields by the wall, a small red pennant, single building game asset, 3/4 top-down view as in classic RTS games like Age of Empires 2 but not isometric, front facing the viewer, square footprint, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        96,
+        112
+      ],
+      "num_images": 1,
+      "seed": 9308,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_barracks.png"
+      ],
+      "cost": 0.06,
+      "task_id": "ee2cf1c3-bdbe-4f1f-97bc-012016615c10",
+      "remaining_balance": 3.14
+    },
+    {
+      "name": "gdl_range",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian, round logs, archery range: small open straw-roofed shed, a trampled yard with three straw targets, bows on a rack, single building game asset, 3/4 top-down view as in classic RTS games like Age of Empires 2 but not isometric, front facing the viewer, square footprint, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        96,
+        96
+      ],
+      "num_images": 1,
+      "seed": 9309,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_range.png"
+      ],
+      "cost": 0.06,
+      "task_id": "24a9cccc-e4d9-4df3-8eb0-c7396748e92a",
+      "remaining_balance": 3.08
+    },
+    {
+      "name": "gdl_stable",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian, round logs, long log stable with a straw roof, a small fenced paddock and a haystack, single building game asset, 3/4 top-down view as in classic RTS games like Age of Empires 2 but not isometric, front facing the viewer, square footprint, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        96,
+        112
+      ],
+      "num_images": 1,
+      "seed": 9310,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_stable.png"
+      ],
+      "cost": 0.06,
+      "task_id": "cce4bd7e-dddc-4a51-af8f-b7750f08e805",
+      "remaining_balance": 3.02
+    },
+    {
+      "name": "to_house",
+      "prompt": "Teutonic Order 1409, colonist's house: half-timbered white plaster walls with dark beams, high straw thatched roof, single building game asset, 3/4 top-down view as in classic RTS games like Age of Empires 2 but not isometric, front facing the viewer, square footprint, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        64,
+        80
+      ],
+      "num_images": 1,
+      "seed": 9311,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "to_house.png"
+      ],
+      "cost": 0.06,
+      "task_id": "732bf02e-1cf3-41d8-9a9d-f8adadaaeebb",
+      "remaining_balance": 2.96
+    },
+    {
+      "name": "to_shrine",
+      "prompt": "Teutonic Order 1409, small red brick gothic chapel with a small bell turret, red tile roof, a cross on top, single building game asset, 3/4 top-down view as in classic RTS games like Age of Empires 2 but not isometric, front facing the viewer, square footprint, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        64,
+        96
+      ],
+      "num_images": 1,
+      "seed": 9312,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "to_shrine.png"
+      ],
+      "cost": 0.06,
+      "task_id": "10f759e2-a41f-476d-b1f3-35cbc5ce09b3",
+      "remaining_balance": 2.9
+    },
+    {
+      "name": "rubble_wood",
+      "prompt": "pile of burnt black and brown log beams, charred timber debris and ashes, ruins of a wooden house, single building game asset, 3/4 top-down view as in classic RTS games like Age of Empires 2 but not isometric, front facing the viewer, square footprint, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 9313,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "rubble_wood.png"
+      ],
+      "cost": 0.06,
+      "task_id": "defcd780-2f9d-48b3-8a0d-51a8de33ab78",
+      "remaining_balance": 2.84
+    },
+    {
+      "name": "rubble_brick",
+      "prompt": "pile of broken red bricks, charred beams and grey dust, ruins of a brick building, single building game asset, 3/4 top-down view as in classic RTS games like Age of Empires 2 but not isometric, front facing the viewer, square footprint, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 9314,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "rubble_brick.png"
+      ],
+      "cost": 0.06,
+      "task_id": "2856906c-0ca6-4440-86b8-8b35db3dd735",
+      "remaining_balance": 2.78
+    },
+    {
+      "name": "gdl_bort",
+      "prompt": "tall pine tree with a wooden beehive hollow carved in the trunk, reddish bark, small game asset, 3/4 top-down view (not isometric), light from top-left, crisp pixel art, no text, no ground, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_item",
+      "size": [
+        32,
+        64
+      ],
+      "num_images": 1,
+      "seed": 9315,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_bort.png"
+      ],
+      "cost": 0.06,
+      "task_id": "93cccceb-6d55-49af-9caa-2315ed2985ff",
+      "remaining_balance": 2.72
+    },
+    {
+      "name": "gdl_palisade",
+      "prompt": "straight horizontal row of sharpened vertical wooden stakes, a palisade wall segment, side view from the front, small game asset, 3/4 top-down view (not isometric), light from top-left, crisp pixel art, no text, no ground, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_item",
+      "size": [
+        96,
+        48
+      ],
+      "num_images": 1,
+      "seed": 9316,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_palisade.png"
+      ],
+      "cost": 0.06,
+      "task_id": "162037ff-ef83-4811-adb2-78eddb9b0354",
+      "remaining_balance": 2.66
+    },
+    {
+      "name": "gdl_palisade_v",
+      "prompt": "palisade wall of sharpened wooden stakes running away from the viewer, seen from above, narrow vertical strip, small game asset, 3/4 top-down view (not isometric), light from top-left, crisp pixel art, no text, no ground, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_item",
+      "size": [
+        32,
+        96
+      ],
+      "num_images": 1,
+      "seed": 9317,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_palisade_v.png"
+      ],
+      "cost": 0.06,
+      "task_id": "366ff730-eb2e-4d76-96aa-7c34596a091c",
+      "remaining_balance": 2.6
+    },
+    {
+      "name": "gdl_granary_v2",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian, round logs, small log granary raised on wooden stilts with a ladder, straw roof, grain sacks by the door, single building game asset, front view facing south, 3/4 top-down view from slightly above, walls parallel to image edges, front wall facing the viewer straight on, not isometric, no diagonal corner, no rotation, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        64,
+        80
+      ],
+      "num_images": 1,
+      "seed": 9303,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_granary_v2.png"
+      ],
+      "cost": 0.06,
+      "task_id": "c5b88c6b-685c-4ee7-95c9-4ec48fb8a93d",
+      "remaining_balance": 57.48
+    },
+    {
+      "name": "gdl_lumber_yard_v2",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian, round logs, open shed on posts with a straw roof, stacks of logs and a chopping block, single building game asset, front view facing south, 3/4 top-down view from slightly above, walls parallel to image edges, front wall facing the viewer straight on, not isometric, no diagonal corner, no rotation, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        64,
+        80
+      ],
+      "num_images": 1,
+      "seed": 9304,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_lumber_yard_v2.png"
+      ],
+      "cost": 0.06,
+      "task_id": "93fa60dc-42e6-46ee-a6f4-dc84918c753c",
+      "remaining_balance": 57.42
+    },
+    {
+      "name": "gdl_mine_v2",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian, round logs, bog iron works: small clay bloomery furnace under a straw lean-to, baskets and heaps of rusty bog ore, charcoal pile, single building game asset, front view facing south, 3/4 top-down view from slightly above, walls parallel to image edges, front wall facing the viewer straight on, not isometric, no diagonal corner, no rotation, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        64,
+        80
+      ],
+      "num_images": 1,
+      "seed": 9305,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_mine_v2.png"
+      ],
+      "cost": 0.06,
+      "task_id": "74c410a1-5b37-4daf-9430-b6e61f875bfd",
+      "remaining_balance": 57.36
+    },
+    {
+      "name": "rubble_brick_v2",
+      "prompt": "low flat heap of broken red bricks and charred beams lying on the ground, collapsed ruins, no standing walls, no roof, single building game asset, front view facing south, 3/4 top-down view from slightly above, walls parallel to image edges, front wall facing the viewer straight on, not isometric, no diagonal corner, no rotation, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 9314,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "rubble_brick_v2.png"
+      ],
+      "cost": 0.06,
+      "task_id": "a33cf874-4924-465a-b836-332c52120956",
+      "remaining_balance": 57.3
+    },
+    {
+      "name": "gdl_palisade_v2",
+      "prompt": "straight horizontal row of sharpened vertical brown weathered wooden log stakes, a palisade wall segment, front view, brown wood only, small game asset, 3/4 top-down view (not isometric), light from top-left, crisp pixel art, no text, no ground, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_item",
+      "size": [
+        96,
+        48
+      ],
+      "num_images": 1,
+      "seed": 9316,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_palisade_v2.png"
+      ],
+      "cost": 0.06,
+      "task_id": "2a3ebdf1-1960-400f-9d02-9ee4871fd0a9",
+      "remaining_balance": 57.24
+    },
+    {
+      "name": "gdl_palisade_v_v2",
+      "prompt": "palisade wall of sharpened brown wooden log stakes running away from the viewer, seen from above, narrow vertical strip, brown wood only, small game asset, 3/4 top-down view (not isometric), light from top-left, crisp pixel art, no text, no ground, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_item",
+      "size": [
+        32,
+        96
+      ],
+      "num_images": 1,
+      "seed": 9317,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_palisade_v_v2.png"
+      ],
+      "cost": 0.06,
+      "task_id": "329f2ef4-73e7-4e42-bf08-3f7de8024d8b",
+      "remaining_balance": 57.18
+    },
+    {
+      "name": "gdl_gate_v2",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian, round logs, wooden gate in a palisade with a small roofed platform above, front view, small game asset, 3/4 top-down view (not isometric), light from top-left, crisp pixel art, no text, no ground, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_item",
+      "size": [
+        48,
+        48
+      ],
+      "num_images": 1,
+      "seed": 9318,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_gate_v2.png"
+      ],
+      "cost": 0.06,
+      "task_id": "6a4114a2-698f-4469-a159-c18c13e3e577",
+      "remaining_balance": 57.12
+    },
+    {
+      "name": "gdl_gate_v_v2",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian, round logs, wooden palisade gate seen from the side, running away from the viewer, narrow, small game asset, 3/4 top-down view (not isometric), light from top-left, crisp pixel art, no text, no ground, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_item",
+      "size": [
+        32,
+        64
+      ],
+      "num_images": 1,
+      "seed": 9319,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_gate_v_v2.png"
+      ],
+      "cost": 0.06,
+      "task_id": "abe4194a-b337-4226-bd08-556183d5d567",
+      "remaining_balance": 57.06
+    },
+    {
+      "name": "gdl_tower_v2",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian, round logs, tall square log watchtower with an overhanging fighting gallery and a pyramid shingle roof, small game asset, 3/4 top-down view (not isometric), light from top-left, crisp pixel art, no text, no ground, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_item",
+      "size": [
+        32,
+        80
+      ],
+      "num_images": 1,
+      "seed": 9320,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_tower_v2.png"
+      ],
+      "cost": 0.06,
+      "task_id": "9b06dcd3-c72c-4194-adfd-c1adca012880",
+      "remaining_balance": 57.0
+    },
+    {
+      "name": "gdl_zaseka_v2",
+      "prompt": "abatis barrier: felled trees lying crosswise with branches pointing out, horizontal, small game asset, 3/4 top-down view (not isometric), light from top-left, crisp pixel art, no text, no ground, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_item",
+      "size": [
+        96,
+        48
+      ],
+      "num_images": 1,
+      "seed": 9321,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_zaseka_v2.png"
+      ],
+      "cost": 0.06,
+      "task_id": "c8dd2893-e4f1-454e-ba42-f5c7043d4b2e",
+      "remaining_balance": 56.94
+    },
+    {
+      "name": "gdl_zaseka_v_v2",
+      "prompt": "abatis barrier: felled trees lying crosswise with branches, running away from the viewer, narrow vertical strip, small game asset, 3/4 top-down view (not isometric), light from top-left, crisp pixel art, no text, no ground, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_item",
+      "size": [
+        32,
+        96
+      ],
+      "num_images": 1,
+      "seed": 9322,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_zaseka_v_v2.png"
+      ],
+      "cost": 0.06,
+      "task_id": "0cdc545b-6371-47bf-8b5a-add082480e7f",
+      "remaining_balance": 56.88
+    },
+    {
+      "name": "to_gate_v2",
+      "prompt": "Teutonic Order 1409, wooden gate with a timber gatehouse platform above, a small white flag with a black cross, front view, small game asset, 3/4 top-down view (not isometric), light from top-left, crisp pixel art, no text, no ground, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_item",
+      "size": [
+        48,
+        48
+      ],
+      "num_images": 1,
+      "seed": 9323,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "to_gate_v2.png"
+      ],
+      "cost": 0.06,
+      "task_id": "e1c0cd6a-6811-4a1b-8dfe-a56724f82ff6",
+      "remaining_balance": 56.82
+    },
+    {
+      "name": "to_gate_v_v2",
+      "prompt": "Teutonic Order 1409, wooden gate seen from the side, running away from the viewer, narrow, small white flag with black cross, small game asset, 3/4 top-down view (not isometric), light from top-left, crisp pixel art, no text, no ground, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_item",
+      "size": [
+        32,
+        64
+      ],
+      "num_images": 1,
+      "seed": 9324,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "to_gate_v_v2.png"
+      ],
+      "cost": 0.06,
+      "task_id": "f14cb913-492f-454d-9656-40f889fb3089",
+      "remaining_balance": 56.76
+    },
+    {
+      "name": "gdl_lumber_yard_v3",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian, round logs, open shed on posts with a straw roof, stacks of logs and a chopping block, single building game asset, front view facing south, 3/4 top-down view from slightly above, walls parallel to image edges, front wall facing the viewer straight on, not isometric, no diagonal corner, no rotation, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_pro__topdown",
+      "size": [
+        64,
+        80
+      ],
+      "num_images": 1,
+      "seed": 9304,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "gdl_lumber_yard_v3.png"
+      ],
+      "cost": 0.18,
+      "task_id": "49d233e0-1dc1-4e51-98cb-a4fe6a9503f9",
+      "remaining_balance": 56.58
+    },
+    {
+      "name": "gdl_gate_v3",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian, round logs, wooden double gate between two thick gate posts of a log palisade, a small roofed lookout platform above the gate, brown wood, single building game asset, front view facing south, 3/4 top-down view from slightly above, walls parallel to image edges, front wall facing the viewer straight on, not isometric, no diagonal corner, no rotation, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 9318,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_gate_v3.png"
+      ],
+      "cost": 0.06,
+      "task_id": "d21058d7-be01-4eed-a48c-888292ae8333",
+      "remaining_balance": 56.52
+    },
+    {
+      "name": "gdl_lumber_yard_v4",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian, round logs, small lumber yard, the whole scene visible and centred: one open shed on four posts with a straw roof in the middle, stacks of logs beside it and a chopping block with an axe, compact, single building game asset, front view facing south, 3/4 top-down view from slightly above, walls parallel to image edges, front wall facing the viewer straight on, not isometric, no diagonal corner, no rotation, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_pro__topdown",
+      "size": [
+        96,
+        96
+      ],
+      "num_images": 1,
+      "seed": 9304,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "gdl_lumber_yard_v4.png"
+      ],
+      "cost": 0.18,
+      "task_id": "0296036d-4f7f-426e-9ba7-e4845f6e65f6",
+      "remaining_balance": 56.34
+    },
+    {
+      "name": "gdl_gate_v5",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian, gate in a palisade of sharpened brown log stakes: two thick square log gate posts joined by a log beam on top, closed double door of vertical brown planks between them, short pieces of brown stake palisade on the left and right, symmetrical, brown wood only, single building game asset, front view facing south, 3/4 top-down view from slightly above, walls parallel to image edges, front wall facing the viewer straight on, not isometric, no diagonal corner, no rotation, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 9403,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_gate_v5.png"
+      ],
+      "cost": 0.06,
+      "task_id": "3106aa73-6139-4086-9fe6-13b94770a428",
+      "remaining_balance": 56.28
+    },
+    {
+      "name": "gdl_tower_v5",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian, tall narrow square watchtower of horizontal brown round logs on four log legs, an open lookout platform with a railing on top, a steep pyramid roof of brown wooden shingles, symmetrical, brown wood only, single building game asset, front view facing south, 3/4 top-down view from slightly above, walls parallel to image edges, front wall facing the viewer straight on, not isometric, no diagonal corner, no rotation, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        48,
+        96
+      ],
+      "num_images": 1,
+      "seed": 9404,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "error",
+      "error": {
+        "_http_error": 400,
+        "body": "{\"error\":{\"code\":\"invalid_style_dimensions\",\"message\":\"Image dimensions are not allowed for this style.\",\"request_id\":\"1aaad976-d13a-11f1-aee6-a2aa8a267627\"}}"
+      }
+    },
+    {
+      "name": "gdl_zaseka_v5",
+      "prompt": "abatis barrier: a low horizontal row of felled spruce trees lying side by side on the ground with sharpened bare branches pointing towards the viewer, brown trunks, dry brown and dark green branches, wide and low, symmetrical, single building game asset, front view facing south, 3/4 top-down view from slightly above, walls parallel to image edges, front wall facing the viewer straight on, not isometric, no diagonal corner, no rotation, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        96,
+        48
+      ],
+      "num_images": 1,
+      "seed": 9405,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "error",
+      "error": {
+        "_http_error": 400,
+        "body": "{\"error\":{\"code\":\"invalid_style_dimensions\",\"message\":\"Image dimensions are not allowed for this style.\",\"request_id\":\"29888e98-d13a-11f1-aee6-a2aa8a267627\"}}"
+      }
+    },
+    {
+      "name": "gdl_lumber_yard_v5",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian, small lumber yard: an open shed of round logs on four posts with a straw roof, front side open towards the viewer, neat stack of logs under it, a chopping block with an axe in front, single building game asset, front view facing south, 3/4 top-down view from slightly above, walls parallel to image edges, front wall facing the viewer straight on, not isometric, no diagonal corner, no rotation, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        64,
+        80
+      ],
+      "num_images": 1,
+      "seed": 9406,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_lumber_yard_v5.png"
+      ],
+      "cost": 0.06,
+      "task_id": "d91e2bc0-4f6f-46bc-ba9c-8ae9eca0aab6",
+      "remaining_balance": 56.22
+    },
+    {
+      "name": "gdl_tower_v5",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian, tall narrow square watchtower of horizontal brown round logs on four log legs, an open lookout platform with a railing on top, a steep pyramid roof of brown wooden shingles, symmetrical, brown wood only, single building game asset, front view facing south, 3/4 top-down view from slightly above, walls parallel to image edges, front wall facing the viewer straight on, not isometric, no diagonal corner, no rotation, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        64,
+        96
+      ],
+      "num_images": 1,
+      "seed": 9403,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_tower_v5.png"
+      ],
+      "cost": 0.06,
+      "task_id": "ee49d62f-34a5-4932-9f35-0d01c4149ef6",
+      "remaining_balance": 56.16
+    },
+    {
+      "name": "gdl_zaseka_v5",
+      "prompt": "abatis barrier: a low horizontal row of felled spruce trees lying side by side on the ground with sharpened bare branches pointing towards the viewer, brown trunks, dry brown and dark green branches, wide and low, symmetrical, single building game asset, front view facing south, 3/4 top-down view from slightly above, walls parallel to image edges, front wall facing the viewer straight on, not isometric, no diagonal corner, no rotation, light from top-left, crisp pixel art, no text, no ground, no grass, on a plain white background",
+      "extra_prompt": null,
+      "style": "rd_plus__topdown_asset",
+      "size": [
+        96,
+        96
+      ],
+      "num_images": 1,
+      "seed": 9404,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "other_params": {
+        "remove_bg": true
+      },
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "gdl_zaseka_v5.png"
+      ],
+      "cost": 0.06,
+      "task_id": "47bac7c1-460d-4039-b9a0-8f0c350cb55e",
+      "remaining_balance": 56.1
+    }
+  ],
+  "spent": 2.76,
+  "remaining_balance": 56.1
+}
