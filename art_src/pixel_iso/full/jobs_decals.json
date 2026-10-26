@@ -1,0 +1,174 @@
+{
+  "out_dir": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/decals",
+  "palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+  "jobs": [
+    {
+      "name": "d_flowers_yellow",
+      "style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7500,
+      "remove_bg": true,
+      "prompt": "small clump of tiny yellow buttercup flowers in grass, single small object, on a plain white background"
+    },
+    {
+      "name": "d_flowers_white",
+      "style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7501,
+      "remove_bg": true,
+      "prompt": "small clump of tiny white daisies in grass, single small object, on a plain white background"
+    },
+    {
+      "name": "d_flowers_blue",
+      "style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7502,
+      "remove_bg": true,
+      "prompt": "small clump of tiny blue cornflowers, single small object, on a plain white background"
+    },
+    {
+      "name": "d_stone_grey",
+      "style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7503,
+      "remove_bg": true,
+      "prompt": "single grey field stone boulder, single small object, on a plain white background"
+    },
+    {
+      "name": "d_stones_small",
+      "style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7504,
+      "remove_bg": true,
+      "prompt": "three small grey pebbles, single small object, on a plain white background"
+    },
+    {
+      "name": "d_tussock",
+      "style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7505,
+      "remove_bg": true,
+      "prompt": "grass tussock, tuft of tall green grass, single small object, on a plain white background"
+    },
+    {
+      "name": "d_sedge",
+      "style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7506,
+      "remove_bg": true,
+      "prompt": "bog sedge tussock with rusty tips, single small object, on a plain white background"
+    },
+    {
+      "name": "d_mushrooms",
+      "style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7507,
+      "remove_bg": true,
+      "prompt": "small group of brown forest mushrooms, single small object, on a plain white background"
+    },
+    {
+      "name": "d_stump",
+      "style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7508,
+      "remove_bg": true,
+      "prompt": "old tree stump with moss, single small object, on a plain white background"
+    },
+    {
+      "name": "d_bush",
+      "style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7509,
+      "remove_bg": true,
+      "prompt": "small round green bush, single small object, on a plain white background"
+    },
+    {
+      "name": "d_reeds",
+      "style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7510,
+      "remove_bg": true,
+      "prompt": "clump of tall reeds, single small object, on a plain white background"
+    },
+    {
+      "name": "d_puddle",
+      "style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7511,
+      "remove_bg": true,
+      "prompt": "small muddy puddle of water, single small object, on a plain white background"
+    },
+    {
+      "name": "d_fern",
+      "style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7512,
+      "remove_bg": true,
+      "prompt": "green fern plant, single small object, on a plain white background"
+    },
+    {
+      "name": "d_deadwood",
+      "style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7513,
+      "remove_bg": true,
+      "prompt": "fallen dry branch with moss, single small object, on a plain white background"
+    }
+  ]
+}

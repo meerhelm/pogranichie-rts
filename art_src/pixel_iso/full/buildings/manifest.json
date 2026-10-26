@@ -1,0 +1,666 @@
+{
+  "entries": [
+    {
+      "name": "gdl_granary",
+      "prompt": "Samogitian, Grand Duchy of Lithuania, 1409, round logs and straw thatch, small log granary raised on short wooden stilts, steep straw roof, ladder to a small door, grain sacks, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        160,
+        160
+      ],
+      "num_images": 1,
+      "seed": 7300,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "gdl_granary_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "7e576758-e934-448e-825c-bd611a6f1283",
+      "remaining_balance": 51.0
+    },
+    {
+      "name": "gdl_lumber_yard",
+      "prompt": "Samogitian, Grand Duchy of Lithuania, 1409, round logs and straw thatch, lumber yard: open shed on four posts with a straw roof, stacks of round logs, chopping block with an axe, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        160,
+        160
+      ],
+      "num_images": 1,
+      "seed": 7301,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "gdl_lumber_yard_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "a04c9240-4cc4-4da5-9f2c-2ee149c9686e",
+      "remaining_balance": 50.82
+    },
+    {
+      "name": "gdl_mine",
+      "prompt": "Samogitian, Grand Duchy of Lithuania, 1409, round logs and straw thatch, bog iron works: small clay bloomery furnace under a straw lean-to roof, baskets and heaps of rusty bog ore, charcoal pile, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        160,
+        160
+      ],
+      "num_images": 1,
+      "seed": 7302,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "gdl_mine_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "26b70246-90f5-4f6e-8f49-bd5f31260f7b",
+      "remaining_balance": 50.64
+    },
+    {
+      "name": "gdl_shrine",
+      "prompt": "Samogitian pagan sacred place (alka): one large old oak tree inside a ring of grey field stones, small fire burning in the middle, no idols, no buildings, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        160,
+        192
+      ],
+      "num_images": 1,
+      "seed": 7303,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "gdl_shrine_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "5e26cac1-196d-435a-ad90-ee0b0cfdbcb6",
+      "remaining_balance": 50.46
+    },
+    {
+      "name": "gdl_farm",
+      "prompt": "slash-and-burn field clearing: a flat square patch of young green rye among tree stumps and black burnt earth, low wattle fence on one side, no buildings, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        224,
+        128
+      ],
+      "num_images": 1,
+      "seed": 7304,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "gdl_farm_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "6a4adbfb-8b9e-4cc8-87eb-2164432a166c",
+      "remaining_balance": 50.28
+    },
+    {
+      "name": "gdl_barracks",
+      "prompt": "Samogitian, Grand Duchy of Lithuania, 1409, round logs and straw thatch, long log hall with a straw roof, racks of spears and round wooden shields by the wall, small red pennant, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        224,
+        192
+      ],
+      "num_images": 1,
+      "seed": 7305,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "gdl_barracks_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "e91993cc-d2b0-4d1b-94eb-3dab252b7cbc",
+      "remaining_balance": 50.1
+    },
+    {
+      "name": "gdl_range",
+      "prompt": "Samogitian, Grand Duchy of Lithuania, 1409, round logs and straw thatch, archery range: small open straw-roofed shed, trampled yard with three straw targets, bows on a rack, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        224,
+        192
+      ],
+      "num_images": 1,
+      "seed": 7306,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "failed",
+      "error": {
+        "status_code": 502,
+        "code": "inference_failed",
+        "message": "Unable to run inference.",
+        "request_id": "a9d3fc6e-dbfe-4b5e-968c-1e5710eae746"
+      },
+      "task_id": "a9d3fc6e-dbfe-4b5e-968c-1e5710eae746"
+    },
+    {
+      "name": "gdl_range",
+      "prompt": "Samogitian, Grand Duchy of Lithuania, 1409, round logs and straw thatch, archery range: small open straw-roofed shed, trampled yard with three straw targets, bows on a rack, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        224,
+        192
+      ],
+      "num_images": 1,
+      "seed": 7306,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "gdl_range_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "7eeadcd1-7ab6-48e6-8def-a392a8705da9",
+      "remaining_balance": 49.92
+    },
+    {
+      "name": "gdl_stable",
+      "prompt": "Samogitian, Grand Duchy of Lithuania, 1409, round logs and straw thatch, long log stable with a straw roof, small fenced paddock with a haystack, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        224,
+        192
+      ],
+      "num_images": 1,
+      "seed": 7307,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "gdl_stable_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "1d006ed1-5c3c-4f2c-ba4f-456de38bbbe7",
+      "remaining_balance": 49.74
+    },
+    {
+      "name": "gdl_town_center",
+      "prompt": "Samogitian, Grand Duchy of Lithuania, 1409, round logs and straw thatch, chieftain's yard: big log house with a high steep straw roof and a smaller log storehouse inside a square palisade of sharpened stakes, open gate, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        256,
+        256
+      ],
+      "num_images": 1,
+      "seed": 7308,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "gdl_town_center_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "07718991-c499-44c2-a288-36da84e28616",
+      "remaining_balance": 49.56
+    },
+    {
+      "name": "gdl_tower",
+      "prompt": "Samogitian, Grand Duchy of Lithuania, 1409, round logs and straw thatch, tall square log watchtower on four thick posts, overhanging fighting gallery, pyramid shingle roof, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        112,
+        240
+      ],
+      "num_images": 1,
+      "seed": 7309,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "gdl_tower_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "6bbbbe6a-efd8-4607-bb84-607f872f789c",
+      "remaining_balance": 49.38
+    },
+    {
+      "name": "gdl_bort",
+      "prompt": "tall pine tree with a wooden beehive hollow carved into the trunk and a small plank door on it, reddish bark, no ground, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        64,
+        160
+      ],
+      "num_images": 1,
+      "seed": 7310,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "gdl_bort_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "744ddf54-4933-4869-bcd6-7162f4856d25",
+      "remaining_balance": 49.2
+    },
+    {
+      "name": "gdl_palisade",
+      "prompt": "straight wall of sharpened vertical brown log stakes, three tiles long, running diagonally from upper left to lower right, no ground, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        224,
+        160
+      ],
+      "num_images": 1,
+      "seed": 7311,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "gdl_palisade_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "3660a3fc-4220-44d0-889d-d8eba080abe6",
+      "remaining_balance": 49.02
+    },
+    {
+      "name": "gdl_gate",
+      "prompt": "Samogitian, Grand Duchy of Lithuania, 1409, round logs and straw thatch, wooden double gate between two thick log posts with a small roofed lookout platform above, part of a stake palisade running diagonally from upper left to lower right, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        128,
+        160
+      ],
+      "num_images": 1,
+      "seed": 7312,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "gdl_gate_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "15267900-f61c-4f2a-a521-3cebe382dbc7",
+      "remaining_balance": 48.84
+    },
+    {
+      "name": "gdl_zaseka",
+      "prompt": "abatis: felled trees lying crosswise in a row with branches pointing outward, three tiles long, running diagonally from upper left to lower right, no ground, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        224,
+        160
+      ],
+      "num_images": 1,
+      "seed": 7313,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "gdl_zaseka_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "13f8a4f8-77c7-4c53-8bf4-087aa865c025",
+      "remaining_balance": 48.66
+    },
+    {
+      "name": "to_house",
+      "prompt": "Teutonic Order in Prussia, 1409, colonist's house: half-timbered white plaster walls with dark beams, high straw thatched roof, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        160,
+        160
+      ],
+      "num_images": 1,
+      "seed": 7314,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "to_house_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "93fc62f0-6999-49ee-be68-a0ca7c272f36",
+      "remaining_balance": 48.48
+    },
+    {
+      "name": "to_shrine",
+      "prompt": "Teutonic Order in Prussia, 1409, small red brick gothic chapel with a small bell turret, red tile roof, a cross on top, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        160,
+        208
+      ],
+      "num_images": 1,
+      "seed": 7315,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "to_shrine_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "319dc130-017b-420a-9751-21d8799263f5",
+      "remaining_balance": 48.3
+    },
+    {
+      "name": "to_gate",
+      "prompt": "Teutonic Order in Prussia, 1409, wooden gate with a timber gatehouse platform above, small white flag with a black cross, part of a stake palisade running diagonally from upper left to lower right, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        128,
+        160
+      ],
+      "num_images": 1,
+      "seed": 7316,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "to_gate_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "d2735ff0-77f5-4c26-9f9a-3198e502f7ee",
+      "remaining_balance": 48.12
+    },
+    {
+      "name": "rubble_wood",
+      "prompt": "low heap of burnt black and brown log beams, charred timber debris and ashes on the ground, no standing walls, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        160,
+        112
+      ],
+      "num_images": 1,
+      "seed": 7317,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "rubble_wood_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "f01a96e1-859d-4121-9466-9333caecd78a",
+      "remaining_balance": 47.94
+    },
+    {
+      "name": "rubble_brick",
+      "prompt": "low heap of broken red bricks, charred beams and grey dust on the ground, no standing walls, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        160,
+        112
+      ],
+      "num_images": 1,
+      "seed": 7318,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "failed",
+      "error": {
+        "status_code": 502,
+        "code": "inference_failed",
+        "message": "Unable to run inference.",
+        "request_id": "1b27303c-bf67-455e-a93b-bdd1ffc20327"
+      },
+      "task_id": "1b27303c-bf67-455e-a93b-bdd1ffc20327"
+    },
+    {
+      "name": "rubble_brick",
+      "prompt": "low heap of broken red bricks, charred beams and grey dust on the ground, no standing walls, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        160,
+        112
+      ],
+      "num_images": 1,
+      "seed": 7318,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "rubble_brick_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "5c13b9c6-ce2a-4e87-b12e-f91fb8714021",
+      "remaining_balance": 47.76
+    },
+    {
+      "name": "to_castle",
+      "prompt": "Teutonic Order in Prussia, 1409, small castle: square earth rampart with a timber palisade, tall red brick gate tower with a red tile roof and a white flag with a black cross, brick house inside, on a plain white background",
+      "style": "rd_plus__isometric_asset",
+      "requested_style": "rd_plus__isometric_asset",
+      "size": [
+        256,
+        384
+      ],
+      "num_images": 2,
+      "seed": 7350,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": null
+      },
+      "extra": null,
+      "estimated_cost": 0.12,
+      "status": "succeeded",
+      "files": [
+        "to_castle_1.png",
+        "to_castle_2.png"
+      ],
+      "cost": 0.12,
+      "task_id": "146e508d-ba99-4587-8f15-34ba778997fc",
+      "remaining_balance": 47.64
+    }
+  ],
+  "spent": 3.54,
+  "remaining_balance": 47.64
+}

@@ -1,0 +1,12 @@
+{
+  "out_dir": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial",
+  "palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+  "jobs": [
+    {"name": "iso_grass", "style": "rd_plus__isometric", "size": [64, 64], "num_images": 2, "seed": 7110,
+     "note": "no isometric tile style in API; rd_plus__isometric min size 64x64",
+     "prompt": "short green meadow grass with subtle variation and very few tiny pale yellow wildflowers, flat isometric 2:1 ground tile diamond 64x32, seamless, crisp pixel art, no text"},
+    {"name": "iso_field", "style": "rd_plus__isometric", "size": [64, 64], "num_images": 2, "seed": 7111,
+     "note": "no isometric tile style in API; rd_plus__isometric min size 64x64",
+     "prompt": "ploughed field with parallel brown furrows, flat isometric 2:1 ground tile diamond 64x32, seamless, crisp pixel art, no text"}
+  ]
+}

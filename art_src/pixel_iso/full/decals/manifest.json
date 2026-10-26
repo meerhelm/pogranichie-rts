@@ -1,0 +1,384 @@
+{
+  "entries": [
+    {
+      "name": "d_flowers_yellow",
+      "prompt": "small clump of tiny yellow buttercup flowers in grass, single small object, on a plain white background",
+      "style": "rd_plus__isometric_asset",
+      "requested_style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7500,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": null,
+        "reference_images": null
+      },
+      "extra": null,
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "d_flowers_yellow_1.png"
+      ],
+      "cost": 0.06,
+      "task_id": "024e6f33-491e-4ffd-9692-97820c0844ca",
+      "remaining_balance": 51.96
+    },
+    {
+      "name": "d_flowers_white",
+      "prompt": "small clump of tiny white daisies in grass, single small object, on a plain white background",
+      "style": "rd_plus__isometric_asset",
+      "requested_style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7501,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": null,
+        "reference_images": null
+      },
+      "extra": null,
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "d_flowers_white_1.png"
+      ],
+      "cost": 0.06,
+      "task_id": "9fc53588-bb4d-4985-818d-cd68fc71ed38",
+      "remaining_balance": 51.9
+    },
+    {
+      "name": "d_flowers_blue",
+      "prompt": "small clump of tiny blue cornflowers, single small object, on a plain white background",
+      "style": "rd_plus__isometric_asset",
+      "requested_style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7502,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": null,
+        "reference_images": null
+      },
+      "extra": null,
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "d_flowers_blue_1.png"
+      ],
+      "cost": 0.06,
+      "task_id": "8540e66f-382d-4c30-a830-f24b2465b710",
+      "remaining_balance": 51.84
+    },
+    {
+      "name": "d_stone_grey",
+      "prompt": "single grey field stone boulder, single small object, on a plain white background",
+      "style": "rd_plus__isometric_asset",
+      "requested_style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7503,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": null,
+        "reference_images": null
+      },
+      "extra": null,
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "d_stone_grey_1.png"
+      ],
+      "cost": 0.06,
+      "task_id": "ace82ae8-2829-498f-b2ba-51e8a024b427",
+      "remaining_balance": 51.78
+    },
+    {
+      "name": "d_stones_small",
+      "prompt": "three small grey pebbles, single small object, on a plain white background",
+      "style": "rd_plus__isometric_asset",
+      "requested_style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7504,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": null,
+        "reference_images": null
+      },
+      "extra": null,
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "d_stones_small_1.png"
+      ],
+      "cost": 0.06,
+      "task_id": "e38ffba9-5294-4d2c-88b0-ba4174078ad3",
+      "remaining_balance": 51.72
+    },
+    {
+      "name": "d_tussock",
+      "prompt": "grass tussock, tuft of tall green grass, single small object, on a plain white background",
+      "style": "rd_plus__isometric_asset",
+      "requested_style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7505,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": null,
+        "reference_images": null
+      },
+      "extra": null,
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "d_tussock_1.png"
+      ],
+      "cost": 0.06,
+      "task_id": "7c2a5572-2f5a-492e-a80f-9e9a44f2e64c",
+      "remaining_balance": 51.66
+    },
+    {
+      "name": "d_sedge",
+      "prompt": "bog sedge tussock with rusty tips, single small object, on a plain white background",
+      "style": "rd_plus__isometric_asset",
+      "requested_style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7506,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": null,
+        "reference_images": null
+      },
+      "extra": null,
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "d_sedge_1.png"
+      ],
+      "cost": 0.06,
+      "task_id": "2398ce1c-5680-4494-81f9-19c701981e6f",
+      "remaining_balance": 51.6
+    },
+    {
+      "name": "d_mushrooms",
+      "prompt": "small group of brown forest mushrooms, single small object, on a plain white background",
+      "style": "rd_plus__isometric_asset",
+      "requested_style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7507,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": null,
+        "reference_images": null
+      },
+      "extra": null,
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "d_mushrooms_1.png"
+      ],
+      "cost": 0.06,
+      "task_id": "e17004d2-26d5-48d9-8a22-6b88bf78f151",
+      "remaining_balance": 51.54
+    },
+    {
+      "name": "d_stump",
+      "prompt": "old tree stump with moss, single small object, on a plain white background",
+      "style": "rd_plus__isometric_asset",
+      "requested_style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7508,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": null,
+        "reference_images": null
+      },
+      "extra": null,
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "d_stump_1.png"
+      ],
+      "cost": 0.06,
+      "task_id": "6ce9a2a0-7687-4373-9363-d1d9d71e071f",
+      "remaining_balance": 51.48
+    },
+    {
+      "name": "d_bush",
+      "prompt": "small round green bush, single small object, on a plain white background",
+      "style": "rd_plus__isometric_asset",
+      "requested_style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7509,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": null,
+        "reference_images": null
+      },
+      "extra": null,
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "d_bush_1.png"
+      ],
+      "cost": 0.06,
+      "task_id": "274c7a91-880f-48df-bbcc-5ab0051095d9",
+      "remaining_balance": 51.42
+    },
+    {
+      "name": "d_reeds",
+      "prompt": "clump of tall reeds, single small object, on a plain white background",
+      "style": "rd_plus__isometric_asset",
+      "requested_style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7510,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": null,
+        "reference_images": null
+      },
+      "extra": null,
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "d_reeds_1.png"
+      ],
+      "cost": 0.06,
+      "task_id": "2fad3124-9527-45d7-9973-423b7b13f58a",
+      "remaining_balance": 51.36
+    },
+    {
+      "name": "d_puddle",
+      "prompt": "small muddy puddle of water, single small object, on a plain white background",
+      "style": "rd_plus__isometric_asset",
+      "requested_style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7511,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": null,
+        "reference_images": null
+      },
+      "extra": null,
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "d_puddle_1.png"
+      ],
+      "cost": 0.06,
+      "task_id": "53d0cc61-d1e6-4efa-8a38-8ccfb4d8a6f0",
+      "remaining_balance": 51.3
+    },
+    {
+      "name": "d_fern",
+      "prompt": "green fern plant, single small object, on a plain white background",
+      "style": "rd_plus__isometric_asset",
+      "requested_style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7512,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": null,
+        "reference_images": null
+      },
+      "extra": null,
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "d_fern_1.png"
+      ],
+      "cost": 0.06,
+      "task_id": "f0fc2e6d-fa74-4c3e-85df-c96531447bbb",
+      "remaining_balance": 51.24
+    },
+    {
+      "name": "d_deadwood",
+      "prompt": "fallen dry branch with moss, single small object, on a plain white background",
+      "style": "rd_plus__isometric_asset",
+      "requested_style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7513,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": null,
+        "reference_images": null
+      },
+      "extra": null,
+      "estimated_cost": 0.06,
+      "status": "succeeded",
+      "files": [
+        "d_deadwood_1.png"
+      ],
+      "cost": 0.06,
+      "task_id": "2db2c370-ed28-421d-8775-1e9ad6b6c547",
+      "remaining_balance": 51.18
+    }
+  ],
+  "spent": 0.84,
+  "remaining_balance": 51.18
+}

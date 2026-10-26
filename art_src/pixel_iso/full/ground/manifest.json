@@ -1,0 +1,210 @@
+{
+  "entries": [
+    {
+      "name": "g_field",
+      "prompt": "flat ploughed field with straight parallel furrows of brown earth",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        256,
+        128
+      ],
+      "num_images": 1,
+      "seed": 7600,
+      "remove_bg": false,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/inputs/field_iso_patch.png",
+        "reference_images": null
+      },
+      "extra": {
+        "strength": 0.35
+      },
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "g_field_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "e447b0b3-6ace-4694-8257-0ab7791802ec",
+      "remaining_balance": 54.0
+    },
+    {
+      "name": "g_road",
+      "prompt": "flat packed dirt road surface with faint cart ruts",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        256,
+        128
+      ],
+      "num_images": 1,
+      "seed": 7601,
+      "remove_bg": false,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/inputs/road_iso_patch.png",
+        "reference_images": null
+      },
+      "extra": {
+        "strength": 0.35
+      },
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "g_road_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "0b0126eb-7b94-4575-bfab-153a7b1c0474",
+      "remaining_balance": 53.82
+    },
+    {
+      "name": "g_bog",
+      "prompt": "flat bog ground, olive sedge, dark wet mud, small rusty puddles",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        256,
+        128
+      ],
+      "num_images": 1,
+      "seed": 7602,
+      "remove_bg": false,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/inputs/bog_iso_patch.png",
+        "reference_images": null
+      },
+      "extra": {
+        "strength": 0.35
+      },
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "g_bog_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "029d9e15-52a9-41b4-8ee2-2ef212aeb21f",
+      "remaining_balance": 53.64
+    },
+    {
+      "name": "g_quagmire",
+      "prompt": "flat quagmire, pools of black still water between floating olive moss",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        256,
+        128
+      ],
+      "num_images": 1,
+      "seed": 7603,
+      "remove_bg": false,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/inputs/quagmire_iso_patch.png",
+        "reference_images": null
+      },
+      "extra": {
+        "strength": 0.35
+      },
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "g_quagmire_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "657c5f9f-a0ad-4cf0-be19-01d1247ea1ac",
+      "remaining_balance": 53.46
+    },
+    {
+      "name": "g_hill",
+      "prompt": "flat dry hilltop meadow, short yellowish grass, a few bare earth patches",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        256,
+        128
+      ],
+      "num_images": 1,
+      "seed": 7604,
+      "remove_bg": false,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/inputs/hill_iso_patch.png",
+        "reference_images": null
+      },
+      "extra": {
+        "strength": 0.35
+      },
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "g_hill_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "af748984-d61d-43fe-9a94-5cc25ae7838b",
+      "remaining_balance": 53.28
+    },
+    {
+      "name": "g_forest_floor",
+      "prompt": "flat pine forest floor, brown needles, patches of dark green moss",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        256,
+        128
+      ],
+      "num_images": 1,
+      "seed": 7605,
+      "remove_bg": false,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/inputs/forest_floor_iso_patch.png",
+        "reference_images": null
+      },
+      "extra": {
+        "strength": 0.35
+      },
+      "estimated_cost": 0.18,
+      "status": "failed",
+      "error": {
+        "status_code": 502,
+        "code": "inference_failed",
+        "message": "Unable to run inference.",
+        "request_id": "b934f2fd-6f52-4546-9df8-9e7965fc6fb7"
+      },
+      "task_id": "b934f2fd-6f52-4546-9df8-9e7965fc6fb7"
+    },
+    {
+      "name": "g_forest_floor",
+      "prompt": "flat pine forest floor, brown needles, patches of dark green moss",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        256,
+        128
+      ],
+      "num_images": 1,
+      "seed": 7605,
+      "remove_bg": false,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/inputs/forest_floor_iso_patch.png",
+        "reference_images": null
+      },
+      "extra": {
+        "strength": 0.35
+      },
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "g_forest_floor_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "a7a4028d-9019-4c42-8de5-b479e1aa71f0",
+      "remaining_balance": 53.1
+    }
+  ],
+  "spent": 1.08,
+  "remaining_balance": 53.1
+}

@@ -1,0 +1,150 @@
+{
+  "entries": [
+    {
+      "name": "gdl_house_ref",
+      "prompt": "Samogitian peasant log hut of round logs, steep straw thatched roof, small plank door, 15th century Lithuania, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        128,
+        128
+      ],
+      "num_images": 1,
+      "seed": 7200,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/../gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_plus_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "gdl_house_ref_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "fcb99739-3be7-415c-84fa-37e2967794ac",
+      "remaining_balance": 54.78
+    },
+    {
+      "name": "gdl_house_plus2",
+      "prompt": "Samogitian peasant log hut of round logs, steep straw thatched roof, small plank door, 15th century Lithuania, on a plain white background",
+      "style": "rd_plus__isometric_asset",
+      "requested_style": "rd_plus__isometric_asset",
+      "size": [
+        128,
+        128
+      ],
+      "num_images": 2,
+      "seed": 7201,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/../gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": null
+      },
+      "extra": null,
+      "estimated_cost": 0.12,
+      "status": "succeeded",
+      "files": [
+        "gdl_house_plus2_1.png",
+        "gdl_house_plus2_2.png"
+      ],
+      "cost": 0.12,
+      "task_id": "26f50540-7337-4eec-b85d-0a7cc3e54989",
+      "remaining_balance": 54.66
+    },
+    {
+      "name": "nt_pine2",
+      "prompt": "tall Scots pine tree, long bare reddish-orange trunk, small dark green clumpy crown only at the top, no ground, on a plain white background",
+      "style": "rd_plus__isometric_asset",
+      "requested_style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        128
+      ],
+      "num_images": 2,
+      "seed": 7202,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/../gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": null
+      },
+      "extra": null,
+      "estimated_cost": 0.12,
+      "status": "succeeded",
+      "files": [
+        "nt_pine2_1.png",
+        "nt_pine2_2.png"
+      ],
+      "cost": 0.12,
+      "task_id": "8f54639a-b368-42d0-83d0-0ce5743f90e4",
+      "remaining_balance": 54.54
+    },
+    {
+      "name": "iso_grass_i2i",
+      "prompt": "flat green meadow grass ground",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        128,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7210,
+      "remove_bg": false,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/../smolina/palette.png",
+        "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/inputs/fill_grass_1_patch.png",
+        "reference_images": null
+      },
+      "extra": {
+        "strength": 0.35
+      },
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "iso_grass_i2i_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "1ad12ae1-2ca0-4cb6-b44a-b6b0d8a1323a",
+      "remaining_balance": 54.36
+    },
+    {
+      "name": "iso_field_i2i",
+      "prompt": "flat ploughed field with furrows",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        128,
+        64
+      ],
+      "num_images": 1,
+      "seed": 7211,
+      "remove_bg": false,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/../smolina/palette.png",
+        "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/inputs/fill_field_1_patch.png",
+        "reference_images": null
+      },
+      "extra": {
+        "strength": 0.35
+      },
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "iso_field_i2i_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "d263f00d-18ed-401f-b3b1-cb6c1ed1b9be",
+      "remaining_balance": 54.18
+    }
+  ],
+  "spent": 0.78,
+  "remaining_balance": 54.18
+}
