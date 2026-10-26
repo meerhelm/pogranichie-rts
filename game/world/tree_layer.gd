@@ -9,6 +9,12 @@ extends Node
 ## thousands of trees is one texture per kind and batches well.
 
 const KINDS: Array[StringName] = [&"nt_pine", &"nt_birch"]
+## Extra kinds used when they have art (pixel set): a forest cell picks by weight, old forest
+## from OLD_MIX. Missing ones are skipped.
+const MIX: Dictionary[StringName, int] = {
+	&"nt_pine": 40, &"nt_pine_2": 25, &"nt_birch": 15, &"nt_birch_2": 10, &"nt_spruce": 10
+}
+const OLD_MIX: Dictionary[StringName, int] = {&"nt_spruce": 50, &"nt_oak": 20, &"nt_pine": 30}
 const OLD_TINT := Color(0.72, 0.8, 0.72)
 ## Ticks between fog checks of the trees.
 const FOG_EVERY := 10
@@ -23,6 +29,12 @@ var _trees: Dictionary[int, Sprite2D] = {}
 var _textures: Array[Texture2D] = []
 var _pivots: Array[Vector2] = []
 var _scales: Array[float] = []
+## Kind index by name, and the weighted pick lists (kind indices) for forest and old forest.
+var _kind_of: Dictionary[StringName, int] = {}
+var _pick: Array[int] = []
+var _pick_old: Array[int] = []
+## Old forest is darkened only for the two rendered kinds; pixel kinds have their own species.
+var _tint_old := true
 var _version := -1
 
 
@@ -30,12 +42,21 @@ func attach(p_sim: Simulation, clock: SimClock, p_depth_layer: Node2D) -> void:
 	sim = p_sim
 	depth_layer = p_depth_layer
 	for kind in KINDS:
-		var art := SpriteDB.tree(kind)
-		if art == null:
+		if SpriteDB.tree(kind) == null:
 			return
+	for kind: StringName in MIX.keys() + OLD_MIX.keys():
+		var art := SpriteDB.tree(kind)
+		if art == null or _kind_of.has(kind):
+			continue
+		_kind_of[kind] = _textures.size()
 		_textures.append(_merge(art))
 		_pivots.append(art.pivot)
 		_scales.append(art.scale)
+	_pick = _weighted(MIX)
+	_pick_old = _weighted(OLD_MIX)
+	if _pick_old.is_empty():
+		_pick_old = [_kind_of[&"nt_pine"]]
+	_tint_old = SpriteDB.tree(&"nt_spruce") == null
 	_plant()
 	clock.advanced.connect(_on_advanced)
 
@@ -73,6 +94,15 @@ static func _merge(art: SpriteDB.Sprite) -> Texture2D:
 	return ImageTexture.create_from_image(img)
 
 
+func _weighted(mix: Dictionary[StringName, int]) -> Array[int]:
+	var out: Array[int] = []
+	for kind: StringName in mix:
+		if _kind_of.has(kind):
+			for i in mix[kind]:
+				out.append(_kind_of[kind])
+	return out
+
+
 func _is_forest(cell: int) -> bool:
 	var id := sim.nav.terrain_ids[sim.nav.terrain[cell]]
 	return id == NavGrid.FOREST or id == &"t_old_forest"
@@ -92,13 +122,22 @@ func _plant_cell(cell: int) -> void:
 	var y := cell / nav.width
 	var h := absi(hash(Vector2i(x, y)))
 	var old := nav.terrain_ids[nav.terrain[cell]] == &"t_old_forest"
-	var kind := 0 if old or h % 100 < 65 else 1
+	var kind: int
+	if _textures.size() == 2:
+		kind = 0 if old or h % 100 < 65 else 1
+	else:
+		var pick := _pick_old if old else _pick
+		kind = pick[h % pick.size()]
 	var t := Sprite2D.new()
 	t.texture = _textures[kind]
 	t.centered = false
 	t.offset = -_pivots[kind]
-	t.scale = Vector2.ONE * _scales[kind] * (0.9 + (h >> 8) % 20 / 100.0)
-	if old:
+	if _scales[kind] >= 1.0:
+		# Pixel art stays 1:1 and crisp (no random scale, it would smear the pixels).
+		t.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	else:
+		t.scale = Vector2.ONE * _scales[kind] * (0.9 + (h >> 8) % 20 / 100.0)
+	if old and _tint_old:
 		t.modulate = OLD_TINT
 	var jitter := Vector2(((h >> 4) % 31) / 100.0 - 0.15, ((h >> 12) % 31) / 100.0 - 0.15)
 	t.position = Iso.cell_to_screen(Vector2(x + 0.5, y + 0.5) + jitter)

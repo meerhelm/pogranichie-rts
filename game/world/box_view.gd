@@ -71,6 +71,9 @@ func set_sprite(
 		return
 	sprite = p_sprite
 	tint = p_tint
+	# Pixel art (drawn 1:1) stays crisp when the camera zooms; rendered art is smoothed.
+	var pixel := sprite != null and sprite.scale >= 1.0
+	texture_filter = TEXTURE_FILTER_NEAREST if pixel else TEXTURE_FILTER_PARENT_NODE
 	back = p_back
 	front = p_front
 	queue_redraw()

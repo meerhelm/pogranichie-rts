@@ -41,6 +41,8 @@ func build(nav: NavGrid) -> void:
 	# TileMapLayer puts a diamond-down tile's centre half a tile right of Iso's; line them up.
 	position = Vector2(-Iso.HALF_W, 0.0)
 	tile_set = _make_tile_set(nav.terrain_ids)
+	# Ground tiles are pixel art: no smoothing when the camera zooms.
+	texture_filter = TEXTURE_FILTER_NEAREST
 	clear()
 	for y in nav.height:
 		for x in nav.width:

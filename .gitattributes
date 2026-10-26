@@ -33,3 +33,6 @@ ui/skin/*.png !filter !diff !merge binary
 ui/icons/**/*.png !filter !diff !merge binary
 ui/art/* !filter !diff !merge binary
 art/tiles/*.png !filter !diff !merge binary
+# Pixel-iso sources made in the cloud (redrawn ground textures, picked house): plain git too.
+art_src/pixel_iso/ground/tex_*.png !filter !diff !merge binary
+art_src/pixel_iso/full/buildings/gdl_house_1.png !filter !diff !merge binary
