@@ -73,7 +73,13 @@ def _fit(img: Image.Image, kind: str) -> Image.Image:
     if kind == "unit":
         scale = min(scale, MAX_UNIT_SCALE)
     size = (max(1, round(img.width * scale)), max(1, round(img.height * scale)))
-    img = img.resize(size, Image.LANCZOS)
+    # Pixel art enlarged keeps hard pixels (whole steps); anything shrunk is filtered.
+    if scale >= 1.0 and kind == "building":
+        k = int(scale)
+        size = (img.width * k, img.height * k)
+        img = img.resize(size, Image.NEAREST)
+    else:
+        img = img.resize(size, Image.LANCZOS)
     tile = _plate(kind)
     x = (SIZE - img.width) // 2
     y = SIZE - MARGIN - img.height if kind == "unit" else (SIZE - img.height) // 2

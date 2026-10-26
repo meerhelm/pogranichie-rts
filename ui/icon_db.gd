@@ -39,10 +39,14 @@ static func path_of(id: StringName) -> String:
 	return tex.resource_path if tex != null else ""
 
 
-## The icon of an order button (ui/icons/orders), or null.
+## The icon of an order button (ui/icons/orders), or null: a pixel-art PNG where there is one
+## (Retro Diffusion, art_src/pixel_iso), else the hand-drawn SVG.
 static func order(name: String) -> Texture2D:
-	var path := ROOT.path_join("orders/%s.svg" % name)
-	return load(path) if ResourceLoader.exists(path) else null
+	for ext: String in ["png", "svg"]:
+		var path := ROOT.path_join("orders/%s.%s" % [name, ext])
+		if ResourceLoader.exists(path):
+			return load(path)
+	return null
 
 
 ## Path of a top bar icon: a resource (0..3), -1 for Power, or a name such as "time".
