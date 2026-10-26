@@ -1,0 +1,102 @@
+{
+ "out_dir": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/ground",
+ "palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+ "jobs": [
+  {
+   "name": "g_field",
+   "style": "rd_pro__isometric",
+   "size": [
+    256,
+    128
+   ],
+   "num_images": 1,
+   "seed": 7600,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/inputs/field_iso_patch.png",
+   "extra": {
+    "strength": 0.35
+   },
+   "prompt": "flat ploughed field with straight parallel furrows of brown earth"
+  },
+  {
+   "name": "g_road",
+   "style": "rd_pro__isometric",
+   "size": [
+    256,
+    128
+   ],
+   "num_images": 1,
+   "seed": 7601,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/inputs/road_iso_patch.png",
+   "extra": {
+    "strength": 0.35
+   },
+   "prompt": "flat packed dirt road surface with faint cart ruts"
+  },
+  {
+   "name": "g_bog",
+   "style": "rd_pro__isometric",
+   "size": [
+    256,
+    128
+   ],
+   "num_images": 1,
+   "seed": 7602,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/inputs/bog_iso_patch.png",
+   "extra": {
+    "strength": 0.35
+   },
+   "prompt": "flat bog ground, olive sedge, dark wet mud, small rusty puddles"
+  },
+  {
+   "name": "g_quagmire",
+   "style": "rd_pro__isometric",
+   "size": [
+    256,
+    128
+   ],
+   "num_images": 1,
+   "seed": 7603,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/inputs/quagmire_iso_patch.png",
+   "extra": {
+    "strength": 0.35
+   },
+   "prompt": "flat quagmire, pools of black still water between floating olive moss"
+  },
+  {
+   "name": "g_hill",
+   "style": "rd_pro__isometric",
+   "size": [
+    256,
+    128
+   ],
+   "num_images": 1,
+   "seed": 7604,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/inputs/hill_iso_patch.png",
+   "extra": {
+    "strength": 0.35
+   },
+   "prompt": "flat dry hilltop meadow, short yellowish grass, a few bare earth patches"
+  },
+  {
+   "name": "g_forest_floor",
+   "style": "rd_pro__isometric",
+   "size": [
+    256,
+    128
+   ],
+   "num_images": 1,
+   "seed": 7605,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/inputs/forest_floor_iso_patch.png",
+   "extra": {
+    "strength": 0.35
+   },
+   "prompt": "flat pine forest floor, brown needles, patches of dark green moss"
+  }
+ ]
+}

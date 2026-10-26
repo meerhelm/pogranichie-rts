@@ -1,0 +1,35 @@
+{
+ "out_dir": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/buildings",
+ "palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+ "jobs": [
+  {
+   "name": "gdl_gate_fix",
+   "style": "rd_pro__isometric",
+   "size": [
+    128,
+    160
+   ],
+   "num_images": 2,
+   "seed": 7412,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+   ],
+   "prompt": "wooden double gate between two thick log posts with a small roofed lookout platform above, part of a stake palisade running diagonally from upper left to lower right, no houses, on a plain white background"
+  },
+  {
+   "name": "to_castle_fix",
+   "style": "rd_plus__isometric_asset",
+   "size": [
+    256,
+    384
+   ],
+   "num_images": 2,
+   "seed": 7450,
+   "remove_bg": true,
+   "reference_images": null,
+   "prompt": "large red brick Teutonic Order castle, square convent house with steep red tile roofs, tall square corner tower, crenellated walls, gothic arched windows, gatehouse, detailed masonry, on a plain white background"
+  }
+ ]
+}

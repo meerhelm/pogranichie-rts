@@ -1,0 +1,43 @@
+{
+ "out_dir": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2",
+ "palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/../gdl01/palette_buildings.png",
+ "jobs": [
+  {
+   "name": "gdl_house_ref",
+   "style": "rd_pro__isometric",
+   "size": [
+    128,
+    128
+   ],
+   "num_images": 1,
+   "seed": 7200,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_plus_1.png"
+   ],
+   "prompt": "Samogitian peasant log hut of round logs, steep straw thatched roof, small plank door, 15th century Lithuania, on a plain white background"
+  },
+  {
+   "name": "gdl_house_plus2",
+   "style": "rd_plus__isometric_asset",
+   "size": [
+    128,
+    128
+   ],
+   "num_images": 2,
+   "seed": 7201,
+   "prompt": "Samogitian peasant log hut of round logs, steep straw thatched roof, small plank door, 15th century Lithuania, on a plain white background"
+  },
+  {
+   "name": "nt_pine2",
+   "style": "rd_plus__isometric_asset",
+   "size": [
+    64,
+    128
+   ],
+   "num_images": 2,
+   "seed": 7202,
+   "prompt": "tall Scots pine tree, long bare reddish-orange trunk, small dark green clumpy crown only at the top, no ground, on a plain white background"
+  }
+ ]
+}

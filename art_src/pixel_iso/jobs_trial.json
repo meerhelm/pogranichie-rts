@@ -1,0 +1,12 @@
+{
+  "out_dir": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial",
+  "palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+  "jobs": [
+    {"name": "gdl_house_plus", "style": "rd_plus__isometric_asset", "size": [128, 128], "num_images": 2, "seed": 7100,
+     "prompt": "Grand Duchy of Lithuania 1409, Samogitian peasant log hut of round logs with a steep straw thatched roof, small door, isometric 2:1 pixel art game building on a 2x2 tile diamond footprint, seen from the south corner so two walls are visible, light from top-left, crisp pixel art, no ground, no text"},
+    {"name": "gdl_house_pro", "style": "rd_pro__isometric", "size": [128, 128], "num_images": 1, "seed": 7101,
+     "prompt": "Grand Duchy of Lithuania 1409, Samogitian peasant log hut of round logs with a steep straw thatched roof, small door, isometric 2:1 pixel art game building on a 2x2 tile diamond footprint, seen from the south corner so two walls are visible, light from top-left, crisp pixel art, no ground, no text"},
+    {"name": "nt_pine_plus", "style": "rd_plus__isometric_asset", "size": [64, 128], "num_images": 2, "seed": 7102,
+     "prompt": "tall Scots pine tree, reddish bark trunk, dark green clumpy crown at the top, isometric pixel art game asset for an RTS like Age of Empires 2, light from top-left, crisp pixel art, no ground, no text"}
+  ]
+}

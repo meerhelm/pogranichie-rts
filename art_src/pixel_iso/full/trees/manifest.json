@@ -1,0 +1,124 @@
+{
+  "entries": [
+    {
+      "name": "nt_pine",
+      "prompt": "tall Scots pine tree, reddish-orange upper trunk, dark green clumpy crown on the upper half, no ground, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        96,
+        176
+      ],
+      "num_images": 2,
+      "seed": 7400,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/nt_pine_plus_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.36,
+      "status": "succeeded",
+      "files": [
+        "nt_pine_1.png",
+        "nt_pine_2.png"
+      ],
+      "cost": 0.36,
+      "task_id": "48e25c4a-f16d-4c2e-bae3-c18f691da807",
+      "remaining_balance": 52.74
+    },
+    {
+      "name": "nt_birch",
+      "prompt": "birch tree, white bark with black marks, light green airy drooping crown, no ground, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        96,
+        176
+      ],
+      "num_images": 2,
+      "seed": 7401,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/nt_pine_plus_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.36,
+      "status": "succeeded",
+      "files": [
+        "nt_birch_1.png",
+        "nt_birch_2.png"
+      ],
+      "cost": 0.36,
+      "task_id": "47d989c6-8d57-4be4-9dbb-8cafd02eba49",
+      "remaining_balance": 52.38
+    },
+    {
+      "name": "nt_spruce",
+      "prompt": "tall Norway spruce, narrow dark blue-green cone with drooping layered branches to the ground, no ground, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        96,
+        176
+      ],
+      "num_images": 1,
+      "seed": 7402,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/nt_pine_plus_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "nt_spruce_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "f99315d2-6ef6-4efa-8c9e-51e8f77f32f0",
+      "remaining_balance": 52.2
+    },
+    {
+      "name": "nt_oak",
+      "prompt": "old broad oak tree, thick dark gnarled trunk, wide round dense dark green crown, no ground, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        96,
+        176
+      ],
+      "num_images": 1,
+      "seed": 7403,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/nt_pine_plus_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "nt_oak_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "74eb89a7-e139-4a29-913e-eae546708c11",
+      "remaining_balance": 52.02
+    }
+  ],
+  "spent": 1.08,
+  "remaining_balance": 52.02
+}

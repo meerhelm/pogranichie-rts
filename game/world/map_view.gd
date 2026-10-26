@@ -1,10 +1,11 @@
 class_name MapView
 extends TileMapLayer
-## Draws the nav grid's terrain as isometric tiles. Each terrain has a 4x4 atlas of seamless
-## diamonds (art/tiles, made by tools/art/tiles.py); a cell uses the tile (x % 4, y % 4), so
-## the texture runs across cells without seams. A terrain without art falls back to a
-## flat-coloured diamond (COLORS), which the minimap also uses. Art tiles reach past their
-## cell with a ragged fading rim, so a bog melts into the grass instead of a zigzag.
+## Draws the nav grid's terrain as isometric tiles. Each terrain has a PERIOD x PERIOD atlas of
+## seamless diamonds (art/tiles, made by tools/art/pixel_tiles.py); a cell uses the tile
+## (x % PERIOD, y % PERIOD), so the texture runs across cells without seams. A terrain without
+## art falls back to a flat-coloured diamond (COLORS), which the minimap also uses. Art tiles
+## reach past their cell with a ragged rim, so a bog melts into the grass instead of a zigzag.
+## A shader (ground_tint.gdshader) lays large soft patches of colour over it all.
 
 ## Placeholder colours by terrain id.
 const COLORS := {
@@ -25,7 +26,9 @@ const COLORS := {
 const FALLBACK_COLOR := Color(1.0, 0.0, 1.0)
 const TILES := "res://art/tiles"
 ## Cells per repeat of a terrain texture: each terrain atlas holds PERIOD x PERIOD tiles.
-const PERIOD := 4
+const PERIOD := 8
+## Large soft patches of colour over the ground (see ground_tint.gdshader).
+const TINT := preload("res://game/world/ground_tint.gdshader")
 
 var grid: NavGrid
 ## Terrain as last drawn and the grid version it was drawn at, to redraw only what changed
@@ -41,6 +44,11 @@ func build(nav: NavGrid) -> void:
 	# TileMapLayer puts a diamond-down tile's centre half a tile right of Iso's; line them up.
 	position = Vector2(-Iso.HALF_W, 0.0)
 	tile_set = _make_tile_set(nav.terrain_ids)
+	# Ground tiles are pixel art: no smoothing when the camera zooms.
+	texture_filter = TEXTURE_FILTER_NEAREST
+	var tint := ShaderMaterial.new()
+	tint.shader = TINT
+	material = tint
 	clear()
 	for y in nav.height:
 		for x in nav.width:

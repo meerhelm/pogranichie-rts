@@ -68,8 +68,9 @@ func test_resources_have_map_art() -> void:
 
 func test_terrain_tiles_repeat_every_period() -> void:
 	var layer := MapView.new()
-	var grid := NavGrid.new(6, 6)
+	var n := MapView.PERIOD + 2
+	var grid := NavGrid.new(n, n)
 	layer.build(grid)
-	assert_eq(layer.get_cell_atlas_coords(Vector2i(5, 2)), Vector2i(1, 2))
-	assert_eq(layer.get_cell_source_id(Vector2i(5, 2)), grid.terrain[grid.cell_at(5, 2)])
+	assert_eq(layer.get_cell_atlas_coords(Vector2i(n - 1, 2)), Vector2i(1, 2))
+	assert_eq(layer.get_cell_source_id(Vector2i(n - 1, 2)), grid.terrain[grid.cell_at(n - 1, 2)])
 	layer.free()

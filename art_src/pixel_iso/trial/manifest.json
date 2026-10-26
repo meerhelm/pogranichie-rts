@@ -1,0 +1,132 @@
+{
+  "entries": [
+    {
+      "name": "gdl_house_plus",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian peasant log hut of round logs with a steep straw thatched roof, small door, isometric 2:1 pixel art game building on a 2x2 tile diamond footprint, seen from the south corner so two walls are visible, light from top-left, crisp pixel art, no ground, no text",
+      "style": "rd_plus__isometric_asset",
+      "requested_style": "rd_plus__isometric_asset",
+      "size": [
+        128,
+        128
+      ],
+      "num_images": 2,
+      "seed": 7100,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "estimated_cost": 0.12,
+      "status": "succeeded",
+      "files": [
+        "gdl_house_plus_1.png",
+        "gdl_house_plus_2.png"
+      ],
+      "cost": 0.12,
+      "task_id": "0d195a23-3315-4c0b-b4a4-ad2d4cc90bc0",
+      "remaining_balance": 55.98
+    },
+    {
+      "name": "gdl_house_pro",
+      "prompt": "Grand Duchy of Lithuania 1409, Samogitian peasant log hut of round logs with a steep straw thatched roof, small door, isometric 2:1 pixel art game building on a 2x2 tile diamond footprint, seen from the south corner so two walls are visible, light from top-left, crisp pixel art, no ground, no text",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        128,
+        128
+      ],
+      "num_images": 1,
+      "seed": 7101,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "estimated_cost": 0.18,
+      "status": "succeeded",
+      "files": [
+        "gdl_house_pro_1.png"
+      ],
+      "cost": 0.18,
+      "task_id": "095bbd7e-9aa0-46b4-b629-22cb262589d6",
+      "remaining_balance": 55.8
+    },
+    {
+      "name": "nt_pine_plus",
+      "prompt": "tall Scots pine tree, reddish bark trunk, dark green clumpy crown at the top, isometric pixel art game asset for an RTS like Age of Empires 2, light from top-left, crisp pixel art, no ground, no text",
+      "style": "rd_plus__isometric_asset",
+      "requested_style": "rd_plus__isometric_asset",
+      "size": [
+        64,
+        128
+      ],
+      "num_images": 2,
+      "seed": 7102,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png"
+      },
+      "estimated_cost": 0.12,
+      "status": "succeeded",
+      "files": [
+        "nt_pine_plus_1.png",
+        "nt_pine_plus_2.png"
+      ],
+      "cost": 0.12,
+      "task_id": "3a853644-61a0-435a-8c58-92ab22a2ec86",
+      "remaining_balance": 55.62
+    },
+    {
+      "name": "iso_grass",
+      "prompt": "short green meadow grass with subtle variation and very few tiny pale yellow wildflowers, flat isometric 2:1 ground tile diamond 64x32, seamless, crisp pixel art, no text",
+      "style": "rd_plus__isometric",
+      "requested_style": "rd_plus__isometric",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 2,
+      "seed": 7110,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png"
+      },
+      "estimated_cost": 0.12,
+      "note": "no isometric tile style in API; rd_plus__isometric min size 64x64",
+      "status": "succeeded",
+      "files": [
+        "iso_grass_1.png",
+        "iso_grass_2.png"
+      ],
+      "cost": 0.12,
+      "task_id": "5f945ea5-e748-4e58-9263-9a50358c513b",
+      "remaining_balance": 55.44
+    },
+    {
+      "name": "iso_field",
+      "prompt": "ploughed field with parallel brown furrows, flat isometric 2:1 ground tile diamond 64x32, seamless, crisp pixel art, no text",
+      "style": "rd_plus__isometric",
+      "requested_style": "rd_plus__isometric",
+      "size": [
+        64,
+        64
+      ],
+      "num_images": 2,
+      "seed": 7111,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png"
+      },
+      "estimated_cost": 0.12,
+      "note": "no isometric tile style in API; rd_plus__isometric min size 64x64",
+      "status": "succeeded",
+      "files": [
+        "iso_field_1.png",
+        "iso_field_2.png"
+      ],
+      "cost": 0.12,
+      "task_id": "79be46b1-1fc0-42b3-97ff-e4ffe41272d8",
+      "remaining_balance": 55.26
+    }
+  ],
+  "spent": 0.66,
+  "remaining_balance": 55.26
+}

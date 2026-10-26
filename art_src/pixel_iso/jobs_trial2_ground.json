@@ -1,0 +1,9 @@
+{"out_dir": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2", "palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/../smolina/palette.png",
+ "jobs": [
+  {"name": "iso_grass_i2i", "style": "rd_pro__isometric", "size": [128,64], "num_images": 1, "seed": 7210, "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/inputs/fill_grass_1_patch.png", "extra": {"strength": 0.35},
+   "prompt": "flat green meadow grass ground"},
+  {"name": "iso_field_i2i", "style": "rd_pro__isometric", "size": [128,64], "num_images": 1, "seed": 7211, "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/inputs/fill_field_1_patch.png", "extra": {"strength": 0.35},
+   "prompt": "flat ploughed field with furrows"}
+ ]}
