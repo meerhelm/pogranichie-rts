@@ -1,0 +1,54 @@
+{
+ "out_dir": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/decals",
+ "palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+ "jobs": [
+  {
+   "name": "d_boulder",
+   "style": "rd_plus__isometric_asset",
+   "size": [
+    64,
+    64
+   ],
+   "num_images": 1,
+   "seed": 7710,
+   "remove_bg": true,
+   "prompt": "large mossy grey granite boulder half sunk in grass, single object, on a plain white background"
+  },
+  {
+   "name": "d_log",
+   "style": "rd_plus__isometric_asset",
+   "size": [
+    64,
+    64
+   ],
+   "num_images": 1,
+   "seed": 7711,
+   "remove_bg": true,
+   "prompt": "fallen birch log lying on the ground with moss, single object, on a plain white background"
+  },
+  {
+   "name": "d_juniper",
+   "style": "rd_plus__isometric_asset",
+   "size": [
+    64,
+    64
+   ],
+   "num_images": 1,
+   "seed": 7712,
+   "remove_bg": true,
+   "prompt": "low dark green juniper bush, single object, on a plain white background"
+  },
+  {
+   "name": "d_hazel",
+   "style": "rd_plus__isometric_asset",
+   "size": [
+    64,
+    64
+   ],
+   "num_images": 1,
+   "seed": 7713,
+   "remove_bg": true,
+   "prompt": "round hazel bush with light green leaves, single object, on a plain white background"
+  }
+ ]
+}

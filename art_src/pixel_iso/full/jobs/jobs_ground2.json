@@ -1,0 +1,86 @@
+{
+ "out_dir": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/ground",
+ "palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/smolina/palette.png",
+ "jobs": [
+  {
+   "name": "g2_lush",
+   "style": "rd_pro__isometric",
+   "size": [
+    256,
+    128
+   ],
+   "num_images": 1,
+   "seed": 7700,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/inputs/g2_lush_iso_patch.png",
+   "extra": {
+    "strength": 0.35
+   },
+   "prompt": "flat lush green meadow grass, dense and dark"
+  },
+  {
+   "name": "g2_dry",
+   "style": "rd_pro__isometric",
+   "size": [
+    256,
+    128
+   ],
+   "num_images": 1,
+   "seed": 7701,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/inputs/g2_dry_iso_patch.png",
+   "extra": {
+    "strength": 0.35
+   },
+   "prompt": "flat dry faded meadow grass, olive and straw tones"
+  },
+  {
+   "name": "g2_meadow",
+   "style": "rd_pro__isometric",
+   "size": [
+    256,
+    128
+   ],
+   "num_images": 1,
+   "seed": 7702,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/inputs/g2_meadow_iso_patch.png",
+   "extra": {
+    "strength": 0.35
+   },
+   "prompt": "flat flowering meadow, light green grass with tiny white and purple flowers"
+  },
+  {
+   "name": "g2_trampled",
+   "style": "rd_pro__isometric",
+   "size": [
+    256,
+    128
+   ],
+   "num_images": 1,
+   "seed": 7703,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/inputs/g2_trampled_iso_patch.png",
+   "extra": {
+    "strength": 0.35
+   },
+   "prompt": "flat trampled grass with worn patches of bare brown earth"
+  },
+  {
+   "name": "g2_quagmire",
+   "style": "rd_pro__isometric",
+   "size": [
+    256,
+    128
+   ],
+   "num_images": 1,
+   "seed": 7704,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/inputs/g2_quagmire_iso_patch.png",
+   "extra": {
+    "strength": 0.35
+   },
+   "prompt": "flat quagmire, dark mossy bog with irregular black water pools"
+  }
+ ]
+}
