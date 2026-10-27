@@ -103,6 +103,9 @@ func page() -> String:
 				tr("Double click selects all units of that type on screen."),
 				tr("Right click orders: walk, attack the enemy, or work on what you click."),
 				tr("Ctrl+1…9 makes a group, 1…9 selects it."),
+				tr(
+					". or the idle worker button in the top bar finds a peasant with nothing to do."
+				),
 				tr("W A S D, the arrows or the screen edge move the view."),
 			],
 		],

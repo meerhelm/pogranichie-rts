@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" path="res://ui/icons/population.svg" id="icon_population"]
 [ext_resource type="Texture2D" path="res://ui/icons/age.svg" id="icon_age"]
 [ext_resource type="Texture2D" path="res://ui/icons/time.svg" id="icon_time"]
+[ext_resource type="Texture2D" path="res://ui/icons/idle_worker.svg" id="icon_idle"]
 
 [node name="Hud" type="Control"]
 process_mode = 3
@@ -146,6 +147,14 @@ stretch_mode = 5
 layout_mode = 2
 mouse_filter = 1
 theme_override_font_sizes/font_size = 22
+
+[node name="IdleButton" type="Button" parent="Top/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 22
+theme_override_constants/icon_max_width = 30
+icon = ExtResource("icon_idle")
 
 [node name="Age" type="HBoxContainer" parent="Top/Row"]
 layout_mode = 2

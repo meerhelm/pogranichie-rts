@@ -22,6 +22,8 @@ extends Control
 ## Looking (2026-10): a left click on anything that is not the player's own (another side's or
 ## a wild unit, another side's building, a deposit, a carcass, a forest cell, a place of
 ## power) shows it in the card without selecting it for orders (`look`, `look_ref`).
+## Idle workers (2026-10): . (or the HUD's button) selects the next idle peasant and centres the
+## camera on it, the next one on each press; Shift+. selects all of them (IdleWorkers).
 
 signal formation_changed(kind: Formation.Kind)
 ## The selected building, the building being placed or its place changed (for the HUD).
@@ -80,6 +82,8 @@ var _wall_from := Vector2i(-1, -1)
 var _cursor_cell := Vector2i.ZERO
 ## Alt was held on the right click being handled (an enemy building is set on fire).
 var _torch := false
+## The idle worker the last . went to, so the next press goes on to the one after it.
+var _last_idle := 0
 
 
 func _ready() -> void:
@@ -193,6 +197,9 @@ func _key(key: InputEventKey) -> void:
 				_center_on_selection()
 			_last_group = digit
 			_last_group_ms = now
+		return
+	if key.physical_keycode in [KEY_PERIOD, KEY_KP_PERIOD]:
+		select_idle_worker(key.shift_pressed)
 		return
 	if key.is_action(&"formation_line"):
 		_set_formation(Formation.Kind.LINE)
@@ -848,6 +855,35 @@ func builders() -> PackedInt32Array:
 		if def != null and (def.has_class(&"peasant") or def.tags.has(&"builds_shrine")):
 			out.append(id)
 	return out
+
+
+## Selects the next idle worker and centres the camera on it (`all`: selects every idle worker
+## and centres on them). False if there is none.
+func select_idle_worker(all := false) -> bool:
+	if sim == null:
+		return false
+	var idle := IdleWorkers.of(sim, player)
+	if idle.is_empty():
+		return false
+	if casting != null:
+		stop_casting()
+	if taking_apart:
+		stop_taking_apart()
+	if placing != null:
+		_stop_placing()
+	if all:
+		selection.set_ids(idle)
+	else:
+		_last_idle = IdleWorkers.next_after(idle, _last_idle)
+		selection.set_ids(PackedInt32Array([_last_idle]))
+	_select_building(Vector2(-1, -1))
+	_look_at(Vector2(-1, -1))
+	if camera != null:
+		var sum := Vector2.ZERO
+		for id in selection.ids:
+			sum += Iso.fixed_to_screen(sim.entities.pos_x[id - 1], sim.entities.pos_y[id - 1])
+		camera.look_at_point(sum / selection.ids.size())
+	return true
 
 
 func _order(cmd: SimCommand) -> void:

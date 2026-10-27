@@ -20,6 +20,7 @@ extends SceneTree
 ##   speed:N (the game speed button stepped N times up, e.g. 2 for 4x),
 ##   forest:X:Y (no fog: a forest patch from cell X, Y with the player's units in it and behind
 ##   it, two selected, and one on open ground beside it, to see their halos and the tree tints),
+##   idle:N (the idle worker button pressed N times: the Nth idle peasant selected, camera on it),
 ##   units:X:Y:ID,ID,... (no fog: the listed units, heroes too, in a row from cell X, Y, two
 ##   cells apart, the camera on them)
 ##   rally (the player's town centre selected, its rally point set a few cells away),
@@ -144,6 +145,9 @@ func _act() -> void:
 	elif _action.begins_with("speed:"):
 		for i in int(_action.split(":")[1]):
 			(main.get_node("UI/Hud") as Hud).step_speed(1)
+	elif _action.begins_with("idle:"):
+		for i in int(_action.split(":")[1]):
+			(main.get_node("UI/Hud") as Hud)._idle_button.pressed.emit()
 	elif _action == "help" and main.has_node("UI/Hud"):
 		(main.get_node("UI/Hud") as Hud).help.open(true)
 

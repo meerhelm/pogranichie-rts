@@ -88,6 +88,11 @@ func same_type(
 	_replace(same)
 
 
+## Selects exactly these units (the idle worker button).
+func set_ids(new_ids: PackedInt32Array) -> void:
+	_replace(new_ids)
+
+
 func assign_group(n: int) -> void:
 	groups[n] = ids.duplicate()
 

@@ -72,6 +72,10 @@ msgstr ""
 msgid "+%s a second"
 msgstr ""
 
+#: ui/help_panel.gd
+msgid ". or the idle worker button in the top bar finds a peasant with nothing to do."
+msgstr ""
+
 #: maps/skirmish.json
 msgid "1 September 1435. By lake Žirnajai near Ukmergė Sigismund Kęstutaitis caught Švitrigaila's army and the Livonian knights on the march, cut it in two and routed it; the Livonian Master fell."
 msgstr ""
@@ -1112,6 +1116,10 @@ msgstr ""
 #: missions/gdl_07/mission.json
 #: missions/gdl_08/mission.json
 msgid "Chronicler"
+msgstr ""
+
+#: ui/hud.gd
+msgid "Click or . for the next one, Shift+click or Shift+. for all"
 msgstr ""
 
 #: ui/help_panel.gd
@@ -2321,6 +2329,10 @@ msgstr ""
 
 #: missions/crown_04/mission.json
 msgid "I will, pan castellan. As long as I can."
+msgstr ""
+
+#: ui/hud.gd
+msgid "Idle workers: %d"
 msgstr ""
 
 #: missions/gdl_03/mission.json

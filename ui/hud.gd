@@ -7,7 +7,9 @@ extends Control
 ## draws nothing. The top bar shows each value as an icon and a number (names in the tooltips). In a
 ## skirmish the Advisor gives a new player step-by-step hints; F1 opens the «How to play» page
 ## (HelpPanel), which the game menu opens too. A button by the menu sets the game speed: 1x, 2x, 4x,
-## 8x (click or + goes up, right click or - goes down).
+## 8x (click or + goes up, right click or - goes down). The idle worker button by the population
+## shows how many peasants stand idle; a click (or .) selects the next one and centres the camera
+## on it, Shift selects all of them.
 
 ## Game speeds the speed button steps through, as multipliers.
 const SPEEDS: Array[int] = [1, 2, 4, 8]
@@ -37,6 +39,7 @@ var player := 1
 @onready var _time: Label = $Top/Row/Time/Value
 @onready var _menu_button: Button = %MenuButton
 @onready var _speed_button: Button = %SpeedButton
+@onready var _idle_button: Button = %IdleButton
 @onready var _placing: Label = %Placing
 @onready var _paused: Label = %Paused
 @onready var _bottom_panel: PanelContainer = %BottomPanel
@@ -48,6 +51,7 @@ func _ready() -> void:
 	_power.visibility_changed.connect(_sync_power_icon)
 	_speed_button.gui_input.connect(_on_speed_input)
 	_menu_button.pressed.connect(menu.open)
+	_idle_button.pressed.connect(_on_idle_pressed)
 	menu.resumed.connect(refresh)
 	menu.help_requested.connect(help.open)
 	menu.hints_changed.connect(_on_hints_changed)
@@ -141,6 +145,25 @@ func _on_speed_input(event: InputEvent) -> void:
 	_speed_button.accept_event()
 
 
+func _on_idle_pressed() -> void:
+	if input != null and input.select_idle_worker(Input.is_key_pressed(KEY_SHIFT)):
+		refresh()
+
+
+func _show_idle() -> void:
+	_idle_button.visible = input != null and IdleWorkers.any(sim, player)
+	if not _idle_button.visible:
+		return
+	var idle := IdleWorkers.of(sim, player).size()
+	_idle_button.text = str(idle)
+	_idle_button.modulate.a = 1.0 if idle > 0 else 0.55
+	_idle_button.tooltip_text = (
+		tr("Idle workers: %d") % idle
+		+ "\n"
+		+ tr("Click or . for the next one, Shift+click or Shift+. for all")
+	)
+
+
 func _show_speed() -> void:
 	_speed_button.text = "%dx" % speed()  # notr
 	_speed_button.tooltip_text = tr("Game speed: click or + faster, right click or - slower")
@@ -173,6 +196,7 @@ func refresh() -> void:
 		var age := eco.db.age_by_index(state.age)
 		_age.text = UiText.name_of(age.id) if age != null else ""
 		_time.text = UiText.clock(sim.tick)
+		_show_idle()
 	_placing.text = _placing_text()
 	card.refresh()
 	commands.refresh()
