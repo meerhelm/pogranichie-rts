@@ -2,6 +2,75 @@
 	"_comment": "What each build has. Newest version first; the first entry must match application/config/version in project.godot. Every new build: bump the version there and in export_presets.cfg, add an entry on top. Texts per game language; a missing language falls back to en.",
 	"versions": [
 		{
+			"version": "0.2.0",
+			"date": "2026-10-27",
+			"items": [
+				{
+					"en": "New pixel art for the whole isometric view: ground, roads, bogs, details and trees, and every building of the Duchy, the Crown, the Order and Muscovy, with walls, palisades, gates and new panel icons.",
+					"be": "Новы піксель-арт для ўсяго ізаметрычнага выгляду: зямля, дарогі, балоты, дробязі і дрэвы, а таксама ўсе пабудовы Княства, Кароны, Ордэна і Масквы разам з мурамі, частаколамі, брамамі і новымі значкамі на панэлі.",
+					"pl": "Nowa grafika pikselowa całego widoku izometrycznego: ziemia, drogi, bagna, detale i drzewa oraz wszystkie budowle Księstwa, Korony, Zakonu i Moskwy, z murami, palisadami, bramami i nowymi ikonami na panelu.",
+					"uk": "Новий піксель-арт для всього ізометричного вигляду: земля, дороги, болота, дрібниці й дерева, а також усі будівлі Князівства, Корони, Ордену й Москви разом із мурами, частоколами, брамами та новими значками на панелі.",
+					"lt": "Nauja pikselių grafika visam izometriniam vaizdui: žemė, keliai, pelkės, smulkmenos ir medžiai bei visi Kunigaikštystės, Karūnos, Ordino ir Maskvos pastatai su sienomis, aptvarais, vartais ir naujomis skydelio piktogramomis."
+				},
+				{
+					"en": "New pixel units of the Duchy: peasant, spearman and forest archer, in eight facings with idle, walk and attack, and new portraits.",
+					"be": "Новыя піксельныя юніты Княства: селянін, кап'яносец і лясны стралец, ва ўсіх васьмі кірунках са стойкай, хадой і атакай, і новыя партрэты.",
+					"pl": "Nowe pikselowe jednostki Księstwa: chłop, włócznik i leśny łucznik, w ośmiu kierunkach, z postojem, marszem i atakiem, oraz nowe portrety.",
+					"uk": "Нові піксельні юніти Князівства: селянин, списник і лісовий лучник, у восьми напрямках зі стійкою, ходою й атакою, і нові портрети.",
+					"lt": "Nauji pikseliniai Kunigaikštystės daliniai: valstietis, ietininkas ir miško lankininkas, aštuoniomis kryptimis su stovėjimu, ėjimu ir puolimu, bei nauji portretai."
+				},
+				{
+					"en": "New interface look: oak planks, iron corners and a folk ornament band on panels and windows, and a new main menu background.",
+					"be": "Новы выгляд інтэрфейсу: дубовыя дошкі, жалезныя куты і стужка народнага арнаменту на панэлях і вокнах, новы фон галоўнага меню.",
+					"pl": "Nowy wygląd interfejsu: dębowe deski, żelazne narożniki i pas ludowego ornamentu na panelach i oknach, nowe tło menu głównego.",
+					"uk": "Новий вигляд інтерфейсу: дубові дошки, залізні кути й стрічка народного орнаменту на панелях і вікнах, новий фон головного меню.",
+					"lt": "Nauja sąsajos išvaizda: ąžuolo lentos, geležiniai kampai ir liaudies ornamento juosta skydeliuose ir languose, naujas pagrindinio meniu fonas."
+				},
+				{
+					"en": "Network play one on one: host or join a game by address, lobby with faction and map choice, pause, chat and resign.",
+					"be": "Сеткавая гульня адзін на адзін: стварыць гульню або далучыцца па адрасе, лобі з выбарам фракцыі і карты, паўза, чат і здача.",
+					"pl": "Gra sieciowa jeden na jednego: założenie gry lub dołączenie po adresie, lobby z wyborem frakcji i mapy, pauza, czat i poddanie się.",
+					"uk": "Мережева гра один на один: створити гру або приєднатися за адресою, лобі з вибором фракції та мапи, пауза, чат і здача.",
+					"lt": "Tinklo žaidimas vienas prieš vieną: sukurti žaidimą arba prisijungti pagal adresą, laukiamasis su frakcijos ir žemėlapio pasirinkimu, pauzė, pokalbis ir pasidavimas."
+				},
+				{
+					"en": "Idle peasant button on the top bar with their count: a click or the «.» key selects the next idle peasant and centres the camera, Shift selects all of them.",
+					"be": "Кнопка бяздзейных сялян на верхняй панэлі з іх лікам: пстрычка або клавіша «.» выбірае наступнага бяздзейнага селяніна і цэнтруе камеру, Shift выбірае ўсіх.",
+					"pl": "Przycisk bezczynnych chłopów na górnym pasku z ich liczbą: kliknięcie lub klawisz «.» wybiera następnego bezczynnego chłopa i centruje kamerę, Shift wybiera wszystkich.",
+					"uk": "Кнопка бездіяльних селян на верхній панелі з їхньою кількістю: клік або клавіша «.» вибирає наступного бездіяльного селянина й центрує камеру, Shift вибирає всіх.",
+					"lt": "Neveikiančių valstiečių mygtukas viršutinėje juostoje su jų skaičiumi: spustelėjimas arba klavišas «.» pažymi kitą neveikiantį valstietį ir centruoja kamerą, Shift pažymi visus."
+				},
+				{
+					"en": "Hovering a resource on the top bar shows how many peasants gather it, income and spending per minute, and the bonuses already researched and still available.",
+					"be": "Пры навядзенні на рэсурс на верхняй панэлі відаць, колькі сялян яго збірае, прыход і расход за хвіліну, а таксама вывучаныя і даступныя бонусы.",
+					"pl": "Po najechaniu na surowiec na górnym pasku widać, ilu chłopów go zbiera, przychód i wydatki na minutę oraz bonusy zbadane i jeszcze dostępne.",
+					"uk": "Під час наведення на ресурс на верхній панелі видно, скільки селян його збирає, прихід і витрати за хвилину, а також вивчені й доступні бонуси.",
+					"lt": "Užvedus pelę ant ištekliaus viršutinėje juostoje matyti, kiek valstiečių jį renka, pajamos ir išlaidos per minutę bei ištirti ir dar prieinami priedai."
+				},
+				{
+					"en": "Fields placed with Shift queue up for the builders, and when a field is finished one peasant stays on it and starts working it.",
+					"be": "Палі, пастаўленыя з Shift, становяцца ў чаргу для будаўнікоў, а на кожным скончаным полі адзін селянін застаецца і пачынае яго апрацоўваць.",
+					"pl": "Pola stawiane z Shiftem ustawiają się w kolejce dla budowniczych, a na każdym ukończonym polu jeden chłop zostaje i zaczyna je uprawiać.",
+					"uk": "Поля, поставлені з Shift, стають у чергу для будівельників, а на кожному завершеному полі один селянин залишається й починає його обробляти.",
+					"lt": "Su Shift padėti laukai sustoja į eilę statytojams, o kiekviename baigtame lauke vienas valstietis lieka ir pradeda jį dirbti."
+				},
+				{
+					"en": "Trees and buildings in front of your units turn see-through, so units in the forest stay visible, and every tree gets its own shade, so groves look less uniform.",
+					"be": "Дрэвы і пабудовы перад вашымі юнітамі становяцца напаўпразрыстымі, і юнітаў у лесе відаць, а кожнае дрэва мае свой адценне, і гаі выглядаюць менш аднастайна.",
+					"pl": "Drzewa i budowle przed twoimi jednostkami stają się przezroczyste, więc jednostki w lesie są widoczne, a każde drzewo ma własny odcień, więc gaje wyglądają mniej jednolicie.",
+					"uk": "Дерева й будівлі перед вашими юнітами стають напівпрозорими, тож юнітів у лісі видно, а кожне дерево має свій відтінок, і гаї виглядають менш одноманітно.",
+					"lt": "Medžiai ir pastatai priešais jūsų dalinius tampa permatomi, todėl miške daliniai matomi, o kiekvienas medis turi savo atspalvį, tad giraitės atrodo mažiau vienodos."
+				},
+				{
+					"en": "Fixed a crash at the start of some missions with the Crown. The game is now also built for macOS.",
+					"be": "Выпраўлена падзенне на пачатку некаторых місій з Каронай. Гульня цяпер збіраецца і для macOS.",
+					"pl": "Naprawiono awarię na początku niektórych misji z Koroną. Gra jest teraz budowana także na macOS.",
+					"uk": "Виправлено падіння на початку деяких місій із Короною. Гра тепер збирається й для macOS.",
+					"lt": "Ištaisytas strigimas kai kurių misijų su Karūna pradžioje. Žaidimas dabar kompiliuojamas ir macOS."
+				}
+			]
+		},
+		{
 			"version": "0.1.1",
 			"date": "2026-10-23",
 			"items": [
