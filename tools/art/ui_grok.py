@@ -37,16 +37,6 @@ def save(img, name):
     print(f"{OUT}/{name} {img.size}")
 
 
-def framed(fill, frame, size):
-    """`fill` tiled under `frame` stretched to `size`."""
-    out = Image.new("RGBA", size)
-    for y in range(0, size[1], fill.height):
-        for x in range(0, size[0], fill.width):
-            out.alpha_composite(fill, (x, y))
-    out.alpha_composite(frame.resize(size, Image.LANCZOS))
-    return out
-
-
 def opaque_bbox(img, threshold=200):
     a = np.asarray(img.getchannel("A")) >= threshold
     ys, xs = np.nonzero(a)
@@ -106,20 +96,97 @@ def command_buttons():
     save(gray, "cmd_disabled.png")
 
 
+def periodic(img, period, axis):
+    """`img` cut to `period` along `axis` (0 = x, 1 = y) so that it tiles without a seam: the
+    part past the period is cross-faded into the start. `img` must be longer than `period`."""
+    a = np.asarray(img).astype(float)
+    if axis == 1:
+        a = a.transpose(1, 0, 2)
+    extra = a.shape[1] - period
+    out = a[:, :period].copy()
+    t = np.linspace(0.0, 1.0, extra + 2)[1:-1][None, :, None]
+    out[:, :extra] = a[:, period:] * (1 - t) + a[:, :extra] * t
+    if axis == 1:
+        out = out.transpose(1, 0, 2)
+    return Image.fromarray(out.round().astype(np.uint8))
+
+
+# The iron-bound frame, rebuilt from two clean pieces of Grok's iron_frame.png (its top right
+# bracket is drawn wrong and its left beam is patchy): the bottom left bracket, flipped into
+# all four corners, and a stretch of the right beam (mirrored for the left one) and of the
+# bottom beam (flipped for the top one). Sizes in source pixels; the margins are the nine-patch
+# margins, the beams between them repeat every PERIOD so that they tile in the theme.
+FRAME_BRACKET = (0, 142, 46, 181)   # bottom left iron bracket, with its beam ends
+FRAME_SIDE = (152, 45, 192, 125)    # right beam between the brackets, no rivet
+FRAME_BOTTOM = (50, 142, 140, 181)  # bottom beam between the brackets, same rows as the bracket
+FRAME_MARGIN = (48, 48)
+FRAME_PERIOD = 64
+
+
+def _band(img, axis, start, end):
+    """`img`'s alpha kept only from `start` to `end` along `axis` (0 = x, 1 = y)."""
+    a = np.asarray(img.getchannel("A")).copy()
+    if axis == 0:
+        a[:, :start] = 0
+        a[:, end:] = 0
+    else:
+        a[:start, :] = 0
+        a[end:, :] = 0
+    return Image.fromarray(a)
+
+
+def iron_frame(fill):
+    """The frame over `fill` (a FRAME_PERIOD-square tile laid under it, phase-matched to the
+    nine-patch middle), as a nine-patch of 2 * FRAME_MARGIN + FRAME_PERIOD source pixels."""
+    src = load("iron_frame.png")
+    mx, my = FRAME_MARGIN
+    n = FRAME_PERIOD
+    w, h = 2 * mx + n, 2 * my + n
+    out = Image.new("RGBA", (w, h))
+    # Under the frame: the fill, over the whole rectangle.
+    for y in range(my - 2 * n, h, n):
+        for x in range(mx - 2 * n, w, n):
+            out.paste(fill, (x, y))
+    # Beams: one period each in the nine-patch middle. The right and bottom ones are laid,
+    # then mirrored onto the left and top.
+    side = periodic(src.crop(FRAME_SIDE), n, 1)
+    bottom = periodic(src.crop(FRAME_BOTTOM), n, 0)
+    right = Image.new("RGBA", (w, h))
+    for y in range(my - 2 * n, h, n):
+        right.paste(side, (w - side.width + 4, y))
+    low = Image.new("RGBA", (w, h))
+    for x in range(mx - 2 * n, w, n):
+        low.paste(bottom, (x, h - bottom.height))
+    bl = src.crop(FRAME_BRACKET)
+    bw, bh = bl.size
+    # Beam ends stop under the brackets, not past them.
+    right.putalpha(_band(right, 1, bh - 8, h - bh + 8))
+    low.putalpha(_band(low, 0, bw - 8, w - bw + 8))
+    beams = Image.alpha_composite(right, right.transpose(Image.FLIP_LEFT_RIGHT))
+    beams.alpha_composite(low)
+    beams.alpha_composite(low.transpose(Image.FLIP_TOP_BOTTOM))
+    out.alpha_composite(beams)
+    # Brackets: the bottom left one in every corner.
+    out.alpha_composite(bl, (0, h - bh))
+    out.alpha_composite(bl.transpose(Image.FLIP_LEFT_RIGHT), (w - bw, h - bh))
+    out.alpha_composite(bl.transpose(Image.FLIP_TOP_BOTTOM), (0, 0))
+    out.alpha_composite(bl.transpose(Image.ROTATE_180), (w - bw, 0))
+    return out
+
+
 def panels():
     """Dark oak boards inside a frame with iron corner brackets (big panels, minimap, portrait)."""
-    iron = load("iron_frame.png")
-    iron = iron.crop(opaque_bbox(iron, 128))
     dark = load("plank_dark.png")
     x0, y0, x1, y1 = opaque_bbox(dark, 250)
     boards = dark.crop((x0 + 30, y0 + 25, x1 - 30, y1 - 25))
-    panel = framed(boards, iron, iron.size)
-    save(scaled(panel, 0.5), "panel.png")
-    black = Image.new("RGBA", (32, 32), (14, 11, 8, 255))
-    save(scaled(framed(black, iron, iron.size), 0.5), "minimap_frame.png")
-    save(scaled(framed(black, iron, iron.size), 0.34), "portrait_frame.png")
+    n = FRAME_PERIOD
+    tile = boards.crop((40, 0, 40 + n + 14, boards.height)).resize((n + 14, n + 14), Image.LANCZOS)
+    tile = periodic(periodic(tile, n, 0), n, 1)
+    save(scaled(iron_frame(tile), 0.5), "panel.png")
+    black = Image.new("RGBA", (n, n), (14, 11, 8, 255))
+    save(scaled(iron_frame(black), 0.5), "minimap_frame.png")
+    save(scaled(iron_frame(black), 0.375), "portrait_frame.png")
     well = darker(boards, 0.55).crop((0, 0, 64, 48))
-    rim = Image.new("RGBA", well.size)
     a = np.zeros((well.height, well.width, 4), np.uint8)
     a[:2, :] = (8, 6, 4, 255)
     a[:, :2] = (8, 6, 4, 255)
