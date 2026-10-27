@@ -1,8 +1,10 @@
 """Retro Diffusion v2 batch client for the isometric trials.
 
-Usage: python3 rd_client.py jobs.json [--cap 0.60] [--dry]
+Usage: python3 rd_client.py jobs.json [--cap 0.60] [--dry] [--resume]
 Key from ~/.config/retrodiffusion/token (never printed), sent as X-RD-Token.
 Prices every job with check_cost first and refuses to run if the sum exceeds --cap.
+--resume skips jobs that already succeeded in the output manifest; a job that fails three
+times (the API answers 502 now and then) is reported and skipped, the rest go on.
 """
 import argparse, base64, json, sys, time, uuid, urllib.request, urllib.error
 from pathlib import Path
@@ -139,6 +141,7 @@ def main():
     ap.add_argument("jobs")
     ap.add_argument("--cap", type=float, default=0.60)
     ap.add_argument("--dry", action="store_true")
+    ap.add_argument("--resume", action="store_true")
     a = ap.parse_args()
     spec = json.loads(Path(a.jobs).read_text())
     out = Path(spec["out_dir"]); out.mkdir(parents=True, exist_ok=True)
@@ -147,7 +150,12 @@ def main():
 
     styles = available_styles()
     prepared, total = [], 0.0
+    done = set()
+    if a.resume:
+        done = {e["name"] for e in load_manifest(out)["entries"] if e.get("status") == "succeeded"}
     for job in spec["jobs"]:
+        if job["name"] in done:
+            continue
         style, note = nearest_style(job["style"], styles)
         if style is None:
             sys.exit(f"no isometric style available for {job['name']}")
@@ -168,11 +176,17 @@ def main():
         return
 
     m = load_manifest(out)
+    failed = []
     for job, body, price in prepared:
-        if not run_job(job, body, out, m, price):
+        for attempt in range(3):
+            if run_job(job, body, out, m, price):
+                break
             print(f"retry {job['name']}: {m['entries'][-1].get('error')}")
-            if not run_job(job, body, out, m, price):
-                sys.exit(f"STOP: {job['name']} failed twice: {m['entries'][-1].get('error')}")
+            time.sleep(5 * (attempt + 1))
+        else:
+            failed.append(job["name"])
+    if failed:
+        print("FAILED:", " ".join(failed))
     print(f"spent {m['spent']} remaining {m.get('remaining_balance')}")
 
 

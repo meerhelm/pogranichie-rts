@@ -1,13 +1,13 @@
 {
  "frame": [
-  176,
-  171
+  80,
+  72
  ],
  "pivot": [
-  64,
-  104
+  40,
+  64
  ],
- "scale": 0.5,
+ "scale": 1.0,
  "anims": {
   "idle": {
    "row": 0,
@@ -16,8 +16,8 @@
   },
   "walk": {
    "row": 8,
-   "frames": 12,
-   "fps": 15
+   "frames": 8,
+   "fps": 10
   },
   "attack": {
    "row": 16,
@@ -25,7 +25,7 @@
    "fps": 12
   }
  },
- "bar_y": 55,
+ "bar_y": 10,
  "rows_per_anim": 8,
  "facing": "row offset = UnitView.facing (0 east, clockwise, 2 south)"
 }

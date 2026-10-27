@@ -21,6 +21,26 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
   -s tools/art/screenshot.gd -- /tmp/shot.png 6 2.0   # seconds, camera zoom
 ```
 
+## Pixel art (Retro Diffusion)
+
+Buildings, trees, decals and the first units are now pixel art generated with Retro Diffusion
+and drawn 1:1 (`"scale": 1.0`, nearest filter). Raw output and job files live in
+`art_src/pixel_iso/full`; the key is `~/.config/retrodiffusion/token`, never in the repo.
+
+```sh
+python3 art_src/pixel_iso/rd_client.py jobs.json --dry            # free: price every job
+python3 art_src/pixel_iso/rd_client.py jobs.json --cap 2 --resume  # run, skip what succeeded
+python3 -m tools.art.pixel_iso --src art_src/pixel_iso/full --out art/sprites [--only id ...]
+python3 -m tools.art.pixel_units [id ...]   # unit sheets + panel icons from the animation GIFs
+godot --headless -s tools/art/make_frames.gd -- gdl_peasant   # then SpriteFrames
+```
+
+- Buildings: `rd_pro__isometric` with the reference huts as `reference_images`, a building
+  palette, `remove_bg`; prompts say «no people». `picks.json` names the chosen raw per id.
+- Units: one view (`rd_pro__isometric`, 64×64) → `rd_advanced_animation__rotate` (8 views in a
+  GIF) → idle / walking / attack (`rd_advanced_animation__*`, 8 frames each) for facings 0, 1,
+  2, 6, 7; 3, 4, 5 are mirrors. The team colour is a belt band at the waist.
+
 ## Files
 
 - `rig.py` — camera, light, scale, shadow catcher; `heading_for_facing` turns a model to the

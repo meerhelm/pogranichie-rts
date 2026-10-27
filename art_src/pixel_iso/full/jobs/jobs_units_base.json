@@ -1,0 +1,53 @@
+{
+ "out_dir": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units",
+ "jobs": [
+  {
+   "name": "gdl_peasant_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    64,
+    64
+   ],
+   "num_images": 2,
+   "seed": 7600,
+   "remove_bg": true,
+   "prompt": "single small full body figure, 15th century Lithuanian peasant man, long linen shirt to the knees with a red belt, grey woollen svita coat, felt cap, bast shoes with foot wraps, holding a wood axe, standing in a neutral pose, isometric view facing down right, game unit sprite, on a plain white background"
+  },
+  {
+   "name": "gdl_spearman_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    64,
+    64
+   ],
+   "num_images": 2,
+   "seed": 7601,
+   "remove_bg": true,
+   "prompt": "single small full body figure, 15th century Lithuanian foot spearman, padded quilted jacket with a red sash, plain round iron cap, long boar spear with a crossbar, narrow wooden hand shield with a long groove on the left arm, bast shoes, standing in a neutral pose, isometric view facing down right, game unit sprite, on a plain white background"
+  },
+  {
+   "name": "gdl_forest_archer_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    64,
+    64
+   ],
+   "num_images": 2,
+   "seed": 7602,
+   "remove_bg": true,
+   "prompt": "single small full body figure, 15th century Lithuanian forest archer, green and brown clothes, dark hood, red hem and red belt, long wooden bow in the left hand, quiver of arrows on the back, knife at the belt, no armour, standing in a neutral pose, isometric view facing down right, game unit sprite, on a plain white background"
+  },
+  {
+   "name": "gdl_forest_archer_base2",
+   "style": "rd_pro__isometric",
+   "size": [
+    64,
+    64
+   ],
+   "num_images": 2,
+   "seed": 7612,
+   "remove_bg": true,
+   "prompt": "single small full body figure alone, 15th century Lithuanian forest archer, green and brown clothes, dark hood, red belt, long wooden bow held upright in the left hand, quiver on the back, standing in a neutral pose, isometric view facing down right, game unit sprite, no ground, no grass, no trees, isolated on a plain white background"
+  }
+ ]
+}
