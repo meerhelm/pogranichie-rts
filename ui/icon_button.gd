@@ -35,6 +35,7 @@ var _compact := false
 func _init(texture: Texture2D = null, p_caption := "", compact := false) -> void:
 	_compact = compact
 	custom_minimum_size = COMPACT if compact else SIZE
+	theme_type_variation = &"CommandButton"
 	focus_mode = Control.FOCUS_NONE
 	clip_contents = true
 	var box := VBoxContainer.new()

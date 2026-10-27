@@ -1,7 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://ui/main_menu.gd" id="1_menu"]
-[ext_resource type="Texture2D" path="res://ui/art/menu_background.jpg" id="2_bg"]
+[ext_resource type="Texture2D" path="res://ui/art/menu_background_grok.jpg" id="2_bg"]
 [ext_resource type="PackedScene" path="res://ui/settings_panel.tscn" id="3_settings"]
 [ext_resource type="PackedScene" path="res://ui/help_panel.tscn" id="4_help"]
 [ext_resource type="PackedScene" path="res://ui/about_panel.tscn" id="5_about"]

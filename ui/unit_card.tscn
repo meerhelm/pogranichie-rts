@@ -14,7 +14,7 @@ theme_override_constants/separation = 10
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
-theme_type_variation = &"Well"
+theme_type_variation = &"PortraitFrame"
 
 [node name="Portrait" type="TextureRect" parent="Outer/Frame"]
 unique_name_in_owner = true
