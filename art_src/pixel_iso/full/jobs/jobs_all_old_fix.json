@@ -1,0 +1,118 @@
+{
+ "out_dir": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/buildings",
+ "palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+ "jobs": [
+  {
+   "name": "pl_farm_px2",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    192
+   ],
+   "num_images": 2,
+   "seed": 8004,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "medieval strip fields of the three-field system, Poland 1410s: a strip of ripe golden rye, a strip of young green wheat sprouts in rows, and a ploughed brown fallow strip side by side, narrow grass balks between them, a stook of sheaves, a wooden harrow, completely flat on the ground, no thickness, no soil cross-section, no maize, no corn cobs, no people, on a plain white background"
+  },
+  {
+   "name": "to_farm_px2",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    192
+   ],
+   "num_images": 2,
+   "seed": 8024,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_shrine_1.png"
+   ],
+   "prompt": "Teutonic Order in Prussia, 1410s, a large flat ploughed field in straight dark brown furrows with young green rows of rye, a wooden rail fence along one edge, a wooden wheelbarrow, completely flat on the ground, no thickness, no soil cross-section, no people, on a plain white background"
+  },
+  {
+   "name": "to_wall_px2",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    176
+   ],
+   "num_images": 2,
+   "seed": 8081,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/buildings/gdl_wall_px_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_castle_fix_2.png"
+   ],
+   "prompt": "Teutonic Order in Prussia, 1410s, a short straight Gothic red brick wall segment standing on the ground, seen from above at an isometric angle, running diagonally from upper left to lower right, crenellated top, a white plastered frieze band under the crenels, arrow slits, dark brick plinth, both ends visible, no towers, no people, on a plain white background"
+  },
+  {
+   "name": "pl_lazaret_px2",
+   "style": "rd_pro__isometric",
+   "size": [
+    160,
+    176
+   ],
+   "num_images": 2,
+   "seed": 8007,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, field infirmary: a long ridge tent of canvas with red and white trim, a small tent, two stretchers, a cauldron over a fire on a tripod, linen drying on a line, a water barrel, straw bedding, a small red banner, no people, on a plain white background"
+  },
+  {
+   "name": "pl_range_px2",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    192
+   ],
+   "num_images": 2,
+   "seed": 8011,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, shooting range: an open shingled shed with racks of bows and crossbows, round straw targets on stands, a shooting line drawn on trodden ground, no people, on a plain white background"
+  },
+  {
+   "name": "pl_tower_px2",
+   "style": "rd_pro__isometric",
+   "size": [
+    112,
+    240
+   ],
+   "num_images": 2,
+   "seed": 8019,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, single defensive tower standing alone: a fieldstone foot, a square red brick shaft with white stone bands, an overhanging timber hoarding with loopholes, a steep shingle pyramid roof, a small red pennant, no wall attached, no people, on a plain white background"
+  },
+  {
+   "name": "to_range_px2",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    192
+   ],
+   "num_images": 2,
+   "seed": 8029,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_shrine_1.png"
+   ],
+   "prompt": "Teutonic Order in Prussia, 1410s, Gothic red brick and red roof tiles, crossbow shooting ground: a small brick shed with a red tile roof, a rack of crossbows, round straw targets on stands, trodden ground, no people, on a plain white background"
+  }
+ ]
+}

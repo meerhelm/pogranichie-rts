@@ -1,13 +1,13 @@
 {
  "size": [
-  330,
-  260
+  202,
+  169
  ],
  "pivot": [
-  141,
-  173
+  77,
+  109
  ],
- "scale": 0.5,
+ "scale": 1.0,
  "pivot_is": "centre of the footprint",
  "cells": [
   2,
@@ -21,5 +21,6 @@
   "damaged_1",
   "damaged_2",
   "rubble"
- ]
+ ],
+ "source": "retro diffusion, tools/art/pixel_iso.py"
 }

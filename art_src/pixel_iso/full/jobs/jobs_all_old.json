@@ -1,0 +1,662 @@
+{
+ "out_dir": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/buildings",
+ "palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+ "jobs": [
+  {
+   "name": "pl_barracks_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    192
+   ],
+   "num_images": 1,
+   "seed": 7900,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, armoury yard: a log hall on a stone plinth under a shingle roof, wooden pavises painted red with a white eagle along the wall, a spear rack, a wooden practice post, no people, on a plain white background"
+  },
+  {
+   "name": "pl_battery_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    160,
+    176
+   ],
+   "num_images": 1,
+   "seed": 7901,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, artillery battery: a half ring of wicker gabions filled with earth around a plank floor, a pyramid of stone cannon balls, a rammer lying on the planks, no cannon, no people, on a plain white background"
+  },
+  {
+   "name": "pl_castle_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    256,
+    256
+   ],
+   "num_images": 1,
+   "seed": 7902,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, royal castle: crenellated brick curtain walls on a stone foot, round corner towers, a tall round brick keep with a conical red roof, a gatehouse with a stone portal, a brick palace with a high red tile roof inside the court, a red banner with a white eagle, no people, on a plain white background"
+  },
+  {
+   "name": "pl_dock_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    192
+   ],
+   "num_images": 1,
+   "seed": 7903,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, river landing: a plank quay on wooden piles over a small square basin of water, a shingled store shed on posts, a timber jib crane with a hanging chest, barrels and sacks on the quay, no people, on a plain white background"
+  },
+  {
+   "name": "pl_farm_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    192
+   ],
+   "num_images": 1,
+   "seed": 7904,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "medieval strip fields of the three-field system, 1410s Poland: a strip of ripe golden rye, a strip of young green corn and a ploughed brown fallow strip side by side, narrow grass balks between them, a stook of sheaves, a wooden harrow, flat on the ground, no people, on a plain white background"
+  },
+  {
+   "name": "pl_granary_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    160,
+    176
+   ],
+   "num_images": 1,
+   "seed": 7905,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, wooden granary on stilts with a shingled roof carried forward over wooden posts as an arcade, plank walls, a ladder, no people, on a plain white background"
+  },
+  {
+   "name": "pl_house_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    160,
+    176
+   ],
+   "num_images": 1,
+   "seed": 7906,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, peasant cottage: whitewashed timber walls under a high hipped straw thatch roof, a wattle fence with clay pots on its stakes, a wooden bench by the door, no people, on a plain white background"
+  },
+  {
+   "name": "pl_lazaret_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    160,
+    176
+   ],
+   "num_images": 1,
+   "seed": 7907,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, field infirmary: a long ridge tent of canvas with red and white trim, a small tent, two stretchers, a cauldron over a fire on a tripod, linen drying on a line, a water barrel, straw bedding, a small red banner, no people, on a plain white background"
+  },
+  {
+   "name": "pl_lumber_yard_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    160,
+    176
+   ],
+   "num_images": 1,
+   "seed": 7908,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, lumber yard: an open shingled shed on posts, stacks of logs and sawn boards, a sawing trestle, an axe in a chopping block, no people, on a plain white background"
+  },
+  {
+   "name": "pl_market_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    192
+   ],
+   "num_images": 1,
+   "seed": 7909,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, market: a timber cloth hall with an arcade of wooden posts and a shingle roof, two stalls under red and white striped awnings, bolts of cloth, scales, barrels, no people, on a plain white background"
+  },
+  {
+   "name": "pl_mine_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    160,
+    176
+   ],
+   "num_images": 1,
+   "seed": 7910,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, lead and silver mine: a shaft with a wooden windlass under a small shingled roof, a bucket on a rope, heaps of grey ore, wicker baskets, a small plank shed, no people, on a plain white background"
+  },
+  {
+   "name": "pl_range_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    192
+   ],
+   "num_images": 1,
+   "seed": 7911,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, shooting range: an open shingled shed with racks of bows and crossbows, round straw targets on stands, a shooting line drawn on trodden ground, no people, on a plain white background"
+  },
+  {
+   "name": "pl_salt_works_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    160,
+    176
+   ],
+   "num_images": 1,
+   "seed": 7912,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, salt works: a plank boiling house with a roof vent and white steam rising, a horse capstan of timber over a brine well, barrels and white cones of salt, no people, on a plain white background"
+  },
+  {
+   "name": "pl_shrine_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    160,
+    176
+   ],
+   "num_images": 1,
+   "seed": 7913,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, roadside wooden cross with a little roof over its arms and a red sash, on a low mound with field stones, inside a small picket fence, no people, on a plain white background"
+  },
+  {
+   "name": "pl_shrine_chapel_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    160,
+    208
+   ],
+   "num_images": 1,
+   "seed": 7914,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, small whitewashed roadside chapel with red brick corners under a steep shingle roof, a little bell turret with a spire on the ridge, a tall wooden cross beside it, no people, on a plain white background"
+  },
+  {
+   "name": "pl_siege_workshop_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    192
+   ],
+   "num_images": 1,
+   "seed": 7915,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, siege workshop: an open shingled shed on posts, a wrought iron bombard barrel lying on wooden trestles, stone cannon balls, a spare cart wheel, timber, no people, on a plain white background"
+  },
+  {
+   "name": "pl_smithy_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    192
+   ],
+   "num_images": 1,
+   "seed": 7916,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, village smithy: a log smithy with a fieldstone chimney, an open forge under a shingled canopy, an anvil on a stump, a water trough, no people, on a plain white background"
+  },
+  {
+   "name": "pl_stable_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    192
+   ],
+   "num_images": 1,
+   "seed": 7917,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, stable: a long log stable under a straw thatch roof, an open hay barn on posts, a small fenced paddock, a wooden trough, no horses, no people, on a plain white background"
+  },
+  {
+   "name": "pl_temple_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    256
+   ],
+   "num_images": 1,
+   "seed": 7918,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, brick Gothic parish church: a nave under a steep red tile roof, a lower chancel, buttresses and pointed windows, white plastered blind niches, a square west tower with a tall green copper octagonal spire, no people, on a plain white background"
+  },
+  {
+   "name": "pl_tower_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    112,
+    240
+   ],
+   "num_images": 1,
+   "seed": 7919,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, single defensive tower standing alone: a fieldstone foot, a square red brick shaft with white stone bands, an overhanging timber hoarding with loopholes, a steep shingle pyramid roof, a small red pennant, no wall attached, no people, on a plain white background"
+  },
+  {
+   "name": "pl_town_center_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    256,
+    256
+   ],
+   "num_images": 1,
+   "seed": 7920,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, noble manor: a whitewashed timber house on a stone basement under a high shingled hipped roof, a porch on wooden columns with a gable over the door, two brick chimneys, a small brick treasury house under red tiles beside it, a well sweep, a red banner with a white eagle, no fence, no people, on a plain white background"
+  },
+  {
+   "name": "pl_gate_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    96,
+    160
+   ],
+   "num_images": 1,
+   "seed": 7921,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, only a wooden gate, nothing beside it: two thick square timber posts, closed double plank leaves painted red with a white eagle, a small roofed lookout platform under shingles on top, gate faces down left, no fence, no palisade, no wall on either side, no people, on a plain white background"
+  },
+  {
+   "name": "to_barracks_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    192
+   ],
+   "num_images": 1,
+   "seed": 7922,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_shrine_1.png"
+   ],
+   "prompt": "Teutonic Order in Prussia, 1410s, Gothic red brick and red roof tiles, knechts' house: a long brick hall with a red tile roof and a stepped gable, spears and painted pavises leaning by the wall, a small white flag with a black cross on the gable, no people, on a plain white background"
+  },
+  {
+   "name": "to_brickworks_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    160,
+    176
+   ],
+   "num_images": 1,
+   "seed": 7923,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_shrine_1.png"
+   ],
+   "prompt": "Teutonic Order in Prussia, 1410s, Gothic red brick and red roof tiles, brickworks: a domed brick kiln with smoke, an open drying shed on posts under tiles with rows of raw bricks, stacks of red bricks, a clay pit, no people, on a plain white background"
+  },
+  {
+   "name": "to_farm_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    192
+   ],
+   "num_images": 1,
+   "seed": 7924,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_shrine_1.png"
+   ],
+   "prompt": "Teutonic Order in Prussia, 1410s, a large flat ploughed field in straight dark brown furrows with young green rows, a wooden fence along one edge, a wheelbarrow, flat on the ground, no people, on a plain white background"
+  },
+  {
+   "name": "to_granary_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    160,
+    176
+   ],
+   "num_images": 1,
+   "seed": 7925,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_shrine_1.png"
+   ],
+   "prompt": "Teutonic Order in Prussia, 1410s, Gothic red brick and red roof tiles, half-timbered granary: white plaster between dark timber framing on a brick base, steep red tile roof, a hoist beam over a loft door, sacks, no people, on a plain white background"
+  },
+  {
+   "name": "to_lumber_yard_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    160,
+    176
+   ],
+   "num_images": 1,
+   "seed": 7926,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_shrine_1.png"
+   ],
+   "prompt": "Teutonic Order in Prussia, 1410s, Gothic red brick and red roof tiles, lumber yard: an open shed on posts under a red tile roof, stacks of logs and sawn boards, sawing trestles, no people, on a plain white background"
+  },
+  {
+   "name": "to_market_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    192
+   ],
+   "num_images": 1,
+   "seed": 7927,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_shrine_1.png"
+   ],
+   "prompt": "Teutonic Order in Prussia, 1410s, Gothic red brick and red roof tiles, Hanseatic trading house: a tall brick warehouse with a stepped gable, a hoist beam with a rope, barrels, bolts of cloth, scales on a table, a small white flag with a black cross, no people, on a plain white background"
+  },
+  {
+   "name": "to_mine_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    160,
+    176
+   ],
+   "num_images": 1,
+   "seed": 7928,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_shrine_1.png"
+   ],
+   "prompt": "Teutonic Order in Prussia, 1410s, Gothic red brick and red roof tiles, bloomery: a squat brick furnace with a chimney and glowing mouth, a bellows shed under tiles, heaps of bog iron ore and charcoal, iron blooms, no people, on a plain white background"
+  },
+  {
+   "name": "to_range_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    192
+   ],
+   "num_images": 1,
+   "seed": 7929,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_shrine_1.png"
+   ],
+   "prompt": "Teutonic Order in Prussia, 1410s, Gothic red brick and red roof tiles, crossbow shooting ground: a small brick shed with a red tile roof, a rack of crossbows, round straw targets on stands, trodden ground, no people, on a plain white background"
+  },
+  {
+   "name": "to_siege_workshop_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    192
+   ],
+   "num_images": 1,
+   "seed": 7930,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_shrine_1.png"
+   ],
+   "prompt": "Teutonic Order in Prussia, 1410s, Gothic red brick and red roof tiles, siege workshop: a brick and timber shed under red tiles, a wooden trebuchet frame half built, a bombard barrel on trestles, stone balls, timber, no people, on a plain white background"
+  },
+  {
+   "name": "to_smithy_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    192
+   ],
+   "num_images": 1,
+   "seed": 7931,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_shrine_1.png"
+   ],
+   "prompt": "Teutonic Order in Prussia, 1410s, Gothic red brick and red roof tiles, brick smithy with a red tile roof and a tall brick chimney, an open forge under a lean-to, an anvil, a quenching trough, no people, on a plain white background"
+  },
+  {
+   "name": "to_stable_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    192
+   ],
+   "num_images": 1,
+   "seed": 7932,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_shrine_1.png"
+   ],
+   "prompt": "Teutonic Order in Prussia, 1410s, Gothic red brick and red roof tiles, stud farm: long brick stables with red tile roofs around a yard, a fenced paddock of wooden rails, a hay rick, no horses, no people, on a plain white background"
+  },
+  {
+   "name": "to_temple_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    256
+   ],
+   "num_images": 1,
+   "seed": 7933,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_shrine_1.png"
+   ],
+   "prompt": "Teutonic Order in Prussia, 1410s, Gothic red brick and red roof tiles, convent church: a tall brick Gothic church with a steep red tile roof, pointed windows, buttresses, a stepped west gable, a small white flag with a black cross, no people, on a plain white background"
+  },
+  {
+   "name": "to_tower_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    112,
+    240
+   ],
+   "num_images": 1,
+   "seed": 7934,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_shrine_1.png"
+   ],
+   "prompt": "Teutonic Order in Prussia, 1410s, Gothic red brick and red roof tiles, single brick defensive tower standing alone: a square red brick tower with crenellations, arrow slits, a steep red tile pyramid roof, a small white flag with a black cross on top, no wall attached, no people, on a plain white background"
+  },
+  {
+   "name": "to_town_center_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    256,
+    256
+   ],
+   "num_images": 1,
+   "seed": 7935,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_shrine_1.png"
+   ],
+   "prompt": "Teutonic Order in Prussia, 1410s, Gothic red brick and red roof tiles, Order's manor farm: a brick yard with a large stepped-gable brick hall, a smaller brick barn, red tile roofs, a well, a white flag with a black cross on the hall, no fence, no people, on a plain white background"
+  },
+  {
+   "name": "to_gate_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    96,
+    160
+   ],
+   "num_images": 1,
+   "seed": 7936,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_shrine_1.png"
+   ],
+   "prompt": "Teutonic Order in Prussia, 1410s, only a wooden gate, nothing beside it: two thick timber posts, closed double plank leaves, a small roofed lookout platform under red tiles on top, a small white flag with a black cross, gate faces down left, no fence, no palisade, no wall on either side, no people, on a plain white background"
+  },
+  {
+   "name": "gdl_gate_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    96,
+    160
+   ],
+   "num_images": 1,
+   "seed": 7937,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+   ],
+   "prompt": "Samogitian, Grand Duchy of Lithuania, 1409, round logs, only a wooden gate, nothing beside it: two thick round log posts, closed double plank leaves, a small roofed lookout platform under shingles on top, a small red pennant, gate faces down left, no fence, no palisade, no wall on either side, no people, on a plain white background"
+  },
+  {
+   "name": "mo_watchtower_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    112,
+    240
+   ],
+   "num_images": 1,
+   "seed": 7938,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+   ],
+   "prompt": "Grand Principality of Moscow, 1500, single watchtower standing alone: four tall leaning log posts with cross braces and a ladder, a plank platform with a railing, a small hipped plank roof on posts, a signal barrel on the platform, small red pennant, unpainted wood, no people, on a plain white background"
+  },
+  {
+   "name": "gdl_wall_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    176
+   ],
+   "num_images": 1,
+   "seed": 7980,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+   ],
+   "prompt": "Samogitian, Grand Duchy of Lithuania, 1409, straight wooden castle wall of log cribs filled with earth, a fighting walk on top behind a plank breastwork with loopholes and a little shingle roof over it, running diagonally from upper left to lower right, three cells long, no towers, no people, on a plain white background"
+  },
+  {
+   "name": "to_wall_px",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    176
+   ],
+   "num_images": 1,
+   "seed": 7981,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_shrine_1.png"
+   ],
+   "prompt": "Teutonic Order in Prussia, 1410s, straight Gothic red brick town wall on a dark brick plinth, crenellated, a white plastered frieze band, arrow slits, running diagonally from upper left to lower right, three cells long, no towers, no people, on a plain white background"
+  }
+ ]
+}

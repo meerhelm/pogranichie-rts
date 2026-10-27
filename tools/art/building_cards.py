@@ -154,7 +154,7 @@ def main(dest: str) -> None:
         _, _, scale, cells = view(sid)
         w, h = cells if isinstance(cells, list) else (cells, cells)
         cost = re.findall(r"\d+", row["cost"].split(",")[0])
-        cards.append({"id": sid, "img": str((out / "img" / f"{sid}.png").resolve()), "name": row["name"],
+        cards.append({"id": sid, "img": str((out / "img" / f"{sid}.png").resolve()), "name": row["name"].rstrip("*"),
                       "faction": factions[row["faction"]]["name"], "age": row["age"],
                       "cost": [int(x) for x in cost[:4]] if len(cost) >= 4 else [],
                       "cost_note": row["cost"] if len(cost) < 4 or "," in row["cost"] else "",

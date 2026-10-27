@@ -21,7 +21,9 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-	var cards: Array = JSON.parse_string(FileAccess.get_file_as_string(_dir.path_join("cards.json")))
+	var cards: Array = JSON.parse_string(
+		FileAccess.get_file_as_string(_dir.path_join("cards.json"))
+	)
 	DirAccess.make_dir_recursive_absolute(_dir.path_join("cards"))
 	var theme: Theme = load(THEME)
 	var n := 0
@@ -74,7 +76,8 @@ func _card(card: Dictionary, theme: Theme) -> Control:
 	v.add_theme_constant_override(&"separation", 10)
 	m.add_child(v)
 	v.add_child(_label(card["name"], 40, Color(1.0, 0.93, 0.78), true))
-	var sub := "%s  ·  эпоха «%s»  ·  %s клеток" % [card["faction"], card["age"], card["cells"]]  # notr
+	var fmt := "%s  ·  эпоха «%s»  ·  %s клеток"  # notr
+	var sub := fmt % [card["faction"], card["age"], card["cells"]]
 	v.add_child(_label(sub, 22, Color(0.78, 0.7, 0.56)))
 	var orn := PanelContainer.new()
 	orn.theme_type_variation = &"Ornament"

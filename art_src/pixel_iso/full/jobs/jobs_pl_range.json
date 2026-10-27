@@ -1,0 +1,22 @@
+{
+ "out_dir": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/buildings",
+ "palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+ "jobs": [
+  {
+   "name": "pl_range_px3",
+   "style": "rd_pro__isometric",
+   "size": [
+    224,
+    192
+   ],
+   "num_images": 2,
+   "seed": 8061,
+   "remove_bg": true,
+   "reference_images": [
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+    "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/art_src/pixel_iso/full/buildings/to_house_1.png"
+   ],
+   "prompt": "Kingdom of Poland, 1410s, empty shooting range: an open shingled shed on posts with racks of bows and crossbows, three round straw targets on wooden stands, a rope shooting line on trodden ground, nobody there, no people, no archers, no figures, on a plain white background"
+  }
+ ]
+}

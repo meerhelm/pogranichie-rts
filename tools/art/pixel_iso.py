@@ -52,13 +52,58 @@ BUILD = {
     "gdl_temple": (3, 3, "gdl", "wood"),
     "gdl_field_camp": (3, 3, "gdl", "wood"),
     "gdl_siege_workshop": (3, 3, "gdl", "wood"),
+    "mo_watchtower": (1, 1, "mo", "wood"),
+    # Crown of Poland
+    "pl_town_center": (4, 4, "pl", "wood"),
+    "pl_castle": (4, 4, "pl", "brick"),
+    "pl_house": (2, 2, "pl", "wood"),
+    "pl_granary": (2, 2, "pl", "wood"),
+    "pl_lumber_yard": (2, 2, "pl", "wood"),
+    "pl_mine": (2, 2, "pl", "wood"),
+    "pl_battery": (2, 2, "pl", "wood"),
+    "pl_lazaret": (2, 2, "pl", "wood"),
+    "pl_salt_works": (2, 2, "pl", "wood"),
+    "pl_shrine": (2, 2, "pl", "wood"),
+    "pl_shrine_chapel": (2, 2, "pl", "brick"),
+    "pl_farm": (3, 3, "pl", "wood"),
+    "pl_barracks": (3, 3, "pl", "wood"),
+    "pl_dock": (3, 3, "pl", "wood"),
+    "pl_market": (3, 3, "pl", "wood"),
+    "pl_range": (3, 3, "pl", "wood"),
+    "pl_siege_workshop": (3, 3, "pl", "wood"),
+    "pl_smithy": (3, 3, "pl", "wood"),
+    "pl_stable": (3, 3, "pl", "wood"),
+    "pl_temple": (3, 3, "pl", "brick"),
+    "pl_tower": (1, 1, "pl", "brick"),
+    "pl_gate": (1, 1, "pl", "wood"),
+    # Teutonic Order
+    "to_town_center": (4, 4, "to", "brick"),
+    "to_brickworks": (2, 2, "to", "brick"),
+    "to_granary": (2, 2, "to", "brick"),
+    "to_lumber_yard": (2, 2, "to", "wood"),
+    "to_mine": (2, 2, "to", "brick"),
+    "to_farm": (3, 3, "to", "wood"),
+    "to_barracks": (3, 3, "to", "brick"),
+    "to_market": (3, 3, "to", "brick"),
+    "to_range": (3, 3, "to", "brick"),
+    "to_siege_workshop": (3, 3, "to", "brick"),
+    "to_smithy": (3, 3, "to", "brick"),
+    "to_stable": (3, 3, "to", "brick"),
+    "to_temple": (3, 3, "to", "brick"),
+    "to_tower": (1, 1, "to", "brick"),
     "to_castle": (4, 4, "to", "brick"),
     "to_house": (2, 2, "to", "wood"),
     "to_gate": (1, 1, "to", "wood"),
     "to_shrine": (2, 2, "to", "brick"),
 }
 ## Turned views: mirror of the base view (a line along y instead of x).
-MIRRORS = {"gdl_gate_v": "gdl_gate", "gdl_zaseka_v": "gdl_zaseka", "to_gate_v": "to_gate"}
+MIRRORS = {"gdl_gate_v": "gdl_gate", "gdl_zaseka_v": "gdl_zaseka", "to_gate_v": "to_gate",
+           "pl_gate_v": "pl_gate"}
+## Line pieces (post + arms) per id: (raw id, faction). The Crown and the Order use the
+## Duchy's sharpened stakes, as their Blender models did.
+LINES = {"gdl_palisade": ("gdl_palisade", "gdl"), "pl_palisade": ("gdl_palisade", "pl"),
+         "to_palisade": ("gdl_palisade", "to"), "gdl_wall": ("gdl_wall", "gdl"),
+         "to_wall": ("to_wall", "to")}
 ## Raw file per id when it is not simply <id>_1.png (best pick after review).
 PICK: dict[str, str] = {}
 
@@ -226,10 +271,10 @@ def broken(im, rnd):
 
 
 def team_mask(im: Image.Image, faction: str) -> Image.Image:
-    """White where the player colour shows: red cloth (Duchy), white flags (Order)."""
+    """White where the player colour shows: red cloth (Duchy, Crown, Muscovy), white flags (Order)."""
     a = np.array(im).astype(int)
     r, g, b, al = a[..., 0], a[..., 1], a[..., 2], a[..., 3]
-    if faction == "gdl":
+    if faction in ("gdl", "pl", "mo"):
         m = (r > 140) & (g < 90) & (b < 80)
     else:
         top = np.zeros_like(r, bool)
@@ -367,13 +412,14 @@ def decals(src: Path, out: Path) -> None:
     (out / "decals" / "decals.json").write_text(json.dumps(meta, indent=1))
 
 
-def palisade(src: Path, out: Path, uid: str = "gdl_palisade") -> None:
+def palisade(src: Path, out: Path, uid: str = "gdl_palisade", raw_id: str = "gdl_palisade",
+             faction: str = "gdl") -> None:
     """Post and arms of a palisade cell, cut from a generated straight palisade three cells
     long that runs along x (screen: upper left to lower right). The post is the stakes by the
     middle; the arm toward +x (e) the next half cell down-right, toward -x (w) up-left; the arms
     along y (s toward +y, n toward -y) are their mirror images. All pieces share one canvas and
     pivot (the middle of the cell on the ground), as BuildingLayer stacks them."""
-    raw = src / "buildings" / PICK.get(uid, f"{uid}_1.png")
+    raw = src / "buildings" / PICK.get(raw_id, f"{raw_id}_1.png")
     if not raw.exists():
         print("missing", raw)
         return
@@ -417,7 +463,7 @@ def palisade(src: Path, out: Path, uid: str = "gdl_palisade") -> None:
         if k == "":
             views["found"] = found((W, H), (px, py), 1, 1, rnd)
         for stage, v in views.items():
-            save_view(out / "buildings", f"{pid}_{stage}_", v, py, "gdl")
+            save_view(out / "buildings", f"{pid}_{stage}_", v, py, faction)
         meta = {"size": [W, H], "pivot": [px, py], "scale": 1.0, "pivot_is": "centre of the footprint",
                 "cells": [1, 1], "stages": STAGES, "source": "retro diffusion, tools/art/pixel_iso.py"}
         (out / "buildings" / f"{pid}.json").write_text(json.dumps(meta, indent=1))
@@ -454,8 +500,9 @@ def main() -> None:
         w, h, fac, rub = BUILD[base]
         if not a.only or uid in a.only:
             building(src, out, uid, h, w, fac, rub, mirror=True, raw_id=base)
-    if not a.only or "gdl_palisade" in a.only:
-        palisade(src, out)
+    for uid, (raw_id, fac) in LINES.items():
+        if not a.only or uid in a.only:
+            palisade(src, out, uid, raw_id, fac)
     for uid, raw in TREES.items():
         if not a.only or uid in a.only:
             tree(src, out, uid, PICK.get(uid, raw))
