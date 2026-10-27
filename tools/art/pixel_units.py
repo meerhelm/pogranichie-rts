@@ -152,7 +152,7 @@ def build(src: Path, out: Path, uid: str) -> None:
     Image.fromarray(team, "LA").save(dest / "team.png", optimize=True)
     Image.fromarray(shadow, "LA").save(dest / "shadow.png", optimize=True)
     meta = {"frame": list(FRAME), "pivot": list(PIVOT), "scale": 1.0, "anims": meta_anims,
-            "bar_y": max(0, int(np.percentile(tops, 10)) - 4), "rows_per_anim": 8,
+            "bar_y": PIVOT[1] - int(np.percentile(tops, 10)) + 3,  # px above the feet, as render.py "rows_per_anim": 8,
             "facing": "row offset = UnitView.facing (0 east, clockwise, 2 south)"}
     (dest / "sheet.json").write_text(json.dumps(meta, indent=1))
     write_pick(str(dest))
