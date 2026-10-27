@@ -36,6 +36,8 @@ var trees := TreeLayer.new()
 ## Small ground details (flowers, stones…), right above the ground tiles.
 var decals := DecalLayer.new()
 var wear := WearLayer.new()
+## Trees and buildings in front of the player's units turn see-through.
+var cover := CoverFade.new()
 
 var _ended := false
 
@@ -87,6 +89,11 @@ func _ready() -> void:
 	trees.local_player = PLAYER
 	add_child(trees)
 	trees.attach(sim, _clock, _units)
+	cover.name = "CoverFade"  # notr
+	cover.units = _units
+	cover.trees = trees
+	cover.local_player = PLAYER
+	add_child(cover)
 	_magic.local_player = PLAYER
 	_magic.attach(sim, _clock)
 	if StealthLayer.wanted(sim):

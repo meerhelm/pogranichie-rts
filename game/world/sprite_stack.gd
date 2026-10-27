@@ -25,3 +25,8 @@ func show_sprite(s: SpriteDB.Sprite, tint: Color) -> void:
 	_team.texture = s.team
 	_team.visible = s.team != null
 	_team.self_modulate = tint
+
+
+## The colour view (whose opaque pixels hide what is behind it).
+func color_sprite() -> Sprite2D:
+	return _color

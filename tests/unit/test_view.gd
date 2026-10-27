@@ -160,38 +160,53 @@ func test_the_whole_drawn_figure_picks_a_unit() -> void:
 	assert_false(view.covers(Vector2(0, 20)), "below the feet")
 
 
-func test_in_the_forest_a_halo_shows_and_picks_the_unit() -> void:
-	var view: UnitView = UnitLayer.VIEW_SCENE.instantiate()
-	view.type_id = &"gdl_spearman"
-	add_child_autofree(view)
-	var halo: Sprite2D = view.get_node("Halo")
-	var top := float(view.sprite.meta["bar_y"])
-	var beside := Vector2(top * 0.3, -top / 2)
-	assert_false(halo.visible, "no halo in the open")
-	assert_false(view.covers(beside), "beside the figure, in the open")
-	view.in_forest = true
-	assert_true(halo.visible, "a halo among trees")
-	assert_gt(halo.z_index, 0, "the halo is drawn over the trees")
-	assert_true(view.covers(beside), "beside the figure, inside the halo")
-	assert_false(view.covers(Vector2(top * 2, -top / 2)), "well outside the halo")
-
-
-func test_a_unit_in_or_behind_the_forest_is_among_trees() -> void:
+func test_a_tree_in_front_of_the_players_unit_turns_see_through() -> void:
 	var db := CatalogDB.load_prototype()
 	var sim := Simulation.new(1, db)
 	sim.nav = NavGrid.for_catalog(20, 20, db)
 	var forest := sim.nav.terrain_index(NavGrid.FOREST)
-	for y in range(10, 14):
-		for x in range(10, 14):
-			sim.nav.set_terrain(sim.nav.cell_at(x, y), forest)
-	var layer := UnitLayer.new()
-	layer.sim = sim
-	add_child_autofree(layer)
-	assert_true(layer._among_trees(sim.nav.cell_at(11, 11)), "in the forest")
-	assert_true(layer._among_trees(sim.nav.cell_at(8, 8)), "behind it, up the screen")
-	assert_false(layer._among_trees(sim.nav.cell_at(15, 15)), "in front of it")
-	assert_false(layer._among_trees(sim.nav.cell_at(16, 5)), "beside it")
-	assert_false(layer._among_trees(sim.nav.cell_at(2, 2)), "far behind it")
+	sim.nav.set_terrain(sim.nav.cell_at(10, 10), forest)
+	sim.vision.rules = null
+	var trees := TreeLayer.new()
+	add_child_autofree(trees)
+	var units := UnitLayer.new()
+	units.sim = sim
+	add_child_autofree(units)
+	var clock := SimClock.new()
+	add_child_autofree(clock)
+	trees.attach(sim, clock, units)
+	if trees.count() == 0:
+		pass_test("no tree art")
+		return
+	var tree := trees.tree_at(sim.nav.cell_at(10, 10))
+	var mine := _view_at(units, sim, 1, Vector2(7.5, 7.5))
+	var theirs := _view_at(units, sim, 2, Vector2(7.6, 7.4))
+	var fade := CoverFade.new()
+	fade.units = units
+	fade.trees = trees
+	add_child_autofree(fade)
+	assert_true(fade.covering().has(tree), "the tree hides the player's man behind it")
+	mine.position = Iso.cell_to_screen(Vector2(11.5, 11.5))
+	sim.entities.pos_x[mine.unit_id - 1] = Fixed.from_cells(11) + Fixed.HALF
+	sim.entities.pos_y[mine.unit_id - 1] = Fixed.from_cells(11) + Fixed.HALF
+	assert_false(fade.covering().has(tree), "a man in front of the tree, the enemy behind it")
+	fade.refresh()
+	assert_eq(tree.modulate.a, 1.0, "not faded yet")
+	assert_not_null(theirs)
+
+
+func _view_at(units: UnitLayer, sim: Simulation, player: int, cell: Vector2) -> UnitView:
+	var id := sim.spawn_unit(
+		&"gdl_spearman", player, int(cell.x * Fixed.ONE), int(cell.y * Fixed.ONE)
+	)
+	var v: UnitView = UnitLayer.VIEW_SCENE.instantiate()
+	v.unit_id = id
+	v.player = player
+	v.type_id = &"gdl_spearman"
+	v.position = Iso.cell_to_screen(cell)
+	units.views[id] = v
+	units.add_child(v)
+	return v
 
 
 func test_trees_get_a_steady_tint_of_their_own() -> void:

@@ -22,7 +22,8 @@ extends SceneTree
 ##   centre), a peasant queued at the town centre and the saw researched),
 ##   speed:N (the game speed button stepped N times up, e.g. 2 for 4x),
 ##   forest:X:Y (no fog: a forest patch from cell X, Y with the player's units in it and behind
-##   it, two selected, and one on open ground beside it, to see their halos and the tree tints),
+##   it, two selected, one on open ground beside it and one behind a house, to see the trees and
+##   the house in front of them turn see-through, and the tree tints),
 ##   idle:N (the idle worker button pressed N times: the Nth idle peasant selected, camera on it),
 ##   units:X:Y:ID,ID,... (no fog: the listed units, heroes too, in a row from cell X, Y, two
 ##   cells apart, the camera on them)
@@ -223,9 +224,9 @@ func _units(main: Node, x0: int, y0: int, ids: PackedStringArray) -> void:
 	cam.look_at_point(Iso.cell_to_screen(Vector2(x0 + ids.size(), y0)))
 
 
-## A forest patch from cell X, Y with the player's units in and around it, two selected, and a
-## wild one's on the edge, the camera on them: the halo of units among the trees and the tree
-## tints.
+## A forest patch from cell X, Y with the player's units in and around it, two selected, and
+## one behind a house, the camera on them: trees and the house in front of them turn
+## see-through; the tree tints.
 func _forest(main: Node, x0: int, y0: int) -> void:
 	var sim: Simulation = main.get("sim")
 	sim.vision.rules = null
@@ -256,6 +257,11 @@ func _forest(main: Node, x0: int, y0: int) -> void:
 		var id := sim.spawn_unit(p[0], 1, at_x, at_y)
 		if ids.size() < 2:
 			ids.append(id)
+	var eco := sim.economy
+	var house := eco._found(1, sim.catalog().building(&"gdl_house"), x0 + 15, y0 + 3, false)
+	eco.complete(house)
+	var behind := Fixed.from_cells(x0 + 14) + Fixed.HALF
+	sim.spawn_unit(&"gdl_spearman", 1, behind, Fixed.from_cells(y0 + 2) + Fixed.HALF)
 	input.selection.ids = ids
 	input.selection.changed.emit()
 	var cam: RtsCamera = main.get_node("Camera")

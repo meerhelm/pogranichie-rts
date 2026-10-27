@@ -78,6 +78,11 @@ func count() -> int:
 	return _trees.size()
 
 
+## The tree sprite on `cell`, or null.
+func tree_at(cell: int) -> Sprite2D:
+	return _trees.get(cell)
+
+
 func _on_advanced(tick: int, steps: int) -> void:
 	if sim.nav.version != _version:
 		_fell()

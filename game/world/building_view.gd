@@ -166,6 +166,19 @@ func _draw_overlay() -> void:
 		_overlay.draw_rect(Rect2(top, Vector2(32.0 * hp, 3.0)), Color(0.3, 0.85, 0.3))
 
 
+## The shown art: the stage's view and the palisade arms, empty without art.
+func stacks() -> Array[SpriteStack]:
+	var out: Array[SpriteStack] = []
+	if sprite == null or not is_node_ready():
+		return out
+	out.append(_main)
+	for holder: Node2D in [_back, _front]:
+		for stack: SpriteStack in holder.get_children():
+			if stack.visible:
+				out.append(stack)
+	return out
+
+
 ## Screen height of the sprite's top over the anchor, less the frame's empty margin.
 func _sprite_top() -> float:
 	return sprite.dest().position.y + 24.0
