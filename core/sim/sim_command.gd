@@ -54,6 +54,8 @@ const TYPE_KINDS: Array[Kind] = [
 const VALUE_KINDS: Array[Kind] = [
 	Kind.STANCE, Kind.PLACE, Kind.BUILD, Kind.GATHER, Kind.CANCEL, Kind.CHOOSE
 ]
+## BUILD value bits: 1 turned (vertical), QUEUED placed with Shift.
+const QUEUED := 2
 
 ## Tick at whose start the command is applied.
 var tick: int
@@ -203,6 +205,7 @@ static func place(
 
 
 ## Lay a foundation with its top-left cell at the point, paid now, and send builders to it.
+## `queued` (Shift): builders already building finish that first and come to this one after.
 static func build(
 	at_tick: int,
 	by: int,
@@ -210,11 +213,14 @@ static func build(
 	building: StringName,
 	px: int,
 	py: int,
-	turned: bool = false
+	turned: bool = false,
+	queued: bool = false
 ) -> SimCommand:
 	var c := place(at_tick, by, building, px, py, turned)
 	c.kind = Kind.BUILD
 	c.ids = units
+	if queued:
+		c.value |= QUEUED
 	return c
 
 

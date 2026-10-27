@@ -16,6 +16,14 @@ extends RefCounted
 ## resource in. Those who took it apart go on to the piles. A WORK order (build, repair) on a
 ## building being taken apart stops it. A side's last finished capital or castle cannot be
 ## taken apart (losing it loses the game, SkirmishVictory.CAPITALS).
+##
+## Queued building (Valentin, 2026-10-27): foundations laid with Shift go into the queue of the
+## builders who are already building; each finishes its building and goes on to the nearest
+## one left in its queue. Of the builders of a finished field or hive, as many as it takes stay
+## to work it, so five peasants and five fields leave one peasant on each.
+
+## Unit slot -> foundations it is to build after its current one (BUILD with Shift).
+var queue: Dictionary[int, PackedInt32Array] = {}
 
 ## The economy, through a Callable: holding it would make a reference cycle (it holds this).
 var _economy: Callable
@@ -72,8 +80,10 @@ func build(id: int) -> void:
 		# A field or hive it put up: the builder works it at once (if there is room on it).
 		if _work_it(slot, b):
 			return
-		# Walls: go on to the next foundation of the line.
-		var next := _nearest_foundation(id)
+		# Then the next foundation of its queue, or of the wall line.
+		var next := _next_queued(slot)
+		if next == BuildingStore.NO_ID:
+			next = _nearest_foundation(id)
 		if next == BuildingStore.NO_ID:
 			e.end_job(slot)
 			return
@@ -99,6 +109,62 @@ func _work_it(slot: int, b: int) -> bool:
 	if e.buildings.workers[b - 1] >= limit:
 		return false
 	return e.start_gather(slot, source, EconomySystem.Target.BUILDING, b)
+
+
+## A BUILD order: with Shift, builders already at work keep their building and queue this one.
+func order_build(units: PackedInt32Array, b: int, queued: bool) -> void:
+	var e := _e()
+	for id in units:
+		if queued and e.buildings.is_alive(b) and _is_building(id) and e.can_build(id, b):
+			var q: PackedInt32Array = queue.get(id - 1, PackedInt32Array())
+			q.append(b)
+			queue[id - 1] = q
+		else:
+			e.set_build_job(id, b)
+
+
+## Whether the order only queues a foundation for this unit (it keeps walking to its work).
+func only_queues(cmd: SimCommand, id: int) -> bool:
+	return (
+		cmd.kind == SimCommand.Kind.BUILD
+		and (cmd.value & SimCommand.QUEUED) != 0
+		and _is_building(id)
+	)
+
+
+func _is_building(id: int) -> bool:
+	return _e().job[id - 1] == EconomySystem.Job.BUILD
+
+
+## The unit's queue is dropped with its job.
+func forget(slot: int) -> void:
+	queue.erase(slot)
+
+
+## The nearest building of the unit's queue still to be built (the queue loses the rest).
+func _next_queued(slot: int) -> int:
+	if not queue.has(slot):
+		return BuildingStore.NO_ID
+	var e := _e()
+	var store := e.buildings
+	var p := e.entities.owners[slot]
+	var left := PackedInt32Array()
+	var best := BuildingStore.NO_ID
+	var best_d := 0
+	for b in queue[slot]:
+		if not store.is_alive(b) or store.owners[b - 1] != p or store.done[b - 1] == 1:
+			continue
+		left.append(b)
+		var d := store.distance_sq(b, e.entities.pos_x[slot], e.entities.pos_y[slot])
+		if best == BuildingStore.NO_ID or d < best_d:
+			best = b
+			best_d = d
+	left.erase(best)
+	if left.is_empty():
+		queue.erase(slot)
+	else:
+		queue[slot] = left
+	return best
 
 
 func _nearest_foundation(id: int) -> int:
@@ -302,3 +368,15 @@ func _leave_salvage(b: int) -> void:
 		var pile := piles[next % piles.size()]
 		next += 1
 		e.start_gather(slot, e.nodes.sources[pile - 1], EconomySystem.Target.NODE, pile)
+
+
+## Queues, by ascending unit slot, for the state hash.
+func write_to(buf: StreamPeerBuffer) -> void:
+	var slots := queue.keys()
+	slots.sort()
+	buf.put_32(slots.size())
+	for slot: int in slots:
+		buf.put_32(slot)
+		buf.put_32(queue[slot].size())
+		for b in queue[slot]:
+			buf.put_32(b)

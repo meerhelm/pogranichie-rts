@@ -345,6 +345,50 @@ func test_the_builder_of_a_field_works_it_at_once() -> void:
 	assert_eq(sim.economy.buildings.workers[farm - 1], sim.economy.rules.farm_workers)
 
 
+## Valentin, 2026-10-27: five peasants, five fields laid one after another with Shift, further
+## apart than builders look for the next foundation. As each field is done one of its builders
+## stays to work it and the rest go on, so in the end every field is worked.
+func test_builders_of_queued_fields_leave_one_on_each() -> void:
+	var sim := _drawn(60, 14)
+	var state := _join(sim, 1, ORDER)
+	_place(sim, 1, &"to_town_center", 2, 2)
+	state.stock[EconomySystem.WOOD] = 1000
+	var builders := PackedInt32Array()
+	for i in 5:
+		builders.append(_spawn(sim, 1, TO_PEASANT, 8.5 + i, 11.5))
+	var farms: Array[int] = []
+	for i in 5:
+		var farm := sim.economy.buildings.next_id
+		var x := _cell(6 + 10 * i)
+		sim.enqueue(SimCommand.build(sim.tick, 1, builders, &"to_farm", x, _cell(6), false, true))
+		sim.step()
+		assert_true(sim.economy.buildings.is_alive(farm))
+		farms.append(farm)
+	for id in builders:
+		assert_eq(sim.economy.job_ref[id - 1], farms[0], "the first field first")
+	for farm in farms:
+		assert_gte(_until_done(sim, farm, 9000), 0)
+	sim.run(2)
+	for farm in farms:
+		assert_eq(sim.economy.buildings.workers[farm - 1], 1, "field %d is worked" % farm)
+	for id in builders:
+		assert_eq(sim.economy.job[id - 1], EconomySystem.Job.GATHER, "peasant %d works" % id)
+	assert_true(sim.economy.construction.queue.is_empty())
+
+
+## Without Shift a new foundation takes the builders off the one they were building.
+func test_a_build_order_without_shift_takes_the_builders_over() -> void:
+	var sim := _drawn(40, 14)
+	var state := _join(sim, 1, ORDER)
+	state.stock[EconomySystem.WOOD] = 1000
+	var p := _spawn(sim, 1, TO_PEASANT, 8.5, 11.5)
+	var first := _build(sim, 1, _ids(p), &"to_farm", 6, 6)
+	var second := _build(sim, 1, _ids(p), &"to_farm", 16, 6)
+	assert_eq(sim.economy.job_ref[p - 1], second)
+	assert_false(sim.economy.construction.queue.has(p - 1))
+	assert_ne(first, second)
+
+
 func test_wood_is_cut_from_the_side_nearest_the_lumber_yard() -> void:
 	var sim := _drawn(30, 10, _fill({}, 12, 2, 20, 7, "f"))
 	_join(sim, 1, GDL)

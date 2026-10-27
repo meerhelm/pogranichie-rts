@@ -209,6 +209,7 @@ func drop_jobs(ids: PackedInt32Array) -> void:
 
 func end_job(slot: int) -> void:
 	_unclaim(slot)
+	construction.forget(slot)
 	job[slot] = Job.NONE
 	phase[slot] = Phase.GO
 	tries[slot] = 0
@@ -251,7 +252,7 @@ func order(cmd: SimCommand, units: PackedInt32Array) -> void:
 			_order_gather(cmd, units)
 		SimCommand.Kind.WORK:
 			for id in units:
-				_set_build_job(id, cmd.target)
+				set_build_job(id, cmd.target)
 		SimCommand.Kind.ASSAULT:
 			_order_assault(cmd, units)
 		SimCommand.Kind.DISMANTLE:
@@ -284,7 +285,7 @@ func _join(p: int, faction: StringName) -> void:
 
 
 ## Peasants build everything; the Crown's priest (builds_shrine) only shrines.
-func _can_build(id: int, b: int) -> bool:
+func can_build(id: int, b: int) -> bool:
 	var def := unit_defs[id - 1]
 	if def != null and def.tags.has(&"builds_shrine"):
 		return buildings.defs[b - 1].tags.has(&"power_place_only")
@@ -301,7 +302,7 @@ func _order_build(cmd: SimCommand, units: PackedInt32Array) -> void:
 	if def == null:
 		return
 	var at := Vector2i(Fixed.to_cells(cmd.x), Fixed.to_cells(cmd.y))
-	var vertical := cmd.value == 1
+	var vertical := (cmd.value & 1) == 1
 	if placement.can_place(cmd.player, def, at.x, at.y, vertical) != Fail.OK:
 		return
 	var p := players[cmd.player]
@@ -310,8 +311,7 @@ func _order_build(cmd: SimCommand, units: PackedInt32Array) -> void:
 		return
 	p.pay(cost)
 	var b := _found(cmd.player, def, at.x, at.y, vertical)
-	for id in units:
-		_set_build_job(id, b)
+	construction.order_build(units, b, (cmd.value & SimCommand.QUEUED) != 0)
 
 
 ## Palisade (any per-cell wall) from one cell to another, along a 4-connected line so it has
@@ -338,11 +338,11 @@ func _order_wall(cmd: SimCommand, units: PackedInt32Array) -> void:
 			first = b
 	if first != BuildingStore.NO_ID:
 		for id in units:
-			_set_build_job(id, first)
+			set_build_job(id, first)
 
 
-func _set_build_job(id: int, b: int) -> void:
-	if not buildings.is_alive(b) or not _can_build(id, b):
+func set_build_job(id: int, b: int) -> void:
+	if not buildings.is_alive(b) or not can_build(id, b):
 		return
 	var slot := id - 1
 	if buildings.owners[b - 1] != entities.owners[slot]:
@@ -974,6 +974,7 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		players[p].write_to(buf)
 	buildings.write_to(buf)
 	nodes.write_to(buf)
+	construction.write_to(buf)
 	for id in entities.alive_ids:
 		var s := id - 1
 		if job[s] == Job.NONE and carry[s] == 0:

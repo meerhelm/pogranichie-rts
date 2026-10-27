@@ -588,7 +588,9 @@ func _placing_click(mb: InputEventMouseButton) -> void:
 		var origin := _ghost_origin(sim.economy.placement.footprint(placing, _turned))
 		var x := Fixed.from_cells(origin.x) + Fixed.HALF
 		var y := Fixed.from_cells(origin.y) + Fixed.HALF
-		_order(SimCommand.build(sim.tick, player, workers, placing.id, x, y, _turned))
+		_order(
+			SimCommand.build(sim.tick, player, workers, placing.id, x, y, _turned, mb.shift_pressed)
+		)
 	if not mb.shift_pressed:
 		_stop_placing()
 

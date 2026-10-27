@@ -39,7 +39,10 @@ extends RefCounted
 ## 23: units have bodies: riders and carts are wider than men on foot, fighters push each other
 ##   whatever their orders, and no two units overlap by more than 3/4 (Separation), but for a
 ##   walker going through standing units out of a fight.
-const SIM_VERSION := 23
+## 24: a BUILD with Shift queues the foundation for builders already building (Construction.queue,
+##   in the hash); they finish theirs and go on to the nearest queued one, one staying on each
+##   finished field or hive.
+const SIM_VERSION := 24
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).
@@ -363,7 +366,8 @@ func _economy_order(cmd: SimCommand) -> void:
 	magic.drop_casts(ids)
 	fire.drop(ids)
 	for id in ids:
-		_stop(id)
+		if not economy.construction.only_queues(cmd, id):
+			_stop(id)
 	economy.order(cmd, ids)
 
 
