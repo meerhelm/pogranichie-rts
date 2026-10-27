@@ -1,0 +1,9 @@
+{"out_dir": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/full/buildings", "palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+ "jobs": [
+  {"name": "gdl_town_center_fix", "style": "rd_pro__isometric", "size": [256, 256], "num_images": 2, "seed": 7508, "remove_bg": true,
+   "reference_images": ["/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png", "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"],
+   "prompt": "Samogitian, Grand Duchy of Lithuania, 1409, round logs and straw thatch, chieftain's manor: one big long log hall with a high steep straw roof and carved gable ends, a covered log porch, a smaller log storehouse joined to its side, standing alone on bare ground, no fence, no palisade, no people, on a plain white background"},
+  {"name": "gdl_tower_fix", "style": "rd_pro__isometric", "size": [112, 240], "num_images": 2, "seed": 7509, "remove_bg": true,
+   "reference_images": ["/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png", "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"],
+   "prompt": "Samogitian, Grand Duchy of Lithuania, 1409, round logs and straw thatch, single tall square log watchtower on four thick posts, overhanging fighting gallery, pyramid shingle roof, ladder, standing alone, no fence, no palisade, no wall, no people, on a plain white background"}
+ ]}

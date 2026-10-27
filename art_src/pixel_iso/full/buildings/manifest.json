@@ -659,8 +659,69 @@
       "cost": 0.12,
       "task_id": "146e508d-ba99-4587-8f15-34ba778997fc",
       "remaining_balance": 47.64
+    },
+    {
+      "name": "gdl_town_center_fix",
+      "prompt": "Samogitian, Grand Duchy of Lithuania, 1409, round logs and straw thatch, chieftain's manor: one big long log hall with a high steep straw roof and carved gable ends, a covered log porch, a smaller log storehouse joined to its side, standing alone on bare ground, no fence, no palisade, no people, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        256,
+        256
+      ],
+      "num_images": 2,
+      "seed": 7508,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.36,
+      "status": "succeeded",
+      "files": [
+        "gdl_town_center_fix_1.png"
+      ],
+      "cost": 0.36,
+      "task_id": "9715ceb0-4468-4f3b-bdd1-44dee12ddb8c",
+      "remaining_balance": 45.66
+    },
+    {
+      "name": "gdl_tower_fix",
+      "prompt": "Samogitian, Grand Duchy of Lithuania, 1409, round logs and straw thatch, single tall square log watchtower on four thick posts, overhanging fighting gallery, pyramid shingle roof, ladder, standing alone, no fence, no palisade, no wall, no people, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        112,
+        240
+      ],
+      "num_images": 2,
+      "seed": 7509,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.36,
+      "status": "succeeded",
+      "files": [
+        "gdl_tower_fix_1.png",
+        "gdl_tower_fix_2.png"
+      ],
+      "cost": 0.36,
+      "task_id": "b72d2502-c6e3-4d2d-a8cb-14a73759509b",
+      "remaining_balance": 45.3
     }
   ],
-  "spent": 3.54,
-  "remaining_balance": 47.64
+  "spent": 4.26,
+  "remaining_balance": 45.3
 }
