@@ -83,10 +83,59 @@ func test_top_bar_shows_stock_population_and_age() -> void:
 	var state := _sim.economy.player(1)
 	var food: Label = _hud._resources[0]
 	assert_eq(food.text, str(state.stock[0]))
-	assert_string_contains(food.tooltip_text, "Food", "the name is in the tooltip")
+	assert_string_contains(_hud._resource_boxes[0].tooltip_text, "Food", "the name in the tooltip")
 	assert_string_contains(_hud._population.text, "%d/" % state.pop_used())
 	assert_eq(_hud._age.text, "Appanage")
 	assert_eq(_hud._time.text, "0:00")
+
+
+func test_resource_tooltip_counts_peasants_flow_and_bonuses() -> void:
+	var eco := _sim.economy
+	var peasants := _own(SkirmishSetup.peasant_of(eco.db, eco.player(1).faction))
+	assert_gt(peasants.size(), 1)
+	var forest := -1
+	for c in _sim.nav.cell_count():
+		if eco.nodes.wood[c] > 0:
+			forest = c
+			break
+	var fx := Fixed.from_cells(forest % _sim.nav.width) + Fixed.HALF
+	var fy := Fixed.from_cells(forest / _sim.nav.width) + Fixed.HALF
+	_sim.enqueue(SimCommand.gather_at(_sim.tick, 1, peasants.slice(0, 2), fx, fy))
+	_sim.step()
+	var w := ResourceTip.workers(eco, 1)
+	assert_eq(w[EconomySystem.WOOD], 2, "two peasants on wood")
+	var flow := ResourceFlow.new()
+	var state := eco.player(1)
+	flow.sample(_sim.tick, state)
+	state.stock[EconomySystem.WOOD] += 30
+	state.gathered[EconomySystem.WOOD] += 30
+	state.stock[EconomySystem.FOOD] -= 50
+	flow.sample(_sim.tick + 20, state)
+	assert_gt(flow.income(EconomySystem.WOOD), 0)
+	assert_eq(flow.spending(EconomySystem.WOOD), 0)
+	assert_gt(flow.spending(EconomySystem.FOOD), 0)
+	var tip := ResourceTip.make(eco, 1, EconomySystem.WOOD, flow).plain_text()
+	assert_string_contains(tip, "Peasants at work: 2")
+	assert_string_contains(tip, "Income: +")
+	assert_string_contains(tip, "Bonuses to research:")
+	assert_string_contains(tip, UiText.name_of(&"t_saw"), "the saw is still to research")
+	state.techs[&"t_saw"] = true
+	var after := ResourceTip.techs_for(eco, 1, EconomySystem.WOOD)
+	assert_eq((after["done"] as Array).size(), 1, "the saw counts as applied")
+	assert_eq((after["open"] as Array).size(), 0)
+
+
+func test_resource_flow_over_one_minute() -> void:
+	var flow := ResourceFlow.new()
+	var state := PlayerState.new(1, &"gdl")
+	flow.sample(0, state)
+	for s in 120:
+		state.stock[0] += 10
+		state.gathered[0] += 10
+		flow.sample((s + 1) * 20, state)
+	assert_eq(flow.income(0), 600, "10 a second is 600 a minute")
+	flow.sample(10, state)
+	assert_eq(flow.income(0), 0, "a tick back starts over")
 
 
 func test_unit_card_shows_hp_morale_and_stance() -> void:

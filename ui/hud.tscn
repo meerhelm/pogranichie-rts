@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://ui/advisor.gd" id="5_advisor"]
 [ext_resource type="PackedScene" path="res://ui/pause_menu.tscn" id="6_menu"]
 [ext_resource type="PackedScene" path="res://ui/help_panel.tscn" id="7_help"]
+[ext_resource type="Script" path="res://ui/tip_box.gd" id="8_tip_box"]
 [ext_resource type="Texture2D" path="res://ui/icons/food.svg" id="icon_food"]
 [ext_resource type="Texture2D" path="res://ui/icons/wood.svg" id="icon_wood"]
 [ext_resource type="Texture2D" path="res://ui/icons/iron.svg" id="icon_iron"]
@@ -43,6 +44,7 @@ theme_override_constants/separation = 28
 [node name="Food" type="HBoxContainer" parent="Top/Row"]
 layout_mode = 2
 mouse_filter = 1
+script = ExtResource("8_tip_box")
 theme_override_constants/separation = 6
 
 [node name="Icon" type="TextureRect" parent="Top/Row/Food"]
@@ -61,6 +63,7 @@ theme_override_font_sizes/font_size = 22
 [node name="Wood" type="HBoxContainer" parent="Top/Row"]
 layout_mode = 2
 mouse_filter = 1
+script = ExtResource("8_tip_box")
 theme_override_constants/separation = 6
 
 [node name="Icon" type="TextureRect" parent="Top/Row/Wood"]
@@ -79,6 +82,7 @@ theme_override_font_sizes/font_size = 22
 [node name="Iron" type="HBoxContainer" parent="Top/Row"]
 layout_mode = 2
 mouse_filter = 1
+script = ExtResource("8_tip_box")
 theme_override_constants/separation = 6
 
 [node name="Icon" type="TextureRect" parent="Top/Row/Iron"]
@@ -97,6 +101,7 @@ theme_override_font_sizes/font_size = 22
 [node name="Silver" type="HBoxContainer" parent="Top/Row"]
 layout_mode = 2
 mouse_filter = 1
+script = ExtResource("8_tip_box")
 theme_override_constants/separation = 6
 
 [node name="Icon" type="TextureRect" parent="Top/Row/Silver"]

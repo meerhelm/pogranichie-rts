@@ -41,6 +41,9 @@ msgstr "(%d с)"
 msgid "(optional) %s"
 msgstr "(неабавязкова) %s"
 
+msgid "(over the last minute of game time)"
+msgstr "(за апошнюю хвіліну гульнявога часу)"
+
 msgid "+%d damage against %s"
 msgstr "+%d урону супраць: %s"
 
@@ -619,6 +622,12 @@ msgstr "Бамбарды пераходзяць канал і ручаі тол�
 
 msgid "Bombards spiked: %d"
 msgstr "Заклёпана бамбард: %d"
+
+msgid "Bonuses applied:"
+msgstr "Ужо дзейнічаюць бонусы:"
+
+msgid "Bonuses to research:"
+msgstr "Можна даследаваць:"
 
 msgid "Both bridges stand. The foot and the guns are going over them."
 msgstr "Абодва масты стаяць. Пяхота і гарматы ідуць па іх."
@@ -1787,6 +1796,9 @@ msgstr "Праз дзве хвіліны набег Ордэна пяройдз�
 msgid "In work: %s, %d%%"
 msgstr "У рабоце: %s, %d%%"
 
+msgid "Income: +%d a minute"
+msgstr "Прыход: +%d у хвіліну"
+
 msgid "Intercept the Order's grain convoy on the river road"
 msgstr "Перахапіць ордэнскі абоз з зернем на рачной дарозе"
 
@@ -2603,6 +2615,9 @@ msgstr "Заплаціць 100 срэбра"
 msgid "Payday: the hired companies have had their morning pay. The next payday is at noon. Stach's own company waits for its pay till noon."
 msgstr "Выплата: наёмныя роты атрымалі ранішняе жалаванне. Наступная выплата апоўдні. Уласная рота Стаха чакае жалавання да поўдня."
 
+msgid "Peasants at work: %d"
+msgstr "Сялян на рабоце: %d"
+
 msgid "Peasants bring here every resource"
 msgstr "Селяне нясуць сюды ўсе рэсурсы"
 
@@ -3100,6 +3115,9 @@ msgstr "Хуткасць %.2f клет./с"
 
 msgid "Spells of wise women nearby recharge faster"
 msgstr "Заклёны знахарак побач аднаўляюцца хутчэй"
+
+msgid "Spending: %s a minute"
+msgstr "Расход: %s у хвіліну"
 
 msgid "Spring 1457"
 msgstr "Вясна 1457"
@@ -4559,6 +4577,9 @@ msgstr "Z X C: наступальная, абарончая, трымаць па
 msgid "Zasekas are felled twice as fast and have +50% HP."
 msgstr "Засекі валяць удвая хутчэй, і ў іх +50% здароўя."
 
+msgid "age: %s"
+msgstr "эпоха: %s"
+
 msgid "age_derzhava"
 msgstr "Дзяржава"
 
@@ -4571,6 +4592,12 @@ msgstr "Удзел"
 msgid "archers"
 msgstr "стралкі"
 
+msgid "being researched"
+msgstr "даследуецца"
+
+msgid "building: %s"
+msgstr "будынак: %s"
+
 msgid "cavalry"
 msgstr "конніца"
 
@@ -4579,6 +4606,9 @@ msgstr "пстрыкніце, дзе ўжыць"
 
 msgid "creatures"
 msgstr "істоты"
+
+msgid "fields %d"
+msgstr "палеткі %d"
 
 msgid "firearm"
 msgstr "агнястрэльны"
@@ -4844,6 +4874,12 @@ msgstr "Князь Юрый Слуцкі"
 msgid "hero_zyndram"
 msgstr "Зындрам з Машкавіц"
 
+msgid "hives %d"
+msgstr "борці %d"
+
+msgid "hunting %d"
+msgstr "паляванне %d"
+
 msgid "infantry"
 msgstr "пяхота"
 
@@ -4894,6 +4930,12 @@ msgstr "Вартавая вежа"
 
 msgid "mo_zaseka"
 msgstr "Засека"
+
+msgid "none left"
+msgstr "усё ўжо даследавана"
+
+msgid "none yet"
+msgstr "пакуль няма"
 
 msgid "not made yet"
 msgstr "яшчэ не зроблена"

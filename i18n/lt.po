@@ -41,6 +41,9 @@ msgstr "(%d s)"
 msgid "(optional) %s"
 msgstr "(nebūtina) %s"
 
+msgid "(over the last minute of game time)"
+msgstr "(per paskutinę žaidimo laiko minutę)"
+
 msgid "+%d damage against %s"
 msgstr "+%d žalos prieš: %s"
 
@@ -619,6 +622,12 @@ msgstr "Bombardos per kanalą ir upelius pereina tik keliais. Įgula išeis iš 
 
 msgid "Bombards spiked: %d"
 msgstr "Užkalta bombardų: %d"
+
+msgid "Bonuses applied:"
+msgstr "Jau veikiantys priedai:"
+
+msgid "Bonuses to research:"
+msgstr "Galima ištirti:"
 
 msgid "Both bridges stand. The foot and the guns are going over them."
 msgstr "Abu tiltai stovi. Pėstininkai ir patrankos eina per juos."
@@ -1787,6 +1796,9 @@ msgstr "Po dviejų minučių Ordino antpuolis perbris pasienio brastą vakaruose
 msgid "In work: %s, %d%%"
 msgstr "Gaminama: %s, %d%%"
 
+msgid "Income: +%d a minute"
+msgstr "Pajamos: +%d per minutę"
+
 msgid "Intercept the Order's grain convoy on the river road"
 msgstr "Perimk ordino grūdų vilkstinę pakrantės kelyje"
 
@@ -2603,6 +2615,9 @@ msgstr "Sumokėti 100 sidabro"
 msgid "Payday: the hired companies have had their morning pay. The next payday is at noon. Stach's own company waits for its pay till noon."
 msgstr "Išmokėjimas: samdyti būriai gavo rytinę algą. Kitas išmokėjimas vidurdienį. Paties Stacho būrys algos laukia iki vidurdienio."
 
+msgid "Peasants at work: %d"
+msgstr "Valstiečių darbe: %d"
+
 msgid "Peasants bring here every resource"
 msgstr "Valstiečiai neša čia visus išteklius"
 
@@ -3100,6 +3115,9 @@ msgstr "Greitis %.2f langel./s"
 
 msgid "Spells of wise women nearby recharge faster"
 msgstr "Šalia esančių žynių kerai atsikuria greičiau"
+
+msgid "Spending: %s a minute"
+msgstr "Išlaidos: %s per minutę"
 
 msgid "Spring 1457"
 msgstr "1457 m. pavasaris"
@@ -4559,6 +4577,9 @@ msgstr "Z X C: puolamoji, gynybinė, nesitraukti. H: stoti."
 msgid "Zasekas are felled twice as fast and have +50% HP."
 msgstr "Užkardos verčiamos dvigubai greičiau ir turi +50% gyvybės."
 
+msgid "age: %s"
+msgstr "epocha: %s"
+
 msgid "age_derzhava"
 msgstr "Valstybė"
 
@@ -4571,6 +4592,12 @@ msgstr "Valda"
 msgid "archers"
 msgstr "šaulius"
 
+msgid "being researched"
+msgstr "tiriama"
+
+msgid "building: %s"
+msgstr "pastatas: %s"
+
 msgid "cavalry"
 msgstr "raitiją"
 
@@ -4579,6 +4606,9 @@ msgstr "spustelėk, kur nukreipti"
 
 msgid "creatures"
 msgstr "būtybes"
+
+msgid "fields %d"
+msgstr "laukai %d"
 
 msgid "firearm"
 msgstr "šaunamoji"
@@ -4844,6 +4874,12 @@ msgstr "Slucko kunigaikštis Jurgis"
 msgid "hero_zyndram"
 msgstr "Zyndramas iš Maškovicų"
 
+msgid "hives %d"
+msgstr "drevės %d"
+
+msgid "hunting %d"
+msgstr "medžioklė %d"
+
 msgid "infantry"
 msgstr "pėstininkus"
 
@@ -4894,6 +4930,12 @@ msgstr "Sargybos bokštas"
 
 msgid "mo_zaseka"
 msgstr "Medžių užkarda"
+
+msgid "none left"
+msgstr "viskas jau ištirta"
+
+msgid "none yet"
+msgstr "kol kas nėra"
 
 msgid "not made yet"
 msgstr "dar nesukurta"

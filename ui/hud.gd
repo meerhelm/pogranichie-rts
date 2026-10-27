@@ -21,6 +21,8 @@ var sim: Simulation
 var input: PlayerInput
 var clock: SimClock
 var player := 1
+## What came in and went out of the stock over the last minute (the resource tooltips).
+var flow := ResourceFlow.new()
 
 @onready var minimap: Minimap = %Minimap
 @onready var card: UnitCard = %Card
@@ -32,6 +34,10 @@ var player := 1
 @onready var _top: PanelContainer = %Top
 @onready var _resources: Array[Label] = [
 	$Top/Row/Food/Value, $Top/Row/Wood/Value, $Top/Row/Iron/Value, $Top/Row/Silver/Value
+]
+## The resources' items (icon and number); hovering one shows ResourceTip.
+@onready var _resource_boxes: Array[TipBox] = [
+	$Top/Row/Food as TipBox, $Top/Row/Wood as TipBox, $Top/Row/Iron, $Top/Row/Silver
 ]
 @onready var _power: Label = $Top/Row/Power/Value
 @onready var _population: Label = $Top/Row/Population/Value
@@ -88,6 +94,7 @@ func _notification(what: int) -> void:
 
 ## Once a frame after its ticks; refreshes at most every second tick, as before 8x.
 func _on_advanced(tick: int, steps: int) -> void:
+	flow.sample(tick, sim.economy.player(player))
 	if tick / 2 != (tick - steps) / 2:
 		refresh()
 
@@ -180,7 +187,7 @@ func refresh() -> void:
 	if state != null:
 		for r in 4:
 			_resources[r].text = str(state.stock[r])
-			_resources[r].tooltip_text = "%s\n%s" % [UiText.resource(r), UiText.resource_help(r)]
+			_refresh_resource_tip(r)
 		# A mission shows Power only once it has told the player about it (ВКЛ 1, trigger 2.3).
 		_power.visible = sim.mission == null or sim.mission.flags.has("show_power")
 		_power.text = str(state.power_points())
@@ -201,6 +208,19 @@ func refresh() -> void:
 	card.refresh()
 	commands.refresh()
 	advisor.refresh()
+
+
+## The tooltip of resource `r`: peasants on it, income and spending a minute, its bonuses.
+## Built only while the mouse is over the bar (the tooltip asks again when shown).
+func _refresh_resource_tip(r: int) -> void:
+	var box := _resource_boxes[r]
+	if not box.get_global_rect().has_point(box.get_global_mouse_position()):
+		if box.tooltip_text.is_empty():
+			box.tooltip_text = UiText.resource(r)
+		return
+	var tip := ResourceTip.make(sim.economy, player, r, flow)
+	box.rich_tip = tip.bbcode()
+	box.tooltip_text = tip.plain_text()
 
 
 func _on_hints_changed() -> void:

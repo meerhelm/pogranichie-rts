@@ -17,6 +17,9 @@ extends SceneTree
 ##   corner and a gate, a house inside; knechts outside storm the house, spearmen inside),
 ##   about (on res://ui/main_menu.tscn: the «About the game» page),
 ##   single (on res://ui/main_menu.tscn: the single player page with the map list),
+##   resource:R (the top bar's tooltip of resource R, 0 food ... 3 silver, after the player's
+##   peasants gathered a minute and a half: three on wood, two on food (a field by the town
+##   centre), a peasant queued at the town centre and the saw researched),
 ##   speed:N (the game speed button stepped N times up, e.g. 2 for 4x),
 ##   forest:X:Y (no fog: a forest patch from cell X, Y with the player's units in it and behind
 ##   it, two selected, and one on open ground beside it, to see their halos and the tree tints),
@@ -142,6 +145,8 @@ func _act() -> void:
 		_click(main, _action.split(":")[1])
 	elif _action.begins_with("panel:"):
 		_panel(main, _action.split(":"))
+	elif _action.begins_with("resource:"):
+		_resource_tip.call_deferred(main, int(_action.split(":")[1]))
 	elif _action.begins_with("speed:"):
 		for i in int(_action.split(":")[1]):
 			(main.get_node("UI/Hud") as Hud).step_speed(1)
@@ -499,6 +504,58 @@ func _panel(main: Node, parts: PackedStringArray) -> void:
 	input.selection.changed.emit()
 	if parts.size() > 2:
 		_hover.call_deferred(main, parts[2])
+
+
+func _resource_tip(main: Node, r: int) -> void:
+	var sim: Simulation = main.get("sim")
+	var hud: Hud = main.get_node("UI/Hud")
+	var eco := sim.economy
+	var state := eco.player(1)
+	var peasants := PackedInt32Array()
+	var tc := BuildingStore.NO_ID
+	for id in sim.entities.alive_ids:
+		if sim.entities.owners[id - 1] == 1 and eco.unit_defs[id - 1] != null:
+			if eco.unit_defs[id - 1].has_class(&"peasant"):
+				peasants.append(id)
+	for b in eco.buildings.alive_ids:
+		if eco.buildings.owners[b - 1] == 1 and eco.buildings.defs[b - 1].base_id == &"town_center":
+			tc = b
+	var at := Vector2i(eco.buildings.cell_x[tc - 1], eco.buildings.cell_y[tc - 1])
+	var farm := sim.economy._found(1, eco.db.building(&"gdl_farm"), at.x + 5, at.y + 1, false)
+	_finish(sim, farm)
+	var forest := -1
+	var best := 1 << 30
+	for c in sim.nav.cell_count():
+		var d := absi(c % sim.nav.width - at.x) + absi(c / sim.nav.width - at.y)
+		if eco.nodes.wood[c] > 0 and d < best:
+			best = d
+			forest = c
+	var fx := Fixed.from_cells(forest % sim.nav.width) + Fixed.HALF
+	var fy := Fixed.from_cells(forest / sim.nav.width) + Fixed.HALF
+	sim.enqueue(SimCommand.gather_at(sim.tick, 1, peasants.slice(0, 3), fx, fy))
+	sim.enqueue(
+		SimCommand.gather(sim.tick, 1, peasants.slice(3, 5), EconomySystem.Target.BUILDING, farm)
+	)
+	state.techs[&"t_saw"] = true
+	state.gather_bonus[ResourceNodes.Source.WOOD] += 200
+	main.get_node("SimClock").paused = true
+	for i in 1800:
+		sim.step()
+		hud.flow.sample(sim.tick, state)
+		if i == 1500:
+			var peasant := SkirmishSetup.peasant_of(eco.db, state.faction)
+			sim.enqueue(SimCommand.queue_item(sim.tick, 1, tc, peasant))
+	hud.refresh()
+	await process_frame
+	var box: Control = hud._resource_boxes[r]
+	var tip := Tips.make_label(ResourceTip.make(eco, 1, r, hud.flow).bbcode(), IconButton.TIP_WIDTH)
+	var panel_box := PanelContainer.new()
+	panel_box.add_theme_stylebox_override("panel", hud.get_theme_stylebox("panel", "TooltipPanel"))
+	panel_box.add_child(tip)
+	hud.add_child(panel_box)
+	await process_frame
+	var rect := box.get_global_rect()
+	panel_box.position = Vector2(rect.position.x, rect.end.y + 6)
 
 
 func _hover(main: Node, what: String) -> void:
