@@ -35,6 +35,9 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	var dir := Input.get_vector(&"cam_left", &"cam_right", &"cam_up", &"cam_down")
+	# Letters typed into a line (the network chat) do not move the camera.
+	if get_viewport().gui_get_focus_owner() is LineEdit:
+		dir = Vector2.ZERO
 	if edge_scroll and dir == Vector2.ZERO and DisplayServer.window_is_focused():
 		if _mouse_inside:
 			var over_ui := over_control(get_viewport().gui_get_hovered_control())

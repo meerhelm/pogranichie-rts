@@ -14,6 +14,10 @@ var _peer: ENetMultiplayerPeer
 var _host := false
 var _connected := false
 var _port := 0
+## Set by ENet's signals during _peer.poll() and acted on after it: closing the peer from inside
+## its own poll crashes the engine.
+var _joined_id := 0
+var _lost := false
 
 
 ## Listens for one player on the port. Returns OK or the error.
@@ -62,14 +66,15 @@ func poll() -> void:
 	if _peer == null:
 		return
 	_peer.poll()
-	if _peer == null:
-		return
+	if _joined_id != 0 and not _connected:
+		_on_joined(_joined_id)
 	while _peer != null and _peer.get_available_packet_count() > 0:
 		received.emit(_peer.get_packet())
 	if _peer == null:
 		return
 	# A guest whose host never answers ends here, with no peer_disconnected.
-	if not _host and _peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
+	var gone := _peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED
+	if _lost or (not _host and gone):
 		_drop()
 
 
@@ -83,6 +88,8 @@ func close() -> void:
 	var p := _peer
 	_peer = null
 	_connected = false
+	_joined_id = 0
+	_lost = false
 	# What was sent last (the goodbye) goes out before the connection closes.
 	if p.host != null:
 		p.host.flush()
@@ -103,8 +110,11 @@ func describe() -> String:
 
 
 func _on_peer_connected(id: int) -> void:
-	if _connected:
-		return
+	if _joined_id == 0:
+		_joined_id = id
+
+
+func _on_joined(id: int) -> void:
 	_connected = true
 	var enet := _peer.get_peer(id)
 	if enet != null:
@@ -116,7 +126,7 @@ func _on_peer_connected(id: int) -> void:
 
 
 func _on_peer_disconnected(_id: int) -> void:
-	_drop()
+	_lost = true
 
 
 func _drop() -> void:

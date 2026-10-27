@@ -9,10 +9,13 @@ extends RefCounted
 ## yet (or a test without town centres) is never knocked out. With fewer than two players there
 ## is nobody to win against and nothing ends.
 ##
+## A player may give up (RESIGN, network play 2026-10-27): they are out at once, and when one
+## side is left it wins with reason RESIGN.
+##
 ## In a mission (M9) these rules are off (no rules): the mission's script ends the game and
 ## fills in winner, reason MISSION, its end text (message) and end_tick.
 
-enum Reason { NONE, CONQUEST, PLACES, MISSION }
+enum Reason { NONE, CONQUEST, PLACES, MISSION, RESIGN }
 
 ## BuildingDef.base_id of the buildings a side must keep: «столица и замки».
 const CAPITALS: Array[StringName] = [&"town_center", &"castle"]
@@ -34,6 +37,8 @@ var holder := 0
 var held_ticks := 0
 
 var _had_capital: Dictionary[int, bool] = {}
+## Players who gave up -> the tick (also in `out`).
+var _resigned: Dictionary[int, int] = {}
 
 
 func _init(p_rules: SkirmishRulesDef, p_economy: EconomySystem, p_places: PowerPlaces) -> void:
@@ -52,6 +57,22 @@ func is_over() -> bool:
 
 func is_out(p: int) -> bool:
 	return out.has(p)
+
+
+## The player gives up: out now, and the game ends at once if one side is left.
+func resign(p: int, tick: int) -> void:
+	if not enabled() or is_over() or out.has(p) or not economy.players.has(p):
+		return
+	out[p] = tick
+	_resigned[p] = tick
+	var left: Array[int] = []
+	var ids := economy.players.keys()
+	ids.sort()
+	for q: int in ids:
+		if not out.has(q):
+			left.append(q)
+	if left.size() <= 1:
+		_end(left[0] if left.size() == 1 else 0, Reason.RESIGN, tick)
 
 
 ## Finished capitals and castles of each player.
@@ -129,3 +150,10 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		for p: int in keys:
 			buf.put_32(p)
 			buf.put_64(int(d[p]))
+	# Only games with a resignation write it, so older replays keep their hashes.
+	if not _resigned.is_empty():
+		var gave_up := _resigned.keys()
+		gave_up.sort()
+		buf.put_32(gave_up.size())
+		for p: int in gave_up:
+			buf.put_32(p)

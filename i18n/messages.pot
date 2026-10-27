@@ -35,6 +35,10 @@ msgstr ""
 msgid "%d%% of its price is left in heaps; peasants carry it to the stores."
 msgstr ""
 
+#: ui/net_lobby.gd
+msgid "%s (you)"
+msgstr ""
+
 #: ui/tips.gd
 msgid "%s Power a second on a place of power"
 msgstr ""
@@ -843,6 +847,10 @@ msgstr ""
 
 #: missions/gdl_08/mission.json
 msgid "Both bridges stand. The foot and the guns are going over them."
+msgstr ""
+
+#: ui/net_lobby.gd
+msgid "Both ready: the host starts the game"
 msgstr ""
 
 #: missions/gdl_03/mission.json
@@ -1957,6 +1965,14 @@ msgstr ""
 msgid "Give it to mother. Tell her you found it on the field."
 msgstr ""
 
+#: ui/pause_menu.gd
+msgid "Give up"
+msgstr ""
+
+#: ui/pause_menu.gd
+msgid "Give up? Press again to confirm"
+msgstr ""
+
 #: ui/command_panel.gd
 msgid "Give way before the enemy and lead him on, then turn on the chasers."
 msgstr ""
@@ -2040,6 +2056,10 @@ msgstr ""
 
 #: maps/skirmish.json
 msgid "Grunwald"
+msgstr ""
+
+#: ui/net_lobby.gd
+msgid "Guest"
 msgstr ""
 
 #: ui/mission_panel.gd
@@ -2241,6 +2261,10 @@ msgstr ""
 
 #: ui/mission_panel.gd
 msgid "Horses: %d%%"
+msgstr ""
+
+#: ui/net_lobby.gd
+msgid "Host"
 msgstr ""
 
 #: ui/unit_card.gd
@@ -2979,12 +3003,20 @@ msgstr ""
 msgid "Menu (F10)"
 msgstr ""
 
+#: ui/pause_menu.gd
+msgid "Menu: the game goes on"
+msgstr ""
+
 #: ui/mission_panel.gd
 msgid "Mercenaries' patience: %d%%"
 msgstr ""
 
 #: missions/crown_05/mission.json
 msgid "Mercenary"
+msgstr ""
+
+#: ui/net_chat.gd
+msgid "Message to the other player (Enter sends, Esc closes)"
 msgstr ""
 
 #: missions/crown_01/mission.json
@@ -3417,8 +3449,12 @@ msgstr ""
 msgid "Only on a salt spring"
 msgstr ""
 
-#: ui/main_menu.gd
+#: ui/net_chat.gd
 #: ui/net_lobby.gd
+msgid "Opponent"
+msgstr ""
+
+#: ui/main_menu.gd
 msgid "Opponent plays: %s"
 msgstr ""
 
@@ -3546,6 +3582,10 @@ msgstr ""
 msgid "Pani Barbara, the peasants of the Żuławy have already come to the town hall. They say they have paid for three wars at once this year."
 msgstr ""
 
+#: ui/net_status.gd
+msgid "Parts that differ: %s"
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Passive"
 msgstr ""
@@ -3556,6 +3596,14 @@ msgstr ""
 
 #: ui/hud.gd
 msgid "Paused (P)"
+msgstr ""
+
+#: ui/net_status.gd
+msgid "Paused by the other player. P to go on"
+msgstr ""
+
+#: ui/net_status.gd
+msgid "Paused by you. P to go on"
 msgstr ""
 
 #: missions/crown_06/mission.json
@@ -3612,6 +3660,10 @@ msgstr ""
 
 #: ui/help_panel.gd
 msgid "Pick one and left-click the ground; F turns it, Shift lays several."
+msgstr ""
+
+#: ui/net_lobby.gd
+msgid "Pick your faction and press «Ready»"
 msgstr ""
 
 #: missions/crown_02/mission.json
@@ -3849,6 +3901,10 @@ msgstr ""
 
 #: missions/crown_06/mission.json
 msgid "Raweneck was wounded already, but he led his men again. Who killed him is not written down."
+msgstr ""
+
+#: ui/net_lobby.gd
+msgid "Ready"
 msgstr ""
 
 #: missions/crown_03/mission.json
@@ -4316,6 +4372,10 @@ msgstr ""
 
 #: ui/tips.gd
 msgid "Standing %d s sets up the pavise: shooters behind him +%d pierce armor"
+msgstr ""
+
+#: ui/net_lobby.gd
+msgid "Start the game"
 msgstr ""
 
 #: ui/command_panel.gd
@@ -5141,6 +5201,10 @@ msgstr ""
 msgid "The lord vogt demands grain for the castles. You wanted to be protected, did you not?"
 msgstr ""
 
+#: ui/end_screen.gd
+msgid "The losing side gave up."
+msgstr ""
+
 #: missions/gdl_04/mission.json
 msgid "The marshal's banner is down! Press on, lords, before they raise another!"
 msgstr ""
@@ -5217,6 +5281,7 @@ msgstr ""
 msgid "The other game sent a start this game cannot read"
 msgstr ""
 
+#: ui/net_lobby.gd
 #: ui/net_status.gd
 msgid "The other player has left the game"
 msgstr ""
@@ -6188,6 +6253,10 @@ msgstr ""
 msgid "You will knock at this door a long time, sir knight. And yet a door has gatekeepers. In the castle sit Czechs, hired men. The Czechs do not care whom they stand for; they care how much they are paid."
 msgstr ""
 
+#: ui/net_chat.gd
+msgid "You: %s"
+msgstr ""
+
 #: missions/crown_03/mission.json
 msgid "Your account ended at that barrel. The other prisoners are the king's. If you want them, go and ask the king."
 msgstr ""
@@ -6214,6 +6283,10 @@ msgstr ""
 
 #: ui/tips.gd
 msgid "Your men near the relic do not flee while their morale is above 10; enemies nearby lose 10 morale."
+msgstr ""
+
+#: ui/net_lobby.gd
+msgid "Your name"
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -6775,6 +6848,10 @@ msgstr ""
 msgid "not made yet"
 msgstr ""
 
+#: ui/net_lobby.gd
+msgid "not ready"
+msgstr ""
+
 #: catalog:prototype_units
 msgid "nt_bear"
 msgstr ""
@@ -7058,6 +7135,10 @@ msgstr ""
 #: ui/tips.gd
 #: ui/unit_card.gd
 msgid "range %d"
+msgstr ""
+
+#: ui/net_lobby.gd
+msgid "ready"
 msgstr ""
 
 #: ui/ui_text.gd

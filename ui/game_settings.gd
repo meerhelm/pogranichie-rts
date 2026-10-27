@@ -41,6 +41,8 @@ static var enemy_faction: StringName = &"to"
 static var skirmish_map := SkirmishSetup.MAP_ID
 ## The host's address last typed for network play (NetLobby).
 static var net_address := ""
+## The player's name in network play (NetLobby).
+static var player_name := ""
 ## What the game scene opens (M9), set by the menus before switching to it: a campaign
 ## mission by id (empty: a skirmish), and a save to load instead (empty: a new game).
 static var mission_id := ""
@@ -74,6 +76,7 @@ static func ensure_loaded() -> void:
 		var map: String = cfg.get_value("skirmish", "map", skirmish_map)
 		skirmish_map = map if SkirmishMaps.has(map) else SkirmishSetup.MAP_ID
 		net_address = str(cfg.get_value("network", "address", net_address))
+		player_name = str(cfg.get_value("network", "name", player_name))
 	apply()
 
 
@@ -109,6 +112,7 @@ static func save() -> void:
 	cfg.set_value("skirmish", "enemy", String(enemy_faction))
 	cfg.set_value("skirmish", "map", skirmish_map)
 	cfg.set_value("network", "address", net_address)
+	cfg.set_value("network", "name", player_name)
 	var err := cfg.save(PATH)
 	if err != OK:
 		push_warning("cannot save settings: %s" % error_string(err))

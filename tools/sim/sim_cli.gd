@@ -17,6 +17,9 @@ extends SceneTree
 ##   godot --headless -s tools/sim/sim_cli.gd -- net --role guest [--address 127.0.0.1] ...
 ##     (a network game over ENet, each side played by the AI through Lockstep; run the two in two
 ##     processes; each prints its final hash, which must be the same, and fails on a desync)
+##   godot --headless -s tools/sim/sim_cli.gd -- parts replay.json --tick 1200
+##     (plays the replay to the tick and prints the hash of each part of the world: run it on two
+##     machines, e.g. Mac and Windows, with the same replay; the lines that differ show where)
 ## record, determinism and bench take --map <map id> (see MapText); without it, open grass;
 ## and --economy 1 to have the fuzzer play the economy too (players, buildings, gathering);
 ## with it, --magic 1 adds shrines on places of power and spells.
@@ -57,6 +60,8 @@ func _initialize() -> void:
 				code = _mission(opts)
 			"net":
 				code = _net(opts)
+			"parts":
+				code = _parts(args[1] if args.size() > 1 else "", opts)
 			_:
 				printerr("unknown command: ", args[0])
 	quit(code)
@@ -407,7 +412,13 @@ func _net(opts: Dictionary) -> int:
 	while session.state != NetSession.State.STARTED and failure[0] == "":
 		if Time.get_ticks_msec() > deadline:
 			failure[0] = "no other side within 60 s"
-		transport.poll()
+		session.poll()
+		# Both mark themselves ready in the lobby; the host starts.
+		if session.state == NetSession.State.LOBBY:
+			if not session.ready_flags[session.local_player - 1]:
+				session.set_ready(true)
+			if host:
+				session.start_game()
 		OS.delay_msec(5)
 	if failure[0] != "":
 		printerr("network game did not start: ", failure[0])
@@ -432,11 +443,11 @@ func _net(opts: Dictionary) -> int:
 	# The other side's last hashes may still be on the way.
 	var grace := Time.get_ticks_msec() + 1000
 	while Time.get_ticks_msec() < grace and ls.desync_tick < 0:
-		transport.poll()
+		session.poll()
 		OS.delay_msec(5)
 	print(
 		(
-			"tick %d final %s checkpoints %d stalls %d rejected %d desync %d seconds %.1f"
+			"tick %d final %s checkpoints %d stalls %d rejected %d desync %d delay %d rtt %d seconds %.1f"
 			% [
 				game.sim.tick,
 				game.sim.state_hash(),
@@ -444,6 +455,8 @@ func _net(opts: Dictionary) -> int:
 				ls.stalls,
 				ls.rejected,
 				ls.desync_tick,
+				ls.delay,
+				session.rtt_msec,
 				(Time.get_ticks_msec() - start) / 1000.0,
 			]
 		)
@@ -452,6 +465,25 @@ func _net(opts: Dictionary) -> int:
 	game.free_ai()
 	NetSession.close_current()
 	return 0 if ok else 1
+
+
+func _parts(path: String, opts: Dictionary) -> int:
+	var r := Replay.load_file(path)
+	if r == null:
+		printerr("usage: parts <replay.json> [--tick N]")
+		return 1
+	var db := CatalogDB.load_prototype()
+	var sim := r.new_simulation(db)
+	for cmd in r.commands:
+		sim.enqueue(cmd.duplicate_command())
+	var until := mini(int(opts.get("tick", str(r.ticks))), r.ticks)
+	while sim.tick < until:
+		sim.step()
+	print("tick %d hash %s" % [sim.tick, sim.state_hash()])
+	var parts := sim.part_hashes()
+	for key: String in parts:
+		print("%-9s %s" % [key, parts[key]])
+	return 0
 
 
 func _fuzz_replay(opts: Dictionary) -> Replay:

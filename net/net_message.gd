@@ -3,15 +3,18 @@ extends RefCounted
 ## The messages the two games send each other, as dictionaries packed with var_to_bytes (no
 ## objects, so a packet from the other side cannot make this side run code).
 ##
-## - hello (guest → host): the guest's versions, to check both games run the same rules.
-## - start (host → guest): seed, map, factions, input delay and the guest's player number.
+## - hello (guest → host): versions and the guest's name; welcome/lobby (host → guest): map,
+##   factions, who is ready, names; pick, ready (guest → host): the guest's faction, readiness.
+## - start (host → guest): seed, map, factions, input delay, once both are ready.
 ## - refuse (host → guest): why the game cannot start (versions differ).
 ## - turn: one player's commands for one tick (Lockstep).
-## - hash: the state hash after a tick, to find out when the games have drifted apart.
-## - bye: the player leaves the game.
+## - hash: the state hash after a tick, to find out when the games have drifted apart; parts:
+##   the hash of each part of the world at the tick they drifted (where to look).
+## - ping / pong: the round trip, for Lockstep's delay; pause: the game stops or goes on for
+##   both; chat: a line of text; bye: the player leaves the game.
 
 ## Bump when the messages change in a way older games cannot read.
-const PROTOCOL := 1
+const PROTOCOL := 2
 
 ## Commands a player may send over the network. The rest (SPAWN, REMOVE, JOIN, PLACE, CHOOSE)
 ## are the game's own (start of a skirmish, missions, tests) and are refused from a player.
@@ -37,6 +40,7 @@ const PLAYER_KINDS: Array[SimCommand.Kind] = [
 	SimCommand.Kind.IGNITE,
 	SimCommand.Kind.DISMANTLE,
 	SimCommand.Kind.TABOR,
+	SimCommand.Kind.RESIGN,
 ]
 ## No order names more units than this (a whole army is a few hundred).
 const MAX_IDS := 1000

@@ -21,8 +21,8 @@ func after_each() -> void:
 	_sessions.clear()
 
 
-## Host and guest over a loopback line, through the handshake.
-func _pair(
+## Host and guest over a loopback line, in the lobby.
+func _lobby(
 	factions: Array[StringName] = [&"gdl", &"to"], lag: int = 0, delay: int = 6
 ) -> Array[NetSession]:
 	var ends := LoopbackTransport.pair()
@@ -30,12 +30,29 @@ func _pair(
 	var host := NetSession.create(get_tree(), ends[0])
 	var guest := NetSession.create(get_tree(), ends[1])
 	_sessions.append_array([host, guest])
-	host.host_game(SkirmishSetup.MAP_ID, factions, delay)
-	guest.join_game()
-	for i in 10:
-		host.transport.poll()
-		guest.transport.poll()
+	host.host_game(SkirmishSetup.MAP_ID, factions, delay, "Vitaut")
+	guest.join_game("Jagiello")
+	_poll([host, guest])
 	return [host, guest]
+
+
+func _poll(pair: Array[NetSession], times: int = 10) -> void:
+	for i in times + 2 * int(pair[1].transport.get("lag_polls")):
+		for s in pair:
+			s.poll()
+
+
+## Host and guest through the lobby (both ready) to the start.
+func _pair(
+	factions: Array[StringName] = [&"gdl", &"to"], lag: int = 0, delay: int = 6
+) -> Array[NetSession]:
+	var pair := _lobby(factions, lag, delay)
+	for s in pair:
+		s.set_ready(true)
+		_poll(pair)
+	assert_true(pair[0].start_game(), "the host starts")
+	_poll(pair)
+	return pair
 
 
 func _games_of(pair: Array[NetSession]) -> Array[NetMatch]:
@@ -62,10 +79,46 @@ func test_handshake_gives_the_guest_the_hosts_game() -> void:
 	var pair := _pair([&"pl", &"to"])
 	assert_eq(pair[0].state, NetSession.State.STARTED)
 	assert_eq(pair[1].state, NetSession.State.STARTED)
+	assert_eq(pair[1].setup["map"], pair[0].setup["map"])
 	assert_eq(pair[1].setup["seed"], pair[0].setup["seed"])
 	assert_eq(pair[1].factions(), [&"pl", &"to"] as Array[StringName])
 	assert_eq(pair[0].local_player, 1)
 	assert_eq(pair[1].local_player, 2)
+
+
+func test_the_lobby_carries_picks_and_takes_ready_back() -> void:
+	var pair := _lobby()
+	var host := pair[0]
+	var guest := pair[1]
+	assert_eq(host.state, NetSession.State.LOBBY)
+	assert_eq(guest.state, NetSession.State.LOBBY)
+	assert_eq(host.remote_name(), "Jagiello")
+	assert_eq(guest.remote_name(), "Vitaut")
+	host.set_ready(true)
+	guest.set_ready(true)
+	_poll(pair)
+	assert_true(host.both_ready())
+	assert_true(guest.both_ready())
+	guest.pick_faction(&"pl")
+	_poll(pair)
+	assert_eq(host.factions(), [&"gdl", &"pl"] as Array[StringName])
+	assert_eq(guest.factions(), [&"gdl", &"pl"] as Array[StringName])
+	assert_false(host.both_ready(), "a new faction takes «ready» back")
+	assert_false(host.start_game(), "no start before both are ready")
+	host.pick_map("map_sk_grunwald")
+	_poll(pair)
+	assert_eq(guest.map_id(), "map_sk_grunwald")
+	assert_false(guest.start_game(), "only the host starts")
+
+
+func test_a_guest_leaving_the_lobby_ends_it() -> void:
+	var pair := _lobby()
+	var left := []
+	pair[0].opponent_left.connect(func() -> void: left.append(true))
+	pair[1].leave()
+	_poll(pair)
+	assert_eq(left.size(), 1)
+	assert_eq(pair[0].state, NetSession.State.CLOSED)
 
 
 func test_a_different_version_is_refused() -> void:
@@ -128,6 +181,70 @@ func test_a_drift_between_the_worlds_is_found() -> void:
 	assert_eq(found.size(), 2, "both sides see it")
 	assert_eq(int(found[0]), 120)
 	assert_eq(games[0].session.lockstep.desync_tick, 120)
+
+
+func test_a_drift_names_the_part_of_the_world_that_differs() -> void:
+	var games := _games_of(_pair())
+	_play(games, 100)
+	var parts := []
+	games[0].session.desync_parts.connect(func(p: PackedStringArray) -> void: parts.append(p))
+	# A unit's hit points on one machine only.
+	var e := games[1].sim.entities
+	e.hp[e.alive_ids[0] - 1] -= 1
+	_play(games, 200)
+	_poll([games[0].session, games[1].session])
+	assert_eq(parts.size(), 1)
+	assert_true("entities" in parts[0], str(parts))
+	assert_false("economy" in parts[0], str(parts))
+
+
+func test_a_resignation_ends_the_game_for_both() -> void:
+	var games := _games_of(_pair())
+	_play(games, 60)
+	games[1].session.lockstep.submit(SimCommand.resign(0, 2))
+	_play(games, 100)
+	for g in games:
+		assert_true(g.sim.victory.is_over())
+		assert_eq(g.sim.victory.winner, 1)
+		assert_eq(g.sim.victory.reason, SkirmishVictory.Reason.RESIGN)
+	assert_eq(games[0].sim.state_hash(), games[1].sim.state_hash())
+
+
+func test_pause_and_chat_reach_the_other_player() -> void:
+	var games := _games_of(_pair())
+	var host := games[0].session
+	var guest := games[1].session
+	var lines := []
+	host.chat.connect(func(t: String) -> void: lines.append(t))
+	var pauses := []
+	host.paused_changed.connect(func(on: bool, me: bool) -> void: pauses.append([on, me]))
+	guest.set_paused(true)
+	guest.send_chat("Do Wilna!")
+	_poll([host, guest])
+	assert_true(host.paused)
+	assert_eq(pauses, [[true, false]])
+	assert_eq(lines, ["Do Wilna!"])
+	host.set_paused(false)
+	_poll([host, guest])
+	assert_false(guest.paused)
+
+
+func test_the_delay_follows_the_line_and_the_worlds_stay_equal() -> void:
+	assert_eq(Lockstep.delay_for(0), Lockstep.MIN_DELAY)
+	assert_eq(Lockstep.delay_for(200), 6)
+	assert_eq(Lockstep.delay_for(100_000), Lockstep.MAX_DELAY)
+	var games := _games_of(_pair([&"pl", &"to"], 2))
+	var ls := games[1].session.lockstep
+	_play(games, 300)
+	ls.note_rtt(600)
+	assert_gt(ls.delay, Lockstep.DEFAULT_DELAY, "a slow line: commands run later")
+	_play(games, 600)
+	for i in Lockstep.RTT_SAMPLES:
+		ls.note_rtt(0)
+	assert_eq(ls.delay, Lockstep.MIN_DELAY, "a quick line: sooner")
+	_play(games, 900)
+	assert_eq(games[0].sim.state_hash(), games[1].sim.state_hash())
+	assert_eq(ls.desync_tick, -1)
 
 
 func test_commands_a_player_may_not_send_are_dropped() -> void:

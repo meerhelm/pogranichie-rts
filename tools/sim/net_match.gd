@@ -29,7 +29,7 @@ func begin(db: CatalogDB, difficulty: StringName = &"normal") -> void:
 ## Delivers what came over the network and steps as many ticks as the other side allows, at most
 ## max_steps; returns the ticks stepped.
 func pump(max_steps: int = 100) -> int:
-	session.transport.poll()
+	session.poll()
 	if session.lockstep == null:
 		return 0
 	var n := 0

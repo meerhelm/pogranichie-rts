@@ -33,8 +33,11 @@ extends SceneTree
 ##   and a spearman carrying «Реликвия в строю», to see the particle effects),
 ##   briefing (in a mission: the briefing closed, the mission run a little, then F2's briefing),
 ##   net (on res://ui/main_menu.tscn: the «Network play» page, a game created and waiting),
+##   netlobby:ADDRESS (on the main menu: joins the game at ADDRESS, picks the Crown and is ready;
+##   run with a `net` shot of the host for both sides of the lobby),
 ##   nethost / netjoin:ADDRESS (a network game over ENet: run one of each, the host first; the
-##   game scene opens once they have shaken hands, then the player's units are selected).
+##   game scene opens once both are ready in the lobby, then the player's units are selected,
+##   the guest sends a chat line, the host answers one and pauses the game).
 ## SHOT_MISSION=gdl_01 (or another mission id) opens that mission instead of the skirmish; a new
 ## mission starts with its briefing open. SHOT_MAP=map_sk_orsha (or another SkirmishMaps id) plays
 ## the skirmish on that map.
@@ -87,6 +90,13 @@ func _start_net() -> void:
 	else:
 		t.join(_action.split(":")[1])
 		s.join_game()
+	s.lobby_changed.connect(
+		func() -> void:
+			if s.state == NetSession.State.LOBBY and not s.ready_flags[s.local_player - 1]:
+				s.set_ready(true)
+			if s.is_host and s.both_ready():
+				s.start_game()
+	)
 	s.started.connect(
 		func() -> void:
 			change_scene_to_file(_scene)
@@ -140,9 +150,28 @@ func _act() -> void:
 		input.selection.ids = ids
 		input.selection.changed.emit()
 		print("network game: player %d at tick %d" % [input.player, sim.tick])
+		var chat: NetChat = main.get_node("UI/NetChat")
+		if _action == "nethost":
+			chat._on_submitted("Gotowi? Zaczynamy.")
+			NetSession.current.set_paused(true)
+		else:
+			chat._on_submitted("Да, пачынаем!")
 	elif _action == "net" and main.get("_net") != null:
 		main._network.pressed.emit()
-		(main.get("_net") as NetLobby).create.pressed.emit()
+		var lobby: NetLobby = main.get("_net")
+		lobby.player_name.text = "Vitaut"
+		lobby.create.pressed.emit()
+	elif _action.begins_with("netlobby:") and main.get("_net") != null:
+		main._network.pressed.emit()
+		var lobby: NetLobby = main.get("_net")
+		lobby.player_name.text = "Jagiello"
+		lobby.address.text = _action.split(":")[1]
+		lobby.join.pressed.emit()
+		await create_timer(1.5).timeout
+		lobby.mine.select(SkirmishSetup.FACTIONS.find(&"pl"))
+		lobby.mine.item_selected.emit(lobby.mine.selected)
+		await create_timer(0.5).timeout
+		lobby.ready_box.button_pressed = true
 	elif _action == "single" and main.get("_single") != null:
 		main._single_button.pressed.emit()
 	elif _action == "about" and main.get("_about") != null:

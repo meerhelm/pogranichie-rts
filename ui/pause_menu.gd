@@ -4,6 +4,8 @@ extends Control
 ## resume, settings, back to the main menu, quit. Runs while the scene tree is paused. In a
 ## mission (M9, can_save) also save the game and load a saved one (the list of saves, newest
 ## first), and open the mission's briefing again (its goal and objectives).
+## In a skirmish (can_resign) also give up; in a network game (keeps_running) the menu does not
+## stop the game, which goes on for both players.
 
 signal resumed
 signal save_requested
@@ -14,14 +16,23 @@ signal help_requested
 signal briefing_requested
 ## The skirmish hints were turned on or off in the settings.
 signal hints_changed
+## «Give up» was pressed and confirmed.
+signal resign_requested
 
 const MENU_SCENE := "res://ui/main_menu.tscn"
 const SCENE := "res://ui/pause_menu.tscn"
 
 ## Whether this game can be saved (a mission).
 var can_save := false
+## Whether the player may give up here (a skirmish, also over the network).
+var can_resign := false
+## A network game: opening the menu does not pause the game.
+var keeps_running := false
 
 var _note := ""
+## «Give up»; a second press confirms.
+var _resign := Button.new()
+var _resign_armed := false
 
 @onready var _title: Label = %Title
 @onready var _resume: Button = %Resume
@@ -48,6 +59,11 @@ func _ready() -> void:
 	_to_menu.pressed.connect(_on_main_menu)
 	_quit.pressed.connect(func() -> void: get_tree().quit())
 	_settings.closed.connect(_show_settings.bind(false))
+	_resign.name = "Resign"  # notr
+	_resign.custom_minimum_size = _to_menu.custom_minimum_size
+	_resign.pressed.connect(_on_resign)
+	_to_menu.add_sibling(_resign)
+	_menu.move_child(_resign, _to_menu.get_index())
 	_retranslate()
 
 
@@ -62,7 +78,9 @@ func _notification(what: int) -> void:
 
 
 func _retranslate() -> void:
-	_title.text = tr("Paused") if _note.is_empty() else _note
+	var head := tr("Menu: the game goes on") if keeps_running else tr("Paused")
+	_title.text = head if _note.is_empty() else _note
+	_resign.text = tr("Give up? Press again to confirm") if _resign_armed else tr("Give up")
 	_resume.text = tr("Resume")
 	_briefing.text = tr("Mission (F2)")
 	_save.text = tr("Save game")
@@ -91,17 +109,31 @@ func open() -> void:
 	_save.visible = can_save
 	_load.visible = can_save
 	_clear_saves()
+	_resign_armed = false
+	_resign.visible = can_resign
 	_retranslate()
 	visible = true
 	UiAnim.pop_in(self, %Panel)
-	get_tree().paused = true
+	if not keeps_running:
+		get_tree().paused = true
 	_resume.grab_focus.call_deferred()
 
 
 func close() -> void:
 	visible = false
-	get_tree().paused = false
+	if not keeps_running:
+		get_tree().paused = false
 	resumed.emit()
+
+
+func _on_resign() -> void:
+	if not _resign_armed:
+		_resign_armed = true
+		_retranslate()
+		return
+	_resign_armed = false
+	resign_requested.emit()
+	close()
 
 
 ## A line in place of the title, already translated ("Game saved").

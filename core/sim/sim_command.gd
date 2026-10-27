@@ -32,6 +32,7 @@ enum Kind {
 	DISMANTLE,
 	CHOOSE,
 	TABOR,
+	RESIGN,
 }
 
 ## Kinds whose x and y are a point on the map.
@@ -362,6 +363,18 @@ static func choose(at_tick: int, by: int, question: StringName, option: int) -> 
 	c.kind = Kind.CHOOSE
 	c.type_id = question
 	c.value = option
+	return c
+
+
+# --- network play ---------------------------------------------------------------------------
+
+
+## The player gives up the skirmish (SkirmishVictory.resign).
+static func resign(at_tick: int, by: int) -> SimCommand:
+	var c := SimCommand.new()
+	c.tick = at_tick
+	c.player = by
+	c.kind = Kind.RESIGN
 	return c
 
 

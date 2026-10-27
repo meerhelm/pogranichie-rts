@@ -20,7 +20,8 @@ extends Node2D
 ## Network play (NetSession.current, from the menu's NetLobby): the skirmish of the session's
 ## seed, map and factions, the local player being the host (1) or the guest (2); no AI, the world
 ## steps through Lockstep and orders go to it, the game cannot be paused or sped up, and the
-## clock runs on while a menu is open. NetStatus tells of waiting, a player gone or a desync.
+## clock runs on while a menu is open; P pauses both games and either player goes on. NetStatus
+## tells of waiting, a pause, a player gone or a desync; NetChat sends lines (Enter).
 
 const SEED := 1
 const PLAYER := 1
@@ -148,6 +149,8 @@ func _ready() -> void:
 	_input.attach(sim, _units, _camera, _buildings)
 	_hud.attach(sim, _clock, _input, _camera, me)
 	_hud.menu.resumed.connect(_apply_camera_settings)
+	_hud.menu.can_resign = sim.mission == null
+	_hud.menu.resign_requested.connect(_input.order_resign)
 	_clock.advanced.connect(func(t: int, _s: int) -> void: _on_ticked(t))
 	$UI.add_child(end_screen)
 	if sim.mission != null:
@@ -182,10 +185,14 @@ func _start_net() -> void:
 	_clock.stepper = lockstep.try_step
 	_clock.process_mode = Node.PROCESS_MODE_ALWAYS
 	_input.sink = lockstep.submit
-	_hud.set_net_game()
+	_hud.set_net_game(net)
 	var status := NetStatus.new()
 	$UI.add_child(status)
 	status.attach(net, _clock)
+	var talk := NetChat.new()
+	$UI.add_child(talk)
+	talk.attach(net)
+	net.paused_changed.connect(func(on: bool, _by_me: bool) -> void: _clock.paused = on)
 
 
 ## The map base of the player at this screen: the first in a skirmish, the network player's own.

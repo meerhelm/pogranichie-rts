@@ -13,6 +13,8 @@ extends RefCounted
 
 ## The other side's hash for a tick differs from this side's.
 signal desynced(tick: int, mine: String, theirs: String)
+## This side has hashed its world after `tick` (a checkpoint), before comparing it.
+signal checkpointed(tick: int)
 
 ## Ticks between giving a command and running it. At the game's 40 ticks a second, 6 is 150 ms,
 ## enough for a line across Europe.
@@ -21,11 +23,25 @@ const DEFAULT_DELAY := 6
 const HASH_EVERY := 20
 ## The game waits for a command at most this far ahead (a buggy or hostile peer could flood).
 const MAX_AHEAD := 2000
+## Bounds of the delay as the line is measured (adapt_delay).
+const MIN_DELAY := 3
+const MAX_DELAY := 40
+## Real milliseconds of one tick at the game's pace (40 ticks a second, Hud.BASE_SPEED).
+const TICK_MSEC := 25
+## Room in milliseconds for a frame and for the line's ups and downs, on top of half the round trip.
+const DELAY_MARGIN_MSEC := 45
+## Round trips remembered; the delay follows the slowest of them.
+const RTT_SAMPLES := 8
 
 var sim: Simulation
 var local_player: int
 var remote_player: int
+## How many ticks ahead this side's commands run. It starts at the delay both sides agreed on and
+## then follows the measured line on each side for itself (note_rtt): a side may send its turns
+## further ahead or hold them back without the other side knowing, since the other side only needs
+## each turn before it steps that tick. Off with `adapt` false.
 var delay := DEFAULT_DELAY
+var adapt := true
 ## Sends one message to the other side (NetSession: encode and hand to the transport).
 var send: Callable
 ## This side's state hashes, one every HASH_EVERY ticks from the start on (as Replay).
@@ -49,6 +65,9 @@ var _local: Dictionary[int, Array] = {}
 var _remote_hashes: Dictionary[int, String] = {}
 ## The tick the game started at here (0 for a new game).
 var _start := 0
+## The first tick that has turns; before it both sides step without any (the agreed delay).
+var _first := 0
+var _rtts: Array[int] = []
 
 
 func _init(p_sim: Simulation, p_local: int, p_remote: int, p_delay: int = DEFAULT_DELAY) -> void:
@@ -57,7 +76,8 @@ func _init(p_sim: Simulation, p_local: int, p_remote: int, p_delay: int = DEFAUL
 	remote_player = p_remote
 	delay = maxi(p_delay, 1)
 	_start = sim.tick
-	_sent_through = _start + delay - 1
+	_first = _start + delay
+	_sent_through = _first - 1
 
 
 ## A command of the local player (PlayerInput's sink). It runs at the first tick whose turn has
@@ -91,6 +111,7 @@ func try_step() -> bool:
 		var h := sim.state_hash()
 		checkpoints.append(h)
 		send.call({"m": "hash", "t": sim.tick, "h": h})
+		checkpointed.emit(sim.tick)
 		_compare(sim.tick)
 	return true
 
@@ -116,7 +137,22 @@ func receive(msg: Dictionary) -> void:
 
 
 func _first_turn() -> int:
-	return _start + delay
+	return _first
+
+
+## A measured round trip: the delay becomes what the slowest of the last RTT_SAMPLES needs.
+func note_rtt(msec: int) -> void:
+	_rtts.append(maxi(msec, 0))
+	if _rtts.size() > RTT_SAMPLES:
+		_rtts.pop_front()
+	if adapt:
+		delay = delay_for(_rtts.max())
+
+
+## Ticks of delay a round trip of `msec` needs.
+static func delay_for(msec: int) -> int:
+	var need := (msec / 2 + DELAY_MARGIN_MSEC + TICK_MSEC - 1) / TICK_MSEC
+	return clampi(need, MIN_DELAY, MAX_DELAY)
 
 
 func _send_turns_through(last: int) -> void:

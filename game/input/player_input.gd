@@ -1,3 +1,4 @@
+# gdlint:ignore = max-public-methods
 class_name PlayerInput
 extends Control
 ## Mouse and keyboard of the local player: select units (click, drag box, Shift, double click
@@ -683,6 +684,11 @@ func _set_formation(kind: Formation.Kind) -> void:
 
 func set_formation(kind: Formation.Kind) -> void:
 	_set_formation(kind)
+
+
+## The player gives up the skirmish (the game menu's «Give up»).
+func order_resign() -> void:
+	_order(SimCommand.resign(sim.tick, player))
 
 
 func order_stop() -> void:

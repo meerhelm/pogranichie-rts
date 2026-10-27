@@ -29,6 +29,9 @@ msgstr "%d вози, поставлені в коло, утворюють таб
 msgid "%d%% of its price is left in heaps; peasants carry it to the stores."
 msgstr "%d%% ціни лишається в купах; селяни відносять її до сховищ."
 
+msgid "%s (you)"
+msgstr "%s (ви)"
+
 msgid "%s Power a second on a place of power"
 msgstr "%s Сили за секунду на місці сили"
 
@@ -631,6 +634,9 @@ msgstr "Можна дослідити:"
 
 msgid "Both bridges stand. The foot and the guns are going over them."
 msgstr "Обидва мости стоять. Піхота й гармати йдуть по них."
+
+msgid "Both ready: the host starts the game"
+msgstr "Обидва готові: господар починає гру"
 
 msgid "Boyar"
 msgstr "Боярин"
@@ -1445,6 +1451,12 @@ msgstr "Дати 150 їжі"
 msgid "Give it to mother. Tell her you found it on the field."
 msgstr "Віддай матері. Скажи, що знайшов на полі."
 
+msgid "Give up"
+msgstr "Здатися"
+
+msgid "Give up? Press again to confirm"
+msgstr "Здатися? Натисніть ще раз"
+
 msgid "Give way before the enemy and lead him on, then turn on the chasers."
 msgstr "Відступайте перед ворогом і ведіть його за собою, потім оберніться на погоню."
 
@@ -1507,6 +1519,9 @@ msgstr "Зелене — можна ставити; рядок угорі каж
 
 msgid "Grunwald"
 msgstr "Грюнвальд"
+
+msgid "Guest"
+msgstr "Гість"
 
 msgid "Guest knights taken captive: %d"
 msgstr "Гостей-лицарів узято в полон: %d"
@@ -1657,6 +1672,9 @@ msgstr "Сили коней: %d%%"
 
 msgid "Horses: %d%%"
 msgstr "Коні: %d%%"
+
+msgid "Host"
+msgstr "Господар"
 
 msgid "Houses %d"
 msgstr "Хат %d"
@@ -2204,11 +2222,17 @@ msgstr "З бічної хвіртки вибігають люди в корот
 msgid "Menu (F10)"
 msgstr "Меню (F10)"
 
+msgid "Menu: the game goes on"
+msgstr "Меню: гра триває"
+
 msgid "Mercenaries' patience: %d%%"
 msgstr "Терпіння найманців: %d%%"
 
 msgid "Mercenary"
 msgstr "Найманець"
+
+msgid "Message to the other player (Enter sends, Esc closes)"
+msgstr "Повідомлення іншому гравцеві (Enter — надіслати, Esc — закрити)"
 
 msgid "Messenger"
 msgstr "Гонець"
@@ -2525,6 +2549,9 @@ msgstr "Лише на місці сили"
 msgid "Only on a salt spring"
 msgstr "Тільки на соляному джерелі"
 
+msgid "Opponent"
+msgstr "Суперник"
+
 msgid "Opponent plays: %s"
 msgstr "Суперник: %s"
 
@@ -2621,6 +2648,9 @@ msgstr "Пані Барбара загинула. Не лишилося ніко
 msgid "Pani Barbara, the peasants of the Żuławy have already come to the town hall. They say they have paid for three wars at once this year."
 msgstr "Пані Барбаро, селяни з Жулав уже прийшли до ратуші. Кажуть, що цього року заплатили за три війни відразу."
 
+msgid "Parts that differ: %s"
+msgstr "Різні частини: %s"
+
 msgid "Passive"
 msgstr "Пасивна"
 
@@ -2629,6 +2659,12 @@ msgstr "Пауза"
 
 msgid "Paused (P)"
 msgstr "Пауза (P)"
+
+msgid "Paused by the other player. P to go on"
+msgstr "Пауза від іншого гравця. P — продовжити"
+
+msgid "Paused by you. P to go on"
+msgstr "Ви поставили паузу. P — продовжити"
 
 msgid "Paweł Jasieński led the heavy horse out first. Długosz wrote that he struck so that the enemy's lances all missed; that is how chroniclers write."
 msgstr "Першим вивів важку кінноту Павло Ясенський. Длугош писав, що він ударив так, що всі ворожі списи схибили; так уже пишуть літописці."
@@ -2671,6 +2707,9 @@ msgstr "Може, торгується за місто."
 
 msgid "Pick one and left-click the ground; F turns it, Shift lays several."
 msgstr "Виберіть і клацніть лівою по землі; F повертає, Shift ставить кілька."
+
+msgid "Pick your faction and press «Ready»"
+msgstr "Оберіть фракцію і натисніть «Готовий»"
 
 msgid "Piotr of Oleśnica"
 msgstr "Петро з Олесниці"
@@ -2845,6 +2884,9 @@ msgstr "Равенека теж поранено. Його кіннота від
 
 msgid "Raweneck was wounded already, but he led his men again. Who killed him is not written down."
 msgstr "Равенек був уже поранений, але знову повів своїх. Хто його вбив, не записано."
+
+msgid "Ready"
+msgstr "Готовий"
 
 msgid "Refuse"
 msgstr "Відмовити"
@@ -3190,6 +3232,9 @@ msgstr "Хорунжий, веди їх до лісу. Тільки не над�
 
 msgid "Standing %d s sets up the pavise: shooters behind him +%d pierce armor"
 msgstr "Постоявши %d с, ставить павезу: стрільцям за нею +%d броні від колючої шкоди"
+
+msgid "Start the game"
+msgstr "Почати гру"
 
 msgid "Stop"
 msgstr "Стій"
@@ -3805,6 +3850,9 @@ msgstr "Самотній дуб на пагорбі — місце сили. З�
 
 msgid "The lord vogt demands grain for the castles. You wanted to be protected, did you not?"
 msgstr "Пан фогт вимагає зерна для замків. Ви ж хотіли захисту, чи не так?"
+
+msgid "The losing side gave up."
+msgstr "Сторона, що програла, здалася."
 
 msgid "The marshal's banner is down! Press on, lords, before they raise another!"
 msgstr "Маршальська корогва лежить! Тисніть, панове, поки вони не підняли іншої!"
@@ -4589,6 +4637,9 @@ msgstr "Ти охрестився, Гінтауте."
 msgid "You will knock at this door a long time, sir knight. And yet a door has gatekeepers. In the castle sit Czechs, hired men. The Czechs do not care whom they stand for; they care how much they are paid."
 msgstr "Довго стукатимете в ці двері, пане лицарю. А в дверей же є воротарі. У замку сидять чехи, наймані. Чехам байдуже, за кого стояти; їм не байдуже, скільки платять."
 
+msgid "You: %s"
+msgstr "Ви: %s"
+
 msgid "Your account ended at that barrel. The other prisoners are the king's. If you want them, go and ask the king."
 msgstr "Твій рахунок скінчився біля тієї бочки. Решта полонених королівські. Хочеш їх, іди спитай у короля."
 
@@ -4609,6 +4660,9 @@ msgstr "Ваші люди довкола: дух не падає, шкода +25
 
 msgid "Your men near the relic do not flee while their morale is above 10; enemies nearby lose 10 morale."
 msgstr "Свої поруч із реліквією не тікають, доки дух вищий за 10; вороги поруч втрачають 10 духу."
+
+msgid "Your name"
+msgstr "Ваше ім’я"
 
 msgid "Your people are not ready to fight yet. Gather your stores again."
 msgstr "Твої люди ще не готові битися. Збери запаси знову."
@@ -4988,6 +5042,9 @@ msgstr "поки немає"
 msgid "not made yet"
 msgstr "ще не зроблена"
 
+msgid "not ready"
+msgstr "не готовий"
+
 msgid "nt_bear"
 msgstr "Ведмідь"
 
@@ -5200,6 +5257,9 @@ msgstr "радіус %d"
 
 msgid "range %d"
 msgstr "дальність %d"
+
+msgid "ready"
+msgstr "готовий"
 
 msgid "siege"
 msgstr "облогова"

@@ -273,6 +273,51 @@ func state_hash() -> String:
 	return ctx.finish().hex_encode()
 
 
+## The state hash in parts (core, entities, combat, economy, vision, magic, victory, fire, sides,
+## mission): when two network games drift apart, the parts that differ say where to look.
+func part_hashes() -> Dictionary:
+	var parts := {}
+	var core := StreamPeerBuffer.new()
+	core.put_32(SIM_VERSION)
+	core.put_64(tick)
+	core.put_64(rng.state)
+	core.put_data(nav.content_hash())
+	core.put_32(_next_flow_id)
+	for id in _path_queue:
+		core.put_32(id)
+	core.put_32(_searching)
+	for flow_id in _flow_queue:
+		core.put_32(flow_id)
+	parts["core"] = _sha(core)
+	var systems := {
+		"entities": entities,
+		"combat": combat,
+		"economy": economy,
+		"vision": vision,
+		"magic": magic,
+		"victory": victory,
+		"fire": fire,
+		"sides": sides,
+	}
+	if mission != null:
+		systems["mission"] = mission
+	for key: String in systems:
+		var buf := StreamPeerBuffer.new()
+		buf.big_endian = false
+		(systems[key] as Object).call("write_to", buf)
+		parts[key] = _sha(buf)
+	return parts
+
+
+static func _sha(buf: StreamPeerBuffer) -> String:
+	var ctx := HashingContext.new()
+	ctx.start(HashingContext.HASH_SHA256)
+	if buf.data_array.is_empty():
+		return "empty"  # notr
+	ctx.update(buf.data_array)
+	return ctx.finish().hex_encode()
+
+
 ## The catalog the world was made with (null in tests without data).
 func catalog() -> CatalogDB:
 	return _db
@@ -331,6 +376,8 @@ func _apply(cmd: SimCommand) -> void:
 			combat.drop_targets(ids)
 			fire.drop(ids)
 			magic.order(cmd, ids)
+		SimCommand.Kind.RESIGN:
+			victory.resign(cmd.player, tick)
 		SimCommand.Kind.CHOOSE:
 			if mission != null:
 				mission.choose(cmd.player, String(cmd.type_id), cmd.value, tick)

@@ -64,6 +64,8 @@ func _fill() -> void:
 			why = tr("All places of power held for five minutes.")
 		SkirmishVictory.Reason.MISSION:
 			why = tr(v.message)
+		SkirmishVictory.Reason.RESIGN:
+			why = tr("The losing side gave up.")
 	_reason.text = "%s %s" % [why, tr("Game time: %s") % UiText.clock(v.end_tick + 1)]
 	var m := _sim.mission
 	if m != null and m.def.rules.has("rescue"):
