@@ -10,6 +10,10 @@ const VIEW_SCENE := preload("res://game/world/unit_view.tscn")
 const NO_POINT := Vector2i(-1, -1)
 ## Ticks between looks into the training queues for art to load ahead (_prefetch_queued).
 const PREFETCH_TICKS := 20
+## How many rows lower on screen a tree can stand and still hide a unit (trees are about
+## 165 px tall, a row is 16 px, and the unit's figure is about 40 px above its feet).
+const TREE_ROWS := 8
+const OLD_FOREST := &"t_old_forest"
 
 var sim: Simulation
 var clock: SimClock
@@ -25,6 +29,20 @@ var _struck: Dictionary[int, int] = {}
 ## Fixed positions at the previous and the latest tick, by id.
 var _prev: Dictionary[int, Vector2i] = {}
 var _cur: Dictionary[int, Vector2i] = {}
+## Whether a unit is among trees, worked out again only when it changes cell or the map does:
+## the cell and nav version it was worked out for, by id.
+var _tree_cell: Dictionary[int, int] = {}
+var _tree_version: Dictionary[int, int] = {}
+## Cell steps from a unit's own cell to the cells in front of it on screen (lower, within a
+## half tile to either side) whose trees would cover it.
+var _front: Array[Vector2i] = []
+
+
+func _init() -> void:
+	for rows in TREE_ROWS + 1:
+		for side: int in [-1, 0, 1]:
+			if (rows + side) % 2 == 0 and rows + side >= 0 and rows - side >= 0:
+				_front.append(Vector2i((rows + side) / 2, (rows - side) / 2))
 
 
 func _ready() -> void:
@@ -57,6 +75,11 @@ func _on_advanced(tick: int, steps: int) -> void:
 			_show_action(id, view, p != _cur[id])
 		_cur[id] = p
 		_show_state(id, view)
+		var cell := sim.nav.cell_of(p.x, p.y)
+		if _tree_cell.get(id, -1) != cell or _tree_version.get(id, -1) != sim.nav.version:
+			_tree_cell[id] = cell
+			_tree_version[id] = sim.nav.version
+			view.in_forest = _among_trees(cell)
 	for id: int in views.keys():
 		if not e.is_alive(id):
 			views[id].queue_free()
@@ -64,6 +87,24 @@ func _on_advanced(tick: int, steps: int) -> void:
 			_prev.erase(id)
 			_cur.erase(id)
 			_struck.erase(id)
+			_tree_cell.erase(id)
+			_tree_version.erase(id)
+
+
+## Whether a unit on `cell` stands among trees: in a forest cell, or behind one (a forest cell
+## lower on screen whose tree covers it).
+func _among_trees(cell: int) -> bool:
+	var nav := sim.nav
+	var cx := cell % nav.width
+	var cy := cell / nav.width
+	for d: Vector2i in _front:
+		var x := cx + d.x
+		var y := cy + d.y
+		if nav.in_bounds(x, y):
+			var id := nav.terrain_ids[nav.terrain[nav.cell_at(x, y)]]
+			if id == NavGrid.FOREST or id == OLD_FOREST:
+				return true
+	return false
 
 
 ## Unit sheets are big: the art of what any building is training is loaded on a worker thread

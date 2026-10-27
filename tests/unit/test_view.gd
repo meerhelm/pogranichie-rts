@@ -158,3 +158,48 @@ func test_the_whole_drawn_figure_picks_a_unit() -> void:
 	assert_false(view.covers(Vector2(40, -top / 2)), "beside the figure")
 	assert_false(view.covers(Vector2(0, -top - 20)), "above the figure")
 	assert_false(view.covers(Vector2(0, 20)), "below the feet")
+
+
+func test_in_the_forest_a_halo_shows_and_picks_the_unit() -> void:
+	var view: UnitView = UnitLayer.VIEW_SCENE.instantiate()
+	view.type_id = &"gdl_spearman"
+	add_child_autofree(view)
+	var halo: Sprite2D = view.get_node("Halo")
+	var top := float(view.sprite.meta["bar_y"])
+	var beside := Vector2(top * 0.3, -top / 2)
+	assert_false(halo.visible, "no halo in the open")
+	assert_false(view.covers(beside), "beside the figure, in the open")
+	view.in_forest = true
+	assert_true(halo.visible, "a halo among trees")
+	assert_gt(halo.z_index, 0, "the halo is drawn over the trees")
+	assert_true(view.covers(beside), "beside the figure, inside the halo")
+	assert_false(view.covers(Vector2(top * 2, -top / 2)), "well outside the halo")
+
+
+func test_a_unit_in_or_behind_the_forest_is_among_trees() -> void:
+	var db := CatalogDB.load_prototype()
+	var sim := Simulation.new(1, db)
+	sim.nav = NavGrid.for_catalog(20, 20, db)
+	var forest := sim.nav.terrain_index(NavGrid.FOREST)
+	for y in range(10, 14):
+		for x in range(10, 14):
+			sim.nav.set_terrain(sim.nav.cell_at(x, y), forest)
+	var layer := UnitLayer.new()
+	layer.sim = sim
+	add_child_autofree(layer)
+	assert_true(layer._among_trees(sim.nav.cell_at(11, 11)), "in the forest")
+	assert_true(layer._among_trees(sim.nav.cell_at(8, 8)), "behind it, up the screen")
+	assert_false(layer._among_trees(sim.nav.cell_at(15, 15)), "in front of it")
+	assert_false(layer._among_trees(sim.nav.cell_at(16, 5)), "beside it")
+	assert_false(layer._among_trees(sim.nav.cell_at(2, 2)), "far behind it")
+
+
+func test_trees_get_a_steady_tint_of_their_own() -> void:
+	var seen := {}
+	for i in 40:
+		var c := TreeLayer.tint(i, i * 3 % 17)
+		assert_eq(c, TreeLayer.tint(i, i * 3 % 17), "the same cell, the same tint")
+		assert_almost_eq(c.g, 1.0, 0.15, "a couple of tones lighter or darker")
+		assert_almost_eq(c.r - c.b, 0.0, 0.4, "a little warmer or cooler")
+		seen[c] = true
+	assert_gt(seen.size(), 30, "trees differ")

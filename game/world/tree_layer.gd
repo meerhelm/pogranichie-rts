@@ -5,6 +5,8 @@ extends Node
 ## Old forest is all pine and darker. A felled cell loses its tree when the grid changes (a cell
 ## that turns back to forest gets one again), and trees on ground the local player has not
 ## explored yet stay hidden under the fog.
+## Each tree gets its own slight tint, lighter or darker and warmer or cooler, picked from its
+## cell, so a forest is not one flat green and looks the same every game.
 ## Shadow and colour are merged into one texture per tree kind at start, so a forest of
 ## thousands of trees is one texture per kind and batches well.
 
@@ -16,6 +18,10 @@ const MIX: Dictionary[StringName, int] = {
 }
 const OLD_MIX: Dictionary[StringName, int] = {&"nt_spruce": 50, &"nt_oak": 20, &"nt_pine": 30}
 const OLD_TINT := Color(0.72, 0.8, 0.72)
+## Per-tree tint: brightness up to ±TINT_LIGHT, warm (redder, less blue) or cool up to
+## ±TINT_WARM.
+const TINT_LIGHT := 0.12
+const TINT_WARM := 0.08
 ## Ticks between fog checks of the trees.
 const FOG_EVERY := 10
 
@@ -137,13 +143,23 @@ func _plant_cell(cell: int) -> void:
 		t.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	else:
 		t.scale = Vector2.ONE * _scales[kind] * (0.9 + (h >> 8) % 20 / 100.0)
+	t.modulate = tint(x, y)
 	if old and _tint_old:
-		t.modulate = OLD_TINT
+		t.modulate *= OLD_TINT
 	var jitter := Vector2(((h >> 4) % 31) / 100.0 - 0.15, ((h >> 12) % 31) / 100.0 - 0.15)
 	t.position = Iso.cell_to_screen(Vector2(x + 0.5, y + 0.5) + jitter)
 	t.name = "Tree%d" % cell
 	_trees[cell] = t
 	depth_layer.add_child(t)
+
+
+## The tint of the tree on cell x, y: the same for a cell every time (its own hash, not the
+## tree's pick), around white.
+static func tint(x: int, y: int) -> Color:
+	var h := absi(hash(Vector3i(x, y, 7)))
+	var light := 1.0 + ((h % 1001) / 500.0 - 1.0) * TINT_LIGHT
+	var warm := (((h / 1001) % 1001) / 500.0 - 1.0) * TINT_WARM
+	return Color(light * (1.0 + warm), light * (1.0 + warm * 0.3), light * (1.0 - warm))
 
 
 func _fell() -> void:

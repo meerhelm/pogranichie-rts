@@ -18,6 +18,8 @@ extends SceneTree
 ##   about (on res://ui/main_menu.tscn: the «About the game» page),
 ##   single (on res://ui/main_menu.tscn: the single player page with the map list),
 ##   speed:N (the game speed button stepped N times up, e.g. 2 for 4x),
+##   forest:X:Y (no fog: a forest patch from cell X, Y with the player's units in it and behind
+##   it, two selected, and one on open ground beside it, to see their halos and the tree tints),
 ##   units:X:Y:ID,ID,... (no fog: the listed units, heroes too, in a row from cell X, Y, two
 ##   cells apart, the camera on them)
 ##   rally (the player's town centre selected, its rally point set a few cells away),
@@ -129,6 +131,9 @@ func _act() -> void:
 	elif _action.begins_with("towers:"):
 		var parts := _action.split(":")
 		_towers(main, int(parts[1]), int(parts[2]))
+	elif _action.begins_with("forest:"):
+		var parts := _action.split(":")
+		_forest(main, int(parts[1]), int(parts[2]))
 	elif _action.begins_with("units:"):
 		var parts := _action.split(":")
 		_units(main, int(parts[1]), int(parts[2]), parts[3].split(","))
@@ -207,6 +212,45 @@ func _units(main: Node, x0: int, y0: int, ids: PackedStringArray) -> void:
 		sim.spawn_unit(StringName(ids[i]), 1, at, Fixed.from_cells(y0) + Fixed.ONE / 2)
 	var cam: RtsCamera = main.get_node("Camera")
 	cam.look_at_point(Iso.cell_to_screen(Vector2(x0 + ids.size(), y0)))
+
+
+## A forest patch from cell X, Y with the player's units in and around it, two selected, and a
+## wild one's on the edge, the camera on them: the halo of units among the trees and the tree
+## tints.
+func _forest(main: Node, x0: int, y0: int) -> void:
+	var sim: Simulation = main.get("sim")
+	sim.vision.rules = null
+	(main.get_node("World/Fog") as Node2D).visible = false
+	var grass := sim.nav.terrain_index(&"t_grass")
+	var forest := sim.nav.terrain_index(NavGrid.FOREST)
+	for y in range(y0 - 4, y0 + 12):
+		for x in range(x0 - 4, x0 + 20):
+			if sim.nav.in_bounds(x, y):
+				var inside := x >= x0 and x < x0 + 12 and y >= y0 and y < y0 + 10
+				sim.nav.set_terrain(sim.nav.cell_at(x, y), forest if inside else grass)
+	var places := [
+		[&"gdl_spearman", 3, 3],
+		[&"gdl_spearman", 4, 4],
+		[&"gdl_peasant", 7, 2],
+		[&"gdl_samogitian", 6, 6],
+		[&"gdl_light_horse", 9, 5],
+		[&"gdl_peasant", 2, 8],
+		[&"gdl_spearman", -2, 2],
+		[&"gdl_peasant", 5, -2],
+		[&"gdl_spearman", 13, -1],
+	]
+	var input: PlayerInput = main.get_node("UI/PlayerInput")
+	var ids := PackedInt32Array()
+	for p: Array in places:
+		var at_x := Fixed.from_cells(x0 + int(p[1])) + Fixed.ONE / 2
+		var at_y := Fixed.from_cells(y0 + int(p[2])) + Fixed.ONE / 2
+		var id := sim.spawn_unit(p[0], 1, at_x, at_y)
+		if ids.size() < 2:
+			ids.append(id)
+	input.selection.ids = ids
+	input.selection.changed.emit()
+	var cam: RtsCamera = main.get_node("Camera")
+	cam.look_at_point(Iso.cell_to_screen(Vector2(x0 + 9, y0 + 6)))
 
 
 func _towers(main: Node, x0: int, y0: int) -> void:

@@ -9,6 +9,8 @@ extends Node2D
 ## nodes of unit_view.tscn playing the type's SpriteFrames: idle, walk, work (peasants at their
 ## job) or attack (once per blow or shot) in the facing direction, with the ground shadow under
 ## and the team mask, tinted with the owner's colour, over it.
+## Among trees (UnitLayer sets `in_forest`) a soft, nearly clear halo shows over the trees where
+## the unit stands, and a click anywhere in it picks the unit.
 
 enum Mood { STEADY, WAVERING, FLEEING }
 
@@ -30,6 +32,9 @@ const SPRITE_BAR_Y := 46.0
 const STILL_TICKS := 3
 ## A click this close to the figure's rectangle (screen pixels at zoom 1) still picks it.
 const PICK_SLACK := 3.0
+## The halo in the forest: how much of the owner's colour it takes, and its fade in seconds.
+const HALO_TEAM_MIX := 0.3
+const HALO_FADE := 0.25
 
 var unit_id: int
 var player: int
@@ -64,7 +69,15 @@ var facing := 2:
 			_play()
 			queue_redraw()
 
+## Standing among trees (in a forest cell or right behind one): the halo shows.
+var in_forest := false:
+	set(value):
+		if in_forest != value:
+			in_forest = value
+			_show_halo()
+
 var _still_ticks := 0
+var _halo_tween: Tween
 ## The attack animation plays once per blow; true while it does.
 var _striking := false
 
@@ -73,6 +86,8 @@ var _striking := false
 @onready var _shadow: AnimatedSprite2D = $Shadow
 @onready var _body: AnimatedSprite2D = $Body
 @onready var _team: AnimatedSprite2D = $Team
+## Soft glow over the trees where the unit stands in the forest (z above the trees).
+@onready var _halo: Sprite2D = $Halo
 ## HP bar and mood marks, over the sprite.
 @onready var _overlay: Node2D = $Overlay
 
@@ -81,6 +96,7 @@ func _ready() -> void:
 	sprite = SpriteDB.unit(type_id)
 	set_process(false)
 	_overlay.draw.connect(_draw_state)
+	_fit_halo()
 	if sprite == null:
 		for pass_sprite: AnimatedSprite2D in [_shadow, _body, _team]:
 			pass_sprite.visible = false
@@ -143,6 +159,44 @@ func _play(restart := false) -> void:
 	_sync_passes()
 
 
+## The halo is an upright oval around the figure (wider for riders and carts), lightly tinted
+## with the owner's colour.
+func _fit_halo() -> void:
+	var height := RADIUS * 2.0 + 8.0
+	if sprite != null:
+		height = float(sprite.meta.get("bar_y", SPRITE_BAR_Y))
+	var wide := move_class in [NavGrid.MoveClass.CAVALRY, NavGrid.MoveClass.SIEGE]
+	var size := Vector2(height * (1.15 if wide else 0.8), height * 1.15)
+	_halo.position = Vector2(0, -height * 0.42)
+	_halo.scale = size / _halo.texture.get_size()
+	var team := PLAYER_COLORS[player % PLAYER_COLORS.size()]
+	_halo.self_modulate = Color.WHITE.lerp(team, HALO_TEAM_MIX)
+	_halo.visible = in_forest
+	_halo.modulate.a = 1.0 if in_forest else 0.0
+
+
+func _show_halo() -> void:
+	if not is_node_ready():
+		return
+	if _halo_tween != null:
+		_halo_tween.kill()
+	_halo_tween = _halo.create_tween()
+	var tween := _halo_tween
+	if in_forest:
+		_halo.visible = true
+		tween.tween_property(_halo, "modulate:a", 1.0, HALO_FADE)
+	else:
+		tween.tween_property(_halo, "modulate:a", 0.0, HALO_FADE)
+		tween.tween_callback(_halo.hide)
+
+
+## Whether `local` (pixels from the anchor) is inside the halo's oval.
+func _in_halo(local: Vector2) -> bool:
+	var half := _halo.texture.get_size() * _halo.scale / 2.0
+	var d := (local - _halo.position) / half
+	return d.length_squared() <= 1.0
+
+
 func _sync_passes() -> void:
 	_shadow.frame = _body.frame
 	_team.frame = _body.frame
@@ -155,8 +209,11 @@ func _on_animation_finished() -> void:
 
 
 ## Whether `local` (pixels from the anchor) is in the rectangle around the figure as drawn
-## now, give or take PICK_SLACK: the whole sprite picks the unit, not just its feet.
+## now, give or take PICK_SLACK: the whole sprite picks the unit, not just its feet. In the
+## forest the whole halo picks it too.
 func covers(local: Vector2) -> bool:
+	if in_forest and _in_halo(local):
+		return true
 	if sprite == null:
 		return local.distance_to(Vector2(0, -RADIUS)) <= RADIUS + PICK_SLACK
 	var a := _anim()
@@ -235,7 +292,9 @@ func show_state(p_hp_permille: int, p_mood: Mood, p_hidden: bool, p_move_class: 
 	hp_permille = p_hp_permille
 	mood = p_mood
 	stealthed = p_hidden
-	move_class = p_move_class
+	if p_move_class != move_class:
+		move_class = p_move_class
+		_fit_halo()
 	modulate.a = 0.45 if stealthed else 1.0
 	_redraw()
 
