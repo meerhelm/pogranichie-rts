@@ -720,8 +720,98 @@
       "cost": 0.36,
       "task_id": "b72d2502-c6e3-4d2d-a8cb-14a73759509b",
       "remaining_balance": 45.3
+    },
+    {
+      "name": "gdl_temple",
+      "prompt": "Samogitian, Grand Duchy of Lithuania, 1410s, round logs, small wooden parish church: log nave and a lower log chancel under high steep shingle roofs, open bell turret with a small spire and a cross on the ridge, roofed porch over the door, a wooden cross beside it, no people, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        224,
+        256
+      ],
+      "num_images": 2,
+      "seed": 7520,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.36,
+      "status": "succeeded",
+      "files": [
+        "gdl_temple_1.png"
+      ],
+      "cost": 0.36,
+      "task_id": "ada5ccfb-c9e2-478d-99ee-feff130ebc3a",
+      "remaining_balance": 42.99
+    },
+    {
+      "name": "gdl_field_camp",
+      "prompt": "Grand Duchy of Lithuania 1435, field army camp: a round canvas pavilion tent with a red valance and two small ridge tents of canvas, a wooden cart at the back, a campfire with a kettle on a tripod, a red banner, barrels and sacks, on trodden grass, no people, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        224,
+        192
+      ],
+      "num_images": 2,
+      "seed": 7521,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.36,
+      "status": "succeeded",
+      "files": [
+        "gdl_field_camp_1.png"
+      ],
+      "cost": 0.36,
+      "task_id": "eb534151-aaf2-4a73-8b91-bbc1e92c104d",
+      "remaining_balance": 42.49
+    },
+    {
+      "name": "gdl_siege_workshop",
+      "prompt": "Samogitian, Grand Duchy of Lithuania, 1409, round logs and shingles, open carpenter shed on log posts with a shingle roof, an unfinished wooden cart under it, stacked logs, coiled ropes, spare wooden wheels, small red pennant, no people, on a plain white background",
+      "style": "rd_pro__isometric",
+      "requested_style": "rd_pro__isometric",
+      "size": [
+        224,
+        192
+      ],
+      "num_images": 2,
+      "seed": 7522,
+      "remove_bg": true,
+      "inputs": {
+        "input_palette": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/gdl01/palette_buildings.png",
+        "input_image": null,
+        "reference_images": [
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial2/gdl_house_ref_1.png",
+          "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/trial/gdl_house_pro_1.png"
+        ]
+      },
+      "extra": null,
+      "estimated_cost": 0.36,
+      "status": "succeeded",
+      "files": [
+        "gdl_siege_workshop_1.png"
+      ],
+      "cost": 0.36,
+      "task_id": "8f76bff7-2feb-42eb-a1e2-3e7260c3c76f",
+      "remaining_balance": 41.85
     }
   ],
-  "spent": 4.26,
-  "remaining_balance": 45.3
+  "spent": 5.34,
+  "remaining_balance": 41.85
 }
