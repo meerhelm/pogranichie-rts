@@ -17,6 +17,10 @@ extends Node2D
 ## MissionPanel shows objectives, hints, dialogues and cutscenes; the game menu saves and loads.
 ## A new mission opens with its briefing (MissionBriefing: story, goal, objectives), which F2 and
 ## the game menu show again.
+## Network play (NetSession.current, from the menu's NetLobby): the skirmish of the session's
+## seed, map and factions, the local player being the host (1) or the guest (2); no AI, the world
+## steps through Lockstep and orders go to it, the game cannot be paused or sped up, and the
+## clock runs on while a menu is open. NetStatus tells of waiting, a player gone or a desync.
 
 const SEED := 1
 const PLAYER := 1
@@ -24,6 +28,10 @@ const PLAYER := 1
 const AI_PLAYER := 2
 
 var sim: Simulation
+## The player at this screen: PLAYER, or the network game's local player.
+var me := PLAYER
+## The network game (null when playing alone).
+var net: NetSession
 ## The computer player (null if there is no profile for its faction and difficulty).
 var ai: SkirmishAi
 var end_screen := EndScreen.create()
@@ -62,9 +70,12 @@ func _ready() -> void:
 	print("Main scene ready: ", label.text)
 
 	var db := CatalogDB.load_prototype()
+	if NetSession.in_game():
+		net = NetSession.current
+		me = net.local_player
 	sim = _new_world(db)
 	var grid := sim.nav
-	if sim.mission == null:
+	if sim.mission == null and net == null:
 		var faction := SkirmishSetup.faction_of(AI_PLAYER, _factions())
 		var profile := SkirmishSetup.ai_profile(faction, GameSettings.ai_difficulty)
 		if profile != null:
@@ -76,65 +87,66 @@ func _ready() -> void:
 	_map.add_sibling(decals)
 	decals.build(grid)
 	_clock.sim = sim
-	_units.local_player = PLAYER
+	_units.local_player = me
 	_units.attach(sim, _clock)
 	_shots.attach(sim, _clock, _units)
-	_buildings.local_player = PLAYER
+	_buildings.local_player = me
 	_buildings.depth_layer = _units
 	_buildings.attach(sim, _clock)
 	wear.name = "Wear"  # notr
 	_map.add_sibling(wear)
 	wear.build(grid, _buildings)
 	decals.wear = wear
-	trees.local_player = PLAYER
+	trees.local_player = me
 	add_child(trees)
 	trees.attach(sim, _clock, _units)
 	cover.name = "CoverFade"  # notr
 	cover.units = _units
 	cover.trees = trees
-	cover.local_player = PLAYER
+	cover.local_player = me
 	add_child(cover)
-	_magic.local_player = PLAYER
+	_magic.local_player = me
 	_magic.attach(sim, _clock)
 	if StealthLayer.wanted(sim):
 		var stealth := StealthLayer.new()
-		stealth.local_player = PLAYER
+		stealth.local_player = me
 		_magic.add_sibling(stealth)
 		stealth.attach(sim, _clock, _units)
 	if SiegeLayer.wanted(sim):
 		var siege := SiegeLayer.new()
-		siege.local_player = PLAYER
+		siege.local_player = me
 		_magic.add_sibling(siege)
 		siege.attach(sim, _clock, _units)
 	if BattleLayer.wanted(sim):
 		var battle := BattleLayer.new()
-		battle.local_player = PLAYER
+		battle.local_player = me
 		_magic.add_sibling(battle)
 		battle.attach(sim, _clock)
 	if ChojniceLayer.wanted(sim):
 		var chojnice := ChojniceLayer.new()
-		chojnice.local_player = PLAYER
+		chojnice.local_player = me
 		_shots.add_sibling(chojnice)
 		chojnice.attach(sim, _clock)
 	if SwiecinoLayer.wanted(sim):
 		var swiecino := SwiecinoLayer.new()
-		swiecino.local_player = PLAYER
+		swiecino.local_player = me
 		_shots.add_sibling(swiecino)
 		swiecino.attach(sim, _clock)
 	if SilverLayer.wanted(sim):
 		var silver := SilverLayer.new()
-		silver.local_player = PLAYER
+		silver.local_player = me
 		_shots.add_sibling(silver)
 		silver.attach(sim, _clock)
-	_fog.attach(sim, _clock, PLAYER)
+	_fog.attach(sim, _clock, me)
 	_camera.bounds = Iso.map_rect(grid.width, grid.height)
-	var home := SkirmishMaps.base(GameSettings.skirmish_map, 0) + Vector2i(2, 4)
+	var home := _home_base() + Vector2i(2, 4)
 	if sim.mission != null:
 		home = sim.mission.def.camera
 	_camera.look_at_point(Iso.cell_to_screen(Vector2(home)))
 	_apply_camera_settings()
+	_input.player = me
 	_input.attach(sim, _units, _camera, _buildings)
-	_hud.attach(sim, _clock, _input, _camera, PLAYER)
+	_hud.attach(sim, _clock, _input, _camera, me)
 	_hud.menu.resumed.connect(_apply_camera_settings)
 	_clock.advanced.connect(func(t: int, _s: int) -> void: _on_ticked(t))
 	$UI.add_child(end_screen)
@@ -156,10 +168,36 @@ func _ready() -> void:
 			briefing.open(true)
 			_answer_marks()
 		mission_panel.poll()
+	if net != null:
+		_start_net()
 	if ai != null:
 		# Thinks before the step its orders are for, as a player at the keyboard would.
 		_clock.ticked.connect(func(_t: int) -> void: ai.issue())
 		ai.issue()
+
+
+## The world steps when both players' orders for a tick are in (Lockstep); a menu does not stop it.
+func _start_net() -> void:
+	var lockstep := net.attach(sim)
+	_clock.stepper = lockstep.try_step
+	_clock.process_mode = Node.PROCESS_MODE_ALWAYS
+	_input.sink = lockstep.submit
+	_hud.set_net_game()
+	var status := NetStatus.new()
+	$UI.add_child(status)
+	status.attach(net, _clock)
+
+
+## The map base of the player at this screen: the first in a skirmish, the network player's own.
+func _home_base() -> Vector2i:
+	if net != null:
+		return SkirmishMaps.base(net.map_id(), me - 1)
+	return SkirmishMaps.base(GameSettings.skirmish_map, 0)
+
+
+func _exit_tree() -> void:
+	if net != null and NetSession.current == net:
+		NetSession.close_current()
 
 
 ## Корона 2 on: what the campaign remembers of earlier missions (setup.marks) is told to the
@@ -173,6 +211,8 @@ func _answer_marks() -> void:
 
 ## A new skirmish, a new mission or a loaded save, as GameSettings says.
 func _new_world(db: CatalogDB) -> Simulation:
+	if net != null:
+		return net.new_simulation(db)
 	if not GameSettings.load_path.is_empty():
 		var path := GameSettings.load_path
 		GameSettings.load_path = ""
@@ -214,13 +254,13 @@ func _on_ticked(_tick: int) -> void:
 	decals.refresh()
 	if sim.victory.is_over() and not _ended:
 		_ended = true
-		if sim.mission != null and sim.victory.winner == PLAYER:
+		if sim.mission != null and sim.victory.winner == me:
 			var kept := PackedStringArray()
 			for flag in sim.mission.def.carry:
 				if sim.mission.flags.has(flag):
 					kept.append(flag)
 			CampaignProgress.mark_won(sim.mission.def.id, kept)
-		end_screen.open(sim, PLAYER)
+		end_screen.open(sim, me)
 
 
 func _apply_camera_settings() -> void:

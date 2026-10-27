@@ -788,6 +788,12 @@ msgstr "Скасувати: %s"
 msgid "Cannot be built on this ground"
 msgstr "Тут будувати не можна"
 
+msgid "Cannot connect to %s: %s"
+msgstr "Не вдається під’єднатися до %s: %s"
+
+msgid "Cannot wait for players on port %d: %s"
+msgstr "Не вдається чекати гравців на порту %d: %s"
+
 msgid "Carcass"
 msgstr "Туша"
 
@@ -866,14 +872,23 @@ msgstr "Згода: %d%%"
 msgid "Conditions not met"
 msgstr "Умови не виконано"
 
+msgid "Connecting to %s…"
+msgstr "Під’єднання до %s…"
+
 msgid "Cooldown %d s"
 msgstr "Перезарядка %d с"
+
+msgid "Could not connect to the other player"
+msgstr "Не вдалося з’єднатися з іншим гравцем"
 
 msgid "Could not save the game"
 msgstr "Не вдалося зберегти гру"
 
 msgid "Craftsman"
 msgstr "Ремісник"
+
+msgid "Create a game"
+msgstr "Створити гру"
 
 msgid "Cross the stream and cut Švitrigaila's column in two"
 msgstr "Перейдіть струмок і розітніть колону Свидригайла навпіл"
@@ -952,6 +967,9 @@ msgstr "Щоб перемогти, знищте столицю ворога («%
 
 msgid "Did we start it?"
 msgstr "Хіба ми почали?"
+
+msgid "Different game versions: the other player has %s, you have %s"
+msgstr "Різні версії гри: в іншого гравця %s, у вас %s"
 
 msgid "Discontent in Gdańsk: %d%%"
 msgstr "Невдоволення в Гданську: %d%%"
@@ -1913,6 +1931,9 @@ msgstr "Корогви Ясько посічені"
 msgid "Jaśko's banners have been cut to pieces."
 msgstr "Корогви Ясько посічені."
 
+msgid "Join a game"
+msgstr "Приєднатися до гри"
+
 msgid "Jurij Gintovt's banner can be put to flight but not destroyed."
 msgstr "Корогву Юрія Гінтовта можна обернути на втечу, але не знищити."
 
@@ -2297,8 +2318,8 @@ msgstr "Куме, а де ж німці?"
 msgid "Neighbouring knight"
 msgstr "Лицар-сусід"
 
-msgid "Network play (coming later)"
-msgstr "Гра по мережі (згодом)"
+msgid "Network play"
+msgstr "Гра по мережі"
 
 msgid "Never flees"
 msgstr "Ніколи не тікає"
@@ -2515,6 +2536,9 @@ msgstr "Суперник: звичайний"
 
 msgid "Or hold every place of power on the map for 5 minutes."
 msgstr "Або утримуйте всі місця сили на мапі 5 хвилин."
+
+msgid "Or join a game: the host's address"
+msgstr "Або приєднайтеся до гри: адреса господаря"
 
 msgid "Orsha"
 msgstr "Орша"
@@ -3647,6 +3671,9 @@ msgstr "Брід нижче за міст, ближче до Дніпра. На 
 msgid "The forest borderland of Muscovy and the Grand Duchy of Lithuania. The end of August or September 1507."
 msgstr "Лісове порубіжжя Московії та Великого князівства Литовського. Кінець серпня або вересень 1507 року."
 
+msgid "The games differ in rules or data; both players need the same build"
+msgstr "Ігри відрізняються правилами або даними; обом гравцям потрібна однакова збірка"
+
 msgid "The garrison has broken into the royal camp and ruined the king's tent."
 msgstr "Гарнізон увірвався до королівського табору й зруйнував намет короля."
 
@@ -3833,6 +3860,12 @@ msgstr "Сирітки дійшли до полонених: %s"
 msgid "The other bank. Dawn twilight. Andrei with a patrol by the water."
 msgstr "Інший берег. Досвітній присмерк. Андрій з роз'їздом біля води."
 
+msgid "The other game sent a start this game cannot read"
+msgstr "Інша гра надіслала початок, який ця гра не може прочитати"
+
+msgid "The other player has left the game"
+msgstr "Інший гравець покинув гру"
+
 msgid "The pagans are coming out of the farmstead again."
 msgstr "Язичники знову виходять із хутора."
 
@@ -3880,6 +3913,9 @@ msgstr "Мор росте від тісноти, спеки і від людей
 
 msgid "The plague in the camp reaches its limit"
 msgstr "Мор у таборі дійде до межі"
+
+msgid "The port after «:» must be a number from 1 to 65535"
+msgstr "Порт після «:» має бути числом від 1 до 65535"
 
 msgid "The price is for each cell of the line."
 msgstr "Ціна за кожну клітину лінії."
@@ -3979,6 +4015,9 @@ msgstr "Міщани роблять вилазки на гірку. В окол�
 
 msgid "The truth. That we were baptized. That for years the Germans burned our yards and took our people. That we want the cross, but not the German cross."
 msgstr "Правду. Що нас охрестили. Що роками німці палили наші двори й забирали наших людей. Що ми хочемо хреста, але не німецького."
+
+msgid "The two games have drifted apart at %s. Replay saved: %s"
+msgstr "Ігри розійшлися на %s. Запис збережено: %s"
 
 msgid "The village burns down"
 msgstr "Село згорить"
@@ -4271,6 +4310,9 @@ msgstr "Через два роки після Хойніце пан Ян, тод
 msgid "Two years after Chojnice the Order has no money to pay its mercenaries. The Bohemian captain Červenka holds Malbork, the Order's capital, and is ready to sell it to the Crown, if only the Crown pays. The money has to be borrowed in Gdańsk and carried across the Żuławy. Stach has gone to the mercenaries with the king's letter; the silver is the business of his elder sister Barbara, Jaśko's granddaughter and a Gdańsk merchant's wife."
 msgstr "Через два роки після Хойніце Орден не має грошей, щоб заплатити найманцям. Чеський гетьман Червенка тримає Мальборк, столицю Ордену, і готовий продати його Короні, аби лиш Корона заплатила. Гроші треба позичити в Гданську й перевезти через Жулави. Стах поїхав до найманців із листом короля; срібло ж справа його старшої сестри Барбари, онуки Ясько й дружини гданського купця."
 
+msgid "Type the host's address"
+msgstr "Введіть адресу господаря"
+
 msgid "Under construction: %d%%"
 msgstr "Будується: %d%%"
 
@@ -4336,6 +4378,12 @@ msgstr "Дочекайся наказу, потім витримай удар п
 
 msgid "Wait out the day and reach the border ford"
 msgstr "Перечекати день і дістатися до прикордонного броду"
+
+msgid "Waiting for the other player. Your address: %s"
+msgstr "Чекаємо на іншого гравця. Ваша адреса: %s"
+
+msgid "Waiting for the other player…"
+msgstr "Чекаємо на іншого гравця…"
 
 msgid "Walk and stand in a broad line."
 msgstr "Іти й стояти широкою шеренгою."
@@ -5191,6 +5239,9 @@ msgstr "Вовча стежка"
 
 msgid "spearmen"
 msgstr "списники"
+
+msgid "such as 192.168.1.5"
+msgstr "наприклад 192.168.1.5"
 
 msgid "t_arrows"
 msgstr "Гранчасті наконечники"

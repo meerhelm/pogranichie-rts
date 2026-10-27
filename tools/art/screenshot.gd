@@ -31,7 +31,10 @@ extends SceneTree
 ##   play (in a mission: the briefing closed, the mission starts),
 ##   effects (no fog: the player's town centre and a house on fire, «Болотный туман» beside them
 ##   and a spearman carrying «Реликвия в строю», to see the particle effects),
-##   briefing (in a mission: the briefing closed, the mission run a little, then F2's briefing).
+##   briefing (in a mission: the briefing closed, the mission run a little, then F2's briefing),
+##   net (on res://ui/main_menu.tscn: the «Network play» page, a game created and waiting),
+##   nethost / netjoin:ADDRESS (a network game over ENet: run one of each, the host first; the
+##   game scene opens once they have shaken hands, then the player's units are selected).
 ## SHOT_MISSION=gdl_01 (or another mission id) opens that mission instead of the skirmish; a new
 ## mission starts with its briefing open. SHOT_MAP=map_sk_orsha (or another SkirmishMaps id) plays
 ## the skirmish on that map.
@@ -65,8 +68,35 @@ func _initialize() -> void:
 	if not OS.get_environment("SHOT_MAP").is_empty():
 		GameSettings.ensure_loaded()
 		GameSettings.skirmish_map = OS.get_environment("SHOT_MAP")
+	if _action == "nethost" or _action.begins_with("netjoin:"):
+		_start_net()
+		return
 	change_scene_to_file(_scene)
 	_shoot.call_deferred()
+
+
+## Shakes hands with the other screenshot process, then opens the game scene.
+func _start_net() -> void:
+	GameSettings.ensure_loaded()
+	var t := EnetTransport.new()
+	var s := NetSession.open(self, t)
+	if _action == "nethost":
+		t.host()
+		var factions: Array[StringName] = [&"gdl", &"to"]
+		s.host_game(GameSettings.skirmish_map, factions, Lockstep.DEFAULT_DELAY)
+	else:
+		t.join(_action.split(":")[1])
+		s.join_game()
+	s.started.connect(
+		func() -> void:
+			change_scene_to_file(_scene)
+			_shoot.call_deferred()
+	)
+	s.failed.connect(
+		func(why: String) -> void:
+			printerr("network game did not start: ", why)
+			quit(1)
+	)
 
 
 func _shoot() -> void:
@@ -100,6 +130,19 @@ func _act() -> void:
 				ids.append(id)
 		input.selection.ids = ids
 		input.selection.changed.emit()
+	elif (_action == "nethost" or _action.begins_with("netjoin:")) and main.get("sim") != null:
+		var input: PlayerInput = main.get_node("UI/PlayerInput")
+		var sim: Simulation = main.get("sim")
+		var ids := PackedInt32Array()
+		for id in sim.entities.alive_ids:
+			if sim.entities.owners[id - 1] == input.player:
+				ids.append(id)
+		input.selection.ids = ids
+		input.selection.changed.emit()
+		print("network game: player %d at tick %d" % [input.player, sim.tick])
+	elif _action == "net" and main.get("_net") != null:
+		main._network.pressed.emit()
+		(main.get("_net") as NetLobby).create.pressed.emit()
 	elif _action == "single" and main.get("_single") != null:
 		main._single_button.pressed.emit()
 	elif _action == "about" and main.get("_about") != null:

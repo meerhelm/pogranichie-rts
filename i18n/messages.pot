@@ -723,6 +723,7 @@ msgid "B next, F turn, Shift keep placing, Esc or right click cancel"
 msgstr ""
 
 #: ui/main_menu.gd
+#: ui/net_lobby.gd
 #: ui/settings_panel.gd
 #: ui/settings_panel.tscn
 msgid "Back"
@@ -1053,6 +1054,14 @@ msgstr ""
 msgid "Cannot be built on this ground"
 msgstr ""
 
+#: ui/net_lobby.gd
+msgid "Cannot connect to %s: %s"
+msgstr ""
+
+#: ui/net_lobby.gd
+msgid "Cannot wait for players on port %d: %s"
+msgstr ""
+
 #: ui/ui_text.gd
 msgid "Carcass"
 msgstr ""
@@ -1170,8 +1179,16 @@ msgstr ""
 msgid "Conditions not met"
 msgstr ""
 
+#: ui/net_lobby.gd
+msgid "Connecting to %s…"
+msgstr ""
+
 #: ui/tips.gd
 msgid "Cooldown %d s"
+msgstr ""
+
+#: net/net_session.gd
+msgid "Could not connect to the other player"
 msgstr ""
 
 #: game/main.gd
@@ -1180,6 +1197,10 @@ msgstr ""
 
 #: missions/crown_05/mission.json
 msgid "Craftsman"
+msgstr ""
+
+#: ui/net_lobby.gd
+msgid "Create a game"
 msgstr ""
 
 #: missions/gdl_04/mission.json
@@ -1292,6 +1313,10 @@ msgstr ""
 
 #: missions/gdl_01/mission.json
 msgid "Did we start it?"
+msgstr ""
+
+#: net/net_session.gd
+msgid "Different game versions: the other player has %s, you have %s"
 msgstr ""
 
 #: ui/mission_panel.gd
@@ -2585,6 +2610,10 @@ msgstr ""
 msgid "Jaśko's banners have been cut to pieces."
 msgstr ""
 
+#: ui/net_lobby.gd
+msgid "Join a game"
+msgstr ""
+
 #: missions/gdl_04/mission.json
 msgid "Jurij Gintovt's banner can be put to flight but not destroyed."
 msgstr ""
@@ -2926,6 +2955,7 @@ msgid "Many of them know it, my lord. In Lithuanian."
 msgstr ""
 
 #: ui/main_menu.gd
+#: ui/net_lobby.gd
 msgid "Map: %s"
 msgstr ""
 
@@ -3106,7 +3136,8 @@ msgid "Neighbouring knight"
 msgstr ""
 
 #: ui/main_menu.gd
-msgid "Network play (coming later)"
+#: ui/net_lobby.gd
+msgid "Network play"
 msgstr ""
 
 #: ui/tips.gd
@@ -3387,6 +3418,7 @@ msgid "Only on a salt spring"
 msgstr ""
 
 #: ui/main_menu.gd
+#: ui/net_lobby.gd
 msgid "Opponent plays: %s"
 msgstr ""
 
@@ -3400,6 +3432,10 @@ msgstr ""
 
 #: ui/help_panel.gd
 msgid "Or hold every place of power on the map for 5 minutes."
+msgstr ""
+
+#: ui/net_lobby.gd
+msgid "Or join a game: the host's address"
 msgstr ""
 
 #: maps/skirmish.json
@@ -4924,6 +4960,10 @@ msgstr ""
 msgid "The forest borderland of Muscovy and the Grand Duchy of Lithuania. The end of August or September 1507."
 msgstr ""
 
+#: net/net_session.gd
+msgid "The games differ in rules or data; both players need the same build"
+msgstr ""
+
 #: missions/crown_02/mission.json
 msgid "The garrison has broken into the royal camp and ruined the king's tent."
 msgstr ""
@@ -5173,6 +5213,14 @@ msgstr ""
 msgid "The other bank. Dawn twilight. Andrei with a patrol by the water."
 msgstr ""
 
+#: net/net_session.gd
+msgid "The other game sent a start this game cannot read"
+msgstr ""
+
+#: ui/net_status.gd
+msgid "The other player has left the game"
+msgstr ""
+
 #: missions/gdl_03/mission.json
 msgid "The pagans are coming out of the farmstead again."
 msgstr ""
@@ -5235,6 +5283,10 @@ msgstr ""
 
 #: missions/crown_02/mission.json
 msgid "The plague in the camp reaches its limit"
+msgstr ""
+
+#: ui/net_lobby.gd
+msgid "The port after «:» must be a number from 1 to 65535"
 msgstr ""
 
 #: ui/tips.gd
@@ -5367,6 +5419,10 @@ msgstr ""
 
 #: missions/gdl_03/mission.json
 msgid "The truth. That we were baptized. That for years the Germans burned our yards and took our people. That we want the cross, but not the German cross."
+msgstr ""
+
+#: ui/net_status.gd
+msgid "The two games have drifted apart at %s. Replay saved: %s"
 msgstr ""
 
 #: missions/gdl_01/mission.json
@@ -5757,6 +5813,10 @@ msgstr ""
 msgid "Two years after Chojnice the Order has no money to pay its mercenaries. The Bohemian captain Červenka holds Malbork, the Order's capital, and is ready to sell it to the Crown, if only the Crown pays. The money has to be borrowed in Gdańsk and carried across the Żuławy. Stach has gone to the mercenaries with the king's letter; the silver is the business of his elder sister Barbara, Jaśko's granddaughter and a Gdańsk merchant's wife."
 msgstr ""
 
+#: ui/net_lobby.gd
+msgid "Type the host's address"
+msgstr ""
+
 #: ui/unit_card.gd
 msgid "Under construction: %d%%"
 msgstr ""
@@ -5845,6 +5905,14 @@ msgstr ""
 
 #: missions/gdl_06/mission.json
 msgid "Wait out the day and reach the border ford"
+msgstr ""
+
+#: ui/net_lobby.gd
+msgid "Waiting for the other player. Your address: %s"
+msgstr ""
+
+#: ui/net_status.gd
+msgid "Waiting for the other player…"
 msgstr ""
 
 #: ui/command_panel.gd
@@ -6096,6 +6164,7 @@ msgid "You lose if"
 msgstr ""
 
 #: ui/main_menu.gd
+#: ui/net_lobby.gd
 msgid "You play: %s"
 msgstr ""
 
@@ -7041,6 +7110,10 @@ msgstr ""
 
 #: ui/tips.gd
 msgid "spearmen"
+msgstr ""
+
+#: ui/net_lobby.gd
+msgid "such as 192.168.1.5"
 msgstr ""
 
 #: catalog:prototype_techs

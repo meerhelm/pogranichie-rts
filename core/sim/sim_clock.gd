@@ -19,12 +19,21 @@ const MAX_TICKS_PER_FRAME := 5
 ## (the machine cannot run 8x), the game runs slower than asked instead of dropping to a few
 ## frames a second, and the backlog is dropped as after a stall.
 const FRAME_BUDGET_USEC := 25_000
+## Ticks of time kept while waiting for the stepper, to catch up once it can step again.
+const WAIT_BACKLOG := 2
 
 var sim: Simulation
 var paused := false
 ## Game speed in per-mille: 1000 is normal, 2000 double. Speed only changes how many ticks
 ## run per real second; every tick is the same, so replays and lockstep stay deterministic.
 var speed_permille := 1000
+
+## Steps the world instead of sim.step() when set (a network game: Lockstep.try_step); returns
+## false when the tick cannot run yet (the other player's commands have not come), and the clock
+## waits with the time it has, not catching up more than WAIT_BACKLOG ticks afterwards.
+var stepper := Callable()
+## Frames in a row the clock has stood waiting for the stepper (0: running).
+var waiting := 0
 
 ## FRAME_BUDGET_USEC; tests set it.
 var budget_usec := FRAME_BUDGET_USEC
@@ -47,8 +56,15 @@ func advance_accumulated() -> int:
 	var over := false
 	var was_paused := paused
 	while _accum_usec >= Fixed.TICK_USEC and steps < max_steps:
+		if stepper.is_valid():
+			if not stepper.call():
+				waiting += 1
+				_accum_usec = mini(_accum_usec, Fixed.TICK_USEC * WAIT_BACKLOG)
+				break
+			waiting = 0
+		else:
+			sim.step()
 		_accum_usec -= Fixed.TICK_USEC
-		sim.step()
 		steps += 1
 		ticked.emit(sim.tick)
 		# A dialogue or cutscene that paused the game stops the frame's ticks right there.

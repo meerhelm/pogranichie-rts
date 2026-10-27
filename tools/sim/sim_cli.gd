@@ -12,6 +12,11 @@ extends SceneTree
 ##     [--mission gdl_01|...|gdl_08] [--difficulty normal] [--ticks 90000]
 ##     [--every 200]
 ##     (MissionBot plays the campaign mission until it is over; fails unless it is won)
+##   godot --headless -s tools/sim/sim_cli.gd -- net --role host [--port 24610] [--ticks 6000]
+##     [--factions gdl,to] [--map <skirmish map id>] [--delay 6] [--out host.json]
+##   godot --headless -s tools/sim/sim_cli.gd -- net --role guest [--address 127.0.0.1] ...
+##     (a network game over ENet, each side played by the AI through Lockstep; run the two in two
+##     processes; each prints its final hash, which must be the same, and fails on a desync)
 ## record, determinism and bench take --map <map id> (see MapText); without it, open grass;
 ## and --economy 1 to have the fuzzer play the economy too (players, buildings, gathering);
 ## with it, --magic 1 adds shrines on places of power and spells.
@@ -31,7 +36,7 @@ func _initialize() -> void:
 	var code := 1
 	if args.is_empty():
 		printerr(
-			"usage: sim_cli.gd -- play|record|determinism|bench|arena|aivsai|mission [options]"
+			"usage: sim_cli.gd -- play|record|determinism|bench|arena|aivsai|mission|net [options]"
 		)
 	else:
 		var opts := _options(args.slice(1))
@@ -50,6 +55,8 @@ func _initialize() -> void:
 				code = _ai_vs_ai(opts)
 			"mission":
 				code = _mission(opts)
+			"net":
+				code = _net(opts)
 			_:
 				printerr("unknown command: ", args[0])
 	quit(code)
@@ -371,6 +378,80 @@ func _ai_vs_ai(opts: Dictionary) -> int:
 			return 1
 		f.store_string("\n".join(lines) + "\n")
 	return code
+
+
+func _net(opts: Dictionary) -> int:
+	var host: bool = opts.get("role", "host") == "host"
+	var port := int(opts.get("port", str(EnetTransport.DEFAULT_PORT)))
+	var ticks := int(opts.get("ticks", "6000"))
+	var transport := EnetTransport.new()
+	var err := (
+		transport.host(port)
+		if host
+		else transport.join(str(opts.get("address", "127.0.0.1")), port)
+	)
+	if err != OK:
+		printerr("cannot open the connection: ", error_string(err))
+		return 1
+	var session := NetSession.open(self, transport)
+	if host:
+		var sides: PackedStringArray = String(opts.get("factions", "gdl,to")).split(",")
+		var factions: Array[StringName] = [StringName(sides[0]), StringName(sides[1])]
+		var map: String = opts.get("map", SkirmishSetup.MAP_ID)
+		session.host_game(map, factions, int(opts.get("delay", str(Lockstep.DEFAULT_DELAY))))
+	else:
+		session.join_game()
+	var failure := [""]
+	session.failed.connect(func(why: String) -> void: failure[0] = why)
+	var deadline := Time.get_ticks_msec() + 60_000
+	while session.state != NetSession.State.STARTED and failure[0] == "":
+		if Time.get_ticks_msec() > deadline:
+			failure[0] = "no other side within 60 s"
+		transport.poll()
+		OS.delay_msec(5)
+	if failure[0] != "":
+		printerr("network game did not start: ", failure[0])
+		return 1
+	var game := NetMatch.new(session)
+	game.begin(CatalogDB.load_prototype(), StringName(opts.get("difficulty", "normal")))
+	print("started as player %d, seed %d" % [session.local_player, int(session.setup["seed"])])
+	var start := Time.get_ticks_msec()
+	var last_progress := start
+	while game.sim.tick < ticks:
+		if game.pump(mini(50, ticks - game.sim.tick)) > 0:
+			last_progress = Time.get_ticks_msec()
+		else:
+			if Time.get_ticks_msec() - last_progress > 20_000:
+				printerr("stuck at tick %d" % game.sim.tick)
+				break
+			OS.delay_msec(1)
+	var ls := session.lockstep
+	var out: String = opts.get("out", "")
+	if not out.is_empty():
+		Replay.of_game(game.sim, session.map_id(), ls.checkpoints, Lockstep.HASH_EVERY).save(out)
+	# The other side's last hashes may still be on the way.
+	var grace := Time.get_ticks_msec() + 1000
+	while Time.get_ticks_msec() < grace and ls.desync_tick < 0:
+		transport.poll()
+		OS.delay_msec(5)
+	print(
+		(
+			"tick %d final %s checkpoints %d stalls %d rejected %d desync %d seconds %.1f"
+			% [
+				game.sim.tick,
+				game.sim.state_hash(),
+				ls.checkpoints.size(),
+				ls.stalls,
+				ls.rejected,
+				ls.desync_tick,
+				(Time.get_ticks_msec() - start) / 1000.0,
+			]
+		)
+	)
+	var ok := game.sim.tick >= ticks and ls.desync_tick < 0
+	game.free_ai()
+	NetSession.close_current()
+	return 0 if ok else 1
 
 
 func _fuzz_replay(opts: Dictionary) -> Replay:

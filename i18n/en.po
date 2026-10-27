@@ -788,6 +788,12 @@ msgstr "Cancel %s"
 msgid "Cannot be built on this ground"
 msgstr "Cannot be built on this ground"
 
+msgid "Cannot connect to %s: %s"
+msgstr "Cannot connect to %s: %s"
+
+msgid "Cannot wait for players on port %d: %s"
+msgstr "Cannot wait for players on port %d: %s"
+
 msgid "Carcass"
 msgstr "Carcass"
 
@@ -866,14 +872,23 @@ msgstr "Concord: %d%%"
 msgid "Conditions not met"
 msgstr "Conditions not met"
 
+msgid "Connecting to %s…"
+msgstr "Connecting to %s…"
+
 msgid "Cooldown %d s"
 msgstr "Cooldown %d s"
+
+msgid "Could not connect to the other player"
+msgstr "Could not connect to the other player"
 
 msgid "Could not save the game"
 msgstr "Could not save the game"
 
 msgid "Craftsman"
 msgstr "Craftsman"
+
+msgid "Create a game"
+msgstr "Create a game"
 
 msgid "Cross the stream and cut Švitrigaila's column in two"
 msgstr "Cross the stream and cut Švitrigaila's column in two"
@@ -952,6 +967,9 @@ msgstr "Destroy the enemy's capital («%s») and castles to win."
 
 msgid "Did we start it?"
 msgstr "Did we start it?"
+
+msgid "Different game versions: the other player has %s, you have %s"
+msgstr "Different game versions: the other player has %s, you have %s"
 
 msgid "Discontent in Gdańsk: %d%%"
 msgstr "Discontent in Gdańsk: %d%%"
@@ -1913,6 +1931,9 @@ msgstr "Jaśko's banners are cut to pieces"
 msgid "Jaśko's banners have been cut to pieces."
 msgstr "Jaśko's banners have been cut to pieces."
 
+msgid "Join a game"
+msgstr "Join a game"
+
 msgid "Jurij Gintovt's banner can be put to flight but not destroyed."
 msgstr "Jurij Gintovt's banner can be put to flight but not destroyed."
 
@@ -2297,8 +2318,8 @@ msgstr "Neighbour, where are the Germans, then?"
 msgid "Neighbouring knight"
 msgstr "Neighbouring knight"
 
-msgid "Network play (coming later)"
-msgstr "Network play (coming later)"
+msgid "Network play"
+msgstr "Network play"
 
 msgid "Never flees"
 msgstr "Never flees"
@@ -2515,6 +2536,9 @@ msgstr "Opponent: normal"
 
 msgid "Or hold every place of power on the map for 5 minutes."
 msgstr "Or hold every place of power on the map for 5 minutes."
+
+msgid "Or join a game: the host's address"
+msgstr "Or join a game: the host's address"
 
 msgid "Orsha"
 msgstr "Orsha"
@@ -3647,6 +3671,9 @@ msgstr "The ford lies below the bridge, towards the Dnieper. No more than two in
 msgid "The forest borderland of Muscovy and the Grand Duchy of Lithuania. The end of August or September 1507."
 msgstr "The forest borderland of Muscovy and the Grand Duchy of Lithuania. The end of August or September 1507."
 
+msgid "The games differ in rules or data; both players need the same build"
+msgstr "The games differ in rules or data; both players need the same build"
+
 msgid "The garrison has broken into the royal camp and ruined the king's tent."
 msgstr "The garrison has broken into the royal camp and ruined the king's tent."
 
@@ -3833,6 +3860,12 @@ msgstr "The orphans reach the prisoners: %s"
 msgid "The other bank. Dawn twilight. Andrei with a patrol by the water."
 msgstr "The other bank. Dawn twilight. Andrei with a patrol by the water."
 
+msgid "The other game sent a start this game cannot read"
+msgstr "The other game sent a start this game cannot read"
+
+msgid "The other player has left the game"
+msgstr "The other player has left the game"
+
 msgid "The pagans are coming out of the farmstead again."
 msgstr "The pagans are coming out of the farmstead again."
 
@@ -3880,6 +3913,9 @@ msgstr "The plague grows with the crowding, the heat and with men standing on th
 
 msgid "The plague in the camp reaches its limit"
 msgstr "The plague in the camp reaches its limit"
+
+msgid "The port after «:» must be a number from 1 to 65535"
+msgstr "The port after «:» must be a number from 1 to 65535"
 
 msgid "The price is for each cell of the line."
 msgstr "The price is for each cell of the line."
@@ -3979,6 +4015,9 @@ msgstr "The townsmen come out against the hill. The villages round about still h
 
 msgid "The truth. That we were baptized. That for years the Germans burned our yards and took our people. That we want the cross, but not the German cross."
 msgstr "The truth. That we were baptized. That for years the Germans burned our yards and took our people. That we want the cross, but not the German cross."
+
+msgid "The two games have drifted apart at %s. Replay saved: %s"
+msgstr "The two games have drifted apart at %s. Replay saved: %s"
 
 msgid "The village burns down"
 msgstr "The village burns down"
@@ -4271,6 +4310,9 @@ msgstr "Two years after Chojnice pan Jan, not yet born then, might have been lef
 msgid "Two years after Chojnice the Order has no money to pay its mercenaries. The Bohemian captain Červenka holds Malbork, the Order's capital, and is ready to sell it to the Crown, if only the Crown pays. The money has to be borrowed in Gdańsk and carried across the Żuławy. Stach has gone to the mercenaries with the king's letter; the silver is the business of his elder sister Barbara, Jaśko's granddaughter and a Gdańsk merchant's wife."
 msgstr "Two years after Chojnice the Order has no money to pay its mercenaries. The Bohemian captain Červenka holds Malbork, the Order's capital, and is ready to sell it to the Crown, if only the Crown pays. The money has to be borrowed in Gdańsk and carried across the Żuławy. Stach has gone to the mercenaries with the king's letter; the silver is the business of his elder sister Barbara, Jaśko's granddaughter and a Gdańsk merchant's wife."
 
+msgid "Type the host's address"
+msgstr "Type the host's address"
+
 msgid "Under construction: %d%%"
 msgstr "Under construction: %d%%"
 
@@ -4336,6 +4378,12 @@ msgstr "Wait for the order, then hold the blow of the Order's right wing. When t
 
 msgid "Wait out the day and reach the border ford"
 msgstr "Wait out the day and reach the border ford"
+
+msgid "Waiting for the other player. Your address: %s"
+msgstr "Waiting for the other player. Your address: %s"
+
+msgid "Waiting for the other player…"
+msgstr "Waiting for the other player…"
 
 msgid "Walk and stand in a broad line."
 msgstr "Walk and stand in a broad line."
@@ -5191,6 +5239,9 @@ msgstr "Wolf Trail"
 
 msgid "spearmen"
 msgstr "spearmen"
+
+msgid "such as 192.168.1.5"
+msgstr "such as 192.168.1.5"
 
 msgid "t_arrows"
 msgstr "Faceted Arrowheads"

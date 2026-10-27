@@ -18,6 +18,8 @@ var view: AiView
 var rng: SimRng
 var economy_ai: AiEconomy
 var military_ai: AiMilitary
+## Where its commands go instead of straight into the world (a network game: Lockstep.submit).
+var sink := Callable()
 ## Thinks so far.
 var thinks := 0
 ## With `timing` on, step_usec sums the microseconds each tree step took (for profiling).
@@ -174,7 +176,10 @@ func state() -> PlayerState:
 
 
 func order(cmd: SimCommand) -> void:
-	sim.enqueue(cmd)
+	if sink.is_valid():
+		sink.call(cmd)
+	else:
+		sim.enqueue(cmd)
 
 
 func unit_def(id: int) -> UnitDef:

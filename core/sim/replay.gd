@@ -83,6 +83,26 @@ static func record(
 	return r
 
 
+## A replay of a game played from tick 0 on a map without a mission (a network game, NetSession):
+## its commands so far, the hashes the game kept every `every` ticks and the hash of its world now.
+static func of_game(
+	sim: Simulation, p_map_id: String, p_checkpoints: PackedStringArray, every: int
+) -> Replay:
+	var r := Replay.new()
+	r.map_id = p_map_id
+	r.seed_value = sim.seed_value
+	r.data_version = sim.data_version
+	r.map_width_cells = sim.nav.width
+	r.map_height_cells = sim.nav.height
+	r.ticks = sim.tick
+	r.checkpoint_every = every
+	r.checkpoints = p_checkpoints.duplicate()
+	for cmd in sim.command_log:
+		r.commands.append(cmd.duplicate_command())
+	r.final_hash = sim.state_hash()
+	return r
+
+
 ## Plays the replay back against the given catalog and compares every checkpoint.
 func play(db: CatalogDB) -> Playback:
 	var result := Playback.new()

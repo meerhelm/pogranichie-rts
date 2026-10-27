@@ -54,6 +54,9 @@ var units: UnitLayer
 var camera: RtsCamera
 var buildings: BuildingLayer
 var player := 1
+## Where orders go instead of straight into the world (a network game: Lockstep.submit, which
+## sends them to the other player and runs them a few ticks later on both sides).
+var sink := Callable()
 var selection := Selection.new()
 var formation := Formation.Kind.LINE
 ## The local player's selected building (BuildingStore id).
@@ -887,7 +890,10 @@ func select_idle_worker(all := false) -> bool:
 
 
 func _order(cmd: SimCommand) -> void:
-	sim.enqueue(cmd)
+	if sink.is_valid():
+		sink.call(cmd)
+	else:
+		sim.enqueue(cmd)
 
 
 ## The player's own units: [ids, screen points, types]; only those on screen if visible_only.

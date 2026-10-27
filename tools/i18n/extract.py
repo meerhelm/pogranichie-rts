@@ -12,7 +12,7 @@ end texts and dialogue and cutscene lines as English keys; a speaker is a catalo
 an English key. Skirmish maps (maps/skirmish.json) give their title and history note the same way.
 
 The check fails when
-- a string literal in game/ or ui/ looks like text for the player but is not passed to tr()
+- a string literal in game/, ui/ or net/ looks like text for the player but is not passed to tr()
   (a capitalised word or words with spaces; developer messages in print/push_warning/assert and
   lines marked `# notr` are skipped);
 - a .tscn sets text or tooltip_text to something that is not a key;
@@ -32,7 +32,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 I18N = ROOT / "i18n"
 LOCALES = ("en", "be", "pl", "uk", "lt")
-SCAN_DIRS = ("game", "ui")
+SCAN_DIRS = ("game", "ui", "net")
 INDEX = ROOT / "data" / "catalog_index.tres"
 # Catalog lists whose ids are shown to the player.
 INDEX_LISTS = (

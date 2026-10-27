@@ -788,6 +788,12 @@ msgstr "Atšaukti: %s"
 msgid "Cannot be built on this ground"
 msgstr "Čia statyti negalima"
 
+msgid "Cannot connect to %s: %s"
+msgstr "Nepavyksta prisijungti prie %s: %s"
+
+msgid "Cannot wait for players on port %d: %s"
+msgstr "Nepavyksta laukti žaidėjų prievade %d: %s"
+
 msgid "Carcass"
 msgstr "Skerdena"
 
@@ -866,14 +872,23 @@ msgstr "Santarvė: %d%%"
 msgid "Conditions not met"
 msgstr "Sąlygos neįvykdytos"
 
+msgid "Connecting to %s…"
+msgstr "Jungiamasi prie %s…"
+
 msgid "Cooldown %d s"
 msgstr "Atsikūrimas %d s"
+
+msgid "Could not connect to the other player"
+msgstr "Nepavyko susijungti su kitu žaidėju"
 
 msgid "Could not save the game"
 msgstr "Nepavyko išsaugoti žaidimo"
 
 msgid "Craftsman"
 msgstr "Amatininkas"
+
+msgid "Create a game"
+msgstr "Sukurti žaidimą"
 
 msgid "Cross the stream and cut Švitrigaila's column in two"
 msgstr "Perbriskite upelį ir perkirskite Švitrigailos koloną pusiau"
@@ -952,6 +967,9 @@ msgstr "Kad laimėtumėte, sunaikinkite priešo sostinę («%s») ir pilis."
 
 msgid "Did we start it?"
 msgstr "Ar mes tai pradėjom?"
+
+msgid "Different game versions: the other player has %s, you have %s"
+msgstr "Skirtingos žaidimo versijos: kitas žaidėjas turi %s, jūs – %s"
 
 msgid "Discontent in Gdańsk: %d%%"
 msgstr "Nepasitenkinimas Gdanske: %d%%"
@@ -1913,6 +1931,9 @@ msgstr "Jaśkos vėliavos iškapotos"
 msgid "Jaśko's banners have been cut to pieces."
 msgstr "Jaśkos vėliavos iškapotos."
 
+msgid "Join a game"
+msgstr "Prisijungti prie žaidimo"
+
 msgid "Jurij Gintovt's banner can be put to flight but not destroyed."
 msgstr "Jurgio Gintauto vėliavą galima priversti bėgti, bet ne sunaikinti."
 
@@ -2297,8 +2318,8 @@ msgstr "Kaimyne, o kur gi vokiečiai?"
 msgid "Neighbouring knight"
 msgstr "Kaimynas riteris"
 
-msgid "Network play (coming later)"
-msgstr "Žaidimas tinkle (vėliau)"
+msgid "Network play"
+msgstr "Žaidimas tinkle"
 
 msgid "Never flees"
 msgstr "Niekada nebėga"
@@ -2515,6 +2536,9 @@ msgstr "Priešininkas: įprastas"
 
 msgid "Or hold every place of power on the map for 5 minutes."
 msgstr "Arba 5 minutes išlaikykite visas galios vietas žemėlapyje."
+
+msgid "Or join a game: the host's address"
+msgstr "Arba prisijunkite prie žaidimo: šeimininko adresas"
 
 msgid "Orsha"
 msgstr "Orša"
@@ -3647,6 +3671,9 @@ msgstr "Brasta yra žemiau tilto, Dnepro pusėje. Joje ne daugiau kaip du vienu 
 msgid "The forest borderland of Muscovy and the Grand Duchy of Lithuania. The end of August or September 1507."
 msgstr "Miškingas Maskvos ir Lietuvos Didžiosios Kunigaikštystės pasienis. 1507 m. rugpjūčio pabaiga arba rugsėjis."
 
+msgid "The games differ in rules or data; both players need the same build"
+msgstr "Žaidimų taisyklės arba duomenys skiriasi; abiem žaidėjams reikia to paties leidimo"
+
 msgid "The garrison has broken into the royal camp and ruined the king's tent."
 msgstr "Įgula įsiveržė į karaliaus stovyklą ir suniokojo karaliaus palapinę."
 
@@ -3833,6 +3860,12 @@ msgstr "Našlaičiai pasiekė belaisvius: %s"
 msgid "The other bank. Dawn twilight. Andrei with a patrol by the water."
 msgstr "Kitas krantas. Prieš aušrą prieblanda. Andrius su raitelių būriu prie vandens."
 
+msgid "The other game sent a start this game cannot read"
+msgstr "Kitas žaidimas atsiuntė pradžią, kurios šis žaidimas negali perskaityti"
+
+msgid "The other player has left the game"
+msgstr "Kitas žaidėjas paliko žaidimą"
+
 msgid "The pagans are coming out of the farmstead again."
 msgstr "Pagonys vėl išeina iš vienkiemio."
 
@@ -3880,6 +3913,9 @@ msgstr "Maras auga nuo ankštumo, karščio ir nuo žmonių, stovinčių prie ka
 
 msgid "The plague in the camp reaches its limit"
 msgstr "Maras stovykloje pasieks ribą"
+
+msgid "The port after «:» must be a number from 1 to 65535"
+msgstr "Prievadas po «:» turi būti skaičius nuo 1 iki 65535"
 
 msgid "The price is for each cell of the line."
 msgstr "Kaina už kiekvieną linijos langelį."
@@ -3979,6 +4015,9 @@ msgstr "Miestiečiai daro išpuolius prieš kalvą. Aplinkiniuose kaimuose dar y
 
 msgid "The truth. That we were baptized. That for years the Germans burned our yards and took our people. That we want the cross, but not the German cross."
 msgstr "Tiesą. Kad mus pakrikštijo. Kad metų metus vokiečiai degino mūsų kiemus ir grobė mūsų žmones. Kad norime kryžiaus, bet ne vokiško."
+
+msgid "The two games have drifted apart at %s. Replay saved: %s"
+msgstr "Žaidimai išsiskyrė %s. Įrašas išsaugotas: %s"
 
 msgid "The village burns down"
 msgstr "Kaimas sudegs"
@@ -4271,6 +4310,9 @@ msgstr "Praėjus dvejiems metams po Chojnicės, ponas Janas, tada dar negimęs, 
 msgid "Two years after Chojnice the Order has no money to pay its mercenaries. The Bohemian captain Červenka holds Malbork, the Order's capital, and is ready to sell it to the Crown, if only the Crown pays. The money has to be borrowed in Gdańsk and carried across the Żuławy. Stach has gone to the mercenaries with the king's letter; the silver is the business of his elder sister Barbara, Jaśko's granddaughter and a Gdańsk merchant's wife."
 msgstr "Praėjus dvejiems metams po Chojnicės, Ordinas neturi kuo mokėti samdiniams. Čekų vadas Červenka laiko Malborką, Ordino sostinę, ir pasirengęs parduoti jį Karūnai, jei tik Karūna sumokės. Pinigus reikia pasiskolinti Gdanske ir pergabenti per Žuliavas. Stachas išvyko pas samdinius su karaliaus laišku; sidabras yra jo vyresniosios sesers Barboros, Jaśkos anūkės ir Gdansko pirklio žmonos, rūpestis."
 
+msgid "Type the host's address"
+msgstr "Įveskite šeimininko adresą"
+
 msgid "Under construction: %d%%"
 msgstr "Statoma: %d%%"
 
@@ -4336,6 +4378,12 @@ msgstr "Sulauk įsakymo, paskui atlaikyk ordino dešiniojo sparno smūgį. Kai d
 
 msgid "Wait out the day and reach the border ford"
 msgstr "Pralaukti dieną ir pasiekti pasienio brastą"
+
+msgid "Waiting for the other player. Your address: %s"
+msgstr "Laukiama kito žaidėjo. Jūsų adresas: %s"
+
+msgid "Waiting for the other player…"
+msgstr "Laukiama kito žaidėjo…"
 
 msgid "Walk and stand in a broad line."
 msgstr "Eiti ir stovėti plačia greta."
@@ -5191,6 +5239,9 @@ msgstr "Vilko takas"
 
 msgid "spearmen"
 msgstr "ietininkus"
+
+msgid "such as 192.168.1.5"
+msgstr "pvz., 192.168.1.5"
 
 msgid "t_arrows"
 msgstr "Briaunoti antgaliai"

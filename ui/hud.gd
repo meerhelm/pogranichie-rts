@@ -21,6 +21,8 @@ var sim: Simulation
 var input: PlayerInput
 var clock: SimClock
 var player := 1
+## A network game: no pause and no game speed (both players' worlds run at one pace).
+var net_game := false
 ## What came in and went out of the stock over the last minute (the resource tooltips).
 var flow := ResourceFlow.new()
 
@@ -103,18 +105,25 @@ func _unhandled_input(event: InputEvent) -> void:
 	var key := event as InputEventKey
 	if key == null or not key.pressed or key.echo or menu.visible:
 		return
-	if key.physical_keycode == KEY_P or key.physical_keycode == KEY_PAUSE:
+	var code := key.physical_keycode
+	if (code == KEY_P or code == KEY_PAUSE) and not net_game:
 		toggle_pause()
 		get_viewport().set_input_as_handled()
-	elif key.physical_keycode in [KEY_EQUAL, KEY_KP_ADD]:
+	elif code in [KEY_EQUAL, KEY_KP_ADD] and not net_game:
 		step_speed(1)
 		get_viewport().set_input_as_handled()
-	elif key.physical_keycode in [KEY_MINUS, KEY_KP_SUBTRACT]:
+	elif code in [KEY_MINUS, KEY_KP_SUBTRACT] and not net_game:
 		step_speed(-1)
 		get_viewport().set_input_as_handled()
-	elif key.physical_keycode == KEY_F1 and not help.visible:
+	elif code == KEY_F1 and not help.visible:
 		help.open(true)
 		get_viewport().set_input_as_handled()
+
+
+## A network game: hides the speed button, P and +/- do nothing.
+func set_net_game() -> void:
+	net_game = true
+	_speed_button.visible = false
 
 
 ## Pauses the game without the menu (P), or resumes it.

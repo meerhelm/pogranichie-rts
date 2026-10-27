@@ -1,6 +1,6 @@
 extends Control
 ## Main menu (main_menu.tscn: the evening court from tools/art/menu_scene.py behind a shade, the
-## title and the pages). The first page: campaign, single player, network play (not made yet), load
+## title and the pages). The first page: campaign, single player, network play (NetLobby), load
 ## a saved game, how to play, about the game (version and what each build added), settings, quit.
 ## The game's version stands under the title. Campaign leads to the choice of a country (GDL or the
 ## Crown) and then to its missions, which open one after another as they are won (CampaignProgress);
@@ -8,7 +8,7 @@ extends Control
 ## campaign mission, the menu opens on that campaign's missions. The first scene the game opens.
 ## Typing CampaignProgress.CHEAT_CODE on any page opens (or closes back) every campaign mission.
 
-enum Page { MAIN, COUNTRIES, MISSIONS, SINGLE }
+enum Page { MAIN, COUNTRIES, MISSIONS, SINGLE, NET }
 
 const GAME_SCENE := "res://game/main.tscn"
 ## Colour of the notes under countries, missions and maps.
@@ -28,6 +28,8 @@ var _back: Array[Button] = []
 var _page := Page.MAIN
 ## The campaign the missions page shows.
 var _shown := "gdl"
+## The «Network play» page.
+var _net := NetLobby.new()
 ## Set once _ready() has made every control; the locale can change before that.
 var _built := false
 
@@ -75,6 +77,7 @@ func _ready() -> void:
 	_build_countries()
 	_build_missions()
 	_build_single()
+	_build_net()
 	_settings.closed.connect(_show_settings.bind(false))
 	_built = true
 	var back_to := CampaignProgress.campaign_of(GameSettings.mission_id)
@@ -130,6 +133,14 @@ func _build_single() -> void:
 	_add_back(%SingleBack, Page.MAIN)
 
 
+func _build_net() -> void:
+	_single.add_sibling(_net)
+	_network.disabled = false
+	_network.pressed.connect(_show_page.bind(Page.NET))
+	_net.back.connect(_show_page.bind(Page.MAIN))
+	_net.start.connect(_on_net_start)
+
+
 func _add_back(b: Button, to: Page) -> void:
 	b.pressed.connect(_show_page.bind(to))
 	_back.append(b)
@@ -155,6 +166,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	match _page:
 		Page.COUNTRIES, Page.SINGLE:
 			_show_page(Page.MAIN)
+		Page.NET:
+			_net.cancel()
 		Page.MISSIONS:
 			_show_page(Page.COUNTRIES)
 		_:
@@ -202,7 +215,7 @@ func _retranslate() -> void:
 	_subtitle.text = tr("Grand Duchy of Lithuania against the Teutonic Order")
 	_campaign_button.text = tr("Campaign")
 	_single_button.text = tr("Single player")
-	_network.text = tr("Network play (coming later)")
+	_network.text = tr("Network play")
 	_load.text = tr("Load game")
 	_settings_button.text = tr("Settings")
 	_help_button.text = tr("How to play")
@@ -249,6 +262,7 @@ func _show_page(page: Page) -> void:
 	_countries.visible = page == Page.COUNTRIES
 	_missions.visible = page == Page.MISSIONS
 	_single.visible = page == Page.SINGLE
+	_net.visible = page == Page.NET
 	var level := maxi(GameSettings.DIFFICULTIES.find(GameSettings.ai_difficulty), 0)
 	_difficulty.selected = level
 	_campaign_difficulty.selected = level
@@ -268,6 +282,9 @@ func _show_page(page: Page) -> void:
 					focus = b
 		Page.SINGLE:
 			focus = _skirmish
+		Page.NET:
+			_net.open()
+			return
 	focus.grab_focus.call_deferred()
 
 
@@ -359,6 +376,13 @@ func _on_map(index: int) -> void:
 
 
 func _on_skirmish() -> void:
+	GameSettings.mission_id = ""
+	GameSettings.load_path = ""
+	get_tree().change_scene_to_file(GAME_SCENE)
+
+
+## Both network games agreed: the game scene plays the session's skirmish (NetSession.current).
+func _on_net_start() -> void:
 	GameSettings.mission_id = ""
 	GameSettings.load_path = ""
 	get_tree().change_scene_to_file(GAME_SCENE)
