@@ -213,8 +213,8 @@ func test_trees_get_a_steady_tint_of_their_own() -> void:
 	var seen := {}
 	for i in 40:
 		var c := TreeLayer.tint(i, i * 3 % 17)
-		assert_eq(c, TreeLayer.tint(i, i * 3 % 17), "the same cell, the same tint")
-		assert_almost_eq(c.g, 1.0, 0.35, "a few tones lighter or darker")
-		assert_almost_eq(c.r - c.b, 0.0, 0.7, "warmer or cooler")
+		assert_eq(c, TreeLayer.tint(i, i * 3 % 17), "the same cell, the same shade")
+		assert_between(c.x, -1.0, 1.0, "lighter or darker")
+		assert_between(c.y, -1.0, 1.0, "warmer or cooler")
 		seen[c] = true
 	assert_gt(seen.size(), 30, "trees differ")

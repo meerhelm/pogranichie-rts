@@ -17,17 +17,15 @@ const MIX: Dictionary[StringName, int] = {
 	&"nt_pine": 40, &"nt_pine_2": 25, &"nt_birch": 15, &"nt_birch_2": 10, &"nt_spruce": 10
 }
 const OLD_MIX: Dictionary[StringName, int] = {&"nt_spruce": 50, &"nt_oak": 20, &"nt_pine": 30}
-const OLD_TINT := Color(0.72, 0.8, 0.72)
-## Per-tree tint: each tree its own brightness (up to ±TINT_LIGHT) and warmth (redder and less
-## blue, or the other way, up to ±TINT_WARM), on top of a slow drift over the map (groves a few
-## cells across, up to ±GROVE_LIGHT and ±GROVE_WARM), so a forest has lighter and darker,
-## warmer and cooler stands instead of one flat green.
-const TINT_LIGHT := 0.14
-const TINT_WARM := 0.1
-const GROVE_LIGHT := 0.12
-const GROVE_WARM := 0.12
+## Per-tree shade (tree_tint.gdshader): each tree its own brightness and warmth, up to
+## ±TREE_SHARE of the full shift, on top of a slow drift over the map (groves a few cells
+## across, the rest), so a forest has lighter and darker, warmer and cooler stands instead of
+## one flat green. Old forest is darker by OLD_DARK.
+const TREE_SHARE := 0.55
+const OLD_DARK := 0.6
 ## Grove size in cells.
 const GROVE := 6
+const TINT_SHADER := preload("res://game/world/tree_tint.gdshader")
 ## Ticks between fog checks of the trees.
 const FOG_EVERY := 10
 
@@ -48,11 +46,14 @@ var _pick_old: Array[int] = []
 ## Old forest is darkened only for the two rendered kinds; pixel kinds have their own species.
 var _tint_old := true
 var _version := -1
+## One material for all trees, so they still batch.
+var _material := ShaderMaterial.new()
 
 
 func attach(p_sim: Simulation, clock: SimClock, p_depth_layer: Node2D) -> void:
 	sim = p_sim
 	depth_layer = p_depth_layer
+	_material.shader = TINT_SHADER
 	for kind in KINDS:
 		if SpriteDB.tree(kind) == null:
 			return
@@ -154,9 +155,11 @@ func _plant_cell(cell: int) -> void:
 		t.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	else:
 		t.scale = Vector2.ONE * _scales[kind] * (0.9 + (h >> 8) % 20 / 100.0)
-	t.modulate = tint(x, y)
+	var shade := tint(x, y)
 	if old and _tint_old:
-		t.modulate *= OLD_TINT
+		shade.x = maxf(shade.x - OLD_DARK, -1.0)
+	t.material = _material
+	t.modulate = Color(0.5 + shade.x / 2.0, 0.5 + shade.y / 2.0, 1.0)
 	var jitter := Vector2(((h >> 4) % 31) / 100.0 - 0.15, ((h >> 12) % 31) / 100.0 - 0.15)
 	t.position = Iso.cell_to_screen(Vector2(x + 0.5, y + 0.5) + jitter)
 	t.name = "Tree%d" % cell
@@ -164,16 +167,15 @@ func _plant_cell(cell: int) -> void:
 	depth_layer.add_child(t)
 
 
-## The tint of the tree on cell x, y: the same for a cell every time (hashes of the cell and of
-## the grove corners around it, not the tree's pick), around white.
-static func tint(x: int, y: int) -> Color:
+## The shade of the tree on cell x, y: brightness (x) and warmth (y), each -1..1, the same for
+## a cell every time (hashes of the cell and of the grove corners around it).
+static func tint(x: int, y: int) -> Vector2:
 	var h := absi(hash(Vector3i(x, y, 7)))
-	var light := ((h % 1001) / 500.0 - 1.0) * TINT_LIGHT
-	var warm := (((h / 1001) % 1001) / 500.0 - 1.0) * TINT_WARM
-	light += _grove(x, y, 11) * GROVE_LIGHT
-	warm += _grove(x, y, 13) * GROVE_WARM
-	var l := 1.0 + light
-	return Color(l * (1.0 + warm), l * (1.0 + warm * 0.3), l * (1.0 - warm))
+	var light := ((h % 1001) / 500.0 - 1.0) * TREE_SHARE
+	var warm := (((h / 1001) % 1001) / 500.0 - 1.0) * TREE_SHARE
+	light += _grove(x, y, 11) * (1.0 - TREE_SHARE)
+	warm += _grove(x, y, 13) * (1.0 - TREE_SHARE)
+	return Vector2(light, warm)
 
 
 ## Smooth noise in -1..1 over the map, one value per grove corner blended between them.
