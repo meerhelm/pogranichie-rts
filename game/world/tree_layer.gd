@@ -18,10 +18,16 @@ const MIX: Dictionary[StringName, int] = {
 }
 const OLD_MIX: Dictionary[StringName, int] = {&"nt_spruce": 50, &"nt_oak": 20, &"nt_pine": 30}
 const OLD_TINT := Color(0.72, 0.8, 0.72)
-## Per-tree tint: brightness up to ±TINT_LIGHT, warm (redder, less blue) or cool up to
-## ±TINT_WARM.
-const TINT_LIGHT := 0.12
-const TINT_WARM := 0.08
+## Per-tree tint: each tree its own brightness (up to ±TINT_LIGHT) and warmth (redder and less
+## blue, or the other way, up to ±TINT_WARM), on top of a slow drift over the map (groves a few
+## cells across, up to ±GROVE_LIGHT and ±GROVE_WARM), so a forest has lighter and darker,
+## warmer and cooler stands instead of one flat green.
+const TINT_LIGHT := 0.14
+const TINT_WARM := 0.1
+const GROVE_LIGHT := 0.12
+const GROVE_WARM := 0.12
+## Grove size in cells.
+const GROVE := 6
 ## Ticks between fog checks of the trees.
 const FOG_EVERY := 10
 
@@ -158,13 +164,35 @@ func _plant_cell(cell: int) -> void:
 	depth_layer.add_child(t)
 
 
-## The tint of the tree on cell x, y: the same for a cell every time (its own hash, not the
-## tree's pick), around white.
+## The tint of the tree on cell x, y: the same for a cell every time (hashes of the cell and of
+## the grove corners around it, not the tree's pick), around white.
 static func tint(x: int, y: int) -> Color:
 	var h := absi(hash(Vector3i(x, y, 7)))
-	var light := 1.0 + ((h % 1001) / 500.0 - 1.0) * TINT_LIGHT
+	var light := ((h % 1001) / 500.0 - 1.0) * TINT_LIGHT
 	var warm := (((h / 1001) % 1001) / 500.0 - 1.0) * TINT_WARM
-	return Color(light * (1.0 + warm), light * (1.0 + warm * 0.3), light * (1.0 - warm))
+	light += _grove(x, y, 11) * GROVE_LIGHT
+	warm += _grove(x, y, 13) * GROVE_WARM
+	var l := 1.0 + light
+	return Color(l * (1.0 + warm), l * (1.0 + warm * 0.3), l * (1.0 - warm))
+
+
+## Smooth noise in -1..1 over the map, one value per grove corner blended between them.
+static func _grove(x: int, y: int, salt: int) -> float:
+	var gx := floori(float(x) / GROVE)
+	var gy := floori(float(y) / GROVE)
+	var fx := float(x - gx * GROVE) / GROVE
+	var fy := float(y - gy * GROVE) / GROVE
+	fx = fx * fx * (3.0 - 2.0 * fx)
+	fy = fy * fy * (3.0 - 2.0 * fy)
+	var a := _corner(gx, gy, salt)
+	var b := _corner(gx + 1, gy, salt)
+	var c := _corner(gx, gy + 1, salt)
+	var d := _corner(gx + 1, gy + 1, salt)
+	return lerpf(lerpf(a, b, fx), lerpf(c, d, fx), fy)
+
+
+static func _corner(gx: int, gy: int, salt: int) -> float:
+	return (absi(hash(Vector3i(gx, gy, salt))) % 1001) / 500.0 - 1.0
 
 
 func _fell() -> void:
