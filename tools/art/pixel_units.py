@@ -28,7 +28,7 @@ from tools.art.pick import write_pick
 from tools.art.pixel_iso import shadow_of
 
 FRAME = (80, 72)
-PIVOT = (40, 64)
+PIVOT = (40, 56)  # feet; 16 px below for the down-right shadow
 GENERATED = (0, 1, 2, 6, 7)
 MIRROR = {3: 1, 4: 0, 5: 7}
 # anim: fps; "work" may reuse another anim's source

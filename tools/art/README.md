@@ -41,6 +41,48 @@ godot --headless -s tools/art/make_frames.gd -- gdl_peasant   # then SpriteFrame
   GIF) → idle / walking / attack (`rd_advanced_animation__*`, 8 frames each) for facings 0, 1,
   2, 6, 7; 3, 4, 5 are mirrors. The team colour is a belt band at the waist.
 
+### Building shadows from rough 3D proxies (`proxy_shadow.py`)
+
+A generated picture is flat, so its shadow is computed from an invisible stand-in: a few
+solids per building in `art_src/pixel_iso/proxies.json` (box, roof `gable_u` / `gable_v` /
+`pyramid` / `flat`, cylinder, cone, post), in cells from the centre of the footprint (`u` screen
+down-right, `v` down-left) and screen pixels of height `z`. The sun is the Blender rig's (upper
+left of the screen, 60° up): a point `z` px high throws its shadow (0.3 z, 0.3 z) px down-right,
+the same for buildings, trees and units.
+
+- The proxy only gives depth: it is carved by the picture (a proxy point counts only where the
+  sprite is opaque at its screen spot), so the gaps between a tower's legs, a bare trunk under a
+  crown or an open shed come out by themselves.
+- Soft: every 8 px of height casts its own layer, blurred by 0.4 + 0.035 × height px, so the
+  shadow is crisp at the foot and soft at a tower's top (`BAND`, `SOFT0`, `SOFT`).
+- Heights: `fit` adds a tower for every run of screen columns where the sprite rises 18 px or
+  more over the first box (a keep, a belfry, a spire, a chimney; `spires`), standing in the
+  middle of the box's depth there. Solids shade one another on the sprite itself
+  (`cast_on_self`): the keep darkens the castle roofs to its lower right, a hall its annex; a box
+  and the roof on it are one solid and never shade themselves (their dark side is painted).
+- The shadow stays a separate layer (`*_shadow.png`); building stages get it too (the scaffold
+  stages from the proxy cut at a third and two thirds of its height). For ids in `GROUND` (a
+  painted yard or pad) the sprite's own ground pixels inside the shadow are darkened as the game
+  darkens the map.
+- Raws lit from the right are turned in `pixel_iso.LIGHT_FIX` (square footprints mirrored, the
+  felled tree turned half round). Trees and units keep the flat-card shadow (`shadow_of`).
+
+```sh
+python3 -m tools.art.proxy_shadow fit [id ...]         # first guess: box + roof fitted to the outline, + towers
+python3 -m tools.art.proxy_shadow spires id …          # add towers to a hand-made proxy
+python3 -m tools.art.proxy_shadow sheet /tmp/s.png id …  # review: shadow on grass | proxy wireframe (K=1: 1x)
+python3 -m tools.art.proxy_shadow probe /tmp/probe id …  # sprite x2 over a quarter-cell ground grid
+python3 -m tools.art.pixel_iso --only id …             # write the sprites with the new shadows
+```
+
+`fit` writes only ids missing from `proxies.json` unless named; options per id (`lam` = how
+much spilling past the outline costs, lower for frames and crowns; `kinds` = roofs to try) are
+in `proxy_shadow.FIT`. A tower `fit` puts on a ridge finial or a target post (a dark stripe on
+a roof in the sheet) is deleted from `proxies.json` by hand. Hand-made proxies (farms, ranges,
+the Order's town centre) are read off `probe`: a ground point of the sprite at (x, y) is
+u − v = (x − pivot x) / 32, u + v = (y + z − pivot y) / 16. On the sheet the red outline is the
+proxy, blue its base, yellow its uncarved shadow.
+
 ## Files
 
 - `rig.py` — camera, light, scale, shadow catcher; `heading_for_facing` turns a model to the

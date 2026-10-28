@@ -15,11 +15,14 @@ draws them 1:1 and pixels stay crisp):
 
 import argparse
 import json
+import math
 import random
 from pathlib import Path
 
 import numpy as np
 from PIL import Image, ImageDraw
+
+from tools.art import proxy_shadow as ps
 
 STAGES = ["found", "build_33", "build_66", "done", "damaged_1", "damaged_2", "rubble"]
 OUTL = (0x2A, 0x1C, 0x14, 255)
@@ -29,9 +32,9 @@ DUST = (0xA8, 0x8A, 0x60, 255)
 PAD = (0x6B, 0x4C, 0x32, 150)
 INNER = (0x14, 0x12, 0x10, 255)
 CHAR = (0x3A, 0x2A, 0x20, 255)
-## Shadow of a point `h` pixels above the ground: sun upper left, so it falls down-right.
-## The silhouette is sheared right by SHADOW_DX per pixel of height and squashed to SHADOW_DY.
-SHADOW_DX, SHADOW_DY = 0.6, 0.45
+## Shadow of a point `h` pixels above the ground: sun upper left, so it falls down-right
+## (SHADOW_DX, SHADOW_DY screen pixels per pixel of height; the same sun as proxy_shadow).
+SHADOW_DX, SHADOW_DY = ps.SHADOW_DX, ps.SHADOW_DY
 
 # id: (cells w, h, faction, rubble kind, mirror source or None)
 BUILD = {
@@ -106,6 +109,14 @@ LINES = {"gdl_palisade": ("gdl_palisade", "gdl"), "pl_palisade": ("gdl_palisade"
          "to_wall": ("to_wall", "to")}
 ## Raw file per id when it is not simply <id>_1.png (best pick after review).
 PICK: dict[str, str] = {}
+## Raw pictures lit from the right turned so the light comes from the left like the rest:
+## a square footprint is simply mirrored; the felled tree (3 x 1, it has a turned view) is
+## turned half round, which keeps it along x.
+LIGHT_FIX = {"gdl_stable": "mirror", "gdl_mine": "mirror", "gdl_range": "mirror",
+              "gdl_field_camp": "mirror", "gdl_zaseka": "rot180"}
+## Rough 3D stand-ins for the shadows (tools/art/proxy_shadow.py); ids without one keep the
+## flat-card shadow of shadow_of.
+PROXIES: dict[str, list[dict]] = ps.load()
 
 
 # --- basics ----------------------------------------------------------------------------------
@@ -130,15 +141,16 @@ def foot_of(im: Image.Image) -> tuple[int, int]:
 
 
 def shadow_of(color: Image.Image, base_y: int) -> Image.Image:
-    """Ground shadow (LA, white with alpha) of the sprite: every opaque pixel thrown down-right
-    along the ground by its height over `base_y`."""
+    """Flat-card ground shadow (LA) of the sprite: every opaque pixel thrown down-right along
+    the ground by its height over `base_y`, as if the picture stood upright facing the camera.
+    Trees and units use it; buildings with a proxy get theirs from proxy_shadow."""
     a = np.array(color)[..., 3] > 0
     h, w = a.shape
     sh = np.zeros((h, w), bool)
     ys, xs = np.nonzero(a)
     hgt = np.maximum(base_y - ys, 0)
     sx = np.round(xs + hgt * SHADOW_DX).astype(int)
-    sy = np.round(base_y - hgt * SHADOW_DY).astype(int)
+    sy = np.round(base_y + hgt * SHADOW_DY).astype(int)
     ok = (sx >= 0) & (sx < w) & (sy >= 0) & (sy < h)
     sh[sy[ok], sx[ok]] = True
     # close pinholes
@@ -289,32 +301,57 @@ def team_mask(im: Image.Image, faction: str) -> Image.Image:
 
 # --- writers ---------------------------------------------------------------------------------
 
-def save_view(out_dir: Path, prefix: str, color: Image.Image, base_y: int, faction: str | None):
+def save_view(out_dir: Path, prefix: str, color: Image.Image, base_y: int, faction: str | None,
+              shadow: Image.Image | None = None):
     color.save(out_dir / f"{prefix}color.png", optimize=True)
     if prefix.endswith("_found_"):  # a flat site casts no shadow (its stakes are tiny)
         Image.new("LA", color.size).save(out_dir / f"{prefix}shadow.png", optimize=True)
     else:
-        shadow_of(color, base_y).save(out_dir / f"{prefix}shadow.png", optimize=True)
+        (shadow or shadow_of(color, base_y)).save(out_dir / f"{prefix}shadow.png", optimize=True)
     if faction:
         team_mask(color, faction).save(out_dir / f"{prefix}team.png", optimize=True)
+
+
+def finished(src: Path, raw_id: str, w: int, h: int, mirror: bool = False, right: int = 48,
+             top: int = 4, bottom: int = 0) -> tuple[Image.Image, tuple[int, int]] | None:
+    """The finished building on its canvas (room for the footprint, and `right`, `top` and
+    `bottom` pixels for the shadow) and the pivot: the centre of the footprint."""
+    raw = src / "buildings" / PICK.get(raw_id, f"{raw_id}_1.png")
+    if not raw.exists():
+        print("missing", raw)
+        return None
+    done = clean(Image.open(raw))
+    flip = LIGHT_FIX.get(raw_id)
+    if flip == "mirror":
+        done = done.transpose(Image.FLIP_LEFT_RIGHT)
+    elif flip == "rot180":
+        done = done.transpose(Image.ROTATE_180)
+    if mirror:
+        done = done.transpose(Image.FLIP_LEFT_RIGHT)
+    foot_w = (w + h) * 32
+    extra_x = max(0, (foot_w - done.width) // 2 + 2)
+    done = pad_canvas(done, extra_x, top, extra_x + right, max(bottom, (w + h) * 4 + 8))
+    bx, by = foot_of(done)
+    return done, (bx - (w - h) * 16, by - (w + h) * 8)
 
 
 def building(src: Path, out: Path, uid: str, w: int, h: int, faction: str, rubble_kind: str,
              mirror: bool = False, raw_id: str | None = None) -> None:
     raw_id = raw_id or uid
-    raw = src / "buildings" / PICK.get(raw_id, f"{raw_id}_1.png")
-    if not raw.exists():
-        print("missing", raw)
+    got = finished(src, raw_id, w, h, mirror)
+    if got is None:
         return
-    done = clean(Image.open(raw))
-    if mirror:
-        done = done.transpose(Image.FLIP_LEFT_RIGHT)
-    # Room for the shadow to the right and below, and for the footprint diamond.
-    foot_w = (w + h) * 32
-    extra_x = max(0, (foot_w - done.width) // 2 + 2)
-    done = pad_canvas(done, extra_x, 4, extra_x + 48, (w + h) * 4 + 8)
-    bx, by = foot_of(done)
-    pivot = (bx - (w - h) * 16, by - (w + h) * 8)
+    done, pivot = got
+    parts = PROXIES.get(raw_id)
+    if parts and mirror:
+        parts = ps.swap_uv(parts)
+    if parts:  # room for the whole shadow of the proxy
+        x0, y0, x1, y1 = ps.reach(parts, pivot)
+        right = max(48, int(math.ceil(x1)) - done.width + 48 + 4)
+        top = max(4, 4 - int(math.floor(y0)) + 2)
+        bottom = (w + h) * 4 + 8 + max(0, int(math.ceil(y1)) + 4 - done.height)
+        done, pivot = finished(src, raw_id, w, h, mirror, right, top, bottom)
+    by = pivot[1] + (w + h) * 8
     size = done.size
     rnd = random.Random(uid)
     rub_raw = src / "buildings" / PICK.get(f"rubble_{rubble_kind}", f"rubble_{rubble_kind}_1.png")
@@ -329,16 +366,29 @@ def building(src: Path, out: Path, uid: str, w: int, h: int, faction: str, rubbl
     rub = Image.new("RGBA", size)
     if rub_raw.exists():
         r = clean(Image.open(rub_raw))
-        scale = min(1.0, foot_w * 0.9 / r.width)
+        scale = min(1.0, foot_w_of(w, h) * 0.9 / r.width)
         if scale < 1.0:
             r = r.resize((max(1, int(r.width * scale)), max(1, int(r.height * scale))), Image.NEAREST)
         rub.alpha_composite(r, (int(pivot[0] - r.width / 2), int(pivot[1] - r.height * 0.6)))
     views["rubble"] = rub
+    zmax = max((p[2] for part in parts or [] for sol in ps.solids(part) for p in sol), default=0)
+    caps = {"build_33": 0.34 * zmax, "build_66": 0.67 * zmax}
     for stage, im in views.items():
-        save_view(out / "buildings", f"{uid}_{stage}_", im, by, faction)
+        shadow = None
+        if parts and stage not in ("found", "rubble"):
+            cap = caps.get(stage)
+            shadow = ps.shadow_la(parts, im, pivot, cap)
+            if raw_id in ps.GROUND:
+                im = ps.darken_ground(parts, im, pivot, cap)
+            im = ps.cast_on_self(parts, im, pivot, cap)
+        save_view(out / "buildings", f"{uid}_{stage}_", im, by, faction, shadow)
     meta = {"size": list(size), "pivot": list(pivot), "scale": 1.0, "pivot_is": "centre of the footprint",
             "cells": [w, h], "stages": STAGES, "source": "retro diffusion, tools/art/pixel_iso.py"}
     (out / "buildings" / f"{uid}.json").write_text(json.dumps(meta, indent=1))
+
+
+def foot_w_of(w: int, h: int) -> int:
+    return (w + h) * 32
 
 
 def tree(src: Path, out: Path, uid: str, raw_name: str) -> None:
@@ -347,7 +397,7 @@ def tree(src: Path, out: Path, uid: str, raw_name: str) -> None:
         print("missing", raw)
         return
     im = clean(Image.open(raw))
-    im = pad_canvas(im, 2, 2, 60, 12)
+    im = pad_canvas(im, 2, 2, 48, 40)  # the shadow falls down-right
     bx, by = foot_of(im)
     save_view(out / "trees", f"{uid}_", im, by, None)
     meta = {"size": list(im.size), "pivot": [bx, by - 4], "scale": 1.0, "pivot_is": "foot of the trunk",
