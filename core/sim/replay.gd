@@ -169,19 +169,19 @@ func to_dict() -> Dictionary:
 
 static func from_dict(d: Dictionary) -> Replay:
 	# Format 2 differs only in lacking the mission fields.
-	assert(int(d["format"]) in [2, FORMAT], "unsupported replay format")
+	assert(Num.of(d["format"]) in [2, FORMAT], "unsupported replay format")
 	var r := Replay.new()
-	r.sim_version = int(d["sim_version"])
+	r.sim_version = Num.of(d["sim_version"])
 	r.data_version = d["data_version"]
-	r.seed_value = int(d["seed"])
+	r.seed_value = Num.of(d["seed"])
 	var map_size: Array = d["map"]
 	r.map_id = str(d.get("map_id", ""))
 	r.mission_id = str(d.get("mission_id", ""))
 	r.difficulty = str(d.get("difficulty", "normal"))
-	r.map_width_cells = int(map_size[0])
-	r.map_height_cells = int(map_size[1])
-	r.ticks = int(d["ticks"])
-	r.checkpoint_every = int(d["checkpoint_every"])
+	r.map_width_cells = Num.of(map_size[0])
+	r.map_height_cells = Num.of(map_size[1])
+	r.ticks = Num.of(d["ticks"])
+	r.checkpoint_every = Num.of(d["checkpoint_every"])
 	r.final_hash = d["final_hash"]
 	var raw_checkpoints: Array = d["checkpoints"]
 	r.checkpoints = PackedStringArray(raw_checkpoints)

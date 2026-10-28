@@ -105,7 +105,8 @@ static func source_ids(ts: TileSet, ids: Array[StringName]) -> PackedInt32Array:
 		by_name[StringName(ts.get_source(id).resource_name)] = id
 	var out := PackedInt32Array()
 	for t in ids:
-		out.append(by_name.get(t, -1))
+		var source: int = by_name.get(t, -1)
+		out.append(source)
 	return out
 
 
@@ -128,7 +129,8 @@ static func _add_terrain(ts: TileSet, id: StringName) -> void:
 	var terrain := ts.get_terrains_count(0)
 	ts.add_terrain(0)
 	ts.set_terrain_name(0, terrain, String(id))
-	ts.set_terrain_color(0, terrain, COLORS.get(id, FALLBACK_COLOR))
+	var color: Color = COLORS.get(id, FALLBACK_COLOR)
+	ts.set_terrain_color(0, terrain, color)
 	var source := TileSetAtlasSource.new()
 	source.resource_name = String(id)
 	var path := TILES.path_join("%s.png" % id)

@@ -89,7 +89,7 @@ func _log() -> void:
 	var kinds := {}
 	for id in _mine():
 		var t := String(sim.entities.type_ids[id - 1])
-		kinds[t] = int(kinds.get(t, 0)) + 1
+		kinds[t] = Num.of(kinds.get(t, 0)) + 1
 	print("   ", kinds)
 
 

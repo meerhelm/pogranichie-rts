@@ -30,8 +30,8 @@ static func create() -> SettingsPanel:
 
 func _ready() -> void:
 	GameSettings.ensure_loaded()
-	for name in GameSettings.LANGUAGE_NAMES:
-		_language.add_item(name)
+	for language_name: String in GameSettings.LANGUAGE_NAMES:
+		_language.add_item(language_name)
 	_language.select(GameSettings.LANGUAGES.find(GameSettings.language))
 	_language.item_selected.connect(_on_language)
 	_edge.button_pressed = GameSettings.edge_scroll
@@ -62,12 +62,12 @@ func _retranslate() -> void:
 	_language_label.text = tr("Language")
 	_edge.text = tr("Scroll at the screen edge")
 	_edge_speed_label.text = tr("Edge scrolling speed")
-	var speeds := [tr("Slow"), tr("Medium"), tr("Fast"), tr("Very fast")]
+	var speeds: Array[String] = [tr("Slow"), tr("Medium"), tr("Fast"), tr("Very fast")]
 	for i in mini(speeds.size(), _edge_speed.item_count):
 		_edge_speed.set_item_text(i, speeds[i])
 	_fullscreen.text = tr("Fullscreen")
 	_text_label.text = tr("Text size")
-	var sizes := [tr("Small"), tr("Normal"), tr("Large"), tr("Very large")]
+	var sizes: Array[String] = [tr("Small"), tr("Normal"), tr("Large"), tr("Very large")]
 	for i in mini(sizes.size(), _text_size.item_count):
 		_text_size.set_item_text(i, sizes[i])
 	_hints.text = tr("Hints in skirmish")

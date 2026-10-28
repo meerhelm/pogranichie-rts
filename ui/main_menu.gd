@@ -116,7 +116,7 @@ func _build_countries() -> void:
 
 func _build_missions() -> void:
 	_fill_difficulty(_campaign_difficulty)
-	_add_back(%MissionsBack, Page.COUNTRIES)
+	_add_back(%MissionsBack as Button, Page.COUNTRIES)
 
 
 func _build_single() -> void:
@@ -130,7 +130,7 @@ func _build_single() -> void:
 	_my_faction.item_selected.connect(_on_faction.bind(true))
 	_enemy_faction.item_selected.connect(_on_faction.bind(false))
 	_skirmish.pressed.connect(_on_skirmish)
-	_add_back(%SingleBack, Page.MAIN)
+	_add_back(%SingleBack as Button, Page.MAIN)
 
 
 func _build_net() -> void:
@@ -228,7 +228,7 @@ func _retranslate() -> void:
 	for b in _back:
 		b.text = tr("Back")
 	# The locale can change before _ready() has filled the lists (GameSettings.ensure_loaded).
-	var levels := [tr("Opponent: easy"), tr("Opponent: normal")]
+	var levels: Array[String] = [tr("Opponent: easy"), tr("Opponent: normal")]
 	for box: OptionButton in [_difficulty, _campaign_difficulty]:
 		for i in mini(levels.size(), box.item_count):
 			box.set_item_text(i, levels[i])
@@ -248,7 +248,7 @@ func _retranslate() -> void:
 ## «Grunwald, 1410»: the map's title and the year of its battle (none for the prototype map).
 func _map_title(m: Dictionary) -> String:
 	var title := tr(str(m["title"]))
-	var year := int(m.get("year", 0))
+	var year: int = m.get("year", 0)
 	return "%s, %d" % [title, year] if year > 0 else title
 
 
@@ -298,7 +298,8 @@ func _fill_countries() -> void:
 	for i in CampaignProgress.ORDER.size():
 		var c := CampaignProgress.ORDER[i]
 		_country[i].text = UiText.name_of(CampaignProgress.FACTION[c])
-		var total: int = (CampaignProgress.MISSIONS[c] as Array).size()
+		var missions: Array = CampaignProgress.MISSIONS[c]
+		var total := missions.size()
 		_country_note[i].text = (
 			"«%s» · %s"
 			% [
@@ -406,11 +407,9 @@ func _list_saves() -> void:
 		_saves.add_child(none)
 	for path in paths:
 		var head := SimSave.read_header(path)
+		var tick: int = head.get("tick", 0)
 		var b := Button.new()
-		b.text = (
-			"%s · %s"
-			% [tr(str(head.get("title", path.get_file()))), UiText.clock(int(head.get("tick", 0)))]
-		)
+		b.text = "%s · %s" % [tr(str(head.get("title", path.get_file()))), UiText.clock(tick)]
 		b.pressed.connect(
 			func() -> void:
 				GameSettings.load_path = path

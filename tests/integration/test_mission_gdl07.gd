@@ -171,11 +171,11 @@ func test_a_party_raises_its_ladder_and_climbs_over_one_at_a_time() -> void:
 	var m := sim.mission
 	var party := _ladder(sim, 3)
 	assert_eq(sim.entities.stance[party[0] - 1], EntityStore.Stance.PASSIVE, "carries, not fights")
-	var raise := int(m.def.rules["siege"]["ladder"]["raise_ticks"])
+	var raise := Num.of(m.def.rules["siege"]["ladder"]["raise_ticks"])
 	sim.run(raise + 4 * CHECK)
 	assert_eq(m.siege.l_state[0], MissionSiege.Ladder.UP)
 	assert_true(m.flags.has("ladder_up"))
-	var climb := int(m.def.rules["siege"]["ladder"]["climb_ticks"])
+	var climb := Num.of(m.def.rules["siege"]["ladder"]["climb_ticks"])
 	sim.run(climb + 2 * CHECK)
 	assert_between(m.siege.climbed, 1, 2, "the first men over the wall, not all at once")
 	var over := 0
@@ -194,7 +194,7 @@ func test_men_at_the_top_push_the_ladder_off_and_the_climber_falls() -> void:
 	_alone(sim)
 	var m := sim.mission
 	var party := _ladder(sim, 2, 1)
-	var raise := int(m.def.rules["siege"]["ladder"]["raise_ticks"])
+	var raise := Num.of(m.def.rules["siege"]["ladder"]["raise_ticks"])
 	sim.run(raise + 3 * CHECK)
 	assert_eq(m.siege.l_state[0], MissionSiege.Ladder.UP)
 	# Three defenders right behind the wall, passive so they only push.
@@ -202,7 +202,7 @@ func test_men_at_the_top_push_the_ladder_off_and_the_climber_falls() -> void:
 	for k in 3:
 		men.append(_one(sim, &"gdl_spearman", P, TOP + Vector2i(k - 1, 1)))
 		sim.entities.stance[men[k] - 1] = EntityStore.Stance.PASSIVE
-	var push := int(m.def.rules["siege"]["ladder"]["push_ticks"])
+	var push := Num.of(m.def.rules["siege"]["ladder"]["push_ticks"])
 	sim.run(push / 3 + 3 * CHECK)
 	assert_eq(m.siege.pushed, 1)
 	assert_true(m.flags.has("ladder_pushed"))
@@ -218,12 +218,12 @@ func test_a_pushed_ladder_is_raised_again_while_tries_last() -> void:
 	_alone(sim)
 	var m := sim.mission
 	_ladder(sim, 2, 2)
-	var raise := int(m.def.rules["siege"]["ladder"]["raise_ticks"])
+	var raise := Num.of(m.def.rules["siege"]["ladder"]["raise_ticks"])
 	sim.run(raise + 3 * CHECK)
 	for k in 3:
 		var id := _one(sim, &"gdl_spearman", P, TOP + Vector2i(k - 1, 1))
 		sim.entities.stance[id - 1] = EntityStore.Stance.PASSIVE
-	var push := int(m.def.rules["siege"]["ladder"]["push_ticks"])
+	var push := Num.of(m.def.rules["siege"]["ladder"]["push_ticks"])
 	sim.run(push / 3 + 3 * CHECK)
 	assert_eq(m.siege.pushed, 1)
 	assert_eq(m.siege.l_state[0], MissionSiege.Ladder.RAISING, "up again")
@@ -290,7 +290,7 @@ func test_shooters_by_the_wall_shoot_further_and_are_harder_to_hit() -> void:
 	assert_eq(sim.entities.up_range[a - 1], 0, "off the wall, no bonus")
 	var g := _one(sim, &"gdl_hakownica", P, Vector2i(61, 47))
 	_check(sim)
-	assert_eq(sim.entities.up_range[g - 1], int(m.def.rules["siege"]["wall"]["range"]))
+	assert_eq(sim.entities.up_range[g - 1], Num.of(m.def.rules["siege"]["wall"]["range"]))
 
 
 func test_the_townsmen_take_up_arms() -> void:
@@ -417,7 +417,7 @@ func test_fire_arrows_set_roofs_alight_but_not_the_walls() -> void:
 		[_one(sim, &"gdl_castle_archer", REBELS, FAR)]
 	)
 	m.run({"do": "fire_arrows", "on": true}, sim.tick)
-	var every := int(m.def.rules["siege"]["fire_arrows"]["every_ticks"])
+	var every := Num.of(m.def.rules["siege"]["fire_arrows"]["every_ticks"])
 	sim.run(every + CHECK)
 	assert_true(m.flags.has("fire_arrow"))
 	assert_eq(sim.fire.burning.size(), 1)

@@ -46,7 +46,7 @@ func open(pause_game: bool = false) -> void:
 	_retranslate()
 	_text.scroll_to_line(0)
 	visible = true
-	UiAnim.pop_in(self, %Panel)
+	UiAnim.pop_in(self, %Panel as Control)
 	_paused_it = pause_game and not get_tree().paused
 	if _paused_it:
 		get_tree().paused = true

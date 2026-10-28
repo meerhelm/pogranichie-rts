@@ -58,12 +58,14 @@ func _input(event: InputEvent) -> void:
 
 
 func _process(delta: float) -> void:
-	for line in _lines:
-		line[1] = float(line[1]) - delta
+	for line: Array in _lines:
+		var left: float = line[1]
+		left -= delta
+		line[1] = left
 		var label: Label = line[0]
-		label.modulate.a = clampf(float(line[1]), 0.0, 1.0)
-	while not _lines.is_empty() and float(_lines[0][1]) <= 0.0:
-		(_lines.pop_front()[0] as Label).queue_free()
+		label.modulate.a = clampf(left, 0.0, 1.0)
+	while not _lines.is_empty() and _left(0) <= 0.0:
+		_drop_first()
 
 
 func _on_submitted(text: String) -> void:
@@ -98,4 +100,17 @@ func show_line(text: String) -> void:
 	move_child(edit, -1)
 	_lines.append([label, LINE_SECONDS])
 	while _lines.size() > MAX_LINES:
-		(_lines.pop_front()[0] as Label).queue_free()
+		_drop_first()
+
+
+## Seconds line `i` stays on screen.
+func _left(i: int) -> float:
+	var line: Array = _lines[i]
+	var left: float = line[1]
+	return left
+
+
+func _drop_first() -> void:
+	var line: Array = _lines.pop_front()
+	var label: Label = line[0]
+	label.queue_free()

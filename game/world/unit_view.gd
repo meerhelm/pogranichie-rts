@@ -129,17 +129,17 @@ func _play(restart := false) -> void:
 	var anim := _anim_name()
 	if not sprite.anims.has(anim):
 		anim = sprite.anims.keys()[0]
-	var name := SpriteDB.anim_name(anim, facing)
-	if name == _body.animation and not restart:
+	var anim_id := SpriteDB.anim_name(anim, facing)
+	if anim_id == _body.animation and not restart:
 		return
 	var same_action := String(_body.animation).begins_with(anim + "_")
 	var frame := _body.frame
 	var progress := _body.frame_progress
-	_body.play(name)
+	_body.play(anim_id)
 	if same_action and not restart:
 		_body.set_frame_and_progress(frame, progress)
 	for pass_sprite: AnimatedSprite2D in [_shadow, _team]:
-		pass_sprite.animation = name
+		pass_sprite.animation = anim_id
 	_sync_passes()
 
 
@@ -160,7 +160,8 @@ func covers(local: Vector2) -> bool:
 	if sprite == null:
 		return local.distance_to(Vector2(0, -RADIUS)) <= RADIUS + PICK_SLACK
 	var a := _anim()
-	return sprite.covers(int(a["row"]) + facing, _body.frame, local, PICK_SLACK)
+	var row: int = a["row"]
+	return sprite.covers(row + facing, _body.frame, local, PICK_SLACK)
 
 
 ## Points on the figure as drawn (five heights from feet to head, three across), global:
@@ -168,7 +169,8 @@ func covers(local: Vector2) -> bool:
 func figure_points() -> PackedVector2Array:
 	var h := RADIUS * 2.0
 	if sprite != null:
-		h = float(sprite.meta.get("bar_y", SPRITE_BAR_Y)) - 6.0
+		var bar_y: float = sprite.meta.get("bar_y", SPRITE_BAR_Y)
+		h = bar_y - 6.0
 	var out := PackedVector2Array()
 	for k in 5:
 		var y := -3.0 - (h - 3.0) * k / 4.0
@@ -223,7 +225,8 @@ func _draw_state() -> void:
 	var o := _overlay
 	var top := Vector2(-BAR_WIDTH / 2.0, -RADIUS * 2.0 - 8.0)
 	if sprite != null:
-		top.y = -float(sprite.meta.get("bar_y", SPRITE_BAR_Y))
+		var bar_y: float = sprite.meta.get("bar_y", SPRITE_BAR_Y)
+		top.y = -bar_y
 	if selected or looked or hp_permille < 1000:
 		o.draw_rect(Rect2(top, Vector2(BAR_WIDTH, 3.0)), Color(0.15, 0.05, 0.05))
 		var w := BAR_WIDTH * hp_permille / 1000.0

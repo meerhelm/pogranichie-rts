@@ -46,17 +46,17 @@ func _on_advanced(tick: int, steps: int) -> void:
 	var e := sim.entities
 	for id in e.alive_ids:
 		var p := Vector2i(e.pos_x[id - 1], e.pos_y[id - 1])
-		var view: UnitView = views.get(id)
-		if view == null:
-			view = _make_view(id)
+		var uv: UnitView = views.get(id)
+		if uv == null:
+			uv = _make_view(id)
 			_prev[id] = p
 		else:
 			_prev[id] = _cur[id] if steps == 1 else p
-			view.face(p.x - _cur[id].x, p.y - _cur[id].y)
-			view.set_moving(p != _cur[id])
-			_show_action(id, view, p != _cur[id])
+			uv.face(p.x - _cur[id].x, p.y - _cur[id].y)
+			uv.set_moving(p != _cur[id])
+			_show_action(id, uv, p != _cur[id])
 		_cur[id] = p
-		_show_state(id, view)
+		_show_state(id, uv)
 	for id: int in views.keys():
 		if not e.is_alive(id):
 			views[id].queue_free()
@@ -95,12 +95,12 @@ func _show_state(id: int, v: UnitView) -> void:
 		mood = UnitView.Mood.FLEEING
 	elif sim.combat.enabled() and sim.combat.wavering(slot):
 		mood = UnitView.Mood.WAVERING
-	var hidden := sim.combat.enabled() and sim.combat.is_hidden(id)
+	var is_hidden := sim.combat.enabled() and sim.combat.is_hidden(id)
 	var own := e.owners[slot] == local_player
 	var seen := reveal_all or sim.vision.sees_unit(local_player, id)
-	v.visible = own or (not hidden and seen)
+	v.visible = own or (not is_hidden and seen)
 	var hp := clampi(e.hp[slot] * 1000 / maxi(e.max_hp[slot], 1), 0, 1000)
-	v.show_state(hp, mood, hidden, e.move_class[slot])
+	v.show_state(hp, mood, is_hidden, e.move_class[slot])
 
 
 ## Work and attack animations, turned toward what the unit works on or hits.

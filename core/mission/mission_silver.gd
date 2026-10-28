@@ -137,9 +137,9 @@ func set_up(m: MissionRuntime) -> void:
 	if r.is_empty():
 		return
 	on = true
-	player = int(r["player"])
-	patience = int(r.get("patience", {}).get("start", 500))
-	discontent = int(r.get("discontent", {}).get("start", 0))
+	player = Num.of(r["player"])
+	patience = Num.of(r.get("patience", {}).get("start", 500))
+	discontent = Num.of(r.get("discontent", {}).get("start", 0))
 	var n := (r.get("villages", {}).get("at", []) as Array).size()
 	taxed_tick.resize(n)
 	taxed_season.resize(n)
@@ -155,7 +155,7 @@ func set_up(m: MissionRuntime) -> void:
 	rumour.fill(0)
 	var w: Dictionary = r.get("wages", {})
 	if not w.is_empty() and str(w.get("from", "")) == "":
-		next_pay = int(w["every_ticks"])
+		next_pay = Num.of(w["every_ticks"])
 	# Campaign-only buildings the player may build here (the pier), as in MissionBesiege.
 	var allowed: Dictionary = m.def.setup.get("allowed", {})
 	for key: String in allowed:
@@ -187,27 +187,27 @@ func test(m: MissionRuntime, c: Dictionary) -> bool:
 	var ok := false
 	match c["type"]:
 		"delivered":
-			ok = delivered >= int(c["at_least"])
+			ok = delivered >= Num.of(c["at_least"])
 		"patience":
-			ok = not c.has("at_least") or patience >= int(c["at_least"])
-			ok = ok and (not c.has("at_most") or patience <= int(c["at_most"]))
+			ok = not c.has("at_least") or patience >= Num.of(c["at_least"])
+			ok = ok and (not c.has("at_most") or patience <= Num.of(c["at_most"]))
 		"discontent":
-			ok = not c.has("at_least") or discontent >= int(c["at_least"])
-			ok = ok and (not c.has("at_most") or discontent <= int(c["at_most"]))
+			ok = not c.has("at_least") or discontent >= Num.of(c["at_least"])
+			ok = ok and (not c.has("at_most") or discontent <= Num.of(c["at_most"]))
 		"season":
-			ok = season >= int(c["at_least"])
+			ok = season >= Num.of(c["at_least"])
 		"taxed":
-			ok = taxes >= int(c["at_least"])
+			ok = taxes >= Num.of(c["at_least"])
 		"rumours":
-			ok = rumours >= int(c["at_least"])
+			ok = rumours >= Num.of(c["at_least"])
 		"lost":
-			ok = lost >= int(c["at_least"])
+			ok = lost >= Num.of(c["at_least"])
 		"deserted":
 			ok = deserted > 0
 		"loans_taken":
-			ok = loans >= int(c["at_least"])
+			ok = loans >= Num.of(c["at_least"])
 		"units_near":
-			ok = units_near(m, c["at"], int(c["radius"])) >= int(c["count"])
+			ok = units_near(m, c["at"], Num.of(c["radius"])) >= Num.of(c["count"])
 	return ok
 
 
@@ -216,15 +216,15 @@ func run(m: MissionRuntime, a: Dictionary, tick: int) -> void:
 		return
 	match a["do"]:
 		"season":
-			_season(m, int(a["to"]), tick)
+			_season(m, Num.of(a["to"]), tick)
 		"patience":
 			var p: Dictionary = _rules(m).get("patience", {})
-			patience = clampi(patience + int(a["add"]), 0, int(p.get("max", 1000)))
+			patience = clampi(patience + Num.of(a["add"]), 0, Num.of(p.get("max", 1000)))
 		"cargo":
-			for id in m.alive_of(a["group"]):
-				cargo[id] = int(a["silver"])
+			for id in m.alive_of(str(a["group"])):
+				cargo[id] = Num.of(a["silver"])
 		"unload":
-			for id in m.alive_of(a["group"]):
+			for id in m.alive_of(str(a["group"])):
 				cargo.erase(id)
 
 
@@ -241,11 +241,11 @@ func on_the_road(m: MissionRuntime) -> int:
 
 
 func need(m: MissionRuntime) -> int:
-	return int(_rules(m).get("need", 0))
+	return Num.of(_rules(m).get("need", 0))
 
 
 func florins(m: MissionRuntime, silver: int) -> int:
-	return silver * int(_rules(m).get("florins", 1))
+	return silver * Num.of(_rules(m).get("florins", 1))
 
 
 ## Silver the player pays in wages a payday.
@@ -257,7 +257,7 @@ func wages_due(m: MissionRuntime) -> int:
 	var n := 0
 	for id in m.entities.alive_ids:
 		if m.entities.owners[id - 1] == player:
-			n += int(pay.get(String(m.entities.type_ids[id - 1]), 0))
+			n += Num.of(pay.get(String(m.entities.type_ids[id - 1]), 0))
 	return n
 
 
@@ -281,7 +281,9 @@ func units_near(m: MissionRuntime, at: Array, radius: int) -> int:
 func loans_open(m: MissionRuntime) -> bool:
 	var d: Dictionary = _rules(m).get("discontent", {})
 	return (
-		crowd.is_empty() and now >= closed_until and discontent < int(d.get("closed_at", 1 << 30))
+		crowd.is_empty()
+		and now >= closed_until
+		and discontent < Num.of(d.get("closed_at", 1 << 30))
 	)
 
 
@@ -317,9 +319,9 @@ func _carriers(m: MissionRuntime, r: Dictionary) -> void:
 			m.flags["silver_lost"] = now
 	var units: Dictionary = c["units"]
 	var state := m.economy.player(player)
-	var load_r := Fixed.from_cells(int(c.get("load_radius", 4)))
+	var load_r := Fixed.from_cells(Num.of(c.get("load_radius", 4)))
 	var points: Array = d.get("points", [])
-	var deliver_r := Fixed.from_cells(int(d.get("radius", 4)))
+	var deliver_r := Fixed.from_cells(Num.of(d.get("radius", 4)))
 	var p: Dictionary = r.get("patience", {})
 	for id in e.alive_ids:
 		var s := id - 1
@@ -331,12 +333,14 @@ func _carriers(m: MissionRuntime, r: Dictionary) -> void:
 					var silver: int = cargo[id]
 					cargo.erase(id)
 					delivered += silver
-					var gain := silver * int(p.get("per_silver_permille", 1000)) / 1000
-					patience = mini(patience + gain, int(p.get("max", 1000)))
+					var gain := silver * Num.of(p.get("per_silver_permille", 1000)) / 1000
+					patience = mini(patience + gain, Num.of(p.get("max", 1000)))
 					m.flags["delivered"] = now
 					break
 		elif state != null and e.orders[s] == EntityStore.Order.IDLE:
-			var silver := mini(int(units[String(e.type_ids[s])]), state.stock[EconomySystem.SILVER])
+			var silver := mini(
+				Num.of(units[String(e.type_ids[s])]), state.stock[EconomySystem.SILVER]
+			)
 			if silver > 0 and _near_building(m, s, c["load"], load_r):
 				state.stock[EconomySystem.SILVER] -= silver
 				cargo[id] = silver
@@ -365,7 +369,7 @@ func _near_building(m: MissionRuntime, s: int, bases: Array, reach: int) -> bool
 func _patience(m: MissionRuntime, p: Dictionary, tick: int) -> void:
 	if p.is_empty() or not m.fired.has(str(p.get("from", ""))):
 		return
-	if tick % int(p["every_ticks"]) == 0:
+	if tick % Num.of(p["every_ticks"]) == 0:
 		patience = maxi(patience - 1, 0)
 
 
@@ -373,14 +377,14 @@ func _discontent(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	var d: Dictionary = r.get("discontent", {})
 	if d.is_empty():
 		return
-	if tick % int(d["every_ticks"]) == 0 and crowd.is_empty():
+	if tick % Num.of(d["every_ticks"]) == 0 and crowd.is_empty():
 		discontent = maxi(discontent - 1, 0)
 	var c: Dictionary = r.get("crowd", {})
 	if c.is_empty():
 		return
-	if discontent < int(d["calm_below"]):
+	if discontent < Num.of(d["calm_below"]):
 		crowd_armed = true
-	if crowd_armed and crowd.is_empty() and discontent >= int(d["crowd_at"]):
+	if crowd_armed and crowd.is_empty() and discontent >= Num.of(d["crowd_at"]):
 		_raise_crowd(m, c, tick)
 	if not crowd_question.is_empty():
 		for option in 3:
@@ -414,15 +418,15 @@ func _calm(m: MissionRuntime, c: Dictionary, option: int, tick: int) -> void:
 	var state := m.economy.player(player)
 	match option:
 		0:
-			discontent = maxi(discontent - int(c["concession"]), 0)
-			closed_until = tick + int(c["concession_ticks"])
+			discontent = maxi(discontent - Num.of(c["concession"]), 0)
+			closed_until = tick + Num.of(c["concession_ticks"])
 		1:
 			if state != null:
-				var pay := mini(int(c["money"]), state.stock[EconomySystem.SILVER])
+				var pay := mini(Num.of(c["money"]), state.stock[EconomySystem.SILVER])
 				state.stock[EconomySystem.SILVER] -= pay
-			discontent = maxi(discontent - int(c["money_calm"]), 0)
+			discontent = maxi(discontent - Num.of(c["money_calm"]), 0)
 		_:
-			discontent = maxi(discontent - int(c["guard_calm"]), 0)
+			discontent = maxi(discontent - Num.of(c["guard_calm"]), 0)
 	m.flags["calmed"] = tick
 	for id in crowd:
 		if m.entities.is_alive(id):
@@ -454,15 +458,15 @@ func _loans(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 			if option < sums.size():
 				_borrow(m, l, sums[option], tick)
 			loan_question = ""
-			loan_wait = tick + int(l["wait_ticks"])
+			loan_wait = tick + Num.of(l["wait_ticks"])
 			break
 		return
 	if tick < loan_wait or not loans_open(m):
 		return
-	var hero := m.alive_of(l["hero"])
+	var hero := m.alive_of(str(l["hero"]))
 	if hero.is_empty():
 		return
-	if _dist(m.entities, hero[0] - 1, l["hall"]) <= Fixed.from_cells(int(l["radius"])):
+	if _dist(m.entities, hero[0] - 1, l["hall"]) <= Fixed.from_cells(Num.of(l["radius"])):
 		loan_question = "loan_%d" % (loans + 1)
 		_ask(m, "loan", loan_question, tick)
 
@@ -470,10 +474,10 @@ func _loans(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 func _borrow(m: MissionRuntime, l: Dictionary, sum: Array, tick: int) -> void:
 	var state := m.economy.player(player)
 	if state != null:
-		state.stock[EconomySystem.SILVER] += int(sum[0])
-	var grow := (int(sum[1]) + int(l["interest"]) * loans) * int(l["hero_permille"]) / 1000
+		state.stock[EconomySystem.SILVER] += Num.of(sum[0])
+	var grow := (Num.of(sum[1]) + Num.of(l["interest"]) * loans) * Num.of(l["hero_permille"]) / 1000
 	var d: Dictionary = _rules(m).get("discontent", {})
-	discontent = mini(discontent + grow, int(d.get("max", 1000)))
+	discontent = mini(discontent + grow, Num.of(d.get("max", 1000)))
 	loans += 1
 	m.flags["loan"] = tick
 
@@ -487,7 +491,7 @@ func _villages(m: MissionRuntime, v: Dictionary, tick: int) -> void:
 	var e := m.entities
 	var at: Array = v["at"]
 	var by: Array = v["by"]
-	var reach := Fixed.from_cells(int(v["radius"]))
+	var reach := Fixed.from_cells(Num.of(v["radius"]))
 	var state := m.economy.player(player)
 	for i in at.size():
 		var here := false
@@ -499,22 +503,22 @@ func _villages(m: MissionRuntime, v: Dictionary, tick: int) -> void:
 					here = true
 					break
 		tax_stay[i] = tax_stay[i] + MissionRuntime.CHECK_EVERY if here else 0
-		if tax_stay[i] < int(v["stay_ticks"]) or state == null:
+		if tax_stay[i] < Num.of(v["stay_ticks"]) or state == null:
 			continue
-		if taxed_tick[i] >= 0 and tick < taxed_tick[i] + int(v["again_ticks"]):
+		if taxed_tick[i] >= 0 and tick < taxed_tick[i] + Num.of(v["again_ticks"]):
 			continue
 		tax_stay[i] = 0
 		if plundered[i] == season:
 			m.flags["plundered_nothing"] = tick
 			continue
-		var silver := int(v["silver"])
+		var silver := Num.of(v["silver"])
 		if rumour[i] == 1:
-			silver = silver * int(v["rumour_permille"]) / 1000
+			silver = silver * Num.of(v["rumour_permille"]) / 1000
 		state.stock[EconomySystem.SILVER] += silver
-		state.stock[EconomySystem.FOOD] += int(v["food"])
+		state.stock[EconomySystem.FOOD] += Num.of(v["food"])
 		var again := taxed_season[i] == season
-		discontent += int(v["tax_twice"]) if again else int(v["tax"])
-		discontent = mini(discontent, int(_rules(m).get("discontent", {}).get("max", 1000)))
+		discontent += Num.of(v["tax_twice"]) if again else Num.of(v["tax"])
+		discontent = mini(discontent, Num.of(_rules(m).get("discontent", {}).get("max", 1000)))
 		if again:
 			twice += 1
 			m.flags["taxed_twice"] = tick
@@ -532,8 +536,8 @@ func _rumours(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	var at: Array = v["at"]
 	var e := m.entities
 	# The priest ends rumours where he stands long enough.
-	var reach := Fixed.from_cells(int(ru["radius"]))
-	var priest := StringName(ru["priest"])
+	var reach := Fixed.from_cells(Num.of(ru["radius"]))
+	var priest := StringName(str(ru["priest"]))
 	for i in at.size():
 		if rumour[i] == 0:
 			priest_stay[i] = 0
@@ -545,16 +549,16 @@ func _rumours(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 				here = true
 				break
 		priest_stay[i] = priest_stay[i] + MissionRuntime.CHECK_EVERY if here else 0
-		if priest_stay[i] >= int(ru["clear_ticks"]):
+		if priest_stay[i] >= Num.of(ru["clear_ticks"]):
 			rumour[i] = 0
 			priest_stay[i] = 0
 			m.flags["rumour_cleared"] = tick
 	if next_rumour < 0:
-		next_rumour = tick + int(ru["every_ticks"])
+		next_rumour = tick + Num.of(ru["every_ticks"])
 	if tick < next_rumour:
 		return
-	next_rumour = tick + int(ru["every_ticks"])
-	var shrine_r := Fixed.from_cells(int(ru["shrine_radius"]))
+	next_rumour = tick + Num.of(ru["every_ticks"])
+	var shrine_r := Fixed.from_cells(Num.of(ru["shrine_radius"]))
 	for k in at.size():
 		var i := (rumours + k) % at.size()
 		if rumour[i] == 1 or _shrine_near(m, at[i], shrine_r):
@@ -568,8 +572,8 @@ func _rumours(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 
 func _shrine_near(m: MissionRuntime, at: Array, reach: int) -> bool:
 	var store := m.economy.buildings
-	var x := Fixed.from_cells(int(at[0])) + Fixed.HALF
-	var y := Fixed.from_cells(int(at[1])) + Fixed.HALF
+	var x := Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+	var y := Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
 	for b in store.alive_ids:
 		var bs := b - 1
 		if store.owners[bs] != player or store.done[bs] != 1 or store.defs[bs].base_id != &"shrine":
@@ -602,7 +606,7 @@ func _raids(m: MissionRuntime, ra: Dictionary, tick: int) -> void:
 
 func _raid_every(ra: Dictionary) -> int:
 	var every: Array = ra["every"]
-	return int(every[mini(season, every.size() - 1)])
+	return Num.of(every[mini(season, every.size() - 1)])
 
 
 func _send_raid(m: MissionRuntime, ra: Dictionary, tick: int) -> void:
@@ -638,8 +642,8 @@ func _next_village(m: MissionRuntime, at: Array, skip: int) -> int:
 	for i in v.size():
 		if i == skip or plundered[i] == season:
 			continue
-		var dx := int(v[i][0]) - int(at[0])
-		var dy := int(v[i][1]) - int(at[1])
+		var dx := Num.of(v[i][0]) - Num.of(at[0])
+		var dy := Num.of(v[i][1]) - Num.of(at[1])
 		if dx * dx + dy * dy < best_d:
 			best_d = dx * dx + dy * dy
 			best = i
@@ -664,21 +668,21 @@ func _ride(m: MissionRuntime, ra: Dictionary, k: int, tick: int) -> void:
 		_home(m, ra, g, tick)
 		return
 	# A loaded wagon near: at it.
-	var prey := _loaded_near(m, cx, cy, Fixed.from_cells(int(ra["chase_cells"])))
+	var prey := _loaded_near(m, cx, cy, Fixed.from_cells(Num.of(ra["chase_cells"])))
 	if prey != 0:
-		m._apply.call(SimCommand.attack(tick, int(ra["player"]), ids, prey))
+		m._apply.call(SimCommand.attack(tick, Num.of(ra["player"]), ids, prey))
 		return
 	var v: Array = _rules(m)["villages"]["at"]
 	var t: Array = v[raid_target[k]]
-	var dx := int(t[0]) - int(centre[0])
-	var dy := int(t[1]) - int(centre[1])
-	var r := int(ra["plunder_radius"])
+	var dx := Num.of(t[0]) - Num.of(centre[0])
+	var dy := Num.of(t[1]) - Num.of(centre[1])
+	var r := Num.of(ra["plunder_radius"])
 	if dx * dx + dy * dy <= r * r:
 		plundered[raid_target[k]] = season
 		m.flags["plundered"] = tick
 		raid_done[k] += 1
 		var nxt := _next_village(m, centre, raid_target[k])
-		raid_target[k] = nxt if raid_done[k] < int(ra["per_raid"]) and nxt >= 0 else -1
+		raid_target[k] = nxt if raid_done[k] < Num.of(ra["per_raid"]) and nxt >= 0 else -1
 		return
 	m.run({"do": "attack_move", "group": g, "to": t}, tick)
 
@@ -716,8 +720,8 @@ func _trophies(m: MissionRuntime, ra: Dictionary) -> void:
 				continue
 			counted[id] = true
 			if _dist(e, id - 1, ra["exit"]) > home and state != null:
-				state.stock[EconomySystem.SILVER] += int(ra["trophy"])
-				trophies += int(ra["trophy"])
+				state.stock[EconomySystem.SILVER] += Num.of(ra["trophy"])
+				trophies += Num.of(ra["trophy"])
 
 
 # --- seasons --------------------------------------------------------------------------------
@@ -733,8 +737,8 @@ func _season(m: MissionRuntime, to: int, tick: int) -> void:
 	var ice := nav.terrain_index(&"t_ice")
 	if season == Season.WINTER:
 		for rect: Array in se.get("freeze", []):
-			for cy in range(int(rect[1]), int(rect[3]) + 1):
-				for cx in range(int(rect[0]), int(rect[2]) + 1):
+			for cy in range(Num.of(rect[1]), Num.of(rect[3]) + 1):
+				for cx in range(Num.of(rect[0]), Num.of(rect[2]) + 1):
 					var cell := nav.cell_at(cx, cy)
 					if nav.terrain[cell] == water:
 						frozen.append(cell)
@@ -745,8 +749,8 @@ func _season(m: MissionRuntime, to: int, tick: int) -> void:
 		frozen = PackedInt32Array()
 		var grass := [nav.terrain_index(&"t_grass"), nav.terrain_index(&"t_field")]
 		for rect: Array in se.get("flood", []):
-			for cy in range(int(rect[1]), int(rect[3]) + 1):
-				for cx in range(int(rect[0]), int(rect[2]) + 1):
+			for cy in range(Num.of(rect[1]), Num.of(rect[3]) + 1):
+				for cx in range(Num.of(rect[0]), Num.of(rect[2]) + 1):
 					var cell := nav.cell_at(cx, cy)
 					if grass.has(int(nav.terrain[cell])) and nav.blocked[cell] == 0:
 						flooded.append(cell)
@@ -777,7 +781,7 @@ func _mud(m: MissionRuntime, se: Dictionary) -> void:
 	if se.is_empty():
 		return
 	var types: Array = se.get("mud_units", [])
-	var permille := int(se.get("mud_permille", 1000)) if season == Season.AUTUMN else 1000
+	var permille := Num.of(se.get("mud_permille", 1000)) if season == Season.AUTUMN else 1000
 	var e := m.entities
 	for id in e.alive_ids:
 		var s := id - 1
@@ -796,10 +800,10 @@ func _wages(m: MissionRuntime, w: Dictionary, tick: int) -> void:
 	if w.is_empty():
 		return
 	if next_pay < 0 and m.fired.has(str(w.get("from", ""))):
-		next_pay = tick + int(w["every_ticks"])
+		next_pay = tick + Num.of(w["every_ticks"])
 	if next_pay < 0 or tick < next_pay:
 		return
-	next_pay = tick + int(w["every_ticks"])
+	next_pay = tick + Num.of(w["every_ticks"])
 	var state := m.economy.player(player)
 	if state == null:
 		return
@@ -819,7 +823,7 @@ func _wages(m: MissionRuntime, w: Dictionary, tick: int) -> void:
 	var owed := due - left
 	var k := ids.size() - 1
 	while owed > 0 and k >= 0:
-		var wage := int(pay[String(e.type_ids[ids[k] - 1])])
+		var wage := Num.of(pay[String(e.type_ids[ids[k] - 1])])
 		owed -= wage
 		m._remove.call(ids[k])
 		deserted += 1
@@ -831,7 +835,7 @@ func _piles(m: MissionRuntime, p: Dictionary) -> void:
 	if p.is_empty():
 		return
 	var rect: Array = p["rect"]
-	var centre := [(int(rect[0]) + int(rect[2])) / 2, (int(rect[1]) + int(rect[3])) / 2]
+	var centre := [(Num.of(rect[0]) + Num.of(rect[2])) / 2, (Num.of(rect[1]) + Num.of(rect[3])) / 2]
 	var e := m.entities
 	var boats := PackedInt32Array()
 	for id in e.alive_ids:
@@ -840,19 +844,24 @@ func _piles(m: MissionRuntime, p: Dictionary) -> void:
 			continue
 		var cx := Fixed.to_cells(e.pos_x[s])
 		var cy := Fixed.to_cells(e.pos_y[s])
-		if cx >= int(rect[0]) and cx <= int(rect[2]) and cy >= int(rect[1]) and cy <= int(rect[3]):
+		if (
+			cx >= Num.of(rect[0])
+			and cx <= Num.of(rect[2])
+			and cy >= Num.of(rect[1])
+			and cy <= Num.of(rect[3])
+		):
 			boats.append(id)
-	if boats.is_empty() or _tower_near(m, centre, Fixed.from_cells(int(p["tower_radius"]))):
+	if boats.is_empty() or _tower_near(m, centre, Fixed.from_cells(Num.of(p["tower_radius"]))):
 		return
 	for id in boats:
-		m.combat.lightning(id, 0, int(p["damage"]))
+		m.combat.lightning(id, 0, Num.of(p["damage"]))
 		m.flags["piles"] = now
 
 
 func _tower_near(m: MissionRuntime, at: Array, reach: int) -> bool:
 	var store := m.economy.buildings
-	var x := Fixed.from_cells(int(at[0])) + Fixed.HALF
-	var y := Fixed.from_cells(int(at[1])) + Fixed.HALF
+	var x := Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+	var y := Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
 	for b in store.alive_ids:
 		var bs := b - 1
 		if store.owners[bs] != player or store.done[bs] != 1 or store.defs[bs].base_id != &"tower":
@@ -880,8 +889,8 @@ func _brothers(m: MissionRuntime, b: Dictionary, tick: int) -> void:
 
 
 static func _dist(e: EntityStore, s: int, at: Array) -> int:
-	var x := Fixed.from_cells(int(at[0])) + Fixed.HALF
-	var y := Fixed.from_cells(int(at[1])) + Fixed.HALF
+	var x := Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+	var y := Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
 	return Fixed.distance(e.pos_x[s], e.pos_y[s], x, y)
 
 

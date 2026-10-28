@@ -118,7 +118,8 @@ func retranslate() -> void:
 	_name_factions()
 	var maps := SkirmishMaps.all()
 	for i in mini(maps.size(), map.item_count):
-		map.set_item_text(i, tr("Map: %s") % tr(str((maps[i] as Dictionary)["title"])))
+		var m: Dictionary = maps[i]
+		map.set_item_text(i, tr("Map: %s") % tr(str(m["title"])))
 	create.text = tr("Create a game")
 	join_note.text = tr("Or join a game: the host's address")
 	address.placeholder_text = tr("such as 192.168.1.5")

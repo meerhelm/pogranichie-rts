@@ -149,7 +149,7 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_32(keys.size())
 		for p: int in keys:
 			buf.put_32(p)
-			buf.put_64(int(d[p]))
+			buf.put_64(Num.of(d[p]))
 	# Only games with a resignation write it, so older replays keep their hashes.
 	if not _resigned.is_empty():
 		var gave_up := _resigned.keys()

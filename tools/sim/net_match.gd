@@ -22,7 +22,7 @@ func begin(db: CatalogDB, difficulty: StringName = &"normal") -> void:
 	var profile := SkirmishSetup.ai_profile(faction, difficulty)
 	if profile != null:
 		ai = SkirmishAi.new()
-		ai.setup(sim, session.local_player, profile, int(session.setup["seed"]))
+		ai.setup(sim, session.local_player, profile, Num.of(session.setup["seed"]))
 		ai.sink = lockstep.submit
 
 

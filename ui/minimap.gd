@@ -149,12 +149,12 @@ func _draw_units() -> void:
 	var e := sim.entities
 	for id in e.alive_ids:
 		var s := id - 1
-		var owner := e.owners[s]
-		if owner != player and not sim.vision.sees_unit(player, id):
+		var who := e.owners[s]
+		if who != player and not sim.vision.sees_unit(player, id):
 			continue
-		if owner != player and sim.combat.enabled() and sim.combat.is_hidden(id):
+		if who != player and sim.combat.enabled() and sim.combat.is_hidden(id):
 			continue
-		var c := UnitView.PLAYER_COLORS[owner % UnitView.PLAYER_COLORS.size()]
+		var c := UnitView.PLAYER_COLORS[who % UnitView.PLAYER_COLORS.size()]
 		var at := _to_local * Vector2(float(e.pos_x[s]) / Fixed.ONE, float(e.pos_y[s]) / Fixed.ONE)
 		_marks.draw_rect(Rect2(at - Vector2(DOT, DOT) / 2.0, Vector2(DOT, DOT)), c)
 

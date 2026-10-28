@@ -42,7 +42,7 @@ func open() -> void:
 	_retranslate()
 	_text.scroll_to_line(0)
 	visible = true
-	UiAnim.pop_in(self, %Panel)
+	UiAnim.pop_in(self, %Panel as Control)
 	_close.grab_focus.call_deferred()
 
 

@@ -167,16 +167,16 @@ func _mission(opts: Dictionary) -> int:
 			print("over at %d: %s" % [sim.tick, sim.mission.outcome_text])
 		return sim.mission.is_over()
 	var replay := Replay.record(
-		int(opts.get("seed", "1")),
+		Num.of(opts.get("seed", "1")),
 		db,
-		int(opts.get("ticks", "90000")),
+		Num.of(opts.get("ticks", "90000")),
 		orders,
-		int(opts.get("every", "200")),
+		Num.of(opts.get("every", "200")),
 		0,
 		0,
 		"",
 		mission_id,
-		opts.get("difficulty", "normal"),
+		str(opts.get("difficulty", "normal")),
 		over
 	)
 	var played := replay.play(db)
@@ -203,7 +203,7 @@ func _mission(opts: Dictionary) -> int:
 
 
 func _determinism(opts: Dictionary) -> int:
-	var runs := int(opts.get("runs", "10"))
+	var runs := Num.of(opts.get("runs", "10"))
 	var first := _fuzz_replay(opts)
 	var db := CatalogDB.load_prototype()
 	print("run 1: %s (%d commands)" % [first.final_hash.left(16), first.commands.size()])
@@ -218,12 +218,12 @@ func _determinism(opts: Dictionary) -> int:
 
 
 func _bench(opts: Dictionary) -> int:
-	var units := int(opts.get("units", "200"))
-	var ticks := int(opts.get("ticks", "600"))
+	var units := Num.of(opts.get("units", "200"))
+	var ticks := Num.of(opts.get("ticks", "600"))
 	var db := CatalogDB.load_prototype()
 	var map_id: String = opts.get("map", "")
 	var grid := MapText.load_map(map_id, db) if not map_id.is_empty() else null
-	var sim := Simulation.new(int(opts.get("seed", "1")), db, 120, 120, grid)
+	var sim := Simulation.new(Num.of(opts.get("seed", "1")), db, 120, 120, grid)
 	var types := _unit_types(db)
 	var battle: bool = opts.get("battle", "0") == "1"
 	if battle:
@@ -253,7 +253,7 @@ func _bench(opts: Dictionary) -> int:
 			var one := {}
 			sim.step_profiled(one)
 			for key: String in one:
-				times[key] = int(times.get(key, 0)) + int(one[key])
+				times[key] = Num.of(times.get(key, 0)) + Num.of(one[key])
 			if Time.get_ticks_usec() - t0 > worst:
 				worst_parts = one
 		else:
@@ -284,7 +284,11 @@ func _bench(opts: Dictionary) -> int:
 		print(
 			(
 				"  %-18s %.3f ms/tick, %.3f ms in the worst tick"
-				% [key, int(times[key]) / 1000.0 / ticks, int(worst_parts.get(key, 0)) / 1000.0]
+				% [
+					key,
+					Num.of(times[key]) / 1000.0 / ticks,
+					Num.of(worst_parts.get(key, 0)) / 1000.0
+				]
 			)
 		)
 	return 0
@@ -324,7 +328,7 @@ static func _charge_battle(sim: Simulation) -> void:
 ## Balance arena (BalanceArena): one CSV row per pair, printed and written to --out; with
 ## --parity 1 the row is the count of B that holds A's budget army to an even fight.
 func _arena(opts: Dictionary) -> int:
-	var seeds := int(opts.get("seeds", "50"))
+	var seeds := Num.of(opts.get("seeds", "50"))
 	var only := PackedStringArray()
 	if opts.has("pairs"):
 		only = str(opts["pairs"]).split(",")
@@ -352,11 +356,11 @@ func _arena(opts: Dictionary) -> int:
 ## «ИИ против ИИ» (AiMatch): --games games from --seed on, one CSV row each; fails if a game
 ## times out. Split a long run across processes with different --seed and --games.
 func _ai_vs_ai(opts: Dictionary) -> int:
-	var games := int(opts.get("games", "20"))
-	var first := int(opts.get("seed", "1"))
-	var difficulty := StringName(opts.get("difficulty", "normal"))
+	var games := Num.of(opts.get("games", "20"))
+	var first := Num.of(opts.get("seed", "1"))
+	var difficulty := StringName(str(opts.get("difficulty", "normal")))
 	var match_runner := AiMatch.new(CatalogDB.load_prototype())
-	var sides: PackedStringArray = String(opts.get("factions", "gdl,to")).split(",")
+	var sides: PackedStringArray = String(str(opts.get("factions", "gdl,to"))).split(",")
 	if sides.size() != 2:
 		printerr("--factions takes two factions, such as pl,to")
 		return 1
@@ -369,7 +373,7 @@ func _ai_vs_ai(opts: Dictionary) -> int:
 	print(AiMatch.CSV_HEADER)
 	var code := 0
 	for i in games:
-		var game := match_runner.play(first + i, difficulty, int(opts.get("ticks", "72000")))
+		var game := match_runner.play(first + i, difficulty, Num.of(opts.get("ticks", "72000")))
 		var line := match_runner.row(i + 1, first + i, difficulty, game)
 		print(line)
 		lines.append(line)
@@ -387,8 +391,8 @@ func _ai_vs_ai(opts: Dictionary) -> int:
 
 func _net(opts: Dictionary) -> int:
 	var host: bool = opts.get("role", "host") == "host"
-	var port := int(opts.get("port", str(EnetTransport.DEFAULT_PORT)))
-	var ticks := int(opts.get("ticks", "6000"))
+	var port := Num.of(opts.get("port", str(EnetTransport.DEFAULT_PORT)))
+	var ticks := Num.of(opts.get("ticks", "6000"))
 	var transport := EnetTransport.new()
 	var err := (
 		transport.host(port)
@@ -400,10 +404,10 @@ func _net(opts: Dictionary) -> int:
 		return 1
 	var session := NetSession.open(self, transport)
 	if host:
-		var sides: PackedStringArray = String(opts.get("factions", "gdl,to")).split(",")
+		var sides: PackedStringArray = String(str(opts.get("factions", "gdl,to"))).split(",")
 		var factions: Array[StringName] = [StringName(sides[0]), StringName(sides[1])]
 		var map: String = opts.get("map", SkirmishSetup.MAP_ID)
-		session.host_game(map, factions, int(opts.get("delay", str(Lockstep.DEFAULT_DELAY))))
+		session.host_game(map, factions, Num.of(opts.get("delay", str(Lockstep.DEFAULT_DELAY))))
 	else:
 		session.join_game()
 	var failure := [""]
@@ -424,8 +428,8 @@ func _net(opts: Dictionary) -> int:
 		printerr("network game did not start: ", failure[0])
 		return 1
 	var game := NetMatch.new(session)
-	game.begin(CatalogDB.load_prototype(), StringName(opts.get("difficulty", "normal")))
-	print("started as player %d, seed %d" % [session.local_player, int(session.setup["seed"])])
+	game.begin(CatalogDB.load_prototype(), StringName(str(opts.get("difficulty", "normal"))))
+	print("started as player %d, seed %d" % [session.local_player, Num.of(session.setup["seed"])])
 	var start := Time.get_ticks_msec()
 	var last_progress := start
 	while game.sim.tick < ticks:
@@ -476,7 +480,7 @@ func _parts(path: String, opts: Dictionary) -> int:
 	var sim := r.new_simulation(db)
 	for cmd in r.commands:
 		sim.enqueue(cmd.duplicate_command())
-	var until := mini(int(opts.get("tick", str(r.ticks))), r.ticks)
+	var until := mini(Num.of(opts.get("tick", str(r.ticks))), r.ticks)
 	while sim.tick < until:
 		sim.step()
 	print("tick %d hash %s" % [sim.tick, sim.state_hash()])
@@ -488,18 +492,18 @@ func _parts(path: String, opts: Dictionary) -> int:
 
 func _fuzz_replay(opts: Dictionary) -> Replay:
 	var db := CatalogDB.load_prototype()
-	var fuzz := CommandFuzzer.new(int(opts.get("fuzz-seed", "2")), _unit_types(db))
+	var fuzz := CommandFuzzer.new(Num.of(opts.get("fuzz-seed", "2")), _unit_types(db))
 	fuzz.economy = opts.get("economy", "0") == "1"
 	fuzz.magic = opts.get("magic", "0") == "1"
 	return Replay.record(
-		int(opts.get("seed", "1")),
+		Num.of(opts.get("seed", "1")),
 		db,
-		int(opts.get("ticks", "1000")),
+		Num.of(opts.get("ticks", "1000")),
 		fuzz.issue,
-		int(opts.get("every", str(Replay.DEFAULT_CHECKPOINT_EVERY))),
+		Num.of(opts.get("every", str(Replay.DEFAULT_CHECKPOINT_EVERY))),
 		Simulation.DEFAULT_MAP_CELLS,
 		Simulation.DEFAULT_MAP_CELLS,
-		opts.get("map", "")
+		str(opts.get("map", ""))
 	)
 
 

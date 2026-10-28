@@ -280,5 +280,5 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_32(progress[i])
 		buf.put_32(shrines[i])
 		buf.put_8(consecrated[i])
-		buf.put_32(consecrated_by.get(i, 0))
+		buf.put_32(Num.of(consecrated_by.get(i, 0)))
 		buf.put_8(1 if hidden.has(i) else 0)

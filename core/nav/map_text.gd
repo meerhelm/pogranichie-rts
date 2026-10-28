@@ -109,7 +109,7 @@ static func to_text(grid: NavGrid) -> String:
 	var by_object := {}
 	for ch: String in OBJECTS:
 		var obj: Array = OBJECTS[ch]
-		by_object[String(obj[1])] = ch
+		by_object[String(str(obj[1]))] = ch
 	var lines := PackedStringArray()
 	for y in grid.height:
 		var row := ""

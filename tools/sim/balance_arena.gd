@@ -252,7 +252,7 @@ func win_share(pair: Array, seeds: int, count_b: int) -> int:
 	var a: StringName = pair[1]
 	var points := 0
 	for s in range(1, seeds + 1):
-		var o := battle(s, a, pair[2], pair[3], pair[4], army_size(a), count_b)
+		var o := battle(s, a, str(pair[2]), pair[3], pair[4], army_size(a), count_b)
 		points += 1000 if o.winner == 1 else (500 if o.winner == 0 else 0)
 	return points / seeds
 
@@ -266,7 +266,7 @@ func parity_count(pair: Array, seeds: int) -> PackedInt32Array:
 	if _share(pair, seeds, 1, shares) <= 500:
 		return PackedInt32Array([0, shares.size()])
 	var lo := 1
-	var hi := clampi(army_size(pair[2]), 2, PARITY_MAX)
+	var hi := clampi(army_size(str(pair[2])), 2, PARITY_MAX)
 	while _share(pair, seeds, hi, shares) > 500:
 		if hi == PARITY_MAX:
 			return PackedInt32Array([-1, shares.size()])

@@ -113,7 +113,7 @@ func open() -> void:
 	_resign.visible = can_resign
 	_retranslate()
 	visible = true
-	UiAnim.pop_in(self, %Panel)
+	UiAnim.pop_in(self, %Panel as Control)
 	if not keeps_running:
 		get_tree().paused = true
 	_resume.grab_focus.call_deferred()
@@ -157,13 +157,14 @@ func _list_saves() -> void:
 		_saves.add_child(none)
 	for path in paths:
 		var head := SimSave.read_header(path)
+		var tick: int = head.get("tick", 0)
 		var b := Button.new()
 		var when := Time.get_datetime_string_from_unix_time(FileAccess.get_modified_time(path))
 		b.text = (
 			"%s · %s · %s"
 			% [
 				tr(str(head.get("title", path.get_file()))),
-				UiText.clock(int(head.get("tick", 0))),
+				UiText.clock(tick),
 				when.replace("T", " ")
 			]
 		)
@@ -172,7 +173,7 @@ func _list_saves() -> void:
 
 
 func _show_settings(on: bool) -> void:
-	_menu.get_parent().visible = not on
+	(_menu.get_parent() as CanvasItem).visible = not on
 	_settings.visible = on
 
 

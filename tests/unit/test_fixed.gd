@@ -25,13 +25,13 @@ func test_mul_and_div() -> void:
 func test_floor_div_rounds_down_for_every_sign() -> void:
 	var cases := [[7, 2, 3], [-7, 2, -4], [7, -2, -4], [-7, -2, 3], [6, 3, 2], [-6, 3, -2]]
 	for c: Array in cases:
-		assert_eq(Fixed.floor_div(c[0], c[1]), c[2], "%d // %d" % [c[0], c[1]])
+		assert_eq(Fixed.floor_div(Num.of(c[0]), Num.of(c[1])), c[2], "%d // %d" % [c[0], c[1]])
 
 
 func test_isqrt_exact_and_floor() -> void:
 	var cases := [[0, 0], [1, 1], [2, 1], [3, 1], [4, 2], [15, 3], [16, 4], [17, 4]]
 	for c: Array in cases:
-		assert_eq(Fixed.isqrt(c[0]), c[1], "isqrt(%d)" % c[0])
+		assert_eq(Fixed.isqrt(Num.of(c[0])), c[1], "isqrt(%d)" % c[0])
 	# Largest squared distance on a 160×160 map stays exact.
 	var far := Fixed.from_cells(160)
 	var n := 2 * far * far

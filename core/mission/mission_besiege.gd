@@ -149,12 +149,12 @@ func set_up(m: MissionRuntime) -> void:
 		for b in store.alive_ids:
 			var s := b - 1
 			if (
-				store.owners[s] != int(r["enemy"])
+				store.owners[s] != Num.of(r["enemy"])
 				or not _in(rect, store.cell_x[s], store.cell_y[s])
 			):
 				continue
 			castle.append(b)
-			store.hp_floor[b] = maxi(store.max_hp[s] * int(c["floor_permille"]) / FULL, 1)
+			store.hp_floor[b] = maxi(store.max_hp[s] * Num.of(c["floor_permille"]) / FULL, 1)
 		castle_hp = _castle_hp(m)
 	var allowed: Dictionary = m.def.setup.get("allowed", {})
 	for key: String in allowed:
@@ -163,7 +163,7 @@ func set_up(m: MissionRuntime) -> void:
 			if state != null:
 				state.allowed[StringName(item)] = true
 	var g: Dictionary = r.get("guns", {})
-	next_shot = int(g.get("every_ticks", 0))
+	next_shot = Num.of(g.get("every_ticks", 0))
 
 
 func step(m: MissionRuntime, tick: int) -> void:
@@ -181,7 +181,7 @@ func step(m: MissionRuntime, tick: int) -> void:
 	_sztum(m, r)
 	for id in m.entities.alive_ids:
 		var s := id - 1
-		if m.entities.owners[s] == int(r["player"]) and m.combat.crown.deployed.has(id):
+		if m.entities.owners[s] == Num.of(r["player"]) and m.combat.crown.deployed.has(id):
 			last_shot = maxi(last_shot, m.entities.last_attack[s])
 
 
@@ -189,33 +189,33 @@ func test(m: MissionRuntime, c: Dictionary) -> bool:
 	var ok := false
 	match c["type"]:
 		"spiked":
-			ok = spiked_total >= int(c["at_least"])
+			ok = spiked_total >= Num.of(c["at_least"])
 		"sworn":
-			ok = count_towns(1) >= int(c["at_least"])
+			ok = count_towns(1) >= Num.of(c["at_least"])
 		"envoys_lost":
-			ok = count_towns(-1) >= int(c["at_least"])
+			ok = count_towns(-1) >= Num.of(c["at_least"])
 		"plague":
-			ok = plague >= int(c["at_least"])
+			ok = plague >= Num.of(c["at_least"])
 		"hunger":
-			ok = hunger >= int(c["at_least"])
+			ok = hunger >= Num.of(c["at_least"])
 		"brought":
-			ok = brought >= int(c["at_least"])
+			ok = brought >= Num.of(c["at_least"])
 		"bombards_left":
-			ok = _units_of(m, &"pl_bombard") <= int(c["at_most"])
+			ok = _units_of(m, &"pl_bombard") <= Num.of(c["at_most"])
 		"shipmen_taken":
-			ok = taken >= int(c["at_least"])
+			ok = taken >= Num.of(c["at_least"])
 		"chapels":
-			ok = chapels(m) >= int(c["count"])
+			ok = chapels(m) >= Num.of(c["count"])
 		"alone":
 			ok = _alone(m, c)
 		"shot_after":
 			ok = m.fired.has(c["trigger"]) and last_shot > m.fired[c["trigger"]]
 		"nights":
-			ok = nights >= int(c["at_least"])
+			ok = nights >= Num.of(c["at_least"])
 		"ruins_fallen":
-			ok = fallen.size() >= int(c["at_least"])
+			ok = fallen.size() >= Num.of(c["at_least"])
 		"finished":
-			ok = _finished(m, m.def.player, StringName(c["type_id"])) >= int(c["at_least"])
+			ok = _finished(m, m.def.player, StringName(str(c["type_id"]))) >= Num.of(c["at_least"])
 	return ok
 
 
@@ -237,8 +237,8 @@ func run(m: MissionRuntime, a: Dictionary, tick: int) -> void:
 					ids.append(id)
 			if not ids.is_empty():
 				var to: Array = a["to"]
-				var x := Fixed.from_cells(to[0]) + Fixed.HALF
-				var y := Fixed.from_cells(to[1]) + Fixed.HALF
+				var x := Fixed.from_cells(Num.of(to[0])) + Fixed.HALF
+				var y := Fixed.from_cells(Num.of(to[1])) + Fixed.HALF
 				m._apply.call(SimCommand.move(tick, p, ids, x, y))
 		"envoys_go":
 			envoys_walk = true
@@ -268,7 +268,7 @@ func _light(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 		return
 	if m.stealth.night:
 		m.stealth.night = false
-		next_light = tick + int(n["day_ticks"])
+		next_light = tick + Num.of(n["day_ticks"])
 		_dawn(m, tick)
 	else:
 		_nightfall(m, n, tick)
@@ -277,7 +277,7 @@ func _light(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 func _nightfall(m: MissionRuntime, n: Dictionary, tick: int) -> void:
 	m.stealth.night = true
 	nights += 1
-	next_light = tick + int(n["night_ticks"])
+	next_light = tick + Num.of(n["night_ticks"])
 	var s: Dictionary = _rules(m).get("sorties", {})
 	if not s.is_empty():
 		back_at = -1
@@ -300,12 +300,12 @@ func _castle(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 		hp_lost += castle_hp - hp
 	castle_hp = hp
 	var st: Dictionary = r.get("starve", {})
-	if st.is_empty() or not m.fired.has(st["from"]) or tick % int(st["every_ticks"]) != 0:
+	if st.is_empty() or not m.fired.has(st["from"]) or tick % Num.of(st["every_ticks"]) != 0:
 		return
-	var per := maxi(int(st["hp_per_point"]), 1)
-	var add := int(st["base"]) + count_towns(1) * int(st["per_town"]) + hp_lost / per
+	var per := maxi(Num.of(st["hp_per_point"]), 1)
+	var add := Num.of(st["base"]) + count_towns(1) * Num.of(st["per_town"]) + hp_lost / per
 	hp_lost %= per
-	hunger = mini(hunger + add, int(st["cap"]))
+	hunger = mini(hunger + add, Num.of(st["cap"]))
 
 
 func _castle_hp(m: MissionRuntime) -> int:
@@ -324,10 +324,10 @@ func _guns(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	var g: Dictionary = r.get("guns", {})
 	if g.is_empty() or tick < next_shot:
 		return
-	next_shot = tick + int(g["every_ticks"])
+	next_shot = tick + Num.of(g["every_ticks"])
 	var rect: Array = r["castle"]["rect"]
-	var reach := Fixed.from_cells(int(g["range"]))
-	var p := int(r["player"])
+	var reach := Fixed.from_cells(Num.of(g["range"]))
+	var p := Num.of(r["player"])
 	var best := reach * reach + 1
 	var aim := Vector2i(-1, -1)
 	var store := m.economy.buildings
@@ -361,16 +361,16 @@ func _land(m: MissionRuntime, r: Dictionary, g: Dictionary, at: Vector2i, tick: 
 	impact = PackedInt32Array([at.x, at.y, tick])
 	var permille := FULL
 	for c: Array in g.get("cover", []):
-		var dx := at.x - int(c[0])
-		var dy := at.y - int(c[1])
-		if dx * dx + dy * dy <= int(c[2]) * int(c[2]):
-			permille = int(g["cover_permille"])
-	var enemy := int(r["enemy"])
+		var dx := at.x - Num.of(c[0])
+		var dy := at.y - Num.of(c[1])
+		if dx * dx + dy * dy <= Num.of(c[2]) * Num.of(c[2]):
+			permille = Num.of(g["cover_permille"])
+	var enemy := Num.of(r["enemy"])
 	var x := Fixed.from_cells(at.x) + Fixed.HALF
 	var y := Fixed.from_cells(at.y) + Fixed.HALF
-	var hit := _units_near(m, x, y, int(g["radius"]), enemy)
+	var hit := _units_near(m, x, y, Num.of(g["radius"]), enemy)
 	for id in hit:
-		var dmg := int(g["damage"]) * permille / FULL
+		var dmg := Num.of(g["damage"]) * permille / FULL
 		if m.combat.defs[id - 1].has_class(&"siege"):
 			# The guns stand behind the gabions: half the harm.
 			dmg /= 2
@@ -379,8 +379,8 @@ func _land(m: MissionRuntime, r: Dictionary, g: Dictionary, at: Vector2i, tick: 
 	var reach := Fixed.from_cells(1)
 	for b in store.alive_ids.duplicate():
 		var s := b - 1
-		if store.owners[s] == int(r["player"]) and store.distance_sq(b, x, y) <= reach * reach:
-			m.economy.hit_building(b, maxi(int(g["building_damage"]) * permille / FULL, 1))
+		if store.owners[s] == Num.of(r["player"]) and store.distance_sq(b, x, y) <= reach * reach:
+			m.economy.hit_building(b, maxi(Num.of(g["building_damage"]) * permille / FULL, 1))
 	_ruins(m, r, at, tick)
 
 
@@ -390,25 +390,25 @@ func _ruins(m: MissionRuntime, r: Dictionary, at: Vector2i, tick: int) -> void:
 		return
 	var kinds: Array = u["kinds"]
 	var props: Array = m.def.setup.get("props", [])
-	var near := int(u["radius"])
+	var near := Num.of(u["radius"])
 	for i in props.size():
 		var p: Dictionary = props[i]
 		if fallen.has(i) or not kinds.has(p["kind"]):
 			continue
 		var pa: Array = p["at"]
-		var dx := at.x - int(pa[0])
-		var dy := at.y - int(pa[1])
+		var dx := at.x - Num.of(pa[0])
+		var dy := at.y - Num.of(pa[1])
 		if dx * dx + dy * dy > near * near:
 			continue
 		fallen[i] = tick
 		m.flags["ruin_fell"] = tick
-		var x := Fixed.from_cells(pa[0]) + Fixed.HALF
-		var y := Fixed.from_cells(pa[1]) + Fixed.HALF
-		var crushed := _units_near(m, x, y, int(u["crush_radius"]), -1)
+		var x := Fixed.from_cells(Num.of(pa[0])) + Fixed.HALF
+		var y := Fixed.from_cells(Num.of(pa[1])) + Fixed.HALF
+		var crushed := _units_near(m, x, y, Num.of(u["crush_radius"]), -1)
 		for id in crushed:
 			if m.combat.untouchable.has(id):
 				continue
-			m.combat.lightning(id, int(r["enemy"]), int(u["crush"]))
+			m.combat.lightning(id, Num.of(r["enemy"]), Num.of(u["crush"]))
 		if not crushed.is_empty():
 			m.flags["ruin_crushed"] = tick
 		m.run({"do": "ping", "at": [pa[0], pa[1]], "radius": 2}, tick)
@@ -422,11 +422,11 @@ func _sorties(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	if s.is_empty() or nights == 0:
 		return
 	var n: Dictionary = r.get("nights", {})
-	var night_start := next_light - int(n.get("night_ticks", 0))
+	var night_start := next_light - Num.of(n.get("night_ticks", 0))
 	if (
 		m.stealth.night
 		and not m.flags.has("sortie_%d" % nights)
-		and tick >= night_start + int(s["delay_ticks"])
+		and tick >= night_start + Num.of(s["delay_ticks"])
 	):
 		_sortie(m, r, s, tick)
 	if back_at >= 0 and tick >= back_at:
@@ -452,7 +452,7 @@ func _sortie(m: MissionRuntime, r: Dictionary, s: Dictionary, tick: int) -> void
 	var gi: int = open[gate_turn % open.size()]
 	gate_turn += 1
 	var gate: Array = s["gates"][gi]["at"]
-	var size := mini(int(s["first"]) + int(s["grow"]) * sorties, int(s["max"]))
+	var size := mini(Num.of(s["first"]) + Num.of(s["grow"]) * sorties, Num.of(s["max"]))
 	var name := "shipmen_%d" % sorties
 	sorties += 1
 	m.flags["sortie"] = tick
@@ -461,18 +461,18 @@ func _sortie(m: MissionRuntime, r: Dictionary, s: Dictionary, tick: int) -> void
 	m._spawn_group(tick, spawn)
 	for id in m.alive_of(name):
 		out[id] = gi
-	var target := _bombard_near(m, int(r["player"]), gate)
+	var target := _bombard_near(m, Num.of(r["player"]), gate)
 	if target.x >= 0:
 		# They steal up to the guns to spike them, and fight only those who fall on them.
 		m.run({"do": "move", "group": name, "to": [target.x, target.y]}, tick)
 		m.run({"do": "ping", "at": [target.x, target.y], "radius": 3}, tick)
-	back_at = tick + int(s["out_ticks"])
+	back_at = tick + Num.of(s["out_ticks"])
 
 
 func _bombard_near(m: MissionRuntime, p: int, at: Array) -> Vector2i:
 	var e := m.entities
-	var x := Fixed.from_cells(at[0])
-	var y := Fixed.from_cells(at[1])
+	var x := Fixed.from_cells(Num.of(at[0]))
+	var y := Fixed.from_cells(Num.of(at[1]))
 	var best := -1
 	var found := Vector2i(-1, -1)
 	for id in e.alive_ids:
@@ -504,8 +504,8 @@ func _run_back(m: MissionRuntime, s: Dictionary, tick: int) -> void:
 func _cut_off(m: MissionRuntime, r: Dictionary, s: Dictionary, tick: int) -> void:
 	var e := m.entities
 	var gates: Array = s["gates"]
-	var far := Fixed.from_cells(int(s["cut_cells"]))
-	var reach := Fixed.from_cells(int(s["radius"]))
+	var far := Fixed.from_cells(Num.of(s["cut_cells"]))
+	var reach := Fixed.from_cells(Num.of(s["radius"]))
 	var ids: Array = out.keys()
 	ids.sort()
 	for id: int in ids:
@@ -515,14 +515,14 @@ func _cut_off(m: MissionRuntime, r: Dictionary, s: Dictionary, tick: int) -> voi
 			continue
 		var sl := id - 1
 		var gate: Array = gates[out[id]]["at"]
-		var dx := e.pos_x[sl] - Fixed.from_cells(gate[0])
-		var dy := e.pos_y[sl] - Fixed.from_cells(gate[1])
+		var dx := e.pos_x[sl] - Fixed.from_cells(Num.of(gate[0]))
+		var dy := e.pos_y[sl] - Fixed.from_cells(Num.of(gate[1]))
 		if dx * dx + dy * dy <= far * far:
 			m.combat.hp_floor.erase(id)
 			continue
-		var floor_hp := maxi(e.max_hp[sl] * int(s["permille"]) / FULL, 1)
+		var floor_hp := maxi(e.max_hp[sl] * Num.of(s["permille"]) / FULL, 1)
 		m.combat.hp_floor[id] = floor_hp
-		if e.hp[sl] > floor_hp or not _side_near(m, int(r["player"]), sl, reach):
+		if e.hp[sl] > floor_hp or not _side_near(m, Num.of(r["player"]), sl, reach):
 			continue
 		taken += 1
 		m.captives += 1
@@ -542,9 +542,9 @@ func _cut_off(m: MissionRuntime, r: Dictionary, s: Dictionary, tick: int) -> voi
 
 func _spikes(m: MissionRuntime, r: Dictionary) -> void:
 	var e := m.entities
-	var p := int(r["player"])
+	var p := Num.of(r["player"])
 	var s: Dictionary = r.get("sorties", {})
-	var near_cells := int(s.get("spike_radius", 2))
+	var near_cells := Num.of(s.get("spike_radius", 2))
 	var reach := Fixed.from_cells(near_cells)
 	var ids: Array = spiking.keys()
 	for id: int in ids:
@@ -589,8 +589,8 @@ func _forge(m: MissionRuntime, r: Dictionary) -> void:
 		return
 	var e := m.entities
 	var store := m.economy.buildings
-	var p := int(r["player"])
-	var reach := Fixed.from_cells(int(f["radius"]))
+	var p := Num.of(r["player"])
+	var reach := Fixed.from_cells(Num.of(f["radius"]))
 	var ids: Array = spiked.keys()
 	ids.sort()
 	for id: int in ids:
@@ -612,7 +612,7 @@ func _forge(m: MissionRuntime, r: Dictionary) -> void:
 			mending.erase(id)
 			continue
 		mending[id] = mending.get(id, 0) + MissionRuntime.CHECK_EVERY
-		if mending[id] >= int(f["ticks"]):
+		if mending[id] >= Num.of(f["ticks"]):
 			mending.erase(id)
 			spiked.erase(id)
 			m.combat.crown.spiked.erase(id)
@@ -626,13 +626,13 @@ func _plague(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	var pl: Dictionary = r.get("plague", {})
 	if pl.is_empty():
 		return
-	var p := int(r["player"])
+	var p := Num.of(r["player"])
 	var e := m.entities
 	var lz: Dictionary = r.get("lazaret", {})
-	var sick := plague >= int(pl["sick"])
+	var sick := plague >= Num.of(pl["sick"])
 	if not lz.is_empty() and not sick and tick % 20 == 0:
 		_lazaret_heal(m, p, lz)
-	if tick % int(pl["every_ticks"]) != 0 or tick == 0:
+	if tick % Num.of(pl["every_ticks"]) != 0 or tick == 0:
 		return
 	var units := 0
 	var below := 0
@@ -647,18 +647,18 @@ func _plague(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 			priests += 1
 		if _in(water, Fixed.to_cells(e.pos_x[s]), Fixed.to_cells(e.pos_y[s])):
 			below += 1
-	var add := int(pl["base"]) + units / maxi(int(pl["crowd"]), 1)
-	add += below / maxi(int(pl["water_per"]), 1)
+	var add := Num.of(pl["base"]) + units / maxi(Num.of(pl["crowd"]), 1)
+	add += below / maxi(Num.of(pl["water_per"]), 1)
 	if not m.fired.has(pl["heat_until"]):
-		add += int(pl["heat"])
-	add -= priests * int(pl["priest"]) + _finished(m, p, &"pl_lazaret") * int(pl["lazaret"])
+		add += Num.of(pl["heat"])
+	add -= priests * Num.of(pl["priest"]) + _finished(m, p, &"pl_lazaret") * Num.of(pl["lazaret"])
 	var next := plague + add
 	if add < 0:
-		next = maxi(next, mini(plague, int(pl["floor"])))
-	plague = clampi(next, 0, int(pl["max"]))
-	if plague >= int(pl["max"]) and not m.flags.has("plague_max"):
+		next = maxi(next, mini(plague, Num.of(pl["floor"])))
+	plague = clampi(next, 0, Num.of(pl["max"]))
+	if plague >= Num.of(pl["max"]) and not m.flags.has("plague_max"):
 		m.flags["plague_max"] = tick
-	if plague >= int(pl["sick"]):
+	if plague >= Num.of(pl["sick"]):
 		m.magic.no_heal[p] = true
 		for id in e.alive_ids:
 			var s := id - 1
@@ -666,7 +666,7 @@ func _plague(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 				continue
 			if m.combat.flags[s] & CombatSystem.F_HERO or m.combat.defs[s].has_class(&"siege"):
 				continue
-			e.hp[s] = maxi(e.hp[s] - int(pl["sick_hp"]), 1)
+			e.hp[s] = maxi(e.hp[s] - Num.of(pl["sick_hp"]), 1)
 	else:
 		m.magic.no_heal.erase(p)
 
@@ -674,7 +674,7 @@ func _plague(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 func _lazaret_heal(m: MissionRuntime, p: int, lz: Dictionary) -> void:
 	var store := m.economy.buildings
 	var e := m.entities
-	var reach := Fixed.from_cells(int(lz["radius"]))
+	var reach := Fixed.from_cells(Num.of(lz["radius"]))
 	for b in store.alive_ids:
 		var s := b - 1
 		if store.owners[s] != p or store.done[s] != 1 or store.type_ids[s] != &"pl_lazaret":
@@ -688,7 +688,7 @@ func _lazaret_heal(m: MissionRuntime, p: int, lz: Dictionary) -> void:
 				and e.hp[o] > 0
 				and store.distance_sq(b, e.pos_x[o], e.pos_y[o]) <= reach * reach
 			):
-				e.hp[o] = mini(e.max_hp[o], e.hp[o] + int(lz["heal"]))
+				e.hp[o] = mini(e.max_hp[o], e.hp[o] + Num.of(lz["heal"]))
 
 
 # --- the towns' envoys ----------------------------------------------------------------------
@@ -700,9 +700,9 @@ func _towns(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 		return
 	var e := m.entities
 	var to: Array = t["to"]
-	var tx := Fixed.from_cells(to[0]) + Fixed.HALF
-	var ty := Fixed.from_cells(to[1]) + Fixed.HALF
-	var home := Fixed.from_cells(int(t["radius"]))
+	var tx := Fixed.from_cells(Num.of(to[0])) + Fixed.HALF
+	var ty := Fixed.from_cells(Num.of(to[1])) + Fixed.HALF
+	var home := Fixed.from_cells(Num.of(t["radius"]))
 	var groups: Dictionary = t["groups"]
 	var hunters: Dictionary = t.get("hunters", {})
 	for g: String in _sorted(groups):
@@ -724,7 +724,7 @@ func _towns(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 					catching.erase(other)
 					m._remove.call(other)
 				if next_supply < 0:
-					next_supply = tick + int(t["every_ticks"])
+					next_supply = tick + Num.of(t["every_ticks"])
 				break
 			if _caught(m, r, t, id):
 				catching.erase(id)
@@ -737,13 +737,13 @@ func _towns(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 				]
 				m.run({"do": "attack_move", "group": hunters[g], "to": at}, tick)
 	if next_supply >= 0 and tick >= next_supply:
-		next_supply = tick + int(t["every_ticks"])
-		var state := m.economy.player(int(r["player"]))
+		next_supply = tick + Num.of(t["every_ticks"])
+		var state := m.economy.player(Num.of(r["player"]))
 		for g: String in _sorted(groups):
 			if towns.get(g, 0) == 1 and state != null:
 				var give: Array = groups[g]
 				for k in give.size():
-					state.stock[k] += int(give[k])
+					state.stock[k] += Num.of(give[k])
 
 
 ## Whether the envoy has been caught (an enemy at him and no guard of ours by him long enough).
@@ -751,8 +751,8 @@ func _caught(m: MissionRuntime, r: Dictionary, t: Dictionary, id: int) -> bool:
 	var e := m.entities
 	var s := id - 1
 	var foe := false
-	var catch_r := Fixed.from_cells(int(t["catch_radius"]))
-	var guard_r := Fixed.from_cells(int(t["guard_radius"]))
+	var catch_r := Fixed.from_cells(Num.of(t["catch_radius"]))
+	var guard_r := Fixed.from_cells(Num.of(t["guard_radius"]))
 	var guarded := false
 	for other in m.combat.buckets.near(e.pos_x[s], e.pos_y[s], guard_r):
 		var o := other - 1
@@ -761,16 +761,16 @@ func _caught(m: MissionRuntime, r: Dictionary, t: Dictionary, id: int) -> bool:
 		var dx := e.pos_x[o] - e.pos_x[s]
 		var dy := e.pos_y[o] - e.pos_y[s]
 		var d := dx * dx + dy * dy
-		if m.are_hostile(int(r["player"]), e.owners[o]) and d <= catch_r * catch_r:
+		if m.are_hostile(Num.of(r["player"]), e.owners[o]) and d <= catch_r * catch_r:
 			foe = true
-		elif m.are_friendly(int(r["player"]), e.owners[o]) and d <= guard_r * guard_r:
+		elif m.are_friendly(Num.of(r["player"]), e.owners[o]) and d <= guard_r * guard_r:
 			if m.combat.defs[o].damage > 0:
 				guarded = true
 	if not foe or guarded:
 		catching.erase(id)
 		return false
 	catching[id] = catching.get(id, 0) + MissionRuntime.CHECK_EVERY
-	return catching[id] >= int(t["catch_ticks"])
+	return catching[id] >= Num.of(t["catch_ticks"])
 
 
 func count_towns(state: int) -> int:
@@ -790,11 +790,11 @@ func _sztum(m: MissionRuntime, r: Dictionary) -> void:
 		return
 	var e := m.entities
 	var at: Array = z["at"]
-	var x := Fixed.from_cells(at[0]) + Fixed.HALF
-	var y := Fixed.from_cells(at[1]) + Fixed.HALF
-	var reach := Fixed.from_cells(int(z["radius"]))
-	var kind := StringName(z["unit"])
-	var p := int(r["player"])
+	var x := Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+	var y := Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
+	var reach := Fixed.from_cells(Num.of(z["radius"]))
+	var kind := StringName(str(z["unit"]))
+	var p := Num.of(r["player"])
 	for id in e.alive_ids.duplicate():
 		var s := id - 1
 		if e.owners[s] != p or e.type_ids[s] != kind:
@@ -821,8 +821,8 @@ func _burn_bridge(m: MissionRuntime, rect: Array, tick: int) -> void:
 		var s := id - 1
 		if e.hp[s] > 0 and _in(rect, Fixed.to_cells(e.pos_x[s]), Fixed.to_cells(e.pos_y[s])):
 			on_it.append(id)
-	for cy in range(int(rect[1]), int(rect[3]) + 1):
-		for cx in range(int(rect[0]), int(rect[2]) + 1):
+	for cy in range(Num.of(rect[1]), Num.of(rect[3]) + 1):
+		for cx in range(Num.of(rect[0]), Num.of(rect[2]) + 1):
 			if water >= 0:
 				nav.set_terrain(nav.cell_at(cx, cy), water)
 	for id in on_it:
@@ -856,10 +856,10 @@ func chapels(m: MissionRuntime) -> int:
 func _alone(m: MissionRuntime, c: Dictionary) -> bool:
 	var e := m.entities
 	var p := m.def.player
-	var kind := StringName(c["unit"])
+	var kind := StringName(str(c["unit"]))
 	var store := m.economy.buildings
 	var near_b := Fixed.from_cells(3)
-	var reach := Fixed.from_cells(int(c["radius"]))
+	var reach := Fixed.from_cells(Num.of(c["radius"]))
 	for id in e.alive_ids:
 		var s := id - 1
 		if e.owners[s] != p or e.type_ids[s] != kind:
@@ -885,7 +885,7 @@ func _alone(m: MissionRuntime, c: Dictionary) -> bool:
 			var dy := e.pos_y[o] - e.pos_y[s]
 			if dx * dx + dy * dy <= reach * reach:
 				others += 1
-		return others <= int(c["others"])
+		return others <= Num.of(c["others"])
 	return false
 
 
@@ -931,17 +931,22 @@ func _side_near(m: MissionRuntime, p: int, s: int, reach: int) -> bool:
 
 
 static func _to_rect_sq(rect: Array, px: int, py: int) -> int:
-	var x0 := Fixed.from_cells(rect[0])
-	var y0 := Fixed.from_cells(rect[1])
-	var x1 := Fixed.from_cells(int(rect[2]) + 1)
-	var y1 := Fixed.from_cells(int(rect[3]) + 1)
+	var x0 := Fixed.from_cells(Num.of(rect[0]))
+	var y0 := Fixed.from_cells(Num.of(rect[1]))
+	var x1 := Fixed.from_cells(Num.of(rect[2]) + 1)
+	var y1 := Fixed.from_cells(Num.of(rect[3]) + 1)
 	var dx := maxi(maxi(x0 - px, 0), px - x1)
 	var dy := maxi(maxi(y0 - py, 0), py - y1)
 	return dx * dx + dy * dy
 
 
 static func _in(rect: Array, cx: int, cy: int) -> bool:
-	return cx >= int(rect[0]) and cx <= int(rect[2]) and cy >= int(rect[1]) and cy <= int(rect[3])
+	return (
+		cx >= Num.of(rect[0])
+		and cx <= Num.of(rect[2])
+		and cy >= Num.of(rect[1])
+		and cy <= Num.of(rect[3])
+	)
 
 
 static func _sorted(d: Dictionary) -> Array:
@@ -976,7 +981,7 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_32(keys.size())
 		for k: int in keys:
 			buf.put_32(k)
-			buf.put_64(int(d[k]))
+			buf.put_64(Num.of(d[k]))
 	for g: String in _sorted(towns):
 		buf.put_utf8_string(g)
 		buf.put_8(towns[g] + 1)

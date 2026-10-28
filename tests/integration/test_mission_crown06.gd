@@ -287,7 +287,7 @@ func test_idle_foot_in_the_camp_digs_the_ditch_into_bog() -> void:
 	var work := s.work
 	_check(sim)
 	assert_gte(s.work, work + foot.size() * CHECK, "each idle man digs")
-	s.work = int(_rules(sim)["ditch"]["need"]) - 1
+	s.work = Num.of(_rules(sim)["ditch"]["need"]) - 1
 	_check(sim)
 	assert_eq(s.ditch_permille(m), 1000)
 	assert_eq(s.dug, s.ditch_cells.size())
@@ -315,7 +315,7 @@ func test_the_wagon_ring_and_the_ditch_make_the_tabor_and_chain_the_wagons() -> 
 	_morning(sim)
 	var m := sim.mission
 	var s := m.swiecino
-	s.work = int(_rules(sim)["ditch"]["need"])
+	s.work = Num.of(_rules(sim)["ditch"]["need"])
 	sim.apply_now(SimCommand.order(sim.tick, P, SimCommand.Kind.TABOR, m.alive_of("wagons")))
 	sim.run(400)
 	assert_true(s.ring_at_camp(m))
@@ -344,7 +344,7 @@ func test_the_order_horse_loses_its_run_on_the_ditch() -> void:
 	_order(sim)
 	var m := sim.mission
 	var s := m.swiecino
-	s.work = int(_rules(sim)["ditch"]["need"]) - 1
+	s.work = Num.of(_rules(sim)["ditch"]["need"]) - 1
 	_check(sim)
 	var rider := m.alive_of("order_horse")[0]
 	var cell := s.ditch_cells[0]
@@ -733,7 +733,7 @@ func test_the_panel_shows_the_clock_the_ditch_the_silver_and_the_command() -> vo
 	)
 	_hire(sim, 0)
 	_skip(sim, ["4"])
-	m.swiecino.work = int(_rules(sim)["ditch"]["need"])
+	m.swiecino.work = Num.of(_rules(sim)["ditch"]["need"])
 	m.swiecino.prisoners = 2
 	m.run({"do": "transfer", "group": "dunin", "player": DUNIN_TENT}, sim.tick)
 	panel.poll()
@@ -754,7 +754,7 @@ func test_save_and_load_keep_the_ditch_the_wages_and_the_tiring() -> void:
 	sim.run(220)
 	_hire(sim, 0)
 	var m := sim.mission
-	m.swiecino.work = int(_rules(sim)["ditch"]["need"]) - 1
+	m.swiecino.work = Num.of(_rules(sim)["ditch"]["need"]) - 1
 	_put(sim, m.alive_of("royal_foot"), CAMP)
 	sim.run(100)
 	var data := SimSave.capture(sim)

@@ -37,7 +37,7 @@ func _check(sim: Simulation) -> void:
 func _kinds(sim: Simulation) -> PackedStringArray:
 	var out := PackedStringArray()
 	for e: Dictionary in sim.mission.events:
-		out.append(e["kind"])
+		out.append(str(e["kind"]))
 	return out
 
 
@@ -81,7 +81,7 @@ func test_the_mission_sets_up_the_map_and_both_sides() -> void:
 	assert_eq(sim.nav.width, 160, "plan M9: map 160×160")
 	assert_eq(sim.magic.places.count(), 7, "seven places of power")
 	for name: String in ["village_tc", "chapel", "skir_castle", "dub_castle"]:
-		assert_true(sim.economy.buildings.is_alive(m.named.get(name, 0)), name)
+		assert_true(sim.economy.buildings.is_alive(Num.of(m.named.get(name, 0))), name)
 	assert_true(sim.fire.wooden.has(m.named["skir_castle"]), "Skirsnemune is a wooden castle")
 	assert_eq(m.alive_of("gintaut").size(), 1)
 	assert_eq(m.alive_of("grove_guard").size(), 11, "priest, 6 knechts, 4 crossbows")
@@ -327,15 +327,15 @@ func test_boats_bring_4_knechts_until_the_pier_is_held() -> void:
 	for id in sim.entities.alive_ids:
 		if sim.entities.owners[id - 1] == ORDER and _near(sim, id, pier, 8):
 			_put(sim, PackedInt32Array([id]), 20, 20)
-	_spawn(sim, P, &"gdl_spearman", pier[0], pier[1])
+	_spawn(sim, P, &"gdl_spearman", Num.of(pier[0]), Num.of(pier[1]))
 	_check(sim)
 	assert_true(sim.mission.flags.has("pier_closed"))
 	assert_eq(sim.mission.next_boat, -1, "no more boats")
 
 
 func _near(sim: Simulation, id: int, at: Array, radius: int) -> bool:
-	var dx := sim.entities.pos_x[id - 1] - Fixed.from_cells(at[0])
-	var dy := sim.entities.pos_y[id - 1] - Fixed.from_cells(at[1])
+	var dx := sim.entities.pos_x[id - 1] - Fixed.from_cells(Num.of(at[0]))
+	var dy := sim.entities.pos_y[id - 1] - Fixed.from_cells(Num.of(at[1]))
 	return dx * dx + dy * dy <= Fixed.from_cells(radius) * Fixed.from_cells(radius)
 
 
@@ -453,7 +453,7 @@ func _phase_4(sim: Simulation, guards: int = 3) -> void:
 	_check(sim)
 	for at: Array in _posts(sim):
 		for k in guards:
-			var id := _spawn(sim, P, &"gdl_spearman", at[0] + k % 2, at[1] + k / 2)
+			var id := _spawn(sim, P, &"gdl_spearman", Num.of(at[0] + k % 2), Num.of(at[1] + k / 2))
 			sim.apply_now(SimCommand.set_stance(sim.tick, P, _ids([id]), EntityStore.Stance.STAND))
 
 
@@ -484,7 +484,7 @@ func test_a_post_with_an_enemy_near_is_not_held_and_the_blockade_stops() -> void
 	_phase_4(sim)
 	_garrison_home(sim)
 	var at: Array = _posts(sim)[1]
-	var knecht := _spawn(sim, ORDER, &"to_knecht", at[0] + 2, at[1])
+	var knecht := _spawn(sim, ORDER, &"to_knecht", Num.of(at[0] + 2), Num.of(at[1]))
 	sim.apply_now(
 		SimCommand.set_stance(sim.tick, ORDER, _ids([knecht]), EntityStore.Stance.PASSIVE)
 	)

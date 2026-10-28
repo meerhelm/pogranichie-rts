@@ -43,7 +43,7 @@ func open(sim: Simulation, player: int) -> void:
 	_player = player
 	_fill()
 	visible = true
-	UiAnim.pop_in(self, %Panel)
+	UiAnim.pop_in(self, %Panel as Control)
 	get_tree().paused = true
 	_to_menu.grab_focus.call_deferred()
 
@@ -89,7 +89,8 @@ func _fill() -> void:
 	for p: int in players:
 		_cell(UiText.name_of(_sim.economy.players[p].faction), true)
 	for row: Array in rows():
-		_cell(row[0])
+		var label: String = row[0]
+		_cell(label)
 		for value: String in row[1]:
 			_cell(value)
 

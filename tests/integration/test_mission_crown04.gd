@@ -78,7 +78,7 @@ func _one(sim: Simulation, type: StringName, p: int, c: Vector2i) -> int:
 ## The clock of the mission set to `minutes` since midnight.
 func _at_hour(sim: Simulation, minutes: int) -> void:
 	var day: Dictionary = sim.mission.def.rules["chojnice"]["day"]
-	var tick := (minutes - int(day["start_minutes"])) * int(day["ticks_per_hour"]) / 60
+	var tick := (minutes - Num.of(day["start_minutes"])) * Num.of(day["ticks_per_hour"]) / 60
 	sim.tick = maxi(sim.tick, tick - 1)
 
 
@@ -119,7 +119,7 @@ func test_the_field_the_bog_and_the_sides_are_set_up() -> void:
 	assert_eq(m.alive_of("leczyca").size(), 12)
 	assert_eq(m.alive_of("camp_wagons").size(), 12)
 	assert_eq(m.chojnice.bearer, m.alive_of("bninski")[0], "Bniński has the banner at first")
-	assert_true(sim.economy.buildings.is_alive(m.named.get("king_tent", 0)))
+	assert_true(sim.economy.buildings.is_alive(Num.of(m.named.get("king_tent", 0))))
 
 
 func test_the_banner_can_reach_the_line_the_tent_and_the_east_bank() -> void:

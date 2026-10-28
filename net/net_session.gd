@@ -255,13 +255,15 @@ func _send_lobby() -> void:
 
 ## The world both games start from: the skirmish map and factions of setup, with its seed.
 func new_simulation(db: CatalogDB) -> Simulation:
-	return SkirmishSetup.new_simulation(int(setup["seed"]), db, factions(), map_id())
+	var sim_seed: int = setup["seed"]
+	return SkirmishSetup.new_simulation(sim_seed, db, factions(), map_id())
 
 
 ## The game scene's world, made from setup; from now on it steps through lockstep.
 func attach(sim: Simulation) -> Lockstep:
 	_sim = sim
-	lockstep = Lockstep.new(sim, local_player, remote_player(), int(setup.get("delay", 6)))
+	var turn_delay: int = setup.get("delay", 6)
+	lockstep = Lockstep.new(sim, local_player, remote_player(), turn_delay)
 	lockstep.send = _send
 	lockstep.desynced.connect(_on_desynced)
 	lockstep.checkpointed.connect(_on_checkpoint)
@@ -365,7 +367,8 @@ func _on_message(msg: Dictionary) -> void:
 					_set_faction(GUEST_PLAYER, f)
 		"ready":
 			if is_host and state == State.LOBBY and msg.get("on") is bool:
-				ready_flags[1] = msg["on"] as bool
+				var on: bool = msg["on"]
+				ready_flags[1] = on
 				_send_lobby()
 		"start":
 			if not is_host and state == State.LOBBY:
@@ -384,15 +387,18 @@ func _on_message(msg: Dictionary) -> void:
 			_send({"m": "pong", "at": msg.get("at")})
 		"pong":
 			if msg.get("at") is int:
-				rtt_msec = Time.get_ticks_msec() - (msg["at"] as int)
+				var sent_at: int = msg["at"]
+				rtt_msec = Time.get_ticks_msec() - sent_at
 				if lockstep != null:
 					lockstep.note_rtt(rtt_msec)
 		"chat":
 			if msg.get("text") is String:
-				chat.emit((msg["text"] as String).left(MAX_CHAT))
+				var text: String = msg["text"]
+				chat.emit(text.left(MAX_CHAT))
 		"pause":
 			if state == State.PLAYING and msg.get("on") is bool and msg["on"] != paused:
-				paused = msg["on"] as bool
+				var on: bool = msg["on"]
+				paused = on
 				paused_changed.emit(paused, false)
 		"parts":
 			_on_parts(msg)
@@ -428,13 +434,17 @@ func _on_lobby(msg: Dictionary) -> void:
 	var who: Variant = msg.get("names")
 	if not (map is String and sides is Array and flags is Array and who is Array):
 		return
-	if not _valid_setup(map as String, sides as Array):
+	var map_name: String = map
+	var side_list: Array = sides
+	var flag_list: Array = flags
+	var who_list: Array = who
+	if not _valid_setup(map_name, side_list):
 		return
 	setup["map"] = map
-	setup["factions"] = [str((sides as Array)[0]), str((sides as Array)[1])]
+	setup["factions"] = [str(side_list[0]), str(side_list[1])]
 	for i in 2:
-		ready_flags[i] = (flags as Array).size() > i and (flags as Array)[i] == true
-		names[i] = _clean_name((who as Array)[i] if (who as Array).size() > i else "")
+		ready_flags[i] = flag_list.size() > i and flag_list[i] == true
+		names[i] = _clean_name(who_list[i] if who_list.size() > i else "")
 	state = State.LOBBY
 	lobby_changed.emit()
 
@@ -443,16 +453,23 @@ func _on_start(msg: Dictionary) -> void:
 	var map: Variant = msg.get("map")
 	var sides: Variant = msg.get("factions")
 	var ok: bool = msg.get("seed") is int and msg.get("delay") is int and map is String
-	if not ok or not sides is Array or not _valid_setup(map as String, sides as Array):
+	ok = ok and sides is Array
+	if ok:
+		var map_name: String = map
+		var side_list: Array = sides
+		ok = _valid_setup(map_name, side_list)
+	if not ok:
 		state = State.CLOSED
 		failed.emit(tr("The other game sent a start this game cannot read"))
 		transport.close()
 		return
+	var side_names: Array = sides
+	var turn_delay: int = msg["delay"]
 	setup = {
 		"seed": msg["seed"],
 		"map": map,
-		"factions": [str((sides as Array)[0]), str((sides as Array)[1])],
-		"delay": clampi(msg["delay"] as int, 1, Lockstep.MAX_DELAY),
+		"factions": [str(side_names[0]), str(side_names[1])],
+		"delay": clampi(turn_delay, 1, Lockstep.MAX_DELAY),
 	}
 	state = State.STARTED
 	started.emit()
@@ -488,12 +505,16 @@ func _on_desynced(tick: int, _mine: String, _theirs: String) -> void:
 func _on_parts(msg: Dictionary) -> void:
 	var t: Variant = msg.get("t")
 	var theirs: Variant = msg.get("parts")
-	if not (t is int and theirs is Dictionary) or not _parts.has(t as int):
+	if not (t is int and theirs is Dictionary):
 		return
-	var mine: Dictionary = _parts[t as int]
+	var turn: int = t
+	if not _parts.has(turn):
+		return
+	var their_parts: Dictionary = theirs
+	var mine: Dictionary = _parts[turn]
 	var differ := PackedStringArray()
 	for key: String in mine:
-		if str((theirs as Dictionary).get(key)) != str(mine[key]):
+		if str(their_parts.get(key)) != str(mine[key]):
 			differ.append(key)
 	desync_parts.emit(differ)
 

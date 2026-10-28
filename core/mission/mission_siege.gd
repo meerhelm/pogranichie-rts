@@ -122,14 +122,14 @@ func set_up(m: MissionRuntime) -> void:
 	if not r.get("lines_catch", true):
 		var store := m.economy.buildings
 		for b in store.alive_ids:
-			if store.owners[b - 1] == int(r["player"]) and LINES.has(store.defs[b - 1].base_id):
+			if store.owners[b - 1] == Num.of(r["player"]) and LINES.has(store.defs[b - 1].base_id):
 				m.fire.no_spread[b] = true
 	var posad: Dictionary = r.get("posad", {})
 	if not posad.is_empty():
-		next_posad = int(posad["every_ticks"])
+		next_posad = Num.of(posad["every_ticks"])
 	var boats: Dictionary = r.get("boats", {})
 	if not boats.is_empty():
-		next_boat = int(boats["every_ticks"])
+		next_boat = Num.of(boats["every_ticks"])
 
 
 func step(m: MissionRuntime, tick: int) -> void:
@@ -155,22 +155,22 @@ func test(m: MissionRuntime, c: Dictionary) -> bool:
 		"belt_lost":
 			ok = lost.get(c["belt"], false)
 		"belt_fell":
-			ok = falls.get(c["belt"], 0) >= int(c.get("at_least", 1))
+			ok = falls.get(c["belt"], 0) >= Num.of(c.get("at_least", 1))
 		"burned":
-			ok = burned_set.size() >= int(c["at_least"])
+			ok = burned_set.size() >= Num.of(c["at_least"])
 		"assault_due":
 			ok = assault_base >= 0 and now >= assault_due(m)
 		"ladders_spent":
-			ok = ladders_spent(c["group"])
+			ok = ladders_spent(str(c["group"]))
 		"manned":
-			ok = wall_range.size() >= int(c["at_least"])
+			ok = wall_range.size() >= Num.of(c["at_least"])
 		"in_belt":
-			for id in m.alive_of(c["group"]):
+			for id in m.alive_of(str(c["group"])):
 				ok = ok or not belt_of(m, id).is_empty()
 		"hp_at_least":
-			ok = _hp_at_least(m, c["group"], int(c["permille"]))
+			ok = _hp_at_least(m, str(c["group"]), Num.of(c["permille"]))
 		"standing":
-			ok = standing_permille(m, c["buildings"]) >= int(c["permille"])
+			ok = standing_permille(m, c["buildings"]) >= Num.of(c["permille"])
 		"tunnel_used":
 			ok = tunnel_used
 	return ok
@@ -191,13 +191,13 @@ func run(m: MissionRuntime, a: Dictionary, tick: int) -> void:
 		"ladders":
 			_set_ladders(m, a, tick)
 		"assault_at":
-			assault_base = tick + int(a["ticks"])
+			assault_base = tick + Num.of(a["ticks"])
 		"militia":
 			_arm(m)
 		"fire_arrows":
 			arrows_on = a.get("on", true)
 			var fa: Dictionary = _rules(m).get("fire_arrows", {})
-			next_arrow = tick + int(fa.get("every_ticks", 0)) if arrows_on else -1
+			next_arrow = tick + Num.of(fa.get("every_ticks", 0)) if arrows_on else -1
 		"tunnel":
 			tunnel_on = a.get("on", true)
 
@@ -205,7 +205,7 @@ func run(m: MissionRuntime, a: Dictionary, tick: int) -> void:
 ## When the assault comes: the time set plus the delay of every workshop burned.
 func assault_due(m: MissionRuntime) -> int:
 	var w: Dictionary = _rules(m).get("workshops", {})
-	return assault_base + burned_set.size() * int(w.get("delay_ticks", 0))
+	return assault_base + burned_set.size() * Num.of(w.get("delay_ticks", 0))
 
 
 func ladders_spent(group: String) -> bool:
@@ -246,7 +246,7 @@ func standing_permille(m: MissionRuntime, names: Array) -> int:
 		return 0
 	var n := 0
 	for name: String in names:
-		if m.economy.buildings.is_alive(m.named.get(name, 0)):
+		if m.economy.buildings.is_alive(Num.of(m.named.get(name, 0))):
 			n += 1
 	return n * 1000 / names.size()
 
@@ -256,7 +256,12 @@ func _rules(m: MissionRuntime) -> Dictionary:
 
 
 static func _inside(rect: Array, cx: int, cy: int) -> bool:
-	return cx >= int(rect[0]) and cx <= int(rect[2]) and cy >= int(rect[1]) and cy <= int(rect[3])
+	return (
+		cx >= Num.of(rect[0])
+		and cx <= Num.of(rect[2])
+		and cy >= Num.of(rect[1])
+		and cy <= Num.of(rect[3])
+	)
 
 
 static func _cell_x(m: MissionRuntime, cell: int) -> int:
@@ -283,8 +288,8 @@ func _near_cell(m: MissionRuntime, id: int, cell: int, cells: int) -> bool:
 
 func _belts(m: MissionRuntime, r: Dictionary) -> void:
 	var belts: Dictionary = r.get("belts", {})
-	var need := int(r.get("fall", {}).get("enemies", 1))
-	var p := int(r["player"])
+	var need := Num.of(r.get("fall", {}).get("enemies", 1))
+	var p := Num.of(r["player"])
 	var e := m.entities
 	var names := belts.keys()
 	names.sort()
@@ -321,8 +326,8 @@ func _set_ladders(m: MissionRuntime, a: Dictionary, tick: int) -> void:
 	var away: Array = a.get("else", goal)
 	var first := l_group.size()
 	for spot: Array in spots:
-		var wall := Vector2i(spot[0], spot[1])
-		var foot := Vector2i(spot[2], spot[3])
+		var wall := Vector2i(Num.of(spot[0]), Num.of(spot[1]))
+		var foot := Vector2i(Num.of(spot[2]), Num.of(spot[3]))
 		var top := wall * 2 - foot
 		l_group.append(a["group"])
 		l_wall.append(nav.cell_at(wall.x, wall.y))
@@ -333,12 +338,12 @@ func _set_ladders(m: MissionRuntime, a: Dictionary, tick: int) -> void:
 		l_push.append(0)
 		l_climber.append(0)
 		l_climb.append(0)
-		l_tries.append(int(lr.get("tries", 1)))
-		l_goal.append(nav.cell_at(goal[0], goal[1]))
-		l_else.append(nav.cell_at(away[0], away[1]))
+		l_tries.append(Num.of(lr.get("tries", 1)))
+		l_goal.append(nav.cell_at(Num.of(goal[0]), Num.of(goal[1])))
+		l_else.append(nav.cell_at(Num.of(away[0]), Num.of(away[1])))
 	# The party splits over its ladders in turn and carries them to the wall, not fighting
 	# on the way.
-	var ids := m.alive_of(a["group"])
+	var ids := m.alive_of(str(a["group"]))
 	var count := l_group.size() - first
 	if count <= 0 or ids.is_empty():
 		return
@@ -400,7 +405,7 @@ func _ladders(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 					_to_foot(m, i, tick)
 				continue
 			l_raise[i] += MissionRuntime.CHECK_EVERY
-			if l_raise[i] >= int(lr.get("raise_ticks", 0)):
+			if l_raise[i] >= Num.of(lr.get("raise_ticks", 0)):
 				l_state[i] = Ladder.UP
 				l_push[i] = 0
 				m.flags["ladder_up"] = tick
@@ -413,25 +418,25 @@ func _ladders(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 ## The player's men at the top push the ladder off.
 func _push(m: MissionRuntime, r: Dictionary, i: int, tick: int) -> void:
 	var lr: Dictionary = r.get("ladder", {})
-	var p := int(r["player"])
+	var p := Num.of(r["player"])
 	var n := 0
 	for id in m.entities.alive_ids:
 		if m.entities.owners[id - 1] != p or not _fit(m, id):
 			continue
-		if _near_cell(m, id, l_top[i], int(lr.get("push_radius", 2))):
+		if _near_cell(m, id, l_top[i], Num.of(lr.get("push_radius", 2))):
 			n += 1
 			if n >= PUSHERS:
 				break
 	if n == 0:
 		return
 	l_push[i] += MissionRuntime.CHECK_EVERY * n
-	if l_push[i] < int(lr.get("push_ticks", 0)):
+	if l_push[i] < Num.of(lr.get("push_ticks", 0)):
 		return
 	pushed += 1
 	m.flags["ladder_pushed"] = tick
 	var climber := l_climber[i]
 	if climber != 0 and m.entities.is_alive(climber):
-		m.combat.lightning(climber, p, int(lr.get("fall_damage", 0)))
+		m.combat.lightning(climber, p, Num.of(lr.get("fall_damage", 0)))
 	l_climber[i] = 0
 	l_climb[i] = 0
 	l_raise[i] = 0
@@ -466,7 +471,7 @@ func _climb(
 		l_climber[i] = climber
 		l_climb[i] = 0
 	l_climb[i] += MissionRuntime.CHECK_EVERY
-	if l_climb[i] < int(lr.get("climb_ticks", 0)):
+	if l_climb[i] < Num.of(lr.get("climb_ticks", 0)):
 		return
 	var e := m.entities
 	var owner := e.owners[climber - 1]
@@ -491,7 +496,7 @@ func _walls(m: MissionRuntime, r: Dictionary) -> void:
 	var w: Dictionary = r.get("wall", {})
 	if w.is_empty():
 		return
-	var p := int(r["player"])
+	var p := Num.of(r["player"])
 	var e := m.entities
 	for id: int in wall_range.keys():
 		if not e.is_alive(id):
@@ -505,9 +510,9 @@ func _walls(m: MissionRuntime, r: Dictionary) -> void:
 			continue
 		var on := _on_wall(m, p, id)
 		if on and not wall_range.has(id):
-			wall_range[id] = def.param(&"wall_range_bonus", int(w.get("range", 0)))
-			wall_armor_m[id] = def.param(&"wall_armor_melee", int(w.get("armor_m", 0)))
-			wall_armor_p[id] = def.param(&"wall_armor_pierce", int(w.get("armor_p", 0)))
+			wall_range[id] = def.param(&"wall_range_bonus", Num.of(w.get("range", 0)))
+			wall_armor_m[id] = def.param(&"wall_armor_melee", Num.of(w.get("armor_m", 0)))
+			wall_armor_p[id] = def.param(&"wall_armor_pierce", Num.of(w.get("armor_p", 0)))
 			e.up_range[s] += wall_range[id]
 			e.up_armor_m[s] += wall_armor_m[id]
 			e.up_armor_p[s] += wall_armor_p[id]
@@ -547,7 +552,7 @@ func _lady(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	var lady: Dictionary = r.get("lady", {})
 	if lady.is_empty():
 		return
-	var ids := m.alive_of(lady["group"])
+	var ids := m.alive_of(str(lady["group"]))
 	if ids.is_empty():
 		return
 	var her := ids[0]
@@ -556,11 +561,11 @@ func _lady(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	if not _inside(rect, Fixed.to_cells(e.pos_x[her - 1]), Fixed.to_cells(e.pos_y[her - 1])):
 		if e.orders[her - 1] == EntityStore.Order.IDLE or tick % 100 == 0:
 			var home: Array = lady["home"]
-			var x := Fixed.from_cells(home[0]) + Fixed.HALF
-			var y := Fixed.from_cells(home[1]) + Fixed.HALF
+			var x := Fixed.from_cells(Num.of(home[0])) + Fixed.HALF
+			var y := Fixed.from_cells(Num.of(home[1])) + Fixed.HALF
 			m._apply.call(SimCommand.move(tick, e.owners[her - 1], PackedInt32Array([her]), x, y))
 	var reach := Fixed.from_cells(m.combat.aura_radius(m.economy.unit_defs[her - 1]))
-	var floor_permille := int(lady.get("floor_permille", 0))
+	var floor_permille := Num.of(lady.get("floor_permille", 0))
 	for id in e.alive_ids:
 		var s := id - 1
 		var def := m.economy.unit_defs[s]
@@ -580,12 +585,12 @@ func _water(m: MissionRuntime, r: Dictionary) -> void:
 	var fire := m.fire
 	if fire.burning.is_empty():
 		return
-	var p := int(r["player"])
+	var p := Num.of(r["player"])
 	var w: Dictionary = r.get("water", {})
 	var lady: Dictionary = r.get("lady", {})
 	var her := 0
 	if not lady.is_empty():
-		var l := m.alive_of(lady["group"])
+		var l := m.alive_of(str(lady["group"]))
 		her = l[0] if not l.is_empty() else 0
 	var store := m.economy.buildings
 	var ids := fire.burning.keys()
@@ -607,11 +612,11 @@ func _water(m: MissionRuntime, r: Dictionary) -> void:
 			):
 				continue
 			if (w.get("units", []) as Array).has(String(m.entities.type_ids[id - 1])):
-				extra += int(w.get("unit_permille", 0))
+				extra += Num.of(w.get("unit_permille", 0))
 			if near_water:
-				extra += int(w.get("water_permille", 0))
+				extra += Num.of(w.get("water_permille", 0))
 			if lady_near:
-				extra += int(lady.get("douse_permille", 0))
+				extra += Num.of(lady.get("douse_permille", 0))
 		if extra <= 0:
 			continue
 		fire.doused[b] = fire.doused.get(b, 0) + MissionRuntime.CHECK_EVERY * extra / 1000
@@ -623,13 +628,13 @@ func _water_near(m: MissionRuntime, w: Dictionary, b: int) -> bool:
 	if w.is_empty():
 		return false
 	var kinds: Array = w.get("kinds", [])
-	var reach := Fixed.from_cells(int(w.get("radius", 0)))
+	var reach := Fixed.from_cells(Num.of(w.get("radius", 0)))
 	for prop: Dictionary in m.def.setup.get("props", []):
 		if not kinds.has(prop["kind"]):
 			continue
 		var at: Array = prop["at"]
-		var x := Fixed.from_cells(at[0]) + Fixed.HALF
-		var y := Fixed.from_cells(at[1]) + Fixed.HALF
+		var x := Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+		var y := Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
 		if m.economy.buildings.distance_sq(b, x, y) <= reach * reach:
 			return true
 	return false
@@ -647,7 +652,7 @@ func _rain(m: MissionRuntime, r: Dictionary) -> void:
 	var fire := m.fire
 	if fire.burning.is_empty():
 		return
-	var p := int(r["player"])
+	var p := Num.of(r["player"])
 	var magic := m.magic
 	var store := m.economy.buildings
 	for i in magic.fx_ids.size():
@@ -668,10 +673,10 @@ func _arrows(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	var fa: Dictionary = r.get("fire_arrows", {})
 	if fa.is_empty() or not arrows_on or next_arrow < 0 or tick < next_arrow:
 		return
-	next_arrow = tick + int(fa["every_ticks"])
-	if m.alive_of(fa["group"]).is_empty():
+	next_arrow = tick + Num.of(fa["every_ticks"])
+	if m.alive_of(str(fa["group"])).is_empty():
 		return
-	var p := int(r["player"])
+	var p := Num.of(r["player"])
 	var store := m.economy.buildings
 	var nav := m.economy.nav
 	var belts: Dictionary = r.get("belts", {})
@@ -711,25 +716,25 @@ func _burned(m: MissionRuntime, r: Dictionary) -> void:
 
 
 func _food(m: MissionRuntime, r: Dictionary, tick: int) -> void:
-	var p := int(r["player"])
+	var p := Num.of(r["player"])
 	var state := m.economy.player(p)
 	if state == null:
 		return
 	var posad: Dictionary = r.get("posad", {})
 	if not posad.is_empty() and next_posad >= 0 and tick >= next_posad:
-		next_posad = tick + int(posad["every_ticks"])
+		next_posad = tick + Num.of(posad["every_ticks"])
 		var n := 0
 		for name: String in posad["buildings"]:
-			if m.economy.buildings.is_alive(m.named.get(name, 0)):
+			if m.economy.buildings.is_alive(Num.of(m.named.get(name, 0))):
 				n += 1
-		state.stock[EconomySystem.FOOD] += n * int(posad["food"])
-		food_in += n * int(posad["food"])
+		state.stock[EconomySystem.FOOD] += n * Num.of(posad["food"])
+		food_in += n * Num.of(posad["food"])
 	var boats: Dictionary = r.get("boats", {})
 	if not boats.is_empty() and next_boat >= 0 and tick >= next_boat:
-		next_boat = tick + int(boats["every_ticks"])
-		if not _enemy_near(m, p, boats["pier"], int(boats["radius"])):
-			state.stock[EconomySystem.FOOD] += int(boats["food"])
-			food_in += int(boats["food"])
+		next_boat = tick + Num.of(boats["every_ticks"])
+		if not _enemy_near(m, p, boats["pier"], Num.of(boats["radius"])):
+			state.stock[EconomySystem.FOOD] += Num.of(boats["food"])
+			food_in += Num.of(boats["food"])
 			m.flags["boat"] = tick
 	var starve: Dictionary = r.get("starve", {})
 	if starve.is_empty() or state.stock[EconomySystem.FOOD] > 0:
@@ -737,12 +742,12 @@ func _food(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	m.flags["starving"] = tick
 	for id in m.entities.alive_ids:
 		if m.entities.owners[id - 1] == p:
-			m.combat.lose_morale(id - 1, int(starve["morale"]))
+			m.combat.lose_morale(id - 1, Num.of(starve["morale"]))
 
 
 func _enemy_near(m: MissionRuntime, p: int, at: Array, radius: int) -> bool:
-	var x := Fixed.from_cells(at[0]) + Fixed.HALF
-	var y := Fixed.from_cells(at[1]) + Fixed.HALF
+	var x := Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+	var y := Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
 	var reach := Fixed.from_cells(radius)
 	var e := m.entities
 	for id in e.alive_ids:
@@ -763,9 +768,9 @@ func _tunnel(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	var t: Dictionary = r.get("tunnel", {})
 	if t.is_empty() or not tunnel_on:
 		return
-	var p := int(r["player"])
+	var p := Num.of(r["player"])
 	var mouths: Array = [t["from"], t["to"]]
-	var radius := int(t.get("radius", 1))
+	var radius := Num.of(t.get("radius", 1))
 	var e := m.entities
 	for id in e.alive_ids:
 		var s := id - 1
@@ -773,8 +778,8 @@ func _tunnel(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 			continue
 		for k in 2:
 			var at: Array = mouths[k]
-			var x := Fixed.from_cells(at[0]) + Fixed.HALF
-			var y := Fixed.from_cells(at[1]) + Fixed.HALF
+			var x := Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+			var y := Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
 			var dx := e.pos_x[s] - x
 			var dy := e.pos_y[s] - y
 			var reach := Fixed.from_cells(radius) - Fixed.HALF
@@ -784,8 +789,8 @@ func _tunnel(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 			var out: Array = mouths[1 - k]
 			var side: Array = t.get("out_from" if k == 1 else "out_to", [0, 1])
 			m._apply.call(SimCommand.stop(tick, p, PackedInt32Array([id])))
-			e.pos_x[s] = Fixed.from_cells(int(out[0]) + int(side[0])) + Fixed.HALF
-			e.pos_y[s] = Fixed.from_cells(int(out[1]) + int(side[1])) + Fixed.HALF
+			e.pos_x[s] = Fixed.from_cells(Num.of(out[0]) + Num.of(side[0])) + Fixed.HALF
+			e.pos_y[s] = Fixed.from_cells(Num.of(out[1]) + Num.of(side[1])) + Fixed.HALF
 			if not tunnel_used:
 				tunnel_used = true
 				m.flags["tunnel_used"] = tick
@@ -797,7 +802,7 @@ func _arm(m: MissionRuntime) -> void:
 	if mi.is_empty() or militia:
 		return
 	militia = true
-	var p := int(_rules(m)["player"])
+	var p := Num.of(_rules(m)["player"])
 	var e := m.entities
 	for id in e.alive_ids:
 		var def := m.economy.unit_defs[id - 1]
@@ -838,7 +843,7 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_32(keys.size())
 		for k: int in keys:
 			buf.put_32(k)
-			buf.put_32(int(d[k]))
+			buf.put_32(Num.of(d[k]))
 	var burned := burned_set.keys()
 	burned.sort()
 	for name: String in burned:

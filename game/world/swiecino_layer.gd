@@ -47,11 +47,12 @@ func _draw() -> void:
 		return
 	var s := sim.mission.swiecino
 	var rules: Dictionary = sim.mission.def.rules["swiecino"]
-	var zone: Array = rules.get("crossbows", {}).get("zone", [])
+	var crossbows: Dictionary = rules.get("crossbows", {})
+	var zone: Array = crossbows.get("zone", [])
 	if zone.size() == 4:
-		_zone(zone, s.crossbows_on)
+		_zone(PackedFloat64Array(zone), s.crossbows_on)
 	var f: Dictionary = rules.get("fatigue", {})
-	var tired := int(f.get("tired", 400))
+	var tired: int = f.get("tired", 400)
 	var e := sim.entities
 	for id: int in s.stamina:
 		if not e.is_alive(id) or not _seen(id):
@@ -69,7 +70,7 @@ func _draw() -> void:
 
 
 ## The rectangle [x0, y0, x1, y1] (cells, inclusive) as a diamond on the ground.
-func _zone(r: Array, shooting: bool) -> void:
+func _zone(r: PackedFloat64Array, shooting: bool) -> void:
 	var corners := PackedVector2Array(
 		[
 			Iso.cell_to_screen(Vector2(r[0], r[1])),

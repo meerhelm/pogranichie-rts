@@ -89,7 +89,7 @@ func map_text() -> String:
 	var ground := _ground()
 	var char_of: Dictionary[String, String] = {}
 	for ch: String in MapText.LEGEND:
-		char_of[String(MapText.LEGEND[ch])] = ch
+		char_of[String(str(MapText.LEGEND[ch]))] = ch
 	var object_char: Dictionary[int, String] = {}
 	for ch: String in MapText.OBJECTS:
 		var obj: Array = MapText.OBJECTS[ch]
@@ -126,7 +126,7 @@ func _place_lines() -> PackedStringArray:
 		if not marker is Node2D:
 			continue
 		var cell := Iso.screen_to_cell((marker as Node2D).position) - Vector2.ONE * _half_site()
-		var kind := String(marker.get_meta(&"kind", String(marker.name).get_slice("_", 0)))
+		var kind := String(str(marker.get_meta(&"kind", String(marker.name).get_slice("_", 0))))
 		out.append("@place %s %d %d" % [kind, roundi(cell.x), roundi(cell.y)])
 	return out
 

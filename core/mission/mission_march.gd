@@ -23,16 +23,16 @@ const ACTIONS: Array[String] = ["merge", "protect", "march", "morale", "countdow
 static func set_up(m: MissionRuntime) -> void:
 	var s: Dictionary = m.def.rules.get("supply", {})
 	if not s.is_empty():
-		m.next_supply = int(s["every_ticks"])
+		m.next_supply = Num.of(s["every_ticks"])
 	var r: Dictionary = m.def.rules.get("raids", {})
 	if not r.is_empty():
-		m.next_raid = int(r["first_ticks"])
+		m.next_raid = Num.of(r["first_ticks"])
 	var sp: Dictionary = m.def.rules.get("spare", {})
 	if sp.is_empty():
 		return
-	for id in m.alive_of(sp["group"]):
+	for id in m.alive_of(str(sp["group"])):
 		if m.combat.flags[id - 1] & CombatSystem.F_HERO:
-			var floor_hp := maxi(m.entities.max_hp[id - 1] * int(sp["permille"]) / 1000, 1)
+			var floor_hp := maxi(m.entities.max_hp[id - 1] * Num.of(sp["permille"]) / 1000, 1)
 			m.combat.hp_floor[id] = floor_hp
 
 
@@ -42,17 +42,17 @@ static func supply(m: MissionRuntime, tick: int) -> void:
 	var s: Dictionary = m.def.rules.get("supply", {})
 	if s.is_empty() or m.next_supply < 0 or tick < m.next_supply:
 		return
-	if not m.economy.buildings.is_alive(m.named.get(s["building"], 0)):
+	if not m.economy.buildings.is_alive(Num.of(m.named.get(s["building"], 0))):
 		m.next_supply = -1
 		m.flags["supply_lost"] = tick
 		return
-	m.next_supply = tick + int(s["every_ticks"])
-	var state := m.economy.player(s["player"])
+	m.next_supply = tick + Num.of(s["every_ticks"])
+	var state := m.economy.player(Num.of(s["player"]))
 	if state == null:
 		return
 	var amount: Array = s["amount"]
 	for r in amount.size():
-		state.stock[r] += int(amount[r])
+		state.stock[r] += Num.of(amount[r])
 
 
 ## Raids (card 1.3: «каждые 2 минуты набег татар (3–4 юнита) через северную полосу суши на
@@ -65,7 +65,7 @@ static func raids(m: MissionRuntime, tick: int) -> void:
 	if m.fired.has(r["until"]):
 		m.next_raid = -1
 		return
-	m.next_raid = tick + int(r["every_ticks"])
+	m.next_raid = tick + Num.of(r["every_ticks"])
 	var name := "raid_%d" % m.raids
 	m.raids += 1
 	var g := {
@@ -100,8 +100,8 @@ static func march(m: MissionRuntime, tick: int) -> void:
 	if r.is_empty() or m.marching.is_empty():
 		return
 	var e := m.entities
-	var reform := int(r["reform_ticks"])
-	var cap_permille := int(r["morale_permille"])
+	var reform := Num.of(r["reform_ticks"])
+	var cap_permille := Num.of(r["morale_permille"])
 	var ids := m.marching.keys()
 	ids.sort()
 	for id: int in ids:
@@ -135,8 +135,8 @@ static func capture(m: MissionRuntime, tick: int, remove: Callable) -> void:
 	if c.is_empty():
 		return
 	var captor: int = c["player"]
-	var permille := int(c["morale_permille"])
-	var r := Fixed.from_cells(c["radius"])
+	var permille := Num.of(c["morale_permille"])
+	var r := Fixed.from_cells(Num.of(c["radius"]))
 	var e := m.entities
 	var combat := m.combat
 	var only: Array = c.get("players", [])
@@ -213,7 +213,7 @@ static func spare(m: MissionRuntime, tick: int) -> void:
 	var flag := "spared:%s" % sp["group"]
 	if m.flags.has(flag):
 		return
-	for id in m.alive_of(sp["group"]):
+	for id in m.alive_of(str(sp["group"])):
 		if not m.combat.hp_floor.has(id) or m.entities.hp[id - 1] > m.combat.hp_floor[id]:
 			continue
 		m.flags[flag] = tick
@@ -228,12 +228,12 @@ static func spare(m: MissionRuntime, tick: int) -> void:
 static func test(m: MissionRuntime, c: Dictionary) -> bool:
 	match c["type"]:
 		"groups_near":
-			return groups_near(m, c["group"], c["other"], int(c["radius"]))
+			return groups_near(m, str(c["group"]), str(c["other"]), Num.of(c["radius"]))
 		"captured":
 			var n: int = m.captured.get(c["group"], 0) if c.has("group") else m.captives
-			return n >= int(c["at_least"])
+			return n >= Num.of(c["at_least"])
 		"groups_taken":
-			return groups_taken(m, c["groups"]) >= int(c["count"])
+			return groups_taken(m, c["groups"]) >= Num.of(c["count"])
 		"spared":
 			return m.flags.has("spared:%s" % c["group"])
 	return false
@@ -248,18 +248,18 @@ static func run(m: MissionRuntime, a: Dictionary, tick: int) -> void:
 			ids.sort()
 			m.groups[a["group"]] = ids
 		"protect":
-			for id in m.alive_of(a["group"]):
+			for id in m.alive_of(str(a["group"])):
 				m.combat.untouchable[id] = true
 		"march":
 			set_marching(m, a["groups"], a.get("on", true))
 		"morale":
-			for id in m.alive_of(a["group"]):
+			for id in m.alive_of(str(a["group"])):
 				var unit := m.combat.defs[id - 1]
 				if unit != null:
-					m.combat.lose_morale(id - 1, unit.morale * int(a["permille"]) / 1000)
+					m.combat.lose_morale(id - 1, unit.morale * Num.of(a["permille"]) / 1000)
 		"countdown":
 			m.countdown_text = a.get("text", "")
-			m.countdown_end = tick + int(a["ticks"]) if int(a["ticks"]) > 0 else -1
+			m.countdown_end = tick + Num.of(a["ticks"]) if Num.of(a["ticks"]) > 0 else -1
 
 
 static func groups_near(m: MissionRuntime, group: String, other: String, radius: int) -> bool:

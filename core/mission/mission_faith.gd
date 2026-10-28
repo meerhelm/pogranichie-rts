@@ -13,9 +13,9 @@ static func baptism(m: MissionRuntime, tick: int) -> void:
 	if b.is_empty() or m.baptism_every <= 0 or tick == 0 or tick % m.baptism_every != 0:
 		return
 	var p: int = b["player"]
-	var base := StringName(b["base"])
-	var unit := StringName(b["unit"])
-	var r := Fixed.from_cells(b["radius"])
+	var base := StringName(str(b["base"]))
+	var unit := StringName(str(b["unit"]))
+	var r := Fixed.from_cells(Num.of(b["radius"]))
 	var entities := m.entities
 	var store := m.economy.buildings
 	for c in store.alive_ids:
@@ -57,19 +57,19 @@ static func spies(m: MissionRuntime, tick: int, spawn: Callable, apply: Callable
 		else:
 			m.spies_killed += 1
 			m.spy_waypoint.erase(id)
-			m.spy_next = tick + int(r["respawn_ticks"])
-			add_evidence(m, int(m.def.rules.get("evidence", {}).get("kill", 0)) * 1000)
+			m.spy_next = tick + Num.of(r["respawn_ticks"])
+			add_evidence(m, Num.of(m.def.rules.get("evidence", {}).get("kill", 0)) * 1000)
 	m.spies = alive
 	var route: Array = r["route"]
 	if m.spies.size() < m.spies_wanted and tick >= m.spy_next:
 		var at: Array = r["at"]
-		var x := Fixed.from_cells(at[0]) + Fixed.HALF
-		var y := Fixed.from_cells(at[1]) + Fixed.HALF
-		var id: int = spawn.call(StringName(r["unit"]), r["player"], x, y)
+		var x := Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+		var y := Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
+		var id: int = spawn.call(StringName(str(r["unit"])), r["player"], x, y)
 		if id != EntityStore.NO_ID:
 			apply.call(
 				SimCommand.set_stance(
-					tick, r["player"], PackedInt32Array([id]), EntityStore.Stance.PASSIVE
+					tick, Num.of(r["player"]), PackedInt32Array([id]), EntityStore.Stance.PASSIVE
 				)
 			)
 			m.spies.append(id)
@@ -82,9 +82,9 @@ static func spies(m: MissionRuntime, tick: int, spawn: Callable, apply: Callable
 		var k: int = m.spy_waypoint[id]
 		var to: Array = route[k]
 		m.spy_waypoint[id] = (k + 1) % route.size()
-		var tx := Fixed.from_cells(to[0]) + Fixed.HALF
-		var ty := Fixed.from_cells(to[1]) + Fixed.HALF
-		apply.call(SimCommand.move(tick, r["player"], PackedInt32Array([id]), tx, ty))
+		var tx := Fixed.from_cells(Num.of(to[0])) + Fixed.HALF
+		var ty := Fixed.from_cells(Num.of(to[1])) + Fixed.HALF
+		apply.call(SimCommand.move(tick, Num.of(r["player"]), PackedInt32Array([id]), tx, ty))
 
 
 ## Evidence (card ВКЛ 3, «Шкала Свидетельства»): it grows when a spy sees a rite at an alka
@@ -99,9 +99,9 @@ static func evidence(m: MissionRuntime, tick: int) -> void:
 	if r.is_empty():
 		return
 	var p: int = r["player"]
-	var spy := StringName(r["spy"])
-	var sight := Fixed.from_cells(r["sight"])
-	var near_sight := Fixed.from_cells(r["mist_sight"])
+	var spy := StringName(str(r["spy"]))
+	var sight := Fixed.from_cells(Num.of(r["sight"]))
+	var near_sight := Fixed.from_cells(Num.of(r["mist_sight"]))
 	var entities := m.entities
 	var magic := m.magic
 	var eyes := PackedInt32Array()
@@ -119,7 +119,7 @@ static func evidence(m: MissionRuntime, tick: int) -> void:
 			m.flags["power_spent"] = tick
 		var reach := sight + Fixed.from_cells(magic.fx_radius[i])
 		if _seen_by(entities, eyes, magic.fx_x[i], magic.fx_y[i], reach):
-			gain += int(r["cast"]) * 1000
+			gain += Num.of(r["cast"]) * 1000
 			m.flags["rite_seen"] = tick
 	var store := m.economy.buildings
 	for b in store.alive_ids:
@@ -130,7 +130,7 @@ static func evidence(m: MissionRuntime, tick: int) -> void:
 		var by := store.center_y(b)
 		var hidden := magic.mist.hides(p, Fixed.to_cells(bx), Fixed.to_cells(by), -1)
 		if _seen_by(entities, eyes, bx, by, near_sight if hidden else sight):
-			gain += int(r["alka_milli"])
+			gain += Num.of(r["alka_milli"])
 			m.flags["rite_seen"] = tick
 	add_evidence(m, gain)
 
@@ -141,13 +141,15 @@ static func add_evidence(m: MissionRuntime, milli: int) -> void:
 	if milli <= 0 or r.is_empty():
 		return
 	var faith := baptized_alive(m) + m.faith_bonus
-	var keep := maxi(int(r["faith_floor_permille"]), 1000 - faith * int(r["faith_step_permille"]))
+	var keep := maxi(
+		Num.of(r["faith_floor_permille"]), 1000 - faith * Num.of(r["faith_step_permille"])
+	)
 	m.evidence = mini(m.evidence + milli * keep / 1000, evidence_max(m))
 
 
 ## The evidence that loses the mission, in milli-points.
 static func evidence_max(m: MissionRuntime) -> int:
-	return int(m.def.rules.get("evidence", {}).get("max", 100)) * 1000
+	return Num.of(m.def.rules.get("evidence", {}).get("max", 100)) * 1000
 
 
 static func _seen_by(

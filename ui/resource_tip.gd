@@ -58,12 +58,16 @@ static func techs_for(eco: EconomySystem, p: int, r: int) -> Dictionary:
 		var def := eco.db.tech(id)
 		if def == null or not _touches(def, r):
 			continue
+		var key := ""
 		if state.techs.has(id):
-			(out["done"] as Array).append(def)
+			key = "done"
 		elif state.researching.has(id):
-			(out["researching"] as Array).append(def)
+			key = "researching"
 		elif not state.locked.has(id):
-			(out["open"] as Array).append(def)
+			key = "open"
+		if not key.is_empty():
+			var list: Array = out[key]
+			list.append(def)
 	return out
 
 

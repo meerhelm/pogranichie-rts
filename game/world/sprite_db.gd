@@ -83,8 +83,10 @@ class Sprite:
 		var b: Array = _pick_boxes[k]
 		if b.is_empty():
 			return false
+		var box := PackedFloat64Array(b)
 		var rect := Rect2(
-			(Vector2(b[0], b[1]) - pivot) * scale, Vector2(b[2] - b[0], b[3] - b[1]) * scale
+			(Vector2(box[0], box[1]) - pivot) * scale,
+			Vector2(box[2] - box[0], box[3] - box[1]) * scale
 		)
 		return rect.grow(slack).has_point(local)
 
@@ -96,7 +98,8 @@ class Sprite:
 			return false
 		var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(pick_path))
 		_pick_boxes = data["boxes"]
-		_pick_cols = int(data["cols"])
+		var cols: int = data["cols"]
+		_pick_cols = cols
 		return true
 
 	## Draws shadow, colour and the team mask tinted by `tint` on `item` at the anchor.
@@ -169,12 +172,15 @@ static func build_frames(s: Sprite) -> SpriteFrames:
 		for dir in FACINGS:
 			var name := anim_name(anim, dir)
 			f.add_animation(name)
-			f.set_animation_speed(name, float(a["fps"]))
+			var fps: float = a["fps"]
+			var frames: int = a["frames"]
+			var row: int = a["row"]
+			f.set_animation_speed(name, fps)
 			f.set_animation_loop(name, anim != "attack")  # notr
-			for i in int(a["frames"]):
+			for i in frames:
 				var t := AtlasTexture.new()
 				t.atlas = s.color
-				t.region = s.source(int(a["row"]) + dir, i)
+				t.region = s.source(row + dir, i)
 				f.add_frame(name, t)
 	return f
 
@@ -235,7 +241,7 @@ static func deposit_at(source: int, cell: int) -> Sprite:
 	var first := deposit(id, 0)
 	if first == null:
 		return null
-	var count := int(first.meta.get("variants", 1))
+	var count: int = first.meta.get("variants", 1)
 	return deposit(id, absi(hash(cell)) % count)
 
 
@@ -282,9 +288,11 @@ static func _load(prefix: String, meta_name: String) -> Sprite:
 	s.shadow = _texture(base, "shadow.png")
 	if ResourceLoader.exists(base + "team.png"):
 		s.team = _texture(base, "team.png")
-	var pivot: Array = meta.get("pivot", [0, 0])
+	var pivot_xy: Array = meta.get("pivot", [0, 0])
+	var pivot := PackedFloat64Array(pivot_xy)
 	s.pivot = Vector2(pivot[0], pivot[1])
-	var size: Array = meta.get("frame", meta.get("size", [0, 0]))
+	var frame_xy: Array = meta.get("frame", meta.get("size", [0, 0]))
+	var size := PackedFloat64Array(frame_xy)
 	s.frame = Vector2(size[0], size[1])
 	s.scale = meta.get("scale", 0.5)
 	s.anims = meta.get("anims", {})

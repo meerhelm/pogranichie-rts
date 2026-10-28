@@ -41,7 +41,7 @@ func test_painted_cells_and_moved_places_are_saved() -> void:
 	objects.set_cell(Vector2i(1, 0), 0, Vector2i(NavGrid.OBJECT_IDS.find(&"o_bog_ore"), 0))
 	var marker: Node2D = editor.get_node("Places").get_child(0)
 	marker.position = Iso.cell_to_screen(Vector2(11, 21))
-	var grid := MapText.parse(editor.map_text(), CatalogDB.load_all())
+	var grid := MapText.parse(str(editor.map_text()), CatalogDB.load_all())
 	assert_eq(grid.terrain_at(grid.cell_at(0, 0)), &"t_water", "painted water")
 	assert_eq(grid.object_at(grid.cell_at(1, 0)), &"o_bog_ore", "a new ore cell")
 	assert_eq(grid.terrain_at(grid.cell_at(1, 0)), &"t_bog", "ore lies in a bog")

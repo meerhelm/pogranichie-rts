@@ -151,7 +151,8 @@ func _group(ids: PackedInt32Array) -> void:
 	var counts := {}
 	for id in ids:
 		var type := String(sim.entities.type_ids[id - 1])
-		counts[type] = (counts.get(type, 0) as int) + 1
+		var had: int = counts.get(type, 0)
+		counts[type] = had + 1
 	var types := PackedStringArray(counts.keys())
 	types.sort()
 	var lines := PackedStringArray()

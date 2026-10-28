@@ -37,7 +37,7 @@ func _lobby(
 
 
 func _poll(pair: Array[NetSession], times: int = 10) -> void:
-	for i in times + 2 * int(pair[1].transport.get("lag_polls")):
+	for i in times + 2 * Num.of(pair[1].transport.get("lag_polls")):
 		for s in pair:
 			s.poll()
 
@@ -137,7 +137,7 @@ func test_a_different_version_is_refused() -> void:
 	ends[0].poll()
 	assert_eq(host.state, NetSession.State.CLOSED)
 	assert_eq(why.size(), 1)
-	assert_true(why[0].contains("0.0.0"), why[0])
+	assert_true(why[0].contains("0.0.0"), str(why[0]))
 
 
 func test_both_worlds_stay_equal_with_ai_orders_over_a_slow_line() -> void:
@@ -179,7 +179,7 @@ func test_a_drift_between_the_worlds_is_found() -> void:
 	games[1].sim.rng.state ^= 0x55
 	_play(games, 200)
 	assert_eq(found.size(), 2, "both sides see it")
-	assert_eq(int(found[0]), 120)
+	assert_eq(Num.of(found[0]), 120)
 	assert_eq(games[0].session.lockstep.desync_tick, 120)
 
 

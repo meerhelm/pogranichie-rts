@@ -406,21 +406,21 @@ func to_dict() -> Dictionary:
 ## JSON gives numbers as floats; every field is converted back to int here.
 static func from_dict(d: Dictionary) -> SimCommand:
 	var c := SimCommand.new()
-	c.tick = int(d["t"])
-	c.player = int(d["p"])
+	c.tick = Num.of(d["t"])
+	c.player = Num.of(d["p"])
 	var kind_name: String = d["k"]
 	var kind_index: int = Kind.keys().find(kind_name)
 	assert(kind_index >= 0, "unknown command kind: %s" % kind_name)
 	c.kind = kind_index as Kind
 	var raw_ids: Array = d.get("ids", [])
 	for v: Variant in raw_ids:
-		c.ids.append(int(v))
-	c.x = int(d.get("x", 0))
-	c.y = int(d.get("y", 0))
-	c.x2 = int(d.get("x2", 0))
-	c.y2 = int(d.get("y2", 0))
+		c.ids.append(Num.of(v))
+	c.x = Num.of(d.get("x", 0))
+	c.y = Num.of(d.get("y", 0))
+	c.x2 = Num.of(d.get("x2", 0))
+	c.y2 = Num.of(d.get("y2", 0))
 	c.type_id = StringName(str(d.get("u", "")))
-	c.formation = int(d.get("f", 0))
-	c.target = int(d.get("tg", 0))
-	c.value = int(d.get("v", 0))
+	c.formation = Num.of(d.get("f", 0))
+	c.target = Num.of(d.get("tg", 0))
+	c.value = Num.of(d.get("v", 0))
 	return c

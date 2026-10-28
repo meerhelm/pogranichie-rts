@@ -50,21 +50,21 @@ func set_up(m: MissionRuntime) -> void:
 		return
 	var h: Dictionary = r.get("heat", {})
 	if not h.is_empty():
-		_make_shade(m, int(h.get("shade_cells", 2)))
+		_make_shade(m, Num.of(h.get("shade_cells", 2)))
 		var start: Dictionary = h.get("start", {})
 		for id in m.entities.alive_ids:
 			if _feels_heat(m, h, id - 1):
-				heat[id] = int(start.get(str(m.entities.owners[id - 1]), 0))
+				heat[id] = Num.of(start.get(str(m.entities.owners[id - 1]), 0))
 	var b: Dictionary = r.get("royal_banner", {})
 	if not b.is_empty():
-		var carriers := m.alive_of(b["group"])
+		var carriers := m.alive_of(str(b["group"]))
 		if not carriers.is_empty():
 			bearer = carriers[0]
 			_banner_morale(m, b, true)
 	var c: Dictionary = r.get("capture", {})
 	if not c.is_empty():
-		for id in m.alive_of(c["group"]):
-			var floor_hp := maxi(m.entities.max_hp[id - 1] * int(c["permille"]) / 1000, 1)
+		for id in m.alive_of(str(c["group"])):
+			var floor_hp := maxi(m.entities.max_hp[id - 1] * Num.of(c["permille"]) / 1000, 1)
 			m.combat.hp_floor[id] = floor_hp
 
 
@@ -81,7 +81,7 @@ func step(m: MissionRuntime, tick: int) -> void:
 func test(_m: MissionRuntime, c: Dictionary) -> bool:
 	match c["type"]:
 		"captives":
-			return captured >= int(c["at_least"])
+			return captured >= Num.of(c["at_least"])
 	return false
 
 
@@ -177,8 +177,8 @@ func _heat(m: MissionRuntime, h: Dictionary, tick: int) -> void:
 	if h.is_empty():
 		return
 	var e := m.entities
-	var every := int(h["every_ticks"])
-	var top := int(h["max"])
+	var every := Num.of(h["every_ticks"])
+	var top := Num.of(h["max"])
 	if tick % every == 0:
 		for id in e.alive_ids:
 			var s := id - 1
@@ -187,9 +187,9 @@ func _heat(m: MissionRuntime, h: Dictionary, tick: int) -> void:
 					continue
 				heat[id] = 0
 			if in_shade(m, e.pos_x[s], e.pos_y[s]):
-				heat[id] = maxi(heat[id] - int(h["shade"]), 0)
+				heat[id] = maxi(heat[id] - Num.of(h["shade"]), 0)
 			else:
-				heat[id] = mini(heat[id] + int(h["sun"]), top)
+				heat[id] = mini(heat[id] + Num.of(h["sun"]), top)
 	var gone := PackedInt32Array()
 	for id: int in heat:
 		if not e.is_alive(id):
@@ -212,8 +212,8 @@ func _line(m: MissionRuntime, l: Dictionary, tick: int) -> void:
 			sent_back.clear()
 		return
 	var e := m.entities
-	var p := int(l["player"])
-	var row := Fixed.from_cells(int(l["y"]))
+	var p := Num.of(l["player"])
+	var row := Fixed.from_cells(Num.of(l["y"]))
 	var back := PackedInt32Array()
 	var sum_x := 0
 	for id in e.alive_ids:
@@ -233,7 +233,7 @@ func _line(m: MissionRuntime, l: Dictionary, tick: int) -> void:
 	if not m.flags.has("line_crossed"):
 		m.flags["line_crossed"] = tick
 	var x := sum_x / back.size()
-	var y := Fixed.from_cells(int(l["back_y"])) + Fixed.HALF
+	var y := Fixed.from_cells(Num.of(l["back_y"])) + Fixed.HALF
 	m._apply.call(SimCommand.move(tick, p, back, x, y))
 
 
@@ -245,15 +245,15 @@ func _banner(m: MissionRuntime, b: Dictionary, tick: int) -> void:
 		return
 	if not m.flags.has("banner_reached") and _raiser_near(m, b) != 0:
 		m.flags["banner_reached"] = tick
-	if tick - banner_down >= int(b["ticks"]) and not m.flags.has("banner_reached"):
+	if tick - banner_down >= Num.of(b["ticks"]) and not m.flags.has("banner_reached"):
 		m.flags["royal_banner_lost"] = tick
 
 
 ## The raiser of the mission's player within reach of the lying banner, or 0.
 func _raiser_near(m: MissionRuntime, b: Dictionary) -> int:
 	var e := m.entities
-	var reach := Fixed.from_cells(int(b["radius"]))
-	var kind := StringName(b["raiser"])
+	var reach := Fixed.from_cells(Num.of(b["radius"]))
+	var kind := StringName(str(b["raiser"]))
 	for id in e.alive_ids:
 		var s := id - 1
 		if e.owners[s] != m.def.player or e.type_ids[s] != kind or e.hp[s] <= 0:
@@ -269,7 +269,7 @@ func _banner_morale(m: MissionRuntime, b: Dictionary, on: bool) -> void:
 	var crown := m.combat.crown
 	for p: int in b["players"]:
 		if on and bearer != 0:
-			crown.army_morale[p] = int(b["morale"])
+			crown.army_morale[p] = Num.of(b["morale"])
 		else:
 			crown.army_morale.erase(p)
 
@@ -280,8 +280,8 @@ func _banner_morale(m: MissionRuntime, b: Dictionary, on: bool) -> void:
 func _capture(m: MissionRuntime, c: Dictionary, tick: int) -> void:
 	if c.is_empty():
 		return
-	var reach := Fixed.from_cells(int(c["radius"]))
-	for id in m.alive_of(c["group"]):
+	var reach := Fixed.from_cells(Num.of(c["radius"]))
+	for id in m.alive_of(str(c["group"])):
 		if not m.combat.hp_floor.has(id) or m.entities.hp[id - 1] > m.combat.hp_floor[id]:
 			continue
 		if not _friend_near(m, id - 1, reach):

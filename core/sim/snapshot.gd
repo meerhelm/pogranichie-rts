@@ -43,7 +43,7 @@ static func capture(root: Object, externals: Dictionary = {}) -> Dictionary:
 static func restore(
 	data: Dictionary, fresh_root: Object, externals: Dictionary = {}, factories: Dictionary = {}
 ) -> String:
-	if int(data.get("format", 0)) != FORMAT:
+	if Num.of(data.get("format", 0)) != FORMAT:
 		return "unsupported snapshot format"
 	var r := _Reader.new()
 	r.table = data["objects"]
@@ -65,7 +65,7 @@ static func script_vars(obj: Object) -> PackedStringArray:
 	for prop: Dictionary in obj.get_property_list():
 		var usage: int = prop["usage"]
 		if usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
-			names.append(prop["name"])
+			names.append(str(prop["name"]))
 	return names
 
 
@@ -193,9 +193,9 @@ class _Reader:
 		elif tag.has(KEYS):
 			out = decode_dictionary(tag[KEYS], tag[VALUES], current)
 		elif tag.has(OBJECT):
-			out = object_for(int(tag[OBJECT]), current)
+			out = object_for(Num.of(tag[OBJECT]), current)
 		elif tag.has(RESOURCE):
-			out = load(tag[RESOURCE])
+			out = load(str(tag[RESOURCE]))
 		elif tag.has(EXTERNAL):
 			out = externals.get(tag[EXTERNAL])
 		elif tag.has(CALLABLE):
@@ -227,7 +227,7 @@ class _Reader:
 		if typeof(current) == TYPE_CALLABLE and (current as Callable).is_standard():
 			fresh = (current as Callable).get_object()
 		var target: Variant = decode(parts[0], fresh)
-		return Callable(target as Object, StringName(parts[1]))
+		return Callable(target as Object, StringName(str(parts[1])))
 
 	func object_for(id: int, current: Variant) -> Object:
 		if live.has(id):

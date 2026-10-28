@@ -131,8 +131,8 @@ func set_up(m: MissionRuntime) -> void:
 	if r.is_empty():
 		return
 	on = true
-	player = int(r["player"])
-	enemy = int(r["enemy"])
+	player = Num.of(r["player"])
+	enemy = Num.of(r["enemy"])
 	mustered = _fighting_alive(m)
 	var d: Dictionary = r.get("ditch", {})
 	if not d.is_empty():
@@ -154,35 +154,35 @@ func step(m: MissionRuntime, tick: int) -> void:
 	_surrender(m, r.get("surrender", {}), tick)
 	if tick % CHARGE_EVERY == 0:
 		for g in charging:
-			_charge(m, g, int(r.get("charge", {}).get("leash", 60)), tick)
+			_charge(m, g, Num.of(r.get("charge", {}).get("leash", 60)), tick)
 
 
 func test(m: MissionRuntime, c: Dictionary) -> bool:
 	var ok := false
 	match c["type"]:
 		"clock":
-			ok = minutes(m, now) >= int(c["at_least"])
+			ok = minutes(m, now) >= Num.of(c["at_least"])
 		"hired":
 			var n := hired_horse + hired_foot
 			if c.get("kind", "") == "horse":
 				n = hired_horse
 			elif c.get("kind", "") == "foot":
 				n = hired_foot
-			ok = n >= int(c["at_least"])
+			ok = n >= Num.of(c["at_least"])
 		"ditch":
-			ok = ditch_permille(m) >= int(c["at_least"])
+			ok = ditch_permille(m) >= Num.of(c["at_least"])
 		"tabor_ready":
 			ok = tabor_ready(m)
 		"in_zone":
-			ok = in_zone(m) >= int(c["at_least"])
+			ok = in_zone(m) >= Num.of(c["at_least"])
 		"prisoners":
-			ok = prisoners >= int(c["at_least"])
+			ok = prisoners >= Num.of(c["at_least"])
 		"unpaid":
-			ok = deserted >= int(c["at_least"])
+			ok = deserted >= Num.of(c["at_least"])
 		"fleeing":
-			ok = fleeing_permille(m) >= int(c["permille"])
+			ok = fleeing_permille(m) >= Num.of(c["permille"])
 		"camp_lost":
-			ok = camp_threat >= int(c["ticks"])
+			ok = camp_threat >= Num.of(c["ticks"])
 		"hiring":
 			ok = hiring
 	return ok
@@ -210,7 +210,7 @@ func run(m: MissionRuntime, a: Dictionary, tick: int) -> void:
 			if a.get("on", true):
 				if not charging.has(g):
 					charging.append(g)
-					_charge(m, g, int(_rules(m).get("charge", {}).get("leash", 60)), tick)
+					_charge(m, g, Num.of(_rules(m).get("charge", {}).get("leash", 60)), tick)
 			elif charging.has(g):
 				charging.remove_at(charging.find(g))
 		"fall_back_order":
@@ -220,11 +220,11 @@ func run(m: MissionRuntime, a: Dictionary, tick: int) -> void:
 					m.combat.flags[id - 1] |= CombatSystem.F_RETREAT
 			m.flags["fall_back"] = tick
 		"rest":
-			_rest(m, int(a["player"]), a["to"], tick)
+			_rest(m, Num.of(a["player"]), a["to"], tick)
 		"hurt":
-			for id in m.alive_of(a["group"]):
+			for id in m.alive_of(str(a["group"])):
 				var s := id - 1
-				var hp := maxi(m.entities.max_hp[s] * int(a["permille"]) / FULL, 1)
+				var hp := maxi(m.entities.max_hp[s] * Num.of(a["permille"]) / FULL, 1)
 				m.entities.hp[s] = mini(m.entities.hp[s], hp)
 
 
@@ -236,7 +236,7 @@ func minutes(m: MissionRuntime, tick: int) -> int:
 	var d: Dictionary = _rules(m).get("day", {})
 	if d.is_empty():
 		return 0
-	return int(d["start_minutes"]) + tick * 60 / maxi(int(d["ticks_per_hour"]), 1)
+	return Num.of(d["start_minutes"]) + tick * 60 / maxi(Num.of(d["ticks_per_hour"]), 1)
 
 
 ## The clock as «HH:MM», for the panel.
@@ -246,7 +246,7 @@ func clock_text(m: MissionRuntime, tick: int) -> String:
 
 
 func ditch_permille(m: MissionRuntime) -> int:
-	var need := int(_rules(m).get("ditch", {}).get("need", 0))
+	var need := Num.of(_rules(m).get("ditch", {}).get("need", 0))
 	return FULL if need <= 0 else mini(work * FULL / need, FULL)
 
 
@@ -261,9 +261,9 @@ func ring_at_camp(m: MissionRuntime) -> bool:
 		return false
 	var cr := m.combat.crown
 	var at: Array = c["at"]
-	var x := Fixed.from_cells(at[0]) + Fixed.HALF
-	var y := Fixed.from_cells(at[1]) + Fixed.HALF
-	var reach := Fixed.from_cells(int(c["radius"]))
+	var x := Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+	var y := Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
+	var reach := Fixed.from_cells(Num.of(c["radius"]))
 	for i in cr.ring_owner.size():
 		if cr.ring_owner[i] == player and Fixed.distance(x, y, cr.ring_x[i], cr.ring_y[i]) <= reach:
 			return true
@@ -357,22 +357,22 @@ func _hire_one(m: MissionRuntime, h: Dictionary, offer: Array, tick: int) -> voi
 	var kind: String = offer[3]
 	var cap: Dictionary = h.get("max", {})
 	var have := hired_horse if kind == "horse" else hired_foot
-	if have >= int(cap.get(kind, 0)):
+	if have >= Num.of(cap.get(kind, 0)):
 		m.flags["full_" + kind] = tick
 		return
 	var state := m.economy.player(player)
-	if state == null or state.stock[EconomySystem.SILVER] < int(offer[1]):
+	if state == null or state.stock[EconomySystem.SILVER] < Num.of(offer[1]):
 		m.flags["no_silver"] = tick
 		return
-	state.stock[EconomySystem.SILVER] -= int(offer[1])
+	state.stock[EconomySystem.SILVER] -= Num.of(offer[1])
 	var at: Array = h["at"]
 	var k := hired_horse + hired_foot
-	var x := Fixed.from_cells(int(at[0]) + k % 4) + Fixed.HALF
-	var y := Fixed.from_cells(int(at[1]) + k / 4) + Fixed.HALF
-	var id: int = m._spawn.call(StringName(offer[0]), player, x, y)
+	var x := Fixed.from_cells(Num.of(at[0]) + k % 4) + Fixed.HALF
+	var y := Fixed.from_cells(Num.of(at[1]) + k / 4) + Fixed.HALF
+	var id: int = m._spawn.call(StringName(str(offer[0])), player, x, y)
 	if id == EntityStore.NO_ID:
 		return
-	wage[id] = int(offer[2])
+	wage[id] = Num.of(offer[2])
 	mustered += 1
 	if kind == "horse":
 		hired_horse += 1
@@ -387,7 +387,7 @@ func _hire_one(m: MissionRuntime, h: Dictionary, offer: Array, tick: int) -> voi
 func _paid_now(m: MissionRuntime) -> PackedInt32Array:
 	var w: Dictionary = _rules(m).get("wages", {})
 	var out := PackedInt32Array()
-	var every := maxi(int(w.get("company_every", 1)), 1)
+	var every := maxi(Num.of(w.get("company_every", 1)), 1)
 	if (paydays + 1) % every == 0:
 		out.append_array(m.alive_of(str(w.get("company", ""))))
 	var ids := wage.keys()
@@ -404,7 +404,7 @@ func _wage_of(m: MissionRuntime, id: int) -> int:
 	var type := String(m.entities.type_ids[id - 1])
 	for offer: Array in _rules(m).get("hire", {}).get("offers", []):
 		if offer[0] == type:
-			return int(offer[2])
+			return Num.of(offer[2])
 	return 0
 
 
@@ -443,11 +443,16 @@ func _ditch_order(m: MissionRuntime, d: Dictionary) -> PackedInt32Array:
 	var inner: Array = d["inner"]
 	var out := PackedInt32Array()
 	var seen := {}
-	var x0 := int(outer[0])
-	var y0 := int(outer[1])
-	var x1 := int(outer[2])
-	var y1 := int(outer[3])
-	while x0 < int(inner[0]) and y0 < int(inner[1]) and x1 > int(inner[2]) and y1 > int(inner[3]):
+	var x0 := Num.of(outer[0])
+	var y0 := Num.of(outer[1])
+	var x1 := Num.of(outer[2])
+	var y1 := Num.of(outer[3])
+	while (
+		x0 < Num.of(inner[0])
+		and y0 < Num.of(inner[1])
+		and x1 > Num.of(inner[2])
+		and y1 > Num.of(inner[3])
+	):
 		var ring: Array[Vector2i] = []
 		for x in range(x0, x1 + 1):
 			ring.append(Vector2i(x, y0))
@@ -474,7 +479,12 @@ func _ditch_order(m: MissionRuntime, d: Dictionary) -> PackedInt32Array:
 
 static func _in_gap(d: Dictionary, c: Vector2i) -> bool:
 	for g: Array in d.get("gaps", []):
-		if c.x >= int(g[0]) and c.y >= int(g[1]) and c.x <= int(g[2]) and c.y <= int(g[3]):
+		if (
+			c.x >= Num.of(g[0])
+			and c.y >= Num.of(g[1])
+			and c.x <= Num.of(g[2])
+			and c.y <= Num.of(g[3])
+		):
 			return true
 	return false
 
@@ -483,7 +493,7 @@ func _ditch(m: MissionRuntime, d: Dictionary, tick: int) -> void:
 	if d.is_empty() or ditch_cells.is_empty():
 		return
 	var e := m.entities
-	var need := int(d["need"])
+	var need := Num.of(d["need"])
 	if work < need:
 		var diggers := 0
 		for id in e.alive_ids:
@@ -498,7 +508,7 @@ func _ditch(m: MissionRuntime, d: Dictionary, tick: int) -> void:
 		work = mini(work + diggers * CHECK, need)
 		var should := ditch_cells.size() * work / need
 		var nav := m.combat.nav
-		var t := nav.terrain_ids.find(StringName(d.get("terrain", "t_bog")))
+		var t := nav.terrain_ids.find(StringName(str(d.get("terrain", "t_bog"))))
 		while dug < should and t >= 0:
 			nav.set_terrain(ditch_cells[dug], t)
 			dug += 1
@@ -529,9 +539,9 @@ func _camp(m: MissionRuntime, c: Dictionary) -> void:
 		for id in m.alive_of(str(c.get("wagons", ""))):
 			m.combat.untouchable[id] = true
 	var at: Array = c["at"]
-	var x := Fixed.from_cells(at[0]) + Fixed.HALF
-	var y := Fixed.from_cells(at[1]) + Fixed.HALF
-	var reach := Fixed.from_cells(int(c["radius"]))
+	var x := Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+	var y := Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
+	var reach := Fixed.from_cells(Num.of(c["radius"]))
 	var e := m.entities
 	var theirs := 0
 	var ours := 0
@@ -545,7 +555,7 @@ func _camp(m: MissionRuntime, c: Dictionary) -> void:
 			ours += 1
 		elif e.owners[s] == enemy:
 			theirs += 1
-	if theirs >= int(c.get("lost_units", 3)) and ours == 0:
+	if theirs >= Num.of(c.get("lost_units", 3)) and ours == 0:
 		camp_threat += CHECK
 	else:
 		camp_threat = 0
@@ -561,29 +571,29 @@ func _fatigue(m: MissionRuntime, f: Dictionary, tick: int) -> void:
 	var players: Array = f["players"]
 	var drain: Dictionary = f.get("drain", {})
 	var camps: Dictionary = f.get("camps", {})
-	var near_camp := Fixed.from_cells(int(f.get("camp_radius", 8)))
-	var floor_permille := int(f.get("floor", 300))
-	var tired := int(f.get("tired", 400))
+	var near_camp := Fixed.from_cells(Num.of(f.get("camp_radius", 8)))
+	var floor_permille := Num.of(f.get("floor", 300))
+	var tired := Num.of(f.get("tired", 400))
 	var crown := m.combat.crown
 	# The long morning: the riders skirmish and wheel away, so blows land seldom until `until`.
 	var skirmish: Dictionary = f.get("skirmish", {})
 	var base := FULL
-	if not skirmish.is_empty() and not m.fired.has(String(skirmish.get("until", ""))):
-		base = int(skirmish.get("damage", FULL))
+	if not skirmish.is_empty() and not m.fired.has(String(str(skirmish.get("until", "")))):
+		base = Num.of(skirmish.get("damage", FULL))
 	for id in e.alive_ids:
 		var s := id - 1
 		if not players.has(e.owners[s]) or not _is_horse(m, s, false):
 			continue
 		var left: int = stamina.get(id, FULL)
-		var k := int(drain.get(String(e.type_ids[s]), FULL))
+		var k := Num.of(drain.get(String(e.type_ids[s]), FULL))
 		if e.calm[s] < MELEE_TICKS:
-			left -= int(f["fight"]) * k / FULL
+			left -= Num.of(f["fight"]) * k / FULL
 		elif e.moved[s] == 1:
-			left -= int(f["ride"]) * k / FULL
+			left -= Num.of(f["ride"]) * k / FULL
 		elif _at_camp(e, s, camps, near_camp):
-			left += int(f["camp_rest"])
+			left += Num.of(f["camp_rest"])
 		else:
-			left += int(f["rest"])
+			left += Num.of(f["rest"])
 		left = clampi(left, 0, FULL)
 		stamina[id] = left
 		var full := m.combat.defs[s].morale * CombatSystem.MORALE_SCALE
@@ -592,7 +602,7 @@ func _fatigue(m: MissionRuntime, f: Dictionary, tick: int) -> void:
 			e.morale[s] = cap
 		var dmg := base
 		if left < tired:
-			dmg = dmg * int(f.get("tired_damage", FULL)) / FULL
+			dmg = dmg * Num.of(f.get("tired_damage", FULL)) / FULL
 		if dmg != FULL:
 			crown.mission_damage[id] = dmg
 		else:
@@ -610,8 +620,8 @@ func _at_camp(e: EntityStore, s: int, camps: Dictionary, reach: int) -> bool:
 	var at: Array = camps.get(str(e.owners[s]), [])
 	if at.is_empty():
 		return false
-	var x := Fixed.from_cells(at[0]) + Fixed.HALF
-	var y := Fixed.from_cells(at[1]) + Fixed.HALF
+	var x := Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+	var y := Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
 	return Fixed.distance(x, y, e.pos_x[s], e.pos_y[s]) <= reach
 
 
@@ -621,11 +631,11 @@ func _rotate(m: MissionRuntime, f: Dictionary, camps: Dictionary, reach: int, ti
 	var at: Array = camps.get(str(enemy), [])
 	if at.is_empty():
 		return
-	var home_x := Fixed.from_cells(at[0]) + Fixed.HALF
-	var home_y := Fixed.from_cells(at[1]) + Fixed.HALF
+	var home_x := Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+	var home_y := Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
 	var post: Array = f.get("post", at)
-	var post_x := Fixed.from_cells(post[0]) + Fixed.HALF
-	var post_y := Fixed.from_cells(post[1]) + Fixed.HALF
+	var post_x := Fixed.from_cells(Num.of(post[0])) + Fixed.HALF
+	var post_y := Fixed.from_cells(Num.of(post[1])) + Fixed.HALF
 	var ids := stamina.keys()
 	ids.sort()
 	var home := PackedInt32Array()
@@ -634,14 +644,18 @@ func _rotate(m: MissionRuntime, f: Dictionary, camps: Dictionary, reach: int, ti
 		var s := id - 1
 		if e.owners[s] != enemy or e.intents[s] == EntityStore.Intent.FLEE:
 			continue
-		var hurt := e.hp[s] * FULL < int(f.get("wounded", 0)) * e.max_hp[s]
+		var hurt := e.hp[s] * FULL < Num.of(f.get("wounded", 0)) * e.max_hp[s]
 		if resting.has(id):
 			var idle := e.intents[s] == EntityStore.Intent.NONE
-			if idle and stamina[id] >= int(f.get("rested", 800)) and _at_camp(e, s, camps, reach):
+			if (
+				idle
+				and stamina[id] >= Num.of(f.get("rested", 800))
+				and _at_camp(e, s, camps, reach)
+			):
 				if not hurt:
 					resting.erase(id)
 					out.append(id)
-		elif stamina[id] < int(f.get("tired", 400)) or hurt:
+		elif stamina[id] < Num.of(f.get("tired", 400)) or hurt:
 			resting[id] = true
 			home.append(id)
 	if not home.is_empty():
@@ -654,10 +668,10 @@ func _rotate(m: MissionRuntime, f: Dictionary, camps: Dictionary, reach: int, ti
 
 
 func _crossbows(m: MissionRuntime, cb: Dictionary, tick: int) -> void:
-	if cb.is_empty() or not crossbows_on or tick % int(cb["every_ticks"]) != 0:
+	if cb.is_empty() or not crossbows_on or tick % Num.of(cb["every_ticks"]) != 0:
 		return
 	var e := m.entities
-	var shooter := StringName(cb["shooter"])
+	var shooter := StringName(str(cb["shooter"]))
 	var shooters := 0
 	for id in e.alive_ids:
 		var s := id - 1
@@ -667,7 +681,7 @@ func _crossbows(m: MissionRuntime, cb: Dictionary, tick: int) -> void:
 				and _in_rect(cb["reeds"], e.pos_x[s], e.pos_y[s])
 			):
 				shooters += 1
-	shooters = mini(shooters, int(cb.get("cap", 4)))
+	shooters = mini(shooters, Num.of(cb.get("cap", 4)))
 	if shooters == 0:
 		return
 	var hit := PackedInt32Array()
@@ -677,9 +691,9 @@ func _crossbows(m: MissionRuntime, cb: Dictionary, tick: int) -> void:
 			if not m.combat.untouchable.has(id) and _fights(m, s):
 				hit.append(id)
 	for id in hit:
-		m.combat.lightning(id, player, int(cb["damage"]) * shooters)
+		m.combat.lightning(id, player, Num.of(cb["damage"]) * shooters)
 		if e.is_alive(id):
-			m.combat.lose_morale(id - 1, int(cb.get("morale", 0)))
+			m.combat.lose_morale(id - 1, Num.of(cb.get("morale", 0)))
 	if not hit.is_empty():
 		m.flags["volley"] = tick
 
@@ -690,31 +704,31 @@ func _command(m: MissionRuntime, c: Dictionary, tick: int) -> void:
 	var crown := m.combat.crown
 	crown.army_morale.erase(player)
 	crown.mission_morale.clear()
-	var head := m.alive_of(c["group"])
+	var head := m.alive_of(str(c["group"]))
 	# The commander cannot fall; he only drops out wounded, when the story says so.
 	for id in head:
-		var floor_hp := m.entities.max_hp[id - 1] * int(c.get("floor_permille", 0)) / FULL
+		var floor_hp := m.entities.max_hp[id - 1] * Num.of(c.get("floor_permille", 0)) / FULL
 		if floor_hp > 0:
 			m.combat.hp_floor[id] = floor_hp
 	var serving := not head.is_empty() and m.entities.owners[head[0] - 1] == player
-	var wounded := int(m.flags.get("wounded", -1))
-	if wounded >= 0 and tick - wounded < int(c.get("keep_ticks", 0)):
+	var wounded := Num.of(m.flags.get("wounded", -1))
+	if wounded >= 0 and tick - wounded < Num.of(c.get("keep_ticks", 0)):
 		serving = true
 	if serving:
-		crown.army_morale[player] = int(c["morale"])
+		crown.army_morale[player] = Num.of(c["morale"])
 		return
-	var stand := m.alive_of(c["stand_in"])
+	var stand := m.alive_of(str(c["stand_in"]))
 	if stand.is_empty():
 		return
 	var e := m.entities
 	var s := stand[0] - 1
-	var reach := Fixed.from_cells(int(c["radius"]))
+	var reach := Fixed.from_cells(Num.of(c["radius"]))
 	for id in m.combat.buckets.near(e.pos_x[s], e.pos_y[s], reach):
 		var o := id - 1
 		if e.owners[o] != player:
 			continue
 		if Fixed.distance(e.pos_x[s], e.pos_y[s], e.pos_x[o], e.pos_y[o]) <= reach:
-			crown.mission_morale[id] = int(c["morale"])
+			crown.mission_morale[id] = Num.of(c["morale"])
 
 
 ## Whether the player's command is in Stach's hands now (Dunin bandaged in the tabor).
@@ -722,21 +736,21 @@ func stand_in_commands(m: MissionRuntime) -> bool:
 	var c: Dictionary = _rules(m).get("command", {})
 	if c.is_empty():
 		return false
-	var head := m.alive_of(c["group"])
+	var head := m.alive_of(str(c["group"]))
 	return head.is_empty() or m.entities.owners[head[0] - 1] != player
 
 
 func _leader(m: MissionRuntime, l: Dictionary, tick: int) -> void:
 	if l.is_empty() or leader_down:
 		return
-	var ids := m.alive_of(l["group"])
+	var ids := m.alive_of(str(l["group"]))
 	var e := m.entities
 	if not ids.is_empty():
 		var s := ids[0] - 1
 		if m.fired.has(str(l.get("mortal_from", ""))):
 			m.combat.hp_floor.erase(ids[0])
 		else:
-			m.combat.hp_floor[ids[0]] = maxi(e.max_hp[s] * int(l["floor_permille"]) / FULL, 1)
+			m.combat.hp_floor[ids[0]] = maxi(e.max_hp[s] * Num.of(l["floor_permille"]) / FULL, 1)
 		if e.hp[s] > 0:
 			return
 	if not m.groups.has(l["group"]):
@@ -745,14 +759,14 @@ func _leader(m: MissionRuntime, l: Dictionary, tick: int) -> void:
 	m.flags["leader_dead"] = tick
 	for g: String in l.get("followers", []):
 		for id in m.alive_of(g):
-			m.combat.lose_morale(id - 1, int(l["morale"]))
+			m.combat.lose_morale(id - 1, Num.of(l["morale"]))
 
 
 func _surrender(m: MissionRuntime, sr: Dictionary, tick: int) -> void:
 	if sr.is_empty() or not m.flags.has(str(sr.get("from", ""))):
 		return
 	var e := m.entities
-	var reach := Fixed.from_cells(int(sr["radius"]))
+	var reach := Fixed.from_cells(Num.of(sr["radius"]))
 	var taken := PackedInt32Array()
 	for id in e.alive_ids:
 		var s := id - 1
@@ -766,14 +780,14 @@ func _surrender(m: MissionRuntime, sr: Dictionary, tick: int) -> void:
 			taken.append(id)
 	var t: Dictionary = sr.get("tabor", {})
 	if not t.is_empty() and tick >= next_yield and _player_in(m, t["rect"]):
-		next_yield = tick + int(t["every_ticks"])
+		next_yield = tick + Num.of(t["every_ticks"])
 		for g: String in t["groups"]:
 			var ids := m.alive_of(g)
 			if not ids.is_empty() and not taken.has(ids[0]):
 				taken.append(ids[0])
 				break
 	for id in taken:
-		_take(m, id, int(sr.get("silver", 0)), tick)
+		_take(m, id, Num.of(sr.get("silver", 0)), tick)
 
 
 func _take(m: MissionRuntime, id: int, silver: int, tick: int) -> void:
@@ -859,8 +873,8 @@ func _rest(m: MissionRuntime, p: int, to: Array, tick: int) -> void:
 			ids.append(id)
 	if ids.is_empty():
 		return
-	var x := Fixed.from_cells(to[0]) + Fixed.HALF
-	var y := Fixed.from_cells(to[1]) + Fixed.HALF
+	var x := Fixed.from_cells(Num.of(to[0])) + Fixed.HALF
+	var y := Fixed.from_cells(Num.of(to[1])) + Fixed.HALF
 	m._apply.call(SimCommand.move(tick, p, ids, x, y))
 
 
@@ -897,7 +911,12 @@ func _fighting_alive(m: MissionRuntime) -> int:
 static func _in_rect(rect: Array, x: int, y: int) -> bool:
 	var cx := Fixed.to_cells(x)
 	var cy := Fixed.to_cells(y)
-	return cx >= int(rect[0]) and cy >= int(rect[1]) and cx <= int(rect[2]) and cy <= int(rect[3])
+	return (
+		cx >= Num.of(rect[0])
+		and cy >= Num.of(rect[1])
+		and cx <= Num.of(rect[2])
+		and cy <= Num.of(rect[3])
+	)
 
 
 func _rules(m: MissionRuntime) -> Dictionary:
@@ -917,7 +936,7 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_32(ids.size())
 		for id: int in ids:
 			buf.put_32(id)
-			buf.put_32(int(d[id]))
+			buf.put_32(Num.of(d[id]))
 	var rest := resting.keys()
 	rest.sort()
 	buf.put_32(rest.size())

@@ -324,9 +324,9 @@ func _forest(main: Node, x0: int, y0: int) -> void:
 	var input: PlayerInput = main.get_node("UI/PlayerInput")
 	var ids := PackedInt32Array()
 	for p: Array in places:
-		var at_x := Fixed.from_cells(x0 + int(p[1])) + Fixed.ONE / 2
-		var at_y := Fixed.from_cells(y0 + int(p[2])) + Fixed.ONE / 2
-		var id := sim.spawn_unit(p[0], 1, at_x, at_y)
+		var at_x := Fixed.from_cells(x0 + Num.of(p[1])) + Fixed.ONE / 2
+		var at_y := Fixed.from_cells(y0 + Num.of(p[2])) + Fixed.ONE / 2
+		var id := sim.spawn_unit(str(p[0]), 1, at_x, at_y)
 		if ids.size() < 2:
 			ids.append(id)
 	var eco := sim.economy

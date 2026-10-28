@@ -75,7 +75,7 @@ func _card(card: Dictionary, theme: Theme) -> Control:
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override(&"separation", 10)
 	m.add_child(v)
-	v.add_child(_label(card["name"], 40, Color(1.0, 0.93, 0.78), true))
+	v.add_child(_label(str(card["name"]), 40, Color(1.0, 0.93, 0.78), true))
 	var fmt := "%s  ·  эпоха «%s»  ·  %s клеток"  # notr
 	var sub := fmt % [card["faction"], card["age"], card["cells"]]
 	v.add_child(_label(sub, 22, Color(0.78, 0.7, 0.56)))
@@ -92,7 +92,7 @@ func _card(card: Dictionary, theme: Theme) -> Control:
 	frame.custom_minimum_size = Vector2(700, 0)
 	h.add_child(frame)
 	var pic := TextureRect.new()
-	pic.texture = ImageTexture.create_from_image(Image.load_from_file(card["img"]))
+	pic.texture = ImageTexture.create_from_image(Image.load_from_file(str(card["img"])))
 	pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	pic.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -117,7 +117,7 @@ func _card(card: Dictionary, theme: Theme) -> Control:
 		grid.columns = 2
 		grid.add_theme_constant_override(&"h_separation", 10)
 		for i in 4:
-			if int(cost[i]) == 0:
+			if Num.of(cost[i]) == 0:
 				continue
 			var icon := TextureRect.new()
 			icon.texture = load("res://ui/icons/%s.svg" % RES_ICONS[i])
@@ -125,7 +125,7 @@ func _card(card: Dictionary, theme: Theme) -> Control:
 			icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			grid.add_child(icon)
-			grid.add_child(_label("%d  %s" % [int(cost[i]), RES_NAMES[i]], 24))
+			grid.add_child(_label("%d  %s" % [Num.of(cost[i]), RES_NAMES[i]], 24))
 		if grid.get_child_count() == 0:
 			info.add_child(_label("бесплатно", 22))  # notr
 		info.add_child(grid)

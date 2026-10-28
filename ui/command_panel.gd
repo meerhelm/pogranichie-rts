@@ -142,8 +142,8 @@ static func _set_tip(b: IconButton, tip: Tips.Tip) -> void:
 
 
 ## An order button: icon (ui/icons/orders), name, key and what it does.
-func _order(icon: String, name: String, key: String, what: String, action: Callable) -> IconButton:
-	var b := _button(_orders, IconDB.order(icon), name, Tips.order(icon, name, key, what), action)
+func _order(icon: String, title: String, key: String, what: String, action: Callable) -> IconButton:
+	var b := _button(_orders, IconDB.order(icon), title, Tips.order(icon, title, key, what), action)
 	b.hotkey = key
 	return b
 
@@ -172,7 +172,10 @@ func _unit_orders() -> void:
 	]
 	for row: Array in stances:
 		var s: EntityStore.Stance = row[0]
-		_order(row[2], UiText.stance(s), row[1], row[3], input.order_stance.bind(s))
+		var key: String = row[1]
+		var icon: String = row[2]
+		var what: String = row[3]
+		_order(icon, UiText.stance(s), key, what, input.order_stance.bind(s))
 	var formations := [
 		[Formation.Kind.LINE, "Q", "line", tr("Walk and stand in a broad line.")],
 		[
@@ -190,9 +193,12 @@ func _unit_orders() -> void:
 	]
 	for row: Array in formations:
 		var k: Formation.Kind = row[0]
-		var name := UiText.formation(k)
-		var b := _order(row[2], name, row[1], row[3], input.set_formation.bind(k))
-		b.tooltip_text = tr("Formation: %s (%s)") % [name, row[1]] + "\n" + row[3]
+		var key: String = row[1]
+		var icon: String = row[2]
+		var what: String = row[3]
+		var title := UiText.formation(k)
+		var b := _order(icon, title, key, what, input.set_formation.bind(k))
+		b.tooltip_text = tr("Formation: %s (%s)") % [title, key] + "\n" + what
 	var any_flags := 0
 	for id in input.selection.ids:
 		if sim.combat.enabled():
@@ -367,7 +373,7 @@ func _refresh_state() -> void:
 		elif eco.db.techs.has(item):
 			tip = Tips.tech(eco.db.techs[item], cost, ticks, fail, button.hotkey)
 		else:
-			var age := eco.db.ages.get(item) as AgeDef
+			var age: AgeDef = eco.db.ages.get(item)
 			tip = Tips.age(age, eco.db, state.faction, cost, ticks, fail, button.hotkey)
 		_set_tip(button, tip)
 

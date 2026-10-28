@@ -299,16 +299,18 @@ func test_barbara_at_the_town_hall_is_offered_a_loan_that_angers_the_town() -> v
 	assert_eq(_silver(sim), 600, "60 000 florins")
 	assert_eq(m.silver.loans, 1)
 	var l: Dictionary = _rules(sim)["loans"]
-	var grow: int = int(l["sums"][1][1]) * int(l["hero_permille"]) / 1000
+	var grow: int = Num.of(l["sums"][1][1]) * Num.of(l["hero_permille"]) / 1000
 	assert_almost_eq(m.silver.discontent, 100 + grow, 2)
 	# The next one is offered after a while, and costs more.
-	sim.run(int(l["wait_ticks"]) + CHECK)
+	sim.run(Num.of(l["wait_ticks"]) + CHECK)
 	assert_true(m.choices.has("loan_2"))
 	var before := m.silver.discontent
 	sim.enqueue(SimCommand.choose(sim.tick, P, &"loan_2", 0))
 	_check(sim)
 	assert_eq(_silver(sim), 900)
-	var more: int = (int(l["sums"][0][1]) + int(l["interest"])) * int(l["hero_permille"]) / 1000
+	var more: int = (
+		(Num.of(l["sums"][0][1]) + Num.of(l["interest"])) * Num.of(l["hero_permille"]) / 1000
+	)
 	assert_almost_eq(m.silver.discontent, before + more, 2)
 
 
@@ -441,7 +443,7 @@ func test_taxing_a_village_twice_in_a_season_fails_the_optional_objective() -> v
 	_put(sim, m.alive_of("barbara"), VILLAGE)
 	sim.run(140)
 	assert_eq(m.silver.taxes, 1)
-	sim.run(int(_rules(sim)["villages"]["again_ticks"]))
+	sim.run(Num.of(_rules(sim)["villages"]["again_ticks"]))
 	assert_eq(m.silver.taxes, 2)
 	assert_eq(m.silver.twice, 1)
 	_check(sim)
@@ -453,13 +455,13 @@ func test_7_a_rumour_halves_the_tax_and_the_priest_ends_it() -> void:
 	var m := sim.mission
 	_no_boats(sim)
 	_skip(sim, ["1", "4"])
-	sim.run(int(_rules(sim)["rumours"]["every_ticks"]) + CHECK)
+	sim.run(Num.of(_rules(sim)["rumours"]["every_ticks"]) + CHECK)
 	assert_eq(m.silver.rumours, 1)
 	assert_true(m.fired.has("7"))
 	var i := m.silver.rumour.find(1)
 	assert_gte(i, 0)
 	var at: Array = _rules(sim)["villages"]["at"][i]
-	var v := Vector2i(int(at[0]), int(at[1]))
+	var v := Vector2i(Num.of(at[0]), Num.of(at[1]))
 	_put(sim, m.alive_of("barbara"), v)
 	sim.run(140)
 	assert_eq(_silver(sim), 30, "half the tax")
@@ -475,7 +477,7 @@ func test_a_chapel_keeps_rumours_away() -> void:
 	var shrine := _place(sim, P, &"pl_shrine", Vector2i(60, 86))
 	assert_ne(shrine, 0)
 	for _k in 7:
-		sim.run(int(_rules(sim)["rumours"]["every_ticks"]))
+		sim.run(Num.of(_rules(sim)["rumours"]["every_ticks"]))
 	var near: Array = [3, 4]
 	for i: int in near:
 		assert_eq(m.silver.rumour[i], 0, "village %d is near the chapel" % i)
@@ -503,7 +505,7 @@ func test_riders_come_over_the_nogat_and_plunder_a_village() -> void:
 	var barbara := m.alive_of("barbara")
 	for id in m.alive_of("raid_0"):
 		sim.remove_unit(id)
-	_put(sim, barbara, Vector2i(int(at[0]), int(at[1])))
+	_put(sim, barbara, Vector2i(Num.of(at[0]), Num.of(at[1])))
 	sim.run(160)
 	assert_eq(m.silver.taxes, 0, "a plundered village pays nothing this season")
 

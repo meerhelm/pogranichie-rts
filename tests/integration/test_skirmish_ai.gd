@@ -176,7 +176,7 @@ func _fenced(
 			var edge := x == RING_FROM.x or x == RING_TO.x or y == RING_FROM.y or y == RING_TO.y
 			if not edge or gap.has(c):
 				continue
-			pieces[c] = _place(sim, 1, special.get(c, &"gdl_palisade"), c)
+			pieces[c] = _place(sim, 1, str(special.get(c, &"gdl_palisade")), c)
 			assert_ne(pieces[c], 0, "piece at %s" % c)
 	return pieces
 

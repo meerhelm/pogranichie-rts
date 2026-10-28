@@ -51,10 +51,18 @@ func build(nav: NavGrid) -> void:
 		var d: Dictionary = meta[id]
 		var r: Array = d["rect"]
 		var p: Array = d["pivot"]
-		var g := StringName(d["ground"])
+		var ground: String = d["ground"]
+		var g := StringName(ground)
 		if not _by_ground.has(g):
 			_by_ground[g] = []
-		_by_ground[g].append([Rect2(r[0], r[1], r[2], r[3]), Vector2(p[0], p[1])])
+		var list: Array = _by_ground[g]
+		var rx: float = r[0]
+		var ry: float = r[1]
+		var rw: float = r[2]
+		var rh: float = r[3]
+		var px: float = p[0]
+		var py: float = p[1]
+		list.append([Rect2(rx, ry, rw, rh), Vector2(px, py)])
 	texture_filter = TEXTURE_FILTER_NEAREST
 	_version = nav.version
 	queue_redraw()

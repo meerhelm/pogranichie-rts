@@ -45,4 +45,4 @@ static func has(map_id: String) -> bool:
 ## The top-left cell of the town centre of the map's side `index` (0 or 1).
 static func base(map_id: String, index: int) -> Vector2i:
 	var b: Array = find(map_id)["bases"][index]
-	return Vector2i(int(b[0]), int(b[1]))
+	return Vector2i(Num.of(b[0]), Num.of(b[1]))

@@ -70,7 +70,7 @@ func _spawn(sim: Simulation) -> void:
 			var y := (
 				Fixed.from_cells(clampi(home.y - 6 + i / 8, 1, sim.nav.height - 2)) + Fixed.HALF
 			)
-			sim.apply_now(SimCommand.spawn(sim.tick, side + 1, kinds[i % kinds.size()], x, y))
+			sim.apply_now(SimCommand.spawn(sim.tick, side + 1, str(kinds[i % kinds.size()]), x, y))
 	var sides: Array[PackedInt32Array] = [PackedInt32Array(), PackedInt32Array()]
 	var kinds_all: Array = ARMIES[0] + ARMIES[1]
 	for id in sim.entities.alive_ids:

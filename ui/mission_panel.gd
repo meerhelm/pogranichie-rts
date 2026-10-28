@@ -145,7 +145,7 @@ func poll() -> void:
 			"objective":
 				_fill_objectives()
 			"hint":
-				_hint(e["text"])
+				_hint(str(e["text"]))
 			"dialogue":
 				_dialogues.append(e["lines"])
 			"cutscene":
@@ -163,11 +163,14 @@ func poll() -> void:
 	if hold:
 		return
 	if _asking.is_empty() and _line < 0 and not _questions.is_empty():
-		_ask(_questions.pop_front())
+		var question: Dictionary = _questions.pop_front()
+		_ask(question)
 	if _line < 0 and not _cutscenes.is_empty():
-		_start_cutscene(_cutscenes.pop_front())
+		var cutscene: Dictionary = _cutscenes.pop_front()
+		_start_cutscene(cutscene)
 	elif _line < 0 and not _in_dialogue and not _dialogues.is_empty():
-		_start_dialogue(_dialogues.pop_front())
+		var dialogue: Array = _dialogues.pop_front()
+		_start_dialogue(dialogue)
 
 
 ## Ends the hold: what waited starts now.
@@ -243,7 +246,8 @@ func _show_evidence() -> void:
 	_evidence.visible = m.def.rules.has("evidence")
 	if not _evidence.visible:
 		return
-	var most := int(m.def.rules["evidence"].get("max", 100))
+	var evidence: Dictionary = m.def.rules["evidence"]
+	var most: int = evidence.get("max", 100)
 	_evidence.text = (
 		tr("Evidence: %d of %d") % [m.evidence / 1000, most]
 		+ "\n"
@@ -261,7 +265,8 @@ func _show_march() -> void:
 		lines.append(tr(m.countdown_text) % UiText.clock(left))
 	var c: Dictionary = m.def.rules.get("capture", {})
 	if c.has("banners") and m.objective_state.has("captives"):
-		var taken := MissionMarch.groups_taken(m, c["banners"])
+		var banners: Array = c["banners"]
+		var taken := MissionMarch.groups_taken(m, banners)
 		lines.append(tr("Banners taken captive: %d") % taken)
 	_retreat_lines(m, lines)
 	_stealth_lines(m, lines)
@@ -318,7 +323,8 @@ func _siege_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
 		lines.append(tr("Ladders at the walls: %d") % sg.ladders_up())
 	if sg.lost.get("lower", false):
 		lines.append(tr("The Lower castle is lost"))
-	var posad: Array = r.get("posad", {}).get("buildings", [])
+	var posad_rules: Dictionary = r.get("posad", {})
+	var posad: Array = posad_rules.get("buildings", [])
 	if not posad.is_empty():
 		lines.append(tr("Posad standing: %d%%") % (sg.standing_permille(m, posad) / 10))
 
@@ -332,7 +338,8 @@ func _battle_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
 	var bt := m.battle
 	var bridges: Array = r.get("bridges", [])
 	for i in bridges.size():
-		var sections := int(bridges[i]["sections"])
+		var bridge: Dictionary = bridges[i]
+		var sections: int = bridge["sections"]
 		if bt.built[i] < sections and m.stealth.night:
 			var line := tr("Bridge %d: %d of %d sections") % [i + 1, bt.built[i], sections]
 			lines.append(line + " (%d%%)" % (bt.section_permille(m, i) / 10))
@@ -345,7 +352,8 @@ func _battle_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
 ## Корона 1: «Heat on your lances: 30%» while it is hot and the lances feel it, «Guest knights
 ## taken captive: 2» once any is.
 func _field_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
-	if not m.def.rules.get("field", {}).has("heat"):
+	var field: Dictionary = m.def.rules.get("field", {})
+	if not field.has("heat"):
 		return
 	var heat := m.field.player_heat(m)
 	if heat > 0:
@@ -362,7 +370,8 @@ func _besiege_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
 	if not bs.on:
 		return
 	lines.append(tr("Siege: %d%%") % (bs.hunger / 10))
-	var shot := maxi(int(sim.economy.db.unit(&"pl_bombard").params.get(&"shot_iron", 1)), 1)
+	var shot_iron: int = sim.economy.db.unit(&"pl_bombard").params.get(&"shot_iron", 1)
+	var shot := maxi(shot_iron, 1)
 	var iron := sim.economy.player(m.def.player).stock[EconomySystem.IRON]
 	lines.append(tr("Powder for %d shots") % (iron / shot))
 	if bs.plague > 0:
@@ -371,7 +380,9 @@ func _besiege_lines(m: MissionRuntime, lines: PackedStringArray) -> void:
 		lines.append(tr("Bombards spiked: %d") % bs.spiked.size())
 	if bs.envoys_walk or not bs.towns.is_empty():
 		lines.append(tr("Towns sworn: %d") % bs.count_towns(1))
-	if m.fired.has(str(m.def.rules["besiege"].get("sztum", {}).get("from", ""))):
+	var besiege: Dictionary = m.def.rules["besiege"]
+	var sztum: Dictionary = besiege.get("sztum", {})
+	if m.fired.has(str(sztum.get("from", ""))):
 		lines.append(tr("Bombards brought to Sztum: %d") % bs.brought)
 
 
@@ -497,14 +508,14 @@ func _ask(e: Dictionary) -> void:
 	if not sim.mission.choices.has(e["id"]):
 		return
 	_asking = e["id"]
-	_question_text.text = tr(e["text"])
+	_question_text.text = tr(str(e["text"]))
 	for child in _answers.get_children():
 		_answers.remove_child(child)
 		child.queue_free()
 	var options: Array = e["options"]
 	for i in options.size():
 		var b := Button.new()
-		b.text = tr(options[i])
+		b.text = tr(str(options[i]))
 		b.custom_minimum_size = Vector2(360, 44)
 		b.pressed.connect(answer.bind(i))
 		_answers.add_child(b)
@@ -561,7 +572,7 @@ static func speaker_name(key: String) -> String:
 static func timeline_text(lines: Array) -> String:
 	var out := PackedStringArray()
 	for line: Array in lines:
-		var said := "%s — %s" % [speaker_name(line[0]), UiText.t(line[1])]
+		var said := "%s — %s" % [speaker_name(str(line[0])), UiText.t(str(line[1]))]
 		for ch: String in ["\\", ":", "[", "]", "{", "}", "#", "<", ">"]:
 			said = said.replace(ch, "\\" + ch)
 		out.append(said)
@@ -573,13 +584,13 @@ func _start_dialogue(lines: Array) -> void:
 	if dialogic == null:
 		# No Dialogic (a test scene): the lines go to the hint area instead.
 		for line: Array in lines:
-			_hint("%s — %s" % [speaker_name(line[0]), tr(line[1])])
+			_hint("%s — %s" % [speaker_name(str(line[0])), tr(str(line[1]))])
 		return
 	var timeline := DialogicTimeline.new()
 	timeline.from_text(timeline_text(lines))
 	_in_dialogue = true
-	dialogic.timeline_ended.connect(_on_dialogue_ended, CONNECT_ONE_SHOT)
-	dialogic.start(timeline)
+	dialogic.connect(&"timeline_ended", _on_dialogue_ended, CONNECT_ONE_SHOT)
+	dialogic.call(&"start", timeline)
 
 
 func _on_dialogue_ended() -> void:
@@ -598,7 +609,8 @@ func _start_cutscene(e: Dictionary) -> void:
 	cutscene_started.emit()
 	var at: Array = e["at"]
 	if camera != null:
-		var to := Iso.cell_to_screen(Vector2(at[0], at[1]))
+		var xy := PackedFloat64Array(at)
+		var to := Iso.cell_to_screen(Vector2(xy[0], xy[1]))
 		var tween := create_tween()
 		tween.tween_property(camera, ^"position", to, 1.5).set_trans(Tween.TRANS_SINE)
 	_show_line()
@@ -606,8 +618,8 @@ func _start_cutscene(e: Dictionary) -> void:
 
 func _show_line() -> void:
 	var line: Array = _lines[_line]
-	_speaker.text = speaker_name(line[0])
-	_subtitle.text = tr(line[1])
+	_speaker.text = speaker_name(str(line[0]))
+	_subtitle.text = tr(str(line[1]))
 	_line_left = LINE_SECONDS
 
 

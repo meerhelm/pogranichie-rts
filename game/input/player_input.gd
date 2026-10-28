@@ -149,20 +149,25 @@ func _plain_click(mb: InputEventMouseButton) -> void:
 				_dragging = false
 				var c := _candidates(true)
 				var hit := _own_unit_under(mb.position)
-				selection.same_type(mb.position, c[0], c[1], c[2], mb.shift_pressed, hit)
+				var c_ids: PackedInt32Array = c[0]
+				var c_points: PackedVector2Array = c[1]
+				var c_types: Array[StringName] = c[2]
+				selection.same_type(mb.position, c_ids, c_points, c_types, mb.shift_pressed, hit)
 		elif _dragging:
 			_dragging = false
 			queue_redraw()
 			var c := _candidates(false)
+			var c_ids: PackedInt32Array = c[0]
+			var c_points: PackedVector2Array = c[1]
 			if _drag_from.distance_to(mb.position) < DRAG_THRESHOLD:
 				var hit := _own_unit_under(mb.position)
-				selection.click(mb.position, c[0], c[1], mb.shift_pressed, hit)
+				selection.click(mb.position, c_ids, c_points, mb.shift_pressed, hit)
 				_select_building(mb.position if selection.ids.is_empty() else Vector2(-1, -1))
 				var free := selection.ids.is_empty() and selected_building == BuildingStore.NO_ID
 				_look_at(mb.position if free else Vector2(-1, -1))
 			else:
 				selection.box(
-					Rect2(_drag_from, mb.position - _drag_from), c[0], c[1], mb.shift_pressed
+					Rect2(_drag_from, mb.position - _drag_from), c_ids, c_points, mb.shift_pressed
 				)
 				_select_building(Vector2(-1, -1))
 				_look_at(Vector2(-1, -1))
@@ -532,13 +537,13 @@ func _stop_placing() -> void:
 
 ## Top-left cell of the ghost: the footprint centred on the cell under the cursor; a shrine
 ## snaps to the place of power within SITE_SNAP cells.
-func _ghost_origin(size: Vector2i) -> Vector2i:
+func _ghost_origin(foot: Vector2i) -> Vector2i:
 	if placing != null and placing.tags.has(&"power_place_only"):
 		var places := sim.magic.places
 		var i := places.site_near(_cursor_cell.x, _cursor_cell.y, SITE_SNAP)
 		if i >= 0:
 			return Vector2i(places.cells[i] % sim.nav.width, places.cells[i] / sim.nav.width)
-	return _cursor_cell - Vector2i((size.x - 1) / 2, (size.y - 1) / 2)
+	return _cursor_cell - Vector2i((foot.x - 1) / 2, (foot.y - 1) / 2)
 
 
 func _update_ghost(screen_point: Vector2) -> void:
@@ -560,14 +565,14 @@ func _update_ghost(screen_point: Vector2) -> void:
 			)
 		place_fail = EconomySystem.Fail.OK
 	else:
-		var size := eco.placement.footprint(placing, _turned)
-		var origin := _ghost_origin(size)
+		var foot := eco.placement.footprint(placing, _turned)
+		var origin := _ghost_origin(foot)
 		place_fail = eco.placement.can_place(player, placing, origin.x, origin.y, _turned)
 		if place_fail == EconomySystem.Fail.OK:
 			var cost := eco.placement.building_cost(player, placing)
 			if not eco.player(player).can_pay(cost):
 				place_fail = EconomySystem.Fail.COST
-		buildings.ghost = Rect2i(origin, size)
+		buildings.ghost = Rect2i(origin, foot)
 		buildings.ghost_ok = place_fail == EconomySystem.Fail.OK
 	buildings.queue_redraw()
 	economy_changed.emit()

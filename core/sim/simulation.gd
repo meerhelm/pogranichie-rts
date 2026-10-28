@@ -230,7 +230,7 @@ func step_profiled(times: Dictionary) -> void:
 
 static func _lap(times: Dictionary, key: String, since: int) -> int:
 	var now := Time.get_ticks_usec()
-	times[key] = int(times.get(key, 0)) + now - since
+	times[key] = Num.of(times.get(key, 0)) + now - since
 	return now
 
 

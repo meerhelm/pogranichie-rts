@@ -117,7 +117,7 @@ func after_move() -> void:
 			deployed.erase(id)
 		else:
 			var need := maxi(_need_still(slot), 1)
-			still[id] = mini(still.get(id, 0) + 1, need)
+			still[id] = mini(Num.of(still.get(id, 0) + 1), need)
 
 
 func _need_still(slot: int) -> int:
@@ -454,4 +454,4 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_32(keys.size())
 		for k: int in keys:
 			buf.put_32(k)
-			buf.put_32(int(d[k]))
+			buf.put_32(Num.of(d[k]))

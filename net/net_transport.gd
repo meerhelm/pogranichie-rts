@@ -6,9 +6,12 @@ extends RefCounted
 ## Nothing happens on its own: the owner calls poll() every frame, and the signals come from it.
 
 ## The other side is there (for the host: a player joined; for the guest: the host answered).
+@warning_ignore("unused_signal")
 signal connected
 ## The other side is gone, or the connection could not be made.
+@warning_ignore("unused_signal")
 signal disconnected
+@warning_ignore("unused_signal")
 signal received(data: PackedByteArray)
 
 

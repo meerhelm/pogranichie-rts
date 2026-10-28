@@ -58,11 +58,14 @@ func _draw() -> void:
 	for i in bridges.size():
 		for c in m.battle.deck_cells(m, i):
 			_deck(c)
-		if m.battle.built[i] < int(bridges[i]["sections"]):
-			_building(m, bridges[i], i)
+		var bridge: Dictionary = bridges[i]
+		var sections: int = bridge["sections"]
+		if m.battle.built[i] < sections:
+			_building(m, bridge, i)
 	if _deploying:
-		for rect: Array in r.get("cover", []):
-			_outline(int(rect[0]), int(rect[1]), int(rect[2]) + 1, int(rect[3]) + 1, COVER)
+		for cover: Array in r.get("cover", []):
+			var rect := PackedInt32Array(cover)
+			_outline(rect[0], rect[1], rect[2] + 1, rect[3] + 1, COVER)
 
 
 ## One cell of finished deck: planks across the stream, ropes along both edges.
@@ -80,26 +83,27 @@ func _deck(c: Vector2i) -> void:
 
 ## The next section of bridge i: its outline, and a bar of how far the work is.
 func _building(m: MissionRuntime, b: Dictionary, i: int) -> void:
+	var cells: Array = b["cells"]
+	var rect := PackedInt32Array(cells)
 	if (
-		sim.vision.state(local_player, sim.nav.cell_at(int(b["cells"][0]), int(b["cells"][3])))
+		sim.vision.state(local_player, sim.nav.cell_at(rect[0], rect[3]))
 		== (VisionSystem.State.UNEXPLORED)
 	):
 		return
-	var rect: Array = b["cells"]
 	var rows := MissionBattle.section_rows(b)
-	var bottom := int(rect[3]) + 1 - m.battle.built[i] * rows
-	var top := maxi(bottom - rows, int(rect[1]))
-	_outline(int(rect[0]), top, int(rect[2]) + 1, bottom, MARK)
+	var bottom := rect[3] + 1 - m.battle.built[i] * rows
+	var top := maxi(bottom - rows, rect[1])
+	_outline(rect[0], top, rect[2] + 1, bottom, MARK)
 	var done := float(m.battle.section_permille(m, i)) / 1000.0
 	if done <= 0.0:
 		return
 	var y := float(bottom) - (bottom - top) * done
 	var poly := PackedVector2Array(
 		[
-			_p(int(rect[0]), y),
-			_p(int(rect[2]) + 1, y),
-			_p(int(rect[2]) + 1, bottom),
-			_p(int(rect[0]), bottom),
+			_p(rect[0], y),
+			_p(rect[2] + 1, y),
+			_p(rect[2] + 1, bottom),
+			_p(rect[0], bottom),
 		]
 	)
 	draw_colored_polygon(poly, Color(PLANK, 0.6))

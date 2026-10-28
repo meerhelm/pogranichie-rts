@@ -62,7 +62,7 @@ func open(first: bool = false) -> void:
 	_first = first
 	_retranslate()
 	visible = true
-	UiAnim.pop_in(self, %Panel)
+	UiAnim.pop_in(self, %Panel as Control)
 	_paused_it = not get_tree().paused
 	if _paused_it:
 		get_tree().paused = true
@@ -82,7 +82,7 @@ func close() -> void:
 func _retranslate() -> void:
 	var def := sim.mission.def
 	_title.text = tr(def.title)
-	_place.text = tr(def.briefing.get("place", ""))
+	_place.text = tr(str(def.briefing.get("place", "")))
 	_place.visible = not _place.text.is_empty()
 	_close.text = tr("Begin") if _first else tr("Back to the game (F2)")
 	_text.text = page()
@@ -93,13 +93,13 @@ func page() -> String:
 	var b := sim.mission.def.briefing
 	var out := PackedStringArray()
 	if b.has("story"):
-		out.append(_esc(tr(b["story"])))
+		out.append(_esc(tr(str(b["story"]))))
 	if b.has("goal"):
-		out.append(_head(tr("Goal")) + "\n" + _esc(tr(b["goal"])))
+		out.append(_head(tr("Goal")) + "\n" + _esc(tr(str(b["goal"]))))
 	var lines := PackedStringArray()
 	for row: Array in objective_rows():
 		var color: Color = row[1]
-		lines.append("[color=#%s]%s[/color]" % [color.to_html(false), _esc(row[0])])
+		lines.append("[color=#%s]%s[/color]" % [color.to_html(false), _esc(str(row[0]))])
 	var later := tr("New objectives appear as the mission goes on.")
 	lines.append("[color=#a0a0a0][i]%s[/i][/color]" % later)
 	out.append(_head(tr("Objectives")) + "\n" + "\n".join(lines))
@@ -122,11 +122,12 @@ func objective_rows() -> Array:
 			rows.append(MissionPanel.objective_row(m, oid))
 		return rows
 	for t: Dictionary in m.def.triggers:
-		if t["when"].get("type", "") != "start":
+		var when: Dictionary = t["when"]
+		if when.get("type", "") != "start":
 			continue
 		for a: Dictionary in t["do"]:
 			if a["do"] == "objective" and a.has("text"):
-				var text := tr(a["text"])
+				var text := tr(str(a["text"]))
 				if a.get("optional", false):
 					text = tr("(optional) %s") % text
 				rows.append(["• " + text, Color.WHITE])  # notr

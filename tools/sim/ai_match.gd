@@ -41,8 +41,8 @@ func play(game_seed: int, difficulty: StringName, max_ticks: int = MAX_TICKS) ->
 	var ais: Array[SkirmishAi] = []
 	for base: Array in SkirmishSetup.BASES:
 		var ai := SkirmishAi.new()
-		var faction := SkirmishSetup.faction_of(base[0], factions)
-		ai.setup(sim, base[0], SkirmishSetup.ai_profile(faction, difficulty), game_seed)
+		var faction := SkirmishSetup.faction_of(Num.of(base[0]), factions)
+		ai.setup(sim, Num.of(base[0]), SkirmishSetup.ai_profile(faction, difficulty), game_seed)
 		ais.append(ai)
 	var start := Time.get_ticks_usec()
 	while sim.tick < max_ticks and not sim.victory.is_over():

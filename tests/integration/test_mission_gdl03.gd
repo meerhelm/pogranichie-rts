@@ -44,7 +44,7 @@ func _check(sim: Simulation) -> void:
 func _kinds(sim: Simulation) -> PackedStringArray:
 	var out := PackedStringArray()
 	for e: Dictionary in sim.mission.events:
-		out.append(e["kind"])
+		out.append(str(e["kind"]))
 	return out
 
 
@@ -186,7 +186,7 @@ func test_every_place_on_the_story_can_be_reached() -> void:
 	]
 	goals.append_array(VILLAGES)
 	for at: Array in sim.mission.def.rules["spies"]["route"]:
-		goals.append(Vector2i(at[0], at[1]))
+		goals.append(Vector2i(Num.of(at[0]), Num.of(at[1])))
 	for g in goals:
 		assert_eq(sim.nav.area(foot, home), sim.nav.area(foot, sim.nav.cell_at(g.x, g.y)), "%s" % g)
 	var siege := NavGrid.MoveClass.SIEGE

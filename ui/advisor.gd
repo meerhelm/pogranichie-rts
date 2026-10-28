@@ -7,7 +7,7 @@ extends PanelContainer
 ## turns the hints off (also in the settings). Reads the simulation only; nothing here is
 ## part of the game state, so it never touches a replay.
 
-const STEPS := [
+const STEPS: Array[StringName] = [
 	&"select", &"wood", &"house", &"farm", &"peasants", &"iron", &"army", &"shrine", &"win"
 ]
 

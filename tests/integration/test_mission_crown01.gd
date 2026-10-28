@@ -39,7 +39,7 @@ func _check(sim: Simulation) -> void:
 func _kinds(sim: Simulation) -> PackedStringArray:
 	var out := PackedStringArray()
 	for e: Dictionary in sim.mission.events:
-		out.append(e["kind"])
+		out.append(str(e["kind"]))
 	return out
 
 

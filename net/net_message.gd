@@ -81,7 +81,8 @@ static func command_from(d: Variant) -> SimCommand:
 	var kind_name: Variant = dict.get("k")
 	if not kind_name is String:
 		return null
-	var kind := SimCommand.Kind.keys().find(kind_name as String)
+	var kind_text: String = kind_name
+	var kind := SimCommand.Kind.keys().find(kind_text)
 	if kind < 0 or not (kind as SimCommand.Kind) in PLAYER_KINDS:
 		return null
 	for key: String in ["t", "p", "x", "y", "x2", "y2", "f", "tg", "v"]:
@@ -91,9 +92,12 @@ static func command_from(d: Variant) -> SimCommand:
 		return null
 	if dict.has("ids"):
 		var ids: Variant = dict["ids"]
-		if not ids is Array or (ids as Array).size() > MAX_IDS:
+		if not ids is Array:
 			return null
-		for v: Variant in ids as Array:
+		var id_list: Array = ids
+		if id_list.size() > MAX_IDS:
+			return null
+		for v: Variant in id_list:
 			if not (v is int or v is float):
 				return null
 	var safe := dict.duplicate()

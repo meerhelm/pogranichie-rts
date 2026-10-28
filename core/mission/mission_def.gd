@@ -68,7 +68,7 @@ static func from_dict(d: Dictionary) -> MissionDef:
 	m.player = d.get("player", 1)
 	m.players = d.get("players", [])
 	var cam: Array = d.get("camera", [0, 0])
-	m.camera = Vector2i(cam[0], cam[1])
+	m.camera = Vector2i(Num.of(cam[0]), Num.of(cam[1]))
 	m.difficulties = PackedStringArray(d.get("difficulties", ["normal"]))
 	m.setup = d.get("setup", {})
 	m.rules = d.get("rules", {})
@@ -105,7 +105,7 @@ static func ints(value: Variant) -> Variant:
 func faction_of(p: int) -> StringName:
 	for entry: Array in players:
 		if entry[0] == p:
-			return StringName(entry[1])
+			return StringName(str(entry[1]))
 	return &""
 
 
@@ -116,23 +116,23 @@ func texts() -> PackedStringArray:
 	var out := PackedStringArray([title])
 	for key: String in ["place", "story", "goal"]:
 		if briefing.has(key):
-			out.append(briefing[key])
+			out.append(str(briefing[key]))
 	for line: String in briefing.get("lose", []):
 		out.append(line)
 	for t: Dictionary in triggers:
 		for action: Dictionary in t.get("do", []):
 			if action.has("text"):
-				out.append(action["text"])
+				out.append(str(action["text"]))
 			for line: Array in action.get("lines", []):
-				out.append(line[0])
-				out.append(line[1])
+				out.append(str(line[0]))
+				out.append(str(line[1]))
 			for option: String in action.get("options", []):
 				out.append(option)
 	var kinds := asks.keys()
 	kinds.sort()
 	for kind: String in kinds:
 		var q: Dictionary = asks[kind]
-		out.append(q["text"])
+		out.append(str(q["text"]))
 		for option: String in q.get("options", []):
 			out.append(option)
 	return out

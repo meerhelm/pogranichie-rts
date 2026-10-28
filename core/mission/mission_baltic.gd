@@ -92,7 +92,7 @@ func set_up(m: MissionRuntime) -> void:
 	if r.is_empty():
 		return
 	on = true
-	concord = int(r.get("concord", {}).get("start", CONCORD_MAX))
+	concord = Num.of(r.get("concord", {}).get("start", CONCORD_MAX))
 	var w: Dictionary = r.get("wind", {})
 	if not w.is_empty():
 		var store := m.economy.buildings
@@ -132,27 +132,27 @@ func test(m: MissionRuntime, c: Dictionary) -> bool:
 	var ok := false
 	match c["type"]:
 		"concord":
-			ok = not c.has("at_least") or concord >= int(c["at_least"])
-			ok = ok and (not c.has("at_most") or concord <= int(c["at_most"]))
+			ok = not c.has("at_least") or concord >= Num.of(c["at_least"])
+			ok = ok and (not c.has("at_most") or concord <= Num.of(c["at_most"]))
 		"mutinies":
-			ok = mutinies >= int(c["at_least"])
+			ok = mutinies >= Num.of(c["at_least"])
 		"camp_held":
-			ok = camps_now & (1 << int(c["camp"])) != 0
+			ok = camps_now & (1 << Num.of(c["camp"])) != 0
 		"camps_held":
-			ok = _bits(camps_ever) >= int(c["at_least"])
+			ok = _bits(camps_ever) >= Num.of(c["at_least"])
 		"surrendered":
-			ok = surrendered >= int(c["at_least"])
+			ok = surrendered >= Num.of(c["at_least"])
 		"ransomed":
-			ok = ransomed >= int(c["at_least"])
+			ok = ransomed >= Num.of(c["at_least"])
 		"prisoners_killed":
-			ok = killed >= int(c["at_least"])
+			ok = killed >= Num.of(c["at_least"])
 		"prisoners_left":
 			var group: String = _rules(m).get("prisoners", {}).get("group", "")
-			ok = m.alive_of(group).size() <= int(c["at_most"])
+			ok = m.alive_of(group).size() <= Num.of(c["at_most"])
 		"foraged":
-			ok = foraged(1 if c["by"] == "player" else 2) >= int(c["at_least"])
+			ok = foraged(1 if c["by"] == "player" else 2) >= Num.of(c["at_least"])
 		"knighted":
-			ok = knights.size() >= int(c["at_least"])
+			ok = knights.size() >= Num.of(c["at_least"])
 	return ok
 
 
@@ -161,11 +161,11 @@ func run(m: MissionRuntime, a: Dictionary, tick: int) -> void:
 		return
 	match a["do"]:
 		"concord":
-			add_concord(m, int(a["add"]), tick)
+			add_concord(m, Num.of(a["add"]), tick)
 		"prisoners":
 			hunting = a.get("on", true)
 		"tabor":
-			var ids := m.alive_of(a["group"])
+			var ids := m.alive_of(str(a["group"]))
 			if not ids.is_empty():
 				var owner := m.entities.owners[ids[0] - 1]
 				m._apply.call(SimCommand.order(tick, owner, SimCommand.Kind.TABOR, ids))
@@ -180,11 +180,11 @@ func add_concord(m: MissionRuntime, add: int, tick: int) -> void:
 		return
 	var c: Dictionary = _rules(m).get("concord", {})
 	mutinies += 1
-	mutiny_until = tick + int(c.get("mutiny_ticks", 2400))
+	mutiny_until = tick + Num.of(c.get("mutiny_ticks", 2400))
 	m.flags["mutiny"] = tick
 	var ids := _orphans(m)
 	if not ids.is_empty():
-		var p := int(_rules(m)["hussites"])
+		var p := Num.of(_rules(m)["hussites"])
 		m._apply.call(SimCommand.stop(tick, p, ids))
 		m._apply.call(SimCommand.set_stance(tick, p, ids, EntityStore.Stance.STAND))
 
@@ -210,7 +210,7 @@ func camps_total(m: MissionRuntime) -> int:
 
 
 func _orphans(m: MissionRuntime) -> PackedInt32Array:
-	var p := int(_rules(m)["hussites"])
+	var p := Num.of(_rules(m)["hussites"])
 	var out := PackedInt32Array()
 	for id in m.entities.alive_ids:
 		if m.entities.owners[id - 1] == p:
@@ -222,26 +222,26 @@ func _mutiny(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	if mutiny_until < 0 or tick < mutiny_until:
 		return
 	mutiny_until = -1
-	concord = int(r.get("concord", {}).get("reset", 400))
+	concord = Num.of(r.get("concord", {}).get("reset", 400))
 	m.flags["mutiny_over"] = tick
 	var ids := _orphans(m)
 	if not ids.is_empty():
-		var p := int(r["hussites"])
+		var p := Num.of(r["hussites"])
 		m._apply.call(SimCommand.set_stance(tick, p, ids, EntityStore.Stance.AGGRESSIVE))
 
 
 func _follow(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	var e := m.entities
 	for f: Array in r.get("follow", []):
-		var leaders := m.alive_of(f[1])
+		var leaders := m.alive_of(str(f[1]))
 		if leaders.is_empty():
 			continue
 		var lead := leaders[0] - 1
-		var far := Fixed.from_cells(int(f[2]))
+		var far := Fixed.from_cells(Num.of(f[2]))
 		var lx := e.pos_x[lead]
 		var ly := e.pos_y[lead]
 		var away := PackedInt32Array()
-		for id in m.alive_of(f[0]):
+		for id in m.alive_of(str(f[0])):
 			var s := id - 1
 			if e.target[s] != EntityStore.NO_ID:
 				continue
@@ -257,14 +257,14 @@ func _follow(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 func _camps(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	var camps: Array = r.get("camps", [])
 	var crown: CrownTactics = m.combat.crown
-	var p := int(r["player"])
+	var p := Num.of(r["player"])
 	camps_now = 0
 	for i in camps.size():
 		var c: Dictionary = camps[i]
 		var at: Array = c["at"]
-		var x := Fixed.from_cells(at[0]) + Fixed.HALF
-		var y := Fixed.from_cells(at[1]) + Fixed.HALF
-		var reach := Fixed.from_cells(int(c["radius"]))
+		var x := Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+		var y := Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
+		var reach := Fixed.from_cells(Num.of(c["radius"]))
 		for k in crown.ring_owner.size():
 			if crown.ring_owner[k] != p:
 				continue
@@ -284,9 +284,9 @@ func _wind(m: MissionRuntime, w: Dictionary, tick: int) -> void:
 		return
 	var store := m.economy.buildings
 	var fire := m.fire
-	var dx := int(w["dx"])
-	var dy := int(w["dy"])
-	var reach := int(w["reach"])
+	var dx := Num.of(w["dx"])
+	var dy := Num.of(w["dy"])
+	var reach := Num.of(w["reach"])
 	var lit := PackedInt32Array()
 	var gone := 0
 	for b in suburb:
@@ -305,7 +305,7 @@ func _wind(m: MissionRuntime, w: Dictionary, tick: int) -> void:
 		_scorch(m, w, bx, by, dx, dy)
 	for o in lit:
 		fire.ignite(o)
-	if not gate_lit and gone >= int(w["burnt"]):
+	if not gate_lit and gone >= Num.of(w["burnt"]):
 		gate_lit = true
 		m.flags["suburb_burnt"] = tick
 		var g: int = m.named.get(w.get("gate", ""), 0)
@@ -345,7 +345,7 @@ static func _downwind(bx: int, by: int, ox: int, oy: int, dx: int, dy: int, reac
 ## Units within heat_cells downwind of a burning building lose heat_damage HP.
 func _scorch(m: MissionRuntime, w: Dictionary, bx: int, by: int, dx: int, dy: int) -> void:
 	var e := m.entities
-	var cells := int(w["heat_cells"])
+	var cells := Num.of(w["heat_cells"])
 	var hurt := PackedInt32Array()
 	for id in m.combat.buckets.near(bx, by, Fixed.from_cells(cells)):
 		var s := id - 1
@@ -354,18 +354,18 @@ func _scorch(m: MissionRuntime, w: Dictionary, bx: int, by: int, dx: int, dy: in
 	hurt.sort()
 	for id in hurt:
 		if m.entities.is_alive(id):
-			m.combat.lightning(id, 0, int(w["heat_damage"]))
+			m.combat.lightning(id, 0, Num.of(w["heat_damage"]))
 
 
 # --- the town and its prisoners -----------------------------------------------------------
 
 
 func _surrender(m: MissionRuntime, s: Dictionary, tick: int) -> void:
-	if s.is_empty() or not m.fired.has(s["from"]) or tick % int(s["every_ticks"]) != 0:
+	if s.is_empty() or not m.fired.has(s["from"]) or tick % Num.of(s["every_ticks"]) != 0:
 		return
 	var rect: Array = s["rect"]
 	var e := m.entities
-	var p := int(_rules(m)["player"])
+	var p := Num.of(_rules(m)["player"])
 	var inside := false
 	for id in e.alive_ids:
 		if e.owners[id - 1] == p and _in_rect(rect, e.pos_x[id - 1], e.pos_y[id - 1]):
@@ -373,7 +373,7 @@ func _surrender(m: MissionRuntime, s: Dictionary, tick: int) -> void:
 			break
 	if not inside:
 		return
-	var left := int(s["count"])
+	var left := Num.of(s["count"])
 	for g: String in s["groups"]:
 		for id in m.alive_of(g):
 			if left == 0:
@@ -390,27 +390,27 @@ func _prisoners(m: MissionRuntime, pr: Dictionary, tick: int) -> void:
 	if pr.is_empty():
 		return
 	var e := m.entities
-	var held := m.alive_of(pr["group"])
+	var held := m.alive_of(str(pr["group"]))
 	if held.is_empty():
 		return
-	var to := m.alive_of(pr["to"])
+	var to := m.alive_of(str(pr["to"]))
 	if not to.is_empty():
 		var tx := e.pos_x[to[0] - 1]
 		var ty := e.pos_y[to[0] - 1]
-		var reach := Fixed.from_cells(int(pr["radius"]))
+		var reach := Fixed.from_cells(Num.of(pr["radius"]))
 		for id in held:
 			if Fixed.distance(tx, ty, e.pos_x[id - 1], e.pos_y[id - 1]) <= reach:
 				ransomed += 1
 				m.flags["ransomed"] = tick
 				var state := m.economy.player(m.def.player)
 				if state != null:
-					state.stock[EconomySystem.SILVER] += int(pr.get("silver", 0))
+					state.stock[EconomySystem.SILVER] += Num.of(pr.get("silver", 0))
 				m._remove.call(id)
-		held = m.alive_of(pr["group"])
+		held = m.alive_of(str(pr["group"]))
 	if not hunting or held.is_empty():
 		return
-	var kill := Fixed.from_cells(int(pr["kill_radius"]))
-	for k in m.alive_of(pr["killers"]):
+	var kill := Fixed.from_cells(Num.of(pr["kill_radius"]))
+	for k in m.alive_of(str(pr["killers"])):
 		var kx := e.pos_x[k - 1]
 		var ky := e.pos_y[k - 1]
 		var best := 0
@@ -441,10 +441,10 @@ func _forage(m: MissionRuntime, f: Dictionary, tick: int) -> void:
 	if f.is_empty():
 		return
 	var store := m.economy.buildings
-	var reach := Fixed.from_cells(int(f["radius"]))
+	var reach := Fixed.from_cells(Num.of(f["radius"]))
 	var r := _rules(m)
-	var p := int(r["player"])
-	var orphans := int(r["hussites"])
+	var p := Num.of(r["player"])
+	var orphans := Num.of(r["hussites"])
 	for v: String in f["villages"]:
 		if villages.has(v):
 			continue
@@ -469,7 +469,7 @@ func _forage(m: MissionRuntime, f: Dictionary, tick: int) -> void:
 			var state := m.economy.player(p)
 			var amount: Array = f["amount"]
 			for k in amount.size():
-				state.stock[k] += int(amount[k])
+				state.stock[k] += Num.of(amount[k])
 			m.run({"do": "ping", "at": [Fixed.to_cells(bx), Fixed.to_cells(by)], "radius": 2}, tick)
 		elif by_orphans:
 			villages[v] = 2
@@ -484,8 +484,8 @@ func _chapels(m: MissionRuntime, c: Dictionary, tick: int) -> void:
 	var places := m.magic.places
 	var r := _rules(m)
 	var crown: Array = r.get("crown", [r["player"]])
-	var orphans := int(r["hussites"])
-	var reach := Fixed.from_cells(int(c["radius"]))
+	var orphans := Num.of(r["hussites"])
+	var reach := Fixed.from_cells(Num.of(c["radius"]))
 	var e := m.entities
 	for i in places.count():
 		var b := places.shrines[i]
@@ -507,7 +507,7 @@ func _chapels(m: MissionRuntime, c: Dictionary, tick: int) -> void:
 			unguarded.erase(i)
 			continue
 		unguarded[i] = unguarded.get(i, 0) + MissionRuntime.CHECK_EVERY
-		if unguarded[i] >= int(c["ticks"]):
+		if unguarded[i] >= Num.of(c["ticks"]):
 			unguarded.erase(i)
 			broken += 1
 			m.flags["chapel_broken"] = tick
@@ -516,9 +516,9 @@ func _chapels(m: MissionRuntime, c: Dictionary, tick: int) -> void:
 
 
 func _hungry(m: MissionRuntime, h: Dictionary, tick: int) -> void:
-	if h.is_empty() or tick % int(h["every_ticks"]) != 0:
+	if h.is_empty() or tick % Num.of(h["every_ticks"]) != 0:
 		return
-	var p := int(_rules(m)["player"])
+	var p := Num.of(_rules(m)["player"])
 	var state := m.economy.player(p)
 	if state == null or state.stock[EconomySystem.FOOD] > 0:
 		return
@@ -526,7 +526,7 @@ func _hungry(m: MissionRuntime, h: Dictionary, tick: int) -> void:
 	for id in m.entities.alive_ids:
 		var unit := m.combat.defs[id - 1]
 		if m.entities.owners[id - 1] == p and unit != null and unit.morale > 0:
-			m.combat.lose_morale(id - 1, unit.morale * int(h["permille"]) / 1000)
+			m.combat.lose_morale(id - 1, unit.morale * Num.of(h["permille"]) / 1000)
 
 
 func _knighting(m: MissionRuntime, k: Dictionary, tick: int) -> void:
@@ -540,8 +540,8 @@ func _knighting(m: MissionRuntime, k: Dictionary, tick: int) -> void:
 			if not m.flags.has(MissionRuntime.choice_flag(q, option)):
 				continue
 			answered.append(q)
-			if option < groups.size() and not knights.has(groups[option]):
-				knights.append(groups[option])
+			if option < groups.size() and not knights.has(str(groups[option])):
+				knights.append(str(groups[option]))
 				m.flags["knights"] = tick
 			break
 
@@ -552,7 +552,12 @@ func _knighting(m: MissionRuntime, k: Dictionary, tick: int) -> void:
 static func _in_rect(rect: Array, x: int, y: int) -> bool:
 	var cx := Fixed.to_cells(x)
 	var cy := Fixed.to_cells(y)
-	return cx >= int(rect[0]) and cy >= int(rect[1]) and cx <= int(rect[2]) and cy <= int(rect[3])
+	return (
+		cx >= Num.of(rect[0])
+		and cy >= Num.of(rect[1])
+		and cx <= Num.of(rect[2])
+		and cy <= Num.of(rect[3])
+	)
 
 
 static func _bits(v: int) -> int:

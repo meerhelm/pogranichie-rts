@@ -84,8 +84,8 @@ func set_up(m: MissionRuntime) -> void:
 	# Props (setup.props [{kind, at, block?}]) are drawn by the game; a blocking one closes its cell.
 	for p: Dictionary in m.def.setup.get("props", []):
 		var at: Array = p["at"]
-		if p.get("block", false) and m.economy.nav.in_bounds(at[0], at[1]):
-			m.economy.nav.set_blocked(m.economy.nav.cell_at(at[0], at[1]), true)
+		if p.get("block", false) and m.economy.nav.in_bounds(Num.of(at[0]), Num.of(at[1])):
+			m.economy.nav.set_blocked(m.economy.nav.cell_at(Num.of(at[0]), Num.of(at[1])), true)
 	var r := _rules(m)
 	if r.is_empty():
 		return
@@ -119,20 +119,20 @@ func test(m: MissionRuntime, c: Dictionary) -> bool:
 	var ok := false
 	match c["type"]:
 		"alarm":
-			ok = alarms >= int(c.get("at_least", 1))
+			ok = alarms >= Num.of(c.get("at_least", 1))
 		"detection":
-			ok = meter >= int(c["at_least"])
+			ok = meter >= Num.of(c["at_least"])
 		"found":
-			ok = found.has(int(c["place"]))
+			ok = found.has(Num.of(c["place"]))
 		"found_count":
-			ok = found.size() >= int(c["at_least"])
+			ok = found.size() >= Num.of(c["at_least"])
 		"night":
 			ok = night == bool(c.get("is", true))
 		"pursuit_due":
 			ok = pursuit_at >= 0 and now >= pursuit_at
 		"west_of":
-			var edge := Fixed.from_cells(int(c["x"]))
-			for id in m.alive_of(c["group"]):
+			var edge := Fixed.from_cells(Num.of(c["x"]))
+			for id in m.alive_of(str(c["group"])):
 				ok = ok or m.entities.pos_x[id - 1] < edge
 	return ok
 
@@ -144,12 +144,12 @@ func run(m: MissionRuntime, a: Dictionary, tick: int) -> void:
 		"stealth":
 			on = bool(a.get("on", true)) and not _rules(m).is_empty()
 		"reveal":
-			_reveal(m, int(a["place"]), tick)
+			_reveal(m, Num.of(a["place"]), tick)
 		"open_path":
-			var ticks := int(a.get("ticks", -1))
-			_open_path(m, int(a["place"]), -1 if ticks < 0 else tick + ticks, tick)
+			var ticks := Num.of(a.get("ticks", -1))
+			_open_path(m, Num.of(a["place"]), -1 if ticks < 0 else tick + ticks, tick)
 		"pursuit":
-			var at := tick + int(a["ticks"])
+			var at := tick + Num.of(a["ticks"])
 			pursuit_at = at if pursuit_at < 0 else mini(pursuit_at, at)
 
 
@@ -179,7 +179,7 @@ func pace(_m: MissionRuntime, ids: PackedInt32Array) -> PackedInt32Array:
 ## A fugitive's step this tick: led on foot or on a tired horse it walks.
 func speed(id: int, budget: int, m: MissionRuntime) -> int:
 	if walking.has(id) or tired.has(id):
-		return budget * int(_rules(m)["stamina"]["walk_permille"]) / 1000
+		return budget * Num.of(_rules(m)["stamina"]["walk_permille"]) / 1000
 	return budget
 
 
@@ -195,9 +195,9 @@ func sight_of(m: MissionRuntime, id: int) -> int:
 	var cells: int = def.param(&"sight", m.combat.rules.sight_default) if def != null else 6
 	var permille := FULL
 	if night:
-		permille = int(r.get("night_permille", FULL))
+		permille = Num.of(r.get("night_permille", FULL))
 		if _torch(m, r, id):
-			permille = int(r.get("torch_permille", permille))
+			permille = Num.of(r.get("torch_permille", permille))
 	return Fixed.from_cells(cells) * permille / FULL
 
 
@@ -209,10 +209,10 @@ func trail(m: MissionRuntime, i: int) -> PackedInt32Array:
 	for k in range(1, pts.size()):
 		var a: Array = pts[k - 1]
 		var b: Array = pts[k]
-		var ax := int(a[0])
-		var ay := int(a[1])
-		var dx := int(b[0]) - ax
-		var dy := int(b[1]) - ay
+		var ax := Num.of(a[0])
+		var ay := Num.of(a[1])
+		var dx := Num.of(b[0]) - ax
+		var dy := Num.of(b[1]) - ay
 		var n := maxi(maxi(absi(dx), absi(dy)), 1)
 		var wide := Vector2i(1, 0) if absi(dy) > absi(dx) else Vector2i(0, 1)
 		var prev := Vector2i(ax, ay)
@@ -269,12 +269,12 @@ func _watch(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 			var heard := 0
 			var dogs := Fixed.from_cells(m.combat.defs[ws].param(&"dogs_radius", 0))
 			if dogs > 0 and not path_old.has(cell) and d2 <= dogs * dogs:
-				heard += int(r["dogs"])
+				heard += Num.of(r["dogs"])
 			if trot:
 				var road := m.economy.nav.terrain_at(cell) == &"t_road" and not path_old.has(cell)
-				var n := Fixed.from_cells(int(r["road_noise_cells" if road else "noise_cells"]))
+				var n := Fixed.from_cells(Num.of(r["road_noise_cells" if road else "noise_cells"]))
 				if d2 <= n * n:
-					heard += int(r["noise"])
+					heard += Num.of(r["noise"])
 			if heard > 0:
 				got += heard
 				_turn(m, w, dx, dy)
@@ -282,17 +282,17 @@ func _watch(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 				continue
 			var reach := _reach(m, r, sight_of(m, w), forest, lit, moving)
 			if d2 <= reach * reach and _in_cone(m, r, w, dx, dy, d2):
-				got += int(r["see"]) * (2 if d2 * 4 <= reach * reach else 1)
+				got += Num.of(r["see"]) * (2 if d2 * 4 <= reach * reach else 1)
 		for b in towers:
 			var bs := m.economy.buildings
 			var dx := fx - bs.center_x(b)
 			var dy := fy - bs.center_y(b)
 			var base := Fixed.from_cells(bs.defs[b - 1].param(&"sight", 0))
 			if night:
-				base = base * int(r.get("night_permille", FULL)) / FULL
+				base = base * Num.of(r.get("night_permille", FULL)) / FULL
 			var reach := _reach(m, r, base, forest, lit, moving)
 			if not hidden and dx * dx + dy * dy <= reach * reach:
-				got += int(r["see"])
+				got += Num.of(r["see"])
 		if got > 0:
 			gain += got
 			last_x = fx
@@ -301,7 +301,7 @@ func _watch(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 		if tick >= calm_until:
 			meter = mini(meter + gain, FULL)
 	else:
-		meter = maxi(meter - int(r["decay"]), 0)
+		meter = maxi(meter - Num.of(r["decay"]), 0)
 	if meter >= FULL:
 		_alarm(m, r, tick)
 
@@ -313,11 +313,11 @@ func _reach(
 ) -> int:
 	var reach := base
 	if lit:
-		reach = reach * int(r.get("lit_permille", FULL)) / FULL
+		reach = reach * Num.of(r.get("lit_permille", FULL)) / FULL
 	elif not night and moving and not forest:
-		reach = reach * int(r.get("day_open_permille", FULL)) / FULL
+		reach = reach * Num.of(r.get("day_open_permille", FULL)) / FULL
 	if forest and not lit:
-		reach = mini(reach, Fixed.from_cells(int(r.get("cover", m.combat.rules.sight_default))))
+		reach = mini(reach, Fixed.from_cells(Num.of(r.get("cover", m.combat.rules.sight_default))))
 	return reach
 
 
@@ -327,7 +327,7 @@ func _in_cone(m: MissionRuntime, r: Dictionary, w: int, dx: int, dy: int, d2: in
 	if d == 0:
 		return true
 	var dot := e.facing_x[w - 1] * dx + e.facing_y[w - 1] * dy
-	return dot * FULL >= int(r.get("cone_permille", 500)) * Fixed.ONE * d
+	return dot * FULL >= Num.of(r.get("cone_permille", 500)) * Fixed.ONE * d
 
 
 ## A standing watcher who hears or smells someone turns that way.
@@ -368,14 +368,14 @@ func _towers(m: MissionRuntime, r: Dictionary) -> PackedInt32Array:
 
 func _guide(m: MissionRuntime, r: Dictionary) -> PackedInt32Array:
 	var g: Dictionary = r.get("guide", {})
-	return PackedInt32Array() if g.is_empty() else m.alive_of(g["group"])
+	return PackedInt32Array() if g.is_empty() else m.alive_of(str(g["group"]))
 
 
 func _guided(m: MissionRuntime, r: Dictionary, guide: PackedInt32Array, f: int) -> bool:
 	if guide.is_empty():
 		return false
 	var e := m.entities
-	var reach := Fixed.from_cells(int(r["guide"]["radius"]))
+	var reach := Fixed.from_cells(Num.of(r["guide"]["radius"]))
 	for g in guide:
 		var dx := e.pos_x[f - 1] - e.pos_x[g - 1]
 		var dy := e.pos_y[f - 1] - e.pos_y[g - 1]
@@ -398,13 +398,13 @@ func _is_forest(m: MissionRuntime, cell: int) -> bool:
 
 ## Whether the point is in the light of one of the setup's campfires.
 func _lit(m: MissionRuntime, r: Dictionary, x: int, y: int) -> bool:
-	var reach := Fixed.from_cells(int(r.get("light_radius", 0)))
+	var reach := Fixed.from_cells(Num.of(r.get("light_radius", 0)))
 	for p: Dictionary in m.def.setup.get("props", []):
 		if p["kind"] != "prop_campfire":
 			continue
 		var at: Array = p["at"]
-		var dx := x - Fixed.from_cells(at[0]) - Fixed.HALF
-		var dy := y - Fixed.from_cells(at[1]) - Fixed.HALF
+		var dx := x - Fixed.from_cells(Num.of(at[0])) - Fixed.HALF
+		var dy := y - Fixed.from_cells(Num.of(at[1])) - Fixed.HALF
 		if dx * dx + dy * dy <= reach * reach:
 			return true
 	return false
@@ -413,12 +413,12 @@ func _lit(m: MissionRuntime, r: Dictionary, x: int, y: int) -> bool:
 ## The alarm: the meter falls back, the chase comes nearer, the watch near the spot rides there.
 func _alarm(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	alarms += 1
-	meter = int(r.get("alarm_reset", 0))
-	calm_until = tick + int(r.get("alarm_calm_ticks", 0))
+	meter = Num.of(r.get("alarm_reset", 0))
+	calm_until = tick + Num.of(r.get("alarm_calm_ticks", 0))
 	m.flags["alarm"] = tick
 	if pursuit_at >= 0:
-		pursuit_at = maxi(pursuit_at - int(r.get("alarm_cut_ticks", 0)), tick)
-	var reach := Fixed.from_cells(int(r.get("alarm_radius", 0)))
+		pursuit_at = maxi(pursuit_at - Num.of(r.get("alarm_cut_ticks", 0)), tick)
+	var reach := Fixed.from_cells(Num.of(r.get("alarm_radius", 0)))
 	var e := m.entities
 	var by: Dictionary[int, PackedInt32Array] = {}
 	for w in _watchers(m, r):
@@ -447,14 +447,14 @@ func _posts(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	var e := m.entities
 	for p: Dictionary in r.get("posts", []):
 		var looks: Array = p["look"]
-		var every := maxi(int(p.get("every_ticks", 1)), 1)
+		var every := maxi(Num.of(p.get("every_ticks", 1)), 1)
 		var look: Array = looks[(tick / every) % looks.size()]
-		var lx := int(look[0])
-		var ly := int(look[1])
+		var lx := Num.of(look[0])
+		var ly := Num.of(look[1])
 		var d := Fixed.isqrt(lx * lx + ly * ly)
 		if d == 0 or tick % every >= MissionRuntime.CHECK_EVERY:
 			continue
-		for id in m.alive_of(p["group"]):
+		for id in m.alive_of(str(p["group"])):
 			if roused.has(id) or e.orders[id - 1] != EntityStore.Order.IDLE:
 				continue
 			e.facing_x[id - 1] = lx * Fixed.ONE / d
@@ -480,8 +480,8 @@ func _patrols(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 		var leg: int = (patrol_leg.get(g, -1) + 1) % route.size()
 		patrol_leg[g] = leg
 		var to: Array = route[leg]
-		var x := Fixed.from_cells(to[0]) + Fixed.HALF
-		var y := Fixed.from_cells(to[1]) + Fixed.HALF
+		var x := Fixed.from_cells(Num.of(to[0])) + Fixed.HALF
+		var y := Fixed.from_cells(Num.of(to[1])) + Fixed.HALF
 		m._apply.call(SimCommand.move(tick, e.owners[ids[0] - 1], ids, x, y))
 
 
@@ -493,9 +493,9 @@ func _find(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	var places := m.magic.places
 	if places.hidden.is_empty():
 		return
-	var reach := Fixed.from_cells(int(r.get("reveal_radius", 0)))
+	var reach := Fixed.from_cells(Num.of(r.get("reveal_radius", 0)))
 	var e := m.entities
-	for id in m.alive_of(r.get("finder", "")):
+	for id in m.alive_of(str(r.get("finder", ""))):
 		for i in places.count():
 			if not places.hidden.has(i):
 				continue
@@ -514,7 +514,7 @@ func _reveal(m: MissionRuntime, i: int, tick: int) -> void:
 	var state := m.economy.player(m.def.player)
 	if state != null:
 		var cap := m.magic.rules.power_cap * MagicSystem.POWER_UNIT
-		var charge := int(_rules(m).get("charge", 0)) * MagicSystem.POWER_UNIT
+		var charge := Num.of(_rules(m).get("charge", 0)) * MagicSystem.POWER_UNIT
 		state.power = mini(state.power + charge, cap)
 	m.flags["found_%d" % i] = tick
 	var at := [Fixed.to_cells(places.center_x(i)), Fixed.to_cells(places.center_y(i))]
@@ -585,14 +585,14 @@ func _horses(m: MissionRuntime, r: Dictionary) -> void:
 		var moving := e.orders[id - 1] == EntityStore.Order.MOVE
 		var left: int = stamina.get(id, FULL)
 		if moving and not at_walk(id):
-			left -= int(s["drain"])
+			left -= Num.of(s["drain"])
 			if left <= 0:
 				left = 0
 				tired[id] = true
 		else:
-			left += int(s["rest"] if moving else s["rest_still"])
+			left += Num.of(s["rest"] if moving else s["rest_still"])
 		left = mini(left, FULL)
-		if tired.has(id) and left >= int(s["tired_until"]):
+		if tired.has(id) and left >= Num.of(s["tired_until"]):
 			tired.erase(id)
 		stamina[id] = left
 	for id: int in stamina.keys():
@@ -612,7 +612,7 @@ func _stable(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	if not bs.is_alive(b):
 		return
 	var e := m.entities
-	var reach := Fixed.from_cells(int(st["radius"]))
+	var reach := Fixed.from_cells(Num.of(st["radius"]))
 	var taker := 0
 	for id in fugitives(m):
 		if bs.distance_sq(b, e.pos_x[id - 1], e.pos_y[id - 1]) <= reach * reach:
@@ -621,7 +621,7 @@ func _stable(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	if taker == 0:
 		return
 	stable_used = true
-	var share := Fixed.from_cells(int(st["share"]))
+	var share := Fixed.from_cells(Num.of(st["share"]))
 	for id in fugitives(m):
 		var dx := e.pos_x[id - 1] - e.pos_x[taker - 1]
 		var dy := e.pos_y[id - 1] - e.pos_y[taker - 1]
@@ -653,7 +653,7 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_32(keys.size())
 		for k: int in keys:
 			buf.put_32(k)
-			buf.put_64(int(d[k]))
+			buf.put_64(Num.of(d[k]))
 	var names := patrol_leg.keys()
 	names.sort()
 	for g: String in names:

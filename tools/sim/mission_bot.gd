@@ -434,7 +434,7 @@ func _dubysa(army: PackedInt32Array) -> void:
 	var e := sim.entities
 	for i in posts.size():
 		var at: Array = posts[i]
-		var post := Vector2i(at[0], at[1])
+		var post := Vector2i(Num.of(at[0]), Num.of(at[1]))
 		var via: Vector2i = POST_WAYPOINTS[i]
 		var settle := PackedInt32Array()
 		var to_via := PackedInt32Array()
@@ -527,7 +527,7 @@ func _gintaut_fit(id: int) -> bool:
 	var s := id - 1
 	if e.hp[s] * 2 > e.max_hp[s]:
 		return true
-	if not _sent.has("gintaut_home") or sim.tick - int(_sent["gintaut_home"]) > 200:
+	if not _sent.has("gintaut_home") or sim.tick - Num.of(_sent["gintaut_home"]) > 200:
 		_sent["gintaut_home"] = sim.tick
 		var x := Fixed.from_cells(HOME.x) + Fixed.HALF
 		var y := Fixed.from_cells(HOME.y + 4) + Fixed.HALF

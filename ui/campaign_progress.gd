@@ -16,7 +16,7 @@ const MISSIONS := {
 	"crown": ["crown_01", "crown_02", "crown_03", "crown_04", "crown_05", "crown_06"],
 }
 ## The faction whose name the country button shows (a catalog id, translated as a name).
-const FACTION := {"gdl": &"gdl", "crown": &"pl"}
+const FACTION: Dictionary[String, StringName] = {"gdl": &"gdl", "crown": &"pl"}
 ## Typed in the main menu (letters by key position, so any keyboard layout), it opens all missions.
 const CHEAT_CODE := "VITAUT"  # notr
 
@@ -123,13 +123,17 @@ static func is_open(mission_id: String) -> bool:
 		return true
 	var list: Array = MISSIONS[campaign_of(mission_id)]
 	var i := list.find(mission_id)
-	return i == 0 or is_won(list[i - 1])
+	if i == 0:
+		return true
+	var before: String = list[i - 1]
+	return is_won(before)
 
 
 ## The campaign a mission belongs to ("" for none).
 static func campaign_of(mission_id: String) -> String:
 	for c: String in ORDER:
-		if (MISSIONS[c] as Array).has(mission_id):
+		var list: Array = MISSIONS[c]
+		if list.has(mission_id):
 			return c
 	return ""
 

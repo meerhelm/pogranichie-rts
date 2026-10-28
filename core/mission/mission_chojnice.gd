@@ -110,14 +110,14 @@ func set_up(m: MissionRuntime) -> void:
 	on = true
 	var d: Dictionary = r.get("dispute", {})
 	for entry: Array in d.get("groups", []):
-		var members := m.alive_of(entry[0])
-		var every := maxi(int(entry[1]), 1)
-		var ticks := int(entry[2])
+		var members := m.alive_of(str(entry[0]))
+		var every := maxi(Num.of(entry[1]), 1)
+		var ticks := Num.of(entry[2])
 		for k in members.size():
 			if k % every != 0:
 				continue
 			var owner := m.entities.owners[members[k] - 1]
-			arguing[members[k]] = -1 if owner == int(r["player"]) else ticks * (1 + k % 3)
+			arguing[members[k]] = -1 if owner == Num.of(r["player"]) else ticks * (1 + k % 3)
 	var places: Dictionary = r.get("deploy", {})
 	for g: String in places:
 		var members := m.alive_of(g)
@@ -132,8 +132,12 @@ func set_up(m: MissionRuntime) -> void:
 		cx /= members.size()
 		cy /= members.size()
 		for id in members:
-			place_x[id] = Fixed.from_cells(to[0]) + Fixed.HALF + m.entities.pos_x[id - 1] - cx
-			place_y[id] = Fixed.from_cells(to[1]) + Fixed.HALF + m.entities.pos_y[id - 1] - cy
+			place_x[id] = (
+				Fixed.from_cells(Num.of(to[0])) + Fixed.HALF + m.entities.pos_x[id - 1] - cx
+			)
+			place_y[id] = (
+				Fixed.from_cells(Num.of(to[1])) + Fixed.HALF + m.entities.pos_y[id - 1] - cy
+			)
 	var b: Dictionary = r.get("banner", {})
 	if not b.is_empty():
 		_banner_to(m, str((b["groups"] as Array)[0]))
@@ -164,20 +168,20 @@ func test(m: MissionRuntime, c: Dictionary) -> bool:
 	var ok := false
 	match c["type"]:
 		"hour":
-			ok = minutes(m, now) >= int(c["at_least"])
+			ok = minutes(m, now) >= Num.of(c["at_least"])
 		"chased":
-			ok = chased.size() >= int(c["at_least"])
+			ok = chased.size() >= Num.of(c["at_least"])
 		"panic_reached":
-			ok = front >= int(c["cells"])
+			ok = front >= Num.of(c["cells"])
 		"king_led":
 			ok = led
 		"escaped":
-			ok = escaped >= int(c["at_least"])
+			ok = escaped >= Num.of(c["at_least"])
 		"drowned":
 			var n := drowned_player if c.has("player") else drowned
-			ok = n >= int(c["at_least"])
+			ok = n >= Num.of(c["at_least"])
 		"arguing":
-			ok = arguing_now(m) <= int(c["at_most"])
+			ok = arguing_now(m) <= Num.of(c["at_most"])
 	return ok
 
 
@@ -189,8 +193,8 @@ func run(m: MissionRuntime, a: Dictionary, tick: int) -> void:
 			deploying = a.get("on", true)
 		"panic":
 			var at: Array = a["at"]
-			panic_x = Fixed.from_cells(at[0]) + Fixed.HALF
-			panic_y = Fixed.from_cells(at[1]) + Fixed.HALF
+			panic_x = Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+			panic_y = Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
 			front = 0
 			m.flags["panic"] = tick
 		"pursue":
@@ -202,7 +206,7 @@ func run(m: MissionRuntime, a: Dictionary, tick: int) -> void:
 			elif pursuing.has(g):
 				pursuing.remove_at(pursuing.find(g))
 		"banner_to":
-			_banner_to(m, a["group"])
+			_banner_to(m, str(a["group"]))
 		"last_stand":
 			_last_stand(m, tick)
 		"release":
@@ -218,7 +222,7 @@ func minutes(m: MissionRuntime, tick: int) -> int:
 	var d: Dictionary = _rules(m).get("day", {})
 	if d.is_empty():
 		return 0
-	return int(d["start_minutes"]) + tick * 60 / maxi(int(d["ticks_per_hour"]), 1)
+	return Num.of(d["start_minutes"]) + tick * 60 / maxi(Num.of(d["ticks_per_hour"]), 1)
 
 
 ## The clock as «HH:MM», for the panel.
@@ -246,14 +250,14 @@ func _dispute(m: MissionRuntime, d: Dictionary, tick: int) -> void:
 	if arguing.is_empty():
 		return
 	var e := m.entities
-	var p := int(_rules(m)["player"])
-	var reach := Fixed.from_cells(int(d.get("hero_radius", 4)))
+	var p := Num.of(_rules(m)["player"])
+	var reach := Fixed.from_cells(Num.of(d.get("hero_radius", 4)))
 	var heroes := PackedInt32Array()
 	for id in e.alive_ids:
 		if e.owners[id - 1] == p and m.combat.defs[id - 1] != null:
 			if m.combat.defs[id - 1].has_class(&"hero"):
 				heroes.append(id)
-	var start := int(m.fired.get(str(d.get("from", "")), 0))
+	var start := Num.of(m.fired.get(str(d.get("from", "")), 0))
 	var done := PackedInt32Array()
 	var held := PackedInt32Array()
 	var ids := arguing.keys()
@@ -303,9 +307,9 @@ func _pospolite(m: MissionRuntime, ps: Dictionary, tick: int) -> void:
 		return
 	var e := m.entities
 	var players: Array = ps["players"]
-	var reach := Fixed.from_cells(int(ps["chase_cells"]))
-	var near_banner := Fixed.from_cells(int(ps.get("banner_radius", 8)))
-	var recovery := int(ps.get("banner_recovery", 0)) * CombatSystem.MORALE_SCALE
+	var reach := Fixed.from_cells(Num.of(ps["chase_cells"]))
+	var near_banner := Fixed.from_cells(Num.of(ps.get("banner_radius", 8)))
+	var recovery := Num.of(ps.get("banner_recovery", 0)) * CombatSystem.MORALE_SCALE
 	for id in e.alive_ids:
 		var s := id - 1
 		var unit := m.combat.defs[s]
@@ -356,7 +360,7 @@ func _walls(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 		return
 	var rect: Array = r["walls"]
 	var e := m.entities
-	var p := int(r["player"])
+	var p := Num.of(r["player"])
 	for id in e.alive_ids:
 		var s := id - 1
 		if e.owners[s] == p and not chased.has(id) and _in_rect(rect, e.pos_x[s], e.pos_y[s]):
@@ -368,14 +372,14 @@ func _walls(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 
 
 func _panic(m: MissionRuntime, pn: Dictionary, tick: int) -> void:
-	if pn.is_empty() or front < 0 or front >= int(pn["max"]):
+	if pn.is_empty() or front < 0 or front >= Num.of(pn["max"]):
 		return
-	front = mini(front + int(pn["speed"]), int(pn["max"]))
+	front = mini(front + Num.of(pn["speed"]), Num.of(pn["max"]))
 	var e := m.entities
 	var players: Array = pn["players"]
 	var reach := Fixed.from_cells(front)
-	var shield := Fixed.from_cells(int(pn["shield_radius"]))
-	var foot := StringName(pn.get("foot", ""))
+	var shield := Fixed.from_cells(Num.of(pn["shield_radius"]))
+	var foot := StringName(str(pn.get("foot", "")))
 	var hit := PackedInt32Array()
 	for id in m.combat.buckets.near(panic_x, panic_y, reach):
 		var s := id - 1
@@ -421,7 +425,7 @@ func _drown(m: MissionRuntime, dr: Dictionary, r: Dictionary, tick: int) -> void
 		return
 	var e := m.entities
 	var crown: Array = r.get("crown", [r["player"]])
-	var p := int(r["player"])
+	var p := Num.of(r["player"])
 	var bog := &"t_bog"
 	var lost := PackedInt32Array()
 	for id in e.alive_ids:
@@ -452,21 +456,21 @@ func _drown(m: MissionRuntime, dr: Dictionary, r: Dictionary, tick: int) -> void
 func _king(m: MissionRuntime, k: Dictionary, tick: int) -> void:
 	if k.is_empty() or king_out:
 		return
-	var ids := m.alive_of(k["group"])
+	var ids := m.alive_of(str(k["group"]))
 	if ids.is_empty():
 		return
 	var e := m.entities
 	var king := ids[0]
 	var s := king - 1
-	m.combat.hp_floor[king] = maxi(e.max_hp[s] * int(k["floor_permille"]) / FULL, 1)
+	m.combat.hp_floor[king] = maxi(e.max_hp[s] * Num.of(k["floor_permille"]) / FULL, 1)
 	if e.hp[s] <= m.combat.hp_floor[king] and _taken(m, s):
 		m.flags["king_taken"] = tick
 		return
 	if not m.fired.has(str(k["from"])):
 		return
-	var p := int(_rules(m)["player"])
+	var p := Num.of(_rules(m)["player"])
 	if not led:
-		if _count_near(m, s, p, Fixed.from_cells(int(k["radius"]))) >= int(k["escorts"]):
+		if _count_near(m, s, p, Fixed.from_cells(Num.of(k["radius"]))) >= Num.of(k["escorts"]):
 			led = true
 			m.flags["king_led"] = tick
 			m._apply.call(SimCommand.set_stance(tick, e.owners[s], ids, EntityStore.Stance.PASSIVE))
@@ -474,8 +478,8 @@ func _king(m: MissionRuntime, k: Dictionary, tick: int) -> void:
 			return
 	var route: Array = k["route"]
 	var at: Array = route[mini(leg, route.size() - 1)]
-	var wx := Fixed.from_cells(at[0]) + Fixed.HALF
-	var wy := Fixed.from_cells(at[1]) + Fixed.HALF
+	var wx := Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+	var wy := Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
 	if Fixed.distance(wx, wy, e.pos_x[s], e.pos_y[s]) <= Fixed.from_cells(AT_WAYPOINT):
 		leg += 1
 		if leg >= route.size():
@@ -485,9 +489,9 @@ func _king(m: MissionRuntime, k: Dictionary, tick: int) -> void:
 			m._remove.call(king)
 			return
 		at = route[leg]
-		wx = Fixed.from_cells(at[0]) + Fixed.HALF
-		wy = Fixed.from_cells(at[1]) + Fixed.HALF
-	var with_us := _count_near(m, s, p, Fixed.from_cells(int(k["follow_cells"]))) > 0
+		wx = Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+		wy = Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
+	var with_us := _count_near(m, s, p, Fixed.from_cells(Num.of(k["follow_cells"]))) > 0
 	if with_us and (e.orders[s] == EntityStore.Order.IDLE or tick % 100 == 0):
 		m._apply.call(SimCommand.move(tick, e.owners[s], PackedInt32Array([king]), wx, wy))
 	elif not with_us and e.orders[s] != EntityStore.Order.IDLE:
@@ -552,8 +556,8 @@ func _banner(m: MissionRuntime, b: Dictionary, tick: int) -> void:
 		m.flags["banner_down"] = tick
 		var at := [Fixed.to_cells(banner_x), Fixed.to_cells(banner_y)]
 		m.run({"do": "ping", "at": at, "radius": 2}, tick)
-	var p := int(_rules(m)["player"])
-	var reach := Fixed.from_cells(int(b["raise_radius"]))
+	var p := Num.of(_rules(m)["player"])
+	var reach := Fixed.from_cells(Num.of(b["raise_radius"]))
 	var near := m.combat.buckets.near(banner_x, banner_y, reach)
 	near.sort()
 	for id in near:
@@ -566,7 +570,7 @@ func _banner(m: MissionRuntime, b: Dictionary, tick: int) -> void:
 			m.combat.banners.bearers[id] = true
 			m.flags["banner_raised"] = tick
 			return
-	if tick - banner_down >= int(b["raise_ticks"]):
+	if tick - banner_down >= Num.of(b["raise_ticks"]):
 		m.flags["banner_taken"] = tick
 
 
@@ -578,14 +582,14 @@ func _last_stand(m: MissionRuntime, tick: int) -> void:
 	for q: String in d.get("marks", []):
 		if m.flags.has(MissionRuntime.choice_flag(q, 0)):
 			debt += 1
-	stand_until = tick + int(d["base_ticks"]) + debt * int(d["per_debt_ticks"])
+	stand_until = tick + Num.of(d["base_ticks"]) + debt * Num.of(d["per_debt_ticks"])
 	m.flags["last_stand"] = tick
 
 
 func _stand(m: MissionRuntime, d: Dictionary, tick: int) -> void:
 	if d.is_empty() or stand_until < 0 or paid:
 		return
-	var ids := m.alive_of(d["group"])
+	var ids := m.alive_of(str(d["group"]))
 	if tick >= stand_until or ids.is_empty():
 		paid = true
 		m.flags["debt_paid"] = tick
@@ -624,7 +628,7 @@ func _floors(m: MissionRuntime, floors: Dictionary) -> void:
 		if released.has(g):
 			continue
 		for id in m.alive_of(g):
-			var hp := m.entities.max_hp[id - 1] * int(floors[g]) / FULL
+			var hp := m.entities.max_hp[id - 1] * Num.of(floors[g]) / FULL
 			m.combat.hp_floor[id] = maxi(hp, 1)
 
 
@@ -634,8 +638,8 @@ func _pursue(m: MissionRuntime, g: String, tick: int) -> void:
 		return
 	var e := m.entities
 	var r := _rules(m)
-	var p := int(r["player"])
-	var king := m.alive_of(r.get("king", {}).get("group", ""))
+	var p := Num.of(r["player"])
+	var king := m.alive_of(str(r.get("king", {}).get("group", "")))
 	var lead := ids[0] - 1
 	var best := 0
 	var best_d := 0
@@ -661,7 +665,7 @@ func _escape(m: MissionRuntime, es: Dictionary, tick: int) -> void:
 	if es.is_empty():
 		return
 	var e := m.entities
-	var p := int(_rules(m)["player"])
+	var p := Num.of(_rules(m)["player"])
 	var keep := {}
 	for g: String in es.get("keep", []):
 		for id in m.alive_of(g):
@@ -682,7 +686,12 @@ func _escape(m: MissionRuntime, es: Dictionary, tick: int) -> void:
 static func _in_rect(rect: Array, x: int, y: int) -> bool:
 	var cx := Fixed.to_cells(x)
 	var cy := Fixed.to_cells(y)
-	return cx >= int(rect[0]) and cy >= int(rect[1]) and cx <= int(rect[2]) and cy <= int(rect[3])
+	return (
+		cx >= Num.of(rect[0])
+		and cy >= Num.of(rect[1])
+		and cx <= Num.of(rect[2])
+		and cy <= Num.of(rect[3])
+	)
 
 
 func _rules(m: MissionRuntime) -> Dictionary:
@@ -699,7 +708,7 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_32(ids.size())
 		for id: int in ids:
 			buf.put_32(id)
-			buf.put_64(int(d[id]))
+			buf.put_64(Num.of(d[id]))
 	for d: Dictionary in [sent, chased, struck]:
 		var ids := d.keys()
 		ids.sort()

@@ -652,7 +652,7 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_32(keys.size())
 		for k: int in keys:
 			buf.put_64(k)
-			buf.put_32(int(d[k]))
+			buf.put_32(Num.of(d[k]))
 	var waiting := _pending.keys()
 	waiting.sort()
 	buf.put_32(waiting.size())

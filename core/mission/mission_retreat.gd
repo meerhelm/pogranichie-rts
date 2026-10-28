@@ -48,12 +48,12 @@ var waves := 0
 
 
 func set_up(m: MissionRuntime) -> void:
-	bridge_hp = int(m.def.rules.get("bridge", {}).get("hp", 0))
+	bridge_hp = Num.of(m.def.rules.get("bridge", {}).get("hp", 0))
 	var power: Dictionary = m.def.setup.get("power", {})
 	for key: String in power:
 		var state := m.economy.player(key.to_int())
 		if state != null:
-			state.power = int(power[key]) * MagicSystem.POWER_UNIT
+			state.power = Num.of(power[key]) * MagicSystem.POWER_UNIT
 
 
 func step(m: MissionRuntime, tick: int) -> void:
@@ -68,12 +68,12 @@ func test(m: MissionRuntime, c: Dictionary) -> bool:
 		"bridge_down":
 			return bridge_fell
 		"bridge_below":
-			var full := int(m.def.rules["bridge"]["hp"])
-			return bridge_from >= 0 and bridge_hp * 1000 < full * int(c["permille"])
+			var full := Num.of(m.def.rules["bridge"]["hp"])
+			return bridge_from >= 0 and bridge_hp * 1000 < full * Num.of(c["permille"])
 		"saved":
-			return saved(m, c.get("group", "")) >= int(c["at_least"])
+			return saved(m, str(c.get("group", ""))) >= Num.of(c["at_least"])
 		"drowned":
-			return drowned >= int(c["at_least"])
+			return drowned >= Num.of(c["at_least"])
 	return false
 
 
@@ -88,16 +88,16 @@ func run(m: MissionRuntime, a: Dictionary, tick: int) -> void:
 			ford_on = a.get("on", true)
 		"waves":
 			var w: Dictionary = m.def.rules.get("waves", {})
-			next_wave = tick + int(w.get("every_ticks", 0)) if a.get("on", true) else -1
+			next_wave = tick + Num.of(w.get("every_ticks", 0)) if a.get("on", true) else -1
 		"unprotect":
-			for id in m.alive_of(a["group"]):
+			for id in m.alive_of(str(a["group"])):
 				m.combat.untouchable.erase(id)
 		"transfer":
-			_transfer(m, a["group"], int(a["player"]))
+			_transfer(m, str(a["group"]), Num.of(a["player"]))
 		"cast":
-			var ids := m.alive_of(a["group"])
+			var ids := m.alive_of(str(a["group"]))
 			for id in ids:
-				var spell := StringName(a["spell"])
+				var spell := StringName(str(a["spell"]))
 				var owner := m.entities.owners[id - 1]
 				if m.magic.can_cast(owner, id, spell) == MagicSystem.Cast.OK:
 					var x := m.entities.pos_x[id - 1]
@@ -113,7 +113,7 @@ func saved(m: MissionRuntime, group: String = "") -> int:
 	var r: Dictionary = m.def.rules.get("rescue", {})
 	if r.is_empty():
 		return 0
-	var west := Fixed.from_cells(int(r["west_of"]) + 1)
+	var west := Fixed.from_cells(Num.of(r["west_of"]) + 1)
 	var e := m.entities
 	var n := 0
 	if not group.is_empty():
@@ -130,7 +130,7 @@ func saved(m: MissionRuntime, group: String = "") -> int:
 
 ## The bridge's state as a share of its hp (permille), for the panel.
 func bridge_permille(m: MissionRuntime) -> int:
-	var full := int(m.def.rules.get("bridge", {}).get("hp", 0))
+	var full := Num.of(m.def.rules.get("bridge", {}).get("hp", 0))
 	return 0 if bridge_fell or full <= 0 else bridge_hp * 1000 / full
 
 
@@ -138,8 +138,8 @@ func _cross(m: MissionRuntime) -> void:
 	var r: Dictionary = m.def.rules.get("rescue", {})
 	if r.is_empty():
 		return
-	var p := int(r["player"])
-	var east := Fixed.from_cells(int(r["east_of"]))
+	var p := Num.of(r["player"])
+	var east := Fixed.from_cells(Num.of(r["east_of"]))
 	var e := m.entities
 	for id in e.alive_ids:
 		if e.owners[id - 1] == p and e.pos_x[id - 1] >= east:
@@ -151,12 +151,12 @@ func _bridge(m: MissionRuntime, tick: int) -> void:
 	if b.is_empty() or bridge_fell or bridge_from < 0:
 		return
 	var at: Array = b["at"]
-	var x := Fixed.from_cells(at[0]) + Fixed.HALF
-	var y := Fixed.from_cells(at[1]) + Fixed.HALF
-	var r := Fixed.from_cells(b["radius"])
+	var x := Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+	var y := Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
+	var r := Fixed.from_cells(Num.of(b["radius"]))
 	var e := m.entities
 	var working := 0
-	for id in m.alive_of(b["group"]):
+	for id in m.alive_of(str(b["group"])):
 		var s := id - 1
 		if e.hp[s] <= 0 or m.combat.is_fleeing(id):
 			continue
@@ -164,8 +164,8 @@ func _bridge(m: MissionRuntime, tick: int) -> void:
 		var dy := e.pos_y[s] - y
 		if dx * dx + dy * dy <= r * r:
 			working += 1
-	bridge_hp = maxi(bridge_hp - working * int(b["per_unit"]), 0)
-	if bridge_hp == 0 or tick >= bridge_from + int(b["fall_ticks"]):
+	bridge_hp = maxi(bridge_hp - working * Num.of(b["per_unit"]), 0)
+	if bridge_hp == 0 or tick >= bridge_from + Num.of(b["fall_ticks"]):
 		_fall(m, tick)
 
 
@@ -186,8 +186,8 @@ func _fall(m: MissionRuntime, tick: int) -> void:
 		var cy := Fixed.to_cells(e.pos_y[id - 1])
 		if _inside(rect, cx, cy) and e.hp[id - 1] > 0:
 			on.append(id)
-	for cy in range(int(rect[1]), int(rect[3]) + 1):
-		for cx in range(int(rect[0]), int(rect[2]) + 1):
+	for cy in range(Num.of(rect[1]), Num.of(rect[3]) + 1):
+		for cx in range(Num.of(rect[0]), Num.of(rect[2]) + 1):
 			if water >= 0:
 				nav.set_terrain(nav.cell_at(cx, cy), water)
 	for id in on:
@@ -213,7 +213,7 @@ func _ford(m: MissionRuntime, tick: int) -> void:
 		if _inside(rect, Fixed.to_cells(e.pos_x[s]), Fixed.to_cells(e.pos_y[s])):
 			now[id] = ford_in.get(id, tick)
 	ford_in = now
-	var cap := int(f["capacity"])
+	var cap := Num.of(f["capacity"])
 	if now.size() <= cap:
 		return
 	# Who came in last goes under first (ties: the higher id).
@@ -223,7 +223,7 @@ func _ford(m: MissionRuntime, tick: int) -> void:
 	order.sort()
 	for k in range(cap, order.size()):
 		var id: int = order[k][1]
-		var dmg := maxi(e.max_hp[id - 1] * int(f["drown_permille"]) / 1000, 1)
+		var dmg := maxi(e.max_hp[id - 1] * Num.of(f["drown_permille"]) / 1000, 1)
 		if e.hp[id - 1] <= dmg:
 			drowned += 1
 		m.combat.lightning(id, 0, dmg)
@@ -234,7 +234,7 @@ func _waves(m: MissionRuntime, tick: int) -> void:
 	var w: Dictionary = m.def.rules.get("waves", {})
 	if w.is_empty() or next_wave < 0 or tick < next_wave:
 		return
-	next_wave = tick + int(w["every_ticks"])
+	next_wave = tick + Num.of(w["every_ticks"])
 	var name := "wave_%d" % waves
 	waves += 1
 	var g := {"group": name, "player": w["player"], "at": w["at"], "units": w["units"]}
@@ -265,7 +265,12 @@ func _transfer(m: MissionRuntime, group: String, p: int) -> void:
 
 
 static func _inside(rect: Array, cx: int, cy: int) -> bool:
-	return cx >= int(rect[0]) and cx <= int(rect[2]) and cy >= int(rect[1]) and cy <= int(rect[3])
+	return (
+		cx >= Num.of(rect[0])
+		and cx <= Num.of(rect[2])
+		and cy >= Num.of(rect[1])
+		and cy <= Num.of(rect[3])
+	)
 
 
 func write_to(buf: StreamPeerBuffer) -> void:

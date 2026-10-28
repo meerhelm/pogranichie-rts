@@ -77,13 +77,13 @@ func set_up(m: MissionRuntime) -> void:
 	if r.get("known_map", false) and m.combat.vision != null and m.combat.vision.enabled():
 		m.combat.vision.explore_all(m.def.player)
 	var oak: Dictionary = r.get("oak", {})
-	if not oak.is_empty() and int(oak["place"]) < m.magic.places.count():
-		m.magic.places.hidden[int(oak["place"])] = true
+	if not oak.is_empty() and Num.of(oak["place"]) < m.magic.places.count():
+		m.magic.places.hidden[Num.of(oak["place"])] = true
 	var take: Dictionary = r.get("take", {})
 	if not take.is_empty():
-		for id in m.alive_of(take["group"]):
+		for id in m.alive_of(str(take["group"])):
 			if m.combat.flags[id - 1] & CombatSystem.F_HERO:
-				var floor_hp := maxi(m.entities.max_hp[id - 1] * int(take["permille"]) / 1000, 1)
+				var floor_hp := maxi(m.entities.max_hp[id - 1] * Num.of(take["permille"]) / 1000, 1)
 				m.combat.hp_floor[id] = floor_hp
 
 
@@ -104,18 +104,18 @@ func step(m: MissionRuntime, tick: int) -> void:
 func test(m: MissionRuntime, c: Dictionary) -> bool:
 	match c["type"]:
 		"bridges_built":
-			return bridges_done(m) >= int(c["at_least"])
+			return bridges_done(m) >= Num.of(c["at_least"])
 		"north_of":
 			var n := 0
-			var row := Fixed.from_cells(int(c["y"]))
-			for id in m.alive_of(c["group"]):
+			var row := Fixed.from_cells(Num.of(c["y"]))
+			for id in m.alive_of(str(c["group"])):
 				if m.entities.pos_y[id - 1] < row:
 					n += 1
-			return n >= int(c["at_least"])
+			return n >= Num.of(c["at_least"])
 		"pressed":
-			return pressed.size() >= int(c["at_least"])
+			return pressed.size() >= Num.of(c["at_least"])
 		"hidden_count":
-			return hidden.size() >= int(c["at_least"])
+			return hidden.size() >= Num.of(c["at_least"])
 	return false
 
 
@@ -135,7 +135,9 @@ func run(m: MissionRuntime, a: Dictionary, tick: int) -> void:
 			press_on = a.get("on", true)
 		"place":
 			var at: Array = a["at"]
-			var b := m._place(tick, int(a["player"]), a["type"], at[0], at[1])
+			var b := m._place(
+				tick, Num.of(a["player"]), str(a["type"]), Num.of(at[0]), Num.of(at[1])
+			)
 			if b != 0 and a.has("name"):
 				m.named[a["name"]] = b
 
@@ -148,7 +150,7 @@ func bridges_done(m: MissionRuntime) -> int:
 	var n := 0
 	var bridges: Array = _rules(m).get("bridges", [])
 	for i in bridges.size():
-		if built[i] >= int(bridges[i]["sections"]):
+		if built[i] >= Num.of(bridges[i]["sections"]):
 			n += 1
 	return n
 
@@ -156,15 +158,15 @@ func bridges_done(m: MissionRuntime) -> int:
 ## Rows a section of bridge `b` spans (the last one may be shorter).
 static func section_rows(b: Dictionary) -> int:
 	var rect: Array = b["cells"]
-	var rows := int(rect[3]) - int(rect[1]) + 1
-	return ceili(float(rows) / float(maxi(int(b["sections"]), 1)))
+	var rows := Num.of(rect[3]) - Num.of(rect[1]) + 1
+	return ceili(float(rows) / float(maxi(Num.of(b["sections"]), 1)))
 
 
 ## The cell the builders of bridge `b` stand at: just south of its next section, mid-bridge.
 static func head(b: Dictionary, done: int) -> Vector2i:
 	var rect: Array = b["cells"]
-	var x := (int(rect[0]) + int(rect[2])) / 2
-	return Vector2i(x, int(rect[3]) + 1 - done * section_rows(b))
+	var x := (Num.of(rect[0]) + Num.of(rect[2])) / 2
+	return Vector2i(x, Num.of(rect[3]) + 1 - done * section_rows(b))
 
 
 ## The cells of bridge i that are laid (for the map).
@@ -175,9 +177,9 @@ func deck_cells(m: MissionRuntime, i: int) -> Array[Vector2i]:
 		return out
 	var b: Dictionary = bridges[i]
 	var rect: Array = b["cells"]
-	var low := maxi(int(rect[3]) + 1 - built[i] * section_rows(b), int(rect[1]))
-	for y in range(low, int(rect[3]) + 1):
-		for x in range(int(rect[0]), int(rect[2]) + 1):
+	var low := maxi(Num.of(rect[3]) + 1 - built[i] * section_rows(b), Num.of(rect[1]))
+	for y in range(low, Num.of(rect[3]) + 1):
+		for x in range(Num.of(rect[0]), Num.of(rect[2]) + 1):
 			out.append(Vector2i(x, y))
 	return out
 
@@ -186,17 +188,17 @@ func _bridges(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	var bridges: Array = r.get("bridges", [])
 	if bridges.is_empty():
 		return
-	var p := int(r["player"])
-	var worker := StringName(r.get("worker", "gdl_camp_servant"))
+	var p := Num.of(r["player"])
+	var worker := StringName(str(r.get("worker", "gdl_camp_servant")))
 	var e := m.entities
 	for i in bridges.size():
 		var b: Dictionary = bridges[i]
-		if built[i] >= int(b["sections"]):
+		if built[i] >= Num.of(b["sections"]):
 			continue
 		var at := head(b, built[i])
 		var x := Fixed.from_cells(at.x) + Fixed.HALF
 		var y := Fixed.from_cells(at.y) + Fixed.HALF
-		var reach := Fixed.from_cells(int(b["radius"]))
+		var reach := Fixed.from_cells(Num.of(b["radius"]))
 		var workers := 0
 		for id in e.alive_ids:
 			var s := id - 1
@@ -214,7 +216,7 @@ func _bridges(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 				continue
 			paid[i] = 1
 		work[i] += workers * MissionRuntime.CHECK_EVERY
-		if work[i] >= int(b["work"]):
+		if work[i] >= Num.of(b["work"]):
 			_lay(m, r, i, tick)
 
 
@@ -223,10 +225,10 @@ func _pay(m: MissionRuntime, p: int, cost: Array) -> bool:
 	if state == null:
 		return false
 	for k in cost.size():
-		if state.stock[k] < int(cost[k]):
+		if state.stock[k] < Num.of(cost[k]):
 			return false
 	for k in cost.size():
-		state.stock[k] -= int(cost[k])
+		state.stock[k] -= Num.of(cost[k])
 	return true
 
 
@@ -235,28 +237,28 @@ func _lay(m: MissionRuntime, r: Dictionary, i: int, tick: int) -> void:
 	var b: Dictionary = r["bridges"][i]
 	var rect: Array = b["cells"]
 	var rows := section_rows(b)
-	var bottom := int(rect[3]) - built[i] * rows
-	var top := maxi(bottom - rows + 1, int(rect[1]))
+	var bottom := Num.of(rect[3]) - built[i] * rows
+	var top := maxi(bottom - rows + 1, Num.of(rect[1]))
 	var nav := m.economy.nav
-	var deck := nav.terrain_index(StringName(r.get("deck", "t_bog")))
+	var deck := nav.terrain_index(StringName(str(r.get("deck", "t_bog"))))
 	for cy in range(top, bottom + 1):
-		for cx in range(int(rect[0]), int(rect[2]) + 1):
+		for cx in range(Num.of(rect[0]), Num.of(rect[2]) + 1):
 			if deck >= 0:
 				nav.set_terrain(nav.cell_at(cx, cy), deck)
 	built[i] += 1
 	work[i] = 0
 	paid[i] = 0
 	m.flags["section_%d_%d" % [i, built[i]]] = tick
-	if built[i] >= int(b["sections"]):
+	if built[i] >= Num.of(b["sections"]):
 		m.flags["bridge_%d" % i] = tick
 
 
 ## How far the next section of bridge i is (permille), for the panel.
 func section_permille(m: MissionRuntime, i: int) -> int:
 	var bridges: Array = _rules(m).get("bridges", [])
-	if i >= bridges.size() or built[i] >= int(bridges[i]["sections"]):
+	if i >= bridges.size() or built[i] >= Num.of(bridges[i]["sections"]):
 		return 1000
-	return work[i] * 1000 / maxi(int(bridges[i]["work"]), 1)
+	return work[i] * 1000 / maxi(Num.of(bridges[i]["work"]), 1)
 
 
 # --- the patrol -----------------------------------------------------------------------------
@@ -266,15 +268,15 @@ func _patrol(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	var pr: Dictionary = r.get("patrol", {})
 	if pr.is_empty() or alarm or not m.stealth.night:
 		return
-	var ids := m.alive_of(pr["group"])
+	var ids := m.alive_of(str(pr["group"]))
 	if ids.is_empty():
 		return
 	var e := m.entities
 	var route: Array = pr["route"]
 	var lead := ids[0] - 1
 	var to: Array = route[leg % route.size()]
-	var wx := Fixed.from_cells(to[0]) + Fixed.HALF
-	var wy := Fixed.from_cells(to[1]) + Fixed.HALF
+	var wx := Fixed.from_cells(Num.of(to[0])) + Fixed.HALF
+	var wy := Fixed.from_cells(Num.of(to[1])) + Fixed.HALF
 	var near := Fixed.from_cells(AT_WAYPOINT)
 	var dx := e.pos_x[lead] - wx
 	var dy := e.pos_y[lead] - wy
@@ -284,12 +286,12 @@ func _patrol(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 		m.run({"do": "move", "group": pr["group"], "to": to}, tick)
 	elif e.orders[lead] != EntityStore.Order.MOVE:
 		m.run({"do": "move", "group": pr["group"], "to": to}, tick)
-	var spot := _spotted(m, int(r["player"]), ids, Fixed.from_cells(int(pr["radius"])))
+	var spot := _spotted(m, Num.of(r["player"]), ids, Fixed.from_cells(Num.of(pr["radius"])))
 	if spot.x < 0:
 		seen = 0
 		return
 	seen += MissionRuntime.CHECK_EVERY
-	if seen < int(pr["ticks"]):
+	if seen < Num.of(pr["ticks"]):
 		return
 	alarm = true
 	m.flags["alarm"] = tick
@@ -337,8 +339,8 @@ func _hide(m: MissionRuntime, r: Dictionary) -> void:
 	if held.is_empty():
 		return
 	var e := m.entities
-	var p := int(r["player"])
-	for id in m.alive_of(r.get("ambush", "")):
+	var p := Num.of(r["player"])
+	for id in m.alive_of(str(r.get("ambush", ""))):
 		if not held.has(id):
 			continue
 		var cx := Fixed.to_cells(e.pos_x[id - 1])
@@ -357,7 +359,12 @@ func _hide(m: MissionRuntime, r: Dictionary) -> void:
 
 static func in_cover(r: Dictionary, cx: int, cy: int) -> bool:
 	for rect: Array in r.get("cover", []):
-		if cx >= int(rect[0]) and cx <= int(rect[2]) and cy >= int(rect[1]) and cy <= int(rect[3]):
+		if (
+			cx >= Num.of(rect[0])
+			and cx <= Num.of(rect[2])
+			and cy >= Num.of(rect[1])
+			and cy <= Num.of(rect[3])
+		):
 			return true
 	return false
 
@@ -366,11 +373,11 @@ static func in_cover(r: Dictionary, cx: int, cy: int) -> bool:
 ## as much if a hidden member had it in reach.
 func _fire(m: MissionRuntime, a: Dictionary, tick: int) -> void:
 	var r := _rules(m)
-	var p := int(r["player"])
+	var p := Num.of(r["player"])
 	var e := m.entities
-	var reach := Fixed.from_cells(int(a["radius"]))
+	var reach := Fixed.from_cells(Num.of(a["radius"]))
 	var hit: Dictionary[int, bool] = {}
-	for id in m.alive_of(r.get("ambush", "")):
+	for id in m.alive_of(str(r.get("ambush", ""))):
 		var s := id - 1
 		for other in m.combat.buckets.near(e.pos_x[s], e.pos_y[s], reach):
 			var o := other - 1
@@ -385,9 +392,9 @@ func _fire(m: MissionRuntime, a: Dictionary, tick: int) -> void:
 	ids.sort()
 	for id: int in ids:
 		var unit := m.combat.defs[id - 1]
-		m.combat.lightning(id, p, int(a["damage"]))
+		m.combat.lightning(id, p, Num.of(a["damage"]))
 		if unit != null and e.is_alive(id):
-			var points := int(a["morale"]) * (2 if hit[id] else 1)
+			var points := Num.of(a["morale"]) * (2 if hit[id] else 1)
 			m.combat.lose_morale(id - 1, points)
 	m.flags["volley"] = tick
 	if not hidden.is_empty():
@@ -413,8 +420,8 @@ func _chase(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	if chasing.is_empty():
 		return
 	var e := m.entities
-	var p := int(r["player"])
-	var leash := Fixed.from_cells(int(r.get("chase_leash", 40)))
+	var p := Num.of(r["player"])
+	var leash := Fixed.from_cells(Num.of(r.get("chase_leash", 40)))
 	var names := chasing.keys()
 	names.sort()
 	for g: String in names:
@@ -445,14 +452,14 @@ func _oak(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 	var oak: Dictionary = r.get("oak", {})
 	if oak.is_empty() or oak_found:
 		return
-	var i := int(oak["place"])
+	var i := Num.of(oak["place"])
 	var places := m.magic.places
 	if i >= places.count():
 		return
 	var e := m.entities
-	var p := int(r["player"])
-	var reach := Fixed.from_cells(int(oak["radius"]))
-	var unit := StringName(oak["unit"])
+	var p := Num.of(r["player"])
+	var reach := Fixed.from_cells(Num.of(oak["radius"]))
+	var unit := StringName(str(oak["unit"]))
 	for id in e.alive_ids:
 		var s := id - 1
 		if e.owners[s] != p or e.type_ids[s] != unit:
@@ -466,7 +473,7 @@ func _oak(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 		var state := m.economy.player(p)
 		if state != null:
 			var cap := m.magic.rules.power_cap * MagicSystem.POWER_UNIT
-			state.power = mini(state.power + int(oak["charge"]) * MagicSystem.POWER_UNIT, cap)
+			state.power = mini(state.power + Num.of(oak["charge"]) * MagicSystem.POWER_UNIT, cap)
 		m.flags["oak"] = tick
 		var at := [Fixed.to_cells(places.center_x(i)), Fixed.to_cells(places.center_y(i))]
 		m.run({"do": "ping", "at": at, "radius": 3}, tick)
@@ -479,10 +486,15 @@ func _press(m: MissionRuntime, r: Dictionary) -> void:
 		return
 	var rect: Array = pr["cells"]
 	var e := m.entities
-	for id in m.alive_of(pr["group"]):
+	for id in m.alive_of(str(pr["group"])):
 		var cx := Fixed.to_cells(e.pos_x[id - 1])
 		var cy := Fixed.to_cells(e.pos_y[id - 1])
-		if cx >= int(rect[0]) and cx <= int(rect[2]) and cy >= int(rect[1]) and cy <= int(rect[3]):
+		if (
+			cx >= Num.of(rect[0])
+			and cx <= Num.of(rect[2])
+			and cy >= Num.of(rect[1])
+			and cy <= Num.of(rect[3])
+		):
 			pressed[id] = true
 
 
@@ -497,7 +509,7 @@ func _take(m: MissionRuntime, r: Dictionary, tick: int) -> void:
 		if not m.combat.hp_floor.has(id) or m.entities.hp[id - 1] > m.combat.hp_floor[id]:
 			continue
 		var s := id - 1
-		if _friend_near(m, int(r["player"]), s, Fixed.from_cells(int(t["radius"]))):
+		if _friend_near(m, Num.of(r["player"]), s, Fixed.from_cells(Num.of(t["radius"]))):
 			m.flags["taken:" + g] = tick
 			m.captives += 1
 			var at := [Fixed.to_cells(m.entities.pos_x[s]), Fixed.to_cells(m.entities.pos_y[s])]

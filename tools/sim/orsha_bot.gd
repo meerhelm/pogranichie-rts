@@ -114,7 +114,7 @@ func _bridges(m: MissionRuntime) -> void:
 	for i in bridges.size():
 		var b: Dictionary = bridges[i]
 		var crew := _alive(_crews[i])
-		if m.battle.built[i] >= int(b["sections"]):
+		if m.battle.built[i] >= Num.of(b["sections"]):
 			_go(_idle(crew), Vector2i(77, 98), 3)
 			continue
 		var head := MissionBattle.head(b, m.battle.built[i])

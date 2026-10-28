@@ -67,11 +67,14 @@ static func ensure_loaded() -> void:
 		var size: int = cfg.get_value("video", "text_size", text_size)
 		text_size = clampi(size, 0, TEXT_SIZES.size() - 1)
 		hints = cfg.get_value("general", "hints", hints)
-		var level := StringName(cfg.get_value("skirmish", "ai_difficulty", String(ai_difficulty)))
+		var level_name: String = cfg.get_value("skirmish", "ai_difficulty", String(ai_difficulty))
+		var level := StringName(level_name)
 		ai_difficulty = level if DIFFICULTIES.has(level) else &"normal"
-		var mine := StringName(cfg.get_value("skirmish", "faction", String(player_faction)))
+		var mine_name: String = cfg.get_value("skirmish", "faction", String(player_faction))
+		var mine := StringName(mine_name)
 		player_faction = mine if SkirmishSetup.FACTIONS.has(mine) else &"gdl"
-		var theirs := StringName(cfg.get_value("skirmish", "enemy", String(enemy_faction)))
+		var theirs_name: String = cfg.get_value("skirmish", "enemy", String(enemy_faction))
+		var theirs := StringName(theirs_name)
 		enemy_faction = theirs if SkirmishSetup.FACTIONS.has(theirs) else &"to"
 		var map: String = cfg.get_value("skirmish", "map", skirmish_map)
 		skirmish_map = map if SkirmishMaps.has(map) else SkirmishSetup.MAP_ID

@@ -186,11 +186,11 @@ func set_up(tick: int) -> void:
 	var s := def.setup
 	var sides: Dictionary = s.get("sides", {})
 	for key: String in sides:
-		_sides.team[key.to_int()] = int(sides[key])
+		_sides.team[key.to_int()] = Num.of(sides[key])
 	for p: int in s.get("neutral", []):
 		_sides.neutral[p] = true
 	for entry: Array in def.players:
-		_apply.call(SimCommand.join(tick, entry[0], StringName(entry[1])))
+		_apply.call(SimCommand.join(tick, Num.of(entry[0]), StringName(str(entry[1]))))
 	var stock: Dictionary = s.get("stock", {})
 	for key: String in stock:
 		var state := economy.player(key.to_int())
@@ -213,7 +213,7 @@ func set_up(tick: int) -> void:
 		var from: Array = w["from"]
 		var to: Array = w["to"]
 		for cell in BuildingPlacement.wall_cells(from[0], from[1], to[0], to[1]):
-			_place(tick, w["player"], w["type"], cell.x, cell.y)
+			_place(tick, Num.of(w["player"]), str(w["type"]), cell.x, cell.y)
 	for g: Dictionary in s.get("groups", []):
 		_spawn_group(tick, g)
 	for c: Array in s.get("consecrated", []):
@@ -222,21 +222,21 @@ func set_up(tick: int) -> void:
 	for key: String in ages:
 		var state := economy.player(key.to_int())
 		if state != null:
-			state.age = int(ages[key])
+			state.age = Num.of(ages[key])
 	var b: Dictionary = def.rules.get("banner", {})
 	if not b.is_empty():
-		var carriers := alive_of(b["group"])
+		var carriers := alive_of(str(b["group"]))
 		if not carriers.is_empty():
 			_raise_banner(carriers[0])
 	var pop: Dictionary = s.get("pop", {})
 	for key: String in pop:
 		var state := economy.player(key.to_int())
 		if state != null:
-			state.pop_provided += int(pop[key])
+			state.pop_provided += Num.of(pop[key])
 	setup_buildings = economy.buildings.next_id - 1
 	for mark: Array in s.get("marks", []):
 		choices["mark:%s:%s" % [mark[0], mark[1]]] = 1
-	baptism_every = int(def.rules.get("baptism", {}).get("every_ticks", 0))
+	baptism_every = Num.of(def.rules.get("baptism", {}).get("every_ticks", 0))
 	MissionMarch.set_up(self)
 	for mod in _modules():
 		mod.call(&"set_up", self)
@@ -257,20 +257,20 @@ func _spawn_group(tick: int, g: Dictionary) -> void:
 	var units: Array = g["units"]
 	var total := 0
 	for u: Array in units:
-		total += int(u[1])
+		total += Num.of(u[1])
 	var cols := ceili(sqrt(float(total)))
 	var ids := PackedInt32Array()
 	var i := 0
 	for u: Array in units:
-		for k in int(u[1]):
-			var x := Fixed.from_cells(at[0] + i % cols) + Fixed.HALF
-			var y := Fixed.from_cells(at[1] + i / cols) + Fixed.HALF
-			var id: int = _spawn.call(StringName(u[0]), p, x, y)
+		for k in Num.of(u[1]):
+			var x := Fixed.from_cells(Num.of(at[0] + i % cols)) + Fixed.HALF
+			var y := Fixed.from_cells(Num.of(at[1] + i / cols)) + Fixed.HALF
+			var id: int = _spawn.call(StringName(str(u[0])), p, x, y)
 			if id != EntityStore.NO_ID:
 				ids.append(id)
 			i += 1
 	if g.has("stance"):
-		_apply.call(SimCommand.set_stance(tick, p, ids, STANCES[g["stance"]]))
+		_apply.call(SimCommand.set_stance(tick, p, ids, Num.of(STANCES[g["stance"]])))
 	if g.get("untouchable", false):
 		for id in ids:
 			combat.untouchable[id] = true
@@ -333,7 +333,7 @@ func test(c: Dictionary, tid: String, tick: int) -> bool:
 		"fired":
 			ok = fired.has(c["trigger"])
 		"after":
-			ok = fired.has(c["trigger"]) and tick >= fired[c["trigger"]] + int(c["ticks"])
+			ok = fired.has(c["trigger"]) and tick >= fired[c["trigger"]] + Num.of(c["ticks"])
 		"flag":
 			ok = flags.has(c["flag"])
 		"difficulty":
@@ -341,61 +341,61 @@ func test(c: Dictionary, tid: String, tick: int) -> bool:
 		"stock":
 			ok = _stock(c)
 		"built":
-			ok = _built(c["player"], StringName(c["base"]))
+			ok = _built(Num.of(c["player"]), StringName(str(c["base"])))
 		"destroyed":
-			ok = not economy.buildings.is_alive(named.get(c["building"], 0))
+			ok = not economy.buildings.is_alive(Num.of(named.get(c["building"], 0)))
 		"building_hp_below":
 			var b: int = named.get(c["building"], 0)
 			var bs := economy.buildings
-			ok = bs.is_alive(b) and bs.hp[b - 1] * 1000 < bs.max_hp[b - 1] * int(c["permille"])
+			ok = bs.is_alive(b) and bs.hp[b - 1] * 1000 < bs.max_hp[b - 1] * Num.of(c["permille"])
 		"near":
 			ok = _near(c["player"], StringName(c.get("unit", "")), c["at"], c["radius"])
 		"group_near":
-			ok = _group_near(c["group"], c["at"], c["radius"])
+			ok = _group_near(str(c["group"]), c["at"], Num.of(c["radius"]))
 		"has_unit":
-			ok = _units_of(c["player"], StringName(c["unit"])) > 0
+			ok = _units_of(Num.of(c["player"]), StringName(str(c["unit"]))) > 0
 		"age":
-			var state := economy.player(c["player"])
-			ok = state != null and state.age >= int(c["at_least"])
+			var state := economy.player(Num.of(c["player"]))
+			ok = state != null and state.age >= Num.of(c["at_least"])
 		"cast":
-			ok = _cast(c["player"], StringName(c["spell"]))
+			ok = _cast(Num.of(c["player"]), StringName(str(c["spell"])))
 		"group_dead":
-			ok = groups.has(c["group"]) and alive_of(c["group"]).is_empty()
+			ok = groups.has(c["group"]) and alive_of(str(c["group"])).is_empty()
 		"group_lost":
 			var g: String = c["group"]
 			ok = groups.has(g) and alive_of(g).size() + exited.get(g, 0) < groups[g].size()
 		"group_exited":
-			ok = exited.get(c["group"], 0) >= int(c.get("count", 1))
+			ok = exited.get(c["group"], 0) >= Num.of(c.get("count", 1))
 		"places_held":
-			ok = _places_held(c["player"]) >= int(c["count"])
+			ok = _places_held(Num.of(c["player"])) >= Num.of(c["count"])
 		"blockade_held":
 			ok = blockade_on and posts_held == _all_posts()
 		"garrison_at_most":
-			ok = blockade_on and garrison <= int(c["permille"])
+			ok = blockade_on and garrison <= Num.of(c["permille"])
 		"group_near_count":
 			ok = _group_near_count(c["group"], c["at"], c["radius"]) >= int(c["count"])
 		"group_alive_at_most":
-			ok = groups.has(c["group"]) and alive_of(c["group"]).size() <= int(c["count"])
+			ok = groups.has(c["group"]) and alive_of(str(c["group"])).size() <= Num.of(c["count"])
 		"units_at_most":
-			ok = _units_of(c["player"]) <= int(c["count"])
+			ok = _units_of(Num.of(c["player"])) <= Num.of(c["count"])
 		"retreating":
-			ok = _retreating(c["player"])
+			ok = _retreating(Num.of(c["player"]))
 		"place_held":
-			var i := int(c["place"])
-			ok = i < magic.places.count() and magic.places.holders[i] == int(c["player"])
+			var i := Num.of(c["place"])
+			ok = i < magic.places.count() and magic.places.holders[i] == Num.of(c["player"])
 		"baptized":
-			ok = baptized_alive() >= int(c["count"])
+			ok = baptized_alive() >= Num.of(c["count"])
 		"evidence":
 			var points := evidence / 1000
-			ok = not c.has("at_least") or points >= int(c["at_least"])
-			ok = ok and (not c.has("at_most") or points <= int(c["at_most"]))
+			ok = not c.has("at_least") or points >= Num.of(c["at_least"])
+			ok = ok and (not c.has("at_most") or points <= Num.of(c["at_most"]))
 		"built_near":
 			ok = _built_near(c["player"], StringName(c["base"]), c["at"], c["radius"])
 		"mist_over":
 			var at: Array = c["at"]
-			ok = magic.mist.hides(c["player"], at[0], at[1], -1)
+			ok = magic.mist.hides(Num.of(c["player"]), Num.of(at[0]), Num.of(at[1]), -1)
 		"chose":
-			ok = flags.has(choice_flag(c["question"], int(c["option"])))
+			ok = flags.has(choice_flag(str(c["question"]), Num.of(c["option"])))
 		"any":
 			for sub: Dictionary in c["of"]:
 				ok = ok or test(sub, tid, tick)
@@ -410,11 +410,11 @@ func test(c: Dictionary, tid: String, tick: int) -> bool:
 				counters[tid] = counters.get(tid, 0) + CHECK_EVERY
 			else:
 				counters[tid] = 0
-			ok = counters[tid] >= int(c["ticks"])
+			ok = counters[tid] >= Num.of(c["ticks"])
 		_ when MissionMarch.CONDITIONS.has(c["type"]):
 			ok = MissionMarch.test(self, c)
 		_:
-			var mod := _module_for(c["type"], &"CONDITIONS")
+			var mod := _module_for(str(c["type"]), &"CONDITIONS")
 			if mod != null:
 				ok = mod.call(&"test", self, c)
 			else:
@@ -445,72 +445,72 @@ func run(a: Dictionary, tick: int) -> void:
 		"spawn":
 			_spawn_group(tick, a)
 		"move", "attack_move":
-			var ids := alive_of(a["group"])
+			var ids := alive_of(str(a["group"]))
 			if not ids.is_empty():
 				var to: Array = a["to"]
-				var x := Fixed.from_cells(to[0]) + Fixed.HALF
-				var y := Fixed.from_cells(to[1]) + Fixed.HALF
+				var x := Fixed.from_cells(Num.of(to[0])) + Fixed.HALF
+				var y := Fixed.from_cells(Num.of(to[1])) + Fixed.HALF
 				var owner := entities.owners[ids[0] - 1]
 				var cmd := SimCommand.move(tick, owner, ids, x, y)
 				if a["do"] == "attack_move":
 					cmd = SimCommand.attack_move(tick, owner, ids, x, y)
 				_apply.call(cmd)
 		"stance":
-			var ids := alive_of(a["group"])
+			var ids := alive_of(str(a["group"]))
 			if not ids.is_empty():
 				var owner := entities.owners[ids[0] - 1]
-				_apply.call(SimCommand.set_stance(tick, owner, ids, STANCES[a["stance"]]))
+				_apply.call(SimCommand.set_stance(tick, owner, ids, Num.of(STANCES[a["stance"]])))
 		"exit":
 			var at: Array = a["at"]
 			exits[a["group"]] = PackedInt64Array(
 				[
-					Fixed.from_cells(at[0]) + Fixed.HALF,
-					Fixed.from_cells(at[1]) + Fixed.HALF,
-					Fixed.from_cells(a["radius"])
+					Fixed.from_cells(Num.of(at[0])) + Fixed.HALF,
+					Fixed.from_cells(Num.of(at[1])) + Fixed.HALF,
+					Fixed.from_cells(Num.of(a["radius"]))
 				]
 			)
 		"take_stock":
-			var state := economy.player(a["player"])
+			var state := economy.player(Num.of(a["player"]))
 			if state != null:
-				var r := EconomySystem.RESOURCE_NAMES.find(StringName(a["res"]))
-				state.stock[r] -= state.stock[r] * int(a["permille"]) / 1000
+				var r := EconomySystem.RESOURCE_NAMES.find(StringName(str(a["res"])))
+				state.stock[r] -= state.stock[r] * Num.of(a["permille"]) / 1000
 		"give_stock":
-			var state := economy.player(a["player"])
+			var state := economy.player(Num.of(a["player"]))
 			if state != null:
-				var r := EconomySystem.RESOURCE_NAMES.find(StringName(a["res"]))
-				state.stock[r] += int(a["amount"])
+				var r := EconomySystem.RESOURCE_NAMES.find(StringName(str(a["res"])))
+				state.stock[r] += Num.of(a["amount"])
 		"lock", "unlock":
-			_lock(a["player"], a["items"], a["do"] == "lock")
+			_lock(Num.of(a["player"]), a["items"], a["do"] == "lock")
 		"flag":
 			flags[a["flag"]] = tick
 		"boats":
-			next_boat = tick + int(def.rules["boats"]["every_ticks"]) if a["on"] else -1
+			next_boat = tick + Num.of(def.rules["boats"]["every_ticks"]) if a["on"] else -1
 		"blockade":
 			blockade_on = a["on"]
 		"ignite":
-			fire.ignite(named.get(a["building"], 0))
+			fire.ignite(Num.of(named.get(a["building"], 0)))
 		"rally":
 			var at: Array = a["at"]
-			var x := Fixed.from_cells(at[0]) + Fixed.HALF
-			var y := Fixed.from_cells(at[1]) + Fixed.HALF
-			_apply.call(SimCommand.rally(tick, a["player"], x, y))
+			var x := Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+			var y := Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
+			_apply.call(SimCommand.rally(tick, Num.of(a["player"]), x, y))
 		"volley":
 			_volley(a)
 		"kill":
-			for id in alive_of(a["group"]):
-				combat.lightning(id, int(a.get("by", 0)), entities.hp[id - 1])
+			for id in alive_of(str(a["group"])):
+				combat.lightning(id, Num.of(a.get("by", 0)), entities.hp[id - 1])
 		"victory", "defeat":
-			_end(a["do"] == "victory", a.get("text", ""), tick)
+			_end(a["do"] == "victory", str(a.get("text", "")), tick)
 		"evidence":
 			evidence = clampi(evidence + int(a["add"]) * 1000, 0, MissionFaith.evidence_max(self))
 		"faith":
-			faith_bonus += int(a["add"])
+			faith_bonus += Num.of(a["add"])
 		"baptism_rate":
-			baptism_every = int(a["every_ticks"])
+			baptism_every = Num.of(a["every_ticks"])
 		"spies":
-			spies_wanted = int(a["count"])
+			spies_wanted = Num.of(a["count"])
 		"quench":
-			MissionFaith.quench(self, int(a["place"]), int(a["permille"]))
+			MissionFaith.quench(self, Num.of(a["place"]), Num.of(a["permille"]))
 		"ask":
 			choices[a["id"]] = (a["options"] as Array).size()
 			var e := a.duplicate(true)
@@ -519,19 +519,19 @@ func run(a: Dictionary, tick: int) -> void:
 			e["tick"] = tick
 			events.append(e)
 		"pay":
-			var state := economy.player(a["player"])
+			var state := economy.player(Num.of(a["player"]))
 			if state != null:
 				var cost: Array = a["cost"]
 				for r in cost.size():
-					state.stock[r] = maxi(state.stock[r] - int(cost[r]), 0)
+					state.stock[r] = maxi(state.stock[r] - Num.of(cost[r]), 0)
 		"destroy":
-			economy.destroy(named.get(a["building"], 0))
+			economy.destroy(Num.of(named.get(a["building"], 0)))
 		"name_built":
-			var b := _last_built(a["player"], StringName(a["base"]))
+			var b := _last_built(Num.of(a["player"]), StringName(str(a["base"])))
 			if b != 0:
 				named[a["name"]] = b
 		"assault":
-			var ids := alive_of(a["group"])
+			var ids := alive_of(str(a["group"]))
 			var b: int = named.get(a["building"], 0)
 			if not ids.is_empty() and economy.buildings.is_alive(b):
 				var owner := entities.owners[ids[0] - 1]
@@ -541,7 +541,7 @@ func run(a: Dictionary, tick: int) -> void:
 		_ when MissionMarch.ACTIONS.has(a["do"]):
 			MissionMarch.run(self, a, tick)
 		_:
-			var mod := _module_for(a["do"], &"ACTIONS")
+			var mod := _module_for(str(a["do"]), &"ACTIONS")
 			if mod != null:
 				mod.call(&"run", self, a, tick)
 			else:
@@ -599,13 +599,13 @@ func alive_of(group: String) -> PackedInt32Array:
 
 
 func _stock(c: Dictionary) -> bool:
-	var state := economy.player(c["player"])
+	var state := economy.player(Num.of(c["player"]))
 	if state == null:
 		return false
-	var amount := state.stock[EconomySystem.RESOURCE_NAMES.find(StringName(c["res"]))]
-	if c.has("at_least") and amount < int(c["at_least"]):
+	var amount := state.stock[EconomySystem.RESOURCE_NAMES.find(StringName(str(c["res"])))]
+	if c.has("at_least") and amount < Num.of(c["at_least"]):
 		return false
-	if c.has("at_most") and amount > int(c["at_most"]):
+	if c.has("at_most") and amount > Num.of(c["at_most"]):
 		return false
 	return true
 
@@ -620,8 +620,8 @@ func _built(p: int, base: StringName) -> bool:
 
 
 func _near(p: int, unit: StringName, at: Array, radius: int) -> bool:
-	var x := Fixed.from_cells(at[0]) + Fixed.HALF
-	var y := Fixed.from_cells(at[1]) + Fixed.HALF
+	var x := Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+	var y := Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
 	var r := Fixed.from_cells(radius)
 	var e := entities
 	for id in e.alive_ids:
@@ -647,8 +647,8 @@ func are_friendly(a: int, b: int) -> bool:
 
 
 func _group_near_count(group: String, at: Array, radius: int) -> int:
-	var x := Fixed.from_cells(at[0]) + Fixed.HALF
-	var y := Fixed.from_cells(at[1]) + Fixed.HALF
+	var x := Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+	var y := Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
 	var r := Fixed.from_cells(radius)
 	var n := 0
 	for id in alive_of(group):
@@ -677,9 +677,9 @@ func _retreating(p: int) -> bool:
 ## morale as from a volley.
 func _volley(a: Dictionary) -> void:
 	var at: Array = a["at"]
-	var x := Fixed.from_cells(at[0]) + Fixed.HALF
-	var y := Fixed.from_cells(at[1]) + Fixed.HALF
-	var r := Fixed.from_cells(a["radius"])
+	var x := Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+	var y := Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
+	var r := Fixed.from_cells(Num.of(a["radius"]))
 	var by: int = a["player"]
 	var hit := PackedInt32Array()
 	for id in entities.alive_ids:
@@ -689,7 +689,7 @@ func _volley(a: Dictionary) -> void:
 		if _dist_sq(entities.pos_x[s] - x, entities.pos_y[s] - y) <= r * r:
 			hit.append(id)
 	for id in hit:
-		combat.lightning(id, by, int(a["damage"]))
+		combat.lightning(id, by, Num.of(a["damage"]))
 
 
 func _cast(p: int, spell: StringName) -> bool:
@@ -720,8 +720,8 @@ func _last_built(p: int, base: StringName) -> int:
 
 func _built_near(p: int, base: StringName, at: Array, radius: int) -> bool:
 	var store := economy.buildings
-	var x := Fixed.from_cells(at[0]) + Fixed.HALF
-	var y := Fixed.from_cells(at[1]) + Fixed.HALF
+	var x := Fixed.from_cells(Num.of(at[0])) + Fixed.HALF
+	var y := Fixed.from_cells(Num.of(at[1])) + Fixed.HALF
 	var r := Fixed.from_cells(radius)
 	for b in store.alive_ids:
 		var s := b - 1
@@ -774,7 +774,7 @@ func _exits() -> void:
 ## player loses a food per units_per_food of their units, until the `until` trigger fires.
 func _hunger(tick: int) -> void:
 	var h: Dictionary = def.rules.get("hunger", {})
-	if h.is_empty() or fired.has(h["until"]) or tick == 0 or tick % int(h["every_ticks"]) != 0:
+	if h.is_empty() or fired.has(h["until"]) or tick == 0 or tick % Num.of(h["every_ticks"]) != 0:
 		return
 	var p: int = h["player"]
 	var state := economy.player(p)
@@ -784,7 +784,7 @@ func _hunger(tick: int) -> void:
 	for id in entities.alive_ids:
 		if entities.owners[id - 1] == p:
 			n += 1
-	var eat := n / maxi(int(h["units_per_food"]), 1)
+	var eat := n / maxi(Num.of(h["units_per_food"]), 1)
 	state.stock[EconomySystem.FOOD] = maxi(state.stock[EconomySystem.FOOD] - eat, 0)
 
 
@@ -795,14 +795,14 @@ func _boats(tick: int) -> void:
 	if b.is_empty() or next_boat < 0 or flags.has("pier_closed"):
 		return
 	var pier: Array = b["pier"]
-	var holder := _near(b["holder"], &"", pier, b["radius"])
-	if holder and not _near(b["player"], &"", pier, b["radius"]):
+	var holder := _near(Num.of(b["holder"]), &"", pier, Num.of(b["radius"]))
+	if holder and not _near(Num.of(b["player"]), &"", pier, Num.of(b["radius"])):
 		flags["pier_closed"] = tick
 		next_boat = -1
 		return
 	if tick < next_boat:
 		return
-	next_boat = tick + int(b["every_ticks"])
+	next_boat = tick + Num.of(b["every_ticks"])
 	var g := {"group": "boat_%d" % tick, "player": b["player"], "at": b["at"], "units": b["units"]}
 	_spawn_group(tick, g)
 	run({"do": "attack_move", "group": g["group"], "to": b["to"]}, tick)
@@ -827,13 +827,13 @@ func _blockade(tick: int) -> void:
 			posts_held |= 1 << i
 	var full := posts_held == _all_posts()
 	if full and next_sortie < 0:
-		next_sortie = tick + int(b["sortie_every"])
-	if full and garrison > 0 and tick % int(b["every_ticks"]) == 0:
-		var step := int(b["step_permille"])
+		next_sortie = tick + Num.of(b["sortie_every"])
+	if full and garrison > 0 and tick % Num.of(b["every_ticks"]) == 0:
+		var step := Num.of(b["step_permille"])
 		garrison = maxi(garrison - step, 0)
 		_sicken(b, step)
 	if next_sortie >= 0 and tick >= next_sortie and garrison > 0:
-		next_sortie = tick + int(b["sortie_every"])
+		next_sortie = tick + Num.of(b["sortie_every"])
 		_sortie(b, tick)
 
 
@@ -850,7 +850,7 @@ func _garrison_ids(b: Dictionary) -> PackedInt32Array:
 
 
 func _sicken(b: Dictionary, step: int) -> void:
-	var floor_permille := int(b["sick_floor_permille"])
+	var floor_permille := Num.of(b["sick_floor_permille"])
 	for id in _garrison_ids(b):
 		var s := id - 1
 		var low := entities.max_hp[s] * floor_permille / 1000
@@ -867,7 +867,7 @@ func _sortie(b: Dictionary, tick: int) -> void:
 	var keep: Array = b.get("keep", [])
 	var ids := PackedInt32Array()
 	for id in _garrison_ids(b):
-		if ids.size() >= int(b["sortie_size"]):
+		if ids.size() >= Num.of(b["sortie_size"]):
 			break
 		if out_already.has(id) or String(entities.type_ids[id - 1]) in keep:
 			continue
@@ -882,7 +882,7 @@ func _sortie(b: Dictionary, tick: int) -> void:
 	flags["sortie"] = tick
 	run({"do": "stance", "group": name, "stance": "aggressive"}, tick)
 	run({"do": "attack_move", "group": name, "to": at}, tick)
-	run({"do": "ping", "at": at, "radius": int(b["radius"])}, tick)
+	run({"do": "ping", "at": at, "radius": Num.of(b["radius"])}, tick)
 
 
 ## The khorugv's banner (card ВКЛ 2: «Если знаменосец пал, у отряда есть 20 секунд, чтобы
@@ -906,7 +906,7 @@ func _banner(tick: int) -> void:
 		run({"do": "ping", "at": [banner_x / Fixed.ONE, banner_y / Fixed.ONE], "radius": 2}, tick)
 	if banner_down < 0 or flags.has("banner_lost"):
 		return
-	var r := Fixed.from_cells(b["raise_radius"])
+	var r := Fixed.from_cells(Num.of(b["raise_radius"]))
 	var p: int = b["player"]
 	for id in entities.alive_ids:
 		var s := id - 1
@@ -916,7 +916,7 @@ func _banner(tick: int) -> void:
 			_raise_banner(id)
 			flags["banner_raised"] = tick
 			return
-	if tick - banner_down >= int(b["raise_ticks"]):
+	if tick - banner_down >= Num.of(b["raise_ticks"]):
 		flags["banner_lost"] = tick
 		for id in entities.alive_ids:
 			if entities.owners[id - 1] == p:
@@ -959,7 +959,7 @@ func write_to(buf: StreamPeerBuffer) -> void:
 		buf.put_32(keys.size())
 		for k: String in keys:
 			buf.put_utf8_string(k)
-			buf.put_64(int(d[k]))
+			buf.put_64(Num.of(d[k]))
 	var names := groups.keys()
 	names.sort()
 	for g: String in names:
@@ -980,7 +980,7 @@ func write_to(buf: StreamPeerBuffer) -> void:
 	buf.put_32(spies.size())
 	for id in spies:
 		buf.put_32(id)
-		buf.put_32(spy_waypoint.get(id, 0))
+		buf.put_32(Num.of(spy_waypoint.get(id, 0)))
 	buf.put_32(spies_wanted)
 	buf.put_64(spy_next)
 	buf.put_32(spies_killed)

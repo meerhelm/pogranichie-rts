@@ -609,7 +609,7 @@ func _apply_hit(
 	var e := entities
 	var was_alive := e.hp[t] > 0
 	var left := e.hp[t] - dmg
-	e.hp[t] = maxi(left, mini(hp_floor.get(t + 1, left), e.hp[t]))  # ВКЛ 4: a spared hero
+	e.hp[t] = maxi(left, mini(Num.of(hp_floor.get(t + 1, left)), e.hp[t]))  # ВКЛ 4: a spared hero
 	e.calm[t] = 0
 	if e.is_alive(attacker):
 		e.calm[attacker - 1] = 0

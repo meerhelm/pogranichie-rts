@@ -107,8 +107,12 @@ func _blockade_posts() -> void:
 	for i in posts.size():
 		var at: Array = posts[i]
 		var held := m.posts_held & (1 << i) != 0
-		var c := _color(b["player"]) if held else FREE_COLOR
-		var ring := _circle(Vector2(at[0], at[1]) + Vector2(0.5, 0.5), float(b["radius"]))
+		var player: int = b["player"]
+		var radius: float = b["radius"]
+		var ax: float = at[0]
+		var ay: float = at[1]
+		var c := _color(player) if held else FREE_COLOR
+		var ring := _circle(Vector2(ax, ay) + Vector2(0.5, 0.5), radius)
 		ring.append(ring[0])
 		draw_polyline(ring, c, 3.0 if held else 2.0)
 

@@ -44,13 +44,24 @@ func _on_ticked(_tick: int) -> void:
 		queue_redraw()
 
 
+## The villages' cells from the mission rules.
+func _village_cells() -> Array[Vector2i]:
+	var silver: Dictionary = sim.mission.def.rules["silver"]
+	var villages: Dictionary = silver.get("villages", {})
+	var out: Array[Vector2i] = []
+	for p: Array in villages.get("at", []):
+		var xy := PackedInt32Array(p)
+		out.append(Vector2i(xy[0], xy[1]))
+	return out
+
+
 ## Each village's ring: 0 free, 1 taxed this season, 2 rumour, 3 plundered, -1 not seen yet.
 func _villages() -> PackedInt32Array:
 	var s := sim.mission.silver
-	var at: Array = sim.mission.def.rules["silver"].get("villages", {}).get("at", [])
+	var at := _village_cells()
 	var out := PackedInt32Array()
 	for i in at.size():
-		var cell := sim.nav.cell_at(int(at[i][0]), int(at[i][1]))
+		var cell := sim.nav.cell_at(at[i].x, at[i].y)
 		if sim.vision.state(local_player, cell) == VisionSystem.State.UNEXPLORED:
 			out.append(-1)
 		elif s.plundered[i] == s.season:
@@ -67,12 +78,12 @@ func _villages() -> PackedInt32Array:
 func _draw() -> void:
 	if sim == null:
 		return
-	var at: Array = sim.mission.def.rules["silver"].get("villages", {}).get("at", [])
-	var colours := [FREE, TAXED, RUMOUR, PLUNDERED]
+	var at := _village_cells()
+	var colours: Array[Color] = [FREE, TAXED, RUMOUR, PLUNDERED]
 	for i in mini(_state.size(), at.size()):
 		if _state[i] < 0:
 			continue
-		var c := Iso.cell_to_screen(Vector2(int(at[i][0]) + 0.5, int(at[i][1]) + 0.5))
+		var c := Iso.cell_to_screen(Vector2(at[i]) + Vector2(0.5, 0.5))
 		draw_set_transform(c, 0.0, Vector2(1.0, 0.5))
 		draw_arc(Vector2.ZERO, RING, 0.0, TAU, 48, colours[_state[i]], 2.0)
 		draw_set_transform(Vector2.ZERO)

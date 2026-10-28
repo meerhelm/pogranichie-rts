@@ -52,8 +52,6 @@ var flow := ResourceFlow.new()
 @onready var _idle_button: Button = %IdleButton
 @onready var _placing: Label = %Placing
 @onready var _paused: Label = %Paused
-@onready var _bottom_panel: PanelContainer = %BottomPanel
-@onready var _bottom: HBoxContainer = %Bottom
 
 
 func _ready() -> void:

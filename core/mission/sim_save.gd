@@ -28,14 +28,14 @@ static func capture(sim: Simulation) -> Dictionary:
 
 ## The world from capture()'s data, or null (with an error) if it cannot be loaded.
 static func restore(data: Dictionary, db: CatalogDB) -> Simulation:
-	if int(data.get("format", 0)) != FORMAT:
+	if Num.of(data.get("format", 0)) != FORMAT:
 		push_error("save: unsupported format")
 		return null
-	if int(data["sim_version"]) != Simulation.SIM_VERSION:
+	if Num.of(data["sim_version"]) != Simulation.SIM_VERSION:
 		push_error("save: made by another game version (rules %s)" % data["sim_version"])
 		return null
 	var sim := MissionSetup.new_simulation(
-		data["mission_id"], int(data["seed"]), db, data["difficulty"]
+		str(data["mission_id"]), Num.of(data["seed"]), db, str(data["difficulty"])
 	)
 	if sim == null:
 		return null
@@ -91,7 +91,7 @@ static func list() -> PackedStringArray:
 	files.sort()
 	files.reverse()
 	for entry: Array in files:
-		out.append(entry[1])
+		out.append(str(entry[1]))
 	return out
 
 

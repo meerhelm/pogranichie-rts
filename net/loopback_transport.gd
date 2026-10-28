@@ -30,10 +30,12 @@ func poll() -> void:
 		_announced = true
 		connected.emit()
 	var due: Array[PackedByteArray] = []
-	while not _inbox.is_empty() and int(_inbox[0][1]) <= 0:
-		due.append(_inbox.pop_front()[0])
-	for item in _inbox:
-		item[1] = int(item[1]) - 1
+	while not _inbox.is_empty() and _polls_left(_inbox[0]) <= 0:
+		var first: Array = _inbox.pop_front()
+		var bytes: PackedByteArray = first[0]
+		due.append(bytes)
+	for item: Array in _inbox:
+		item[1] = _polls_left(item) - 1
 	for data in due:
 		received.emit(data)
 	if not _open:
@@ -49,3 +51,9 @@ func is_connected_to_peer() -> bool:
 
 func close() -> void:
 	_open = false
+
+
+## Polls an inbox item [data, polls] waits before it is delivered.
+static func _polls_left(item: Array) -> int:
+	var polls: int = item[1]
+	return polls

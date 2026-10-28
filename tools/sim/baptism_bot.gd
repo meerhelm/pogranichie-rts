@@ -437,7 +437,7 @@ func _gintaut() -> void:
 func _army() -> void:
 	var m := sim.mission
 	var army := _soldiers()
-	if army.is_empty() or sim.tick - int(_sent.get("army", -1000)) < 60:
+	if army.is_empty() or sim.tick - Num.of(_sent.get("army", -1000)) < 60:
 		return
 	_sent["army"] = sim.tick
 	var post := GUARD_AT

@@ -10,7 +10,7 @@ func test_unit_sheet_loads() -> void:
 	assert_true(s.anims.has("walk") and s.anims.has("idle"))
 	var walk: Dictionary = s.anims["walk"]
 	var rows := s.color.get_height() / int(s.frame.y)
-	assert_true(int(walk["row"]) + 8 <= rows, "8 directions of walk fit in the sheet")
+	assert_true(Num.of(walk["row"]) + 8 <= rows, "8 directions of walk fit in the sheet")
 	assert_eq(s.color.get_size(), s.team.get_size())
 	assert_eq(s.color.get_size(), s.shadow.get_size())
 
@@ -94,11 +94,13 @@ func test_saved_frames_match_the_sheets() -> void:
 				assert_true(f.has_animation(name), "%s %s" % [id, name])
 				if not f.has_animation(name):
 					continue
-				assert_eq(f.get_frame_count(name), int(a["frames"]), "%s %s" % [id, name])
+				assert_eq(f.get_frame_count(name), Num.of(a["frames"]), "%s %s" % [id, name])
 				assert_eq(f.get_animation_speed(name), float(a["fps"]))
-				var last: AtlasTexture = f.get_frame_texture(name, int(a["frames"]) - 1)
+				var last: AtlasTexture = f.get_frame_texture(name, Num.of(a["frames"]) - 1)
 				assert_eq(
-					last.region, s.source(int(a["row"]) + dir, int(a["frames"]) - 1), "%s" % name
+					last.region,
+					s.source(Num.of(a["row"]) + dir, Num.of(a["frames"]) - 1),
+					"%s" % name
 				)
 
 

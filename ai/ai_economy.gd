@@ -757,8 +757,10 @@ func _send_capturer(i: int, site: Vector2i) -> void:
 	var who: int = _capturers.get(i, 0)
 	if who != 0 and e.is_alive(who):
 		if e.orders[who - 1] == EntityStore.Order.IDLE:
-			var p := SkirmishAi.point(site + Vector2i(1, 1))
-			ai.order(SimCommand.move(ai.sim.tick, ai.player, PackedInt32Array([who]), p.x, p.y))
+			var back := SkirmishAi.point(site + Vector2i(1, 1))
+			ai.order(
+				SimCommand.move(ai.sim.tick, ai.player, PackedInt32Array([who]), back.x, back.y)
+			)
 		return
 	if ai.army.size() < 2:
 		return

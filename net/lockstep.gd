@@ -132,8 +132,10 @@ func receive(msg: Dictionary) -> void:
 			if not (t is int and h is String):
 				rejected += 1
 				return
-			_remote_hashes[t as int] = h as String
-			_compare(t as int)
+			var turn: int = t
+			var hash_text: String = h
+			_remote_hashes[turn] = hash_text
+			_compare(turn)
 
 
 func _first_turn() -> int:
@@ -146,7 +148,8 @@ func note_rtt(msec: int) -> void:
 	if _rtts.size() > RTT_SAMPLES:
 		_rtts.pop_front()
 	if adapt:
-		delay = delay_for(_rtts.max())
+		var slowest: int = _rtts.max()
+		delay = delay_for(slowest)
 
 
 ## Ticks of delay a round trip of `msec` needs.
@@ -182,7 +185,8 @@ func _receive_turn(msg: Dictionary) -> void:
 		rejected += 1
 		return
 	var cmds: Array[SimCommand] = []
-	for d: Variant in (raw as Array).slice(0, NetMessage.MAX_COMMANDS):
+	var raw_list: Array = raw
+	for d: Variant in raw_list.slice(0, NetMessage.MAX_COMMANDS):
 		var c := NetMessage.command_from(d)
 		if c == null:
 			rejected += 1

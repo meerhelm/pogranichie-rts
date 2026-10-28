@@ -38,10 +38,12 @@ func attach(p_sim: Simulation, clock: SimClock, depth_layer: Node2D) -> void:
 	var all: Array = sim.mission.def.setup.get("props", [])
 	for k in all.size():
 		var p: Dictionary = all[k]
-		var art := SpriteDB.prop(StringName(p["kind"]))
+		var kind: String = p["kind"]
+		var art := SpriteDB.prop(StringName(kind))
 		if art == null:
 			continue
-		var at: Array = p["at"]
+		var xy: Array = p["at"]
+		var at := PackedFloat64Array(xy)
 		var s := Sprite2D.new()
 		s.texture = art.color
 		s.centered = false
@@ -81,7 +83,10 @@ func _on_ticked(_tick: int) -> void:
 		tw.finished.connect(func() -> void: _tint.remove_meta("to"))
 	for i in _props.size():
 		var k := _prop_index[i]
-		var at: Array = sim.mission.def.setup["props"][k]["at"]
+		var props: Array = sim.mission.def.setup["props"]
+		var prop: Dictionary = props[k]
+		var xy: Array = prop["at"]
+		var at := PackedInt32Array(xy)
 		var cell := sim.nav.cell_at(at[0], at[1])
 		var seen := sim.vision.state(local_player, cell) != VisionSystem.State.UNEXPLORED
 		# Корона 2: a burned wall a ball brought down is gone.
@@ -94,12 +99,13 @@ func _draw() -> void:
 		return
 	var m := sim.mission
 	var r: Dictionary = m.def.rules.get("stealth", {})
-	var light := float(r.get("light_radius", 0))
+	var light: float = r.get("light_radius", 0)
 	if light > 0.0:
 		for p: Dictionary in m.def.setup.get("props", []):
 			if p["kind"] != "prop_campfire":
 				continue
-			var at: Array = p["at"]
+			var xy: Array = p["at"]
+			var at := PackedInt32Array(xy)
 			var cell := sim.nav.cell_at(at[0], at[1])
 			if sim.vision.state(local_player, cell) == VisionSystem.State.UNEXPLORED:
 				continue
@@ -107,7 +113,8 @@ func _draw() -> void:
 			draw_colored_polygon(MagicLayer._circle(c, light), GLOW_COLOR)
 	if not m.stealth.on or r.is_empty():
 		return
-	var half := acos(clampf(float(r.get("cone_permille", 500)) / 1000.0, -1.0, 1.0))
+	var cone: float = r.get("cone_permille", 500)
+	var half := acos(clampf(cone / 1000.0, -1.0, 1.0))
 	var players: Array = r.get("watchers", [])
 	var e := sim.entities
 	for id in e.alive_ids:
@@ -127,12 +134,15 @@ func _draw() -> void:
 ## Whether a watcher out of sight gives himself away: a torch, or a campfire he stands by.
 func _shows(m: MissionRuntime, r: Dictionary, id: int) -> bool:
 	for g: String in r.get("torches", []):
-		if m.groups.get(g, PackedInt32Array()).has(id):
+		var group: PackedInt32Array = m.groups.get(g, PackedInt32Array())
+		if group.has(id):
 			return true
-	var reach := float(r.get("light_radius", 0)) + 1.0
+	var light: float = r.get("light_radius", 0)
+	var reach := light + 1.0
 	var at := Vector2(sim.entities.pos_x[id - 1], sim.entities.pos_y[id - 1]) / Fixed.ONE
 	for p: Dictionary in m.def.setup.get("props", []):
-		var c: Array = p["at"]
+		var xy: Array = p["at"]
+		var c := PackedFloat64Array(xy)
 		if p["kind"] == "prop_campfire" and at.distance_to(Vector2(c[0], c[1])) <= reach:
 			return true
 	return false

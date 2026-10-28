@@ -264,17 +264,22 @@ static func gives(def: BuildingDef, db: CatalogDB) -> PackedStringArray:
 		lines.append(t("Peasants bring here: %s") % ", ".join(names))
 	var trains := PackedStringArray()
 	for id: StringName in def.trains:
-		var unit := db.unit(id)
-		if unit != null and unit.faction == def.faction and not unit.campaign_only:
+		var unit_def := db.unit(id)
+		if unit_def != null and unit_def.faction == def.faction and not unit_def.campaign_only:
 			trains.append(UiText.name_of(id))
 	if not trains.is_empty():
 		lines.append(t("Trains: %s") % ", ".join(trains))
 	var techs := PackedStringArray()
 	var faction := db.faction(def.faction)
 	for id: StringName in db.techs:
-		var t: TechDef = db.techs[id]
-		var here := t.building == def.id or t.building == def.base_id
-		if here and faction != null and faction.tech_ids.has(id) and not t.effects.is_empty():
+		var tech_def: TechDef = db.techs[id]
+		var here := tech_def.building == def.id or tech_def.building == def.base_id
+		if (
+			here
+			and faction != null
+			and faction.tech_ids.has(id)
+			and not tech_def.effects.is_empty()
+		):
 			techs.append(UiText.name_of(id))
 	if not techs.is_empty():
 		lines.append(t("Researches: %s") % ", ".join(techs))
@@ -587,7 +592,7 @@ static func age(
 		if b.faction == faction and b.age == def.index and not b.campaign_only:
 			opens.append(UiText.name_of(id))
 	tip.points(t("New buildings"), opens)
-	var need := def.params.get(&"required_buildings", 0) as int
+	var need: int = def.params.get(&"required_buildings", 0)
 	if need > 0:
 		tip.text(t("Needs %d finished buildings of the age before.") % need, MUTED)
 	_fail(tip, fail)

@@ -64,8 +64,10 @@ func _exit_tree() -> void:
 
 func _on_ticked(_tick: int) -> void:
 	var s := sim.mission.siege
-	var lr: Dictionary = sim.mission.def.rules["siege"].get("ladder", {})
-	var raise_ticks := maxf(float(lr.get("raise_ticks", 1)), 1.0)
+	var siege: Dictionary = sim.mission.def.rules["siege"]
+	var lr: Dictionary = siege.get("ladder", {})
+	var raise: float = lr.get("raise_ticks", 1)
+	var raise_ticks := maxf(raise, 1.0)
 	while _views.size() < s.l_group.size():
 		var v := LadderView.new()
 		v.name = "Ladder%d" % _views.size()
