@@ -1,0 +1,401 @@
+{
+ "out_dir": "art_src/pixellab/icons",
+ "endpoint": "/generate-with-style-v2",
+ "defaults": {
+  "style_description": "chunky pixel art game button icons, dark outline, warm shading",
+  "no_background": true
+ },
+ "style_images": [
+  "ui/icons/orders/aggressive.png",
+  "ui/icons/orders/defensive.png",
+  "ui/icons/orders/stand_ground.png",
+  "ui/icons/orders/stop.png"
+ ],
+ "jobs": [
+  {
+   "name": "t_horse_collar",
+   "request": {
+    "description": "a padded leather horse collar harness, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_three_field",
+   "request": {
+    "description": "three strips of farm field: green rye, golden wheat and brown fallow earth, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_saw",
+   "request": {
+    "description": "a two-man medieval timber saw with wooden handles, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_bloomery",
+   "request": {
+    "description": "a small clay bloomery furnace with glowing iron bloom and tongs, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_assay",
+   "request": {
+    "description": "a small balance scale weighing silver coins, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_wagons",
+   "request": {
+    "description": "a heavy wooden cart wheel bound with iron, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_weapons_1",
+   "request": {
+    "description": "a medieval sword and a smith's hammer on an anvil, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_weapons_2",
+   "request": {
+    "description": "a fine forged sword with a gilded hilt over an anvil, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_inf_armor_1",
+   "request": {
+    "description": "a medieval mail shirt hauberk, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_inf_armor_2",
+   "request": {
+    "description": "a steel breastplate cuirass, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_cav_armor_1",
+   "request": {
+    "description": "a horse head wearing a padded and mail barding, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_cav_armor_2",
+   "request": {
+    "description": "a horse head wearing a steel chanfron plate armour, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_arrows",
+   "request": {
+    "description": "three steel bodkin arrowheads on arrows, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_banners",
+   "request": {
+    "description": "a medieval cavalry banner on a lance, red cloth, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_powder",
+   "request": {
+    "description": "a powder horn and a pile of black corned gunpowder grains, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_watch",
+   "request": {
+    "description": "a wooden watchtower with a lit lantern at night, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_gdl_zaseka",
+   "request": {
+    "description": "felled trees with sharpened branches forming a forest barricade abatis, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_gdl_forest",
+   "request": {
+    "description": "a wooden beehive in a hollow tree trunk with honeycomb, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_gdl_steppe",
+   "request": {
+    "description": "a Tatar bow and a javelin crossed, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_gdl_horodlo",
+   "request": {
+    "description": "a parchment charter with a red wax seal hanging on a cord, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_gdl_hire",
+   "request": {
+    "description": "a leather purse of silver coins and a halberd, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_pl_great_banner",
+   "request": {
+    "description": "a large royal red banner with a white eagle, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_pl_tabor",
+   "request": {
+    "description": "a ring of medieval war wagons chained together, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_pl_salt_statute",
+   "request": {
+    "description": "a wooden barrel full of white salt crystals, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_pl_obrona",
+   "request": {
+    "description": "a stack of silver coins and a soldier's kettle hat, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_to_arsenal",
+   "request": {
+    "description": "a rack of crossbows in an arsenal, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_to_rossdienst",
+   "request": {
+    "description": "a grey cloaked sergeant rider on horseback with a spear, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_to_great_stud",
+   "request": {
+    "description": "a big strong warhorse head with a black mane, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_to_toll",
+   "request": {
+    "description": "a set of merchant weights and a toll barrier pole, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_mo_big_regiment",
+   "request": {
+    "description": "a red Muscovite war banner with a golden saint image on a staff, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_mo_sudebnik",
+   "request": {
+    "description": "an old Russian law book with a brass clasp, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_mo_italians",
+   "request": {
+    "description": "a red brick tower with swallowtail merlons, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_mo_town_gunners",
+   "request": {
+    "description": "a long matchlock arquebus pishchal with a burning match, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_gdl_herbs",
+   "request": {
+    "description": "a bundle of dried healing herbs tied with string, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_gdl_sacred_fire",
+   "request": {
+    "description": "a pagan sacred fire burning on a stone altar, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_pl_procession",
+   "request": {
+    "description": "a wooden processional cross with a small banner, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_pl_tithe",
+   "request": {
+    "description": "a sheaf of wheat and a small church, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_to_reliquary",
+   "request": {
+    "description": "a golden gothic reliquary box with a cross, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_to_mission",
+   "request": {
+    "description": "an open holy book with a wooden cross, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_mo_wonder_icon",
+   "request": {
+    "description": "a golden orthodox icon of the Virgin glowing, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "t_mo_monastery_estate",
+   "request": {
+    "description": "a wooden orthodox monastery church with an onion dome, game technology icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "sp_bog_mist",
+   "request": {
+    "description": "a swirl of pale green mist rising over dark bog water with reeds, magic, magic spell icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "sp_blood_charm",
+   "request": {
+    "description": "a red glowing pagan charm amulet on a cord with drops of blood, magic, magic spell icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "sp_perkunas",
+   "request": {
+    "description": "a bright lightning bolt from a dark storm cloud, pagan god of thunder, magic, magic spell icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "sp_wolf_path",
+   "request": {
+    "description": "wolf paw prints glowing along a forest path, magic, magic spell icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "sp_bogurodzica",
+   "request": {
+    "description": "a singing medieval knight with a hymn scroll and golden light, magic spell icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "sp_banner_blessing",
+   "request": {
+    "description": "a war banner blessed by golden holy light, magic spell icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "sp_pact",
+   "request": {
+    "description": "two hands clasped over a burning pagan sigil, magic, magic spell icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "sp_consecration",
+   "request": {
+    "description": "a church bell with holy golden glow, magic spell icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "sp_exorcism",
+   "request": {
+    "description": "a raised cross banishing a dark smoky spirit, holy light, magic spell icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "sp_icon",
+   "request": {
+    "description": "an orthodox icon carried on a pole before an army, golden glow, magic spell icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "sp_relic",
+   "request": {
+    "description": "a golden reliquary carried on poles in battle, holy light, magic spell icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "sp_land_consecration",
+   "request": {
+    "description": "holy water sprinkled on earth with a small cross, golden glow, magic spell icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "sp_prophecy",
+   "request": {
+    "description": "an eye in a ring of light over a map, a holy fool's vision, magic spell icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "sp_winter",
+   "request": {
+    "description": "a snowflake and frozen ice crystals with cold blue wind, magic, magic spell icon",
+    "seed": 5
+   }
+  }
+ ]
+}

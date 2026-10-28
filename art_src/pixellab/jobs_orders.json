@@ -1,0 +1,51 @@
+{
+ "out_dir": "art_src/pixellab/icons",
+ "endpoint": "/generate-with-style-v2",
+ "defaults": {
+  "style_description": "chunky pixel art game button icons, dark outline, warm shading",
+  "no_background": true
+ },
+ "style_images": [
+  "ui/icons/orders/aggressive.png",
+  "ui/icons/orders/defensive.png",
+  "ui/icons/orders/stand_ground.png",
+  "ui/icons/orders/stop.png"
+ ],
+ "jobs": [
+  {
+   "name": "dismount",
+   "request": {
+    "description": "a knight's saddle with a stirrup and a boot stepping down from it, order icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "retreat",
+   "request": {
+    "description": "a bold curved arrow turning back behind a small shield, retreat order icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "tabor",
+   "request": {
+    "description": "a ring of medieval war wagons chained together seen from above, order icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "take_apart",
+   "request": {
+    "description": "a claw hammer and an iron crowbar prying apart wooden planks, order icon",
+    "seed": 5
+   }
+  },
+  {
+   "name": "turn",
+   "request": {
+    "description": "a circular arrow around a soldier's helmet, turn around order icon",
+    "seed": 5
+   }
+  }
+ ]
+}
