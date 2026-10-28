@@ -30,3 +30,8 @@ func show_sprite(s: SpriteDB.Sprite, tint: Color) -> void:
 ## The colour view (whose opaque pixels hide what is behind it).
 func color_sprite() -> Sprite2D:
 	return _color
+
+
+## The team mask over the colour view.
+func team_sprite() -> Sprite2D:
+	return _team

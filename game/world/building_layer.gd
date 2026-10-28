@@ -164,6 +164,7 @@ func _refresh() -> void:
 			_boxes[key].def_id = _art_id(s)
 			# One taken apart leaves no ruins.
 			_boxes[key].done = _standing(s)
+			_boxes[key].gate = b.defs[s].base_id == &"gate"
 			var back: Array[SpriteDB.Sprite] = []
 			var front: Array[SpriteDB.Sprite] = []
 			if b.defs[s].base_id == &"palisade" or b.defs[s].base_id == &"wall":
@@ -342,12 +343,15 @@ func _draw() -> void:
 	for t in _inline:
 		var rect: Rect2 = t.rect
 		var height: float = t.height
-		draw_box(self, rect, t.color, height)
+		var color: Color = t.color
+		var fire: float = t.fire
+		var hp: float = t.hp
+		draw_box(self, rect, color, height)
 		if t.outlined:
 			draw_outline(self, rect, Color(0.4, 1.0, 0.4))
-		if t.fire >= 0.0:
-			draw_flames(self, rect, height, t.fire, sim.tick)
-		_draw_hp(rect, height, t.hp)
+		if fire >= 0.0:
+			draw_flames(self, rect, height, fire, sim.tick)
+		_draw_hp(rect, height, hp)
 
 
 func _draw_hp(rect: Rect2, height: float, hp: float) -> void:

@@ -14,6 +14,7 @@ extends Node2D
 ## Screen height of a flat building's top (a farm's fence) for its bar and flames.
 const FLAT_TOP := 16.0
 const STACK_SCENE := preload("res://game/world/sprite_stack.tscn")
+const HAZE_SHADER := preload("res://game/world/building_haze.gdshader")
 
 ## Footprint in cells, relative to the centre (the node's position).
 var cells := Rect2()
@@ -37,6 +38,16 @@ var flat := false
 ## Catalog id of the building and whether it was finished (for its ruins).
 var def_id: StringName
 var done := false
+## A gate (units walk through it, so CoverFade leaves it be).
+var gate := false
+## How far its colours go toward white (CoverFade, while it is see-through), 0 for none.
+var haze := 0.0:
+	set(value):
+		if haze != value:
+			haze = value
+			_apply_haze()
+
+var _haze_material: ShaderMaterial
 
 @onready var _back: Node2D = $Back
 @onready var _main: SpriteStack = $Main
@@ -129,6 +140,21 @@ func _show_art() -> void:
 	_main.show_sprite(sprite, tint)
 	_show_pieces(_back, back if sprite != null else none)
 	_show_pieces(_front, front if sprite != null else none)
+	_apply_haze()
+
+
+## Puts the haze on the shown art (not on the ground shadow), or takes it off at none, so a
+## building that is not faded keeps the plain sprites.
+func _apply_haze() -> void:
+	if haze > 0.0 and _haze_material == null:
+		_haze_material = ShaderMaterial.new()
+		_haze_material.shader = HAZE_SHADER
+	if _haze_material != null:
+		_haze_material.set_shader_parameter(&"haze", haze)
+	var mat: Material = _haze_material if haze > 0.0 else null
+	for stack in stacks():
+		stack.color_sprite().material = mat
+		stack.team_sprite().material = mat
 
 
 ## Fills `holder` with one SpriteStack per piece, reusing the ones it has.

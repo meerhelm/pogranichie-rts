@@ -218,3 +218,29 @@ func test_trees_get_a_steady_tint_of_their_own() -> void:
 		assert_between(c.y, -1.0, 1.0, "warmer or cooler")
 		seen[c] = true
 	assert_gt(seen.size(), 30, "trees differ")
+
+
+func test_cover_fade_forgets_a_building_torn_down_while_faded() -> void:
+	var fade := CoverFade.new()
+	add_child_autofree(fade)
+	var gone := Sprite2D.new()
+	var kept := Sprite2D.new()
+	add_child_autofree(kept)
+	add_child(gone)
+	gone.modulate.a = 0.5
+	kept.modulate.a = 0.5
+	fade._target[gone] = 0.2
+	fade._target[kept] = 1.0
+	gone.free()
+	fade._animate(0.05)
+	assert_eq(fade._target.size(), 1, "the freed building is dropped, the live one stays")
+	assert_true(fade._target.has(kept))
+	assert_gt(kept.modulate.a, 0.5, "the live one still fades back")
+	fade._target[kept] = 1.0
+	var other := Sprite2D.new()
+	add_child(other)
+	fade._target[other] = 0.2
+	other.free()
+	fade._drop_freed()
+	assert_false(fade._target.is_empty(), "the live one survives a look")
+	assert_eq(fade._target.size(), 1)

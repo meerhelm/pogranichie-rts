@@ -1,15 +1,20 @@
 class_name CoverFade
 extends Node
 ## Trees and buildings standing in front of one of the local player's units and covering its
-## figure turn see-through, so the player sees his men in a forest or behind a house: together
-## they are 80 % clear over the unit (one tree alone FADED_ALPHA, several in a row each a bit
-## clearer, so a deep forest does not stay dark); they fade back once nobody of his is behind
-## them. Only the opaque pixels of the
+## figure turn see-through, so the player sees his men in a forest or behind a house: trees
+## together are 80 % clear over the unit (one tree alone FADED_ALPHA, several in a row each a
+## bit clearer, so a deep forest does not stay dark), a building half clear and a little pale
+## (BUILDING_ALPHA, BUILDING_HAZE); they fade back once nobody of his is behind them. Gates
+## and peasants at work by a building do not count. Only the opaque pixels of the
 ## colour view count (not the ground shadow), checked at a few points of each figure several
 ## times a second. Drawing only: the simulation is not touched.
 
-## How opaque all that covers the player's unit is together (80 % see-through).
+## How opaque all the trees covering the player's unit are together (80 % see-through).
 const FADED_ALPHA := 0.2
+## How opaque a building over the player's unit gets: it stays well seen, half clear.
+const BUILDING_ALPHA := 0.7
+## How far a faded building's colours go toward white at BUILDING_ALPHA (building_haze).
+const BUILDING_HAZE := 0.3
 ## Alpha change per second, both ways.
 const FADE_SPEED := 4.0
 ## Seconds between looks for what covers whom.
@@ -56,6 +61,7 @@ func _process(delta: float) -> void:
 ## Finds what covers the local player's units now.
 func refresh() -> void:
 	var now := covering()
+	_drop_freed()
 	for item: CanvasItem in _target.keys():
 		_target[item] = now.get(item, 1.0)
 	for item: CanvasItem in now:
@@ -76,6 +82,7 @@ func covering() -> Dictionary[CanvasItem, float]:
 		var points := v.figure_points()
 		var y := v.global_position.y
 		var over: Array[CanvasItem] = []
+		var houses: Array[CanvasItem] = []
 		if trees != null:
 			var cell := nav.cell_of(sim.entities.pos_x[id - 1], sim.entities.pos_y[id - 1])
 			var cx := cell % nav.width
@@ -88,18 +95,21 @@ func covering() -> Dictionary[CanvasItem, float]:
 					continue
 				if covers(t, points):
 					over.append(t)
-		for b: BuildingView in buckets.get(_bucket(v.global_position), []):
+		# A peasant at work by a house does not clear it: he is where the player sent him.
+		var bucket: Array = [] if v.working else buckets.get(_bucket(v.global_position), [])
+		for b: BuildingView in bucket:
 			if b.global_position.y <= y:
 				continue
 			for stack in b.stacks():
 				if covers(stack.color_sprite(), points):
-					over.append(b)
+					houses.append(b)
 					break
-		if over.is_empty():
-			continue
-		var alpha := 1.0 - pow(1.0 - FADED_ALPHA, 1.0 / over.size())
-		for item in over:
-			out[item] = minf(out.get(item, 1.0), alpha)
+		if not over.is_empty():
+			var alpha := 1.0 - pow(1.0 - FADED_ALPHA, 1.0 / over.size())
+			for item in over:
+				out[item] = minf(out[item] if out.has(item) else 1.0, alpha)
+		for item in houses:
+			out[item] = minf(out[item] if out.has(item) else 1.0, BUILDING_ALPHA)
 	return out
 
 
@@ -133,7 +143,8 @@ func _building_buckets() -> Dictionary[Vector2i, Array]:
 	var out: Dictionary[Vector2i, Array] = {}
 	for child in units.get_children():
 		var b := child as BuildingView
-		if b == null or not b.visible:
+		# Men walk through a gate: it would flicker clear at every passing.
+		if b == null or not b.visible or b.gate:
 			continue
 		for stack in b.stacks():
 			var s := stack.color_sprite()
@@ -154,12 +165,28 @@ static func _bucket(p: Vector2) -> Vector2i:
 	return Vector2i((p / BUCKET).floor())
 
 
+## Forgets trees and buildings freed since the last look (a building torn down, a tree cut).
+## The keys are checked untyped: a freed node cannot even be put in a CanvasItem variable.
+func _drop_freed() -> void:
+	var keys := _target.keys()
+	var alphas := _target.values()
+	var live: Dictionary[CanvasItem, float] = {}
+	for i in keys.size():
+		var key: Variant = keys[i]
+		if is_instance_valid(key):
+			var item: CanvasItem = key
+			live[item] = alphas[i]
+	if live.size() != _target.size():
+		_target = live
+
+
 func _animate(delta: float) -> void:
 	var step := FADE_SPEED * delta
+	_drop_freed()
 	for item: CanvasItem in _target.keys():
-		if not is_instance_valid(item):
-			_target.erase(item)
-			continue
 		item.modulate.a = move_toward(item.modulate.a, _target[item], step)
+		var b := item as BuildingView
+		if b != null:
+			b.haze = (1.0 - b.modulate.a) / (1.0 - BUILDING_ALPHA) * BUILDING_HAZE
 		if item.modulate.a == 1.0 and _target[item] == 1.0:
 			_target.erase(item)
