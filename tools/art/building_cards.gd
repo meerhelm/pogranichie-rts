@@ -80,7 +80,13 @@ func _card(card: Dictionary, theme: Theme) -> Control:
 	var unit := str(card.get("kind", "")) == "unit"
 	var fmt := "%s  ·  эпоха «%s»  ·  %s клеток"  # notr
 	var sub := ""
-	if unit:
+	var hero := str(card.get("kind", "")) == "hero"
+	if hero:
+		sub = (
+			"%s  ·  герой, шаблон «%s»  ·  %s"
+			% [card["faction"], card["template"], card["missions"]]
+		)  # notr
+	elif unit:
 		sub = "%s  ·  эпоха «%s»" % [card["faction"], card["age"]]  # notr
 		if str(card["building"]) != "":
 			sub += "  ·  %s" % card["building"]
@@ -114,6 +120,9 @@ func _card(card: Dictionary, theme: Theme) -> Control:
 	info.add_theme_constant_override(&"separation", 12)
 	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	h.add_child(info)
+	if hero:
+		_hero_info(info, card)
+		return bg
 	if unit:
 		_unit_info(info, card)
 		return bg
@@ -202,3 +211,27 @@ func _unit_info(info: VBoxContainer, card: Dictionary) -> void:
 	eff.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	eff.custom_minimum_size.x = 460
 	info.add_child(eff)
+
+
+func _hero_info(info: VBoxContainer, card: Dictionary) -> void:
+	info.add_theme_constant_override(&"separation", 6)
+	var rows := [
+		["Сторона", str(card["side"])],  # notr
+		["Здоровье", str(card["hp"])],  # notr
+		["Урон", str(card["damage"])],  # notr
+		["Броня", "%s  (ближн. / стрелы)" % card["armor"]],  # notr
+		["Скорость", str(card["speed"])],  # notr
+		["Аура", str(card["aura"])],  # notr
+	]
+	for r: Array in rows:
+		var row := _row(str(r[0]), str(r[1]))
+		var value: Label = row.get_child(1)
+		value.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		value.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		info.add_child(row)
+	for part: Array in [["Общее умение", "common"], ["Своё умение", "effect"]]:  # notr
+		info.add_child(_label(str(part[0]), 24, Color(1.0, 0.93, 0.78), true))
+		var text := _label(str(card[part[1]]), 20)
+		text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		text.custom_minimum_size.x = 460
+		info.add_child(text)

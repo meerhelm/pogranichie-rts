@@ -1,4 +1,4 @@
-"""Unit cards: every catalog unit that has a sprite, on a patch of grass with its catalog data, for review.
+"""Unit and hero cards: every catalog unit that has a sprite and every campaign hero, on a patch of grass with its data, for review.
 
 Step 1 (this script) draws the unit three times (standing, walking, striking; walking only
 for units without a strike) with shadow and team mask in the faction colour, on grass tiles at
@@ -75,9 +75,9 @@ def frame(sid: str, kind: str, anim: str, facing: int, index: int) -> tuple[Imag
     return out, pv
 
 
-def card_image(uid: str) -> Image.Image:
+def card_image(uid: str, fac: str = "") -> Image.Image:
     sid = ALIASES.get(uid, uid)
-    fac = uid.split("_")[0]
+    fac = fac or uid.split("_")[0]
     meta = json.loads((UNITS / sid / "sheet.json").read_text())
     poses = [p for p in POSES if p[0] in meta["anims"]]
     figs = [frame(sid, fac, *p) for p in poses]
@@ -103,6 +103,54 @@ def card_image(uid: str) -> Image.Image:
     return canvas
 
 
+## Hero templates, as the catalog's «Герои: шаблоны» names them in prose.
+TEMPLATES = {"mounted": "конный", "light": "лёгкий", "sovereign": "государь", "lady": "пани", "civilian": "небоевой"}
+## Heroes the game has beyond the catalog's table: the same person in another mission.
+EXTRA_HEROES = {"hero_ostrogski_fugitive": ("hero_ostrogski", "light", "Константин Острожский, беглец", "ВКЛ 6", "Игрок")}
+
+
+def tres(uid: str) -> dict[str, str]:
+    """Plain `key = value` lines of data/units/<id>.tres (the numbers the game plays with)."""
+    out = {}
+    for line in (ROOT / "data" / "units" / f"{uid}.tres").read_text().splitlines():
+        m = re.match(r"(\w+) = (.+)$", line)
+        if m:
+            out[m[1]] = m[2].strip('&"')
+    return out
+
+
+def num(v: str, milli: bool = False) -> str:
+    n = int(v)
+    if milli:
+        return f"{n / 1000:g}".replace(".", ",")
+    return str(n)
+
+
+def hero_cards(c: dict, out: Path) -> list[dict]:
+    """Heroes: the template's numbers as the game has them (data/units), the catalog's words."""
+    tpl = {t["id"].removeprefix("hero_type_"): t for t in c["hero_templates"]}
+    rows = [(h["id"], h) for h in c["heroes"]]
+    by_id = dict(rows)
+    for hid, (base, t, name, missions, side) in EXTRA_HEROES.items():
+        rows.append((hid, dict(by_id[base], id=hid, name=name, missions=missions, template=t, side=side)))
+    cards = []
+    for hid, h in rows:
+        if not (UNITS / hid / "sheet.json").exists() or not (ROOT / "data" / "units" / f"{hid}.tres").exists():
+            print("no sprite or data for", hid)
+            continue
+        d = tres(hid)
+        fac = d["faction"]
+        t = h["template"].split(";")[0].strip()
+        card_image(hid, fac).save(out / "img" / f"{hid}.png")
+        dmg = "—" if int(d["damage"]) == 0 else f"{d['damage']} Б"
+        cards.append({"kind": "hero", "id": hid, "img": str((out / "img" / f"{hid}.png").resolve()),
+                      "name": h["name"], "faction": c["factions"][fac]["name"], "template": TEMPLATES[t],
+                      "side": h["side"], "missions": h["missions"], "hp": num(d["hp"]), "damage": dmg,
+                      "armor": f"{d['armor_melee']}/{d['armor_pierce']}", "speed": num(d["speed_milli"], True),
+                      "aura": tpl[t]["aura"] if "aura_morale" in d["params"] else "—", "common": tpl[t]["ability"], "effect": h["ability"]})
+    return cards
+
+
 def main(dest: str) -> None:
     out = Path(dest)
     (out / "img").mkdir(parents=True, exist_ok=True)
@@ -123,6 +171,7 @@ def main(dest: str) -> None:
                       "train_time": u["train_time"], "pop": u["pop"], "hp": u["hp"], "damage": u["damage"],
                       "reload": u["reload"], "range": u["range"], "armor": u["armor"], "speed": u["speed"],
                       "morale": u["morale"], "effect": u["special"]})
+    cards += hero_cards(c, out)
     (out / "cards.json").write_text(json.dumps(cards, ensure_ascii=False, indent=1))
     print(len(cards), "cards")
 
