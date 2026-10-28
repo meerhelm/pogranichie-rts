@@ -1,6 +1,7 @@
 extends SceneTree
-## Lays out the building cards of tools/art/building_cards.py in the game's own frame, fonts and
-## resource icons and saves one PNG per building (needs a display):
+## Lays out the building cards of tools/art/building_cards.py and the unit cards of
+## tools/art/unit_cards.py (`kind` "unit") in the game's own frame, fonts and resource icons and
+## saves one PNG per card (needs a display):
 ##   godot -s tools/art/building_cards.gd -- <dir with cards.json>
 ## Cards go to <dir>/cards/<NN>_<id>.png. Text is the catalog's (Russian), a review sheet, not UI.
 
@@ -76,8 +77,15 @@ func _card(card: Dictionary, theme: Theme) -> Control:
 	v.add_theme_constant_override(&"separation", 10)
 	m.add_child(v)
 	v.add_child(_label(str(card["name"]), 40, Color(1.0, 0.93, 0.78), true))
+	var unit := str(card.get("kind", "")) == "unit"
 	var fmt := "%s  ·  эпоха «%s»  ·  %s клеток"  # notr
-	var sub := fmt % [card["faction"], card["age"], card["cells"]]
+	var sub := ""
+	if unit:
+		sub = "%s  ·  эпоха «%s»" % [card["faction"], card["age"]]  # notr
+		if str(card["building"]) != "":
+			sub += "  ·  %s" % card["building"]
+	else:
+		sub = fmt % [card["faction"], card["age"], card["cells"]]
 	v.add_child(_label(sub, 22, Color(0.78, 0.7, 0.56)))
 	var orn := PanelContainer.new()
 	orn.theme_type_variation = &"Ornament"
@@ -106,6 +114,9 @@ func _card(card: Dictionary, theme: Theme) -> Control:
 	info.add_theme_constant_override(&"separation", 12)
 	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	h.add_child(info)
+	if unit:
+		_unit_info(info, card)
+		return bg
 	info.add_child(_label("Стоимость", 24, Color(1.0, 0.93, 0.78), true))  # notr
 	var cost: Array = card["cost"]
 	if cost.is_empty() or str(card["cost_note"]) != "":
@@ -138,3 +149,56 @@ func _card(card: Dictionary, theme: Theme) -> Control:
 	eff.custom_minimum_size.x = 460
 	info.add_child(eff)
 	return bg
+
+
+func _cost_line(card: Dictionary) -> Control:
+	var cost: Array = card["cost"]
+	if cost.is_empty():
+		var note := _label(str(card["cost_note"]), 22)
+		note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		return note
+	var line := HBoxContainer.new()
+	line.add_theme_constant_override(&"separation", 8)
+	for i in 4:
+		if Num.of(cost[i]) == 0:
+			continue
+		var icon := TextureRect.new()
+		icon.texture = load("res://ui/icons/%s.svg" % RES_ICONS[i])
+		icon.custom_minimum_size = Vector2(28, 28)
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		line.add_child(icon)
+		var n := _label(str(Num.of(cost[i])), 24)
+		n.custom_minimum_size.x = 52
+		line.add_child(n)
+	if line.get_child_count() == 0:
+		line.add_child(_label("бесплатно", 22))  # notr
+	return line
+
+
+func _unit_info(info: VBoxContainer, card: Dictionary) -> void:
+	info.add_theme_constant_override(&"separation", 5)
+	info.add_child(_label("Стоимость", 24, Color(1.0, 0.93, 0.78), true))  # notr
+	info.add_child(_cost_line(card))
+	var dash := func(v: Variant, unit_text := "") -> String:
+		var t := str(v).strip_edges()
+		return "—" if t == "" or t == "—" else t + unit_text
+	var rows := [
+		["Обучение", dash.call(card["train_time"], " с")],  # notr
+		["Население", dash.call(card["pop"])],  # notr
+		["Здоровье", dash.call(card["hp"])],  # notr
+		["Урон", dash.call(card["damage"])],  # notr
+		["Перезарядка", dash.call(card["reload"], " с")],  # notr
+		["Дальность", dash.call(card["range"])],  # notr
+		["Броня", dash.call(card["armor"], "  (ближн. / стрелы)")],  # notr
+		["Скорость", dash.call(card["speed"])],  # notr
+		["Дух", dash.call(card["morale"])],  # notr
+	]
+	for r: Array in rows:
+		var row := _row(str(r[0]), str(r[1]))
+		info.add_child(row)
+	info.add_child(_label("Особое", 24, Color(1.0, 0.93, 0.78), true))  # notr
+	var eff := _label(str(card["effect"]), 20)
+	eff.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	eff.custom_minimum_size.x = 460
+	info.add_child(eff)
