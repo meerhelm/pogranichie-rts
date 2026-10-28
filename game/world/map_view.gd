@@ -6,6 +6,10 @@ extends TileMapLayer
 ## art falls back to a flat-coloured diamond (COLORS), which the minimap also uses. Art tiles
 ## reach past their cell with a ragged rim, so a bog melts into the grass instead of a zigzag.
 ## A shader (ground_tint.gdshader) lays large soft patches of colour over it all.
+## Where every ground has a top-down texture (art/tiles/<id>_top.png), the tiles are kept only as
+## data (the map editor, tests) and the ground is drawn by one shader over the whole map instead
+## (ground_splat.gdshader): borders between grounds run smoothly through the cells, the higher
+## ground of LAYERING reaching over the lower.
 ## The TileSet is a file, art/tiles/ground.tres (tools/art/make_tileset.gd): one atlas source
 ## per terrain, named by its id, and a terrain set with every terrain, so maps can be painted
 ## with the terrain brush in the editor (tools/maps/map_editor.tscn). Terrains missing from it
@@ -28,6 +32,27 @@ const COLORS := {
 	&"t_ash": Color(0.30, 0.28, 0.26),
 }
 const FALLBACK_COLOR := Color(1.0, 0.0, 1.0)
+## Which ground lies on top where two meet, lowest first: a tile's ragged rim spills over the
+## cells of lower grounds and is covered by higher ones, so a border wanders into the lower
+## ground instead of stepping along the cells, and a one-cell road is not eaten by the grass.
+const LAYERING: Array[StringName] = [
+	&"t_water",
+	&"t_ford",
+	&"t_ice",
+	&"t_quagmire",
+	&"t_bog",
+	&"t_ash",
+	&"t_sand",
+	&"t_field",
+	&"t_grass",
+	&"t_hill",
+	&"t_forest",
+	&"t_old_forest",
+	&"t_road",
+]
+## The map's own z: below everything in the world even with the highest ground's tile z on top.
+const Z_GROUND := -32
+const SPLAT := preload("res://game/world/ground_splat.gdshader")
 const TILES := "res://art/tiles"
 ## Cells per repeat of a terrain texture: each terrain atlas holds PERIOD x PERIOD tiles.
 const PERIOD := 8
@@ -53,6 +78,11 @@ var _drawn := PackedByteArray()
 var _drawn_version := -1
 ## TileSet source id of each terrain index of the grid.
 var _sources := PackedInt32Array()
+## The ground shader's quad, its map of layer indices per cell and the grid's terrain -> layer.
+var _splat: Polygon2D
+var _layer_map: Image
+var _layer_tex: ImageTexture
+var _layers := PackedByteArray()
 
 
 func build(nav: NavGrid) -> void:
@@ -63,6 +93,7 @@ func build(nav: NavGrid) -> void:
 	position = Vector2(-Iso.HALF_W, 0.0)
 	tile_set = ground_tile_set(nav.terrain_ids)
 	_sources = source_ids(tile_set, nav.terrain_ids)
+	z_index = Z_GROUND
 	# Ground tiles are pixel art: no smoothing when the camera zooms.
 	texture_filter = TEXTURE_FILTER_NEAREST
 	var tint := ShaderMaterial.new()
@@ -72,6 +103,65 @@ func build(nav: NavGrid) -> void:
 	for y in nav.height:
 		for x in nav.width:
 			_put_tile(x, y, nav.terrain[nav.cell_at(x, y)])
+	_build_splat(nav)
+
+
+## The ground shader over the whole map, when every ground of the map has a top texture.
+func _build_splat(nav: NavGrid) -> void:
+	if _splat != null:
+		_splat.queue_free()
+		_splat = null
+	self_modulate = Color.WHITE
+	_layer_map = null
+	var images: Array[Image] = []
+	for id in LAYERING:
+		var path := TILES.path_join("%s_top.png" % id)
+		if not ResourceLoader.exists(path):
+			return
+		var img: Image = (load(path) as Texture2D).get_image()
+		if img.is_compressed():
+			img.decompress()
+		img.convert(Image.FORMAT_RGBA8)
+		images.append(img)
+	_layers = PackedByteArray()
+	for id in nav.terrain_ids:
+		var at := LAYERING.find(id)
+		if at < 0:
+			return  # a ground the shader does not know: keep the tiles
+		_layers.append(at)
+	var grounds := Texture2DArray.new()
+	grounds.create_from_images(images)
+	_layer_map = Image.create_empty(nav.width, nav.height, false, Image.FORMAT_R8)
+	for cell in nav.cell_count():
+		_layer_map.set_pixel(
+			cell % nav.width, cell / nav.width, Color(_layers[nav.terrain[cell]] / 255.0, 0, 0)
+		)
+	_layer_tex = ImageTexture.create_from_image(_layer_map)
+	var mat := ShaderMaterial.new()
+	mat.shader = SPLAT
+	mat.set_shader_parameter("terrain_map", _layer_tex)
+	mat.set_shader_parameter("grounds", grounds)
+	mat.set_shader_parameter("map_size", Vector2(nav.width, nav.height))
+	mat.set_shader_parameter("water_top", LAYERING.find(&"t_ford"))
+	mat.set_shader_parameter("road_layer", LAYERING.find(&"t_road"))
+	mat.set_shader_parameter("reed_layer", LAYERING.find(&"t_bog"))
+	_splat = Polygon2D.new()
+	_splat.name = "Ground"
+	_splat.material = mat
+	_splat.position = -position  # world (Iso) coordinates
+	var w := float(nav.width)
+	var h := float(nav.height)
+	_splat.polygon = PackedVector2Array(
+		[
+			Iso.cell_to_screen(Vector2(0, 0)),
+			Iso.cell_to_screen(Vector2(w, 0)),
+			Iso.cell_to_screen(Vector2(w, h)),
+			Iso.cell_to_screen(Vector2(0, h)),
+		]
+	)
+	add_child(_splat)
+	# The tiles stay as data; the shader draws the ground.
+	self_modulate = Color(1, 1, 1, 0)
 
 
 func _put_tile(x: int, y: int, terrain: int) -> void:
@@ -153,6 +243,7 @@ static func _add_terrain(ts: TileSet, id: StringName) -> void:
 		var data := source.get_tile_data(at, 0)
 		data.terrain_set = 0
 		data.terrain = terrain
+		data.z_index = LAYERING.find(id) + 1
 		for bit in _PEERING_BITS:
 			data.set_terrain_peering_bit(bit, terrain)
 	ts.get_source(source_id).resource_name = String(id)
@@ -178,6 +269,15 @@ static func _draw_diamond(img: Image, left: int, top: int, base: Color, id: Stri
 			img.set_pixel(left + x, top + y, c)
 
 
+## The shader layer of the grid's terrain index `t`; a terrain the grid gained after build()
+## (or one LAYERING lacks) gets its layer then, grass when unknown.
+func _layer_of(t: int) -> int:
+	while _layers.size() <= t and _layers.size() < grid.terrain_ids.size():
+		var at := LAYERING.find(grid.terrain_ids[_layers.size()])
+		_layers.append(at if at >= 0 else LAYERING.find(&"t_grass"))
+	return _layers[t] if t < _layers.size() else LAYERING.find(&"t_grass")
+
+
 ## Redraws the cells whose terrain changed since the last call (after a tick).
 func refresh() -> void:
 	if grid == null or grid.version == _drawn_version:
@@ -188,3 +288,9 @@ func refresh() -> void:
 		if t != _drawn[cell]:
 			_drawn[cell] = t
 			_put_tile(cell % grid.width, cell / grid.width, t)
+			if _layer_map != null:
+				_layer_map.set_pixel(
+					cell % grid.width, cell / grid.width, Color(_layer_of(t) / 255.0, 0, 0)
+				)
+	if _layer_map != null:
+		_layer_tex.update(_layer_map)

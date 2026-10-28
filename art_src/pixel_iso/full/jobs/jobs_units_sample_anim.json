@@ -1,0 +1,545 @@
+{
+ "out_dir": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/anim",
+ "jobs": [
+  {
+   "name": "pl_crossbow_idle_g0",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7701,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_crossbow_g0.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_crossbow_walk_g0",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7702,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_crossbow_g0.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_crossbow_attack_g0",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7703,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_crossbow_g0.png",
+   "prompt": "raises the crossbow to the shoulder, aims and shoots a bolt, lowers it, in place"
+  },
+  {
+   "name": "pl_crossbow_idle_g1",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7704,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_crossbow_g1.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_crossbow_walk_g1",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7705,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_crossbow_g1.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_crossbow_attack_g1",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7706,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_crossbow_g1.png",
+   "prompt": "raises the crossbow to the shoulder, aims and shoots a bolt, lowers it, in place"
+  },
+  {
+   "name": "pl_crossbow_idle_g2",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7707,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_crossbow_g2.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_crossbow_walk_g2",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7708,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_crossbow_g2.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_crossbow_attack_g2",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7709,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_crossbow_g2.png",
+   "prompt": "raises the crossbow to the shoulder, aims and shoots a bolt, lowers it, in place"
+  },
+  {
+   "name": "pl_crossbow_idle_g6",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7710,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_crossbow_g6.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_crossbow_walk_g6",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7711,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_crossbow_g6.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_crossbow_attack_g6",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7712,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_crossbow_g6.png",
+   "prompt": "raises the crossbow to the shoulder, aims and shoots a bolt, lowers it, in place"
+  },
+  {
+   "name": "pl_crossbow_idle_g7",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7713,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_crossbow_g7.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_crossbow_walk_g7",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7714,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_crossbow_g7.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_crossbow_attack_g7",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7715,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_crossbow_g7.png",
+   "prompt": "raises the crossbow to the shoulder, aims and shoots a bolt, lowers it, in place"
+  },
+  {
+   "name": "to_knight_brother_idle_g0",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7716,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knight_brother_g0.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_knight_brother_walk_g0",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7717,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knight_brother_g0.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_knight_brother_attack_g0",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7718,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knight_brother_g0.png",
+   "prompt": "the knight lowers the lance and thrusts it forward from the saddle, the horse rears slightly, in place"
+  },
+  {
+   "name": "to_knight_brother_idle_g1",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7719,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knight_brother_g1.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_knight_brother_walk_g1",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7720,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knight_brother_g1.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_knight_brother_attack_g1",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7721,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knight_brother_g1.png",
+   "prompt": "the knight lowers the lance and thrusts it forward from the saddle, the horse rears slightly, in place"
+  },
+  {
+   "name": "to_knight_brother_idle_g2",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7722,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knight_brother_g2.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_knight_brother_walk_g2",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7723,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knight_brother_g2.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_knight_brother_attack_g2",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7724,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knight_brother_g2.png",
+   "prompt": "the knight lowers the lance and thrusts it forward from the saddle, the horse rears slightly, in place"
+  },
+  {
+   "name": "to_knight_brother_idle_g6",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7725,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knight_brother_g6.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_knight_brother_walk_g6",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7726,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knight_brother_g6.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_knight_brother_attack_g6",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7727,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knight_brother_g6.png",
+   "prompt": "the knight lowers the lance and thrusts it forward from the saddle, the horse rears slightly, in place"
+  },
+  {
+   "name": "to_knight_brother_idle_g7",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7728,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knight_brother_g7.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_knight_brother_walk_g7",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7729,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knight_brother_g7.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_knight_brother_attack_g7",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7730,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knight_brother_g7.png",
+   "prompt": "the knight lowers the lance and thrusts it forward from the saddle, the horse rears slightly, in place"
+  },
+  {
+   "name": "hero_vytautas_idle_g0",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7731,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/hero_vytautas_g0.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "hero_vytautas_walk_g0",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7732,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/hero_vytautas_g0.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "hero_vytautas_attack_g0",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7733,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/hero_vytautas_g0.png",
+   "prompt": "the rider draws his sword and slashes down from the saddle, in place"
+  },
+  {
+   "name": "hero_vytautas_idle_g1",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7734,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/hero_vytautas_g1.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "hero_vytautas_walk_g1",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7735,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/hero_vytautas_g1.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "hero_vytautas_attack_g1",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7736,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/hero_vytautas_g1.png",
+   "prompt": "the rider draws his sword and slashes down from the saddle, in place"
+  },
+  {
+   "name": "hero_vytautas_idle_g2",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7737,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/hero_vytautas_g2.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "hero_vytautas_walk_g2",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7738,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/hero_vytautas_g2.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "hero_vytautas_attack_g2",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7739,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/hero_vytautas_g2.png",
+   "prompt": "the rider draws his sword and slashes down from the saddle, in place"
+  },
+  {
+   "name": "hero_vytautas_idle_g6",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7740,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/hero_vytautas_g6.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "hero_vytautas_walk_g6",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7741,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/hero_vytautas_g6.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "hero_vytautas_attack_g6",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7742,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/hero_vytautas_g6.png",
+   "prompt": "the rider draws his sword and slashes down from the saddle, in place"
+  },
+  {
+   "name": "hero_vytautas_idle_g7",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7743,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/hero_vytautas_g7.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "hero_vytautas_walk_g7",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7744,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/hero_vytautas_g7.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "hero_vytautas_attack_g7",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 7745,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/hero_vytautas_g7.png",
+   "prompt": "the rider draws his sword and slashes down from the saddle, in place"
+  }
+ ]
+}

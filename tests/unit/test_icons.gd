@@ -52,7 +52,7 @@ func test_building_tips_tell_what_it_is_for_and_what_it_gives() -> void:
 	assert_string_contains(Tips.purpose(house), "Homes for your people")
 	assert_has(Tips.gives(house, db), "+5 population")
 	var tip := Tips.order("stop", "Stop", "H", "Stop what they are doing and stand.")
-	assert_string_contains(tip.bbcode(), "res://ui/icons/orders/stop.svg")
+	assert_string_contains(tip.bbcode(), IconDB.order("stop").resource_path)
 	assert_eq(tip.plain_text(), "Stop (H)\nStop what they are doing and stand.")
 	for id: StringName in db.buildings:
 		var def: BuildingDef = db.buildings[id]

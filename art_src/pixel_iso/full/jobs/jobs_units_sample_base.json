@@ -1,0 +1,11 @@
+{
+ "out_dir": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units",
+ "jobs": [
+  {"name": "pl_crossbow_base", "style": "rd_pro__isometric", "size": [64, 64], "num_images": 2, "seed": 7620, "remove_bg": true,
+   "prompt": "single small full body figure alone, 15th century Polish crossbowman, steel kettle hat (chapel-de-fer), red brigandine over a grey gambeson, steel crossbow held in both hands, quiver of bolts at the hip, leather boots, standing in a neutral pose, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"},
+  {"name": "to_knight_brother_base", "style": "rd_pro__isometric", "size": [96, 96], "num_images": 2, "seed": 7621, "remove_bg": true,
+   "prompt": "single mounted knight alone, 15th century Teutonic knight brother on a big warhorse, white cloak with a black cross, steel visored bascinet, plate armour, white shield with a black cross, long lance held upright, horse in a white caparison with a black cross, standing still, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"},
+  {"name": "hero_vytautas_base", "style": "rd_pro__isometric", "size": [96, 96], "num_images": 2, "seed": 7622, "remove_bg": true,
+   "prompt": "single mounted figure alone, Grand Duke Vytautas of Lithuania, 1410, old man with a grey beard, steel armour, open bascinet with a thin gold circlet, long red cloak, sword at the side, riding a grey horse with a red caparison, standing still, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"}
+ ]
+}

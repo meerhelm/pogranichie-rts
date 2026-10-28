@@ -1,0 +1,905 @@
+{
+ "out_dir": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/anim",
+ "jobs": [
+  {
+   "name": "pl_kmet_idle_g0",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7901,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_kmet_g0.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_kmet_walk_g0",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7902,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_kmet_g0.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_kmet_attack_g0",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7903,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_kmet_g0.png",
+   "prompt": "chopping swing with the wood axe, raising it and striking down, in place, looping"
+  },
+  {
+   "name": "pl_kmet_idle_g1",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7904,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_kmet_g1.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_kmet_walk_g1",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7905,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_kmet_g1.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_kmet_attack_g1",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7906,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_kmet_g1.png",
+   "prompt": "chopping swing with the wood axe, raising it and striking down, in place, looping"
+  },
+  {
+   "name": "pl_kmet_idle_g2",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7907,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_kmet_g2.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_kmet_walk_g2",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7908,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_kmet_g2.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_kmet_attack_g2",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7909,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_kmet_g2.png",
+   "prompt": "chopping swing with the wood axe, raising it and striking down, in place, looping"
+  },
+  {
+   "name": "pl_kmet_idle_g6",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7910,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_kmet_g6.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_kmet_walk_g6",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7911,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_kmet_g6.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_kmet_attack_g6",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7912,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_kmet_g6.png",
+   "prompt": "chopping swing with the wood axe, raising it and striking down, in place, looping"
+  },
+  {
+   "name": "pl_kmet_idle_g7",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7913,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_kmet_g7.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_kmet_walk_g7",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7914,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_kmet_g7.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_kmet_attack_g7",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7915,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_kmet_g7.png",
+   "prompt": "chopping swing with the wood axe, raising it and striking down, in place, looping"
+  },
+  {
+   "name": "to_peasant_idle_g0",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7916,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_peasant_g0.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_peasant_walk_g0",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7917,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_peasant_g0.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_peasant_attack_g0",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7918,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_peasant_g0.png",
+   "prompt": "chopping swing with the wood axe, raising it and striking down, in place, looping"
+  },
+  {
+   "name": "to_peasant_idle_g1",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7919,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_peasant_g1.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_peasant_walk_g1",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7920,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_peasant_g1.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_peasant_attack_g1",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7921,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_peasant_g1.png",
+   "prompt": "chopping swing with the wood axe, raising it and striking down, in place, looping"
+  },
+  {
+   "name": "to_peasant_idle_g2",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7922,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_peasant_g2.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_peasant_walk_g2",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7923,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_peasant_g2.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_peasant_attack_g2",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7924,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_peasant_g2.png",
+   "prompt": "chopping swing with the wood axe, raising it and striking down, in place, looping"
+  },
+  {
+   "name": "to_peasant_idle_g6",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7925,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_peasant_g6.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_peasant_walk_g6",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7926,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_peasant_g6.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_peasant_attack_g6",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7927,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_peasant_g6.png",
+   "prompt": "chopping swing with the wood axe, raising it and striking down, in place, looping"
+  },
+  {
+   "name": "to_peasant_idle_g7",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7928,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_peasant_g7.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_peasant_walk_g7",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7929,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_peasant_g7.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_peasant_attack_g7",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7930,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_peasant_g7.png",
+   "prompt": "chopping swing with the wood axe, raising it and striking down, in place, looping"
+  },
+  {
+   "name": "to_knecht_idle_g0",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7931,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knecht_g0.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_knecht_walk_g0",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7932,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knecht_g0.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_knecht_attack_g0",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7933,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knecht_g0.png",
+   "prompt": "thrusting the long spear forward and pulling it back, shield held up, in place, looping"
+  },
+  {
+   "name": "to_knecht_idle_g1",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7934,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knecht_g1.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_knecht_walk_g1",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7935,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knecht_g1.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_knecht_attack_g1",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7936,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knecht_g1.png",
+   "prompt": "thrusting the long spear forward and pulling it back, shield held up, in place, looping"
+  },
+  {
+   "name": "to_knecht_idle_g2",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7937,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knecht_g2.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_knecht_walk_g2",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7938,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knecht_g2.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_knecht_attack_g2",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7939,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knecht_g2.png",
+   "prompt": "thrusting the long spear forward and pulling it back, shield held up, in place, looping"
+  },
+  {
+   "name": "to_knecht_idle_g6",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7940,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knecht_g6.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_knecht_walk_g6",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7941,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knecht_g6.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_knecht_attack_g6",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7942,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knecht_g6.png",
+   "prompt": "thrusting the long spear forward and pulling it back, shield held up, in place, looping"
+  },
+  {
+   "name": "to_knecht_idle_g7",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7943,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knecht_g7.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_knecht_walk_g7",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7944,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knecht_g7.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_knecht_attack_g7",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7945,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_knecht_g7.png",
+   "prompt": "thrusting the long spear forward and pulling it back, shield held up, in place, looping"
+  },
+  {
+   "name": "pl_spearman_idle_g0",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7946,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_spearman_g0.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_spearman_walk_g0",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7947,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_spearman_g0.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_spearman_attack_g0",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7948,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_spearman_g0.png",
+   "prompt": "thrusting the long spear forward and pulling it back, shield held up, in place, looping"
+  },
+  {
+   "name": "pl_spearman_idle_g1",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7949,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_spearman_g1.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_spearman_walk_g1",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7950,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_spearman_g1.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_spearman_attack_g1",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7951,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_spearman_g1.png",
+   "prompt": "thrusting the long spear forward and pulling it back, shield held up, in place, looping"
+  },
+  {
+   "name": "pl_spearman_idle_g2",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7952,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_spearman_g2.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_spearman_walk_g2",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7953,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_spearman_g2.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_spearman_attack_g2",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7954,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_spearman_g2.png",
+   "prompt": "thrusting the long spear forward and pulling it back, shield held up, in place, looping"
+  },
+  {
+   "name": "pl_spearman_idle_g6",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7955,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_spearman_g6.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_spearman_walk_g6",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7956,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_spearman_g6.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_spearman_attack_g6",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7957,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_spearman_g6.png",
+   "prompt": "thrusting the long spear forward and pulling it back, shield held up, in place, looping"
+  },
+  {
+   "name": "pl_spearman_idle_g7",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7958,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_spearman_g7.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_spearman_walk_g7",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7959,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_spearman_g7.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_spearman_attack_g7",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7960,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_spearman_g7.png",
+   "prompt": "thrusting the long spear forward and pulling it back, shield held up, in place, looping"
+  },
+  {
+   "name": "to_crossbow_idle_g0",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7961,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_crossbow_g0.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_crossbow_walk_g0",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7962,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_crossbow_g0.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_crossbow_attack_g0",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7963,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_crossbow_g0.png",
+   "prompt": "raises the crossbow to the shoulder, aims and shoots a bolt, lowers it, in place"
+  },
+  {
+   "name": "to_crossbow_idle_g1",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7964,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_crossbow_g1.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_crossbow_walk_g1",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7965,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_crossbow_g1.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_crossbow_attack_g1",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7966,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_crossbow_g1.png",
+   "prompt": "raises the crossbow to the shoulder, aims and shoots a bolt, lowers it, in place"
+  },
+  {
+   "name": "to_crossbow_idle_g2",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7967,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_crossbow_g2.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_crossbow_walk_g2",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7968,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_crossbow_g2.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_crossbow_attack_g2",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7969,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_crossbow_g2.png",
+   "prompt": "raises the crossbow to the shoulder, aims and shoots a bolt, lowers it, in place"
+  },
+  {
+   "name": "to_crossbow_idle_g6",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7970,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_crossbow_g6.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_crossbow_walk_g6",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7971,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_crossbow_g6.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_crossbow_attack_g6",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7972,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_crossbow_g6.png",
+   "prompt": "raises the crossbow to the shoulder, aims and shoots a bolt, lowers it, in place"
+  },
+  {
+   "name": "to_crossbow_idle_g7",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7973,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_crossbow_g7.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_crossbow_walk_g7",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7974,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_crossbow_g7.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_crossbow_attack_g7",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 7975,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_crossbow_g7.png",
+   "prompt": "raises the crossbow to the shoulder, aims and shoots a bolt, lowers it, in place"
+  }
+ ]
+}

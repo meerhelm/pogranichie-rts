@@ -40,6 +40,44 @@ godot --headless -s tools/art/make_frames.gd -- gdl_peasant   # then SpriteFrame
 - Units: one view (`rd_pro__isometric`, 64×64) → `rd_advanced_animation__rotate` (8 views in a
   GIF) → idle / walking / attack (`rd_advanced_animation__*`, 8 frames each) for facings 0, 1,
   2, 6, 7; 3, 4, 5 are mirrors. The team colour is a belt band at the waist.
+- Riders (`pixel_units.RIDERS`) are generated at 96×96 (the price does not depend on the size)
+  and get a 128×120 frame; their panel portrait is the rider from the helmet to the saddle.
+  `WHITE_CLAD` units keep the near-white inside the figure (white cloaks, tabards, shields).
+- The turn GIF starts at the base view's own facing and steps 45° per frame (E, SE, S, … for
+  most); check the sheet by eye and map frames to facings 0, 1, 2, 6, 7. Read its frames with
+  `seek`, not `list(ImageSequence.Iterator(...))`, which hands back one image eight times.
+- A unit costs about $2.40: base 0.36 (two images) + turn 0.10 + 15 animations × 0.14.
+
+### Ground from PixelLab and the ground shader
+
+The ground of most terrains comes from PixelLab (https://api.pixellab.ai/v2, key in
+`~/.config/pixellab/token`, never in the repo; the account bills in generations of its plan):
+`/create-tiles-pro` isometric 64x32 tiles in the style of our old atlas, four numbered kinds of
+ground with four tiles of each (`art_src/pixellab/jobs_tiles.json`, raw tiles in
+`art_src/pixellab/tiles/<id>/`; road and hill came out worse and are kept aside in
+`tiles_unused/`, those two use the old textures).
+
+```sh
+python3 art_src/pixellab/pl_client.py art_src/pixellab/jobs_tiles.json --resume   # needs Pillow
+python3 -m tools.art.pixel_tiles --src art_src/pixel_iso/ground --palette art_src/pixel_iso/palette.png
+godot --headless -s tools/art/make_tileset.gd
+```
+
+- `pixel_tiles` turns each tile back to a 32x32 top-down cell (`unproject_cell`, cutting off the
+  darker rim PixelLab paints round every diamond), fills the 8x8-cell period with tiles of each
+  kind and lays the kinds out in noise patches; PixelLab colours are kept (the 30-colour palette
+  turned dark water brown). It writes the old atlases (`art/tiles/<id>.png`, now with a 32 px
+  rim) and the top-down textures `art/tiles/<id>_top.png`.
+- In the game the ground is drawn by one shader over the map (`game/world/ground_splat.gdshader`,
+  set up by `MapView`): per screen pixel the cell point under it, each ground's share as the
+  bilinear blend of the four nearest cell centres, the highest ground (`MapView.LAYERING`) whose
+  share reaches shows, frayed by noise and dither. Borders run smoothly through the cells, a lone
+  cell is a rounded patch, a road over water gets an earth causeway and shores sparse reeds. The
+  tiles stay in the TileMapLayer as data (map editor, tests) but are not drawn.
+
+Tech, spell and order icons and unit portraits are PixelLab too (`/generate-with-style-v2` with
+our pixel order icons as the style, 16 variants each, `art_src/pixellab/jobs_*.json`);
+`python3 -m tools.art.pl_icons` writes the picked ones (`art_src/pixellab/icons/picks.json`).
 
 ### Building shadows from rough 3D proxies (`proxy_shadow.py`)
 

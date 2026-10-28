@@ -29,6 +29,8 @@ from tools.art.pixel_iso import shadow_of
 
 FRAME = (80, 72)
 PIVOT = (40, 56)  # feet; 16 px below for the down-right shadow
+# riders are generated at 96x96: a bigger frame, room for the longer shadow
+RIDER = ((128, 120), (56, 92))
 GENERATED = (0, 1, 2, 6, 7)
 MIRROR = {3: 1, 4: 0, 5: 7}
 # anim: fps; "work" may reuse another anim's source
@@ -36,15 +38,32 @@ UNITS = {
     "gdl_peasant": {"idle": 6, "walk": 10, "work": ("attack", 9), "attack": 12},
     "gdl_spearman": {"idle": 6, "walk": 10, "attack": 12},
     "gdl_forest_archer": {"idle": 6, "walk": 10, "attack": 10},
+    "pl_crossbow": {"idle": 6, "walk": 10, "attack": 10},
+    "to_knight_brother": {"idle": 6, "walk": 10, "attack": 12},
+    "hero_vytautas": {"idle": 6, "walk": 10, "attack": 12},
+    "pl_kmet": {"idle": 6, "walk": 10, "work": ("attack", 9), "attack": 12},
+    "to_peasant": {"idle": 6, "walk": 10, "work": ("attack", 9), "attack": 12},
+    "to_knecht": {"idle": 6, "walk": 10, "attack": 12},
+    "pl_spearman": {"idle": 6, "walk": 10, "attack": 12},
+    "to_crossbow": {"idle": 6, "walk": 10, "attack": 10},
 }
+RIDERS = {"to_knight_brother", "hero_vytautas"}
+WHITE_CLAD = {"to_knight_brother", "to_knecht", "pl_spearman", "to_crossbow"}  # white cloth, shields
+
+
+def frame_of(uid: str) -> tuple[tuple[int, int], tuple[int, int]]:
+    """Frame size and pivot (feet) of a unit's sheet."""
+    return RIDER if uid in RIDERS else (FRAME, PIVOT)
 
 
 def frames_of(gif: Path) -> list[np.ndarray]:
     return [np.array(f.convert("RGBA")) for f in ImageSequence.Iterator(Image.open(gif))]
 
 
-def cut_white(a: np.ndarray) -> np.ndarray:
-    """Alpha 0 on the white background: every near-white pixel (no unit wears pure white)."""
+def cut_white(a: np.ndarray, inner: bool = True) -> np.ndarray:
+    """Alpha 0 on the white background: the near-white reached from the border and, with
+    `inner`, every other near-white pixel too (the white between a bow and the body); units
+    in white cloaks keep their inner white."""
     rgb = a[..., :3].astype(int)
     near = (rgb >= 232).all(-1)
     h, w = near.shape
@@ -59,7 +78,8 @@ def cut_white(a: np.ndarray) -> np.ndarray:
             if 0 <= yy < h and 0 <= xx < w and near[yy, xx] and not bg[yy, xx]:
                 bg[yy, xx] = True
                 q.append((yy, xx))
-    bg |= near  # also the white caught between a bow and the body
+    if inner:
+        bg |= near  # also the white caught between a bow and the body
     out = a.copy()
     out[..., 3] = np.where(bg | (a[..., 3] < 128), 0, 255)
     out[out[..., 3] == 0, :3] = 0
@@ -73,14 +93,14 @@ def feet(a: np.ndarray) -> tuple[int, int]:
     return (int(xs.min()) + int(xs.max()) + 1) // 2, int(ys.max()) + 1
 
 
-def place(a: np.ndarray, dx: int, dy: int) -> np.ndarray:
-    out = np.zeros((FRAME[1], FRAME[0], 4), np.uint8)
+def place(a: np.ndarray, dx: int, dy: int, frame: tuple[int, int] = FRAME) -> np.ndarray:
+    out = np.zeros((frame[1], frame[0], 4), np.uint8)
     h, w = a.shape[:2]
     x0, y0 = dx, dy
     sx0, sy0 = max(0, -x0), max(0, -y0)
     tx0, ty0 = max(0, x0), max(0, y0)
-    cw = min(w - sx0, FRAME[0] - tx0)
-    ch = min(h - sy0, FRAME[1] - ty0)
+    cw = min(w - sx0, frame[0] - tx0)
+    ch = min(h - sy0, frame[1] - ty0)
     out[ty0:ty0 + ch, tx0:tx0 + cw] = a[sy0:sy0 + ch, sx0:sx0 + cw]
     return out
 
@@ -107,21 +127,22 @@ def team_of(a: np.ndarray) -> np.ndarray:
 
 def build(src: Path, out: Path, uid: str) -> None:
     spec = UNITS[uid]
+    frame, pivot = frame_of(uid)
     names = list(spec)
     cols = 0
     rows: dict[tuple[str, int], list[np.ndarray]] = {}
     for anim in names:
         source = spec[anim][0] if isinstance(spec[anim], tuple) else anim
         for g in GENERATED:
-            fr = [cut_white(f) for f in frames_of(src / f"{uid}_{source}_g{g}.gif")]
+            fr = [cut_white(f, uid not in WHITE_CLAD) for f in frames_of(src / f"{uid}_{source}_g{g}.gif")]
             rows[(anim, g)] = fr
             cols = max(cols, len(fr))
     # one shift per facing, from the first idle frame, so the feet stay put across anims
     shift = {}
     for g in GENERATED:
         fx, fy = feet(rows[("idle", g)][0])
-        shift[g] = (PIVOT[0] - fx, PIVOT[1] - fy)
-    color = np.zeros((FRAME[1] * 8 * len(names), FRAME[0] * cols, 4), np.uint8)
+        shift[g] = (pivot[0] - fx, pivot[1] - fy)
+    color = np.zeros((frame[1] * 8 * len(names), frame[0] * cols, 4), np.uint8)
     team = np.zeros(color.shape[:2] + (2,), np.uint8)
     shadow = np.zeros(color.shape[:2] + (2,), np.uint8)
     meta_anims = {}
@@ -135,14 +156,14 @@ def build(src: Path, out: Path, uid: str) -> None:
             dx, dy = shift[g]
             for i in range(n):
                 fr = rows[(anim, g)][min(i, len(rows[(anim, g)]) - 1)]
-                f = place(fr, dx, dy)
+                f = place(fr, dx, dy, frame)
                 if facing in MIRROR:
                     f = np.roll(f[:, ::-1], 1, axis=1).copy()  # mirror about the pivot column
-                y0, x0 = (ai * 8 + facing) * FRAME[1], i * FRAME[0]
-                color[y0:y0 + FRAME[1], x0:x0 + FRAME[0]] = f
-                team[y0:y0 + FRAME[1], x0:x0 + FRAME[0]] = team_of(f)
+                y0, x0 = (ai * 8 + facing) * frame[1], i * frame[0]
+                color[y0:y0 + frame[1], x0:x0 + frame[0]] = f
+                team[y0:y0 + frame[1], x0:x0 + frame[0]] = team_of(f)
                 im = Image.fromarray(f, "RGBA")
-                shadow[y0:y0 + FRAME[1], x0:x0 + FRAME[0]] = np.array(shadow_of(im, PIVOT[1]))
+                shadow[y0:y0 + frame[1], x0:x0 + frame[0]] = np.array(shadow_of(im, pivot[1]))
                 ys = np.nonzero((f[..., 3] > 0).any(1))[0]
                 if len(ys):
                     tops.append(int(ys[0]))
@@ -151,8 +172,8 @@ def build(src: Path, out: Path, uid: str) -> None:
     Image.fromarray(color, "RGBA").save(dest / "color.png", optimize=True)
     Image.fromarray(team, "LA").save(dest / "team.png", optimize=True)
     Image.fromarray(shadow, "LA").save(dest / "shadow.png", optimize=True)
-    meta = {"frame": list(FRAME), "pivot": list(PIVOT), "scale": 1.0, "anims": meta_anims,
-            "bar_y": PIVOT[1] - int(np.percentile(tops, 10)) + 3,  # px above the feet, as render.py "rows_per_anim": 8,
+    meta = {"frame": list(frame), "pivot": list(pivot), "scale": 1.0, "anims": meta_anims,
+            "bar_y": pivot[1] - int(np.percentile(tops, 10)) + 3,  # px above the feet, as render.py "rows_per_anim": 8,
             "facing": "row offset = UnitView.facing (0 east, clockwise, 2 south)"}
     (dest / "sheet.json").write_text(json.dumps(meta, indent=1))
     write_pick(str(dest))
@@ -177,7 +198,13 @@ def portrait(out: Path, icons: Path, uid: str) -> None:
     bb = fig.getchannel("A").getbbox()
     top = bb[1]
     h = int((bb[3] - bb[1]) * 0.62)  # head to the belt and a little below
-    fig = fig.crop((bb[0], top, bb[2], top + h))
+    left, right = bb[0], bb[2]
+    if uid in RIDERS:  # the rider from the helmet to the saddle, centred on the head
+        h = int((bb[3] - bb[1]) * 0.42)
+        a = np.array(fig.getchannel("A"))[top:top + 6] > 0
+        hx = int(np.nonzero(a.any(0))[0].mean())
+        left, right = max(bb[0], hx - h // 2 - 4), min(bb[2], hx + h // 2 + 4)
+    fig = fig.crop((left, top, right, top + h))
     k = max(1, min((ic.SIZE - 8) // fig.width, (ic.SIZE - 4) // fig.height))
     fig = fig.resize((fig.width * k, fig.height * k), Image.NEAREST)
     tile = ic._plate("unit")

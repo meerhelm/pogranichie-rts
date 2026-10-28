@@ -666,7 +666,7 @@ static func spell(def: SpellDef, fail := "") -> Tip:
 ## An order button: its name, key and what it does.
 static func order(icon: String, name: String, key: String, what: String) -> Tip:
 	var tip := Tip.new()
-	var path := IconDB.ROOT.path_join("orders/%s.svg" % icon)
-	tip.header(path, name, key, "", "")
+	var tex := IconDB.order(icon)
+	tip.header(tex.resource_path if tex != null else "", name, key, "", "")
 	tip.text(what)
 	return tip

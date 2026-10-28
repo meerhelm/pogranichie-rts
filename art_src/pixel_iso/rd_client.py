@@ -26,7 +26,7 @@ def req(method, path, body=None, headers=None):
             return json.loads(resp.read())
     except urllib.error.HTTPError as e:
         return {"_http_error": e.code, "body": e.read().decode(errors="replace")[:2000]}
-    except urllib.error.URLError as e:
+    except (urllib.error.URLError, TimeoutError, OSError) as e:
         return {"_http_error": "network", "body": str(e)}
 
 

@@ -1,0 +1,1085 @@
+{
+ "out_dir": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/anim3c",
+ "jobs": [
+  {
+   "name": "gdl_samogitian_idle_g2",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8346,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_samogitian_g2.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "gdl_samogitian_walk_g2",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8347,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_samogitian_g2.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "gdl_samogitian_attack_g2",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8348,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_samogitian_g2.png",
+   "prompt": "thrusting the long spear forward and pulling it back, in place, looping"
+  },
+  {
+   "name": "gdl_samogitian_idle_g1",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8349,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_samogitian_g1.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "gdl_samogitian_walk_g1",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8350,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_samogitian_g1.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "gdl_samogitian_attack_g1",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8351,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_samogitian_g1.png",
+   "prompt": "thrusting the long spear forward and pulling it back, in place, looping"
+  },
+  {
+   "name": "gdl_samogitian_idle_g0",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8352,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_samogitian_g0.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "gdl_samogitian_walk_g0",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8353,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_samogitian_g0.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "gdl_samogitian_attack_g0",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8354,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_samogitian_g0.png",
+   "prompt": "thrusting the long spear forward and pulling it back, in place, looping"
+  },
+  {
+   "name": "gdl_samogitian_idle_g7",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8355,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_samogitian_g7.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "gdl_samogitian_walk_g7",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8356,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_samogitian_g7.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "gdl_samogitian_attack_g7",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8357,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_samogitian_g7.png",
+   "prompt": "thrusting the long spear forward and pulling it back, in place, looping"
+  },
+  {
+   "name": "gdl_samogitian_idle_g6",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8358,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_samogitian_g6.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "gdl_samogitian_walk_g6",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8359,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_samogitian_g6.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "gdl_samogitian_attack_g6",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8360,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_samogitian_g6.png",
+   "prompt": "thrusting the long spear forward and pulling it back, in place, looping"
+  },
+  {
+   "name": "pl_drab_idle_g2",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8391,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_drab_g2.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_drab_walk_g2",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8392,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_drab_g2.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_drab_attack_g2",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8393,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_drab_g2.png",
+   "prompt": "levels the long pike and thrusts it forward, then pulls it back, in place, looping"
+  },
+  {
+   "name": "pl_drab_idle_g1",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8394,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_drab_g1.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_drab_walk_g1",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8395,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_drab_g1.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_drab_attack_g1",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8396,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_drab_g1.png",
+   "prompt": "levels the long pike and thrusts it forward, then pulls it back, in place, looping"
+  },
+  {
+   "name": "pl_drab_idle_g0",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8397,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_drab_g0.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_drab_walk_g0",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8398,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_drab_g0.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_drab_attack_g0",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8399,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_drab_g0.png",
+   "prompt": "levels the long pike and thrusts it forward, then pulls it back, in place, looping"
+  },
+  {
+   "name": "pl_drab_idle_g7",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8400,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_drab_g7.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_drab_walk_g7",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8401,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_drab_g7.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_drab_attack_g7",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8402,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_drab_g7.png",
+   "prompt": "levels the long pike and thrusts it forward, then pulls it back, in place, looping"
+  },
+  {
+   "name": "pl_drab_idle_g6",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8403,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_drab_g6.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_drab_walk_g6",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8404,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_drab_g6.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_drab_attack_g6",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8405,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_drab_g6.png",
+   "prompt": "levels the long pike and thrusts it forward, then pulls it back, in place, looping"
+  },
+  {
+   "name": "to_halfbrother_idle_g2",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8436,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_halfbrother_g2.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_halfbrother_walk_g2",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8437,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_halfbrother_g2.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_halfbrother_attack_g2",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8438,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_halfbrother_g2.png",
+   "prompt": "thrusting the long spear forward and pulling it back, in place, looping"
+  },
+  {
+   "name": "to_halfbrother_idle_g1",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8439,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_halfbrother_g1.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_halfbrother_walk_g1",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8440,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_halfbrother_g1.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_halfbrother_attack_g1",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8441,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_halfbrother_g1.png",
+   "prompt": "thrusting the long spear forward and pulling it back, in place, looping"
+  },
+  {
+   "name": "to_halfbrother_idle_g0",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8442,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_halfbrother_g0.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_halfbrother_walk_g0",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8443,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_halfbrother_g0.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_halfbrother_attack_g0",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8444,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_halfbrother_g0.png",
+   "prompt": "thrusting the long spear forward and pulling it back, in place, looping"
+  },
+  {
+   "name": "to_halfbrother_idle_g7",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8445,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_halfbrother_g7.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_halfbrother_walk_g7",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8446,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_halfbrother_g7.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_halfbrother_attack_g7",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8447,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_halfbrother_g7.png",
+   "prompt": "thrusting the long spear forward and pulling it back, in place, looping"
+  },
+  {
+   "name": "to_halfbrother_idle_g6",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8448,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_halfbrother_g6.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "to_halfbrother_walk_g6",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8449,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_halfbrother_g6.png",
+   "prompt": "seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "to_halfbrother_attack_g6",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8450,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/to_halfbrother_g6.png",
+   "prompt": "thrusting the long spear forward and pulling it back, in place, looping"
+  },
+  {
+   "name": "gdl_light_horse_idle_g2",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8481,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_light_horse_g2.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "gdl_light_horse_walk_g2",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8482,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_light_horse_g2.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "gdl_light_horse_attack_g2",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8483,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_light_horse_g2.png",
+   "prompt": "the rider throws a javelin forward from the saddle, in place"
+  },
+  {
+   "name": "gdl_light_horse_idle_g1",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8484,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_light_horse_g1.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "gdl_light_horse_walk_g1",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8485,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_light_horse_g1.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "gdl_light_horse_attack_g1",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8486,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_light_horse_g1.png",
+   "prompt": "the rider throws a javelin forward from the saddle, in place"
+  },
+  {
+   "name": "gdl_light_horse_idle_g0",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8487,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_light_horse_g0.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "gdl_light_horse_walk_g0",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8488,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_light_horse_g0.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "gdl_light_horse_attack_g0",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8489,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_light_horse_g0.png",
+   "prompt": "the rider throws a javelin forward from the saddle, in place"
+  },
+  {
+   "name": "gdl_light_horse_idle_g7",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8490,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_light_horse_g7.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "gdl_light_horse_walk_g7",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8491,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_light_horse_g7.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "gdl_light_horse_attack_g7",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8492,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_light_horse_g7.png",
+   "prompt": "the rider throws a javelin forward from the saddle, in place"
+  },
+  {
+   "name": "gdl_light_horse_idle_g6",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8493,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_light_horse_g6.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "gdl_light_horse_walk_g6",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8494,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_light_horse_g6.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "gdl_light_horse_attack_g6",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8495,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/gdl_light_horse_g6.png",
+   "prompt": "the rider throws a javelin forward from the saddle, in place"
+  },
+  {
+   "name": "pl_hussar_idle_g2",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8526,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_hussar_g2.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_hussar_walk_g2",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8527,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_hussar_g2.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_hussar_attack_g2",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8528,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_hussar_g2.png",
+   "prompt": "the rider lowers the lance and thrusts it forward from the saddle, in place"
+  },
+  {
+   "name": "pl_hussar_idle_g1",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8529,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_hussar_g1.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_hussar_walk_g1",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8530,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_hussar_g1.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_hussar_attack_g1",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8531,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_hussar_g1.png",
+   "prompt": "the rider lowers the lance and thrusts it forward from the saddle, in place"
+  },
+  {
+   "name": "pl_hussar_idle_g0",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8532,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_hussar_g0.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_hussar_walk_g0",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8533,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_hussar_g0.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_hussar_attack_g0",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8534,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_hussar_g0.png",
+   "prompt": "the rider lowers the lance and thrusts it forward from the saddle, in place"
+  },
+  {
+   "name": "pl_hussar_idle_g7",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8535,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_hussar_g7.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_hussar_walk_g7",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8536,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_hussar_g7.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_hussar_attack_g7",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8537,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_hussar_g7.png",
+   "prompt": "the rider lowers the lance and thrusts it forward from the saddle, in place"
+  },
+  {
+   "name": "pl_hussar_idle_g6",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8538,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_hussar_g6.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_hussar_walk_g6",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8539,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_hussar_g6.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_hussar_attack_g6",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8540,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_hussar_g6.png",
+   "prompt": "the rider lowers the lance and thrusts it forward from the saddle, in place"
+  },
+  {
+   "name": "pl_pospolite_idle_g2",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8571,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_pospolite_g2.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_pospolite_walk_g2",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8572,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_pospolite_g2.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_pospolite_attack_g2",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8573,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_pospolite_g2.png",
+   "prompt": "the rider lowers the lance and thrusts it forward from the saddle, in place"
+  },
+  {
+   "name": "pl_pospolite_idle_g1",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8574,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_pospolite_g1.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_pospolite_walk_g1",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8575,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_pospolite_g1.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_pospolite_attack_g1",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8576,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_pospolite_g1.png",
+   "prompt": "the rider lowers the lance and thrusts it forward from the saddle, in place"
+  },
+  {
+   "name": "pl_pospolite_idle_g0",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8577,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_pospolite_g0.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_pospolite_walk_g0",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8578,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_pospolite_g0.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_pospolite_attack_g0",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8579,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_pospolite_g0.png",
+   "prompt": "the rider lowers the lance and thrusts it forward from the saddle, in place"
+  },
+  {
+   "name": "pl_pospolite_idle_g7",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8580,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_pospolite_g7.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_pospolite_walk_g7",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8581,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_pospolite_g7.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_pospolite_attack_g7",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8582,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_pospolite_g7.png",
+   "prompt": "the rider lowers the lance and thrusts it forward from the saddle, in place"
+  },
+  {
+   "name": "pl_pospolite_idle_g6",
+   "style": "rd_advanced_animation__idle",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8583,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_pospolite_g6.png",
+   "prompt": "subtle breathing and weight shifting, seamless loop, standing in place, same size every frame"
+  },
+  {
+   "name": "pl_pospolite_walk_g6",
+   "style": "rd_advanced_animation__walking",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8584,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_pospolite_g6.png",
+   "prompt": "the horse walks at a steady pace, seamless looping walk cycle in place, same size every frame"
+  },
+  {
+   "name": "pl_pospolite_attack_g6",
+   "style": "rd_advanced_animation__attack",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8585,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/dirs/pl_pospolite_g6.png",
+   "prompt": "the rider lowers the lance and thrusts it forward from the saddle, in place"
+  }
+ ]
+}

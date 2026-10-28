@@ -1,0 +1,308 @@
+{
+ "entries": [
+  {
+   "name": "t_grass",
+   "status": "rejected",
+   "tile_id": "620d589b-7cc1-488f-b02a-dcb4982cab8f",
+   "request": {
+    "tile_type": "isometric",
+    "tile_size": 64,
+    "tile_view": "top-down",
+    "outline_mode": "segmentation",
+    "description": "1). lush green meadow grass 2). meadow grass with small white and yellow wildflowers 3). slightly drier yellow-green grass 4). short grass with clover patches",
+    "seed": 50
+   },
+   "style_from": [
+    "art/tiles/t_grass.png"
+   ],
+   "usage": {
+    "type": "generations",
+    "generations": 10.0
+   },
+   "files": 16
+  },
+  {
+   "name": "t_field",
+   "status": "completed",
+   "tile_id": "603b6194-810f-482b-896e-7fa1db48d601",
+   "request": {
+    "tile_type": "isometric",
+    "tile_size": 64,
+    "tile_view": "top-down",
+    "outline_mode": "segmentation",
+    "description": "1). ploughed brown field with straight furrows 2). field of young green rye shoots in rows 3). ripe golden rye field 4). stubble field after the harvest",
+    "seed": 51
+   },
+   "style_from": [
+    "art/tiles/t_field.png"
+   ],
+   "usage": {
+    "type": "generations",
+    "generations": 10.0
+   },
+   "files": 16
+  },
+  {
+   "name": "t_forest",
+   "status": "completed",
+   "tile_id": "037b1865-b001-4497-b871-32fd4c51f8de",
+   "request": {
+    "tile_type": "isometric",
+    "tile_size": 64,
+    "tile_view": "top-down",
+    "outline_mode": "segmentation",
+    "description": "1). forest floor with fallen pine needles and moss 2). forest floor with small ferns and leaf litter 3). mossy forest ground with roots 4). forest floor with dead brown leaves",
+    "seed": 52
+   },
+   "style_from": [
+    "art/tiles/t_forest.png"
+   ],
+   "usage": {
+    "type": "generations",
+    "generations": 10.0
+   },
+   "files": 16
+  },
+  {
+   "name": "t_old_forest",
+   "status": "completed",
+   "tile_id": "a230af1a-bef9-4683-ba08-5ddd35b43289",
+   "request": {
+    "tile_type": "isometric",
+    "tile_size": 64,
+    "tile_view": "top-down",
+    "outline_mode": "segmentation",
+    "description": "1). dark old forest floor with thick moss 2). dark forest floor with ferns and bits of rotten wood 3). deep shade forest floor with small mushrooms 4). dark moss over roots",
+    "seed": 53
+   },
+   "style_from": [
+    "art/tiles/t_old_forest.png"
+   ],
+   "usage": {
+    "type": "generations",
+    "generations": 10.0
+   },
+   "files": 16
+  },
+  {
+   "name": "t_bog",
+   "status": "completed",
+   "tile_id": "21da6f2a-ed94-456b-8d86-4b53564aa892",
+   "request": {
+    "tile_type": "isometric",
+    "tile_size": 64,
+    "tile_view": "top-down",
+    "outline_mode": "segmentation",
+    "description": "1). peat bog with green moss and small black puddles 2). bog with reeds and sedge tufts 3). wet bog moss with white cotton grass 4). dark peat with small water pools",
+    "seed": 54
+   },
+   "style_from": [
+    "art/tiles/t_bog.png"
+   ],
+   "usage": {
+    "type": "generations",
+    "generations": 10.0
+   },
+   "files": 16
+  },
+  {
+   "name": "t_quagmire",
+   "status": "completed",
+   "tile_id": "1242dbc7-46f6-40ba-a12f-61b7cb1eb3fe",
+   "request": {
+    "tile_type": "isometric",
+    "tile_size": 64,
+    "tile_view": "top-down",
+    "outline_mode": "segmentation",
+    "description": "1). deep dark mud quagmire with black water 2). swamp mud with floating weed 3). black bog water with rotten reeds 4). sucking mud with bubbles",
+    "seed": 55
+   },
+   "style_from": [
+    "art/tiles/t_quagmire.png"
+   ],
+   "usage": {
+    "type": "generations",
+    "generations": 10.0
+   },
+   "files": 16
+  },
+  {
+   "name": "t_ford",
+   "status": "completed",
+   "tile_id": "9e96e8a2-3c37-4467-9c02-ae665ad9a201",
+   "request": {
+    "tile_type": "isometric",
+    "tile_size": 64,
+    "tile_view": "top-down",
+    "outline_mode": "segmentation",
+    "description": "1). shallow clear river water over pebbles 2). shallow water over sand with ripples 3). shallow river ford with stones showing 4). shallow water with gravel bottom",
+    "seed": 56
+   },
+   "style_from": [
+    "art/tiles/t_ford.png"
+   ],
+   "usage": {
+    "type": "generations",
+    "generations": 10.0
+   },
+   "files": 16
+  },
+  {
+   "name": "t_water",
+   "status": "completed",
+   "tile_id": "d6b63beb-9c5c-4c4b-a4b0-14eb55747849",
+   "request": {
+    "tile_type": "isometric",
+    "tile_size": 64,
+    "tile_view": "top-down",
+    "outline_mode": "segmentation",
+    "description": "1). deep river water with gentle ripples 2). dark lake water 3). river water with small ripples and light glints 4). calm deep blue-green water",
+    "seed": 57
+   },
+   "style_from": [
+    "art/tiles/t_water.png"
+   ],
+   "usage": {
+    "type": "generations",
+    "generations": 10.0
+   },
+   "files": 16
+  },
+  {
+   "name": "t_ice",
+   "status": "completed",
+   "tile_id": "f45c514f-e0b7-4579-bb52-11e08dd2ab5f",
+   "request": {
+    "tile_type": "isometric",
+    "tile_size": 64,
+    "tile_view": "top-down",
+    "outline_mode": "segmentation",
+    "description": "1). frozen lake ice with white cracks 2). ice with a dusting of snow 3). clear blue ice with bubbles 4). snowy ice with wind streaks",
+    "seed": 58
+   },
+   "style_from": [
+    "art/tiles/t_ice.png"
+   ],
+   "usage": {
+    "type": "generations",
+    "generations": 10.0
+   },
+   "files": 16
+  },
+  {
+   "name": "t_road",
+   "status": "rejected",
+   "tile_id": "fd7710ae-a9f6-4695-8198-1b241737967a",
+   "request": {
+    "tile_type": "isometric",
+    "tile_size": 64,
+    "tile_view": "top-down",
+    "outline_mode": "segmentation",
+    "description": "1). dirt road with wheel ruts 2). trampled dirt road with pebbles 3). muddy road with small puddles 4). dry dusty road",
+    "seed": 59
+   },
+   "style_from": [
+    "art/tiles/t_road.png"
+   ],
+   "usage": {
+    "type": "generations",
+    "generations": 10.0
+   },
+   "files": 16
+  },
+  {
+   "name": "t_hill",
+   "status": "completed",
+   "tile_id": "427a1e7e-e4b3-4b40-a0f2-c230b52b8fb6",
+   "request": {
+    "tile_type": "isometric",
+    "tile_size": 64,
+    "tile_view": "top-down",
+    "outline_mode": "segmentation",
+    "description": "1). grassy upland with small grey stones 2). dry heath with heather 3). rocky grassy slope ground 4). short upland grass with gravel",
+    "seed": 60
+   },
+   "style_from": [
+    "art/tiles/t_hill.png"
+   ],
+   "usage": {
+    "type": "generations",
+    "generations": 10.0
+   },
+   "files": 16
+  },
+  {
+   "name": "t_sand",
+   "status": "completed",
+   "tile_id": "0b43d8d5-d5ad-4246-b1c6-24023e983158",
+   "request": {
+    "tile_type": "isometric",
+    "tile_size": 64,
+    "tile_view": "top-down",
+    "outline_mode": "segmentation",
+    "description": "1). pale river sand 2). sand with small pebbles 3). sand with sparse grass tufts 4). damp darker sand",
+    "seed": 61
+   },
+   "style_from": [
+    "art/tiles/t_sand.png"
+   ],
+   "usage": {
+    "type": "generations",
+    "generations": 10.0
+   },
+   "files": 16
+  },
+  {
+   "name": "t_ash",
+   "status": "completed",
+   "tile_id": "532cd542-bdf4-41b3-b6d8-d5818d84ace5",
+   "request": {
+    "tile_type": "isometric",
+    "tile_size": 64,
+    "tile_view": "top-down",
+    "outline_mode": "segmentation",
+    "description": "1). burnt ground covered with grey ash 2). charred grass with embers 3). ash with charcoal bits 4). scorched black earth",
+    "seed": 62
+   },
+   "style_from": [
+    "art/tiles/t_ash.png"
+   ],
+   "usage": {
+    "type": "generations",
+    "generations": 10.0
+   },
+   "files": 16
+  },
+  {
+   "name": "t_grass",
+   "status": "completed",
+   "note": "second run, see jobs_tiles.json",
+   "usage": {
+    "type": "generations",
+    "generations": 10.0
+   }
+  },
+  {
+   "name": "t_road",
+   "status": "completed",
+   "tile_id": "99d43539-0f66-4676-965b-04a0d4c70738",
+   "request": {
+    "tile_type": "isometric",
+    "tile_size": 64,
+    "tile_view": "top-down",
+    "outline_mode": "segmentation",
+    "description": "1). flat packed brown dirt road surface with two wheel ruts 2). flat trampled earth road with small pebbles 3). flat muddy dirt road with a small puddle 4). flat dry dusty earth road, no planks, no wood",
+    "seed": 77
+   },
+   "style_from": [
+    "art/tiles/t_road.png"
+   ],
+   "usage": {
+    "type": "generations",
+    "generations": 10.0
+   },
+   "files": 16
+  }
+ ],
+ "generations": 150.0
+}

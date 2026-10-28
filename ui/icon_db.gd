@@ -2,13 +2,20 @@ class_name IconDB
 extends RefCounted
 ## Icons of the HUD buttons by catalog id or order name (docs/07-ui-icons.md lists them all):
 ## buildings and units are tiles made from the rendered sprites (tools/art/icons.py,
-## tools/art/portraits.py), orders, techs, ages and spells hand-drawn SVG
-## (tools/art/ui_icons.py). An id without an icon gives null and its button shows only a name.
+## tools/art/portraits.py), techs and spells pixel art from PixelLab (tools/art/pl_icons.py)
+## where there is one, else hand-drawn SVG like orders and ages (tools/art/ui_icons.py). An id
+## without an icon gives null and its button shows only a name.
 
 const ROOT := "res://ui/icons"
 ## Where each kind of icon lives, tried in this order for a catalog id.
 const KINDS: Array[String] = [
-	"buildings/%s.png", "units/%s.png", "techs/%s.svg", "ages/%s.svg", "spells/%s.svg"
+	"buildings/%s.png",
+	"units/%s.png",
+	"techs/%s.png",
+	"techs/%s.svg",
+	"ages/%s.svg",
+	"spells/%s.png",
+	"spells/%s.svg"
 ]
 ## Top bar icons of the four resources (EconomySystem order) and of Power.
 const RESOURCES: Array[String] = ["food", "wood", "iron", "silver"]

@@ -1,0 +1,281 @@
+{
+ "out_dir": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units",
+ "jobs": [
+  {
+   "name": "gdl_burgher_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8101,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/gdl_burgher_base_1.png",
+   "prompt": "15th century Lithuanian townsman, long brown cloth kaftan, fur-trimmed cap, wooden bucket in the left hand, axe in the right hand"
+  },
+  {
+   "name": "gdl_camp_servant_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8102,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/gdl_camp_servant_base_1.png",
+   "prompt": "15th century Lithuanian camp servant, short grey woollen coat, felt cap, axe in the belt, wooden shovel in the hands, sack on the back, bast shoes"
+  },
+  {
+   "name": "gdl_castle_archer_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8103,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/gdl_castle_archer_base_1.png",
+   "prompt": "15th century Lithuanian castle archer, steel kettle hat, quilted coat, red cloak, long wooden bow in the left hand, quiver of arrows at the hip"
+  },
+  {
+   "name": "gdl_samogitian_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8104,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/gdl_samogitian_base_1.png",
+   "prompt": "15th century pagan Samogitian warrior, animal hides over a linen shirt, long wooden Lithuanian shield on the arm, spear held upright, battle axe at the belt, no armour, no helmet, fair hair"
+  },
+  {
+   "name": "gdl_znakharka_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8105,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/gdl_znakharka_base_1.png",
+   "prompt": "old Lithuanian village wise woman, white linen head scarf, linen shirt with a red belt, dark woollen coat, bunch of herbs in one hand, wooden staff in the other"
+  },
+  {
+   "name": "gdl_hakownica_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8106,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/gdl_hakownica_base_1.png",
+   "prompt": "15th century Lithuanian gunner, quilted coat, steel kettle hat, long heavy hook gun (arquebus) carried on the shoulder, smouldering match cord in the hand, powder bag at the belt"
+  },
+  {
+   "name": "pl_bowman_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8107,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/pl_bowman_base_1.png",
+   "prompt": "15th century Polish archer, hood with a shoulder cape, quilted coat, longbow in the left hand, quiver of arrows at the hip, short falchion at the belt"
+  },
+  {
+   "name": "pl_drab_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8108,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/pl_drab_base_2.png",
+   "prompt": "early 16th century Bohemian mercenary foot soldier, steel kettle hat, quilted coat, very long pike held upright, spade slung on the back"
+  },
+  {
+   "name": "pl_foot_servant_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8109,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/pl_foot_servant_base_1.png",
+   "prompt": "15th century Polish knight's servant on foot, light quilted coat with a mail collar, simple iron cap, short spear held upright, small round shield red with a white diagonal stripe, hatchet at the belt"
+  },
+  {
+   "name": "pl_handgunner_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8110,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/pl_handgunner_base_1.png",
+   "prompt": "15th century Polish handgunner, quilted coat, steel kettle hat, short iron hand cannon on a wooden pole held in both hands, powder bag and flask at the belt"
+  },
+  {
+   "name": "to_halfbrother_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8111,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/to_halfbrother_base_1.png",
+   "prompt": "15th century Teutonic Order half brother sergeant, grey cloak with a black T-shaped cross, mail shirt, steel kettle hat, spear held upright"
+  },
+  {
+   "name": "to_handgunner_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8112,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/to_handgunner_base_2.png",
+   "prompt": "15th century Bohemian handgunner, grey quilted coat, steel kettle hat, short iron hand cannon on a wooden pole held in both hands, powder bag and horn flask at the belt"
+  },
+  {
+   "name": "to_soldner_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    64,
+    64
+   ],
+   "seed": 8113,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/to_soldner_base_1.png",
+   "prompt": "15th century German mercenary foot soldier, open steel sallet helmet, blue-grey riveted brigandine over a green doublet, hose one leg ochre one dark, very long pike held upright, short falchion at the belt"
+  },
+  {
+   "name": "gdl_light_horse_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8114,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/gdl_light_horse_base_1.png",
+   "prompt": "15th century Lithuanian light horseman, mail shirt, simple round helmet, small shield, three javelins in the hand, sword at the side, small brown horse without a caparison"
+  },
+  {
+   "name": "gdl_lit_lance_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8115,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/gdl_lit_lance_base_1.png",
+   "prompt": "15th century Lithuanian knight, visored bascinet, brigandine with plate arms, red shield with a white knight on horseback, long lance with a red pennon held upright, horse in a red caparison"
+  },
+  {
+   "name": "gdl_szlachta_lance_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8116,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/gdl_szlachta_lance_base_1.png",
+   "prompt": "Lithuanian armoured noble lancer about 1500, full plate armour, sallet helmet with a bevor, red tunic over the plate, long lance with a two-tailed red pennon held upright, heavy horse with a steel head plate"
+  },
+  {
+   "name": "pl_hussar_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8117,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/pl_hussar_base_1.png",
+   "prompt": "Polish light hussar about 1500, long red cloth coat, tall cloth cap with a fur band and a feather, asymmetric wooden shield, long light lance with a pennon held upright, sabre, small light horse with a saddle cloth, no wings, no armour"
+  },
+  {
+   "name": "pl_kopia_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8118,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/pl_kopia_base_1.png",
+   "prompt": "15th century Polish knight, pointed visor bascinet, plate arms over a brigandine, red shield with a white axe, long lance with a pennon held upright, horse in a red caparison with a white axe"
+  },
+  {
+   "name": "pl_light_horse_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8119,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/pl_light_horse_base_1.png",
+   "prompt": "15th century Polish light horseman, mail shirt, steel kettle hat, light spear held upright, small red shield with a white eagle, small brown horse with a saddle cloth"
+  },
+  {
+   "name": "pl_pospolite_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8120,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/pl_pospolite_base_2.png",
+   "prompt": "15th century Polish noble levy rider, old red riveted brigandine over mail, open bascinet with a mail aventail, plain painted wooden shield, lance with a pennon held upright, sword at the side, brown horse"
+  },
+  {
+   "name": "to_guest_knight_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8121,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/to_guest_knight_base_1.png",
+   "prompt": "15th century western crusader knight, great helm with a crest, yellow surcoat with a red diagonal stripe, matching yellow shield with a red diagonal stripe, long lance held upright, horse in a yellow caparison with a red diagonal stripe"
+  },
+  {
+   "name": "to_merc_horse_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8122,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/to_merc_horse_base_2.png",
+   "prompt": "15th century mercenary horseman in half armour, breastplate, pauldrons and plate arms, sallet with a bevor, short ochre tunic edged in dark green, leather riding boots, lance with a two-tailed pennon held upright, dun horse with a saddle cloth"
+  },
+  {
+   "name": "to_prussian_rider_rot",
+   "style": "rd_advanced_animation__rotate",
+   "size": [
+    96,
+    96
+   ],
+   "seed": 8123,
+   "remove_bg": false,
+   "input_image": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units/to_prussian_rider_base_1.png",
+   "prompt": "15th century Prussian light rider, mail shirt, simple round helmet, spear held upright, small shield, small local brown horse"
+  }
+ ]
+}

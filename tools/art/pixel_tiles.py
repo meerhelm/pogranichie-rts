@@ -11,6 +11,11 @@ A terrain without a pixel texture uses the procedural one from tiles.py, shrunk 
 cell and snapped to the palette, so the whole map has one look.
 
     python3 -m tools.art.pixel_tiles --src art_src/pixel_iso/ground --palette art_src/pixel_iso/palette.png
+
+A terrain with PixelLab tiles (--cells, art_src/pixellab/tiles/<id>/tile_<i>.png: 64x32
+diamonds, four kinds of ground, four tiles of each) is built from them
+instead: each kind fills the period with its tiles, turned back to top-down, one per cell, and
+the kinds are laid out in patches a few cells across along smooth noise, as the textures are.
 """
 
 import argparse
@@ -28,8 +33,11 @@ PERIOD = 8
 CELL_PX = 32  # texture pixels per cell side, top-down
 TEX = PERIOD * CELL_PX
 BLOCK = 4  # cells per side of a redrawn iso block (see unproject())
-TILE_W, TILE_H, PAD = proc.TILE_W, proc.TILE_H, proc.PAD
-FEATHER = 0.30
+TILE_W, TILE_H = proc.TILE_W, proc.TILE_H
+## Rim around the 64x32 diamond (px across; half of it above and below): wide, so a ragged border
+## between two grounds wanders a good way into the neighbour cell instead of stepping along cells.
+PAD = 32
+FEATHER = 0.42
 
 ## Per terrain: the textures mixed into it (file names in --src, those missing are skipped)
 ## and each one's share of the ground. A 32 px fill covers one cell, a 128 px texture a 4x4
@@ -109,6 +117,60 @@ def texture(tid: str, src: str, pal: np.ndarray, seed: int = 0) -> np.ndarray:
         (BLOCK * CELL_PX, BLOCK * CELL_PX), Image.BOX), dtype=float)
     k = TEX // small.shape[0]
     return snap(np.tile(small, (k, k, 1)), pal)
+
+
+## PixelLab ground: four numbered kinds per job, four tiles of each.
+KINDS = 4
+## Kinds used per terrain where not all four suit (the water's dark and glinting kinds made it
+## look dirty).
+KIND_PICK = {"t_water": (0, 2)}
+## Share of the cell cut off each side when a tile is turned back to top-down: PixelLab shades
+## the rim of every diamond darker, which would draw the cell grid on the map.
+INSET = 0.12
+
+
+def unproject_cell(iso: np.ndarray) -> np.ndarray:
+    """A 64x32 diamond back to the cell's 32x32 top-down texture (the inverse of the mapping
+    in diamonds()), without its rim (INSET)."""
+    t = INSET + (np.arange(CELL_PX) + 0.5) / CELL_PX * (1 - 2 * INSET)
+    v, u = np.meshgrid(t, t, indexing="ij")
+    x = np.clip(np.floor((u - v) * TILE_W / 2 + TILE_W / 2), 0, TILE_W - 1).astype(int)
+    y = np.clip(np.floor((u + v) * TILE_H / 2), 0, TILE_H - 1).astype(int)
+    return iso[y, x, :3]
+
+
+def cells_texture(folder: str, seed: int, pick: tuple[int, ...] | None = None) -> np.ndarray | None:
+    """TEX x TEX top-down texture from a folder of PixelLab diamonds: a tile per cell, its kind
+    from patch noise (each kind an equal share), the tile within the kind at random."""
+    files = sorted((f for f in os.listdir(folder) if f.startswith("tile_") and f.endswith(".png")),
+                   key=lambda f: int(f[5:-4]))
+    if not files:
+        return None
+    means = [np.array(Image.open(os.path.join(folder, f)).convert("RGB"), dtype=float).reshape(-1, 3).mean(0)
+             for f in files]
+    # PixelLab returns the kinds either interleaved (tile i of kind i % 4) or in runs (i // 4):
+    # take the grouping whose kinds hold the most alike tiles.
+    def spread(key):
+        return sum(np.var([m for i, m in enumerate(means) if key(i) == k], axis=0).sum() for k in range(KINDS))
+    n = max(1, len(files) // KINDS)
+    kind_of = min((lambda i: i % KINDS), (lambda i: i // n), key=spread)
+    cells = []
+    for f in files:
+        im = np.array(Image.open(os.path.join(folder, f)).convert("RGBA"), dtype=float)
+        # A tile that leaves part of its diamond empty (a round "island") would show holes.
+        cells.append(unproject_cell(im) if (unproject_cell(im[..., 3:].repeat(3, -1))[..., 0] > 128).mean() > 0.97 else None)
+    kinds = [[c for i, c in enumerate(cells) if kind_of(i) == k and c is not None] for k in (pick or range(KINDS))]
+    kinds = [k for k in kinds if k]
+    rng = np.random.default_rng(seed)
+    layers = []
+    for group in kinds:  # each kind as a whole period: a tile of the kind in every cell
+        t = np.zeros((TEX, TEX, 3))
+        for cy in range(PERIOD):
+            for cx in range(PERIOD):
+                t[cy * CELL_PX:(cy + 1) * CELL_PX, cx * CELL_PX:(cx + 1) * CELL_PX] = group[rng.integers(len(group))]
+        layers.append(t)
+    # The kinds meet along the contours of smooth noise, a few cells across, not along cell edges.
+    return _mix(layers, [1.0] * len(layers), seed)
 
 
 def unproject(iso: np.ndarray) -> np.ndarray:
@@ -206,6 +268,8 @@ def main() -> None:
     ap.add_argument("--src", required=True, help="folder with fill_*.png textures")
     ap.add_argument("--palette", required=True)
     ap.add_argument("--out", default="art/tiles")
+    ap.add_argument("--cells", default="art_src/pixellab/tiles",
+                    help="folder of PixelLab tile folders by terrain id; used where one exists")
     ap.add_argument("--preview", action="store_true")
     ap.add_argument("--unproject", nargs=2, metavar=("ISO_PNG", "OUT_PNG"),
                     help="turn a redrawn 256x128 iso block into a 128x128 texture and exit")
@@ -218,7 +282,14 @@ def main() -> None:
         return
     os.makedirs(args.out, exist_ok=True)
     for i, tid in enumerate(proc.TERRAINS):
-        tex = texture(tid, args.src, pal, i)
+        folder = os.path.join(args.cells, tid)
+        tex = cells_texture(folder, 700 + i, KIND_PICK.get(tid)) if os.path.isdir(folder) else None
+        own_colours = tex is not None  # PixelLab's colours: the palette turned dark blues brown
+        if tex is None:
+            tex = texture(tid, args.src, pal, i)
+        # The top-down texture itself, for the ground shader (MapView, ground_splat.gdshader).
+        top = tex if own_colours else snap(tex, pal)
+        Image.fromarray(top.astype(np.uint8)).save(os.path.join(args.out, tid + "_top.png"), optimize=True)
         diamonds(tex, proc.noise(100 + i, beta=1.6, size=TEX), pal).save(os.path.join(args.out, tid + ".png"), optimize=True)
     dirt = _load(os.path.join(args.src, WEAR_SOURCE)) * 0.92
     patches = proc.noise(400, beta=1.8, size=TEX)

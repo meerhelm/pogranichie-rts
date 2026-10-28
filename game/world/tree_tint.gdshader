@@ -9,6 +9,10 @@ uniform float hue_shift = 0.08;
 uniform float sat_shift = 0.3;
 uniform float value_scale = 0.45;
 uniform float value_lift = 0.08;
+// All trees a little darker and greyer, so they sit on the darker PixelLab ground instead of
+// glowing over it.
+uniform float base_value = 0.86;
+uniform float base_sat = 0.85;
 
 varying vec2 shade;
 
@@ -41,5 +45,7 @@ void fragment() {
 	hsv.x = fract(hsv.x - warm * hue_shift * green);
 	hsv.y = clamp(hsv.y * (1.0 + warm * sat_shift), 0.0, 1.0);
 	hsv.z = clamp(hsv.z * (1.0 + light * value_scale) + light * value_lift * hsv.y, 0.0, 1.0);
+	hsv.y *= base_sat;
+	hsv.z *= base_value;
 	COLOR = vec4(hsv2rgb(hsv), COLOR.a);
 }
