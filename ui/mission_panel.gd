@@ -2,9 +2,11 @@ class_name MissionPanel
 extends Control
 ## What a campaign mission shows (M9): the objectives (top right; optional ones marked, done
 ## ones ticked, failed ones crossed), hints (top middle, each for a while), the characters'
-## lines in the mission through Dialogic, and cutscenes on the engine: the game stops, a black
-## band rises at the bottom, the camera flies to the place and the lines run there as subtitles
-## (click, Space or Enter for the next one, Esc skips the rest). Reads MissionRuntime.events;
+## lines in the mission (above the bottom panel, each for a while or until clicked) and
+## cutscenes: the game stops and dims, the camera flies to the place and the lines run there at
+## the bottom (click, Space or Enter for the next one, Esc skips the rest). Hints, lines and
+## cutscene lines are all NoticeBox frames; a hero who speaks shows their portrait. Reads
+## MissionRuntime.events;
 ## the only thing it sends is the player's answer to a mission's question (ВКЛ 3), as a CHOOSE
 ## command. All texts are translation keys.
 
@@ -16,7 +18,11 @@ const HINT_SECONDS := 14.0
 const MAX_HINTS := 3
 ## Seconds a subtitle stays before the next one comes by itself.
 const LINE_SECONDS := 7.0
-const BAR_HEIGHT := 120.0
+## A character's line in the mission stays this long plus a second per READ_CHARS letters.
+const TALK_SECONDS := 4.0
+const READ_CHARS := 16.0
+## Gap between the dialogue frame and the HUD's bottom panel.
+const TALK_GAP := 12.0
 
 var sim: Simulation
 var clock: SimClock
@@ -45,14 +51,19 @@ var _hints := VBoxContainer.new()
 ## Waiting dialogues (lists of [speaker, text]) while one is on screen.
 var _dialogues: Array = []
 var _in_dialogue := false
+## The dialogue on screen: its lines, the one shown and seconds left for it.
+var _talk_lines: Array = []
+var _talk_line := -1
+var _talk_left := 0.0
+var _talk := NoticeBox.new(96.0, 720.0)
 ## The cutscene being shown: its lines and the one on screen; queued ones wait.
 var _cutscenes: Array = []
 var _lines: Array = []
 var _line := -1
 var _line_left := 0.0
-var _bottom_bar := ColorRect.new()
-var _subtitle := Label.new()
-var _speaker := Label.new()
+## Dims the game during a cutscene and takes the clicks; the cutscene frame sits on it.
+var _shade := ColorRect.new()
+var _subtitle := NoticeBox.new(128.0, 980.0)
 
 
 func _ready() -> void:
@@ -80,6 +91,7 @@ func _ready() -> void:
 	_hints.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	_hints.position.y = 96
 	_hints.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_hints.add_theme_constant_override("separation", 6)
 	add_child(_hints)
 	_question.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	_question.grow_horizontal = Control.GROW_DIRECTION_BOTH
@@ -94,26 +106,23 @@ func _ready() -> void:
 	ask.add_child(_answers)
 	_question.add_child(ask)
 	add_child(_question)
-	# Only a band at the bottom for the subtitles: the top bar with resources stays in view.
-	_bottom_bar.color = Color.BLACK
-	_bottom_bar.visible = false
-	_bottom_bar.mouse_filter = Control.MOUSE_FILTER_STOP
-	add_child(_bottom_bar)
-	_bottom_bar.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	_bottom_bar.grow_vertical = Control.GROW_DIRECTION_BEGIN
-	_bottom_bar.custom_minimum_size.y = BAR_HEIGHT
-	var box := VBoxContainer.new()
-	box.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	box.alignment = BoxContainer.ALIGNMENT_CENTER
-	_bottom_bar.add_child(box)
-	_speaker.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_speaker.add_theme_color_override("font_color", Color(0.95, 0.8, 0.45))
-	box.add_child(_speaker)
-	_subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_subtitle.custom_minimum_size.x = 1200
-	_subtitle.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	box.add_child(_subtitle)
+	_talk.visible = false
+	_talk.mouse_filter = Control.MOUSE_FILTER_STOP
+	_talk.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	_talk.set_footer(tr("Click: next line"))
+	_talk.clicked.connect(next_talk)
+	add_child(_talk)
+	# The cutscene: the game dims (the top bar stays readable) and its line is at the bottom.
+	_shade.color = Color(0, 0, 0, 0.35)
+	_shade.visible = false
+	_shade.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(_shade)
+	_shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_shade.gui_input.connect(_on_shade_input)
+	_subtitle.set_footer(tr("Click or Space: next line. Esc: skip"))
+	_subtitle.mouse_filter = Control.MOUSE_FILTER_STOP
+	_subtitle.clicked.connect(next_line)
+	_shade.add_child(_subtitle)
 
 
 func attach(p_sim: Simulation, p_clock: SimClock, p_camera: RtsCamera) -> void:
@@ -541,13 +550,8 @@ func blockade_text() -> String:
 
 
 func _hint(text: String) -> void:
-	var label := Label.new()
-	label.text = tr(text)
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.custom_minimum_size.x = 640
-	label.add_theme_color_override("font_outline_color", Color.BLACK)
-	label.add_theme_constant_override("outline_size", 5)
+	var label := NoticeBox.new(0.0, 600.0)
+	label.show_line("", text)
 	_hints.add_child(label)
 	while _hints.get_child_count() > MAX_HINTS:
 		var old := _hints.get_child(0)
@@ -565,37 +569,56 @@ static func speaker_name(key: String) -> String:
 	return UiText.t(key)
 
 
-# --- dialogues (Dialogic) -------------------------------------------------------------------
-
-
-## The lines as a Dialogic timeline in its text format, already translated.
-static func timeline_text(lines: Array) -> String:
-	var out := PackedStringArray()
-	for line: Array in lines:
-		var said := "%s — %s" % [speaker_name(str(line[0])), UiText.t(str(line[1]))]
-		for ch: String in ["\\", ":", "[", "]", "{", "}", "#", "<", ">"]:
-			said = said.replace(ch, "\\" + ch)
-		out.append(said)
-	return "\n".join(out)
+# --- dialogues -----------------------------------------------------------------------------
 
 
 func _start_dialogue(lines: Array) -> void:
-	var dialogic := get_node_or_null(^"/root/Dialogic")
-	if dialogic == null:
-		# No Dialogic (a test scene): the lines go to the hint area instead.
-		for line: Array in lines:
-			_hint("%s — %s" % [speaker_name(str(line[0])), tr(str(line[1]))])
-		return
-	var timeline := DialogicTimeline.new()
-	timeline.from_text(timeline_text(lines))
+	_talk_lines = lines
+	_talk_line = 0
 	_in_dialogue = true
-	dialogic.connect(&"timeline_ended", _on_dialogue_ended, CONNECT_ONE_SHOT)
-	dialogic.call(&"start", timeline)
+	_show_talk()
 
 
-func _on_dialogue_ended() -> void:
+func _show_talk() -> void:
+	var line: Array = _talk_lines[_talk_line]
+	_talk.show_line(str(line[0]), str(line[1]))
+	_talk_left = TALK_SECONDS + tr(str(line[1])).length() / READ_CHARS
+	_talk.visible = _line < 0
+	_place_talk()
+
+
+## The next line of the dialogue on screen, or its end (a click on it, the timer, a test).
+func next_talk() -> void:
+	if _talk_line < 0:
+		return
+	_talk_line += 1
+	if _talk_line < _talk_lines.size():
+		_show_talk()
+		return
+	_talk_line = -1
+	_talk.visible = false
 	_in_dialogue = false
 	poll()
+
+
+## The dialogue line on screen as "Name — text", for tests ("" for none).
+func talk_text() -> String:
+	return _talk.shown() if _talk_line >= 0 else ""
+
+
+func _place_talk() -> void:
+	_place_above_panel(_talk)
+
+
+## A frame goes centred just above the HUD's bottom panel.
+func _place_above_panel(box: Control) -> void:
+	var inset := 0.0
+	var parent := get_parent()
+	var bottom := parent.get_node_or_null(^"Hud/BottomPanel") as Control if parent != null else null
+	if bottom != null and bottom.is_visible_in_tree():
+		inset = bottom.size.y
+	box.reset_size()
+	box.position = Vector2((size.x - box.size.x) / 2.0, size.y - inset - TALK_GAP - box.size.y)
 
 
 # --- cutscenes ------------------------------------------------------------------------------
@@ -605,7 +628,8 @@ func _start_cutscene(e: Dictionary) -> void:
 	_lines = e["lines"]
 	_line = 0
 	clock.paused = true
-	_bottom_bar.visible = true
+	_shade.visible = true
+	_talk.visible = false
 	cutscene_started.emit()
 	var at: Array = e["at"]
 	if camera != null:
@@ -618,9 +642,14 @@ func _start_cutscene(e: Dictionary) -> void:
 
 func _show_line() -> void:
 	var line: Array = _lines[_line]
-	_speaker.text = speaker_name(str(line[0]))
-	_subtitle.text = tr(str(line[1]))
+	_subtitle.show_line(str(line[0]), str(line[1]))
+	_place_above_panel(_subtitle)
 	_line_left = LINE_SECONDS
+
+
+## The cutscene line on screen as "Name — text", for tests ("" for none).
+func subtitle_text() -> String:
+	return _subtitle.shown() if _line >= 0 else ""
 
 
 ## Next subtitle, or the end of the cutscene after the last one.
@@ -636,7 +665,8 @@ func next_line() -> void:
 
 func end_cutscene() -> void:
 	_line = -1
-	_bottom_bar.visible = false
+	_shade.visible = false
+	_talk.visible = _talk_line >= 0
 	clock.paused = false
 	cutscene_finished.emit()
 	poll()
@@ -644,10 +674,22 @@ func end_cutscene() -> void:
 
 func _process(delta: float) -> void:
 	if _line < 0:
+		if _talk_line >= 0 and not get_tree().paused:
+			_place_talk()
+			_talk_left -= delta
+			if _talk_left <= 0.0:
+				next_talk()
 		return
 	_line_left -= delta
 	if _line_left <= 0.0:
 		next_line()
+
+
+func _on_shade_input(event: InputEvent) -> void:
+	var mb := event as InputEventMouseButton
+	if mb != null and mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
+		next_line()
+		_shade.accept_event()
 
 
 func _unhandled_input(event: InputEvent) -> void:

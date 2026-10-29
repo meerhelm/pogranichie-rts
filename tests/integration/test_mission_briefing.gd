@@ -76,3 +76,35 @@ func test_open_pauses_and_close_resumes() -> void:
 	b.close()
 	assert_false(get_tree().paused)
 	assert_false(b.visible)
+
+
+func test_lines_show_in_frames_with_the_heros_portrait() -> void:
+	var sim := MissionSetup.new_simulation("gdl_01", 1, _db, "normal")
+	var clock := SimClock.new()
+	clock.sim = sim
+	add_child_autofree(clock)
+	var panel := MissionPanel.new()
+	add_child_autofree(panel)
+	panel.attach(sim, clock, null)
+	sim.run(MissionRuntime.CHECK_EVERY + 1)
+	panel.poll()
+	assert_string_starts_with(panel.subtitle_text(), "Chronicler — I was at Orsha")
+	for i in 3:
+		panel.next_line()
+	assert_string_starts_with(panel.subtitle_text(), "Gintaut — Bread first")
+	panel.next_line()
+	assert_false(panel.in_cutscene())
+	assert_string_starts_with(panel.talk_text(), "Gintaut — There are fish in the lake")
+	panel.next_talk()
+	assert_eq(panel.talk_text(), "", "a one-line dialogue ends after its line")
+
+
+func test_a_hero_has_a_portrait_and_the_chronicler_none() -> void:
+	var box := NoticeBox.new()
+	add_child_autofree(box)
+	box.show_line("hero_gintaut", "Bread first. Then the Germans.")
+	assert_true(box.has_portrait())
+	box.show_line("Chronicler", "Text")
+	assert_false(box.has_portrait())
+	box.show_line("", "A hint")
+	assert_eq(box.shown(), "A hint")

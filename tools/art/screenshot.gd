@@ -29,6 +29,8 @@ extends SceneTree
 ##   cells apart, the camera on them)
 ##   rally (the player's town centre selected, its rally point set a few cells away),
 ##   play (in a mission: the briefing closed, the mission starts),
+##   talk (in a mission: the briefing closed and the opening cutscene skipped, so the first
+##   dialogue line and hints show),
 ##   effects (no fog: the player's town centre and a house on fire, «Болотный туман» beside them
 ##   and a spearman carrying «Реликвия в строю», to see the particle effects),
 ##   briefing (in a mission: the briefing closed, the mission run a little, then F2's briefing),
@@ -180,6 +182,12 @@ func _act() -> void:
 		_rally(main)
 	elif _action == "play" and main.get("briefing") != null:
 		(main.get("briefing") as MissionBriefing).close()
+	elif _action == "talk" and main.get("briefing") != null:
+		(main.get("briefing") as MissionBriefing).close()
+		await create_timer(0.5).timeout
+		var panel: MissionPanel = main.get("mission_panel")
+		if panel.in_cutscene():
+			panel.end_cutscene()
 	elif _action == "briefing" and main.get("briefing") != null:
 		var briefing: MissionBriefing = main.get("briefing")
 		briefing.close()

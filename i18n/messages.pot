@@ -1151,12 +1151,20 @@ msgstr ""
 msgid "Click or . for the next one, Shift+click or Shift+. for all"
 msgstr ""
 
+#: ui/mission_panel.gd
+msgid "Click or Space: next line. Esc: skip"
+msgstr ""
+
 #: ui/help_panel.gd
 msgid "Click your building to train units; Z X C V B N M press its buttons."
 msgstr ""
 
 #: ui/advisor.gd
 msgid "Click «%s» and train more peasants: the more workers, the faster you grow."
+msgstr ""
+
+#: ui/mission_panel.gd
+msgid "Click: next line"
 msgstr ""
 
 #: ui/about_panel.gd
