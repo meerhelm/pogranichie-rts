@@ -46,9 +46,36 @@ UNITS = {
     "to_knecht": {"idle": 6, "walk": 10, "attack": 12},
     "pl_spearman": {"idle": 6, "walk": 10, "attack": 12},
     "to_crossbow": {"idle": 6, "walk": 10, "attack": 10},
+    "gdl_burgher": {"idle": 6, "walk": 10, "work": ("attack", 9), "attack": 12},
+    "gdl_camp_servant": {"idle": 6, "walk": 10, "work": ("attack", 9), "attack": 12},
+    "gdl_castle_archer": {"idle": 6, "walk": 10, "attack": 10},
+    "gdl_samogitian": {"idle": 6, "walk": 10, "attack": 12},
+    "gdl_hakownica": {"idle": 6, "walk": 10, "attack": 10},
+    "pl_bowman": {"idle": 6, "walk": 10, "attack": 10},
+    "pl_drab": {"idle": 6, "walk": 10, "attack": 12},
+    "pl_foot_servant": {"idle": 6, "walk": 10, "attack": 12},
+    "pl_handgunner": {"idle": 6, "walk": 10, "attack": 10},
+    "to_halfbrother": {"idle": 6, "walk": 10, "attack": 12},
+    "to_handgunner": {"idle": 6, "walk": 10, "attack": 10},
+    "to_soldner": {"idle": 6, "walk": 10, "attack": 12},
+    "gdl_light_horse": {"idle": 6, "walk": 10, "attack": 12},
+    "gdl_lit_lance": {"idle": 6, "walk": 10, "attack": 12},
+    "gdl_szlachta_lance": {"idle": 6, "walk": 10, "attack": 12},
+    "pl_hussar": {"idle": 6, "walk": 10, "attack": 12},
+    "pl_kopia": {"idle": 6, "walk": 10, "attack": 12},
+    "pl_light_horse": {"idle": 6, "walk": 10, "attack": 12},
+    "pl_pospolite": {"idle": 6, "walk": 10, "attack": 12},
+    "to_merc_horse": {"idle": 6, "walk": 10, "attack": 12},
+    "to_prussian_rider": {"idle": 6, "walk": 10, "attack": 12},
 }
-RIDERS = {"to_knight_brother", "hero_vytautas"}
-WHITE_CLAD = {"to_knight_brother", "to_knecht", "pl_spearman", "to_crossbow"}  # white cloth, shields
+RIDERS = {
+    "to_knight_brother", "hero_vytautas", "gdl_light_horse", "gdl_lit_lance", "gdl_szlachta_lance",
+    "pl_hussar", "pl_kopia", "pl_light_horse", "pl_pospolite", "to_merc_horse", "to_prussian_rider",
+}
+WHITE_CLAD = {
+    "to_knight_brother", "to_knecht", "pl_spearman", "to_crossbow", "gdl_lit_lance", "pl_kopia",
+    "pl_foot_servant",
+}  # white cloth, shields
 
 
 def frame_of(uid: str) -> tuple[tuple[int, int], tuple[int, int]]:
@@ -221,7 +248,8 @@ def main() -> None:
     a = ap.parse_args()
     for uid in a.ids or [u for u in UNITS if (Path(a.src) / f"{u}_idle_g0.gif").exists()]:
         build(Path(a.src), Path(a.out), uid)
-        portrait(Path(a.out), Path(a.icons), uid)
+        if not (Path("art_src/pixellab/portraits") / uid).is_dir():  # PixelLab portraits win (pl_icons)
+            portrait(Path(a.out), Path(a.icons), uid)
 
 
 if __name__ == "__main__":

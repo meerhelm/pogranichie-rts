@@ -146,7 +146,7 @@ func _build_splat(nav: NavGrid) -> void:
 	mat.set_shader_parameter("road_layer", LAYERING.find(&"t_road"))
 	mat.set_shader_parameter("reed_layer", LAYERING.find(&"t_bog"))
 	_splat = Polygon2D.new()
-	_splat.name = "Ground"
+	_splat.name = "Ground"  # notr
 	_splat.material = mat
 	_splat.position = -position  # world (Iso) coordinates
 	var w := float(nav.width)

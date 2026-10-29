@@ -2,6 +2,33 @@
 	"_comment": "What each build has. Newest version first; the first entry must match application/config/version in project.godot. Every new build: bump the version there and in export_presets.cfg, add an entry on top. Texts per game language; a missing language falls back to en.",
 	"versions": [
 		{
+			"version": "0.3.0",
+			"date": "2026-10-29",
+			"items": [
+				{
+					"en": "Pixel art for 28 more units of the Duchy, the Crown and the Order, foot and mounted, and for Grand Duke Vytautas, in eight facings with idle, walk and attack.",
+					"be": "Піксель-арт яшчэ для 28 юнітаў Княства, Кароны і Ордэна, пешых і конных, і для вялікага князя Вітаўта, ва ўсіх васьмі кірунках са стойкай, хадой і атакай.",
+					"pl": "Grafika pikselowa dla kolejnych 28 jednostek Księstwa, Korony i Zakonu, pieszych i konnych, oraz dla wielkiego księcia Witolda, w ośmiu kierunkach, z postojem, marszem i atakiem.",
+					"uk": "Піксель-арт ще для 28 юнітів Князівства, Корони й Ордену, піших і кінних, і для великого князя Вітовта, у восьми напрямках зі стійкою, ходою й атакою.",
+					"lt": "Pikselių grafika dar 28 Kunigaikštystės, Karūnos ir Ordino daliniams, pėstiesiems ir raitiesiems, bei didžiajam kunigaikščiui Vytautui, aštuoniomis kryptimis su stovėjimu, ėjimu ir puolimu."
+				},
+				{
+					"en": "New portraits of every unit and hero, and new pixel icons of all technologies, spells and orders.",
+					"be": "Новыя партрэты ўсіх юнітаў і герояў, новыя піксельныя значкі ўсіх тэхналогій, заклёнаў і загадаў.",
+					"pl": "Nowe portrety wszystkich jednostek i bohaterów oraz nowe pikselowe ikony wszystkich technologii, zaklęć i rozkazów.",
+					"uk": "Нові портрети всіх юнітів і героїв, нові піксельні значки всіх технологій, заклять і наказів.",
+					"lt": "Nauji visų dalinių ir herojų portretai bei naujos visų technologijų, užkeikimų ir įsakymų pikselinės piktogramos."
+				},
+				{
+					"en": "New ground: more detailed grass, bogs and water, smooth borders between kinds of ground instead of steps along the cells, an earth causeway where a road crosses water and sparse reeds by the shores. Trees a little darker.",
+					"be": "Новая зямля: больш дэталёвыя трава, балоты і вада, плаўныя межы паміж відамі зямлі замест прыступак па клетках, земляная насып там, дзе дарога ідзе праз ваду, і рэдкі чарот ля берагоў. Дрэвы крыху цямнейшыя.",
+					"pl": "Nowa ziemia: bardziej szczegółowa trawa, bagna i woda, płynne granice między rodzajami ziemi zamiast schodków po polach, ziemny nasyp tam, gdzie droga przecina wodę, i rzadka trzcina przy brzegach. Drzewa nieco ciemniejsze.",
+					"uk": "Нова земля: детальніші трава, болота й вода, плавні межі між видами землі замість сходинок по клітинках, земляний насип там, де дорога йде через воду, і рідкий очерет біля берегів. Дерева трохи темніші.",
+					"lt": "Nauja žemė: detalesnė žolė, pelkės ir vanduo, sklandžios ribos tarp žemės rūšių vietoj laiptelių per langelius, žemių pylimas ten, kur kelias kerta vandenį, ir reti nendrynai prie krantų. Medžiai šiek tiek tamsesni."
+				}
+			]
+		},
+		{
 			"version": "0.2.0",
 			"date": "2026-10-27",
 			"items": [

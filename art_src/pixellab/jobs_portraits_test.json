@@ -1,0 +1,44 @@
+{
+ "out_dir": "art_src/pixellab/portraits",
+ "endpoint": "/generate-with-style-v2",
+ "defaults": {
+  "style_description": "chunky pixel art game button icons, dark outline, warm shading",
+  "no_background": true
+ },
+ "style_images": [
+  "ui/icons/orders/aggressive.png",
+  "ui/icons/orders/defensive.png",
+  "ui/icons/orders/stand_ground.png",
+  "ui/icons/orders/stop.png"
+ ],
+ "jobs": [
+  {
+   "name": "gdl_peasant",
+   "request": {
+    "description": "head and shoulders portrait of a 15th century Lithuanian peasant man, felt cap, grey woollen coat, short beard",
+    "seed": 5
+   }
+  },
+  {
+   "name": "gdl_spearman",
+   "request": {
+    "description": "head and shoulders portrait of a 15th century Lithuanian foot spearman, round iron cap, quilted jacket, spear tip beside him",
+    "seed": 5
+   }
+  },
+  {
+   "name": "to_knight_brother",
+   "request": {
+    "description": "head and shoulders portrait of a Teutonic knight brother, steel great helm, white cloak with a black cross",
+    "seed": 5
+   }
+  },
+  {
+   "name": "hero_vytautas",
+   "request": {
+    "description": "head and shoulders portrait of Grand Duke Vytautas, old man with a grey beard, open bascinet with a thin gold circlet, red cloak over armour",
+    "seed": 5
+   }
+  }
+ ]
+}
