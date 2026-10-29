@@ -42,6 +42,10 @@ func open(sim: Simulation, player: int) -> void:
 	_sim = sim
 	_player = player
 	_fill()
+	if sim.victory.winner == player:
+		Sfx.play(&"stinger_victory", 1000)
+	elif sim.victory.winner != 0:
+		Sfx.play(&"stinger_defeat", 1000)
 	visible = true
 	UiAnim.pop_in(self, %Panel as Control)
 	get_tree().paused = true

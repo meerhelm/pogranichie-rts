@@ -148,6 +148,10 @@ func _ready() -> void:
 	_input.player = me
 	_input.attach(sim, _units, _camera, _buildings)
 	_hud.attach(sim, _clock, _input, _camera, me)
+	var sounds := GameSounds.new()
+	sounds.name = "GameSounds"  # notr
+	add_child(sounds)
+	sounds.attach(sim, me, _input, _hud.minimap)
 	_hud.menu.resumed.connect(_apply_camera_settings)
 	_hud.menu.can_resign = sim.mission == null
 	_hud.menu.resign_requested.connect(_input.order_resign)

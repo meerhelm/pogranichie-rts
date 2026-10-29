@@ -7,6 +7,9 @@ extends Control
 ## Terrain and fog are textures blended by a shader, so redrawing costs no loop over the map;
 ## dots are redrawn a few times a second.
 
+## An alert raised (MinimapAlerts.Kind, map cell), for the sounds.
+signal alerted(kind: int, cell: Vector2)
+
 const SHADER := preload("res://ui/minimap.gdshader")
 ## Redraw the dots every this many ticks.
 const REDRAW_TICKS := 4
@@ -109,6 +112,7 @@ func _on_advanced(tick: int, steps: int) -> void:
 		_marks.queue_redraw()
 		for alert in _alerts.poll(tick):
 			_pings.append({"kind": alert["kind"], "cell": alert["cell"], "age": 0.0})
+			alerted.emit(alert["kind"], alert["cell"])
 
 
 ## Starts a blink at a map cell by hand (for tests and screenshots).

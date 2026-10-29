@@ -73,8 +73,10 @@ def write_ogg(x: np.ndarray, dst: Path) -> None:
             w.setsampwidth(2)
             w.setframerate(SR)
             w.writeframes(pcm.tobytes())
-        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", tmp.name, "-c:a", "libvorbis", "-q:a", "5",
-                        str(dst)], check=True)
+        r = subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", tmp.name, "-c:a", "libvorbis", "-q:a", "5",
+                            str(dst)], capture_output=True)
+        if r.returncode != 0:  # Homebrew's ffmpeg has no libvorbis: oggenc (vorbis-tools) instead
+            subprocess.run(["oggenc", "-Q", "-q", "5", "-o", str(dst), tmp.name], check=True)
 
 
 def main():

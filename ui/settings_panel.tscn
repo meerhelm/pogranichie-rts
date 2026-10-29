@@ -85,6 +85,23 @@ size_flags_vertical = 4
 step = 10.0
 value = 70.0
 
+[node name="SfxRow" type="HBoxContainer" parent="Box"]
+layout_mode = 2
+
+[node name="SfxLabel" type="Label" parent="Box/SfxRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sound volume"
+
+[node name="Sfx" type="HSlider" parent="Box/SfxRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 4
+step = 10.0
+value = 80.0
+
 [node name="Hints" type="CheckBox" parent="Box"]
 unique_name_in_owner = true
 layout_mode = 2

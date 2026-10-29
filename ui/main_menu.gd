@@ -82,6 +82,7 @@ func _ready() -> void:
 	_build_net()
 	_settings.closed.connect(_show_settings.bind(false))
 	_start_music()
+	Sfx.ensure()
 	_built = true
 	var back_to := CampaignProgress.campaign_of(GameSettings.mission_id)
 	if back_to.is_empty():

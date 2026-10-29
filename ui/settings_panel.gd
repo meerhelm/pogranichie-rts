@@ -1,7 +1,7 @@
 class_name SettingsPanel
 extends PanelContainer
 ## Settings window for the main menu and the pause menu (settings_panel.tscn): language, edge
-## scrolling, fullscreen, text size, music volume and the skirmish hints.
+## scrolling, fullscreen, text size, music and sound volume and the skirmish hints.
 ## Changes apply at once and are saved; texts follow the language as it changes.
 
 signal closed
@@ -21,6 +21,8 @@ const SCENE := "res://ui/settings_panel.tscn"
 @onready var _text_size: OptionButton = %TextSize
 @onready var _music_label: Label = %MusicLabel
 @onready var _music: HSlider = %Music
+@onready var _sfx_label: Label = %SfxLabel
+@onready var _sfx: HSlider = %Sfx
 @onready var _hints: CheckBox = %Hints
 @onready var _back: Button = %Back
 
@@ -50,6 +52,8 @@ func _ready() -> void:
 	_text_size.item_selected.connect(_on_text_size)
 	_music.value = GameSettings.music_volume
 	_music.value_changed.connect(_on_music)
+	_sfx.value = GameSettings.sfx_volume
+	_sfx.value_changed.connect(_on_sfx)
 	_hints.button_pressed = GameSettings.hints
 	_hints.toggled.connect(_on_hints)
 	_back.pressed.connect(func() -> void: closed.emit())
@@ -75,6 +79,7 @@ func _retranslate() -> void:
 	for i in mini(sizes.size(), _text_size.item_count):
 		_text_size.set_item_text(i, sizes[i])
 	_music_label.text = tr("Music volume")
+	_sfx_label.text = tr("Sound volume")
 	_hints.text = tr("Hints in skirmish")
 	_back.text = tr("Back")
 
@@ -111,6 +116,13 @@ func _on_music(value: float) -> void:
 	GameSettings.music_volume = roundi(value)
 	GameSettings.apply_volume()
 	GameSettings.save()
+
+
+func _on_sfx(value: float) -> void:
+	GameSettings.sfx_volume = roundi(value)
+	GameSettings.apply_volume()
+	GameSettings.save()
+	Sfx.play(&"ui_click", 150)
 
 
 func _on_hints(on: bool) -> void:

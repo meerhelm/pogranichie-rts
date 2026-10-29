@@ -31,6 +31,10 @@ signal formation_changed(kind: Formation.Kind)
 signal economy_changed
 ## Esc with nothing to cancel, or F10: open the game menu.
 signal menu_requested
+## A command of the player's went out (for the sounds).
+signal ordered(cmd: SimCommand)
+## The player clicked one of their buildings.
+signal building_selected(b: int)
 
 ## What the card shows when nothing of the player's own is selected (a left click on it).
 enum Look { NONE, UNIT, BUILDING, NODE, FOREST, PLACE }
@@ -620,6 +624,8 @@ func _select_building(screen_point: Vector2) -> void:
 			var b := sim.economy.buildings.occupant[sim.nav.cell_at(c.x, c.y)]
 			if b != BuildingStore.NO_ID and sim.economy.buildings.owners[b - 1] == player:
 				picked = b
+	if picked != BuildingStore.NO_ID and picked != selected_building:
+		building_selected.emit(picked)
 	selected_building = picked
 	if buildings != null:
 		buildings.selected = picked
@@ -901,6 +907,7 @@ func select_idle_worker(all := false) -> bool:
 
 
 func _order(cmd: SimCommand) -> void:
+	ordered.emit(cmd)
 	if sink.is_valid():
 		sink.call(cmd)
 	else:
