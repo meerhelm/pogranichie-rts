@@ -2,6 +2,47 @@
 	"_comment": "What each build has. Newest version first; the first entry must match application/config/version in project.godot. Every new build: bump the version there and in export_presets.cfg, add an entry on top. Texts per game language; a missing language falls back to en.",
 	"versions": [
 		{
+			"version": "0.3.1",
+			"date": "2026-10-29",
+			"items": [
+				{
+					"en": "Sound and music made with ElevenLabs: a menu theme and two tracks for each faction in the match; about 290 sounds: buttons, alerts (attack on the town or the army, building done, unit trained, research, objectives, victory and defeat, not enough resources), units answering selection and orders, buildings answering a click, and the world near the camera: shots, blows, deaths, falling buildings, fire, building sites, peasants at work, spells and the ambience of the land. Music and sound volume sliders in the settings.",
+					"be": "Гук і музыка, зробленыя ў ElevenLabs: тэма ў меню і па дзве мелодыі кожнай фракцыі ў бітве; каля 290 гукаў: кнопкі, папярэджанні (напад на горад ці войска, будынак гатовы, юніт навучаны, даследаванне, мэты, перамога і паражэнне, не хапае рэсурсаў), юніты адказваюць на выбар і загады, будынкі адгукаюцца на пстрычку, і свет каля камеры: стрэлы, удары, смерці, падзенне будынкаў, агонь, будоўлі, сяляне за працай, заклёны і гукі мясцовасці. Рэгулятары гучнасці музыкі і гуку ў наладах.",
+					"pl": "Dźwięk i muzyka stworzone w ElevenLabs: motyw w menu i po dwa utwory każdej frakcji w bitwie; około 290 dźwięków: przyciski, ostrzeżenia (atak na miasto lub wojsko, budynek gotowy, jednostka wyszkolona, badanie, cele, zwycięstwo i porażka, brak surowców), jednostki odpowiadają na wybór i rozkazy, budynki odzywają się po kliknięciu, a świat przy kamerze: strzały, ciosy, śmierć, walące się budynki, ogień, budowy, chłopi przy pracy, zaklęcia i odgłosy okolicy. Suwaki głośności muzyki i dźwięku w ustawieniach.",
+					"uk": "Звук і музика, зроблені в ElevenLabs: тема в меню й по дві мелодії кожної фракції в бою; близько 290 звуків: кнопки, попередження (напад на місто чи військо, будівлю завершено, юніта навчено, дослідження, цілі, перемога й поразка, бракує ресурсів), юніти відповідають на вибір і накази, будівлі озиваються на клік, і світ біля камери: постріли, удари, смерті, падіння будівель, вогонь, будови, селяни за роботою, закляття й звуки місцевості. Повзунки гучності музики й звуку в налаштуваннях.",
+					"lt": "Garsas ir muzika, sukurti su ElevenLabs: meniu tema ir po dvi kiekvienos frakcijos melodijas mūšyje; apie 290 garsų: mygtukai, įspėjimai (puolamas miestas ar kariuomenė, pastatas baigtas, dalinys apmokytas, tyrimas, tikslai, pergalė ir pralaimėjimas, trūksta išteklių), daliniai atsiliepia į pasirinkimą ir įsakymus, pastatai atsiliepia paspaudus, ir pasaulis prie kameros: šūviai, smūgiai, žūtys, griūvantys pastatai, ugnis, statybos, valstiečiai prie darbo, užkeikimai ir vietovės garsai. Muzikos ir garso garsumo slankikliai nustatymuose."
+				},
+				{
+					"en": "Events blink on the minimap: an attack on you sends red waves from the spot three times with a red glow along the minimap's edge, a finished building blinks green once, mission signals blink white three times.",
+					"be": "Падзеі мігаюць на мінікарце: напад на вас тройчы пускае чырвоныя хвалі ад месца з чырвоным свячэннем па краі мінікарты, гатовы будынак адзін раз міргае зялёным, сігналы місіі тройчы мігаюць белым.",
+					"pl": "Zdarzenia migają na minimapie: atak na ciebie trzy razy puszcza czerwone fale z miejsca z czerwoną poświatą wzdłuż krawędzi minimapy, gotowy budynek raz miga na zielono, sygnały misji trzy razy migają na biało.",
+					"uk": "Події блимають на мінікарті: напад на вас тричі пускає червоні хвилі від місця з червоним світінням уздовж краю мінікарти, готова будівля один раз блимає зеленим, сигнали місії тричі блимають білим.",
+					"lt": "Įvykiai mirksi minižemėlapyje: jus puolant iš tos vietos tris kartus sklinda raudonos bangos, o minižemėlapio kraštas švyti raudonai, baigtas pastatas vieną kartą sumirksi žaliai, misijos signalai tris kartus sumirksi baltai."
+				},
+				{
+					"en": "Mission hints, characters' lines and cutscenes are shown in one framed box with the speaker's portrait.",
+					"be": "Падказкі місій, рэплікі персанажаў і катсцэны паказваюцца ў адной рамцы з партрэтам таго, хто гаворыць.",
+					"pl": "Wskazówki misji, kwestie postaci i przerywniki są pokazywane w jednej ramce z portretem mówiącego.",
+					"uk": "Підказки місій, репліки персонажів і катсцени показуються в одній рамці з портретом того, хто говорить.",
+					"lt": "Misijų patarimai, veikėjų žodžiai ir intarpai rodomi viename rėmelyje su kalbančiojo portretu."
+				},
+				{
+					"en": "Riders stand on the ground instead of hovering above it, and units take a little more room, so they crowd less and keep neater ranks.",
+					"be": "Коннікі стаяць на зямлі, а не вісяць над ёй, і юніты займаюць крыху больш месца, таму менш таўкуцца і стаяць раўнейшым строем.",
+					"pl": "Jeźdźcy stoją na ziemi zamiast unosić się nad nią, a jednostki zajmują nieco więcej miejsca, więc mniej się tłoczą i trzymają równiejszy szyk.",
+					"uk": "Вершники стоять на землі, а не висять над нею, і юніти займають трохи більше місця, тож менше товчуться й тримають рівніший стрій.",
+					"lt": "Raiteliai stovi ant žemės, o ne kybo virš jos, o daliniai užima šiek tiek daugiau vietos, todėl mažiau grūdasi ir laikosi lygesnės rikiuotės."
+				},
+				{
+					"en": "The game's tests use their own settings and campaign files: they no longer depend on the chosen language and map and no longer overwrite the player's settings.",
+					"be": "Тэсты гульні карыстаюцца сваімі файламі налад і кампаніі: больш не залежаць ад абранай мовы і карты і не перапісваюць налады гульца.",
+					"pl": "Testy gry używają własnych plików ustawień i kampanii: nie zależą już od wybranego języka i mapy i nie nadpisują ustawień gracza.",
+					"uk": "Тести гри користуються власними файлами налаштувань і кампанії: більше не залежать від обраної мови й карти та не перезаписують налаштування гравця.",
+					"lt": "Žaidimo testai naudoja savo nustatymų ir kampanijos failus: nebepriklauso nuo pasirinktos kalbos ir žemėlapio ir nebeperrašo žaidėjo nustatymų."
+				}
+			]
+		},
+		{
 			"version": "0.3.0",
 			"date": "2026-10-29",
 			"items": [
