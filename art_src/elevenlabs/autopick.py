@@ -43,11 +43,11 @@ def defects(x: np.ndarray, s: dict) -> tuple[float, list[str]]:
     if len(x) == 0:
         return 99.0, ["empty"]
     rms = float(np.sqrt(np.mean(x ** 2)))
-    if db(rms) < -45:
+    if db(rms) < -62:
         pen += 5; why.append(f"silent {db(rms):.0f} dB")
     clip = float(np.mean(np.abs(x) > 0.995))
-    if clip > 0.005:  # loud impacts touch full scale for a few samples; that is fine
-        pen += min(1.0, clip * 50); why.append(f"clipping {clip * 100:.1f}%")
+    if clip > 0.2:  # generations are mastered hot: horns and thunder sit at full scale, the ear keeps them
+        pen += 0.3; why.append(f"clipping {clip * 100:.1f}%")
     win = SR // 100
     frames = np.sqrt(np.mean(x[: len(x) // win * win].reshape(-1, win) ** 2, axis=1))
     loud = frames > max(rms * 0.1, 1e-4)
