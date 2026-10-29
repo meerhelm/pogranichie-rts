@@ -2,13 +2,22 @@ class_name Minimap
 extends Control
 ## The map in small, as a diamond like the isometric view (M6): terrain, the local player's fog
 ## of war, buildings and units it sees as dots in their owner's colour, and the camera's view as
-## a frame. Click or drag to move the camera there. Terrain and fog are textures blended by a
-## shader, so redrawing costs no loop over the map; dots are redrawn a few times a second.
+## a frame. Click or drag to move the camera there. Attacks on the player blink red three times
+## with a red glow along the inner edge, a finished building blinks green once (MinimapAlerts).
+## Terrain and fog are textures blended by a shader, so redrawing costs no loop over the map;
+## dots are redrawn a few times a second.
 
 const SHADER := preload("res://ui/minimap.gdshader")
 ## Redraw the dots every this many ticks.
 const REDRAW_TICKS := 4
 const DOT := 2.0
+const ATTACK_COLOR := Color(1.0, 0.15, 0.1)
+const BUILT_COLOR := Color(0.35, 1.0, 0.3)
+## Seconds of one blink, and blinks per alert.
+const BLINK := 0.5
+const ATTACK_BLINKS := 3
+const BUILT_BLINKS := 1
+const HALO_SHADER := preload("res://ui/minimap_halo.gdshader")
 
 var sim: Simulation
 var camera: RtsCamera
@@ -34,6 +43,11 @@ var _to_local := Transform2D()
 var _map_rect := Rect2()
 var _scale := 1.0
 var _dragging := false
+var _alerts: MinimapAlerts
+## Blinking alerts: {kind, cell, age (seconds)}.
+var _pings: Array[Dictionary] = []
+var _ping_layer := Node2D.new()
+var _halo := ColorRect.new()
 
 
 func _ready() -> void:
@@ -46,8 +60,17 @@ func _ready() -> void:
 	_ground.add_child(_ground_sprite)
 	add_child(_ground)
 	add_child(_marks)
+	add_child(_ping_layer)
 	add_child(_frame)
+	var halo_mat := ShaderMaterial.new()
+	halo_mat.shader = HALO_SHADER
+	_halo.material = halo_mat
+	_halo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_halo.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_halo.visible = false
+	add_child(_halo)
 	_marks.draw.connect(_draw_marks)
+	_ping_layer.draw.connect(_draw_pings)
 	_frame.draw.connect(_draw_camera)
 	resized.connect(_fit)
 
@@ -65,6 +88,7 @@ func attach(p_sim: Simulation, clock: SimClock, p_camera: RtsCamera, p_player: i
 	_fog = ImageTexture.create_from_image(_fog_image)
 	_paint_terrain()
 	(_ground_sprite.material as ShaderMaterial).set_shader_parameter(&"fog", _fog)
+	_alerts = MinimapAlerts.new(sim, player)
 	clock.advanced.connect(_on_advanced)
 	_fit()
 
@@ -79,9 +103,18 @@ func _on_advanced(tick: int, steps: int) -> void:
 		_fog.update(_fog_image)
 	if tick / REDRAW_TICKS != (tick - steps) / REDRAW_TICKS:
 		_marks.queue_redraw()
+		for alert in _alerts.poll(tick):
+			_pings.append({"kind": alert["kind"], "cell": alert["cell"], "age": 0.0})
 
 
-func _process(_delta: float) -> void:
+## Starts a blink at a map cell by hand (for tests and screenshots).
+func ping(kind: MinimapAlerts.Kind, cell: Vector2) -> void:
+	_pings.append({"kind": kind, "cell": cell, "age": 0.0})
+
+
+func _process(delta: float) -> void:
+	if not _pings.is_empty() or _halo.visible:
+		_age_pings(delta)
 	# The camera frame follows the camera: redrawn when it moved or zoomed.
 	if camera != null and is_visible_in_tree():
 		var at := Rect2(camera.position, camera.zoom)
@@ -157,6 +190,51 @@ func _draw_units() -> void:
 		var c := UnitView.PLAYER_COLORS[who % UnitView.PLAYER_COLORS.size()]
 		var at := _to_local * Vector2(float(e.pos_x[s]) / Fixed.ONE, float(e.pos_y[s]) / Fixed.ONE)
 		_marks.draw_rect(Rect2(at - Vector2(DOT, DOT) / 2.0, Vector2(DOT, DOT)), c)
+
+
+func _age_pings(delta: float) -> void:
+	var halo := 0.0
+	var left: Array[Dictionary] = []
+	for p in _pings:
+		var age: float = p["age"] + delta
+		if age >= _ping_length(p["kind"]):
+			continue
+		p["age"] = age
+		left.append(p)
+		if p["kind"] == MinimapAlerts.Kind.ATTACK:
+			halo = maxf(halo, _blink(age))
+	_pings = left
+	_halo.visible = halo > 0.0
+	(_halo.material as ShaderMaterial).set_shader_parameter(&"strength", halo)
+	(_halo.material as ShaderMaterial).set_shader_parameter(&"size", size)
+	_ping_layer.queue_redraw()
+
+
+static func _ping_length(kind: int) -> float:
+	return BLINK * (ATTACK_BLINKS if kind == MinimapAlerts.Kind.ATTACK else BUILT_BLINKS)
+
+
+## 0 -> 1 -> 0 within each blink.
+static func _blink(age: float) -> float:
+	return sin(fmod(age, BLINK) / BLINK * PI)
+
+
+func _draw_pings() -> void:
+	for p in _pings:
+		var age: float = p["age"]
+		var on := _blink(age)
+		var attack: bool = p["kind"] == MinimapAlerts.Kind.ATTACK
+		var c := ATTACK_COLOR if attack else BUILT_COLOR
+		var at := _to_local * (p["cell"] as Vector2)
+		var grow := fmod(age, BLINK) / BLINK
+		var dot := 3.0 + 3.0 * on
+		var box := Rect2(at - Vector2(dot, dot), Vector2(dot, dot) * 2.0)
+		_ping_layer.draw_rect(box.grow(1.0), Color(0, 0, 0, on))
+		_ping_layer.draw_rect(box, Color(c.lightened(0.3 * on), on))
+		var ring := Color(c, 1.0 - grow * 0.7)
+		_ping_layer.draw_arc(at, 5.0 + 14.0 * grow, 0.0, TAU, 32, ring, 2.0)
+		if attack:
+			_ping_layer.draw_arc(at, 3.0 + 7.0 * grow, 0.0, TAU, 24, Color(ring, ring.a * 0.6), 1.5)
 
 
 func _draw_camera() -> void:

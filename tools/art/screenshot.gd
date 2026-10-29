@@ -27,6 +27,8 @@ extends SceneTree
 ##   idle:N (the idle worker button pressed N times: the Nth idle peasant selected, camera on it),
 ##   units:X:Y:ID,ID,... (no fog: the listed units, heroes too, in a row from cell X, Y, two
 ##   cells apart, the camera on them)
+##   alerts (the fight by the town centre and a house of the player's finished during it, shot
+##   while the minimap blinks: red at the fight with the red glow, green at the house),
 ##   rally (the player's town centre selected, its rally point set a few cells away),
 ##   play (in a mission: the briefing closed, the mission starts),
 ##   talk (in a mission: the briefing closed and the opening cutscene skipped, so the first
@@ -211,6 +213,8 @@ func _act() -> void:
 		_dismantle(main, _action == "work")
 	elif _action == "fight":
 		_fight(main)
+	elif _action == "alerts":
+		_alerts(main)
 	elif _action == "effects":
 		_effects(main)
 	elif _action.begins_with("towers:"):
@@ -489,6 +493,39 @@ func _fight(main: Node) -> void:
 		sim.step()
 	var cam: RtsCamera = main.get_node("Camera")
 	cam.look_at_point(Iso.cell_to_screen(Vector2(x + 2, y + 2)))
+
+
+func _alerts(main: Node) -> void:
+	var sim: Simulation = main.get("sim")
+	var store := sim.economy.buildings
+	var tc := store.alive_ids[0]
+	for b in store.alive_ids:
+		if store.owners[b - 1] == 1 and store.defs[b - 1].base_id == &"town_center":
+			tc = b
+	var house := sim.economy._found(
+		1,
+		sim.catalog().building(&"gdl_house"),
+		store.cell_x[tc - 1] + 14,
+		store.cell_y[tc - 1] - 2,
+		false
+	)
+	_fight(main)
+	var minimap := (main.get_node("UI/Hud") as Hud).minimap
+	while minimap._pings.is_empty():
+		await process_frame
+	_finish(sim, house)
+	while minimap._pings.size() < 2:
+		await process_frame
+	# Frames under Xvfb are slow: shoot both blinks at their brightest.
+	minimap.set_process(false)
+	for p: Dictionary in minimap._pings:
+		p["age"] = Minimap.BLINK * 0.45
+	minimap._age_pings(0.0)
+	await process_frame
+	await process_frame
+	root.get_texture().get_image().save_png(_out)
+	print("saved ", _out)
+	quit()
 
 
 func _effects(main: Node) -> void:
