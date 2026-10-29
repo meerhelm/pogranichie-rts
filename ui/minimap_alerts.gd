@@ -7,8 +7,9 @@ extends RefCounted
 ## A hit counts as an attack only with an enemy unit or building near the one hurt, so the slow
 ## sickness of a besieged garrison or a hero's own magic does not raise alarms. One fight blinks
 ## once per COOLDOWN_TICKS: further hits within RADIUS cells of the last alert stay quiet.
+## A mission's «look here» signals (MissionRuntime events of kind ping) blink too (SIGNAL).
 
-enum Kind { ATTACK, BUILT }
+enum Kind { ATTACK, BUILT, SIGNAL }
 
 ## Game ticks one area keeps quiet after an attack alert (15 s at 20 ticks a second).
 const COOLDOWN_TICKS := 300
@@ -28,12 +29,17 @@ var _building_hp: Dictionary[int, int] = {}
 var _unfinished: Dictionary[int, bool] = {}
 ## Recent attack alerts: [tick, cell x, cell y].
 var _recent: Array[Vector3i] = []
+## Mission events read so far.
+var _events_read := 0
 
 
 func _init(p_sim: Simulation, p_player: int) -> void:
 	sim = p_sim
 	player = p_player
 	_snapshot()
+	# A loaded game does not repeat the signals it already gave.
+	if sim.mission != null:
+		_events_read = sim.mission.events.size()
 
 
 ## Alerts since the last call, each {kind: Kind, cell: Vector2 (map cells)}.
@@ -48,7 +54,22 @@ func poll(tick: int) -> Array[Dictionary]:
 			continue
 		_recent.append(Vector3i(tick, int(at.x), int(at.y)))
 		out.append({"kind": Kind.ATTACK, "cell": at})
+	_poll_signals(out)
 	return out
+
+
+func _poll_signals(out: Array[Dictionary]) -> void:
+	if sim.mission == null:
+		return
+	var events := sim.mission.events
+	while _events_read < events.size():
+		var e: Dictionary = events[_events_read]
+		_events_read += 1
+		if e["kind"] != "ping":
+			continue
+		var at: Array = e["at"]
+		var cell := Vector2(Num.of(at[0]) + 0.5, Num.of(at[1]) + 0.5)
+		out.append({"kind": Kind.SIGNAL, "cell": cell})
 
 
 func _snapshot() -> void:

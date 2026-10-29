@@ -28,7 +28,8 @@ extends SceneTree
 ##   units:X:Y:ID,ID,... (no fog: the listed units, heroes too, in a row from cell X, Y, two
 ##   cells apart, the camera on them)
 ##   alerts (the fight by the town centre and a house of the player's finished during it, shot
-##   while the minimap blinks: red at the fight with the red glow, green at the house),
+##   while the minimap blinks: red at the fight with the red glow, green at the house, white at
+##   a mission's signal put by hand south of the town centre),
 ##   rally (the player's town centre selected, its rally point set a few cells away),
 ##   play (in a mission: the briefing closed, the mission starts),
 ##   talk (in a mission: the briefing closed and the opening cutscene skipped, so the first
@@ -514,12 +515,18 @@ func _alerts(main: Node) -> void:
 	while minimap._pings.is_empty():
 		await process_frame
 	_finish(sim, house)
-	while minimap._pings.size() < 2:
+	var tc_cell := Vector2(store.cell_x[tc - 1], store.cell_y[tc - 1])
+	minimap.ping(MinimapAlerts.Kind.SIGNAL, tc_cell + Vector2(4, 22))
+	while minimap._pings.size() < 3:
 		await process_frame
-	# Frames under Xvfb are slow: shoot both blinks at their brightest.
+	# Frames under Xvfb are slow: shoot the blinks at a set point of a blink, SHOT_PHASE (0..1,
+	# 0.45 near the brightest).
+	var phase := 0.45
+	if not OS.get_environment("SHOT_PHASE").is_empty():
+		phase = float(OS.get_environment("SHOT_PHASE"))
 	minimap.set_process(false)
 	for p: Dictionary in minimap._pings:
-		p["age"] = Minimap.BLINK * 0.45
+		p["age"] = Minimap.BLINK * phase
 	minimap._age_pings(0.0)
 	await process_frame
 	await process_frame

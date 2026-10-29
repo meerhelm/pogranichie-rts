@@ -70,3 +70,19 @@ func test_minimap_blinks_and_glows_then_stops() -> void:
 	minimap._age_pings(Minimap.BLINK * Minimap.ATTACK_BLINKS)
 	assert_eq(minimap._pings.size(), 0)
 	assert_false(minimap._halo.visible)
+
+
+func test_mission_signal_blinks_once_and_not_after_a_load() -> void:
+	var mission := MissionRuntime.new(MissionDef.load_id("gdl_01"), _sim, "normal")
+	_sim.mission = mission
+	mission.events.clear()
+	mission.events.append({"kind": "ping", "tick": 0, "at": [3, 4], "radius": 2})
+	var alerts := MinimapAlerts.new(_sim, 1)
+	assert_eq(alerts.poll(_sim.tick).size(), 0, "a signal given before the load stays quiet")
+	mission.events.append({"kind": "hint", "tick": 1})
+	mission.events.append({"kind": "ping", "tick": 1, "at": [10, 12], "radius": 2})
+	var got := alerts.poll(_sim.tick)
+	assert_eq(_kinds(got), [MinimapAlerts.Kind.SIGNAL])
+	assert_eq(got[0]["cell"], Vector2(10.5, 12.5))
+	assert_eq(alerts.poll(_sim.tick).size(), 0)
+	_sim.mission = null

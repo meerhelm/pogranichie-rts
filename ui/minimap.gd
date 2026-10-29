@@ -11,12 +11,16 @@ const SHADER := preload("res://ui/minimap.gdshader")
 ## Redraw the dots every this many ticks.
 const REDRAW_TICKS := 4
 const DOT := 2.0
-const ATTACK_COLOR := Color(1.0, 0.15, 0.1)
-const BUILT_COLOR := Color(0.35, 1.0, 0.3)
+const ATTACK_COLOR := Color(0.86, 0.3, 0.24)
+const BUILT_COLOR := Color(0.5, 0.82, 0.45)
+const SIGNAL_COLOR := Color(0.92, 0.91, 0.86)
 ## Seconds of one blink, and blinks per alert.
 const BLINK := 0.5
 const ATTACK_BLINKS := 3
 const BUILT_BLINKS := 1
+const SIGNAL_BLINKS := 3
+## Widest wave, pixels across half the ellipse; waves are flattened 2:1 like the map.
+const WAVE := 16.0
 const HALO_SHADER := preload("res://ui/minimap_halo.gdshader")
 
 var sim: Simulation
@@ -211,7 +215,21 @@ func _age_pings(delta: float) -> void:
 
 
 static func _ping_length(kind: int) -> float:
-	return BLINK * (ATTACK_BLINKS if kind == MinimapAlerts.Kind.ATTACK else BUILT_BLINKS)
+	match kind:
+		MinimapAlerts.Kind.ATTACK:
+			return BLINK * ATTACK_BLINKS
+		MinimapAlerts.Kind.SIGNAL:
+			return BLINK * SIGNAL_BLINKS
+	return BLINK * BUILT_BLINKS
+
+
+static func _ping_color(kind: int) -> Color:
+	match kind:
+		MinimapAlerts.Kind.ATTACK:
+			return ATTACK_COLOR
+		MinimapAlerts.Kind.SIGNAL:
+			return SIGNAL_COLOR
+	return BUILT_COLOR
 
 
 ## 0 -> 1 -> 0 within each blink.
@@ -219,22 +237,36 @@ static func _blink(age: float) -> float:
 	return sin(fmod(age, BLINK) / BLINK * PI)
 
 
+## Each blink sends two waves out of the point, flat ellipses like a ring on the ground, and the
+## point itself, a small diamond, lights up.
 func _draw_pings() -> void:
 	for p in _pings:
 		var age: float = p["age"]
-		var on := _blink(age)
-		var attack: bool = p["kind"] == MinimapAlerts.Kind.ATTACK
-		var c := ATTACK_COLOR if attack else BUILT_COLOR
+		var c := _ping_color(p["kind"])
 		var at := _to_local * (p["cell"] as Vector2)
 		var grow := fmod(age, BLINK) / BLINK
-		var dot := 3.0 + 3.0 * on
-		var box := Rect2(at - Vector2(dot, dot), Vector2(dot, dot) * 2.0)
-		_ping_layer.draw_rect(box.grow(1.0), Color(0, 0, 0, on))
-		_ping_layer.draw_rect(box, Color(c.lightened(0.3 * on), on))
-		var ring := Color(c, 1.0 - grow * 0.7)
-		_ping_layer.draw_arc(at, 5.0 + 14.0 * grow, 0.0, TAU, 32, ring, 2.0)
-		if attack:
-			_ping_layer.draw_arc(at, 3.0 + 7.0 * grow, 0.0, TAU, 24, Color(ring, ring.a * 0.6), 1.5)
+		for wave: float in [grow, grow - 0.4]:
+			if wave > 0.0:
+				_draw_wave(at, 2.0 + WAVE * wave, Color(c, 0.9 * (1.0 - wave)))
+		var on := _blink(age)
+		var r := 2.0 + 1.5 * on
+		var dot := PackedVector2Array(
+			[
+				at + Vector2(-r, 0),
+				at + Vector2(0, -r / 2.0),
+				at + Vector2(r, 0),
+				at + Vector2(0, r / 2.0)
+			]
+		)
+		_ping_layer.draw_colored_polygon(dot, Color(c, on))
+
+
+func _draw_wave(at: Vector2, rx: float, color: Color) -> void:
+	var points := PackedVector2Array()
+	for i in 33:
+		var a := TAU * i / 32.0
+		points.append(at + Vector2(cos(a) * rx, sin(a) * rx / 2.0))
+	_ping_layer.draw_polyline(points, color, 1.5, true)
 
 
 func _draw_camera() -> void:
