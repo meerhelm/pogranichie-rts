@@ -1,51 +1,52 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cl4etcdlsk311"]
 
-[ext_resource type="Script" path="res://game/main.gd" id="1_main"]
-[ext_resource type="Script" path="res://core/sim/sim_clock.gd" id="2_clock"]
-[ext_resource type="Script" path="res://game/world/map_view.gd" id="3_map"]
-[ext_resource type="Script" path="res://game/world/unit_layer.gd" id="4_units"]
-[ext_resource type="Script" path="res://game/camera/rts_camera.gd" id="5_camera"]
-[ext_resource type="Script" path="res://game/input/player_input.gd" id="6_input"]
-[ext_resource type="Script" path="res://game/world/shot_layer.gd" id="7_shots"]
-[ext_resource type="Script" path="res://game/world/building_layer.gd" id="8_buildings"]
-[ext_resource type="Script" path="res://game/world/fog_layer.gd" id="9_fog"]
+[ext_resource type="Script" uid="uid://cubailefx4p0p" path="res://game/main.gd" id="1_main"]
+[ext_resource type="Script" uid="uid://7sntaofwfo3l" path="res://core/sim/sim_clock.gd" id="2_clock"]
+[ext_resource type="Script" uid="uid://djkdp32t8lwfc" path="res://game/world/map_view.gd" id="3_map"]
+[ext_resource type="Script" uid="uid://b4i8bj8ikqpn3" path="res://game/world/unit_layer.gd" id="4_units"]
+[ext_resource type="Script" uid="uid://d4a6vkir76l02" path="res://game/camera/rts_camera.gd" id="5_camera"]
+[ext_resource type="Script" uid="uid://eiaj00p2coss" path="res://game/input/player_input.gd" id="6_input"]
+[ext_resource type="Script" uid="uid://dv838di778i4m" path="res://game/world/shot_layer.gd" id="7_shots"]
+[ext_resource type="Script" uid="uid://dav2kdn88bxey" path="res://game/world/building_layer.gd" id="8_buildings"]
+[ext_resource type="Script" uid="uid://dcxorp2f2d5ds" path="res://game/world/fog_layer.gd" id="9_fog"]
 [ext_resource type="PackedScene" path="res://ui/hud.tscn" id="10_hud"]
-[ext_resource type="Script" path="res://game/world/magic_layer.gd" id="11_magic"]
+[ext_resource type="Script" uid="uid://fvpgo2f1afgc" path="res://game/world/magic_layer.gd" id="11_magic"]
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node2D" unique_id=1406042055]
 script = ExtResource("1_main")
 
-[node name="SimClock" type="Node" parent="."]
+[node name="SimClock" type="Node" parent="." unique_id=1361129156]
 script = ExtResource("2_clock")
 
-[node name="World" type="Node2D" parent="."]
+[node name="World" type="Node2D" parent="." unique_id=398612814]
 
-[node name="Map" type="TileMapLayer" parent="World"]
+[node name="Map" type="TileMapLayer" parent="World" unique_id=1366284751]
 script = ExtResource("3_map")
 
-[node name="Buildings" type="Node2D" parent="World"]
+[node name="Buildings" type="Node2D" parent="World" unique_id=1872072051]
 script = ExtResource("8_buildings")
 
-[node name="Magic" type="Node2D" parent="World"]
+[node name="Magic" type="Node2D" parent="World" unique_id=1946244107]
 script = ExtResource("11_magic")
 
-[node name="Units" type="Node2D" parent="World"]
+[node name="Units" type="Node2D" parent="World" unique_id=1326431362]
 y_sort_enabled = true
 script = ExtResource("4_units")
 
-[node name="Shots" type="Node2D" parent="World"]
+[node name="Shots" type="Node2D" parent="World" unique_id=2003641037]
 script = ExtResource("7_shots")
 
-[node name="Fog" type="Node2D" parent="World"]
+[node name="Fog" type="Node2D" parent="World" unique_id=2011302153]
 z_index = 2
 script = ExtResource("9_fog")
 
-[node name="Camera" type="Camera2D" parent="."]
+[node name="Camera" type="Camera2D" parent="." unique_id=1188716961]
 script = ExtResource("5_camera")
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="." unique_id=1015521043]
 
-[node name="PlayerInput" type="Control" parent="UI"]
+[node name="PlayerInput" type="Control" parent="UI" unique_id=1317059713]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -54,9 +55,9 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("6_input")
 
-[node name="Hud" parent="UI" instance=ExtResource("10_hud")]
+[node name="Hud" parent="UI" unique_id=1154672793 instance=ExtResource("10_hud")]
 
-[node name="VersionLabel" type="Label" parent="UI"]
+[node name="VersionLabel" type="Label" parent="UI" unique_id=2008579055]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
