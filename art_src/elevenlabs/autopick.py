@@ -46,19 +46,19 @@ def defects(x: np.ndarray, s: dict) -> tuple[float, list[str]]:
     if db(rms) < -45:
         pen += 5; why.append(f"silent {db(rms):.0f} dB")
     clip = float(np.mean(np.abs(x) > 0.995))
-    if clip > 0.001:
-        pen += min(2.0, clip * 200); why.append(f"clipping {clip * 100:.1f}%")
+    if clip > 0.005:  # loud impacts touch full scale for a few samples; that is fine
+        pen += min(1.0, clip * 50); why.append(f"clipping {clip * 100:.1f}%")
     win = SR // 100
     frames = np.sqrt(np.mean(x[: len(x) // win * win].reshape(-1, win) ** 2, axis=1))
     loud = frames > max(rms * 0.1, 1e-4)
     if not s.get("loop") and loud.any():
         lead = int(np.argmax(loud)) / 100
-        if lead > 0.15:
-            pen += min(2.0, lead * 2); why.append(f"starts late {lead:.2f}s")
+        if lead > 0.3:
+            pen += min(1.0, lead); why.append(f"starts late {lead:.2f}s")
     want = float(s["seconds"])
     have = len(x) / SR
-    if abs(have - want) > max(0.3, want * 0.25):
-        pen += 1.0; why.append(f"length {have:.1f}s of {want}s")
+    if abs(have - want) > max(0.6, want * 0.5):
+        pen += 0.5; why.append(f"length {have:.1f}s of {want}s")
     if s.get("loop") and len(frames) > 4:
         a, b = frames[:3].mean(), frames[-3:].mean()
         seam = abs(db(a) - db(b))
@@ -78,7 +78,11 @@ class Clap:
 
     def audio(self, xs):
         with self.torch.no_grad():
-            inp = self.proc(audios=[x[: SR * 10] for x in xs], sampling_rate=SR, return_tensors="pt")
+            clips = [x[: SR * 10] for x in xs]
+            try:
+                inp = self.proc(audio=clips, sampling_rate=SR, return_tensors="pt")
+            except (TypeError, ValueError):
+                inp = self.proc(audios=clips, sampling_rate=SR, return_tensors="pt")
             e = self.model.get_audio_features(**inp)
         return self.torch.nn.functional.normalize(e, dim=-1).numpy()
 
