@@ -23,6 +23,8 @@ const TEXT_SIZES: Array[int] = [16, 20, 24, 28]
 ## Edge scrolling speed multipliers the player picks from, slowest first.
 const EDGE_SPEEDS: Array[float] = [0.6, 1.0, 1.5, 2.2]
 
+## Where the settings are kept; tests point it elsewhere (tests/pre_run_hook.gd).
+static var path := PATH
 static var language := "en"
 static var edge_scroll := true
 ## Index in EDGE_SPEEDS.
@@ -57,7 +59,7 @@ static func ensure_loaded() -> void:
 		return
 	_loaded = true
 	var cfg := ConfigFile.new()
-	if cfg.load(PATH) == OK:
+	if cfg.load(path) == OK:
 		var lang: String = cfg.get_value("general", "language", language)
 		language = lang if LANGUAGES.has(lang) else "en"
 		edge_scroll = cfg.get_value("general", "edge_scroll", edge_scroll)
@@ -116,6 +118,6 @@ static func save() -> void:
 	cfg.set_value("skirmish", "map", skirmish_map)
 	cfg.set_value("network", "address", net_address)
 	cfg.set_value("network", "name", player_name)
-	var err := cfg.save(PATH)
+	var err := cfg.save(path)
 	if err != OK:
 		push_warning("cannot save settings: %s" % error_string(err))

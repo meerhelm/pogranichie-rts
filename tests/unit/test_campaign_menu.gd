@@ -7,8 +7,11 @@ extends GutTest
 const MENU := preload("res://ui/main_menu.tscn")
 const TEST_PATH := "user://test_campaign.cfg"
 
+var _path_before := ""
+
 
 func before_each() -> void:
+	_path_before = CampaignProgress.path
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(TEST_PATH))
 	CampaignProgress.path = TEST_PATH
 	CampaignProgress.reset()
@@ -17,7 +20,7 @@ func before_each() -> void:
 
 func after_each() -> void:
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(TEST_PATH))
-	CampaignProgress.path = CampaignProgress.PATH
+	CampaignProgress.path = _path_before
 	CampaignProgress.reset()
 	GameSettings.mission_id = ""
 	TranslationServer.set_locale("en")

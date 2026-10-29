@@ -5,5 +5,6 @@
 	"suffix": ".gd",
 	"log_level": 1,
 	"should_exit": true,
-	"junit_xml_file": "user://gut_results.xml"
+	"junit_xml_file": "user://gut_results.xml",
+	"pre_run_script": "res://tests/pre_run_hook.gd"
 }
