@@ -1,0 +1,1897 @@
+{
+ "model_id": "eleven_text_to_sound_v2",
+ "prompt_influence": 0.5,
+ "output_format": "mp3_44100_192",
+ "out_dir": "art_src/elevenlabs/raw",
+ "tails": {
+  "ALERT": "Short clear game notification sound, medieval instrument, crisp attack, short natural decay.",
+  "UI": "Subtle tactile game interface sound, wood, leather and iron, very short and dry.",
+  "ACK": "Short close-up foley, quiet, dry, isolated.",
+  "WORLD": "Realistic medieval foley, 15th century Eastern Europe, outdoor, dry close recording, single isolated sound.",
+  "AMB": "Seamless outdoor ambience, natural and calm, no melody.",
+  "MAGIC": "Subtle eerie natural sound, ambiguous, could be wind or nature, earthy, not fantasy sparkle."
+ },
+ "batches": {
+  "trial": [
+   "alert_attack_town",
+   "alert_attack_army",
+   "alert_building_done",
+   "alert_research_done",
+   "alert_unit_ready_gdl",
+   "alert_unit_ready_pl",
+   "alert_unit_ready_to",
+   "alert_unit_ready_mo",
+   "alert_no_resources",
+   "ui_click",
+   "ui_queue",
+   "ui_place_ok",
+   "ack_inf_select",
+   "ack_lcav_select",
+   "melee_sword_mail",
+   "melee_sword_shield",
+   "bow_shot",
+   "arrow_hit_body",
+   "gun_hand_shot",
+   "eco_chop",
+   "amb_forest",
+   "amb_bog",
+   "sp_perkunas"
+  ]
+ },
+ "sounds": [
+  {
+   "id": "alert_attack_town",
+   "when": "Враг бьёт постройки или крестьян",
+   "prompt": "Deep medieval war horn, one long urgent blast, slightly rough",
+   "group": "ALERT",
+   "seconds": 2.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "alert_attack_army",
+   "when": "Враг бьёт армию за пределами экрана",
+   "prompt": "Three fast heavy hits on a large medieval war drum, urgent",
+   "group": "ALERT",
+   "seconds": 1.2,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "alert_building_done",
+   "when": "Постройка завершена",
+   "prompt": "Two firm wooden mallet knocks followed by a small bright brass handbell ring",
+   "group": "ALERT",
+   "seconds": 1.5,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "alert_research_done",
+   "when": "Технология изучена",
+   "prompt": "Quill scratching on parchment, then a single soft chime of a small bell",
+   "group": "ALERT",
+   "seconds": 1.8,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "alert_unit_ready_gdl",
+   "when": "Юнит готов, ВКЛ",
+   "prompt": "Single short call of a wooden herdsman's horn",
+   "group": "ALERT",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "alert_unit_ready_pl",
+   "when": "Юнит готов, Корона",
+   "prompt": "Single short bright note of a medieval natural trumpet",
+   "group": "ALERT",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "alert_unit_ready_to",
+   "when": "Юнит готов, Орден",
+   "prompt": "Single short strike of a small bronze bell",
+   "group": "ALERT",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "alert_unit_ready_mo",
+   "when": "Юнит готов, Москва",
+   "prompt": "Two quick strikes of a small Orthodox church bell",
+   "group": "ALERT",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "alert_age_up_gdl",
+   "when": "Новая эпоха, ВКЛ",
+   "prompt": "Two wooden war horns calling in harmony over a frame drum, proud and archaic",
+   "group": "ALERT",
+   "seconds": 4.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "alert_age_up_pl",
+   "when": "Новая эпоха, Корона",
+   "prompt": "Short festive fanfare of medieval natural trumpets with kettle drums",
+   "group": "ALERT",
+   "seconds": 4.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "alert_age_up_to",
+   "when": "Новая эпоха, Орден",
+   "prompt": "Solemn toll of a large cathedral bell with a low brass horn",
+   "group": "ALERT",
+   "seconds": 4.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "alert_age_up_mo",
+   "when": "Новая эпоха, Москва",
+   "prompt": "Joyful festive ringing of several Orthodox church bells",
+   "group": "ALERT",
+   "seconds": 4.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "alert_no_resources",
+   "when": "Не хватает ресурсов или Силы",
+   "prompt": "Dull muffled knock on an empty wooden barrel",
+   "group": "ALERT",
+   "seconds": 0.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "alert_pop_limit",
+   "when": "Упёрлись в лимит населения",
+   "prompt": "Two soft low knocks on a closed heavy wooden door",
+   "group": "ALERT",
+   "seconds": 0.7,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "alert_building_lost",
+   "when": "Своя постройка разрушена",
+   "prompt": "Large timber building collapsing and crashing down, heard from a distance",
+   "group": "ALERT",
+   "seconds": 3.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "alert_hero_down",
+   "when": "Герой пал",
+   "prompt": "Single deep funeral bell toll with long natural decay",
+   "group": "ALERT",
+   "seconds": 3.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "alert_fire",
+   "when": "Своя постройка горит",
+   "prompt": "Fast urgent ringing of a small alarm bell",
+   "group": "ALERT",
+   "seconds": 2.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "alert_breach",
+   "when": "Пролом в стене",
+   "prompt": "Heavy stone wall section cracking and crumbling down",
+   "group": "ALERT",
+   "seconds": 2.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "alert_power_gained",
+   "when": "Захватили место Силы",
+   "prompt": "Low resonant hum slowly rising, wind moving through old oak leaves",
+   "group": "ALERT",
+   "seconds": 2.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "alert_power_lost",
+   "when": "Потеряли место Силы",
+   "prompt": "Low resonant hum fading out, a gust of wind dies away",
+   "group": "ALERT",
+   "seconds": 2.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "alert_enemy_spell",
+   "when": "Враг колдует рядом с нашими",
+   "prompt": "Distant low rumble with a sudden cold gust of wind",
+   "group": "ALERT",
+   "seconds": 2.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "alert_objective_new",
+   "when": "Новая цель миссии",
+   "prompt": "Parchment scroll unrolling, then a wax seal pressed",
+   "group": "ALERT",
+   "seconds": 1.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "alert_objective_done",
+   "when": "Цель выполнена",
+   "prompt": "Two bright bell strikes, rising, satisfying",
+   "group": "ALERT",
+   "seconds": 1.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "alert_objective_failed",
+   "when": "Цель провалена",
+   "prompt": "One low dull bell strike, falling, somber",
+   "group": "ALERT",
+   "seconds": 2.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "alert_message",
+   "when": "Новая строка в ленте или сюжетный текст",
+   "prompt": "Soft rustle of paper and a light wooden tap",
+   "group": "ALERT",
+   "seconds": 0.6,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "alert_trade",
+   "when": "Торговый воз привёз серебро",
+   "prompt": "Silver coins poured into a leather pouch",
+   "group": "ALERT",
+   "seconds": 1.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "alert_idle_worker",
+   "when": "Нажата кнопка «крестьянин без дела»",
+   "prompt": "Wooden tool dropped on the ground, a short pause",
+   "group": "ALERT",
+   "seconds": 0.7,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "alert_creature",
+   "when": "Своё или чужое существо вышло на поле",
+   "prompt": "Deep distant boom like thunder underground, birds scatter from trees",
+   "group": "ALERT",
+   "seconds": 3.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "stinger_victory",
+   "when": "Победа",
+   "prompt": "Triumphant medieval fanfare of horns and drums, short and grand",
+   "group": "ALERT",
+   "seconds": 6.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "stinger_defeat",
+   "when": "Поражение",
+   "prompt": "Slow mournful low horn note over a muffled drum",
+   "group": "ALERT",
+   "seconds": 6.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ui_click",
+   "when": "Любая кнопка",
+   "prompt": "Short click of a small wooden button pressed",
+   "group": "UI",
+   "seconds": 0.15,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ui_tab",
+   "when": "Вкладка, переключатель",
+   "prompt": "Light leather flap turned over",
+   "group": "UI",
+   "seconds": 0.25,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "ui_open",
+   "when": "Открылось окно",
+   "prompt": "Wooden shutter opening softly",
+   "group": "UI",
+   "seconds": 0.4,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "ui_close",
+   "when": "Закрылось окно",
+   "prompt": "Wooden shutter closing softly",
+   "group": "UI",
+   "seconds": 0.35,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "ui_queue",
+   "when": "Заказ юнита или технологии",
+   "prompt": "Small iron coin dropped on a wooden table",
+   "group": "UI",
+   "seconds": 0.3,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ui_cancel",
+   "when": "Отмена заказа",
+   "prompt": "Coin slid back across a wooden table",
+   "group": "UI",
+   "seconds": 0.35,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "ui_place_ok",
+   "when": "Поставили постройку",
+   "prompt": "One wooden stake hammered into the ground",
+   "group": "UI",
+   "seconds": 0.5,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ui_place_bad",
+   "when": "Сюда ставить нельзя",
+   "prompt": "Dull thud of a stick on hard frozen ground",
+   "group": "UI",
+   "seconds": 0.3,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "ui_rally",
+   "when": "Точка сбора",
+   "prompt": "Cloth banner planted into earth with a short flutter",
+   "group": "UI",
+   "seconds": 0.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "ui_group",
+   "when": "Назначили или вызвали группу",
+   "prompt": "Light iron ring tapped on a buckle",
+   "group": "UI",
+   "seconds": 0.2,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "ui_speed",
+   "when": "Сменили скорость игры",
+   "prompt": "Hourglass turned over on a wooden table",
+   "group": "UI",
+   "seconds": 0.4,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "ui_pause",
+   "when": "Пауза",
+   "prompt": "Heavy leather-bound book closed",
+   "group": "UI",
+   "seconds": 0.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "ui_menu_start",
+   "when": "Старт игры из меню",
+   "prompt": "Heavy oak door opening on iron hinges",
+   "group": "UI",
+   "seconds": 1.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "ui_save",
+   "when": "Сохранение",
+   "prompt": "Wax seal pressed onto parchment",
+   "group": "UI",
+   "seconds": 0.6,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "ack_peasant_select",
+   "when": "Крестьяне, кметы, колонисты, слуги, мещане",
+   "prompt": "Wooden tool handle tapped, light clink of a small axe head",
+   "group": "ACK",
+   "seconds": 0.5,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_peasant_move",
+   "when": "",
+   "prompt": "A few quick footsteps of bast shoes on grass",
+   "group": "ACK",
+   "seconds": 0.6,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_peasant_work",
+   "when": "Приказ рубить, копать, строить",
+   "prompt": "One axe swing biting into a log",
+   "group": "ACK",
+   "seconds": 0.5,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_inf_select",
+   "when": "Пехота с мечами и копьями",
+   "prompt": "Mail armor shifting with a leather creak",
+   "group": "ACK",
+   "seconds": 0.5,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_inf_move",
+   "when": "",
+   "prompt": "Small group of soldiers starting to march, mail rustling, a few steps",
+   "group": "ACK",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_inf_attack",
+   "when": "",
+   "prompt": "Sword drawn sharply from a scabbard",
+   "group": "ACK",
+   "seconds": 0.5,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_spear_attack",
+   "when": "Копейщики, рогатины, посошные",
+   "prompt": "Spear shaft knocked against a shield, lowered to attack",
+   "group": "ACK",
+   "seconds": 0.5,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_archer_select",
+   "when": "Лучники",
+   "prompt": "Wooden bow stave creaking as the string is tested",
+   "group": "ACK",
+   "seconds": 0.5,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_archer_move",
+   "when": "",
+   "prompt": "Light footsteps with arrows rattling in a quiver",
+   "group": "ACK",
+   "seconds": 0.7,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_archer_attack",
+   "when": "",
+   "prompt": "Arrow pulled from a quiver and nocked",
+   "group": "ACK",
+   "seconds": 0.5,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_crossbow_select",
+   "when": "Арбалетчики, павезники, лодка",
+   "prompt": "Crossbow bolt laid into the groove with a metal click",
+   "group": "ACK",
+   "seconds": 0.5,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_crossbow_attack",
+   "when": "",
+   "prompt": "Crossbow windlass cranking a few clicks",
+   "group": "ACK",
+   "seconds": 0.7,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_gun_select",
+   "when": "Ручничники, пищальники, гаковница",
+   "prompt": "Slow match cord sizzling briefly",
+   "group": "ACK",
+   "seconds": 0.6,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_gun_attack",
+   "when": "",
+   "prompt": "Powder flask tapped and a ramrod pushed into a barrel",
+   "group": "ACK",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_lcav_select",
+   "when": "Лёгкая конница, татары, сторожа, разъезды",
+   "prompt": "Horse snorting and bridle jingling",
+   "group": "ACK",
+   "seconds": 0.6,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_lcav_move",
+   "when": "",
+   "prompt": "Few horse hoofsteps on soft earth, starting to trot",
+   "group": "ACK",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_lcav_attack",
+   "when": "",
+   "prompt": "Short horse whinny and a saber drawn",
+   "group": "ACK",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_hcav_select",
+   "when": "Рыцари, копья, бояре, гусары",
+   "prompt": "Heavy plate armor clanking, a warhorse snorting under the weight",
+   "group": "ACK",
+   "seconds": 0.7,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_hcav_move",
+   "when": "",
+   "prompt": "Heavy armored horse stepping, barding rattling",
+   "group": "ACK",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_hcav_attack",
+   "when": "",
+   "prompt": "Lance lowered with a clatter, warhorse stamps and snorts",
+   "group": "ACK",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_siege_select",
+   "when": "Пороки, бомбарды, тюфяки, пушки, возы",
+   "prompt": "Wooden wheel creaking and a rope pulled taut",
+   "group": "ACK",
+   "seconds": 0.7,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_siege_move",
+   "when": "",
+   "prompt": "Heavy cart wheels rolling on dirt, an ox snorting",
+   "group": "ACK",
+   "seconds": 1.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_siege_attack",
+   "when": "",
+   "prompt": "Winch ratchet clicking, heavy timber creaking under strain",
+   "group": "ACK",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_boat_select",
+   "when": "Речная лодка",
+   "prompt": "Oars knocking against a wooden boat, water lapping",
+   "group": "ACK",
+   "seconds": 0.7,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "ack_boat_move",
+   "when": "",
+   "prompt": "Oars dipping into water, two strokes",
+   "group": "ACK",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "ack_pagan_select",
+   "when": "Знахарка, жрец непримиримых",
+   "prompt": "Dry herbs rustling and a bone charm clicking",
+   "group": "ACK",
+   "seconds": 0.6,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_priest_select",
+   "when": "Ксёндз, брат-священник, сборщик десятины",
+   "prompt": "Rosary beads clicking and a page turned",
+   "group": "ACK",
+   "seconds": 0.6,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_inok_select",
+   "when": "Инок",
+   "prompt": "Censer chain swinging softly",
+   "group": "ACK",
+   "seconds": 0.6,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_yurodivy_select",
+   "when": "Юродивый",
+   "prompt": "Iron chains clinking on bare feet stepping",
+   "group": "ACK",
+   "seconds": 0.6,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "ack_robe_move",
+   "when": "Все духовные",
+   "prompt": "Soft footsteps with a long robe swishing",
+   "group": "ACK",
+   "seconds": 0.6,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "ack_spy_select",
+   "when": "Брат-соглядатай",
+   "prompt": "Cloak rustle and a quiet single footstep",
+   "group": "ACK",
+   "seconds": 0.4,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "ack_vilkolak_select",
+   "when": "Ваўкалак",
+   "prompt": "Low close wolf growl",
+   "group": "ACK",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_vilkolak_attack",
+   "when": "",
+   "prompt": "Wolf snarl with a snap of jaws",
+   "group": "ACK",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_stranger_select",
+   "when": "Незнакомец в красном",
+   "prompt": "Single footstep echoing too long, a cold draft, candle flame sputtering",
+   "group": "ACK",
+   "seconds": 1.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_moroz_select",
+   "when": "Мороз",
+   "prompt": "Ice crackling and a frosty wind gust",
+   "group": "ACK",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_moroz_attack",
+   "when": "",
+   "prompt": "Sharp loud crack of freezing ice on a lake",
+   "group": "ACK",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "ack_master_select",
+   "when": "Великий магистр",
+   "prompt": "Heavy plate armor step with a deep distant bell hum",
+   "group": "ACK",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "ack_hero_select",
+   "when": "Герои (добавка к классу)",
+   "prompt": "Cloth banner snapping once in the wind",
+   "group": "ACK",
+   "seconds": 0.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_town_center",
+   "when": "Двор / Погост",
+   "prompt": "Village courtyard: hens clucking, a dog barking once, distant hammer",
+   "group": "WORLD",
+   "seconds": 1.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_house",
+   "when": "Дом",
+   "prompt": "Wooden door creaking open",
+   "group": "WORLD",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_granary",
+   "when": "Амбар",
+   "prompt": "Grain poured from a sack into a wooden bin",
+   "group": "WORLD",
+   "seconds": 1.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_farm",
+   "when": "Поле",
+   "prompt": "Scythe swishing through ripe grain",
+   "group": "WORLD",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_lumber_yard",
+   "when": "Лесопилка",
+   "prompt": "Two-man saw cutting a log, a few strokes",
+   "group": "WORLD",
+   "seconds": 1.2,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_mine",
+   "when": "Рудник",
+   "prompt": "Pickaxe striking rock twice",
+   "group": "WORLD",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_barracks",
+   "when": "Казармы",
+   "prompt": "Two swords clashing in practice",
+   "group": "WORLD",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_range",
+   "when": "Стрельбище",
+   "prompt": "Arrow hitting a straw target with a thud",
+   "group": "WORLD",
+   "seconds": 0.6,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_stable",
+   "when": "Конюшня, конный завод",
+   "prompt": "Horse whinnying in a stable, hooves on a wooden floor",
+   "group": "WORLD",
+   "seconds": 1.2,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_shrine",
+   "when": "Святилище",
+   "prompt": "Sacred fire crackling, wind in oak leaves",
+   "group": "WORLD",
+   "seconds": 1.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_palisade",
+   "when": "Частокол",
+   "prompt": "Wooden stake knocked with a mallet",
+   "group": "WORLD",
+   "seconds": 0.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_wall",
+   "when": "Каменная стена",
+   "prompt": "Stone block scraped and set into place",
+   "group": "WORLD",
+   "seconds": 0.7,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_gate_open",
+   "when": "Ворота открываются",
+   "prompt": "Heavy wooden gate creaking open on iron hinges",
+   "group": "WORLD",
+   "seconds": 1.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_gate_close",
+   "when": "Ворота закрываются",
+   "prompt": "Heavy wooden gate swinging shut with an iron latch",
+   "group": "WORLD",
+   "seconds": 1.2,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_tower",
+   "when": "Башня",
+   "prompt": "Wind gusting on a high wooden tower, flag flapping",
+   "group": "WORLD",
+   "seconds": 1.2,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_market",
+   "when": "Торг, рынок, Ганзейская контора",
+   "prompt": "Coins clinking on a wooden counter, scales clattering",
+   "group": "WORLD",
+   "seconds": 1.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_smithy",
+   "when": "Кузня",
+   "prompt": "Hammer on anvil, three rings",
+   "group": "WORLD",
+   "seconds": 1.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_temple_latin",
+   "when": "Храм Короны и Ордена",
+   "prompt": "Single toll of a Gothic church bell with stone reverb",
+   "group": "WORLD",
+   "seconds": 2.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_temple_orth",
+   "when": "Храм и монастырь Москвы, православный храм ВКЛ",
+   "prompt": "Short chime of small Orthodox bells",
+   "group": "WORLD",
+   "seconds": 2.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_siege_workshop",
+   "when": "Осадная мастерская",
+   "prompt": "Mallet driving a wooden peg, timber creaking",
+   "group": "WORLD",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_castle",
+   "when": "Замок",
+   "prompt": "Iron portcullis chain rattling",
+   "group": "WORLD",
+   "seconds": 1.2,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_dock",
+   "when": "Пристань",
+   "prompt": "Water lapping against a wooden pier, rope creaking",
+   "group": "WORLD",
+   "seconds": 1.2,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_foundry",
+   "when": "Литейня",
+   "prompt": "Molten metal hissing as it is poured, bellows pumping",
+   "group": "WORLD",
+   "seconds": 1.2,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_field_camp",
+   "when": "Походный лагерь",
+   "prompt": "Canvas tent flap and a campfire crackling",
+   "group": "WORLD",
+   "seconds": 1.2,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_gdl_zaseka",
+   "when": "Засека",
+   "prompt": "Felled trees dragged, branches cracking",
+   "group": "WORLD",
+   "seconds": 1.2,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_gdl_bort",
+   "when": "Борть",
+   "prompt": "Bees buzzing around a hollow tree hive",
+   "group": "WORLD",
+   "seconds": 1.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_gdl_tatar_sloboda",
+   "when": "Татарская слобода",
+   "prompt": "Several horses snorting, felt tent flap, a frame drum tapped once",
+   "group": "WORLD",
+   "seconds": 1.2,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_pl_salt_works",
+   "when": "Соляная жупа",
+   "prompt": "Brine bubbling in an iron pan, salt crystals poured",
+   "group": "WORLD",
+   "seconds": 1.2,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_pl_tavern",
+   "when": "Корчма",
+   "prompt": "Wooden mugs knocked together, a fist thumps a table",
+   "group": "WORLD",
+   "seconds": 1.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_pl_battery",
+   "when": "Батарея",
+   "prompt": "Cannon barrel rolled on a wooden carriage",
+   "group": "WORLD",
+   "seconds": 1.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_pl_lazaret",
+   "when": "Лазарет",
+   "prompt": "Water poured into a basin, cloth wrung out",
+   "group": "WORLD",
+   "seconds": 1.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_to_brickworks",
+   "when": "Кирпичный завод",
+   "prompt": "Bricks stacked, a kiln fire roaring",
+   "group": "WORLD",
+   "seconds": 1.2,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_to_schnitzhaus",
+   "when": "Шницхаус",
+   "prompt": "Wood plane shaving a stock, a crossbow string tightened",
+   "group": "WORLD",
+   "seconds": 1.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_mo_pomestie",
+   "when": "Поместье",
+   "prompt": "Farmstead: a cow lowing, a gate creaking",
+   "group": "WORLD",
+   "seconds": 1.2,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_mo_watchtower",
+   "when": "Сторожевая вышка",
+   "prompt": "Wind on a tall wooden watchtower, ladder creaking",
+   "group": "WORLD",
+   "seconds": 1.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "bld_mo_yam",
+   "when": "Ям",
+   "prompt": "Post horses harnessed, leather straps, a cart creaking",
+   "group": "WORLD",
+   "seconds": 1.2,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "build_wood_loop",
+   "when": "Идёт стройка или ремонт, дерево",
+   "prompt": "Carpenters hammering and sawing wood at a construction site",
+   "group": "WORLD",
+   "seconds": 8.0,
+   "loop": true,
+   "variants": 2
+  },
+  {
+   "id": "build_stone_loop",
+   "when": "Стройка, камень",
+   "prompt": "Masons chiselling stone and setting blocks",
+   "group": "WORLD",
+   "seconds": 8.0,
+   "loop": true,
+   "variants": 2
+  },
+  {
+   "id": "build_finish",
+   "when": "Последний удар на месте постройки",
+   "prompt": "Final heavy hammer blow, timber settles with a creak",
+   "group": "WORLD",
+   "seconds": 1.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "hit_wood_building",
+   "when": "Удар по деревянной постройке",
+   "prompt": "Axe and spear blows striking a wooden wall",
+   "group": "WORLD",
+   "seconds": 0.6,
+   "loop": false,
+   "variants": 6
+  },
+  {
+   "id": "hit_stone_building",
+   "when": "Удар по каменной постройке",
+   "prompt": "Iron weapon striking a stone wall",
+   "group": "WORLD",
+   "seconds": 0.6,
+   "loop": false,
+   "variants": 6
+  },
+  {
+   "id": "collapse_wood",
+   "when": "Разрушение деревянной постройки",
+   "prompt": "Wooden building collapsing, beams cracking and crashing",
+   "group": "WORLD",
+   "seconds": 3.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "collapse_stone",
+   "when": "Разрушение каменной постройки",
+   "prompt": "Stone building collapsing, rubble falling, dust",
+   "group": "WORLD",
+   "seconds": 3.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "fire_loop",
+   "when": "Пожар",
+   "prompt": "Large timber building burning, crackling and roaring flames",
+   "group": "WORLD",
+   "seconds": 10.0,
+   "loop": true,
+   "variants": 2
+  },
+  {
+   "id": "fire_ignite",
+   "when": "Постройка загорелась",
+   "prompt": "Flames catching dry thatch with a sudden whoosh",
+   "group": "WORLD",
+   "seconds": 1.2,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "fire_out",
+   "when": "Пожар погас, например от дождя",
+   "prompt": "Fire hissing out under rain, steam",
+   "group": "WORLD",
+   "seconds": 1.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "eco_chop",
+   "when": "Рубка дерева",
+   "prompt": "Axe chopping into a tree trunk",
+   "group": "WORLD",
+   "seconds": 0.5,
+   "loop": false,
+   "variants": 6
+  },
+  {
+   "id": "eco_tree_fall",
+   "when": "Дерево срублено",
+   "prompt": "Tree cracking and falling to the ground",
+   "group": "WORLD",
+   "seconds": 2.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "eco_mine",
+   "when": "Добыча железа и серебра",
+   "prompt": "Pickaxe hitting iron ore rock",
+   "group": "WORLD",
+   "seconds": 0.5,
+   "loop": false,
+   "variants": 6
+  },
+  {
+   "id": "eco_farm",
+   "when": "Работа в поле",
+   "prompt": "Hoe digging into soil",
+   "group": "WORLD",
+   "seconds": 0.5,
+   "loop": false,
+   "variants": 6
+  },
+  {
+   "id": "eco_hunt",
+   "when": "Разделка зверя на мясо",
+   "prompt": "Knife cutting through hide, wet thud",
+   "group": "WORLD",
+   "seconds": 0.6,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "eco_drop_food",
+   "when": "Сдача еды",
+   "prompt": "Sack of grain dropped on a wooden floor",
+   "group": "WORLD",
+   "seconds": 0.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "eco_drop_wood",
+   "when": "Сдача дерева",
+   "prompt": "Logs dropped onto a pile",
+   "group": "WORLD",
+   "seconds": 0.6,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "eco_drop_ore",
+   "when": "Сдача железа и серебра",
+   "prompt": "Ore stones poured from a basket onto a heap",
+   "group": "WORLD",
+   "seconds": 0.6,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "eco_honey",
+   "when": "Борть приносит мёд",
+   "prompt": "Bees buzzing, honeycomb cut with a knife",
+   "group": "WORLD",
+   "seconds": 1.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "eco_cart",
+   "when": "Торговый или обозный воз едет",
+   "prompt": "Wooden cart rolling on a dirt road, horse plodding",
+   "group": "WORLD",
+   "seconds": 6.0,
+   "loop": true,
+   "variants": 2
+  },
+  {
+   "id": "melee_sword_mail",
+   "when": "Меч по кольчуге",
+   "prompt": "Sword strike on chain mail armor",
+   "group": "WORLD",
+   "seconds": 0.4,
+   "loop": false,
+   "variants": 6
+  },
+  {
+   "id": "melee_sword_shield",
+   "when": "Меч по щиту",
+   "prompt": "Sword hitting a wooden shield",
+   "group": "WORLD",
+   "seconds": 0.4,
+   "loop": false,
+   "variants": 6
+  },
+  {
+   "id": "melee_spear",
+   "when": "Удар копьём",
+   "prompt": "Spear thrust hitting padded armor",
+   "group": "WORLD",
+   "seconds": 0.4,
+   "loop": false,
+   "variants": 6
+  },
+  {
+   "id": "melee_axe",
+   "when": "Топор, сулица",
+   "prompt": "Axe blow on mail armor",
+   "group": "WORLD",
+   "seconds": 0.4,
+   "loop": false,
+   "variants": 6
+  },
+  {
+   "id": "melee_club",
+   "when": "Булава, цеп, дубина",
+   "prompt": "Heavy club hitting an iron helmet",
+   "group": "WORLD",
+   "seconds": 0.4,
+   "loop": false,
+   "variants": 6
+  },
+  {
+   "id": "melee_flail",
+   "when": "Цеп гуситов",
+   "prompt": "Flail chain swinging and striking",
+   "group": "WORLD",
+   "seconds": 0.5,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "melee_lance",
+   "when": "Удар копьём с коня",
+   "prompt": "Lance shattering against a shield at a gallop",
+   "group": "WORLD",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "bow_shot",
+   "when": "Выстрел из лука",
+   "prompt": "Bowstring released, arrow whooshes away",
+   "group": "WORLD",
+   "seconds": 0.5,
+   "loop": false,
+   "variants": 6
+  },
+  {
+   "id": "bow_volley",
+   "when": "Залп нескольких лучников",
+   "prompt": "Many arrows released at once, whistling volley",
+   "group": "WORLD",
+   "seconds": 1.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "crossbow_shot",
+   "when": "Выстрел арбалета",
+   "prompt": "Heavy crossbow released with a loud snap",
+   "group": "WORLD",
+   "seconds": 0.5,
+   "loop": false,
+   "variants": 6
+  },
+  {
+   "id": "arrow_hit_body",
+   "when": "Стрела в цель",
+   "prompt": "Arrow thudding into padded armor",
+   "group": "WORLD",
+   "seconds": 0.3,
+   "loop": false,
+   "variants": 6
+  },
+  {
+   "id": "arrow_hit_metal",
+   "when": "Стрела по латам",
+   "prompt": "Arrow glancing off plate armor",
+   "group": "WORLD",
+   "seconds": 0.3,
+   "loop": false,
+   "variants": 6
+  },
+  {
+   "id": "arrow_hit_wood",
+   "when": "Стрела в дерево, щит, постройку",
+   "prompt": "Arrow thunking into a wooden wall",
+   "group": "WORLD",
+   "seconds": 0.3,
+   "loop": false,
+   "variants": 6
+  },
+  {
+   "id": "arrow_miss",
+   "when": "Промах",
+   "prompt": "Arrow sticking into soft ground",
+   "group": "WORLD",
+   "seconds": 0.3,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "gun_hand_shot",
+   "when": "Ручница, пищаль",
+   "prompt": "Early hand cannon fired, black powder, sharp crack with smoke hiss",
+   "group": "WORLD",
+   "seconds": 1.2,
+   "loop": false,
+   "variants": 6
+  },
+  {
+   "id": "gun_hook_shot",
+   "when": "Гаковница",
+   "prompt": "Heavy hook gun fired from a rest, deep black powder crack",
+   "group": "WORLD",
+   "seconds": 1.5,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "gun_misfire",
+   "when": "Фитиль погас под дождём",
+   "prompt": "Wet match fizzling out, failed ignition",
+   "group": "WORLD",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "cannon_field",
+   "when": "Полевая пушка, лёгкая пушка",
+   "prompt": "Small black-powder cannon firing, booming",
+   "group": "WORLD",
+   "seconds": 2.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "cannon_bombard",
+   "when": "Бомбарда",
+   "prompt": "Huge medieval bombard firing, massive deep boom with long rumble",
+   "group": "WORLD",
+   "seconds": 3.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "cannon_tyufyak",
+   "when": "Тюфяк",
+   "prompt": "Short-barreled gun firing a load of stone shot, scattering rattle",
+   "group": "WORLD",
+   "seconds": 1.8,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "porok_release",
+   "when": "Порок (метательная машина)",
+   "prompt": "Trebuchet arm released, ropes snapping, wooden creak and a whoosh",
+   "group": "WORLD",
+   "seconds": 2.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "impact_stone_wall",
+   "when": "Ядро или камень в стену",
+   "prompt": "Heavy stone ball smashing into a stone wall",
+   "group": "WORLD",
+   "seconds": 1.5,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "impact_ground",
+   "when": "Ядро в землю",
+   "prompt": "Heavy cannonball thudding into earth, dirt spray",
+   "group": "WORLD",
+   "seconds": 1.2,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "cav_charge_loop",
+   "when": "Атака конницы",
+   "prompt": "Many horses galloping, ground rumbling",
+   "group": "WORLD",
+   "seconds": 8.0,
+   "loop": true,
+   "variants": 2
+  },
+  {
+   "id": "march_loop",
+   "when": "Большой отряд идёт",
+   "prompt": "Large group of armored soldiers marching on a dirt road",
+   "group": "WORLD",
+   "seconds": 8.0,
+   "loop": true,
+   "variants": 2
+  },
+  {
+   "id": "death_inf",
+   "when": "Гибель пехотинца",
+   "prompt": "Armored body falling to the ground, mail clattering",
+   "group": "WORLD",
+   "seconds": 1.0,
+   "loop": false,
+   "variants": 6
+  },
+  {
+   "id": "death_cav",
+   "when": "Гибель всадника",
+   "prompt": "Horse falling heavily, rider's armor crashing",
+   "group": "WORLD",
+   "seconds": 1.5,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "horse_pain",
+   "when": "Ранена лошадь",
+   "prompt": "Horse squealing in pain",
+   "group": "WORLD",
+   "seconds": 1.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "rout",
+   "when": "Отряд побежал",
+   "prompt": "Panicked running footsteps, weapons dropped in the grass",
+   "group": "WORLD",
+   "seconds": 2.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "battle_far_loop",
+   "when": "Бой далеко от камеры",
+   "prompt": "Distant medieval battle, clashing steel and hooves, muffled",
+   "group": "WORLD",
+   "seconds": 15.0,
+   "loop": true,
+   "variants": 2
+  },
+  {
+   "id": "tabor_lock",
+   "when": "Возы смыкаются в табор",
+   "prompt": "Wooden wagons chained together, iron chains rattling",
+   "group": "WORLD",
+   "seconds": 1.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "sp_bog_mist",
+   "when": "«Болотный туман»",
+   "prompt": "Thick fog rolling over a bog: low bubbling, wet hiss, muffled stillness",
+   "group": "MAGIC",
+   "seconds": 4.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "sp_blood_charm",
+   "when": "«Заговор на кровь»",
+   "prompt": "Low breathy wind, a slow heartbeat calming, dry herbs crushed in a hand",
+   "group": "MAGIC",
+   "seconds": 3.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "sp_perkunas",
+   "when": "«Гнев Перкуна»",
+   "prompt": "Close lightning strike with a violent thunder crack",
+   "group": "MAGIC",
+   "seconds": 3.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "rain_loop",
+   "when": "Дождь после Перкуна",
+   "prompt": "Heavy summer thunderstorm rain",
+   "group": "MAGIC",
+   "seconds": 20.0,
+   "loop": true,
+   "variants": 2
+  },
+  {
+   "id": "sp_wolf_path",
+   "when": "«Волчья тропа»",
+   "prompt": "Wolves howling far away in a deep forest, branches parting",
+   "group": "MAGIC",
+   "seconds": 4.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "sp_bogurodzica",
+   "when": "«Богородица»",
+   "prompt": "Hurdy-gurdy drone swelling with a slow war drum, rising",
+   "group": "MAGIC",
+   "seconds": 4.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "sp_banner_blessing",
+   "when": "«Благословение хоругви»",
+   "prompt": "Large banner cloth snapping in the wind, a small bell rings",
+   "group": "MAGIC",
+   "seconds": 2.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "sp_pact",
+   "when": "«Договор»",
+   "prompt": "Parchment torn, a quill scratch, a low distant rumble, then sudden silence",
+   "group": "MAGIC",
+   "seconds": 3.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "sp_exorcism",
+   "when": "«Экзорцизм»",
+   "prompt": "Holy water splashed with a hiss like water on hot coals, a low bell",
+   "group": "MAGIC",
+   "seconds": 3.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "sp_relic",
+   "when": "«Реликвия в строю»",
+   "prompt": "Reliquary chest opened, metal hinges, a deep resonant bell hum",
+   "group": "MAGIC",
+   "seconds": 3.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "sp_land_consecration",
+   "when": "«Освящение земли»",
+   "prompt": "Several bells ringing slowly far away, wind over a field",
+   "group": "MAGIC",
+   "seconds": 4.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "sp_icon",
+   "when": "«Икона перед войском»",
+   "prompt": "Censer chain swinging, a single low Orthodox bell",
+   "group": "MAGIC",
+   "seconds": 3.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "sp_prophecy",
+   "when": "«Пророчество юродивого»",
+   "prompt": "Iron chains rattling, a sudden gust of wind, a raven cawing",
+   "group": "MAGIC",
+   "seconds": 3.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "sp_winter",
+   "when": "«Зима наступает»",
+   "prompt": "Biting cold wind, water freezing and ice cracking across a lake",
+   "group": "MAGIC",
+   "seconds": 5.0,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "power_place_loop",
+   "when": "Фон у места Силы",
+   "prompt": "Low resonant hum, wind in old trees, faint creaking",
+   "group": "MAGIC",
+   "seconds": 15.0,
+   "loop": true,
+   "variants": 2
+  },
+  {
+   "id": "power_tick",
+   "when": "Место Силы даёт Силу",
+   "prompt": "Soft low thrum, like a struck tree trunk",
+   "group": "MAGIC",
+   "seconds": 0.6,
+   "loop": false,
+   "variants": 4
+  },
+  {
+   "id": "an_bison",
+   "when": "Зубр",
+   "prompt": "European bison grunting low",
+   "group": "WORLD",
+   "seconds": 1.2,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "an_bear",
+   "when": "Медведь",
+   "prompt": "Brown bear growling",
+   "group": "WORLD",
+   "seconds": 1.2,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "an_elk",
+   "when": "Лось",
+   "prompt": "Moose bellowing low",
+   "group": "WORLD",
+   "seconds": 1.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "an_boar",
+   "when": "Кабан",
+   "prompt": "Wild boar grunting and squealing",
+   "group": "WORLD",
+   "seconds": 1.0,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "an_wolf_howl",
+   "when": "Волк",
+   "prompt": "Single wolf howl in the distance",
+   "group": "WORLD",
+   "seconds": 2.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "an_wolf_snarl",
+   "when": "Волк в бою",
+   "prompt": "Wolf snarling and biting",
+   "group": "WORLD",
+   "seconds": 0.8,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "an_dogs",
+   "when": "Собаки берут след",
+   "prompt": "Hunting dogs barking on a trail",
+   "group": "WORLD",
+   "seconds": 1.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "an_raven",
+   "when": "Вороны над полем боя",
+   "prompt": "Ravens cawing",
+   "group": "WORLD",
+   "seconds": 1.5,
+   "loop": false,
+   "variants": 3
+  },
+  {
+   "id": "amb_field",
+   "when": "Трава, поле",
+   "prompt": "Open field, wind through tall grass, skylarks singing",
+   "group": "AMB",
+   "seconds": 25.0,
+   "loop": true,
+   "variants": 2
+  },
+  {
+   "id": "amb_forest",
+   "when": "Лес",
+   "prompt": "Mixed forest in daytime: birds, light wind in leaves, a woodpecker",
+   "group": "AMB",
+   "seconds": 25.0,
+   "loop": true,
+   "variants": 2
+  },
+  {
+   "id": "amb_old_forest",
+   "when": "Старый лес",
+   "prompt": "Deep old pine forest, low wind, creaking trunks, a distant raven",
+   "group": "AMB",
+   "seconds": 25.0,
+   "loop": true,
+   "variants": 2
+  },
+  {
+   "id": "amb_bog",
+   "when": "Болото, трясина",
+   "prompt": "Marsh: frogs croaking, bubbles, reeds rustling, a curlew calling",
+   "group": "AMB",
+   "seconds": 25.0,
+   "loop": true,
+   "variants": 2
+  },
+  {
+   "id": "amb_river",
+   "when": "Вода",
+   "prompt": "Calm wide river flowing, gentle lapping",
+   "group": "AMB",
+   "seconds": 25.0,
+   "loop": true,
+   "variants": 2
+  },
+  {
+   "id": "amb_ford",
+   "when": "Брод",
+   "prompt": "Shallow fast stream running over stones",
+   "group": "AMB",
+   "seconds": 20.0,
+   "loop": true,
+   "variants": 2
+  },
+  {
+   "id": "amb_ice",
+   "when": "Лёд, зима",
+   "prompt": "Cold winter wind over a frozen lake, ice creaking",
+   "group": "AMB",
+   "seconds": 25.0,
+   "loop": true,
+   "variants": 2
+  },
+  {
+   "id": "amb_hill",
+   "when": "Холм",
+   "prompt": "Wind on an open hilltop",
+   "group": "AMB",
+   "seconds": 20.0,
+   "loop": true,
+   "variants": 2
+  },
+  {
+   "id": "amb_ash",
+   "when": "Пепелище",
+   "prompt": "Smoldering embers, light wind, faint crackling",
+   "group": "AMB",
+   "seconds": 20.0,
+   "loop": true,
+   "variants": 2
+  },
+  {
+   "id": "amb_village",
+   "when": "Поселение рядом",
+   "prompt": "Medieval village life: distant hammering, chickens, a cart, a dog far away",
+   "group": "AMB",
+   "seconds": 25.0,
+   "loop": true,
+   "variants": 2
+  },
+  {
+   "id": "amb_town",
+   "when": "Город, крепость",
+   "prompt": "Medieval town: cart wheels on cobbles, a smithy far off, a bell tower",
+   "group": "AMB",
+   "seconds": 25.0,
+   "loop": true,
+   "variants": 2
+  },
+  {
+   "id": "amb_camp",
+   "when": "Военный лагерь",
+   "prompt": "Army camp: campfires crackling, horses, armor being polished",
+   "group": "AMB",
+   "seconds": 25.0,
+   "loop": true,
+   "variants": 2
+  },
+  {
+   "id": "amb_menu",
+   "when": "Главное меню",
+   "prompt": "Wind over a misty landscape at dawn, a single distant bell",
+   "group": "AMB",
+   "seconds": 30.0,
+   "loop": true,
+   "variants": 2
+  }
+ ]
+}

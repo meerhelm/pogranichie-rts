@@ -333,3 +333,17 @@ xvfb-run -s "-screen 0 1600x900x24" godot --rendering-driver opengl3 \
 `panel:WHAT[:HOVER]` selects peasants, army or a building (base id) and shows the tooltip of
 the button HOVER; `SHOT_LOCALE=be` takes the shot in another language. The game finds icons by
 catalog id through `ui/icon_db.gd`; buttons are `ui/icon_button.gd`, tooltips `ui/tips.gd`.
+
+## Sound effects (ElevenLabs)
+
+Sound effects come from ElevenLabs text-to-sound (`/v1/sound-generation`, plan Creator, key in
+`~/.config/elevenlabs/token`, never in the repo; the cloud proxy blocks the API, so it runs on the Mac).
+No voices yet. The list is `art_src/elevenlabs/sfx.json`: id, when it plays, prompt, group (its tail
+is appended to the prompt so a group sounds alike), seconds, loop, number of variants; batch `trial`
+is the first ~20 sounds. Raw MP3s go to `art_src/elevenlabs/raw/<id>/` (not in git).
+
+```sh
+python3 art_src/elevenlabs/el_client.py --batch trial --dry        # free: list and count generations
+python3 art_src/elevenlabs/el_client.py --batch trial --cap 120    # generate; reruns fill only the gaps
+python3 art_src/elevenlabs/review.py --batch trial                 # raw/review.html: listen, tick, copy picks
+```
