@@ -36,6 +36,191 @@
    "amb_forest",
    "amb_bog",
    "sp_perkunas"
+  ],
+  "rest": [
+   "alert_age_up_gdl",
+   "alert_age_up_pl",
+   "alert_age_up_to",
+   "alert_age_up_mo",
+   "alert_pop_limit",
+   "alert_building_lost",
+   "alert_hero_down",
+   "alert_fire",
+   "alert_breach",
+   "alert_power_gained",
+   "alert_power_lost",
+   "alert_enemy_spell",
+   "alert_objective_new",
+   "alert_objective_done",
+   "alert_objective_failed",
+   "alert_message",
+   "alert_trade",
+   "alert_idle_worker",
+   "alert_creature",
+   "stinger_victory",
+   "stinger_defeat",
+   "ui_tab",
+   "ui_open",
+   "ui_close",
+   "ui_cancel",
+   "ui_place_bad",
+   "ui_rally",
+   "ui_group",
+   "ui_speed",
+   "ui_pause",
+   "ui_menu_start",
+   "ui_save",
+   "ack_peasant_select",
+   "ack_peasant_move",
+   "ack_peasant_work",
+   "ack_inf_move",
+   "ack_inf_attack",
+   "ack_spear_attack",
+   "ack_archer_select",
+   "ack_archer_move",
+   "ack_archer_attack",
+   "ack_crossbow_select",
+   "ack_crossbow_attack",
+   "ack_gun_select",
+   "ack_gun_attack",
+   "ack_lcav_move",
+   "ack_lcav_attack",
+   "ack_hcav_select",
+   "ack_hcav_move",
+   "ack_hcav_attack",
+   "ack_siege_select",
+   "ack_siege_move",
+   "ack_siege_attack",
+   "ack_boat_select",
+   "ack_boat_move",
+   "ack_pagan_select",
+   "ack_priest_select",
+   "ack_inok_select",
+   "ack_yurodivy_select",
+   "ack_robe_move",
+   "ack_spy_select",
+   "ack_vilkolak_select",
+   "ack_vilkolak_attack",
+   "ack_stranger_select",
+   "ack_moroz_select",
+   "ack_moroz_attack",
+   "ack_master_select",
+   "ack_hero_select",
+   "bld_town_center",
+   "bld_house",
+   "bld_granary",
+   "bld_farm",
+   "bld_lumber_yard",
+   "bld_mine",
+   "bld_barracks",
+   "bld_range",
+   "bld_stable",
+   "bld_shrine",
+   "bld_palisade",
+   "bld_wall",
+   "bld_gate_open",
+   "bld_gate_close",
+   "bld_tower",
+   "bld_market",
+   "bld_smithy",
+   "bld_temple_latin",
+   "bld_temple_orth",
+   "bld_siege_workshop",
+   "bld_castle",
+   "bld_dock",
+   "bld_foundry",
+   "bld_field_camp",
+   "bld_gdl_zaseka",
+   "bld_gdl_bort",
+   "bld_gdl_tatar_sloboda",
+   "bld_pl_salt_works",
+   "bld_pl_tavern",
+   "bld_pl_battery",
+   "bld_pl_lazaret",
+   "bld_to_brickworks",
+   "bld_to_schnitzhaus",
+   "bld_mo_pomestie",
+   "bld_mo_watchtower",
+   "bld_mo_yam",
+   "build_wood_loop",
+   "build_stone_loop",
+   "build_finish",
+   "hit_wood_building",
+   "hit_stone_building",
+   "collapse_wood",
+   "collapse_stone",
+   "fire_loop",
+   "fire_ignite",
+   "fire_out",
+   "eco_tree_fall",
+   "eco_mine",
+   "eco_farm",
+   "eco_hunt",
+   "eco_drop_food",
+   "eco_drop_wood",
+   "eco_drop_ore",
+   "eco_honey",
+   "eco_cart",
+   "melee_spear",
+   "melee_axe",
+   "melee_club",
+   "melee_flail",
+   "melee_lance",
+   "bow_volley",
+   "crossbow_shot",
+   "arrow_hit_metal",
+   "arrow_hit_wood",
+   "arrow_miss",
+   "gun_hook_shot",
+   "gun_misfire",
+   "cannon_field",
+   "cannon_bombard",
+   "cannon_tyufyak",
+   "porok_release",
+   "impact_stone_wall",
+   "impact_ground",
+   "cav_charge_loop",
+   "march_loop",
+   "death_inf",
+   "death_cav",
+   "horse_pain",
+   "rout",
+   "battle_far_loop",
+   "tabor_lock",
+   "sp_bog_mist",
+   "sp_blood_charm",
+   "rain_loop",
+   "sp_wolf_path",
+   "sp_bogurodzica",
+   "sp_banner_blessing",
+   "sp_pact",
+   "sp_exorcism",
+   "sp_relic",
+   "sp_land_consecration",
+   "sp_icon",
+   "sp_prophecy",
+   "sp_winter",
+   "power_place_loop",
+   "power_tick",
+   "an_bison",
+   "an_bear",
+   "an_elk",
+   "an_boar",
+   "an_wolf_howl",
+   "an_wolf_snarl",
+   "an_dogs",
+   "an_raven",
+   "amb_field",
+   "amb_old_forest",
+   "amb_river",
+   "amb_ford",
+   "amb_ice",
+   "amb_hill",
+   "amb_ash",
+   "amb_village",
+   "amb_town",
+   "amb_camp",
+   "amb_menu"
   ]
  },
  "sounds": [
@@ -208,7 +393,7 @@
    "group": "ALERT",
    "seconds": 2.0,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "alert_power_lost",
@@ -217,7 +402,7 @@
    "group": "ALERT",
    "seconds": 2.0,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "alert_enemy_spell",
@@ -226,7 +411,7 @@
    "group": "ALERT",
    "seconds": 2.0,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "alert_objective_new",
@@ -289,7 +474,7 @@
    "group": "ALERT",
    "seconds": 3.0,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "stinger_victory",
@@ -298,7 +483,7 @@
    "group": "ALERT",
    "seconds": 6.0,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "stinger_defeat",
@@ -307,7 +492,7 @@
    "group": "ALERT",
    "seconds": 6.0,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ui_click",
@@ -325,7 +510,7 @@
    "group": "UI",
    "seconds": 0.25,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "ui_open",
@@ -334,7 +519,7 @@
    "group": "UI",
    "seconds": 0.4,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "ui_close",
@@ -343,7 +528,7 @@
    "group": "UI",
    "seconds": 0.35,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "ui_queue",
@@ -361,7 +546,7 @@
    "group": "UI",
    "seconds": 0.35,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "ui_place_ok",
@@ -379,7 +564,7 @@
    "group": "UI",
    "seconds": 0.3,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "ui_rally",
@@ -388,7 +573,7 @@
    "group": "UI",
    "seconds": 0.5,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "ui_group",
@@ -397,7 +582,7 @@
    "group": "UI",
    "seconds": 0.2,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "ui_speed",
@@ -406,7 +591,7 @@
    "group": "UI",
    "seconds": 0.4,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "ui_pause",
@@ -415,7 +600,7 @@
    "group": "UI",
    "seconds": 0.5,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "ui_menu_start",
@@ -424,7 +609,7 @@
    "group": "UI",
    "seconds": 1.5,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "ui_save",
@@ -433,7 +618,7 @@
    "group": "UI",
    "seconds": 0.6,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "ack_peasant_select",
@@ -442,7 +627,7 @@
    "group": "ACK",
    "seconds": 0.5,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_peasant_move",
@@ -451,7 +636,7 @@
    "group": "ACK",
    "seconds": 0.6,
    "loop": false,
-   "variants": 4
+   "variants": 2
   },
   {
    "id": "ack_peasant_work",
@@ -460,7 +645,7 @@
    "group": "ACK",
    "seconds": 0.5,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_inf_select",
@@ -478,7 +663,7 @@
    "group": "ACK",
    "seconds": 0.8,
    "loop": false,
-   "variants": 4
+   "variants": 2
   },
   {
    "id": "ack_inf_attack",
@@ -487,7 +672,7 @@
    "group": "ACK",
    "seconds": 0.5,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_spear_attack",
@@ -496,7 +681,7 @@
    "group": "ACK",
    "seconds": 0.5,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_archer_select",
@@ -505,7 +690,7 @@
    "group": "ACK",
    "seconds": 0.5,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_archer_move",
@@ -514,7 +699,7 @@
    "group": "ACK",
    "seconds": 0.7,
    "loop": false,
-   "variants": 4
+   "variants": 2
   },
   {
    "id": "ack_archer_attack",
@@ -523,7 +708,7 @@
    "group": "ACK",
    "seconds": 0.5,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_crossbow_select",
@@ -532,7 +717,7 @@
    "group": "ACK",
    "seconds": 0.5,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_crossbow_attack",
@@ -541,7 +726,7 @@
    "group": "ACK",
    "seconds": 0.7,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_gun_select",
@@ -550,7 +735,7 @@
    "group": "ACK",
    "seconds": 0.6,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_gun_attack",
@@ -559,7 +744,7 @@
    "group": "ACK",
    "seconds": 0.8,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_lcav_select",
@@ -577,7 +762,7 @@
    "group": "ACK",
    "seconds": 0.8,
    "loop": false,
-   "variants": 4
+   "variants": 2
   },
   {
    "id": "ack_lcav_attack",
@@ -586,7 +771,7 @@
    "group": "ACK",
    "seconds": 0.8,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_hcav_select",
@@ -595,7 +780,7 @@
    "group": "ACK",
    "seconds": 0.7,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_hcav_move",
@@ -604,7 +789,7 @@
    "group": "ACK",
    "seconds": 0.8,
    "loop": false,
-   "variants": 4
+   "variants": 2
   },
   {
    "id": "ack_hcav_attack",
@@ -613,7 +798,7 @@
    "group": "ACK",
    "seconds": 0.8,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_siege_select",
@@ -622,7 +807,7 @@
    "group": "ACK",
    "seconds": 0.7,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_siege_move",
@@ -631,7 +816,7 @@
    "group": "ACK",
    "seconds": 1.0,
    "loop": false,
-   "variants": 4
+   "variants": 2
   },
   {
    "id": "ack_siege_attack",
@@ -640,7 +825,7 @@
    "group": "ACK",
    "seconds": 0.8,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_boat_select",
@@ -658,7 +843,7 @@
    "group": "ACK",
    "seconds": 0.8,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "ack_pagan_select",
@@ -667,7 +852,7 @@
    "group": "ACK",
    "seconds": 0.6,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_priest_select",
@@ -676,7 +861,7 @@
    "group": "ACK",
    "seconds": 0.6,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_inok_select",
@@ -685,7 +870,7 @@
    "group": "ACK",
    "seconds": 0.6,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_yurodivy_select",
@@ -703,7 +888,7 @@
    "group": "ACK",
    "seconds": 0.6,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "ack_spy_select",
@@ -721,7 +906,7 @@
    "group": "ACK",
    "seconds": 0.8,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_vilkolak_attack",
@@ -730,7 +915,7 @@
    "group": "ACK",
    "seconds": 0.8,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_stranger_select",
@@ -739,7 +924,7 @@
    "group": "ACK",
    "seconds": 1.0,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_moroz_select",
@@ -748,7 +933,7 @@
    "group": "ACK",
    "seconds": 0.8,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_moroz_attack",
@@ -757,7 +942,7 @@
    "group": "ACK",
    "seconds": 0.8,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "ack_master_select",
@@ -784,7 +969,7 @@
    "group": "WORLD",
    "seconds": 1.5,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_house",
@@ -793,7 +978,7 @@
    "group": "WORLD",
    "seconds": 0.8,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_granary",
@@ -802,7 +987,7 @@
    "group": "WORLD",
    "seconds": 1.0,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_farm",
@@ -811,7 +996,7 @@
    "group": "WORLD",
    "seconds": 0.8,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_lumber_yard",
@@ -820,7 +1005,7 @@
    "group": "WORLD",
    "seconds": 1.2,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_mine",
@@ -829,7 +1014,7 @@
    "group": "WORLD",
    "seconds": 0.8,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_barracks",
@@ -838,7 +1023,7 @@
    "group": "WORLD",
    "seconds": 0.8,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_range",
@@ -847,7 +1032,7 @@
    "group": "WORLD",
    "seconds": 0.6,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_stable",
@@ -856,7 +1041,7 @@
    "group": "WORLD",
    "seconds": 1.2,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_shrine",
@@ -865,7 +1050,7 @@
    "group": "WORLD",
    "seconds": 1.5,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_palisade",
@@ -874,7 +1059,7 @@
    "group": "WORLD",
    "seconds": 0.5,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_wall",
@@ -883,7 +1068,7 @@
    "group": "WORLD",
    "seconds": 0.7,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_gate_open",
@@ -892,7 +1077,7 @@
    "group": "WORLD",
    "seconds": 1.5,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_gate_close",
@@ -901,7 +1086,7 @@
    "group": "WORLD",
    "seconds": 1.2,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_tower",
@@ -910,7 +1095,7 @@
    "group": "WORLD",
    "seconds": 1.2,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_market",
@@ -919,7 +1104,7 @@
    "group": "WORLD",
    "seconds": 1.0,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_smithy",
@@ -928,7 +1113,7 @@
    "group": "WORLD",
    "seconds": 1.0,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_temple_latin",
@@ -937,7 +1122,7 @@
    "group": "WORLD",
    "seconds": 2.0,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_temple_orth",
@@ -946,7 +1131,7 @@
    "group": "WORLD",
    "seconds": 2.0,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_siege_workshop",
@@ -955,7 +1140,7 @@
    "group": "WORLD",
    "seconds": 0.8,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_castle",
@@ -964,7 +1149,7 @@
    "group": "WORLD",
    "seconds": 1.2,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_dock",
@@ -973,7 +1158,7 @@
    "group": "WORLD",
    "seconds": 1.2,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_foundry",
@@ -982,7 +1167,7 @@
    "group": "WORLD",
    "seconds": 1.2,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_field_camp",
@@ -991,7 +1176,7 @@
    "group": "WORLD",
    "seconds": 1.2,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_gdl_zaseka",
@@ -1000,7 +1185,7 @@
    "group": "WORLD",
    "seconds": 1.2,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_gdl_bort",
@@ -1009,7 +1194,7 @@
    "group": "WORLD",
    "seconds": 1.5,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_gdl_tatar_sloboda",
@@ -1018,7 +1203,7 @@
    "group": "WORLD",
    "seconds": 1.2,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_pl_salt_works",
@@ -1027,7 +1212,7 @@
    "group": "WORLD",
    "seconds": 1.2,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_pl_tavern",
@@ -1036,7 +1221,7 @@
    "group": "WORLD",
    "seconds": 1.0,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_pl_battery",
@@ -1045,7 +1230,7 @@
    "group": "WORLD",
    "seconds": 1.0,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_pl_lazaret",
@@ -1054,7 +1239,7 @@
    "group": "WORLD",
    "seconds": 1.0,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_to_brickworks",
@@ -1063,7 +1248,7 @@
    "group": "WORLD",
    "seconds": 1.2,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_to_schnitzhaus",
@@ -1072,7 +1257,7 @@
    "group": "WORLD",
    "seconds": 1.0,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_mo_pomestie",
@@ -1081,7 +1266,7 @@
    "group": "WORLD",
    "seconds": 1.2,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_mo_watchtower",
@@ -1090,7 +1275,7 @@
    "group": "WORLD",
    "seconds": 1.0,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "bld_mo_yam",
@@ -1099,7 +1284,7 @@
    "group": "WORLD",
    "seconds": 1.2,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "build_wood_loop",
@@ -1135,7 +1320,7 @@
    "group": "WORLD",
    "seconds": 0.6,
    "loop": false,
-   "variants": 6
+   "variants": 4
   },
   {
    "id": "hit_stone_building",
@@ -1144,7 +1329,7 @@
    "group": "WORLD",
    "seconds": 0.6,
    "loop": false,
-   "variants": 6
+   "variants": 4
   },
   {
    "id": "collapse_wood",
@@ -1216,7 +1401,7 @@
    "group": "WORLD",
    "seconds": 0.5,
    "loop": false,
-   "variants": 6
+   "variants": 4
   },
   {
    "id": "eco_farm",
@@ -1225,7 +1410,7 @@
    "group": "WORLD",
    "seconds": 0.5,
    "loop": false,
-   "variants": 6
+   "variants": 4
   },
   {
    "id": "eco_hunt",
@@ -1306,7 +1491,7 @@
    "group": "WORLD",
    "seconds": 0.4,
    "loop": false,
-   "variants": 6
+   "variants": 4
   },
   {
    "id": "melee_axe",
@@ -1315,7 +1500,7 @@
    "group": "WORLD",
    "seconds": 0.4,
    "loop": false,
-   "variants": 6
+   "variants": 4
   },
   {
    "id": "melee_club",
@@ -1324,7 +1509,7 @@
    "group": "WORLD",
    "seconds": 0.4,
    "loop": false,
-   "variants": 6
+   "variants": 4
   },
   {
    "id": "melee_flail",
@@ -1369,7 +1554,7 @@
    "group": "WORLD",
    "seconds": 0.5,
    "loop": false,
-   "variants": 6
+   "variants": 4
   },
   {
    "id": "arrow_hit_body",
@@ -1387,7 +1572,7 @@
    "group": "WORLD",
    "seconds": 0.3,
    "loop": false,
-   "variants": 6
+   "variants": 4
   },
   {
    "id": "arrow_hit_wood",
@@ -1396,7 +1581,7 @@
    "group": "WORLD",
    "seconds": 0.3,
    "loop": false,
-   "variants": 6
+   "variants": 4
   },
   {
    "id": "arrow_miss",
@@ -1513,7 +1698,7 @@
    "group": "WORLD",
    "seconds": 1.0,
    "loop": false,
-   "variants": 6
+   "variants": 4
   },
   {
    "id": "death_cav",
@@ -1567,7 +1752,7 @@
    "group": "MAGIC",
    "seconds": 4.0,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "sp_blood_charm",
@@ -1576,7 +1761,7 @@
    "group": "MAGIC",
    "seconds": 3.0,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "sp_perkunas",
@@ -1603,7 +1788,7 @@
    "group": "MAGIC",
    "seconds": 4.0,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "sp_bogurodzica",
@@ -1612,7 +1797,7 @@
    "group": "MAGIC",
    "seconds": 4.0,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "sp_banner_blessing",
@@ -1621,7 +1806,7 @@
    "group": "MAGIC",
    "seconds": 2.0,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "sp_pact",
@@ -1630,7 +1815,7 @@
    "group": "MAGIC",
    "seconds": 3.0,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "sp_exorcism",
@@ -1639,7 +1824,7 @@
    "group": "MAGIC",
    "seconds": 3.0,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "sp_relic",
@@ -1648,7 +1833,7 @@
    "group": "MAGIC",
    "seconds": 3.0,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "sp_land_consecration",
@@ -1657,7 +1842,7 @@
    "group": "MAGIC",
    "seconds": 4.0,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "sp_icon",
@@ -1666,7 +1851,7 @@
    "group": "MAGIC",
    "seconds": 3.0,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "sp_prophecy",
@@ -1675,7 +1860,7 @@
    "group": "MAGIC",
    "seconds": 3.0,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "sp_winter",
@@ -1684,7 +1869,7 @@
    "group": "MAGIC",
    "seconds": 5.0,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "power_place_loop",
@@ -1702,7 +1887,7 @@
    "group": "MAGIC",
    "seconds": 0.6,
    "loop": false,
-   "variants": 4
+   "variants": 3
   },
   {
    "id": "an_bison",
@@ -1711,7 +1896,7 @@
    "group": "WORLD",
    "seconds": 1.2,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "an_bear",
@@ -1720,7 +1905,7 @@
    "group": "WORLD",
    "seconds": 1.2,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "an_elk",
@@ -1729,7 +1914,7 @@
    "group": "WORLD",
    "seconds": 1.5,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "an_boar",
@@ -1738,7 +1923,7 @@
    "group": "WORLD",
    "seconds": 1.0,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "an_wolf_howl",
@@ -1747,7 +1932,7 @@
    "group": "WORLD",
    "seconds": 2.5,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "an_wolf_snarl",
@@ -1756,7 +1941,7 @@
    "group": "WORLD",
    "seconds": 0.8,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "an_dogs",
@@ -1765,7 +1950,7 @@
    "group": "WORLD",
    "seconds": 1.5,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "an_raven",
@@ -1774,7 +1959,7 @@
    "group": "WORLD",
    "seconds": 1.5,
    "loop": false,
-   "variants": 3
+   "variants": 2
   },
   {
    "id": "amb_field",
