@@ -65,7 +65,7 @@ func think() -> void:
 			_reserve()
 		"wagons":
 			if _formed_up():
-				_charge(WAGONS, 2)
+				_storm()
 	_leaders()
 	if sim.tick % 1200 == 0 and OS.has_environment("BOT_LOG"):
 		_log()
@@ -129,6 +129,28 @@ func _charge(at: Vector2i, every_s: int) -> void:
 		_cmd(SimCommand.attack_move(sim.tick, P, idle, tx, ty))
 	else:
 		_cmd(SimCommand.attack_move(sim.tick, P, idle, _fx(at.x), _fx(at.y)))
+
+
+## The wagenburg: everyone goes for the men behind the wagons by name, the nearest one, and
+## whoever is hacking at a wagon is sent on to them too (a wagon has 150 HP and the crossbows
+## shoot meanwhile; the wagons need not fall for the mission).
+func _storm() -> void:
+	if sim.tick - _last_order < 2 * 20:
+		return
+	_last_order = sim.tick
+	var army := _soldiers()
+	var free := PackedInt32Array()
+	for id in army:
+		var t := sim.entities.target[id - 1]
+		if t == EntityStore.NO_ID or sim.entities.type_ids[t - 1] == &"to_wagon":
+			free.append(id)
+	if free.is_empty():
+		return
+	var target := _nearest_enemy(_centre(free), WAGONS, 16)
+	if target == EntityStore.NO_ID:
+		_cmd(SimCommand.attack_move(sim.tick, P, free, _fx(WAGONS.x), _fx(WAGONS.y)))
+	else:
+		_cmd(SimCommand.attack(sim.tick, P, free, target))
 
 
 ## Before the wagenburg: the army gathers short of it, so it does not run onto the wagons one
@@ -357,6 +379,8 @@ func _nearest_enemy(from: Vector2i, at: Vector2i, radius: int) -> int:
 		var s := id - 1
 		if sim.entities.owners[s] != 2 or sim.combat.untouchable.has(id):
 			continue
+		if stage == "wagons" and sim.entities.type_ids[s] == &"to_wagon":
+			continue  # the men behind the wagons, not the chained wagons
 		if _dist_sq(sim.entities.pos_x[s] - ax, sim.entities.pos_y[s] - ay) > r * r:
 			continue
 		var d := _dist_sq(sim.entities.pos_x[s] - from.x, sim.entities.pos_y[s] - from.y)

@@ -31,6 +31,11 @@ FRAME = (80, 72)
 PIVOT = (40, 56)  # feet; 16 px below for the down-right shadow
 # riders are generated at 96x96: a bigger frame, room for the longer shadow
 RIDER = ((128, 120), (56, 92))
+# How far a rider's lowest hoof stands below the pivot, by generated facing: the pivot is the
+# middle of the horse on the ground, not its nearest hoof, or the horse floats over its spot and
+# its shadow; side on (east) the hooves are nearly in a row, head or tail on they spread far
+# (the Blender riders had 2.5 and 6 to 8 px at their smaller size).
+RIDER_SINK = {0: 3, 1: 8, 2: 8, 6: 10, 7: 10}
 GENERATED = (0, 1, 2, 6, 7)
 MIRROR = {3: 1, 4: 0, 5: 7}
 # anim: fps; "work" may reuse another anim's source
@@ -168,7 +173,8 @@ def build(src: Path, out: Path, uid: str) -> None:
     shift = {}
     for g in GENERATED:
         fx, fy = feet(rows[("idle", g)][0])
-        shift[g] = (pivot[0] - fx, pivot[1] - fy)
+        sink = RIDER_SINK[g] if uid in RIDERS else 0
+        shift[g] = (pivot[0] - fx, pivot[1] - fy + sink)
     color = np.zeros((frame[1] * 8 * len(names), frame[0] * cols, 4), np.uint8)
     team = np.zeros(color.shape[:2] + (2,), np.uint8)
     shadow = np.zeros(color.shape[:2] + (2,), np.uint8)

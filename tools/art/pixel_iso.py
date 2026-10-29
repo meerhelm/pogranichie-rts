@@ -150,7 +150,8 @@ def shadow_of(color: Image.Image, base_y: int) -> Image.Image:
     ys, xs = np.nonzero(a)
     hgt = np.maximum(base_y - ys, 0)
     sx = np.round(xs + hgt * SHADOW_DX).astype(int)
-    sy = np.round(base_y + hgt * SHADOW_DY).astype(int)
+    # a pixel below the base (a rider's near hooves) stands on the ground where it is drawn
+    sy = np.round(np.maximum(ys, base_y) + hgt * SHADOW_DY).astype(int)
     ok = (sx >= 0) & (sx < w) & (sy >= 0) & (sy < h)
     sh[sy[ok], sx[ok]] = True
     # close pinholes

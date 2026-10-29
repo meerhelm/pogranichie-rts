@@ -42,7 +42,9 @@ extends RefCounted
 ## 24: a BUILD with Shift queues the foundation for builders already building (Construction.queue,
 ##   in the hash); they finish theirs and go on to the nearest queued one, one staying on each
 ##   finished field or hive.
-const SIM_VERSION := 24
+## 25: bigger bodies for the pixel sprites: a man on foot 3/4 of a cell, a rider a cell, and no
+##   two bodies overlap by more than a half (Separation).
+const SIM_VERSION := 25
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).

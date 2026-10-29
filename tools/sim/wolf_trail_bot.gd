@@ -15,7 +15,8 @@ const THINK_EVERY := 20
 const P := 1
 ## The band's way, leg by leg: where it walks and what it waits for before the next leg.
 ## Wait kinds: "" (arrive), "found_N" / "trail_N" (flags), "sunset" / "6" / "7" (triggers),
-## "clear" (arrive, then wait until no patrol is near the road ahead), "ford" (wait until
+## "clear" (arrive, then wait until no patrol is near the road ahead), "clear_road" (arrive on
+## the second trail, then wait until the road patrol is away from its end), "ford" (wait until
 ## Andrei's men have cut down the post at the ford).
 const LEGS: Array = [
 	[Vector2i(124, 57), ""],
@@ -31,7 +32,9 @@ const LEGS: Array = [
 	[Vector2i(76, 51), ""],
 	[Vector2i(77, 57), "found_1"],
 	[Vector2i(77, 61), "cast"],
-	[Vector2i(62, 61), "trail_1"],
+	[Vector2i(67, 60), "trail_1"],
+	[Vector2i(67, 60), "clear_road"],
+	[Vector2i(62, 61), ""],
 	[Vector2i(59, 60), "6"],
 	[Vector2i(46, 47), ""],
 	[Vector2i(29, 47), "7"],
@@ -113,7 +116,7 @@ func _walk(band: PackedInt32Array) -> void:
 	if wait == "cast":
 		_cast(prince[0], band, to)
 		return
-	var arrive := wait == "" or wait == "clear"
+	var arrive := wait == "" or wait.begins_with("clear")
 	if _ready(wait) and (not arrive or _dist_cells(prince[0], to) <= 2):
 		_leg += 1
 		return
@@ -157,6 +160,8 @@ func _ready(wait: String) -> bool:
 		return m.alive_of("post_ford").is_empty()
 	if wait == "clear":
 		return _clear(Vector2i(70, 46), 14)
+	if wait == "clear_road":
+		return _clear(Vector2i(60, 60), 12)
 	if wait.begins_with("found_") or wait.begins_with("trail_"):
 		return m.flags.has(wait)
 	return m.fired.has(wait)

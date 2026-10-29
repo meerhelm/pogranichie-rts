@@ -1,6 +1,6 @@
 extends CombatTest
 ## Units have bodies: in a melee they do not heap up on each other, and no two bodies ever
-## overlap by more than 3/4 (Separation.MAX_OVERLAP).
+## overlap by more than a half (Separation.MAX_OVERLAP).
 
 
 ## Two blocks charge each other: every tick, each pair the rule binds stays at least the least
@@ -41,7 +41,7 @@ func test_a_melee_does_not_heap_up() -> void:
 			% [worst, close_pairs, samples]
 		)
 	)
-	assert_gte(worst, 1000, "no two bodies overlap by more than 3/4")
+	assert_gte(worst, 1000, "no two bodies overlap by more than a half")
 	assert_lt(close_pairs * 1000, samples, "under 0.1% of pairs closer than a quarter cell")
 
 
@@ -66,10 +66,10 @@ func test_a_crowd_on_one_target_rings_it() -> void:
 			worst = mini(
 				worst, d * 1000 / Separation.min_distance(e.move_class[a], e.move_class[b])
 			)
-	assert_gte(worst, 1000, "no two of them overlap by more than 3/4")
+	assert_gte(worst, 1000, "no two of them overlap by more than a half")
 
 
-## Whether the 3/4 rule binds the pair: either is fighting, or neither walks past the other
+## Whether the overlap rule binds the pair: either is fighting, or neither walks past the other
 ## standing (out of a fight a walker goes through standing units).
 func _bound(e: EntityStore, a: int, b: int) -> bool:
 	if e.target[a] != EntityStore.NO_ID or e.target[b] != EntityStore.NO_ID:

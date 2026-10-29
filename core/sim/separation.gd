@@ -6,16 +6,18 @@ extends RefCounted
 ## Simulation; holds only scratch arrays, nothing of the world's state.
 
 ## Body width of a man on foot (fixed units). Two units closer than the mean of their bodies
-## push each other apart, a quarter of the overlap a tick.
-const SEPARATION := Fixed.HALF
-## Body width of a rider (a horse is longer than a man is wide).
-const BODY_CAVALRY := Fixed.ONE * 7 / 8
+## push each other apart, a quarter of the overlap a tick. 3/4 since the pixel sprites (0.3.0):
+## they are as tall as the Blender men but wider, a half cell let them heap up.
+const SEPARATION := Fixed.ONE * 3 / 4
+## Body width of a rider (a horse is longer than a man is wide); a cell, as big as the pixel
+## horses, and no more, or two riders would stand out of each other's melee reach.
+const BODY_CAVALRY := Fixed.ONE
 ## Body width of a cart, a gun or a boat.
 const BODY_LARGE := Fixed.ONE
-## However they were ordered, two bodies never overlap by more than 3/4: units closer than this
-## share of their mean body are set apart at once, whatever they are doing.
-const MAX_OVERLAP_NUM := 3
-const MAX_OVERLAP_DEN := 4
+## However they were ordered, two bodies never overlap by more than a half: units closer than
+## this share of their mean body are set apart at once, whatever they are doing.
+const MAX_OVERLAP_NUM := 1
+const MAX_OVERLAP_DEN := 2
 ## Two walking units that meet head-on each step this far a tick to their own right (fixed
 ## units), so they slip past each other instead of pushing back and forth in place.
 const SIDESTEP := Fixed.ONE / 32
@@ -113,8 +115,8 @@ static func body_of(move_class: int) -> int:
 	return SEPARATION
 
 
-## The nearest two units of these move classes may stand (fixed units): a quarter of their mean
-## body, so they overlap by at most MAX_OVERLAP.
+## The nearest two units of these move classes may stand (fixed units): half their mean body,
+## so they overlap by at most MAX_OVERLAP.
 static func min_distance(class_a: int, class_b: int) -> int:
 	var mean := (body_of(class_a) + body_of(class_b)) / 2
 	return mean * (MAX_OVERLAP_DEN - MAX_OVERLAP_NUM) / MAX_OVERLAP_DEN

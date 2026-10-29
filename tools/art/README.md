@@ -42,6 +42,9 @@ godot --headless -s tools/art/make_frames.gd -- gdl_peasant   # then SpriteFrame
   2, 6, 7; 3, 4, 5 are mirrors. The team colour is a belt band at the waist.
 - Riders (`pixel_units.RIDERS`) are generated at 96×96 (the price does not depend on the size)
   and get a 128×120 frame; their panel portrait is the rider from the helmet to the saddle.
+  Their pivot is the middle of the horse on the ground, not the lowest hoof: the lowest hoof
+  stands `RIDER_SINK` px below it (3 side on, 8–10 head or tail on), and `shadow_of` lets
+  pixels below the pivot cast from where they stand, so the shadow starts under the hooves.
   `WHITE_CLAD` units keep the near-white inside the figure (white cloaks, tabards, shields).
 - The turn GIF starts at the base view's own facing and steps 45° per frame (E, SE, S, … for
   most); check the sheet by eye and map frames to facings 0, 1, 2, 6, 7. Read its frames with

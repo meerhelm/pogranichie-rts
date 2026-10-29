@@ -27,6 +27,8 @@ const PEASANTS := 28
 ## Where the army forms up before the grove and before Skirsnemune.
 const GROVE_RALLY := Vector2i(100, 68)
 const SKIR_RALLY := Vector2i(106, 100)
+## The Order's pier on the Neman below Skirsnemune: held with no enemy near, it stops the boats.
+const PIER := Vector2i(112, 140)
 ## The way round Dubysa to each blockade post (north road, river road, Neman bank).
 const POST_WAYPOINTS: Array[Vector2i] = [Vector2i(80, 100), Vector2i(90, 128), Vector2i(90, 140)]
 
@@ -367,8 +369,20 @@ func _army() -> void:
 				_skirsnemune(army)
 
 
-func _skirsnemune(army: PackedInt32Array) -> void:
+func _skirsnemune(all_army: PackedInt32Array) -> void:
 	var m := sim.mission
+	# The riders hold the pier first: every boat brings the garrison four knechts, and with
+	# the wider bodies (SIM 25) the breach no longer wins against a garrison that keeps growing.
+	var army := all_army
+	if not m.flags.has("pier_closed"):
+		var horse := PackedInt32Array()
+		army = PackedInt32Array()
+		for id in all_army:
+			if sim.entities.type_ids[id - 1] in [&"gdl_light_horse", &"hero_rumbaudas"]:
+				horse.append(id)
+			else:
+				army.append(id)
+		_attack_move(horse, PIER)
 	var castle: int = m.named["skir_castle"]
 	if not sim.economy.buildings.is_alive(castle):
 		_attack_move(army, Vector2i(110, 140))

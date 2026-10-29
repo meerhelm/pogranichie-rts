@@ -9,7 +9,9 @@ extends SceneTree
 ##   animal, WHAT = node, forest, building or animal, and a left click on it), dismantle (the
 ##   player's peasants take a house by the town centre apart, nearly done, so its salvage shows),
 ##   work (the same, caught while they work), fight (no fog, spearmen against knechts and a
-##   crossbowman by the town centre), panel:WHAT[:HOVER] (the bottom panel with WHAT selected:
+##   crossbowman by the town centre), melee[:TICKS] (no fog, eight spearmen and four light
+##   horsemen against eight knechts and four knight brothers by the town centre, run TICKS
+##   ticks), panel:WHAT[:HOVER] (the bottom panel with WHAT selected:
 ##   peasants, army (spearmen, a light horseman, a wise woman) or a building base id such as
 ##   town_center or granary, finished by the town centre; plenty of resources; the mouse over the
 ##   button HOVER, a building, unit, tech or spell id, or order<N> for the Nth order button),
@@ -214,6 +216,9 @@ func _act() -> void:
 		_dismantle(main, _action == "work")
 	elif _action == "fight":
 		_fight(main)
+	elif _action.begins_with("melee"):
+		var parts := _action.split(":")
+		_melee(main, int(parts[1]) if parts.size() > 1 else 200)
 	elif _action == "alerts":
 		_alerts(main)
 	elif _action == "effects":
@@ -533,6 +538,34 @@ func _alerts(main: Node) -> void:
 	root.get_texture().get_image().save_png(_out)
 	print("saved ", _out)
 	quit()
+
+
+## A bigger melee on open grass by the town centre: eight spearmen and four light horsemen of
+## the player against eight knechts and four knight brothers, run `ticks` ticks, to see how the
+## bodies keep apart in a crowd and the riders stand on the ground.
+func _melee(main: Node, ticks: int) -> void:
+	var sim: Simulation = main.get("sim")
+	sim.vision.rules = null
+	(main.get_node("World/Fog") as Node2D).visible = false
+	var store := sim.economy.buildings
+	var tc := store.alive_ids[0]
+	for b in store.alive_ids:
+		if store.owners[b - 1] == 1 and store.defs[b - 1].base_id == &"town_center":
+			tc = b
+	var x := store.cell_x[tc - 1] + 6
+	var y := store.cell_y[tc - 1] + 4
+	for i in 8:
+		var fy := Fixed.from_cells(y + i) + Fixed.ONE / 2
+		sim.spawn_unit(&"gdl_spearman", 1, Fixed.from_cells(x), fy)
+		sim.spawn_unit(&"to_knecht", 2, Fixed.from_cells(x + 4), fy)
+	for i in 4:
+		var fy := Fixed.from_cells(y + 1 + i * 2) + Fixed.ONE / 2
+		sim.spawn_unit(&"gdl_light_horse", 1, Fixed.from_cells(x - 2), fy)
+		sim.spawn_unit(&"to_knight_brother", 2, Fixed.from_cells(x + 6), fy)
+	for i in ticks:
+		sim.step()
+	var cam: RtsCamera = main.get_node("Camera")
+	cam.look_at_point(Iso.cell_to_screen(Vector2(x + 2, y + 4)))
 
 
 func _effects(main: Node) -> void:
