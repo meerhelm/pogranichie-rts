@@ -69,6 +69,613 @@
   ],
   "amb_bog": [
    1
+  ],
+  "alert_age_up_gdl": [
+   1
+  ],
+  "alert_age_up_pl": [
+   2
+  ],
+  "alert_age_up_to": [
+   2
+  ],
+  "alert_age_up_mo": [
+   1
+  ],
+  "alert_pop_limit": [
+   1
+  ],
+  "alert_building_lost": [
+   3
+  ],
+  "alert_hero_down": [
+   1
+  ],
+  "alert_fire": [
+   2
+  ],
+  "alert_breach": [
+   3
+  ],
+  "alert_power_gained": [
+   3
+  ],
+  "alert_power_lost": [
+   3
+  ],
+  "alert_enemy_spell": [
+   1
+  ],
+  "alert_objective_new": [
+   1,
+   3
+  ],
+  "alert_objective_done": [
+   1,
+   2
+  ],
+  "alert_objective_failed": [
+   2
+  ],
+  "alert_message": [
+   3
+  ],
+  "alert_trade": [
+   3
+  ],
+  "alert_idle_worker": [
+   3
+  ],
+  "alert_creature": [
+   3
+  ],
+  "stinger_victory": [
+   1
+  ],
+  "stinger_defeat": [
+   3
+  ],
+  "ui_tab": [
+   2
+  ],
+  "ui_open": [
+   1
+  ],
+  "ui_close": [
+   1
+  ],
+  "ui_cancel": [
+   1
+  ],
+  "ui_place_bad": [
+   1
+  ],
+  "ui_rally": [
+   1
+  ],
+  "ui_group": [
+   1
+  ],
+  "ui_speed": [
+   2
+  ],
+  "ui_pause": [
+   2
+  ],
+  "ui_menu_start": [
+   1
+  ],
+  "ui_save": [
+   2
+  ],
+  "ack_peasant_select": [
+   2
+  ],
+  "ack_peasant_move": [
+   1
+  ],
+  "ack_peasant_work": [
+   2
+  ],
+  "ack_inf_move": [
+   2
+  ],
+  "ack_inf_attack": [
+   2
+  ],
+  "ack_spear_attack": [
+   1
+  ],
+  "ack_archer_select": [
+   1
+  ],
+  "ack_archer_move": [
+   1
+  ],
+  "ack_archer_attack": [
+   2
+  ],
+  "ack_crossbow_select": [
+   3
+  ],
+  "ack_crossbow_attack": [
+   2
+  ],
+  "ack_gun_select": [
+   3
+  ],
+  "ack_gun_attack": [
+   3
+  ],
+  "ack_lcav_move": [
+   1
+  ],
+  "ack_lcav_attack": [
+   1
+  ],
+  "ack_hcav_select": [
+   2
+  ],
+  "ack_hcav_move": [
+   2
+  ],
+  "ack_hcav_attack": [
+   3
+  ],
+  "ack_siege_select": [
+   2
+  ],
+  "ack_siege_move": [
+   1
+  ],
+  "ack_siege_attack": [
+   1
+  ],
+  "ack_boat_select": [
+   1
+  ],
+  "ack_boat_move": [
+   2
+  ],
+  "ack_pagan_select": [
+   2
+  ],
+  "ack_priest_select": [
+   1
+  ],
+  "ack_inok_select": [
+   3
+  ],
+  "ack_yurodivy_select": [
+   2
+  ],
+  "ack_robe_move": [
+   1
+  ],
+  "ack_spy_select": [
+   3
+  ],
+  "ack_vilkolak_select": [
+   3
+  ],
+  "ack_vilkolak_attack": [
+   3
+  ],
+  "ack_stranger_select": [
+   1
+  ],
+  "ack_moroz_select": [
+   2
+  ],
+  "ack_moroz_attack": [
+   3
+  ],
+  "ack_master_select": [
+   1
+  ],
+  "ack_hero_select": [
+   2
+  ],
+  "bld_town_center": [
+   1,
+   2
+  ],
+  "bld_house": [
+   1,
+   2
+  ],
+  "bld_granary": [
+   2
+  ],
+  "bld_farm": [
+   1,
+   2
+  ],
+  "bld_lumber_yard": [
+   2
+  ],
+  "bld_mine": [
+   2
+  ],
+  "bld_barracks": [
+   2
+  ],
+  "bld_range": [
+   1
+  ],
+  "bld_stable": [
+   1,
+   2
+  ],
+  "bld_shrine": [
+   1,
+   2
+  ],
+  "bld_palisade": [
+   2
+  ],
+  "bld_wall": [
+   1,
+   2
+  ],
+  "bld_gate_open": [
+   1,
+   2
+  ],
+  "bld_gate_close": [
+   2
+  ],
+  "bld_tower": [
+   1,
+   2
+  ],
+  "bld_market": [
+   1,
+   2
+  ],
+  "bld_smithy": [
+   1
+  ],
+  "bld_temple_latin": [
+   1,
+   2
+  ],
+  "bld_temple_orth": [
+   2
+  ],
+  "bld_siege_workshop": [
+   1,
+   2
+  ],
+  "bld_castle": [
+   1,
+   2
+  ],
+  "bld_dock": [
+   1
+  ],
+  "bld_foundry": [
+   1,
+   2
+  ],
+  "bld_field_camp": [
+   2
+  ],
+  "bld_gdl_zaseka": [
+   1
+  ],
+  "bld_gdl_bort": [
+   1
+  ],
+  "bld_gdl_tatar_sloboda": [
+   1,
+   2
+  ],
+  "bld_pl_salt_works": [
+   1
+  ],
+  "bld_pl_tavern": [
+   1,
+   2
+  ],
+  "bld_pl_battery": [
+   1
+  ],
+  "bld_pl_lazaret": [
+   1,
+   2
+  ],
+  "bld_to_brickworks": [
+   1,
+   2
+  ],
+  "bld_to_schnitzhaus": [
+   1,
+   2
+  ],
+  "bld_mo_pomestie": [
+   1,
+   2
+  ],
+  "bld_mo_watchtower": [
+   2
+  ],
+  "bld_mo_yam": [
+   2
+  ],
+  "build_wood_loop": [
+   2
+  ],
+  "build_stone_loop": [
+   1
+  ],
+  "build_finish": [
+   1,
+   2
+  ],
+  "hit_wood_building": [
+   1,
+   2,
+   3
+  ],
+  "hit_stone_building": [
+   1,
+   2,
+   4
+  ],
+  "collapse_wood": [
+   1,
+   2,
+   3
+  ],
+  "collapse_stone": [
+   1,
+   2,
+   3
+  ],
+  "fire_loop": [
+   2
+  ],
+  "fire_ignite": [
+   2,
+   3
+  ],
+  "fire_out": [
+   3
+  ],
+  "eco_tree_fall": [
+   1,
+   2,
+   3
+  ],
+  "eco_mine": [
+   3
+  ],
+  "eco_farm": [
+   1,
+   3
+  ],
+  "eco_hunt": [
+   1,
+   3
+  ],
+  "eco_drop_food": [
+   1,
+   2,
+   3
+  ],
+  "eco_drop_wood": [
+   2,
+   3
+  ],
+  "eco_drop_ore": [
+   1
+  ],
+  "eco_honey": [
+   2,
+   3
+  ],
+  "eco_cart": [
+   1
+  ],
+  "melee_spear": [
+   2
+  ],
+  "melee_axe": [
+   3,
+   4
+  ],
+  "melee_club": [
+   1
+  ],
+  "melee_flail": [
+   4
+  ],
+  "melee_lance": [
+   1,
+   2,
+   3
+  ],
+  "bow_volley": [
+   1,
+   3
+  ],
+  "crossbow_shot": [
+   2
+  ],
+  "arrow_hit_metal": [
+   1,
+   3,
+   4
+  ],
+  "arrow_hit_wood": [
+   1,
+   4
+  ],
+  "arrow_miss": [
+   1
+  ],
+  "gun_hook_shot": [
+   4
+  ],
+  "gun_misfire": [
+   2
+  ],
+  "cannon_field": [
+   1,
+   2,
+   3
+  ],
+  "cannon_bombard": [
+   4
+  ],
+  "cannon_tyufyak": [
+   2
+  ],
+  "porok_release": [
+   3
+  ],
+  "impact_stone_wall": [
+   1,
+   2
+  ],
+  "impact_ground": [
+   4
+  ],
+  "cav_charge_loop": [
+   2
+  ],
+  "march_loop": [
+   2
+  ],
+  "death_inf": [
+   3
+  ],
+  "death_cav": [
+   1,
+   2
+  ],
+  "horse_pain": [
+   3,
+   4
+  ],
+  "rout": [
+   2,
+   3
+  ],
+  "battle_far_loop": [
+   2
+  ],
+  "tabor_lock": [
+   3
+  ],
+  "sp_bog_mist": [
+   1
+  ],
+  "sp_blood_charm": [
+   1
+  ],
+  "rain_loop": [
+   1
+  ],
+  "sp_wolf_path": [
+   1
+  ],
+  "sp_bogurodzica": [
+   2
+  ],
+  "sp_banner_blessing": [
+   1
+  ],
+  "sp_pact": [
+   1
+  ],
+  "sp_exorcism": [
+   2
+  ],
+  "sp_relic": [
+   1
+  ],
+  "sp_land_consecration": [
+   1
+  ],
+  "sp_icon": [
+   3
+  ],
+  "sp_prophecy": [
+   3
+  ],
+  "sp_winter": [
+   3
+  ],
+  "power_place_loop": [
+   2
+  ],
+  "power_tick": [
+   1
+  ],
+  "an_bison": [
+   1,
+   2
+  ],
+  "an_bear": [
+   1,
+   2
+  ],
+  "an_elk": [
+   1
+  ],
+  "an_boar": [
+   1,
+   2
+  ],
+  "an_wolf_howl": [
+   1,
+   2
+  ],
+  "an_wolf_snarl": [
+   1
+  ],
+  "an_dogs": [
+   1,
+   2
+  ],
+  "an_raven": [
+   1,
+   2
+  ],
+  "amb_field": [
+   1
+  ],
+  "amb_old_forest": [
+   1
+  ],
+  "amb_river": [
+   1
+  ],
+  "amb_ford": [
+   2
+  ],
+  "amb_ice": [
+   2
+  ],
+  "amb_hill": [
+   2
+  ],
+  "amb_ash": [
+   1
+  ],
+  "amb_village": [
+   1
+  ],
+  "amb_town": [
+   2
+  ],
+  "amb_camp": [
+   2
+  ],
+  "amb_menu": [
+   2
   ]
  }
 }

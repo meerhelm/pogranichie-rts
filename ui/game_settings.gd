@@ -1,8 +1,8 @@
 class_name GameSettings
 extends RefCounted
-## Player settings: language, edge scrolling, fullscreen, text size, skirmish hints, and the
-## skirmish AI's difficulty and both sides' factions last picked. Kept in user://settings.cfg
-## and applied at start (main menu or game scene, whichever opens first).
+## Player settings: language, edge scrolling, fullscreen, text size, music volume, skirmish
+## hints, and the skirmish AI's difficulty and both sides' factions last picked. Kept in
+## user://settings.cfg and applied at start (main menu or game scene, whichever opens first).
 
 const PATH := "user://settings.cfg"
 ## Locales the game ships (i18n/<locale>.po); English is the development language.
@@ -32,6 +32,8 @@ static var edge_speed := 1
 static var fullscreen := false
 ## Index in TEXT_SIZES.
 static var text_size := 1
+## Music volume in percent (the Music bus of default_bus_layout.tres).
+static var music_volume := 70
 ## Whether a skirmish shows the advisor's step-by-step hints.
 static var hints := true
 ## AiProfile.difficulty of the skirmish opponent (ai/profiles/*_<difficulty>.tres).
@@ -69,6 +71,8 @@ static func ensure_loaded() -> void:
 		var size: int = cfg.get_value("video", "text_size", text_size)
 		text_size = clampi(size, 0, TEXT_SIZES.size() - 1)
 		hints = cfg.get_value("general", "hints", hints)
+		var music: int = cfg.get_value("audio", "music", music_volume)
+		music_volume = clampi(music, 0, 100)
 		var level_name: String = cfg.get_value("skirmish", "ai_difficulty", String(ai_difficulty))
 		var level := StringName(level_name)
 		ai_difficulty = level if DIFFICULTIES.has(level) else &"normal"
@@ -92,6 +96,7 @@ static func edge_speed_factor() -> float:
 
 static func apply() -> void:
 	TranslationServer.set_locale(language)
+	apply_volume()
 	var theme := ThemeDB.get_project_theme()
 	if theme != null and theme.default_font_size != TEXT_SIZES[text_size]:
 		theme.default_font_size = TEXT_SIZES[text_size]
@@ -104,6 +109,15 @@ static func apply() -> void:
 		DisplayServer.window_set_mode(mode)
 
 
+## Sets the Music bus to the music volume (0 % mutes it).
+static func apply_volume() -> void:
+	var bus := AudioServer.get_bus_index(&"Music")
+	if bus < 0:
+		return
+	AudioServer.set_bus_mute(bus, music_volume <= 0)
+	AudioServer.set_bus_volume_db(bus, linear_to_db(maxf(music_volume, 1) / 100.0))
+
+
 static func save() -> void:
 	var cfg := ConfigFile.new()
 	cfg.set_value("general", "language", language)
@@ -112,6 +126,7 @@ static func save() -> void:
 	cfg.set_value("video", "fullscreen", fullscreen)
 	cfg.set_value("video", "text_size", text_size)
 	cfg.set_value("general", "hints", hints)
+	cfg.set_value("audio", "music", music_volume)
 	cfg.set_value("skirmish", "ai_difficulty", String(ai_difficulty))
 	cfg.set_value("skirmish", "faction", String(player_faction))
 	cfg.set_value("skirmish", "enemy", String(enemy_faction))

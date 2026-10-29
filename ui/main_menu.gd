@@ -11,6 +11,8 @@ extends Control
 enum Page { MAIN, COUNTRIES, MISSIONS, SINGLE, NET }
 
 const GAME_SCENE := "res://game/main.tscn"
+## The main menu theme; the menu stays silent while the file is missing.
+const MENU_MUSIC := "res://audio/music/menu_1.ogg"
 ## Colour of the notes under countries, missions and maps.
 const NOTE_COLOR := Color(0.85, 0.72, 0.45)
 const BUTTON_SIZE := Vector2(340, 50)
@@ -79,6 +81,7 @@ func _ready() -> void:
 	_build_single()
 	_build_net()
 	_settings.closed.connect(_show_settings.bind(false))
+	_start_music()
 	_built = true
 	var back_to := CampaignProgress.campaign_of(GameSettings.mission_id)
 	if back_to.is_empty():
@@ -86,6 +89,24 @@ func _ready() -> void:
 	else:
 		_open_campaign(back_to)
 	_retranslate()
+
+
+## The menu theme (audio/music/menu_1.ogg) on the Music bus, looped, fading in.
+func _start_music() -> void:
+	if not ResourceLoader.exists(MENU_MUSIC):
+		return
+	var stream := load(MENU_MUSIC) as AudioStreamOggVorbis
+	if stream == null:
+		return
+	stream.loop = true
+	var player := AudioStreamPlayer.new()
+	player.name = "Music"  # notr
+	player.stream = stream
+	player.bus = &"Music"
+	player.volume_db = -40.0
+	add_child(player)
+	player.play()
+	create_tween().tween_property(player, "volume_db", 0.0, 2.5)
 
 
 func _build_main() -> void:
