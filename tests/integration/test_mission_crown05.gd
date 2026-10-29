@@ -689,6 +689,9 @@ func test_11_and_12_the_garrison_at_the_gate_lets_the_brothers_out_and_takes_the
 	_check(sim)
 	assert_true(m.fired.has("11"))
 	assert_eq(_state(sim, "brothers"), MissionRuntime.Objective.ACTIVE)
+	# Wages for payday: the brothers take about a minute to clear the gate (wider bodies), and
+	# unpaid men would desert meanwhile.
+	_set_silver(sim, 1000)
 	for _k in 60:
 		if m.alive_of("brothers").is_empty():
 			break

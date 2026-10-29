@@ -110,9 +110,12 @@ func test_fifty_units_cross_forest_and_ford_in_formation() -> void:
 		for id in ids:
 			var slot := id - 1
 			var at := Vector2i(e.pos_x[slot], e.pos_y[slot])
-			assert_eq(
-				at,
-				slots[id],
+			var want: Vector2i = slots[id]
+			# A slot moved off a thicket or the water can end up closer to its neighbour than a
+			# body (3/4 cell): the two standing men then step a little apart.
+			assert_lte(
+				maxi(absi(at.x - want.x), absi(at.y - want.y)),
+				Fixed.ONE / 4,
 				(
 					"%s: unit %d stands in its slot (order %d, replans %d)"
 					% [Formation.Kind.keys()[kind], id, e.orders[slot], e.replans[slot]]
