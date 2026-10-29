@@ -152,6 +152,10 @@ func _ready() -> void:
 	sounds.name = "GameSounds"  # notr
 	add_child(sounds)
 	sounds.attach(sim, me, _input, _hud.minimap)
+	var world_sounds := WorldSounds.new()
+	world_sounds.name = "WorldSounds"  # notr
+	$World.add_child(world_sounds)
+	world_sounds.attach(sim, _units, me)
 	_hud.menu.resumed.connect(_apply_camera_settings)
 	_hud.menu.can_resign = sim.mission == null
 	_hud.menu.resign_requested.connect(_input.order_resign)

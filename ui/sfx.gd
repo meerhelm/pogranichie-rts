@@ -49,6 +49,12 @@ static func play(
 		s._play(id, gap_ms, pitch, volume_db)
 
 
+## The variant streams of sound `id` (empty if it has no files).
+static func streams(id: StringName) -> Array:
+	var s := ensure()
+	return s._streams(id) if s != null else []
+
+
 ## Whether sound `id` has at least one file.
 static func has(id: StringName) -> bool:
 	var s := ensure()
@@ -74,10 +80,8 @@ func _play(id: StringName, gap_ms: int, pitch: float, volume_db: float) -> void:
 	var streams := _streams(id)
 	if streams.is_empty():
 		return
-	var now := Time.get_ticks_msec()
-	if _last_time.has(id) and now - _last_time[id] < gap_ms:
+	if not take_gap(id, gap_ms):
 		return
-	_last_time[id] = now
 	var k := randi() % streams.size()
 	if streams.size() > 1 and k == _last_variant.get(id, -1):
 		k = (k + 1) % streams.size()
@@ -89,6 +93,15 @@ func _play(id: StringName, gap_ms: int, pitch: float, volume_db: float) -> void:
 	p.pitch_scale = 1.0 + randf_range(-pitch, pitch)
 	p.volume_db = volume_db
 	p.play()
+
+
+## True (and the time noted) if sound `id` was not played within the last `gap_ms`.
+func take_gap(id: StringName, gap_ms: int) -> bool:
+	var now := Time.get_ticks_msec()
+	if _last_time.has(id) and now - _last_time[id] < gap_ms:
+		return false
+	_last_time[id] = now
+	return true
 
 
 func _streams(id: StringName) -> Array:

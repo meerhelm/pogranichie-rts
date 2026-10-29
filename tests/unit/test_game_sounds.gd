@@ -54,3 +54,16 @@ func test_kinds_follow_the_unit_classes() -> void:
 	assert_eq(GameSounds.ack_kind(db.unit(&"gdl_forest_archer")), &"archer")
 	assert_eq(GameSounds.ack_kind(db.unit(&"mo_moroz")), &"moroz")
 	assert_eq(GameSounds.ack_kind(db.unit(&"pl_bombard")), &"siege")
+
+
+func test_world_sounds_name_files_that_exist() -> void:
+	for source: int in ResourceNodes.Source.values():
+		assert_true(_has_file(WorldSounds._work_sound(source)), "work %d" % source)
+	for id: String in ["pl_bombard", "mo_tyufyak", "gdl_porok", "pl_field_gun"]:
+		assert_true(_has_file(WorldSounds._gun_sound(id)), id)
+	for land: StringName in WorldSounds.LAND.values():
+		assert_true(_has_file(land), String(land))
+	for id in WorldSounds.MELEE:
+		assert_true(_has_file(id), String(id))
+	for f: String in ["gdl", "pl", "to", "mo"]:
+		assert_true(ResourceLoader.exists("res://audio/music/%s_calm_1.ogg" % f), f)
