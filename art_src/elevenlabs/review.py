@@ -28,7 +28,7 @@ BODY
 <script>
 const K='pogranichie-sfx-picks';
 let st={};try{st=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}
-document.querySelectorAll('input[data-f]').forEach(c=>{c.checked=!!st[c.dataset.f];
+document.querySelectorAll('input[data-f]').forEach(c=>{c.checked=(c.dataset.f in st)?!!st[c.dataset.f]:!!c.dataset.auto;
  c.onchange=()=>{st[c.dataset.f]=c.checked;save()}});
 document.querySelectorAll('input[data-note]').forEach(t=>{t.value=st['note:'+t.dataset.note]||'';
  t.oninput=()=>{st['note:'+t.dataset.note]=t.value;save()}});
@@ -51,7 +51,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--spec", default=str(HERE / "sfx.json"))
     ap.add_argument("--batch")
+    ap.add_argument("--picks", help="autopick_<batch>.json: pre-ticks its picks and shows the scores")
     a = ap.parse_args()
+    auto = json.loads(Path(a.picks).read_text()) if a.picks else {}
     spec = json.loads(Path(a.spec).read_text())
     root = Path(spec["out_dir"])
     if not root.is_absolute():
@@ -68,9 +70,20 @@ def main():
         if s["group"] != group:
             group = s["group"]
             parts.append(f"<h2>{group}</h2>")
+        ap_ = auto.get(s["id"], {})
+        rank = {str(r["n"]): r for r in ap_.get("ranked", [])}
+        pre = {str(n) for n in ap_.get("picks", [])}
+
+        def tip(n):
+            r = rank.get(n)
+            if not r:
+                return ""
+            return html.escape(f'score {r["score"]}' + (" · " + ", ".join(r["defects"]) if r["defects"] else ""))
         vs = "".join(
-            f'<label class="v"><input type="checkbox" data-f="{f.name}" data-n="{f.stem.rsplit("_", 1)[1]}">'
-            f'{f.stem.rsplit("_", 1)[1]} <audio controls preload="none" src="{s["id"]}/{f.name}"></audio></label>'
+            f'<label class="v" title="{tip(f.stem.rsplit("_", 1)[1])}"><input type="checkbox" data-f="{f.name}" '
+            f'data-n="{f.stem.rsplit("_", 1)[1]}"{" data-auto=1" if f.stem.rsplit("_", 1)[1] in pre else ""}>'
+            f'{f.stem.rsplit("_", 1)[1]}{"★" if f.stem.rsplit("_", 1)[1] in pre else ""} '
+            f'<audio controls preload="none" src="{s["id"]}/{f.name}"></audio></label>'
             for f in files)
         parts.append(
             f'<div class="s" data-id="{s["id"]}"><span class="id">{s["id"]}</span> '

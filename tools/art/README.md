@@ -346,4 +346,9 @@ is the first ~20 sounds. Raw MP3s go to `art_src/elevenlabs/raw/<id>/` (not in g
 python3 art_src/elevenlabs/el_client.py --batch trial --dry        # free: list and count generations
 python3 art_src/elevenlabs/el_client.py --batch trial --cap 120    # generate; reruns fill only the gaps
 python3 art_src/elevenlabs/review.py --batch trial                 # raw/review.html: listen, tick, copy picks
+python3 art_src/elevenlabs/autopick.py --batch rest                # picks without listening: defects + CLAP + typicality
+python3 art_src/elevenlabs/review.py --batch rest --picks art_src/elevenlabs/raw/autopick_rest.json   # page with ★ pre-ticked
 ```
+
+Autopick needs ffmpeg and `pip install torch transformers numpy` (CLAP model laion/clap-htsat-unfused);
+check it first on the trial batch against the picks made by ear (`--compare art_src/elevenlabs/picks.json`).
