@@ -166,7 +166,9 @@ func _push_pair(a: int, b: int) -> void:
 	_push_y[a] -= py
 	_push_x[b] += px
 	_push_y[b] += py
-	if soft and a_moves and b_moves and _head_on(a, b, dx, dy):
+	# Head-on they step aside even when one is about to arrive (no soft push then): else the
+	# hard push holds them nose to nose for good, each walking into the other.
+	if a_moves and b_moves and _head_on(a, b, dx, dy):
 		_side_x[a] = -e.facing_y[a] * SIDESTEP / Fixed.ONE
 		_side_y[a] = e.facing_x[a] * SIDESTEP / Fixed.ONE
 		_side_x[b] = -e.facing_y[b] * SIDESTEP / Fixed.ONE

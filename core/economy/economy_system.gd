@@ -52,6 +52,10 @@ const UNIT_ACC := 1000 * Fixed.TICKS_PER_SECOND
 const MAX_WALK_TRIES := 3
 ## How far around a footprint a worker looks for a free cell to stand on.
 const STAND_RINGS := 3
+## A peasant already at work on a tree or deposit keeps at it until pushed this much further
+## than the reach (fixed units): crowded round a small deposit, the others' bodies push him a
+## little, and he must not walk off and back over and over.
+const WORK_SLACK := Fixed.HALF
 const FOREST := &"t_forest"
 const GRASS := &"t_grass"
 ## A click on the forest: the peasant starts on the cell within this many cells of it that is
@@ -622,45 +626,6 @@ func _reach() -> int:
 	return Fixed.from_milli(rules.work_reach_milli)
 
 
-## Where to stand to work on a rectangle of cells: on it if it can be walked on, else on the
-## nearest open cell around it (nearest to the unit, ties by cell index).
-func _stand_point(id: int, x0: int, y0: int, w: int, h: int, blocking: bool) -> Vector2i:
-	var px := entities.pos_x[id - 1]
-	var py := entities.pos_y[id - 1]
-	if not blocking:
-		var cx := clampi(Fixed.to_cells(px), x0, x0 + w - 1)
-		var cy := clampi(Fixed.to_cells(py), y0, y0 + h - 1)
-		var c := nav.cell_at(cx, cy)
-		return Vector2i(nav.center_x(c), nav.center_y(c))
-	var cls: int = entities.move_class[id - 1]
-	for r in range(1, STAND_RINGS + 1):
-		var best := NavGrid.NO_CELL
-		var best_d := 0
-		for y in range(y0 - r, y0 + h + r):
-			for x in range(x0 - r, x0 + w + r):
-				var ring := x == x0 - r or x == x0 + w + r - 1 or y == y0 - r or y == y0 + h + r - 1
-				if not ring or not nav.in_bounds(x, y):
-					continue
-				var c := nav.cell_at(x, y)
-				if not nav.passable(cls, c):
-					continue
-				var d := Fixed.distance(px, py, nav.center_x(c), nav.center_y(c))
-				if best == NavGrid.NO_CELL or d < best_d:
-					best = c
-					best_d = d
-		if best != NavGrid.NO_CELL:
-			return Vector2i(nav.center_x(best), nav.center_y(best))
-	return Vector2i(Fixed.from_cells(x0) + Fixed.HALF, Fixed.from_cells(y0) + Fixed.HALF)
-
-
-func _rect_distance_sq(px: int, py: int, x0: int, y0: int, w: int, h: int) -> int:
-	var ax := Fixed.from_cells(x0)
-	var ay := Fixed.from_cells(y0)
-	var dx := maxi(maxi(ax - px, 0), px - (ax + Fixed.from_cells(w)))
-	var dy := maxi(maxi(ay - py, 0), py - (ay + Fixed.from_cells(h)))
-	return dx * dx + dy * dy
-
-
 ## Walks to a building and reports whether the unit is at it.
 func to_building(id: int, b: int, reach: int = -1) -> bool:
 	var s := b - 1
@@ -669,14 +634,8 @@ func to_building(id: int, b: int, reach: int = -1) -> bool:
 	var near := buildings.distance_sq(b, entities.pos_x[slot], entities.pos_y[slot]) <= r * r
 	var goal := Vector2i.ZERO
 	if not near and entities.orders[slot] != EntityStore.Order.MOVE:
-		goal = _stand_point(
-			id,
-			buildings.cell_x[s],
-			buildings.cell_y[s],
-			buildings.w[s],
-			buildings.h[s],
-			buildings.blocks[s] == 1
-		)
+		var rect := Rect2i(buildings.cell_x[s], buildings.cell_y[s], buildings.w[s], buildings.h[s])
+		goal = WorkSpots.stand_point(entities, nav, id, rect, buildings.blocks[s] == 1, STAND_RINGS)
 	return _approach(id, goal.x, goal.y, near)
 
 
@@ -797,6 +756,7 @@ func _retarget(slot: int) -> bool:
 		if best >= 0:
 			job_ref[slot] = best
 			tries[slot] = 0
+			_new_target(slot)
 			return true
 		for y in range(fy - r, fy + r + 1):
 			for x in range(fx - r, fx + r + 1):
@@ -829,7 +789,14 @@ func _retarget(slot: int) -> bool:
 		return false
 	job_ref[slot] = best
 	tries[slot] = 0
+	_new_target(slot)
 	return true
+
+
+## A new tree or deposit is walked up to anew (the work slack was for the old one).
+func _new_target(slot: int) -> void:
+	if phase[slot] == Phase.WORK:
+		phase[slot] = Phase.GO
 
 
 ## The forest cell within `r` of (fx, fy) nearest to where player p carries wood (ResourceNodes
@@ -848,20 +815,42 @@ func _to_resource(id: int) -> bool:
 	var px := entities.pos_x[slot]
 	var py := entities.pos_y[slot]
 	var r := _reach()
+	if phase[slot] == Phase.WORK:
+		r += WORK_SLACK
 	match job_target[slot]:
 		Target.BUILDING:
 			return to_building(id, ref)
 		Target.CELL:
-			var near := _rect_distance_sq(px, py, ref % nav.width, ref / nav.width, 1, 1) <= r * r
-			return _approach(id, nav.center_x(ref), nav.center_y(ref), near)
+			var at := WorkSpots.rect_distance_sq(px, py, ref % nav.width, ref / nav.width, 1, 1)
+			return _approach(id, nav.center_x(ref), nav.center_y(ref), at <= r * r)
 	var cell := nodes.cells[ref - 1]
 	var cx := cell % nav.width
 	var cy := cell / nav.width
-	var near_node := _rect_distance_sq(px, py, cx, cy, 1, 1) <= r * r
+	var near_node := WorkSpots.rect_distance_sq(px, py, cx, cy, 1, 1) <= r * r
 	var goal := Vector2i.ZERO
 	if not near_node and entities.orders[slot] != EntityStore.Order.MOVE:
-		goal = _stand_point(id, cx, cy, 1, 1, nodes.blocks[ref - 1] == 1)
+		var blocks := nodes.blocks[ref - 1] == 1
+		var rect := Rect2i(cx, cy, 1, 1)
+		var taken := _spots_of_others(slot)
+		goal = WorkSpots.stand_point(entities, nav, id, rect, blocks, STAND_RINGS, taken)
 	return _approach(id, goal.x, goal.y, near_node)
+
+
+## The cells where the other workers on the same node stand, or walk to: one entry each.
+func _spots_of_others(slot: int) -> PackedInt32Array:
+	var out := PackedInt32Array()
+	var e := entities
+	for other in e.alive_ids:
+		var o := other - 1
+		if o == slot or o >= job.size() or job[o] != Job.GATHER:
+			continue
+		if job_target[o] != job_target[slot] or job_ref[o] != job_ref[slot]:
+			continue
+		if e.orders[o] == EntityStore.Order.MOVE:
+			out.append(nav.cell_of(e.target_x[o], e.target_y[o]))
+		else:
+			out.append(nav.cell_of(e.pos_x[o], e.pos_y[o]))
+	return out
 
 
 ## Takes the load to the nearest own building that accepts it, then goes back to work.

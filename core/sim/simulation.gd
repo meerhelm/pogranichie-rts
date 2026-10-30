@@ -44,7 +44,10 @@ extends RefCounted
 ##   finished field or hive.
 ## 25: bigger bodies for the pixel sprites: a man on foot 3/4 of a cell, a rider a cell, and no
 ##   two bodies overlap by more than a half (Separation).
-const SIM_VERSION := 25
+## 26: peasants on one deposit take different cells round it (WorkSpots) and one at work keeps
+##   at it until pushed half a cell past the reach; two walkers head-on step aside also when one
+##   is about to arrive (Separation), so they no longer stick nose to nose and give up.
+const SIM_VERSION := 26
 ## Map size when none is given; the skirmish map default from the implementation plan.
 const DEFAULT_MAP_CELLS := 120
 ## Stats for unit types the catalog does not know (tests without data).

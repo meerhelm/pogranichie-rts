@@ -535,11 +535,13 @@ func _soldiers() -> PackedInt32Array:
 
 
 ## Gintaut fights with the army while he has more than half his HP, then rides home (his fall
-## loses the mission).
+## loses the mission). After the grove he stays home: at Skirsnemune the garrison's archers
+## could bring him down on his way back (SIM 26).
 func _gintaut_fit(id: int) -> bool:
 	var e := sim.entities
 	var s := id - 1
-	if e.hp[s] * 2 > e.max_hp[s]:
+	var after_grove := stage in ["wait_riders", "skirsnemune", "dubysa"]
+	if e.hp[s] * 2 > e.max_hp[s] and not after_grove:
 		return true
 	if not _sent.has("gintaut_home") or sim.tick - Num.of(_sent["gintaut_home"]) > 200:
 		_sent["gintaut_home"] = sim.tick
