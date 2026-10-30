@@ -1,0 +1,245 @@
+{
+ "out_dir": "/Users/valentinsobolev/Development/meerhelm/pogranichie-rts/.rd-trial/iso/units",
+ "jobs": [
+  {
+   "name": "mo_boyar_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    96,
+    96
+   ],
+   "num_images": 2,
+   "seed": 13001,
+   "remove_bg": true,
+   "prompt": "single mounted rider alone, 16th century Muscovite boyar cavalryman, rich bakhterets armour of small plates over mail, pointed shishak helmet with a mail aventail, lance held upright, sabre, round shield, horse with a coloured saddle cloth, standing still, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"
+  },
+  {
+   "name": "mo_syn_boyarsky_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    96,
+    96
+   ],
+   "num_images": 2,
+   "seed": 13002,
+   "remove_bg": true,
+   "prompt": "single mounted rider alone, 16th century Muscovite pomestie horseman, quilted red tegilyai coat with a high collar, pointed conical helmet, composite bow in a quiver case at the hip, sabre, small horse with an eastern saddle, standing still, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"
+  },
+  {
+   "name": "mo_storozha_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    96,
+    96
+   ],
+   "num_images": 2,
+   "seed": 13003,
+   "remove_bg": true,
+   "prompt": "single mounted rider alone, 16th century Muscovite border watchman on a small horse, faded grey quilted coat, cloth cap with a fur band, composite bow in hand, sabre, standing still, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"
+  },
+  {
+   "name": "mo_inok_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    64,
+    64
+   ],
+   "num_images": 2,
+   "seed": 13004,
+   "remove_bg": true,
+   "prompt": "single small full body figure alone, Russian Orthodox monk, long black robe and black klobuk hat with a veil, long grey beard, carrying a small icon in a wooden case on a tall pole, standing in a neutral pose, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"
+  },
+  {
+   "name": "hero_keeper_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    64,
+    64
+   ],
+   "num_images": 2,
+   "seed": 13005,
+   "remove_bg": true,
+   "prompt": "single small full body figure alone, old pagan Lithuanian keeper of the sacred fire, a woman in a long white linen dress, dark cloak, greying hair loose, wooden staff, standing in a neutral pose, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"
+  },
+  {
+   "name": "hero_rumbaudas_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    64,
+    64
+   ],
+   "num_images": 2,
+   "seed": 13006,
+   "remove_bg": true,
+   "prompt": "single small full body figure alone, 15th century Samogitian hunter, sheepskin coat, fur cap, bow on the back, axe in hand, standing in a neutral pose, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"
+  },
+  {
+   "name": "hero_anastasia_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    64,
+    64
+   ],
+   "num_images": 2,
+   "seed": 13007,
+   "remove_bg": true,
+   "prompt": "single small full body figure alone, 16th century princess, mature widow, long dark rich dress to the ground, white widow's kerchief over the head, short fur cloak, standing in a neutral pose, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"
+  },
+  {
+   "name": "hero_ostrogski_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    96,
+    96
+   ],
+   "num_images": 2,
+   "seed": 13008,
+   "remove_bg": true,
+   "prompt": "single mounted rider alone, hetman Konstanty Ostrogski, dark beard, rich plate armour under a crimson kaftan with gold, open gilt sallet helmet, gold orthodox cross, gold mace bulawa, dark horse, standing still, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"
+  },
+  {
+   "name": "hero_jakub_kobylany_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    96,
+    96
+   ],
+   "num_images": 2,
+   "seed": 13009,
+   "remove_bg": true,
+   "prompt": "single mounted rider alone, 15th century Polish knight commander, dark beard, raised visor, plate armour over a brigandine, lance with a red and white pennon held upright, brown horse, standing still, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"
+  },
+  {
+   "name": "hero_jungingen_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    96,
+    96
+   ],
+   "num_images": 2,
+   "seed": 13010,
+   "remove_bg": true,
+   "prompt": "single mounted rider alone, Grand Master of the Teutonic Order, man about 50, white cloak with a black cross and a gold cross, plate armour, open bascinet, sword, big white horse in a white caparison with a black cross, standing still, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"
+  },
+  {
+   "name": "hero_stach_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    96,
+    96
+   ],
+   "num_images": 2,
+   "seed": 13011,
+   "remove_bg": true,
+   "prompt": "single mounted rider alone, young Polish knight 19 years old, beardless, bright new steel breastplate, red brigandine skirt, open sallet helmet, sword, bay horse, standing still, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"
+  },
+  {
+   "name": "hero_jagiello_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    96,
+    96
+   ],
+   "num_images": 2,
+   "seed": 13012,
+   "remove_bg": true,
+   "prompt": "single mounted rider alone, King Wladyslaw Jagiello about 60, grey hair, clean shaven, armour under a long red mantle, gold crown on an open bascinet, sword, grey horse in a red caparison, standing still, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"
+  },
+  {
+   "name": "hero_gintaut_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    96,
+    96
+   ],
+   "num_images": 2,
+   "seed": 13013,
+   "remove_bg": true,
+   "prompt": "single mounted rider alone, Samogitian noble about 30, fair hair, short beard, mail shirt, open bascinet, fur cloak, sword, brown horse, standing still, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"
+  },
+  {
+   "name": "hero_zyndram_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    96,
+    96
+   ],
+   "num_images": 2,
+   "seed": 13014,
+   "remove_bg": true,
+   "prompt": "single mounted rider alone, Polish knight Zyndram, short and stocky, full plate armour under a plain red surcoat, open bascinet, dark beard, mace, brown horse, standing still, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"
+  },
+  {
+   "name": "hero_wallenrode_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    96,
+    96
+   ],
+   "num_images": 2,
+   "seed": 13015,
+   "remove_bg": true,
+   "prompt": "single mounted rider alone, Teutonic Grand Marshal, knight in plate armour and a white cloak with a black cross, visored bascinet, lance held upright, big horse in a white caparison, standing still, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"
+  },
+  {
+   "name": "hero_lengvenis_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    96,
+    96
+   ],
+   "num_images": 2,
+   "seed": 13016,
+   "remove_bg": true,
+   "prompt": "single mounted rider alone, elderly Lithuanian prince with a grey beard, mail and plate armour, pointed helmet, gold orthodox cross on the chest, lance with a pennon held upright, brown horse, standing still, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"
+  },
+  {
+   "name": "hero_plauen_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    96,
+    96
+   ],
+   "num_images": 2,
+   "seed": 13017,
+   "remove_bg": true,
+   "prompt": "single mounted rider alone, Heinrich von Plauen, lean hard tired man about 40, short grizzled beard, open bascinet, plate armour, white Teutonic cloak with a black cross, sword, dark horse, standing still, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"
+  },
+  {
+   "name": "hero_casimir_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    96,
+    96
+   ],
+   "num_images": 2,
+   "seed": 13018,
+   "remove_bg": true,
+   "prompt": "single mounted rider alone, young King Casimir IV, clean shaven, long brown hair, gold crown on an open bascinet, plate armour under a crimson royal mantle with an ermine collar, sword, white horse, standing still, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"
+  },
+  {
+   "name": "hero_kuchmeister_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    96,
+    96
+   ],
+   "num_images": 2,
+   "seed": 13019,
+   "remove_bg": true,
+   "prompt": "single mounted rider alone, Teutonic knight brother, plate armour, white cloak with a black cross, open bascinet, sword, grey horse in a white caparison, standing still, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"
+  },
+  {
+   "name": "hero_mikolaj_base",
+   "style": "rd_pro__isometric",
+   "size": [
+    96,
+    96
+   ],
+   "num_images": 2,
+   "seed": 13020,
+   "remove_bg": true,
+   "prompt": "single mounted rider alone, young Lithuanian noble about 22, open bascinet with an aventail, breastplate covered with green cloth, plate arms, gold cross on the neck, sword, brown horse, standing still, isometric view facing down right, game unit sprite, no ground, isolated on a plain white background"
+  }
+ ]
+}

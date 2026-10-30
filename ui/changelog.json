@@ -2,6 +2,19 @@
 	"_comment": "What each build has. Newest version first; the first entry must match application/config/version in project.godot. Every new build: bump the version there and in export_presets.cfg, add an entry on top. Texts per game language; a missing language falls back to en.",
 	"versions": [
 		{
+			"version": "0.3.2",
+			"date": "2026-10-30",
+			"items": [
+				{
+					"en": "Pixel art for 16 campaign heroes, among them Jagiełło, Lengvenis and Gintaut, Zyndram, Jungingen, Plauen, Casimir IV and Ostrogski, and for the Muscovite boyar, son of a boyar, border watchman and monk.",
+					"be": "Піксель-арт для 16 герояў кампаній, сярод іх Ягайла, Лінгвень і Гінтаўт, Зындрам, Юнгінген, Плаўэн, Казімір IV і Астрожскі, а таксама для маскоўскіх баярына, сына баярскага, вартаўніка і манаха.",
+					"pl": "Grafika pikselowa dla 16 bohaterów kampanii, w tym Jagiełły, Lingwena i Giedygołda, Zyndrama, Jungingena, Plauena, Kazimierza IV i Ostrogskiego, oraz dla moskiewskiego bojara, syna bojarskiego, strażnika granicy i mnicha.",
+					"uk": "Піксель-арт для 16 героїв кампаній, серед них Ягайло, Лугвен і Гінтаут, Зиндрам, Юнгінген, Плауен, Казимир IV і Острозький, а також для московських боярина, сина боярського, сторожі й ченця.",
+					"lt": "Pikselių grafika 16 kampanijų herojų, tarp jų Jogailai, Lengveniui ir Gintautui, Zyndramui, Jungingenui, Plauenui, Kazimierui IV ir Ostrogiškiui, bei maskvėnų bajorui, bajoro sūnui, sargybiniui ir vienuoliui."
+				}
+			]
+		},
+		{
 			"version": "0.3.1",
 			"date": "2026-10-29",
 			"items": [

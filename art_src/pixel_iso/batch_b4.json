@@ -1,0 +1,110 @@
+{
+ "name": "b4",
+ "units": {
+  "mo_boyar": {
+   "rider": true,
+   "attack": "the rider lowers the lance and thrusts it forward from the saddle, in place",
+   "desc": "16th century Muscovite boyar cavalryman, rich bakhterets armour of small plates over mail, pointed shishak helmet with a mail aventail, lance held upright, sabre, round shield, horse with a coloured saddle cloth",
+   "base_facing": 3
+  },
+  "mo_syn_boyarsky": {
+   "rider": true,
+   "attack": "the rider draws the composite bow and shoots an arrow from the saddle, in place",
+   "desc": "16th century Muscovite pomestie horseman, quilted red tegilyai coat with a high collar, pointed conical helmet, composite bow in a quiver case at the hip, sabre, small horse with an eastern saddle"
+  },
+  "mo_storozha": {
+   "rider": true,
+   "attack": "the rider draws the composite bow and shoots an arrow from the saddle, in place",
+   "desc": "16th century Muscovite border watchman on a small horse, faded grey quilted coat, cloth cap with a fur band, composite bow in hand, sabre"
+  },
+  "mo_inok": {
+   "attack": "raises the icon on its pole high over his head with both hands, in place",
+   "desc": "Russian Orthodox monk, long black robe and black klobuk hat with a veil, long grey beard, carrying a small icon in a wooden case on a tall pole"
+  },
+  "hero_keeper": {
+   "attack": "raises her hand and casts a glowing spell, in place",
+   "desc": "old pagan Lithuanian keeper of the sacred fire, a woman in a long white linen dress, dark cloak, greying hair loose, wooden staff",
+   "anims": [
+    "idle",
+    "walk"
+   ],
+   "note": "no attack: the budget ran $0.30 short"
+  },
+  "hero_rumbaudas": {
+   "attack": "raises the axe and strikes down, in place",
+   "desc": "15th century Samogitian hunter, sheepskin coat, fur cap, bow on the back, axe in hand"
+  },
+  "hero_anastasia": {
+   "anims": [
+    "idle",
+    "walk"
+   ],
+   "desc": "16th century princess, mature widow, long dark rich dress to the ground, white widow's kerchief over the head, short fur cloak"
+  },
+  "hero_ostrogski": {
+   "rider": true,
+   "attack": "the rider swings his mace down from the saddle, in place",
+   "desc": "hetman Konstanty Ostrogski, dark beard, rich plate armour under a crimson kaftan with gold, open gilt sallet helmet, gold orthodox cross, gold mace bulawa, dark horse"
+  },
+  "hero_jakub_kobylany": {
+   "rider": true,
+   "attack": "the rider lowers the lance and thrusts it forward from the saddle, in place",
+   "desc": "15th century Polish knight commander, dark beard, raised visor, plate armour over a brigandine, lance with a red and white pennon held upright, brown horse"
+  },
+  "hero_jungingen": {
+   "rider": true,
+   "attack": "the rider draws his sword and slashes down from the saddle, in place",
+   "desc": "Grand Master of the Teutonic Order, man about 50, white cloak with a black cross and a gold cross, plate armour, open bascinet, sword, big white horse in a white caparison with a black cross"
+  },
+  "hero_stach": {
+   "rider": true,
+   "attack": "the rider draws his sword and slashes down from the saddle, in place",
+   "desc": "young Polish knight 19 years old, beardless, bright new steel breastplate, red brigandine skirt, open sallet helmet, sword, bay horse"
+  },
+  "hero_jagiello": {
+   "rider": true,
+   "attack": "the rider draws his sword and slashes down from the saddle, in place",
+   "desc": "King Wladyslaw Jagiello about 60, grey hair, clean shaven, armour under a long red mantle, gold crown on an open bascinet, sword, grey horse in a red caparison"
+  },
+  "hero_gintaut": {
+   "rider": true,
+   "attack": "the rider draws his sword and slashes down from the saddle, in place",
+   "desc": "Samogitian noble about 30, fair hair, short beard, mail shirt, open bascinet, fur cloak, sword, brown horse"
+  },
+  "hero_zyndram": {
+   "rider": true,
+   "attack": "the rider swings his mace down from the saddle, in place",
+   "desc": "Polish knight Zyndram, short and stocky, full plate armour under a plain red surcoat, open bascinet, dark beard, mace, brown horse"
+  },
+  "hero_wallenrode": {
+   "rider": true,
+   "attack": "the rider lowers the lance and thrusts it forward from the saddle, in place",
+   "desc": "Teutonic Grand Marshal, knight in plate armour and a white cloak with a black cross, visored bascinet, lance held upright, big horse in a white caparison"
+  },
+  "hero_lengvenis": {
+   "rider": true,
+   "attack": "the rider lowers the lance and thrusts it forward from the saddle, in place",
+   "desc": "elderly Lithuanian prince with a grey beard, mail and plate armour, pointed helmet, gold orthodox cross on the chest, lance with a pennon held upright, brown horse"
+  },
+  "hero_plauen": {
+   "rider": true,
+   "attack": "the rider draws his sword and slashes down from the saddle, in place",
+   "desc": "Heinrich von Plauen, lean hard tired man about 40, short grizzled beard, open bascinet, plate armour, white Teutonic cloak with a black cross, sword, dark horse"
+  },
+  "hero_casimir": {
+   "rider": true,
+   "attack": "the rider draws his sword and slashes down from the saddle, in place",
+   "desc": "young King Casimir IV, clean shaven, long brown hair, gold crown on an open bascinet, plate armour under a crimson royal mantle with an ermine collar, sword, white horse"
+  },
+  "hero_kuchmeister": {
+   "rider": true,
+   "attack": "the rider draws his sword and slashes down from the saddle, in place",
+   "desc": "Teutonic knight brother, plate armour, white cloak with a black cross, open bascinet, sword, grey horse in a white caparison"
+  },
+  "hero_mikolaj": {
+   "rider": true,
+   "attack": "the rider draws his sword and slashes down from the saddle, in place",
+   "desc": "young Lithuanian noble about 22, open bascinet with an aventail, breastplate covered with green cloth, plate arms, gold cross on the neck, sword, brown horse"
+  }
+ }
+}
